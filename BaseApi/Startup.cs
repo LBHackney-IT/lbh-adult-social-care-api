@@ -22,6 +22,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using BaseApi.V1.Gateways.Interfaces;
 
 namespace BaseApi
 {
@@ -124,9 +125,7 @@ namespace BaseApi
         private static void ConfigureDbContext(IServiceCollection services)
         {
             var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
-
-            services.AddDbContext<DatabaseContext>(
-                opt => opt.UseNpgsql(connectionString).AddXRayInterceptor(true));
+            services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(connectionString));
         }
 
         private static void ConfigureLogging(IServiceCollection services, IConfiguration configuration)
@@ -152,6 +151,16 @@ namespace BaseApi
         private static void RegisterGateways(IServiceCollection services)
         {
             services.AddScoped<IExampleGateway, ExampleGateway>();
+            services.AddScoped<IPackageGateway, PackageGateway>();
+            services.AddScoped<IServiceGateway, ServiceGateway>();
+            services.AddScoped<IRolesGateway, RoleGateway>();
+            services.AddScoped<ITimeSlotTypesGateway, TimeSlotTypesGateway>();
+            services.AddScoped<ITimeSlotShiftsGateway, TimeSlotShiftsGateway>();
+            services.AddScoped<IHomeCarePackageGateway, HomeCarePackageGateway>();
+            services.AddScoped<IClientsGateway, ClientsGateway>();
+            services.AddScoped<IHomeCarePackageSlotsGateway, HomeCarePackageSlotsGateway>();
+            services.AddScoped<IUsersGateway, UsersGateway>();
+            services.AddScoped<IStatusGateway, StatusGateway>();
 
             //TODO: For DynamoDb, remove the line above and uncomment the line below.
             //services.AddScoped<IExampleGateway, DynamoDbGateway>();
@@ -161,6 +170,70 @@ namespace BaseApi
         {
             services.AddScoped<IGetAllUseCase, GetAllUseCase>();
             services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
+            #region Package
+            services.AddScoped<IUpsertPackageUseCase, UpsertPackageUseCase>();
+            services.AddScoped<IGetPackageUseCase, GetPackageUseCase>();
+            services.AddScoped<IGetAllPackageUseCase, GetAllPackageUseCase>();
+            services.AddScoped<IDeletePackageUseCase, DeletePackageUseCase>();
+            #endregion
+            #region Service
+            services.AddScoped<IUpsertServiceUseCase, UpsertServiceUseCase>();
+            services.AddScoped<IGetServiceUseCase, GetServiceUseCase>();
+            services.AddScoped<IGetAllServiceUseCase, GetAllServiceUseCase>();
+            services.AddScoped<IDeleteServiceUseCase, DeleteServiceUseCase>();
+            #endregion
+
+            #region Role
+            services.AddScoped<IUpsertRoleUseCase, UpsertRoleUseCase>();
+            services.AddScoped<IGetRoleUseCase, GetRoleUseCase>();
+            services.AddScoped<IGetAllRoleUseCase, GetAllRoleUseCase>();
+            services.AddScoped<IDeleteRoleUseCase, DeleteRoleUseCase>();
+            #endregion
+
+            #region TimeSlotTypes
+            services.AddScoped<IUpsertTimeSlotTypesUseCase, UpsertTimeSlotTypesUseCase>();
+            services.AddScoped<IGetTimeSlotTypesUseCase, GetTimeSlotTypesUseCase>();
+            services.AddScoped<IGetAllTimeSlotTypesUseCase, GetAllTimeSlotTypesUseCase>();
+            services.AddScoped<IDeleteTimeSlotTypesUseCase, DeleteTimeSlotTypesUseCase>();
+            #endregion
+
+            #region HomeCarePackage
+            services.AddScoped<IUpsertHomeCarePackageUseCase, UpsertHomeCarePackageUseCase>();
+            services.AddScoped<IGetAllHomeCarePackageUseCase, GetAllHomeCarePackageUseCase>();
+            services.AddScoped<IUpdateHomeCarePackageUseCase, UpdateHomeCarePackageUseCase>();
+            #endregion
+
+            #region HomeCarePackageSlots
+            services.AddScoped<IUpsertHomeCarePackageSlotsUseCase, UpsertHomeCarePackageSlotsUseCase>();
+            services.AddScoped<IDeleteHomeCarePackageSlotsUseCase, DeleteHomeCarePackageSlotsUseCase>();
+            #endregion
+
+            #region TimeSlotShift
+            services.AddScoped<IUpsertTimeSlotShiftsUseCase, UpsertTimeSlotShiftsUseCase>();
+            services.AddScoped<IGetTimeSlotShiftsUseCase, GetTimeSlotShiftsUseCase>();
+            services.AddScoped<IGetAllTimeSlotShiftsUseCase, GetAllTimeSlotShiftsUseCase>();
+            services.AddScoped<IDeleteTimeSlotShiftsUseCase, DeleteTimeSlotShiftsUseCase>();
+            #endregion
+
+            #region Clients
+            services.AddScoped<IUpsertClientsUseCase, UpsertClientsUseCase>();
+            services.AddScoped<IGetClientsUseCase, GetClientsUseCase>();
+            services.AddScoped<IDeleteClientsUseCase, DeleteClientsUseCase>();
+            #endregion
+
+            #region Users
+            services.AddScoped<IUpsertUsersUseCase, UpsertUsersUseCase>();
+            services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
+            services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();
+            #endregion
+
+            #region Status
+            services.AddScoped<IUpsertStatusUseCase, UpsertStatusUseCase>();
+            services.AddScoped<IGetStatusUseCase, GetStatusUseCase>();
+            services.AddScoped<IGetAllStatusUseCase, GetAllStatusUseCase>();
+            services.AddScoped<IDeleteStatusUseCase, DeleteStatusUseCase>();
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

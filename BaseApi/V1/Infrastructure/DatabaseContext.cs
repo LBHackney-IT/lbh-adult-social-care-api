@@ -1,4 +1,7 @@
+using BaseApi.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BaseApi.V1.Infrastructure
 {
@@ -12,5 +15,55 @@ namespace BaseApi.V1.Infrastructure
         }
 
         public DbSet<DatabaseEntity> DatabaseEntities { get; set; }
+        public DbSet<Package> Packages { get; set; }
+        public DbSet<PackageServices> PackageServices { get; set; }
+        public DbSet<Roles> Roles { get; set; }
+        public DbSet<TimeSlotType> TimeSlotType { get; set; }
+        public DbSet<TimeSlotShifts> TimeSlotShifts { get; set; }
+        public DbSet<HomeCarePackage> HomeCarePackage { get; set; }
+        public DbSet<HomeCarePackageSlots> HomeCarePackageSlots { get; set; }
+        public DbSet<Users> Users { get; set; }
+        public DbSet<Clients> Clients { get; set; }
+        public DbSet<Status> Status { get; set; }
+
+        public async Task<IList<Package>> GetPackagesAsync()
+        => await Packages
+        .ToListAsync()
+        .ConfigureAwait(false);
+
+        public async Task<IList<PackageServices>> GetServicesAsync()
+        => await PackageServices
+        .ToListAsync()
+        .ConfigureAwait(false);
+
+        public async Task<IList<Roles>> GetRolesAsync()
+        => await Roles
+        .ToListAsync()
+        .ConfigureAwait(false);
+
+        public async Task<IList<TimeSlotType>> GetTimeSlotTypesAsync()
+        => await TimeSlotType
+        .ToListAsync()
+        .ConfigureAwait(false);
+
+        public async Task<IList<TimeSlotShifts>> GetTimeSlotShiftsAsync()
+        => await TimeSlotShifts
+        .ToListAsync()
+        .ConfigureAwait(false);
+
+        public async Task<IList<HomeCarePackage>> GetHomeCarePackagesAsync()
+        => await HomeCarePackage
+        .ToListAsync()
+        .ConfigureAwait(false);
+
+        public async Task<IList<HomeCarePackageSlots>> GetHomeCarePackagesSlotsAsync()
+        => await HomeCarePackageSlots
+        .ToListAsync()
+        .ConfigureAwait(false);
+
+        public async Task<IList<Status>> GetStatusAsync()
+        => await Status
+        .ToListAsync()
+        .ConfigureAwait(false);
     }
 }

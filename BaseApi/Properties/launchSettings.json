@@ -12,12 +12,13 @@
     "base_api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/v1/healthcheck/ping",
+      "launchUrl": "api/v1/package/create",
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DynamoDb_LocalMode": "true",
-        "DynamoDb_LocalServiceUrl": "http://localhost:8000"
+        "DynamoDb_LocalServiceUrl": "http://localhost:8000",
+        "CONNECTION_STRING": "Server=(localdb)\\mssqllocaldb;Database=AdultSocialCare;Trusted_Connection=True;ConnectRetryCount=0"
       }
     }
   }
