@@ -144,6 +144,13 @@ If changes to the database schema are made then the docker image for the databas
 - Have integration tests which test from the PostgreSQL database to API Gateway
 
 ## Data Migrations
+
+## Add migrations
+Open package manager console and run the following command replacing `<MIGRATION NAME>` with a fitting name
+```
+Add-Migration <MIGRATION NAME> -OutputDir "V1/Infrastructure/Migrations"
+```
+
 ### A good data migration
 - Record failure logs
 - Automated

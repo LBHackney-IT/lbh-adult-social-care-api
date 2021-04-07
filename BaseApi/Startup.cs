@@ -122,10 +122,12 @@ namespace BaseApi
             RegisterUseCases(services);
         }
 
-        private static void ConfigureDbContext(IServiceCollection services)
+        private void ConfigureDbContext(IServiceCollection services)
         {
-            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
-            services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(connectionString));
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? Configuration.GetConnectionString("DatabaseConnectionString");
+            // var assemblyName = typeof(DatabaseContext).Namespace ?? "BaseApi";
+            var assemblyName = Assembly.GetCallingAssembly().GetName().Name;
+            services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(connectionString, b => b.MigrationsAssembly(assemblyName)));
         }
 
         private static void ConfigureLogging(IServiceCollection services, IConfiguration configuration)
