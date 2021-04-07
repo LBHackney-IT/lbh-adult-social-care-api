@@ -1,15 +1,3 @@
-using AutoFixture;
-using BaseApi;
-using BaseApi.Tests;
-using BaseApi.V1.Domain;
-using BaseApi.V1.Factories;
-using BaseApi.V1.Infrastructure;
-using FluentAssertions;
-using Newtonsoft.Json;
-using NUnit.Framework;
-using System;
-using System.Net;
-using System.Threading.Tasks;
 
 //namespace BaseApi.Tests.V1.E2ETests
 //{
