@@ -15,7 +15,7 @@ namespace BaseApi
             using (var scope = host.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                db.Database.EnsureCreated();
+                // db.Database.EnsureCreated();
                 if (db.Database.GetPendingMigrations().Any())
                 {
                     db.Database.Migrate();

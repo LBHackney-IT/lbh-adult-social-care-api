@@ -11,7 +11,7 @@
   "profiles": {
     "base_api": {
       "commandName": "Project",
-      "launchBrowser": true,
+      "launchBrowser": false,
       "launchUrl": "api/v1/package/create",
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
