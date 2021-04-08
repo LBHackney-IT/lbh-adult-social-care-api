@@ -24,8 +24,7 @@ namespace BaseApi.V1.Infrastructure.Migrations
                 name: "DayCarePackages",
                 columns: table => new
                 {
-                    DayCarePackageId = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DayCarePackageId = table.Column<Guid>(nullable: false),
                     PackageId = table.Column<Guid>(nullable: false),
                     ClientId = table.Column<Guid>(nullable: false),
                     IsFixedPeriodOrOngoing = table.Column<bool>(nullable: false),

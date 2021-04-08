@@ -5,7 +5,10 @@ using System.Linq;
 using System.Reflection;
 using BaseApi.V1.Controllers;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
+using AutoMapper;
+using BaseApi.V1.Factories;
 using BaseApi.V1.Gateways;
+using BaseApi.V1.Gateways.DayCarePackageGateways;
 using BaseApi.V1.Infrastructure;
 using BaseApi.V1.UseCase;
 using BaseApi.V1.UseCase.Interfaces;
@@ -23,6 +26,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using BaseApi.V1.Gateways.Interfaces;
+using BaseApi.V1.UseCase.DayCarePackageUseCases.Concrete;
+using BaseApi.V1.UseCase.DayCarePackageUseCases.Interfaces;
 
 namespace BaseApi
 {
@@ -112,6 +117,9 @@ namespace BaseApi
                     c.IncludeXmlComments(xmlPath);
             });
 
+            // Add auto mapper
+            services.AddAutoMapper(typeof(Startup));
+
             ConfigureLogging(services, Configuration);
 
             ConfigureDbContext(services);
@@ -124,7 +132,7 @@ namespace BaseApi
 
         private void ConfigureDbContext(IServiceCollection services)
         {
-            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? Configuration.GetConnectionString("DatabaseConnectionString");
+            var connectionString = Configuration.GetConnectionString("DatabaseConnectionString") ?? Environment.GetEnvironmentVariable("CONNECTION_STRING");
             // var assemblyName = typeof(DatabaseContext).Namespace ?? "BaseApi";
             var assemblyName = Assembly.GetCallingAssembly().GetName().Name;
             services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(connectionString, b => b.MigrationsAssembly(assemblyName)));
@@ -159,6 +167,7 @@ namespace BaseApi
             services.AddScoped<ITimeSlotTypesGateway, TimeSlotTypesGateway>();
             services.AddScoped<ITimeSlotShiftsGateway, TimeSlotShiftsGateway>();
             services.AddScoped<IHomeCarePackageGateway, HomeCarePackageGateway>();
+            services.AddScoped<IDayCarePackageGateway, DayCarePackageGateway>();
             services.AddScoped<IClientsGateway, ClientsGateway>();
             services.AddScoped<IHomeCarePackageSlotsGateway, HomeCarePackageSlotsGateway>();
             services.AddScoped<IUsersGateway, UsersGateway>();
@@ -203,6 +212,10 @@ namespace BaseApi
             services.AddScoped<IUpsertHomeCarePackageUseCase, UpsertHomeCarePackageUseCase>();
             services.AddScoped<IGetAllHomeCarePackageUseCase, GetAllHomeCarePackageUseCase>();
             services.AddScoped<IUpdateHomeCarePackageUseCase, UpdateHomeCarePackageUseCase>();
+            #endregion
+
+            #region DayCarePackage
+            services.AddScoped<ICreateDayCarePackageUseCase, CreateDayCarePackageUseCase>();
             #endregion
 
             #region HomeCarePackageSlots
@@ -251,6 +264,9 @@ namespace BaseApi
             {
                 app.UseHsts();
             }
+
+            // Configure extension methods to use auto mapper
+            DBModelFactory.Configure(app.ApplicationServices.GetService<IMapper>());
 
             // TODO
             // If you DON'T use the renaming script, PLEASE replace with your own API name manually

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BaseApi.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210408052622_AddDayCarePackageEntity")]
+    [Migration("20210408105206_AddDayCarePackageEntity")]
     partial class AddDayCarePackageEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -96,11 +96,10 @@ namespace BaseApi.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("BaseApi.V1.Infrastructure.Entities.DayCarePackage", b =>
                 {
-                    b.Property<long>("DayCarePackageId")
+                    b.Property<Guid>("DayCarePackageId")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("DayCarePackageId")
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
