@@ -1,10 +1,10 @@
-using System;
-using System.Threading.Tasks;
-using BaseApi.V1.DataTransferObjects.DayCarePackageDtos;
+using BaseApi.V1.Boundary.DayCarePackageBoundary.Request;
 using BaseApi.V1.Factories;
 using BaseApi.V1.UseCase.DayCarePackageUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace BaseApi.V1.Controllers
 {
@@ -25,7 +25,7 @@ namespace BaseApi.V1.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> CreateDayCarePackage([FromBody] DayCarePackageForCreationDto dayCarePackageForCreation)
+        public async Task<IActionResult> CreateDayCarePackage([FromBody] DayCarePackageForCreationRequest dayCarePackageForCreation)
         {
             try
             {

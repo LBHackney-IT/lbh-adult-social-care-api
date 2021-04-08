@@ -1,8 +1,8 @@
 using System;
 
-namespace BaseApi.V1.DataTransferObjects.DayCarePackageDtos
+namespace BaseApi.V1.Boundary.DayCarePackageBoundary.Request
 {
-    public class DayCarePackageForCreationDto
+    public class DayCarePackageForCreationRequest
     {
         public Guid PackageId { get; set; }
         public Guid ClientId { get; set; }

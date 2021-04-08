@@ -1,5 +1,5 @@
 using AutoMapper;
-using BaseApi.V1.DataTransferObjects.DayCarePackageDtos;
+using BaseApi.V1.Boundary.DayCarePackageBoundary.Request;
 using BaseApi.V1.Infrastructure.Entities;
 
 namespace BaseApi.V1.Profiles
@@ -8,7 +8,7 @@ namespace BaseApi.V1.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<DayCarePackageForCreationDto, DayCarePackage>();
+            CreateMap<DayCarePackageForCreationRequest, DayCarePackage>();
         }
     }
 }
