@@ -1,10 +1,10 @@
+using BaseApi.V1.Exceptions;
 using BaseApi.V1.Gateways.Interfaces;
 using BaseApi.V1.Infrastructure;
 using BaseApi.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BaseApi.V1.Gateways
@@ -51,12 +51,10 @@ namespace BaseApi.V1.Gateways
                 serviceToUpdate.DateCreated = service.DateCreated;
                 serviceToUpdate.UpdatorId = service.UpdatorId;
                 serviceToUpdate.DateUpdated = service.DateUpdated;
-                serviceToUpdate.Success = true;
             }
             else
             {
-                serviceToUpdate.Message = $"This record already exist Service Name: {service.ServiceName}";
-                serviceToUpdate.Success = false;
+                throw new ErrorException($"This record already exist Service Name: {service.ServiceName}");
             }
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
             return serviceToUpdate;

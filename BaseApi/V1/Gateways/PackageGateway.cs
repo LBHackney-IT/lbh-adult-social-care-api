@@ -1,10 +1,10 @@
+using BaseApi.V1.Exceptions;
 using BaseApi.V1.Gateways.Interfaces;
 using BaseApi.V1.Infrastructure;
 using BaseApi.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BaseApi.V1.Gateways
@@ -21,21 +21,19 @@ namespace BaseApi.V1.Gateways
         public async Task<Package> UpsertAsync(Package package)
         {
             Package packageToUpdate = await _databaseContext.Packages.FirstOrDefaultAsync(item => item.PackageName == package.PackageName).ConfigureAwait(false);
-            packageToUpdate = new Package();
             if (packageToUpdate == null)
             {
+                packageToUpdate = new Package();
                 await _databaseContext.Packages.AddAsync(packageToUpdate).ConfigureAwait(false);
                 packageToUpdate.PackageName = package.PackageName;
                 packageToUpdate.CreatorId = package.CreatorId;
                 packageToUpdate.DateCreated = package.DateCreated;
                 packageToUpdate.UpdatorId = package.UpdatorId;
                 packageToUpdate.DateUpdated = package.DateUpdated;
-                packageToUpdate.Success = true;
             }
             else
             {
-                packageToUpdate.Message = $"This record already exist Package Name: {package.PackageName}";
-                packageToUpdate.Success = false;
+                throw new ErrorException($"This record already exist Package Name: {package.PackageName}");
             }
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
             return packageToUpdate;

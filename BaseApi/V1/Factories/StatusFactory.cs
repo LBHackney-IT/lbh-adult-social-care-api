@@ -1,10 +1,7 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Infrastructure.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BaseApi.V1.Factories
 {
@@ -19,9 +16,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = statusEntity.CreatorId,
                 DateCreated = statusEntity.DateCreated,
                 UpdatorId = statusEntity.UpdatorId,
-                DateUpdated = statusEntity.DateUpdated,
-                Success = statusEntity.Success,
-                Message = statusEntity.Message
+                DateUpdated = statusEntity.DateUpdated
             };
         }
 
@@ -34,9 +29,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = statusDomain.CreatorId,
                 DateCreated = statusDomain.DateCreated,
                 UpdatorId = statusDomain.UpdatorId,
-                DateUpdated = statusDomain.DateUpdated,
-                Success = statusDomain.Success,
-                Message = statusDomain.Message
+                DateUpdated = statusDomain.DateUpdated
             };
         }
 
@@ -49,13 +42,11 @@ namespace BaseApi.V1.Factories
                 CreatorId = statusDomain.CreatorId,
                 DateCreated = statusDomain.DateCreated,
                 UpdatorId = statusDomain.UpdatorId,
-                DateUpdated = statusDomain.DateUpdated,
-                Success = statusDomain.Success,
-                Message = statusDomain.Message
+                DateUpdated = statusDomain.DateUpdated
             };
         }
 
-        public static StatusDomain ToDomain(StatusResponse statusEntity)
+        public static StatusDomain ToDomain(StatusRequest statusEntity)
         {
             return new StatusDomain()
             {
@@ -64,9 +55,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = statusEntity.CreatorId,
                 DateCreated = statusEntity.DateCreated,
                 UpdatorId = statusEntity.UpdatorId,
-                DateUpdated = statusEntity.DateUpdated,
-                Success = statusEntity.Success,
-                Message = statusEntity.Message
+                DateUpdated = statusEntity.DateUpdated
             };
         }
     }

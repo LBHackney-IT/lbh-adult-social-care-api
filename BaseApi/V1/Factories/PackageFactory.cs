@@ -1,10 +1,7 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Infrastructure.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BaseApi.V1.Factories
 {
@@ -20,9 +17,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = packageEntity.CreatorId,
                 DateCreated = packageEntity.DateCreated,
                 UpdatorId = packageEntity.UpdatorId,
-                DateUpdated = packageEntity.DateUpdated,
-                Success = packageEntity.Success,
-                Message = packageEntity.Message
+                DateUpdated = packageEntity.DateUpdated
             };
         }
 
@@ -36,9 +31,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = packageDomain.CreatorId,
                 DateCreated = packageDomain.DateCreated,
                 UpdatorId = packageDomain.UpdatorId,
-                DateUpdated = packageDomain.DateUpdated,
-                Success = packageDomain.Success,
-                Message = packageDomain.Message
+                DateUpdated = packageDomain.DateUpdated
             };
         }
 
@@ -52,25 +45,20 @@ namespace BaseApi.V1.Factories
                 CreatorId = packageDomain.CreatorId,
                 DateCreated = packageDomain.DateCreated,
                 UpdatorId = packageDomain.UpdatorId,
-                DateUpdated = packageDomain.DateUpdated,
-                Success = packageDomain.Success,
-                Message = packageDomain.Message
+                DateUpdated = packageDomain.DateUpdated
             };
         }
 
-        public static PackageDomain ToDomain(PackageResponse packageEntity)
+        public static PackageDomain ToDomain(PackageRequest packageEntity)
         {
             return new PackageDomain()
             {
                 Id = packageEntity.Id,
                 PackageName = packageEntity.PackageName,
-                Sequence = packageEntity.Sequence,
                 CreatorId = packageEntity.CreatorId,
                 DateCreated = packageEntity.DateCreated,
                 UpdatorId = packageEntity.UpdatorId,
-                DateUpdated = packageEntity.DateUpdated,
-                Success = packageEntity.Success,
-                Message = packageEntity.Message
+                DateUpdated = packageEntity.DateUpdated
             };
         }
     }

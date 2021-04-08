@@ -1,11 +1,10 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Factories;
 using BaseApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BaseApi.V1.Controllers
@@ -30,14 +29,14 @@ namespace BaseApi.V1.Controllers
 
         [HttpPost]
         [Route("create")]
-        public async Task<ActionResult<ClientsResponse>> Create(ClientsResponse clientsResponse)
+        public async Task<ActionResult<ClientsResponse>> Create(ClientsRequest clientsRequest)
         {
             try
             {
-                ClientsDomain usersDomain = ClientsFactory.ToDomain(clientsResponse);
-                clientsResponse = ClientsFactory.ToResponse(await _upsertClientsUseCase.ExecuteAsync(usersDomain).ConfigureAwait(false));
+                ClientsDomain usersDomain = ClientsFactory.ToDomain(clientsRequest);
+                var clientsResponse = ClientsFactory.ToResponse(await _upsertClientsUseCase.ExecuteAsync(usersDomain).ConfigureAwait(false));
                 if (clientsResponse == null) return NotFound();
-                else if (!clientsResponse.Success) return BadRequest(clientsResponse.Message);
+                //else if (!clientsResponse.Success) return BadRequest(clientsResponse.Message);
                 return Ok(clientsResponse);
             }
             catch (FormatException ex)

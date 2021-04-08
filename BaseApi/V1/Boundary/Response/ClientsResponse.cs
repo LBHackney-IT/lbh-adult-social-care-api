@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BaseApi.V1.Boundary.Response
 {
@@ -86,8 +83,5 @@ namespace BaseApi.V1.Boundary.Response
         /// Gets or sets the Date Updated
         /// </summary>
         public DateTime? DateUpdated { get; set; }
-
-        public bool Success { get; set; }
-        public string Message { get; set; }
     }
 }

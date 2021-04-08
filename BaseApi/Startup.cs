@@ -211,7 +211,7 @@ namespace BaseApi
             #region HomeCarePackage
             services.AddScoped<IUpsertHomeCarePackageUseCase, UpsertHomeCarePackageUseCase>();
             services.AddScoped<IGetAllHomeCarePackageUseCase, GetAllHomeCarePackageUseCase>();
-            services.AddScoped<IUpdateHomeCarePackageUseCase, UpdateHomeCarePackageUseCase>();
+            services.AddScoped<IChangeStatusHomeCarePackageUseCase, ChangeStatusHomeCarePackageUseCase>();
             #endregion
 
             #region DayCarePackage
@@ -254,6 +254,12 @@ namespace BaseApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using (IServiceScope appScope = app.ApplicationServices.CreateScope())
+            {
+                DatabaseContext databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
+                databaseContext.Database.EnsureCreated();
+            }
+
             app.UseCorrelation();
 
             if (env.IsDevelopment())

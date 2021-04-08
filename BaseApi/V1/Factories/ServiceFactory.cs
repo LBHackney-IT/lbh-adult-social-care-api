@@ -1,10 +1,7 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Infrastructure.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BaseApi.V1.Factories
 {
@@ -21,9 +18,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = serviceEntity.CreatorId,
                 DateCreated = serviceEntity.DateCreated,
                 UpdatorId = serviceEntity.UpdatorId,
-                DateUpdated = serviceEntity.DateUpdated,
-                Success = serviceEntity.Success,
-                Message = serviceEntity.Message
+                DateUpdated = serviceEntity.DateUpdated
             };
         }
 
@@ -38,9 +33,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = serviceDomain.CreatorId,
                 DateCreated = serviceDomain.DateCreated,
                 UpdatorId = serviceDomain.UpdatorId,
-                DateUpdated = serviceDomain.DateUpdated,
-                Success = serviceDomain.Success,
-                Message = serviceDomain.Message
+                DateUpdated = serviceDomain.DateUpdated
             };
         }
 
@@ -55,26 +48,21 @@ namespace BaseApi.V1.Factories
                 CreatorId = serviceDomain.CreatorId,
                 DateCreated = serviceDomain.DateCreated,
                 UpdatorId = serviceDomain.UpdatorId,
-                DateUpdated = serviceDomain.DateUpdated,
-                Success = serviceDomain.Success,
-                Message = serviceDomain.Message
+                DateUpdated = serviceDomain.DateUpdated
             };
         }
 
-        public static ServiceDomain ToDomain(ServiceResponse serviceEntity)
+        public static ServiceDomain ToDomain(ServiceRequest serviceEntity)
         {
             return new ServiceDomain()
             {
                 Id = serviceEntity.Id,
                 ServiceName = serviceEntity.ServiceName,
                 PackageId = serviceEntity.PackageId,
-                Package = serviceEntity.Package,
                 CreatorId = serviceEntity.CreatorId,
                 DateCreated = serviceEntity.DateCreated,
                 UpdatorId = serviceEntity.UpdatorId,
-                DateUpdated = serviceEntity.DateUpdated,
-                Success = serviceEntity.Success,
-                Message = serviceEntity.Message
+                DateUpdated = serviceEntity.DateUpdated
             };
         }
     }

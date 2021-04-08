@@ -1,10 +1,7 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Infrastructure.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BaseApi.V1.Factories
 {
@@ -82,15 +79,13 @@ namespace BaseApi.V1.Factories
             };
         }
 
-        public static HomeCarePackageDomain ToDomain(HomeCarePackageResponse homeCarePackageEntity)
+        public static HomeCarePackageDomain ToDomain(HomeCarePackageRequest homeCarePackageEntity)
         {
             return new HomeCarePackageDomain()
             {
                 Id = homeCarePackageEntity.Id,
                 PackageId = homeCarePackageEntity.PackageId,
-                Package = homeCarePackageEntity.Package,
                 ClientId = homeCarePackageEntity.ClientId,
-                Clients = homeCarePackageEntity.Clients,
                 StartDate = homeCarePackageEntity.StartDate,
                 EndDate = homeCarePackageEntity.EndDate,
                 IsFixedPeriod = homeCarePackageEntity.IsFixedPeriod,
@@ -101,8 +96,7 @@ namespace BaseApi.V1.Factories
                 DateCreated = homeCarePackageEntity.DateCreated,
                 UpdatorId = homeCarePackageEntity.UpdatorId,
                 DateUpdated = homeCarePackageEntity.DateUpdated,
-                StatusId = homeCarePackageEntity.StatusId,
-                Status = homeCarePackageEntity.Status
+                StatusId = homeCarePackageEntity.StatusId
             };
         }
     }

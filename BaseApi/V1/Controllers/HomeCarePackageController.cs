@@ -1,12 +1,10 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Factories;
-using BaseApi.V1.Infrastructure.Entities;
 using BaseApi.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BaseApi.V1.Controllers
@@ -18,12 +16,12 @@ namespace BaseApi.V1.Controllers
     {
         private readonly IUpsertHomeCarePackageUseCase _upsertHomeCarePackageUseCase;
         private readonly IGetAllHomeCarePackageUseCase _getAllHomeCarePackageUseCase;
-        private readonly IUpdateHomeCarePackageUseCase _updateHomeCarePackageUseCase;
-
+        private readonly IChangeStatusHomeCarePackageUseCase _updateHomeCarePackageUseCase;
+        
 
         public HomeCarePackageController(IUpsertHomeCarePackageUseCase upsertHomeCarePackageUseCase,
             IGetAllHomeCarePackageUseCase getAllHomeCarePackageUseCase,
-            IUpdateHomeCarePackageUseCase updateHomeCarePackageUseCase)
+            IChangeStatusHomeCarePackageUseCase updateHomeCarePackageUseCase)
         {
             _upsertHomeCarePackageUseCase = upsertHomeCarePackageUseCase;
             _getAllHomeCarePackageUseCase = getAllHomeCarePackageUseCase;
@@ -31,13 +29,13 @@ namespace BaseApi.V1.Controllers
         }
 
         [HttpPut]
-        [Route("update")]
-        public async Task<ActionResult<HomeCarePackageResponse>> Update(HomeCarePackageResponse homeCarePackageResponse)
+        [Route("changeStatus")]
+        public async Task<ActionResult<HomeCarePackageResponse>> ChangeStatus(HomeCarePackageRequest homeCarePackageRequest)
         {
             try
             {
-                HomeCarePackageDomain homeCarePackageDomain = HomeCarePackageFactory.ToDomain(homeCarePackageResponse);
-                homeCarePackageResponse = HomeCarePackageFactory.ToResponse(await _updateHomeCarePackageUseCase.UpdateAsync(homeCarePackageDomain).ConfigureAwait(false));
+                HomeCarePackageDomain homeCarePackageDomain = HomeCarePackageFactory.ToDomain(homeCarePackageRequest);
+                var homeCarePackageResponse = HomeCarePackageFactory.ToResponse(await _updateHomeCarePackageUseCase.UpdateAsync(homeCarePackageDomain).ConfigureAwait(false));
                 if (homeCarePackageResponse == null) return NotFound();
                 return Ok(homeCarePackageResponse);
             }
@@ -49,12 +47,12 @@ namespace BaseApi.V1.Controllers
 
         [HttpPost]
         [Route("create")]
-        public async Task<ActionResult<HomeCarePackageResponse>> Create(HomeCarePackageResponse homeCarePackageResponse)
+        public async Task<ActionResult<HomeCarePackageResponse>> Create(HomeCarePackageRequest homeCarePackageRequest)
         {
             try
             {
-                HomeCarePackageDomain homeCarePackageDomain = HomeCarePackageFactory.ToDomain(homeCarePackageResponse);
-                homeCarePackageResponse = HomeCarePackageFactory.ToResponse(await _upsertHomeCarePackageUseCase.ExecuteAsync(homeCarePackageDomain).ConfigureAwait(false));
+                HomeCarePackageDomain homeCarePackageDomain = HomeCarePackageFactory.ToDomain(homeCarePackageRequest);
+                var homeCarePackageResponse = HomeCarePackageFactory.ToResponse(await _upsertHomeCarePackageUseCase.ExecuteAsync(homeCarePackageDomain).ConfigureAwait(false));
                 if (homeCarePackageResponse == null) return NotFound();
                 return Ok(homeCarePackageResponse);
             }

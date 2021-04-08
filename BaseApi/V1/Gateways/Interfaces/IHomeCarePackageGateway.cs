@@ -1,8 +1,6 @@
-using BaseApi.V1.Domain;
 using BaseApi.V1.Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BaseApi.V1.Gateways.Interfaces
@@ -11,7 +9,7 @@ namespace BaseApi.V1.Gateways.Interfaces
     {
         public Task<HomeCarePackage> UpsertAsync(HomeCarePackage homeCarePackage);
 
-        public Task<HomeCarePackage> UpdateAsync(HomeCarePackage homeCarePackage);
+        public Task<HomeCarePackage> ChangeStatusAsync(HomeCarePackage homeCarePackage);
 
         public Task<HomeCarePackage> GetAsync(Guid homeCarePackageId);
 

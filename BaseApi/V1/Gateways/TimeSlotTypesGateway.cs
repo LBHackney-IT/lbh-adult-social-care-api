@@ -1,10 +1,10 @@
+using BaseApi.V1.Exceptions;
 using BaseApi.V1.Gateways.Interfaces;
 using BaseApi.V1.Infrastructure;
 using BaseApi.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace BaseApi.V1.Gateways
@@ -47,12 +47,10 @@ namespace BaseApi.V1.Gateways
                 timeSlotTypesToUpdate.DateCreated = timeSlotTypes.DateCreated;
                 timeSlotTypesToUpdate.UpdatorId = timeSlotTypes.UpdatorId;
                 timeSlotTypesToUpdate.DateUpdated = timeSlotTypes.DateUpdated;
-                timeSlotTypesToUpdate.Success = true;
             }
             else
             {
-                timeSlotTypesToUpdate.Message = $"This record already exist Time Slot Type Name: {timeSlotTypes.TimeSlotTypeName}";
-                timeSlotTypesToUpdate.Success = false;
+                throw new ErrorException($"This record already exist Time Slot Type Name: {timeSlotTypes.TimeSlotTypeName}");
             }
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return timeSlotTypesToUpdate;
