@@ -2,6 +2,7 @@ using BaseApi.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BaseApi.V1.Infrastructure.SeedConfiguration;
 
 namespace BaseApi.V1.Infrastructure
 {
@@ -14,6 +15,7 @@ namespace BaseApi.V1.Infrastructure
         {
         }
 
+        public DbSet<DayCarePackage> DayCarePackages { get; set; }
         public DbSet<DatabaseEntity> DatabaseEntities { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<PackageServices> PackageServices { get; set; }
@@ -25,6 +27,16 @@ namespace BaseApi.V1.Infrastructure
         public DbSet<Users> Users { get; set; }
         public DbSet<Clients> Clients { get; set; }
         public DbSet<Status> Status { get; set; }
+        public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Seed database
+            // Seed term time consideration options
+            modelBuilder.ApplyConfiguration(new TermTimeConsiderationOptionsSeed());
+        }
 
         public async Task<IList<Package>> GetPackagesAsync()
         => await Packages

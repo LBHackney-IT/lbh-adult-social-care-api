@@ -42,7 +42,7 @@ namespace BaseApi.V1.Controllers
                 //else if (!packageResponse.Success) return BadRequest(packageResponse.Message);
                 return Ok(packageResponse);
             }
-            catch (FormatException ex) 
+            catch (FormatException ex)
             {
                 return BadRequest(ex.Message);
             }
