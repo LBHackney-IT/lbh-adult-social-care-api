@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace BaseApi.V1.UseCase.Interfaces
 {
-    public interface IUpdateHomeCarePackageUseCase
+    public interface IChangeStatusHomeCarePackageUseCase
     {
         public Task<HomeCarePackageDomain> UpdateAsync(HomeCarePackageDomain homeCarePackage);
     }

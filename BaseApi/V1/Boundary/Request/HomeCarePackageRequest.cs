@@ -1,17 +1,16 @@
-using Newtonsoft.Json;
+using BaseApi.V1.Infrastructure.Entities;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace BaseApi.V1.Infrastructure.Entities
+namespace BaseApi.V1.Boundary.Request
 {
-    public class HomeCarePackage
+    public class HomeCarePackageRequest
     {
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [JsonProperty("Id")]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -20,31 +19,18 @@ namespace BaseApi.V1.Infrastructure.Entities
         public Guid PackageId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Package
-        /// </summary>
-        public Package Package { get; set; }
-
-        /// <summary>
         /// Gets or sets the Client Id
         /// </summary>
         public Guid ClientId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Clients
-        /// </summary>
-        [ForeignKey(nameof(ClientId))]
-        public Clients Clients { get; set; }
-
-        /// <summary>
         /// Gets or sets the Start Date
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime StartDate { get; set; }
 
         /// <summary>
         /// Gets or sets the End Date
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime? EndDate { get; set; }
 
         /// <summary>
@@ -75,7 +61,6 @@ namespace BaseApi.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Date Created
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime? DateCreated { get; set; }
 
         /// <summary>
@@ -92,10 +77,5 @@ namespace BaseApi.V1.Infrastructure.Entities
         /// Gets or sets the Status Id
         /// </summary>
         public Guid StatusId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Status Object
-        /// </summary>
-        public Status Status { get; set; }
     }
 }

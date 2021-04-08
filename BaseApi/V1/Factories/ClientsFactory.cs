@@ -1,3 +1,4 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Infrastructure.Entities;
@@ -25,9 +26,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = clientsEntity.CreatorId,
                 DateCreated = clientsEntity.DateCreated,
                 UpdatorId = clientsEntity.UpdatorId,
-                DateUpdated = clientsEntity.DateUpdated,
-                Success = clientsEntity.Success,
-                Message = clientsEntity.Message
+                DateUpdated = clientsEntity.DateUpdated
             };
         }
 
@@ -50,9 +49,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = clientsDomain.CreatorId,
                 DateCreated = clientsDomain.DateCreated,
                 UpdatorId = clientsDomain.UpdatorId,
-                DateUpdated = clientsDomain.DateUpdated,
-                Success = clientsDomain.Success,
-                Message = clientsDomain.Message
+                DateUpdated = clientsDomain.DateUpdated
             };
         }
 
@@ -75,13 +72,11 @@ namespace BaseApi.V1.Factories
                 CreatorId = clientsDomain.CreatorId,
                 DateCreated = clientsDomain.DateCreated,
                 UpdatorId = clientsDomain.UpdatorId,
-                DateUpdated = clientsDomain.DateUpdated,
-                Success = clientsDomain.Success,
-                Message = clientsDomain.Message
+                DateUpdated = clientsDomain.DateUpdated
             };
         }
 
-        public static ClientsDomain ToDomain(ClientsResponse clientsEntity)
+        public static ClientsDomain ToDomain(ClientsRequest clientsEntity)
         {
             return new ClientsDomain()
             {
@@ -100,9 +95,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = clientsEntity.CreatorId,
                 DateCreated = clientsEntity.DateCreated,
                 UpdatorId = clientsEntity.UpdatorId,
-                DateUpdated = clientsEntity.DateUpdated,
-                Success = clientsEntity.Success,
-                Message = clientsEntity.Message
+                DateUpdated = clientsEntity.DateUpdated
             };
         }
     }

@@ -1,16 +1,15 @@
-using Newtonsoft.Json;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace BaseApi.V1.Infrastructure.Entities
+namespace BaseApi.V1.Boundary.Request
 {
-    public class Clients
+    public class ClientsRequest
     {
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        [Key]
         public Guid Id { get; set; }
 
         /// <summary>

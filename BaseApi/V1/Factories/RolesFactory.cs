@@ -1,3 +1,4 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Infrastructure.Entities;
@@ -17,9 +18,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = rolesEntity.CreatorId,
                 DateCreated = rolesEntity.DateCreated,
                 UpdatorId = rolesEntity.UpdatorId,
-                DateUpdated = rolesEntity.DateUpdated,
-                Success = rolesEntity.Success,
-                Message = rolesEntity.Message
+                DateUpdated = rolesEntity.DateUpdated
             };
         }
 
@@ -34,9 +33,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = rolesDomain.CreatorId,
                 DateCreated = rolesDomain.DateCreated,
                 UpdatorId = rolesDomain.UpdatorId,
-                DateUpdated = rolesDomain.DateUpdated,
-                Success = rolesDomain.Success,
-                Message = rolesDomain.Message
+                DateUpdated = rolesDomain.DateUpdated
             };
         }
 
@@ -51,26 +48,21 @@ namespace BaseApi.V1.Factories
                 CreatorId = rolesDomain.CreatorId,
                 DateCreated = rolesDomain.DateCreated,
                 UpdatorId = rolesDomain.UpdatorId,
-                DateUpdated = rolesDomain.DateUpdated,
-                Success = rolesDomain.Success,
-                Message = rolesDomain.Message
+                DateUpdated = rolesDomain.DateUpdated
             };
         }
 
-        public static RolesDomain ToDomain(RolesResponse rolesEntity)
+        public static RolesDomain ToDomain(RolesRequest rolesEntity)
         {
             return new RolesDomain()
             {
                 Id = rolesEntity.Id,
                 RoleName = rolesEntity.RoleName,
                 IsDefault = rolesEntity.IsDefault,
-                Sequence = rolesEntity.Sequence,
                 CreatorId = rolesEntity.CreatorId,
                 DateCreated = rolesEntity.DateCreated,
                 UpdatorId = rolesEntity.UpdatorId,
-                DateUpdated = rolesEntity.DateUpdated,
-                Success = rolesEntity.Success,
-                Message = rolesEntity.Message
+                DateUpdated = rolesEntity.DateUpdated
             };
         }
     }

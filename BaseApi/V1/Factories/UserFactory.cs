@@ -1,3 +1,4 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Infrastructure.Entities;
@@ -26,9 +27,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = usersEntity.CreatorId,
                 DateCreated = usersEntity.DateCreated,
                 UpdatorId = usersEntity.UpdatorId,
-                DateUpdated = usersEntity.DateUpdated,
-                Success = usersEntity.Success,
-                Message = usersEntity.Message
+                DateUpdated = usersEntity.DateUpdated
             };
         }
 
@@ -52,9 +51,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = usersDomain.CreatorId,
                 DateCreated = usersDomain.DateCreated,
                 UpdatorId = usersDomain.UpdatorId,
-                DateUpdated = usersDomain.DateUpdated,
-                Success = usersDomain.Success,
-                Message = usersDomain.Message
+                DateUpdated = usersDomain.DateUpdated
             };
         }
 
@@ -78,13 +75,11 @@ namespace BaseApi.V1.Factories
                 CreatorId = usersDomain.CreatorId,
                 DateCreated = usersDomain.DateCreated,
                 UpdatorId = usersDomain.UpdatorId,
-                DateUpdated = usersDomain.DateUpdated,
-                Success = usersDomain.Success,
-                Message = usersDomain.Message
+                DateUpdated = usersDomain.DateUpdated
             };
         }
 
-        public static UsersDomain ToDomain(UsersResponse usersEntity)
+        public static UsersDomain ToDomain(UsersRequest usersEntity)
         {
             return new UsersDomain()
             {
@@ -100,13 +95,10 @@ namespace BaseApi.V1.Factories
                 County = usersEntity.County,
                 PostCode = usersEntity.PostCode,
                 RoleId = usersEntity.RoleId,
-                Roles = usersEntity.Roles,
                 CreatorId = usersEntity.CreatorId,
                 DateCreated = usersEntity.DateCreated,
                 UpdatorId = usersEntity.UpdatorId,
-                DateUpdated = usersEntity.DateUpdated,
-                Success = usersEntity.Success,
-                Message = usersEntity.Message
+                DateUpdated = usersEntity.DateUpdated
             };
         }
     }

@@ -1,3 +1,4 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Factories;
@@ -34,14 +35,14 @@ namespace BaseApi.V1.Controllers
 
         [HttpPost]
         [Route("create")]
-        public async Task<ActionResult<RolesResponse>> Create(RolesResponse roleResponse)
+        public async Task<ActionResult<RolesResponse>> Create(RolesRequest rolesRequest)
         {
             try
             {
-                RolesDomain roleDomain = RolesFactory.ToDomain(roleResponse);
-                roleResponse = RolesFactory.ToResponse(await _upsertRoleUseCase.ExecuteAsync(roleDomain).ConfigureAwait(false));
+                RolesDomain roleDomain = RolesFactory.ToDomain(rolesRequest);
+                var roleResponse = RolesFactory.ToResponse(await _upsertRoleUseCase.ExecuteAsync(roleDomain).ConfigureAwait(false));
                 if (roleResponse == null) return NotFound();
-                else if (!roleResponse.Success) return BadRequest(roleResponse.Message);
+                //else if (!roleResponse.Success) return BadRequest(roleResponse.Message);
                 return Ok(roleResponse);
             }
             catch (FormatException ex)

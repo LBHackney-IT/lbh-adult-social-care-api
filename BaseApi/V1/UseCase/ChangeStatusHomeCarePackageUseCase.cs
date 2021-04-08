@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace BaseApi.V1.UseCase
 {
-    public class UpdateHomeCarePackageUseCase : IUpdateHomeCarePackageUseCase
+    public class ChangeStatusHomeCarePackageUseCase : IChangeStatusHomeCarePackageUseCase
     {
         private readonly IHomeCarePackageGateway _gateway;
-        public UpdateHomeCarePackageUseCase(IHomeCarePackageGateway homeCarePackageGateway)
+        public ChangeStatusHomeCarePackageUseCase(IHomeCarePackageGateway homeCarePackageGateway)
         {
             _gateway = homeCarePackageGateway;
         }
@@ -17,7 +17,7 @@ namespace BaseApi.V1.UseCase
         public async Task<HomeCarePackageDomain> UpdateAsync(HomeCarePackageDomain homeCarePackage)
         {
             var homeCarePackageEntity = HomeCarePackageFactory.ToEntity(homeCarePackage);
-            homeCarePackageEntity = await _gateway.UpdateAsync(homeCarePackageEntity).ConfigureAwait(false);
+            homeCarePackageEntity = await _gateway.ChangeStatusAsync(homeCarePackageEntity).ConfigureAwait(false);
             if (homeCarePackageEntity == null) return homeCarePackage = null;
             else
             {

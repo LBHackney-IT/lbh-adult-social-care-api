@@ -1,3 +1,4 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Infrastructure.Entities;
@@ -86,27 +87,24 @@ namespace BaseApi.V1.Factories
             };
         }
 
-        public static HomeCarePackageSlotsDomain ToDomain(HomeCarePackageSlotsResponseList homeCarePackageSlotsResponseList)
+        public static HomeCarePackageSlotsDomain ToDomain(HomeCarePackageSlotsRequestList homeCarePackageSlotsResponseList)
         {
             return new HomeCarePackageSlotsDomain()
             {
                 Id = homeCarePackageSlotsResponseList.Id,
                 HomeCarePackageId = homeCarePackageSlotsResponseList.HomeCarePackageId,
                 ServiceId = homeCarePackageSlotsResponseList.ServiceId,
-                Services = homeCarePackageSlotsResponseList.Services,
                 PrimaryCarer = homeCarePackageSlotsResponseList.PrimaryCarer,
                 SecondaryCarer = homeCarePackageSlotsResponseList.SecondaryCarer,
                 NeedToAddress = homeCarePackageSlotsResponseList.NeedToAddress,
                 WhatShouldBeDone = homeCarePackageSlotsResponseList.WhatShouldBeDone,
-                HomeCarePackageSlot = homeCarePackageSlotsResponseList.HomeCarePackageSlotResponse.Select(item => new HomeCarePackageSlotDomain
+                HomeCarePackageSlot = homeCarePackageSlotsResponseList.HomeCarePackageSlotRequest.Select(item => new HomeCarePackageSlotDomain
                 {
                     InHours = item.InHours,
                     InMinutes = item.InMinutes,
                     Time = item.Time,
                     TimeSlotShiftId = item.TimeSlotShiftId,
-                    TimeSlotShift = item.TimeSlotShift,
-                    TimeSlotTypeId = item.TimeSlotTypeId,
-                    TimeSlotTypes = item.TimeSlotTypes,
+                    TimeSlotTypeId = item.TimeSlotTypeId
                 })
                 .ToList()
             };

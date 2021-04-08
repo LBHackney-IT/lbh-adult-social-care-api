@@ -1,23 +1,26 @@
-using Newtonsoft.Json;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace BaseApi.V1.Infrastructure.Entities
+namespace BaseApi.V1.Boundary.Request
 {
-    public class TimeSlotType
+    public class ServiceRequest
     {
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the Time Slot Type Name
+        /// Gets or sets the Package Id
         /// </summary>
-        [Required]
-        public string TimeSlotTypeName { get; set; }
+        public Guid PackageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Service Name
+        /// </summary>
+        public string ServiceName { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id
@@ -27,7 +30,6 @@ namespace BaseApi.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Date Created
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime? DateCreated { get; set; }
 
         /// <summary>

@@ -1,3 +1,4 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Factories;
@@ -34,14 +35,14 @@ namespace BaseApi.V1.Controllers
 
         [HttpPost]
         [Route("create")]
-        public async Task<ActionResult<TimeSlotTypesResponse>> Create(TimeSlotTypesResponse timeSlotTypesResponse)
+        public async Task<ActionResult<TimeSlotTypesResponse>> Create(TimeSlotTypeRequest timeSlotTypeRequest)
         {
             try
             {
-                TimeSlotTypesDomain timeSlotTypesDomain = TimeSlotTypesFactory.ToDomain(timeSlotTypesResponse);
-                timeSlotTypesResponse = TimeSlotTypesFactory.ToResponse(await _upsertTimeSlotTypesUseCase.ExecuteAsync(timeSlotTypesDomain).ConfigureAwait(false));
+                TimeSlotTypesDomain timeSlotTypesDomain = TimeSlotTypesFactory.ToDomain(timeSlotTypeRequest);
+                var timeSlotTypesResponse = TimeSlotTypesFactory.ToResponse(await _upsertTimeSlotTypesUseCase.ExecuteAsync(timeSlotTypesDomain).ConfigureAwait(false));
                 if (timeSlotTypesResponse == null) return NotFound();
-                else if (!timeSlotTypesResponse.Success) return BadRequest(timeSlotTypesResponse.Message);
+                //else if (!timeSlotTypesResponse.Success) return BadRequest(timeSlotTypesResponse.Message);
                 return Ok(timeSlotTypesResponse);
             }
             catch (FormatException ex)

@@ -1,3 +1,4 @@
+using BaseApi.V1.Exceptions;
 using BaseApi.V1.Gateways.Interfaces;
 using BaseApi.V1.Infrastructure;
 using BaseApi.V1.Infrastructure.Entities;
@@ -51,12 +52,10 @@ namespace BaseApi.V1.Gateways
                 usersToUpdate.DateCreated = users.DateCreated;
                 usersToUpdate.UpdatorId = users.UpdatorId;
                 usersToUpdate.DateUpdated = users.DateUpdated;
-                usersToUpdate.Success = true;
             }
             else
             {
-                usersToUpdate.Message = $"This record already exist Hackney Id: {users.HackneyId}";
-                usersToUpdate.Success = false;
+                throw new ErrorException($"This record already exist Hackney Id: {users.HackneyId}");
             }
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
             return usersToUpdate;
