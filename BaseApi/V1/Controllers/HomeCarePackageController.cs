@@ -19,7 +19,7 @@ namespace BaseApi.V1.Controllers
         private readonly IUpsertHomeCarePackageUseCase _upsertHomeCarePackageUseCase;
         private readonly IGetAllHomeCarePackageUseCase _getAllHomeCarePackageUseCase;
         private readonly IUpdateHomeCarePackageUseCase _updateHomeCarePackageUseCase;
-        
+
 
         public HomeCarePackageController(IUpsertHomeCarePackageUseCase upsertHomeCarePackageUseCase,
             IGetAllHomeCarePackageUseCase getAllHomeCarePackageUseCase,

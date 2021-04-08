@@ -50,14 +50,14 @@ namespace BaseApi.V1.Factories
                 WhatShouldBeDone = homeCarePackageSlotsDomain.WhatShouldBeDone,
                 HomeCarePackageSlot = homeCarePackageSlotsDomain.HomeCarePackageSlot.Select(item => new HomeCarePackageSlot
                 {
-                     InHours = item.InHours,
-                     InMinutes = item.InMinutes,
-                     Time = item.Time,
-                     TimeSlotShiftId = item.TimeSlotShiftId,
-                     TimeSlotShift = item.TimeSlotShift,
-                     TimeSlotTypeId = item.TimeSlotTypeId,
-                     TimeSlotTypes = item.TimeSlotTypes
-                 })
+                    InHours = item.InHours,
+                    InMinutes = item.InMinutes,
+                    Time = item.Time,
+                    TimeSlotShiftId = item.TimeSlotShiftId,
+                    TimeSlotShift = item.TimeSlotShift,
+                    TimeSlotTypeId = item.TimeSlotTypeId,
+                    TimeSlotTypes = item.TimeSlotTypes
+                })
                 .ToList()
             };
         }

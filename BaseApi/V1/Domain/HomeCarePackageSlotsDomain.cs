@@ -91,6 +91,6 @@ namespace BaseApi.V1.Domain
         /// </summary>
         public TimeSlotShifts TimeSlotShift { get; set; }
 
-        
+
     }
 }

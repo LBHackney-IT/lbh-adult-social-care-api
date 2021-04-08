@@ -14,6 +14,7 @@ namespace BaseApi.V1.Infrastructure
         {
         }
 
+        public DbSet<DayCarePackage> DayCarePackages { get; set; }
         public DbSet<DatabaseEntity> DatabaseEntities { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<PackageServices> PackageServices { get; set; }
@@ -25,6 +26,7 @@ namespace BaseApi.V1.Infrastructure
         public DbSet<Users> Users { get; set; }
         public DbSet<Clients> Clients { get; set; }
         public DbSet<Status> Status { get; set; }
+        public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
 
         public async Task<IList<Package>> GetPackagesAsync()
         => await Packages
