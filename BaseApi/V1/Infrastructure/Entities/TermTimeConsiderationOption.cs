@@ -8,6 +8,6 @@ namespace BaseApi.V1.Infrastructure.Entities
         [Key]
         [Column("OptionId")]
         public int OptionId { get; set; }
-        public int OptionName { get; set; } // N/A, Term Time, Holiday
+        public string OptionName { get; set; } // N/A, Term Time, Holiday
     }
 }
