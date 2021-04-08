@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using BaseApi.V1.Boundary.DayCarePackageBoundary.Response;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 
@@ -17,6 +18,11 @@ namespace BaseApi.V1.Factories
         public static List<ResponseObject> ToResponse(this IEnumerable<Entity> domainList)
         {
             return domainList.Select(domain => domain.ToResponse()).ToList();
+        }
+
+        public static DayCarePackageResponse ToResponse(this DayCarePackageResponse dayCarePackageResponse)
+        {
+            return dayCarePackageResponse;
         }
     }
 }

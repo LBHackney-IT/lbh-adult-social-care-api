@@ -216,6 +216,7 @@ namespace BaseApi
 
             #region DayCarePackage
             services.AddScoped<ICreateDayCarePackageUseCase, CreateDayCarePackageUseCase>();
+            services.AddScoped<IGetDayCarePackageUseCase, GetDayCarePackageUseCase>();
             #endregion
 
             #region HomeCarePackageSlots
