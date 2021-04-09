@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                     return UnprocessableEntity(ModelState);
                 }
 
-                var result = await _createdDayCarePackageUseCase.Execute(dayCarePackageForCreation.ToDb()).ConfigureAwait(false);
+                Guid result = await _createdDayCarePackageUseCase.Execute(dayCarePackageForCreation.ToDb()).ConfigureAwait(false);
                 return Ok(result);
             }
             catch (NotSupportedException e)
