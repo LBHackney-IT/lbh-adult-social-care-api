@@ -9,7 +9,7 @@ namespace BaseApi.V1.Gateways.Interfaces
     {
         public Task<HomeCarePackage> UpsertAsync(HomeCarePackage homeCarePackage);
 
-        public Task<HomeCarePackage> UpdateAsync(HomeCarePackage homeCarePackage);
+        public Task<HomeCarePackage> ChangeStatusAsync(HomeCarePackage homeCarePackage);
 
         public Task<HomeCarePackage> GetAsync(Guid homeCarePackageId);
 

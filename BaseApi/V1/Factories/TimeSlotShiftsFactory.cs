@@ -1,3 +1,4 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Infrastructure.Entities;
@@ -15,9 +16,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = timeSlotShiftsEntity.CreatorId,
                 DateCreated = timeSlotShiftsEntity.DateCreated,
                 UpdatorId = timeSlotShiftsEntity.UpdatorId,
-                DateUpdated = timeSlotShiftsEntity.DateUpdated,
-                Success = timeSlotShiftsEntity.Success,
-                Message = timeSlotShiftsEntity.Message
+                DateUpdated = timeSlotShiftsEntity.DateUpdated
             };
         }
 
@@ -30,9 +29,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = timeSlotShiftsDomain.CreatorId,
                 DateCreated = timeSlotShiftsDomain.DateCreated,
                 UpdatorId = timeSlotShiftsDomain.UpdatorId,
-                DateUpdated = timeSlotShiftsDomain.DateUpdated,
-                Success = timeSlotShiftsDomain.Success,
-                Message = timeSlotShiftsDomain.Message
+                DateUpdated = timeSlotShiftsDomain.DateUpdated
             };
         }
 
@@ -45,13 +42,11 @@ namespace BaseApi.V1.Factories
                 CreatorId = timeSlotShiftsDomain.CreatorId,
                 DateCreated = timeSlotShiftsDomain.DateCreated,
                 UpdatorId = timeSlotShiftsDomain.UpdatorId,
-                DateUpdated = timeSlotShiftsDomain.DateUpdated,
-                Success = timeSlotShiftsDomain.Success,
-                Message = timeSlotShiftsDomain.Message
+                DateUpdated = timeSlotShiftsDomain.DateUpdated
             };
         }
 
-        public static TimeSlotShiftsDomain ToDomain(TimeSlotShiftsResponse timeSlotShiftsEntity)
+        public static TimeSlotShiftsDomain ToDomain(TimeSlotShiftsRequest timeSlotShiftsEntity)
         {
             return new TimeSlotShiftsDomain()
             {
@@ -60,9 +55,7 @@ namespace BaseApi.V1.Factories
                 CreatorId = timeSlotShiftsEntity.CreatorId,
                 DateCreated = timeSlotShiftsEntity.DateCreated,
                 UpdatorId = timeSlotShiftsEntity.UpdatorId,
-                DateUpdated = timeSlotShiftsEntity.DateUpdated,
-                Success = timeSlotShiftsEntity.Success,
-                Message = timeSlotShiftsEntity.Message
+                DateUpdated = timeSlotShiftsEntity.DateUpdated
             };
         }
     }

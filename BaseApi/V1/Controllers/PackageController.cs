@@ -1,3 +1,4 @@
+using BaseApi.V1.Boundary.Request;
 using BaseApi.V1.Boundary.Response;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Factories;
@@ -31,17 +32,17 @@ namespace BaseApi.V1.Controllers
 
         [HttpPost]
         [Route("create")]
-        public async Task<ActionResult<PackageResponse>> Create(PackageResponse packageResponse)
+        public async Task<ActionResult<PackageResponse>> Create(PackageRequest packageRequest)
         {
             try
             {
-                PackageDomain packageDomain = PackageFactory.ToDomain(packageResponse);
-                packageResponse = PackageFactory.ToResponse(await _upsertPackageUseCase.ExecuteAsync(packageDomain).ConfigureAwait(false));
+                PackageDomain packageDomain = PackageFactory.ToDomain(packageRequest);
+                var packageResponse = PackageFactory.ToResponse(await _upsertPackageUseCase.ExecuteAsync(packageDomain).ConfigureAwait(false));
                 if (packageResponse == null) return NotFound();
-                else if (!packageResponse.Success) return BadRequest(packageResponse.Message);
+                //else if (!packageResponse.Success) return BadRequest(packageResponse.Message);
                 return Ok(packageResponse);
             }
-            catch (FormatException ex) 
+            catch (FormatException ex)
             {
                 return BadRequest(ex.Message);
             }

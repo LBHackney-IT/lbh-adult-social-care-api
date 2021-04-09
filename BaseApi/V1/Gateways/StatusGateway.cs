@@ -1,3 +1,4 @@
+using BaseApi.V1.Exceptions;
 using BaseApi.V1.Gateways.Interfaces;
 using BaseApi.V1.Infrastructure;
 using BaseApi.V1.Infrastructure.Entities;
@@ -46,12 +47,10 @@ namespace BaseApi.V1.Gateways
                 statusToUpdate.DateCreated = status.DateCreated;
                 statusToUpdate.UpdatorId = status.UpdatorId;
                 statusToUpdate.DateUpdated = status.DateUpdated;
-                statusToUpdate.Success = true;
             }
             else
             {
-                statusToUpdate.Message = $"This record already exist Status Name: {status.StatusName}";
-                statusToUpdate.Success = false;
+                throw new ErrorException($"This record already exist Status Name: {status.StatusName}");
             }
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return statusToUpdate;

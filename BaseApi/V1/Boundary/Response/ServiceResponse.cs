@@ -45,7 +45,5 @@ namespace BaseApi.V1.Boundary.Response
         /// </summary>
         public DateTime? DateUpdated { get; set; }
 
-        public bool Success { get; set; }
-        public string Message { get; set; }
     }
 }
