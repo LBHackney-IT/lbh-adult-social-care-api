@@ -28,6 +28,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
+using BaseApi.V1.Gateways;
+using BaseApi.V1.Gateways.Interfaces;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -289,6 +291,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetStatusUseCase, GetStatusUseCase>();
             services.AddScoped<IGetAllStatusUseCase, GetAllStatusUseCase>();
             services.AddScoped<IDeleteStatusUseCase, DeleteStatusUseCase>();
+            #endregion
 
             #region ResidentialCarePackage
             services.AddScoped<IUpsertResidentialCarePackageUseCase, UpsertResidentialCarePackageUseCase>();
