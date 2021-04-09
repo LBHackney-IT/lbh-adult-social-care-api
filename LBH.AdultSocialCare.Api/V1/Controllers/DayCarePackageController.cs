@@ -98,6 +98,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             return Ok(await _getDayCarePackageListUseCase.Execute().ConfigureAwait(false));
         }
 
+        /// <summary>
+        /// Updates the day care package.
+        /// </summary>
+        /// <param name="dayCarePackageId">The day care package identifier.</param>
+        /// <param name="dayCarePackageForUpdate">The day care package for update.</param>
+        /// <returns>Updated day care package</returns>
+        /// <returns>Day care not found</returns>
         [HttpPut("{dayCarePackageId}")]
         [ProducesResponseType(typeof(DayCarePackageResponse), 200)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
