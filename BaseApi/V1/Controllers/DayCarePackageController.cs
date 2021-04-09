@@ -47,7 +47,8 @@ namespace BaseApi.V1.Controllers
                     return UnprocessableEntity(ModelState);
                 }
 
-                var result = await _createdDayCarePackageUseCase.Execute(dayCarePackageForCreation.ToDb()).ConfigureAwait(false);
+                var dayCarePackageDomain = dayCarePackageForCreation.ToDomain();
+                var result = await _createdDayCarePackageUseCase.Execute(dayCarePackageDomain).ConfigureAwait(false);
                 return Ok(result);
             }
             catch (NotSupportedException e)

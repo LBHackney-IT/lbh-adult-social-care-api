@@ -1,5 +1,5 @@
 using AutoMapper;
-using BaseApi.V1.Boundary.DayCarePackageBoundary.Request;
+using BaseApi.V1.Domain.DayCarePackageDomains;
 using BaseApi.V1.Infrastructure.Entities;
 
 namespace BaseApi.V1.Factories
@@ -20,9 +20,9 @@ namespace BaseApi.V1.Factories
             return _mapper.Map<T>(dto);
         }*/
 
-        public static DayCarePackage ToDb(this DayCarePackageForCreationRequest dayCarePackageForCreation)
+        public static DayCarePackage ToDb(this DayCarePackageForCreationDomain dayCarePackageForCreationDomain)
         {
-            return _mapper.Map<DayCarePackage>(dayCarePackageForCreation);
+            return _mapper.Map<DayCarePackage>(dayCarePackageForCreationDomain);
         }
     }
 }
