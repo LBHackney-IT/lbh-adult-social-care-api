@@ -13,6 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             #region DayCarePackage
 
             CreateMap<DayCarePackageForCreationDomain, DayCarePackage>();
+            CreateMap<DayCarePackageForUpdateDomain, DayCarePackage>();
             CreateMap<DayCarePackage, DayCarePackageDomain>()
                 .ForMember(dc => dc.PackageName, opt => opt.MapFrom(b => b.Package.PackageName))
                 .ForMember(dc => dc.ClientName,
@@ -24,6 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
                 .ForMember(dc => dc.UpdaterName,
                     opt => opt.MapFrom(b => $"{b.Updater.FirstName} {b.Updater.MiddleName} {b.Updater.LastName}"));
             CreateMap<DayCarePackageForCreationRequest, DayCarePackageForCreationDomain>();
+            CreateMap<DayCarePackageForUpdateRequest, DayCarePackageForUpdateDomain>();
             CreateMap<DayCarePackageDomain, DayCarePackageResponse>();
 
             #endregion DayCarePackage

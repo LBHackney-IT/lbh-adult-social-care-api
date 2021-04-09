@@ -17,5 +17,10 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             return _mapper.Map<DayCarePackageForCreationDomain>(dayCarePackageForCreation);
         }
+
+        public static DayCarePackageForUpdateDomain ToDomain(this DayCarePackageForUpdateRequest dayCarePackageForUpdate)
+        {
+            return _mapper.Map<DayCarePackageForUpdateDomain>(dayCarePackageForUpdate);
+        }
     }
 }
