@@ -52,8 +52,13 @@ namespace LBH.AdultSocialCare.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
+            services
+                .AddMvc(config =>
+                {
+                    config.ReturnHttpNotAcceptable = true;
+                })
+                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddApiVersioning(o =>
             {
                 o.DefaultApiVersion = new ApiVersion(1, 0);
@@ -247,7 +252,8 @@ namespace LBH.AdultSocialCare.Api
             #region DayCarePackage
 
             services.AddScoped<ICreateDayCarePackageUseCase, CreateDayCarePackageUseCase>();
-
+            services.AddScoped<IGetDayCarePackageUseCase, GetDayCarePackageUseCase>();
+            services.AddScoped<IGetDayCarePackageListUseCase, GetDayCarePackageListUseCase>();
             #endregion
 
             #region HomeCarePackageSlots
@@ -320,7 +326,11 @@ namespace LBH.AdultSocialCare.Api
             }
 
             // Configure extension methods to use auto mapper
-            DBModelFactory.Configure(app.ApplicationServices.GetService<IMapper>());
+            var mapper = app.ApplicationServices.GetService<IMapper>();
+            ApiToDomainFactory.Configure(mapper);
+            DomainToEntityFactory.Configure(mapper);
+            EntityToDomainFactory.Configure(mapper);
+            ResponseFactory.Configure(mapper);
 
             // TODO
             // If you DON'T use the renaming script, PLEASE replace with your own API name manually

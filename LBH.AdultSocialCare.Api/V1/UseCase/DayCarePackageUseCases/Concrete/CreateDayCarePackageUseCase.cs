@@ -1,5 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
 
@@ -13,9 +15,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete
         {
             _dayCarePackageGateway = dayCarePackageGateway;
         }
-        public async Task<Guid> Execute(Infrastructure.Entities.DayCarePackage dayCarePackage)
+
+        public async Task<Guid> Execute(DayCarePackageForCreationDomain dayCarePackageForCreationDomain)
         {
-            var id = await _dayCarePackageGateway.CreateDayCarePackage(dayCarePackage).ConfigureAwait(false);
+            var dayCarePackageEntity = dayCarePackageForCreationDomain.ToDb();
+            var id = await _dayCarePackageGateway.CreateDayCarePackage(dayCarePackageEntity).ConfigureAwait(false);
             return id;
         }
     }

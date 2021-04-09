@@ -1,10 +1,20 @@
+using System.Collections.Generic;
+using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
-    public static class EntityFactory
+    public static class EntityToDomainFactory
     {
+        private static IMapper _mapper { get; set; }
+
+        public static void Configure(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
         public static Entity ToDomain(this DatabaseEntity databaseEntity)
         {
             //TODO: Map the rest of the fields in the domain object.
@@ -27,5 +37,18 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 CreatedAt = entity.CreatedAt
             };
         }
+
+        #region DayCarePackage
+
+        public static DayCarePackageDomain ToDomain(this DayCarePackage dayCarePackageEntity)
+        {
+            return _mapper.Map<DayCarePackageDomain>(dayCarePackageEntity);
+        }
+        public static IEnumerable<DayCarePackageDomain> ToDomain(this List<DayCarePackage> dayCarePackageEntities)
+        {
+            return _mapper.Map<IEnumerable<DayCarePackageDomain>>(dayCarePackageEntities);
+        }
+
+        #endregion
     }
 }
