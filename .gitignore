@@ -65,4 +65,4 @@ tmp/
 .ionide
 
 # Ignore development json file
-BaseApi/appsettings.Development.json
+LBH.AdultSocialCare.Api/appsettings.Development.json
