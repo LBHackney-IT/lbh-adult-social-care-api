@@ -6,7 +6,7 @@ using BaseApi.V1.Infrastructure.Entities;
 
 namespace BaseApi.V1.Factories
 {
-    public static class EntityFactory
+    public static class EntityToDomainFactory
     {
         private static IMapper _mapper { get; set; }
 

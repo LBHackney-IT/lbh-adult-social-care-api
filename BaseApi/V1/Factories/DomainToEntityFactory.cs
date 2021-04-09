@@ -6,7 +6,7 @@ namespace BaseApi.V1.Factories
 {
     // public interface IDto { }
 
-    public static class DBModelFactory
+    public static class DomainToEntityFactory
     {
         private static IMapper _mapper { get; set; }
 

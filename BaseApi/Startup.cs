@@ -274,9 +274,9 @@ namespace BaseApi
 
             // Configure extension methods to use auto mapper
             var mapper = app.ApplicationServices.GetService<IMapper>();
-            DBModelFactory.Configure(mapper);
             ApiToDomainFactory.Configure(mapper);
-            EntityFactory.Configure(mapper);
+            DomainToEntityFactory.Configure(mapper);
+            EntityToDomainFactory.Configure(mapper);
             ResponseFactory.Configure(mapper);
 
             // TODO
