@@ -78,7 +78,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         /// <summary>
         /// Gets or sets the Date Updated
         /// </summary>
-        public DateTime? DateUpdated { get; set; }
+        public DateTimeOffset? DateUpdated { get; set; }
 
         /// <summary>
         /// Gets or sets the Status Id

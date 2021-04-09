@@ -9,10 +9,10 @@
     }
   },
   "profiles": {
-    "base_api": {
+    "LBH.AdultSocialCare.Api": {
       "commandName": "Project",
       "launchBrowser": false,
-      "launchUrl": "api/v1/package/create",
+      "launchUrl": "/swagger",
       "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",

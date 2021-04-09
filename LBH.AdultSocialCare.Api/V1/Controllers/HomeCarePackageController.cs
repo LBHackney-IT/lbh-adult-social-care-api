@@ -26,8 +26,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _updateHomeCarePackageUseCase = updateHomeCarePackageUseCase;
         }
 
-        [HttpPut]
-        [Route("changeStatus")]
+        /// <summary>
+        /// Changes the home care package status.
+        /// </summary>
+        /// <param name="homeCarePackageRequest">The home care package request.</param>
+        /// <returns>The home care package response model.</returns>
+        [HttpPut("changeStatus")]
         public async Task<ActionResult<HomeCarePackageResponse>> ChangeStatus(
             HomeCarePackageRequest homeCarePackageRequest)
         {
@@ -50,6 +54,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates the specified home care package request.
+        /// </summary>
+        /// <param name="homeCarePackageRequest">The home care package request.</param>
+        /// <returns>The home care package creation response.</returns>
         [HttpPost]
         public async Task<ActionResult<HomeCarePackageResponse>> Create(HomeCarePackageRequest homeCarePackageRequest)
         {
