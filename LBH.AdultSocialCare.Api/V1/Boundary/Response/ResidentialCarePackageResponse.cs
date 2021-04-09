@@ -1,4 +1,4 @@
-using BaseApi.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

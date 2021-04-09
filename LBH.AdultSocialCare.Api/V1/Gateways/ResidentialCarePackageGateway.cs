@@ -1,13 +1,13 @@
-using BaseApi.V1.Gateways.Interfaces;
-using BaseApi.V1.Infrastructure;
-using BaseApi.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BaseApi.V1.Gateways
+namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
     public class ResidentialCarePackageGateway : IResidentialCarePackageGateway
     {

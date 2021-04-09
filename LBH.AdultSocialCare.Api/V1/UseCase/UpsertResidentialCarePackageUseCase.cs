@@ -1,13 +1,13 @@
-using BaseApi.V1.Domain;
-using BaseApi.V1.Factories;
-using BaseApi.V1.Gateways.Interfaces;
-using BaseApi.V1.UseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BaseApi.V1.UseCase
+namespace LBH.AdultSocialCare.Api.V1.UseCase
 {
     public class UpsertResidentialCarePackageUseCase : IUpsertResidentialCarePackageUseCase
     {

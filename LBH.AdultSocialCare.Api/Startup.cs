@@ -28,8 +28,6 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
-using BaseApi.V1.Gateways;
-using BaseApi.V1.Gateways.Interfaces;
 
 namespace LBH.AdultSocialCare.Api
 {
