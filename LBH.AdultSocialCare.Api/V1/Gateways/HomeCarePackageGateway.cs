@@ -22,7 +22,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<HomeCarePackage> GetAsync(Guid homeCarePackageId)
         {
-            var result = await _databaseContext.HomeCarePackage.FirstOrDefaultAsync(item => item.Id == homeCarePackageId)
+            HomeCarePackage result = await _databaseContext.HomeCarePackage
+                .FirstOrDefaultAsync(item => item.Id == homeCarePackageId)
                 .ConfigureAwait(false);
 
             result.Package = await _databaseContext.Packages.FirstOrDefaultAsync(item => item.Id == result.PackageId)
@@ -45,13 +46,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             if (homeCarePackageToUpdate != null)
             {
                 homeCarePackageToUpdate.StatusId = homeCarePackage.StatusId;
-
-                homeCarePackageToUpdate.Status = await _databaseContext.Status
-                    .FirstOrDefaultAsync(item => item.Id == homeCarePackage.StatusId)
-                    .ConfigureAwait(false);
                 homeCarePackageToUpdate.CreatorId = homeCarePackage.CreatorId;
                 homeCarePackageToUpdate.UpdatorId = homeCarePackage.UpdatorId;
-                homeCarePackageToUpdate.DateUpdated = DateTime.Now;
             }
 
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
@@ -67,6 +63,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
             if (homeCarePackageToUpdate == null)
             {
+                // Add new package
                 homeCarePackageToUpdate = new HomeCarePackage
                 {
                     StartDate = homeCarePackage.StartDate,
@@ -76,29 +73,24 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                     IsThisAnImmediateService = homeCarePackage.IsThisAnImmediateService,
                     IsThisuserUnderS117 = homeCarePackage.IsThisuserUnderS117
                 };
+
                 await _databaseContext.HomeCarePackage.AddAsync(homeCarePackageToUpdate).ConfigureAwait(false);
             }
 
-            var packageId = _databaseContext.Packages.Where(item => item.Sequence == 1).Select(a => a.Id);
-            homeCarePackageToUpdate.PackageId = await packageId.FirstOrDefaultAsync().ConfigureAwait(false);
-
-            homeCarePackageToUpdate.Package = await _databaseContext.Packages
-                .FirstOrDefaultAsync(item => item.Id == homeCarePackageToUpdate.PackageId)
+            // TODO remove
+            Guid packageId = await _databaseContext.Packages.Where(item => item.Sequence == 1)
+                .Select(a => a.Id)
+                .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
+            
+            // Update properties
+            homeCarePackageToUpdate.PackageId = packageId;
             homeCarePackageToUpdate.ClientId = homeCarePackage.ClientId;
-
-            homeCarePackageToUpdate.Clients = await _databaseContext.Clients
-                .FirstOrDefaultAsync(item => item.Id == homeCarePackage.ClientId)
-                .ConfigureAwait(false);
             homeCarePackageToUpdate.CreatorId = homeCarePackage.CreatorId;
             homeCarePackageToUpdate.DateCreated = homeCarePackage.DateCreated;
             homeCarePackageToUpdate.UpdatorId = homeCarePackage.UpdatorId;
-            homeCarePackageToUpdate.DateUpdated = homeCarePackage.DateUpdated;
             homeCarePackageToUpdate.StatusId = homeCarePackage.StatusId;
 
-            homeCarePackageToUpdate.Status = await _databaseContext.Status
-                .FirstOrDefaultAsync(item => item.Id == homeCarePackageToUpdate.StatusId)
-                .ConfigureAwait(false);
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
 
             return isSuccess
