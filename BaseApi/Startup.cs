@@ -49,7 +49,11 @@ namespace BaseApi
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddMvc()
+                .AddMvc(config =>
+                {
+                    config.ReturnHttpNotAcceptable = true;
+                })
+                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.AddApiVersioning(o =>
             {
@@ -217,6 +221,7 @@ namespace BaseApi
             #region DayCarePackage
             services.AddScoped<ICreateDayCarePackageUseCase, CreateDayCarePackageUseCase>();
             services.AddScoped<IGetDayCarePackageUseCase, GetDayCarePackageUseCase>();
+            services.AddScoped<IGetDayCarePackageListUseCase, GetDayCarePackageListUseCase>();
             #endregion
 
             #region HomeCarePackageSlots

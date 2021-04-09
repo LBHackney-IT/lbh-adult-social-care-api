@@ -33,5 +33,10 @@ namespace BaseApi.V1.Factories
         {
             return _mapper.Map<DayCarePackageResponse>(dayCarePackageDomain);
         }
+
+        public static IEnumerable<DayCarePackageResponse> ToResponse(this IEnumerable<DayCarePackageDomain> dayCarePackageDomains)
+        {
+            return _mapper.Map<IEnumerable<DayCarePackageResponse>>(dayCarePackageDomains);
+        }
     }
 }

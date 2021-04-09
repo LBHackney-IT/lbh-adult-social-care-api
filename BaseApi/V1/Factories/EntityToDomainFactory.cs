@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AutoMapper;
 using BaseApi.V1.Domain;
 using BaseApi.V1.Domain.DayCarePackageDomains;
@@ -42,6 +43,10 @@ namespace BaseApi.V1.Factories
         public static DayCarePackageDomain ToDomain(this DayCarePackage dayCarePackageEntity)
         {
             return _mapper.Map<DayCarePackageDomain>(dayCarePackageEntity);
+        }
+        public static IEnumerable<DayCarePackageDomain> ToDomain(this List<DayCarePackage> dayCarePackageEntities)
+        {
+            return _mapper.Map<IEnumerable<DayCarePackageDomain>>(dayCarePackageEntities);
         }
 
         #endregion

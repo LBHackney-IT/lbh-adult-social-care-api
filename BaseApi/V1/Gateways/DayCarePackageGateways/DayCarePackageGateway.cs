@@ -3,6 +3,7 @@ using BaseApi.V1.Boundary.DayCarePackageBoundary.Response;
 using BaseApi.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BaseApi.V1.Domain.DayCarePackageDomains;
@@ -45,6 +46,19 @@ namespace BaseApi.V1.Gateways.DayCarePackageGateways
             }
 
             return dayCarePackage.ToDomain();
+        }
+
+        public async Task<IEnumerable<DayCarePackageDomain>> GetDayCarePackageList()
+        {
+            var dayCarePackages = await _dbContext.DayCarePackages
+                .Include(dc => dc.Package)
+                .Include(dc => dc.Client)
+                .Include(dc => dc.TermTimeConsiderationOption)
+                .Include(dc => dc.Creator)
+                .Include(dc => dc.Updater)
+                .AsNoTracking()
+                .ToListAsync().ConfigureAwait(false);
+            return dayCarePackages?.ToDomain();
         }
     }
 }

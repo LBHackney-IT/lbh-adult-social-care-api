@@ -1,12 +1,13 @@
+using Amazon.DynamoDBv2.Model;
 using BaseApi.V1.Boundary.DayCarePackageBoundary.Request;
+using BaseApi.V1.Boundary.DayCarePackageBoundary.Response;
 using BaseApi.V1.Factories;
 using BaseApi.V1.UseCase.DayCarePackageUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Amazon.DynamoDBv2.Model;
-using BaseApi.V1.Boundary.DayCarePackageBoundary.Response;
 
 namespace BaseApi.V1.Controllers
 {
@@ -17,23 +18,27 @@ namespace BaseApi.V1.Controllers
     {
         private readonly ICreateDayCarePackageUseCase _createdDayCarePackageUseCase;
         private readonly IGetDayCarePackageUseCase _getDayCarePackageUseCase;
+        private readonly IGetDayCarePackageListUseCase _getDayCarePackageListUseCase;
 
-        public DayCarePackageController(ICreateDayCarePackageUseCase createdDayCarePackageUseCase, IGetDayCarePackageUseCase getDayCarePackageUseCase)
+        public DayCarePackageController(
+            ICreateDayCarePackageUseCase createdDayCarePackageUseCase,
+            IGetDayCarePackageUseCase getDayCarePackageUseCase,
+            IGetDayCarePackageListUseCase getDayCarePackageListUseCase)
         {
             _createdDayCarePackageUseCase = createdDayCarePackageUseCase;
             _getDayCarePackageUseCase = getDayCarePackageUseCase;
+            _getDayCarePackageListUseCase = getDayCarePackageListUseCase;
         }
-        /// <summary>
-        /// Create day care package
-        /// </summary>
-        /// <param name="dayCarePackageForCreation"></param>
-        /// <returns></returns>
+
+        /// <summary>Creates the day care package.</summary>
+        /// <param name="dayCarePackageForCreation">The day care package for creation.</param>
+        /// <returns>
+        /// </returns>
         [HttpPost]
-        // [Route("new")]
         [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> CreateDayCarePackage([FromBody] DayCarePackageForCreationRequest dayCarePackageForCreation)
+        public async Task<ActionResult<Guid>> CreateDayCarePackage([FromBody] DayCarePackageForCreationRequest dayCarePackageForCreation)
         {
             try
             {
@@ -77,6 +82,17 @@ namespace BaseApi.V1.Controllers
             {
                 return NotFound(e.Message);
             }
+        }
+
+        /// <summary>
+        /// Gets the day care package list.
+        /// </summary>
+        /// <returns>List of day care packages</returns>
+        [ProducesResponseType(typeof(IEnumerable<DayCarePackageResponse>), StatusCodes.Status200OK)]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<DayCarePackageResponse>>> GetDayCarePackageList()
+        {
+            return Ok(await _getDayCarePackageListUseCase.Execute().ConfigureAwait(false));
         }
     }
 }
