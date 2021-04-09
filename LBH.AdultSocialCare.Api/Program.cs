@@ -1,9 +1,5 @@
-using System.Linq;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace LBH.AdultSocialCare.Api
 {

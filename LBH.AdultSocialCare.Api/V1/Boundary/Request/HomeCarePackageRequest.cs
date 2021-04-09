@@ -1,13 +1,11 @@
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
 {
+
     public class HomeCarePackageRequest
     {
+
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
@@ -77,5 +75,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         /// Gets or sets the Status Id
         /// </summary>
         public Guid StatusId { get; set; }
+
     }
+
 }

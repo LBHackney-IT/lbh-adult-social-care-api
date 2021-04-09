@@ -10,22 +10,19 @@ using System.Threading.Tasks;
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
 
-    [Route("api/v1/homeCarePackage")]
+    [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
     public class HomeCarePackageController : Controller
     {
 
         private readonly IUpsertHomeCarePackageUseCase _upsertHomeCarePackageUseCase;
-        private readonly IGetAllHomeCarePackageUseCase _getAllHomeCarePackageUseCase;
         private readonly IChangeStatusHomeCarePackageUseCase _updateHomeCarePackageUseCase;
 
         public HomeCarePackageController(IUpsertHomeCarePackageUseCase upsertHomeCarePackageUseCase,
-            IGetAllHomeCarePackageUseCase getAllHomeCarePackageUseCase,
             IChangeStatusHomeCarePackageUseCase updateHomeCarePackageUseCase)
         {
             _upsertHomeCarePackageUseCase = upsertHomeCarePackageUseCase;
-            _getAllHomeCarePackageUseCase = getAllHomeCarePackageUseCase;
             _updateHomeCarePackageUseCase = updateHomeCarePackageUseCase;
         }
 
@@ -38,9 +35,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             {
                 HomeCarePackageDomain homeCarePackageDomain = HomeCarePackageFactory.ToDomain(homeCarePackageRequest);
 
-                HomeCarePackageResponse homeCarePackageResponse = HomeCarePackageFactory.ToResponse(await _updateHomeCarePackageUseCase
-                    .UpdateAsync(homeCarePackageDomain)
-                    .ConfigureAwait(false));
+                HomeCarePackageResponse homeCarePackageResponse =
+                    HomeCarePackageFactory.ToResponse(await _updateHomeCarePackageUseCase
+                        .UpdateAsync(homeCarePackageDomain)
+                        .ConfigureAwait(false));
 
                 if (homeCarePackageResponse == null) return NotFound();
 
@@ -59,9 +57,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             {
                 HomeCarePackageDomain homeCarePackageDomain = HomeCarePackageFactory.ToDomain(homeCarePackageRequest);
 
-                HomeCarePackageResponse homeCarePackageResponse = HomeCarePackageFactory.ToResponse(await _upsertHomeCarePackageUseCase
-                    .ExecuteAsync(homeCarePackageDomain)
-                    .ConfigureAwait(false));
+                HomeCarePackageResponse homeCarePackageResponse =
+                    HomeCarePackageFactory.ToResponse(await _upsertHomeCarePackageUseCase
+                        .ExecuteAsync(homeCarePackageDomain)
+                        .ConfigureAwait(false));
 
                 if (homeCarePackageResponse == null) return NotFound();
 
