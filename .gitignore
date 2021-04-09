@@ -63,3 +63,6 @@ tmp/
 
 .fake
 .ionide
+
+# Ignore development json file
+LBH.AdultSocialCare.Api/appsettings.Development.json
