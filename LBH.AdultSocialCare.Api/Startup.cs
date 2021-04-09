@@ -146,10 +146,14 @@ namespace LBH.AdultSocialCare.Api
 
         private void ConfigureDbContext(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("DatabaseConnectionString") ?? Environment.GetEnvironmentVariable("CONNECTION_STRING");
+            var connectionString = Configuration.GetConnectionString("DatabaseConnectionString") ??
+                                   Environment.GetEnvironmentVariable("CONNECTION_STRING");
+
             // var assemblyName = typeof(DatabaseContext).Namespace ?? "LBH.AdultSocialCare.Api";
             var assemblyName = Assembly.GetCallingAssembly().GetName().Name;
-            services.AddDbContext<DatabaseContext>(opt => opt.UseSqlServer(connectionString, b => b.MigrationsAssembly(assemblyName)));
+
+            services.AddDbContext<DatabaseContext>(opt
+                => opt.UseSqlServer(connectionString, b => b.MigrationsAssembly(assemblyName)));
         }
 
         private static void ConfigureLogging(IServiceCollection services, IConfiguration configuration)
@@ -237,10 +241,13 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IUpsertHomeCarePackageUseCase, UpsertHomeCarePackageUseCase>();
             services.AddScoped<IGetAllHomeCarePackageUseCase, GetAllHomeCarePackageUseCase>();
             services.AddScoped<IChangeStatusHomeCarePackageUseCase, ChangeStatusHomeCarePackageUseCase>();
+
             #endregion
 
             #region DayCarePackage
+
             services.AddScoped<ICreateDayCarePackageUseCase, CreateDayCarePackageUseCase>();
+
             #endregion
 
             #region HomeCarePackageSlots
@@ -292,6 +299,12 @@ namespace LBH.AdultSocialCare.Api
             {
                 DatabaseContext databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
                 databaseContext.Database.EnsureCreated();
+
+                // Perform migrations
+                if (databaseContext.Database.GetPendingMigrations().Any())
+                {
+                    databaseContext.Database.Migrate();
+                }
             }
 
             app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyMethod());

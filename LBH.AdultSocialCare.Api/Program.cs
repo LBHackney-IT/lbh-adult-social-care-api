@@ -12,15 +12,6 @@ namespace LBH.AdultSocialCare.Api
         public static void Main(string[] args)
         {
             var host = CreateWebHostBuilder(args).Build();
-            using (var scope = host.Services.CreateScope())
-            {
-                var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                // db.Database.EnsureCreated();
-                if (db.Database.GetPendingMigrations().Any())
-                {
-                    db.Database.Migrate();
-                }
-            }
             host.Run();
         }
 
