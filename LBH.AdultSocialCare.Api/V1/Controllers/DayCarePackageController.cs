@@ -39,30 +39,23 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         /// </returns>
         [HttpPost]
         [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<Guid>> CreateDayCarePackage([FromBody] DayCarePackageForCreationRequest dayCarePackageForCreation)
         {
-            try
+            if (dayCarePackageForCreation == null)
             {
-                if (dayCarePackageForCreation == null)
-                {
-                    return UnprocessableEntity("Object for creation cannot be null.");
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    return UnprocessableEntity(ModelState);
-                }
-
-                var dayCarePackageDomain = dayCarePackageForCreation.ToDomain();
-                var result = await _createDayCarePackageUseCase.Execute(dayCarePackageDomain).ConfigureAwait(false);
-                return Ok(result);
+                return UnprocessableEntity("Object for creation cannot be null.");
             }
-            catch (NotSupportedException e)
+
+            if (!ModelState.IsValid)
             {
-                return BadRequest(e.Message);
+                return UnprocessableEntity(ModelState);
             }
+
+            var dayCarePackageDomain = dayCarePackageForCreation.ToDomain();
+            var result = await _createDayCarePackageUseCase.Execute(dayCarePackageDomain).ConfigureAwait(false);
+            return Ok(result);
         }
 
         /// <summary>
@@ -76,15 +69,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<IActionResult> GetSingleDayCarePackage(Guid dayCarePackageId)
         {
-            try
-            {
-                var dayCarePackage = await _getDayCarePackageUseCase.Execute(dayCarePackageId).ConfigureAwait(false);
-                return Ok(dayCarePackage);
-            }
-            catch (ResourceNotFoundException e)
-            {
-                return NotFound(e.Message);
-            }
+            var dayCarePackage = await _getDayCarePackageUseCase.Execute(dayCarePackageId).ConfigureAwait(false);
+            return Ok(dayCarePackage);
         }
 
         /// <summary>
@@ -113,26 +99,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             Guid dayCarePackageId,
             DayCarePackageForUpdateRequest dayCarePackageForUpdate)
         {
-            try
+            if (dayCarePackageForUpdate == null)
             {
-                if (dayCarePackageForUpdate == null)
-                {
-                    return UnprocessableEntity("Object for update cannot be null.");
-                }
-
-                if (!ModelState.IsValid)
-                {
-                    return UnprocessableEntity(ModelState);
-                }
-
-                var dayCarePackageForUpdateDomain = dayCarePackageForUpdate.ToDomain();
-                var result = await _updateDayCarePackageUseCase.Execute(dayCarePackageId, dayCarePackageForUpdateDomain).ConfigureAwait(false);
-                return Ok(result);
+                return UnprocessableEntity("Object for update cannot be null.");
             }
-            catch (ResourceNotFoundException e)
+
+            if (!ModelState.IsValid)
             {
-                return NotFound(e.Message);
+                return UnprocessableEntity(ModelState);
             }
+
+            var dayCarePackageForUpdateDomain = dayCarePackageForUpdate.ToDomain();
+            var result = await _updateDayCarePackageUseCase.Execute(dayCarePackageId, dayCarePackageForUpdateDomain).ConfigureAwait(false);
+            return Ok(result);
         }
     }
 }

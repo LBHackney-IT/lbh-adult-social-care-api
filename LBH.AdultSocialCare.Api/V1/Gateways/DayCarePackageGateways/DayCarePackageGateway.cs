@@ -1,13 +1,13 @@
-using Amazon.DynamoDBv2.Model;
+using AutoMapper;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Exceptions;
+using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
 {
@@ -25,9 +25,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
         public async Task<Guid> CreateDayCarePackage(Infrastructure.Entities.DayCarePackage dayCarePackage)
         {
             var entry = await _dbContext.DayCarePackages.AddAsync(dayCarePackage).ConfigureAwait(false);
-            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+            try
+            {
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
 
-            return entry.Entity.DayCarePackageId;
+                return entry.Entity.DayCarePackageId;
+            }
+            catch (Exception)
+            {
+                throw new DbSaveFailedException("Could not save day care package to database");
+            }
         }
 
         public async Task<DayCarePackageDomain> UpdateDayCarePackage(DayCarePackageForUpdateDomain dayCarePackageForUpdate)
@@ -37,13 +44,21 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
                 .SingleOrDefaultAsync().ConfigureAwait(false);
             if (dayCarePackageEntity == null)
             {
-                throw new ResourceNotFoundException($"Unable to locate day care package {dayCarePackageForUpdate.DayCarePackageId.ToString()}");
+                throw new EntityNotFoundException($"Unable to locate day care package {dayCarePackageForUpdate.DayCarePackageId.ToString()}");
             }
             // Map fields with auto mapper and save
             _mapper.Map(dayCarePackageForUpdate, dayCarePackageEntity);
             dayCarePackageEntity.DateUpdated = DateTimeOffset.Now;
-            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
-            return dayCarePackageEntity.ToDomain();
+            // DbUpdateConcurrencyException
+            try
+            {
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+                return dayCarePackageEntity.ToDomain();
+            }
+            catch (Exception)
+            {
+                throw new DbSaveFailedException($"Update for day care package {dayCarePackageForUpdate.DayCarePackageId.ToString()} failed");
+            }
         }
 
         public async Task<DayCarePackageDomain> GetDayCarePackage(Guid dayCarePackageId)
@@ -60,7 +75,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
 
             if (dayCarePackage == null)
             {
-                throw new ResourceNotFoundException($"Unable to locate day care package {dayCarePackageId.ToString()}");
+                throw new EntityNotFoundException($"Unable to locate day care package {dayCarePackageId.ToString()}");
             }
 
             return dayCarePackage.ToDomain();
