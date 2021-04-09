@@ -15,7 +15,7 @@ namespace BaseApi.V1.Controllers
     [Route("api/v1/timeSlotTypes")]
     [Produces("application/json")]
     [ApiController]
-    public class TimeSlotTypesController : Controller
+    public class TimeSlotTypesController : BaseController
     {
         private readonly IUpsertTimeSlotTypesUseCase _upsertTimeSlotTypesUseCase;
         private readonly IGetTimeSlotTypesUseCase _getTimeSlotTypesUseCase;

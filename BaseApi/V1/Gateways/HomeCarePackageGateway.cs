@@ -21,13 +21,12 @@ namespace BaseApi.V1.Gateways
         public async Task<HomeCarePackage> GetAsync(Guid homeCarePackageId)
         {
             var result = await _databaseContext.HomeCarePackage.FirstOrDefaultAsync(item => item.Id == homeCarePackageId).ConfigureAwait(false);
-            result.Package = await _databaseContext.Packages.FirstOrDefaultAsync(item => item.Id == result.PackageId).ConfigureAwait(false);
             return result;
         }
 
         public async Task<IList<HomeCarePackage>> ListAsync()
         {
-            return await _databaseContext.GetHomeCarePackagesAsync().ConfigureAwait(false);
+            return await _databaseContext.HomeCarePackage.ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<HomeCarePackage> ChangeStatusAsync(HomeCarePackage homeCarePackage)
@@ -60,9 +59,6 @@ namespace BaseApi.V1.Gateways
                 homeCarePackageToUpdate.IsThisuserUnderS117 = homeCarePackage.IsThisuserUnderS117;
                 await _databaseContext.HomeCarePackage.AddAsync(homeCarePackageToUpdate).ConfigureAwait(false);
             }
-            var packageId = _databaseContext.Packages.Where(item => item.Sequence == 1).Select(a => a.Id);
-            homeCarePackageToUpdate.PackageId = await packageId.FirstOrDefaultAsync().ConfigureAwait(false);
-            homeCarePackageToUpdate.Package = await _databaseContext.Packages.FirstOrDefaultAsync(item => item.Id == homeCarePackageToUpdate.PackageId).ConfigureAwait(false);
             homeCarePackageToUpdate.ClientId = homeCarePackage.ClientId;
             homeCarePackageToUpdate.Clients = await _databaseContext.Clients.FirstOrDefaultAsync(item => item.Id == homeCarePackage.ClientId).ConfigureAwait(false);
             homeCarePackageToUpdate.CreatorId = homeCarePackage.CreatorId;

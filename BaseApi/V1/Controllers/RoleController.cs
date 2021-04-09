@@ -15,7 +15,7 @@ namespace BaseApi.V1.Controllers
     [Route("api/v1/role")]
     [Produces("application/json")]
     [ApiController]
-    public class RoleController : Controller
+    public class RoleController : BaseController
     {
         private readonly IUpsertRoleUseCase _upsertRoleUseCase;
         private readonly IGetRoleUseCase _getRoleUseCase;

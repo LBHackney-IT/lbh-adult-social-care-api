@@ -26,44 +26,6 @@ namespace BaseApi.V1.Infrastructure
         public DbSet<Clients> Clients { get; set; }
         public DbSet<Status> Status { get; set; }
 
-        public async Task<IList<Package>> GetPackagesAsync()
-        => await Packages
-        .ToListAsync()
-        .ConfigureAwait(false);
-
-        public async Task<IList<PackageServices>> GetServicesAsync()
-        => await PackageServices
-        .ToListAsync()
-        .ConfigureAwait(false);
-
-        public async Task<IList<Roles>> GetRolesAsync()
-        => await Roles
-        .ToListAsync()
-        .ConfigureAwait(false);
-
-        public async Task<IList<TimeSlotType>> GetTimeSlotTypesAsync()
-        => await TimeSlotType
-        .ToListAsync()
-        .ConfigureAwait(false);
-
-        public async Task<IList<TimeSlotShifts>> GetTimeSlotShiftsAsync()
-        => await TimeSlotShifts
-        .ToListAsync()
-        .ConfigureAwait(false);
-
-        public async Task<IList<HomeCarePackage>> GetHomeCarePackagesAsync()
-        => await HomeCarePackage
-        .ToListAsync()
-        .ConfigureAwait(false);
-
-        public async Task<IList<HomeCarePackageSlots>> GetHomeCarePackagesSlotsAsync()
-        => await HomeCarePackageSlots
-        .ToListAsync()
-        .ConfigureAwait(false);
-
-        public async Task<IList<Status>> GetStatusAsync()
-        => await Status
-        .ToListAsync()
-        .ConfigureAwait(false);
+        public DbSet<ResidentialCarePackage> ResidentialCarePackage { get; set; }
     }
 }

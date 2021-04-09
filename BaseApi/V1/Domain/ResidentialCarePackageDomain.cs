@@ -1,19 +1,27 @@
+using BaseApi.V1.Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BaseApi.V1.Infrastructure.Entities
+namespace BaseApi.V1.Domain
 {
-    public class ResidentialCarePackage
+    public class ResidentialCarePackageDomain
     {
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Package Id
+        /// </summary>
+        public Guid PackageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Package
+        /// </summary>
+        public Package Package { get; set; }
 
         /// <summary>
         /// Gets or sets the Client Id
@@ -23,19 +31,16 @@ namespace BaseApi.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Clients
         /// </summary>
-        [ForeignKey(nameof(ClientId))]
         public Clients Clients { get; set; }
 
         /// <summary>
         /// Gets or sets the Start Date
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime StartDate { get; set; }
 
         /// <summary>
         /// Gets or sets the End Date
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime? EndDate { get; set; }
 
         /// <summary>
@@ -96,7 +101,6 @@ namespace BaseApi.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Date Created
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime? DateCreated { get; set; }
 
         /// <summary>

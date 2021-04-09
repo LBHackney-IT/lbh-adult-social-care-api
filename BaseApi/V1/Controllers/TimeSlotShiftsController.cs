@@ -15,7 +15,7 @@ namespace BaseApi.V1.Controllers
     [Route("api/v1/timeSlotShifts")]
     [Produces("application/json")]
     [ApiController]
-    public class TimeSlotShiftsController : Controller
+    public class TimeSlotShiftsController : BaseController
     {
         private readonly IUpsertTimeSlotShiftsUseCase _upsertTimeSlotShiftsUseCase;
         private readonly IGetTimeSlotShiftsUseCase _getTimeSlotShiftsUseCase;

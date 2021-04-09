@@ -1,3 +1,4 @@
+using BaseApi.V1.Domain;
 using BaseApi.V1.Infrastructure.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;

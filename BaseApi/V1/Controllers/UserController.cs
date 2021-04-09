@@ -12,7 +12,7 @@ namespace BaseApi.V1.Controllers
     [Route("api/v1/users")]
     [Produces("application/json")]
     [ApiController]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUpsertUsersUseCase _upsertUsersUseCase;
         private readonly IGetUsersUseCase _getUsersUseCase;

@@ -12,7 +12,7 @@ namespace BaseApi.V1.Controllers
     [Route("api/v1/homeCarePackageSlots")]
     [Produces("application/json")]
     [ApiController]
-    public class HomeCarePackageSlotsController : Controller
+    public class HomeCarePackageSlotsController : BaseController
     {
         private readonly IUpsertHomeCarePackageSlotsUseCase _upsertHomeCarePackageSlotsUseCase;
         private readonly IDeleteHomeCarePackageSlotsUseCase _deleteHomeCarePackageSlotsUseCase;

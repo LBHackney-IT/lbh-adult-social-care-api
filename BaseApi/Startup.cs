@@ -161,6 +161,7 @@ namespace BaseApi
             services.AddScoped<IHomeCarePackageSlotsGateway, HomeCarePackageSlotsGateway>();
             services.AddScoped<IUsersGateway, UsersGateway>();
             services.AddScoped<IStatusGateway, StatusGateway>();
+            services.AddScoped<IResidentialCarePackageGateway, ResidentialCarePackageGateway>();
 
             //TODO: For DynamoDb, remove the line above and uncomment the line below.
             //services.AddScoped<IExampleGateway, DynamoDbGateway>();
@@ -232,6 +233,10 @@ namespace BaseApi
             services.AddScoped<IGetStatusUseCase, GetStatusUseCase>();
             services.AddScoped<IGetAllStatusUseCase, GetAllStatusUseCase>();
             services.AddScoped<IDeleteStatusUseCase, DeleteStatusUseCase>();
+            #endregion
+
+            #region ResidentialCarePackage
+            services.AddScoped<IUpsertResidentialCarePackageUseCase, UpsertResidentialCarePackageUseCase>();
             #endregion
 
         }

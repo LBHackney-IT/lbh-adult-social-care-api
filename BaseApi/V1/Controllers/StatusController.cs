@@ -15,7 +15,7 @@ namespace BaseApi.V1.Controllers
     [Route("api/v1/status")]
     [Produces("application/json")]
     [ApiController]
-    public class StatusController : Controller
+    public class StatusController : BaseController
     {
         private readonly IUpsertStatusUseCase _upsertStatusUseCase;
         private readonly IGetStatusUseCase _getStatusUseCase;

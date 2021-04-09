@@ -34,7 +34,7 @@ namespace BaseApi.V1.Gateways
 
         public async Task<IList<PackageServices>> ListAsync()
         {
-            return await _databaseContext.GetServicesAsync().ConfigureAwait(false);
+            return await _databaseContext.PackageServices.ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<PackageServices> UpsertAsync(PackageServices service)

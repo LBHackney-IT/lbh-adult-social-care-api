@@ -12,7 +12,7 @@ namespace BaseApi.V1.Controllers
     [Route("api/v1/clients")]
     [Produces("application/json")]
     [ApiController]
-    public class ClientController : Controller
+    public class ClientController : BaseController
     {
         private readonly IUpsertClientsUseCase _upsertClientsUseCase;
         private readonly IGetClientsUseCase _getClientsUseCase;

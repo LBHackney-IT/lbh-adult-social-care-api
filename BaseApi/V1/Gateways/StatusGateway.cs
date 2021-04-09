@@ -32,7 +32,7 @@ namespace BaseApi.V1.Gateways
 
         public async Task<IList<Status>> ListAsync()
         {
-            return await _databaseContext.GetStatusAsync().ConfigureAwait(false);
+            return await _databaseContext.Status.ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<Status> UpsertAsync(Status status)

@@ -1,3 +1,4 @@
+using BaseApi.V1.Domain;
 using BaseApi.V1.Gateways.Interfaces;
 using BaseApi.V1.Infrastructure.Entities;
 using BaseApi.V1.UseCase.Interfaces;

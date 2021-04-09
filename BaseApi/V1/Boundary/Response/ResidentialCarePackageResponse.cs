@@ -1,3 +1,4 @@
+using BaseApi.V1.Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,19 @@ namespace BaseApi.V1.Boundary.Response
         public Guid PackageId { get; set; }
 
         /// <summary>
+        /// Gets or sets the Package
+        /// </summary>
+        public Package Package { get; set; }
+
+        /// <summary>
         /// Gets or sets the Client Id
         /// </summary>
         public Guid ClientId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Clients
+        /// </summary>
+        public Clients Clients { get; set; }
 
         /// <summary>
         /// Gets or sets the Start Date
@@ -106,5 +117,10 @@ namespace BaseApi.V1.Boundary.Response
         /// Gets or sets the Status Id
         /// </summary>
         public Guid StatusId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Status Object
+        /// </summary>
+        public Status Status { get; set; }
     }
 }

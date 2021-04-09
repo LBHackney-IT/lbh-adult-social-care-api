@@ -15,7 +15,7 @@ namespace BaseApi.V1.Controllers
     [Route("api/v1/service")]
     [Produces("application/json")]
     [ApiController]
-    public class ServiceController : Controller
+    public class ServiceController : BaseController
     {
         private readonly IUpsertServiceUseCase _upsertServiceUseCase;
         private readonly IGetServiceUseCase _getServiceUseCase;
