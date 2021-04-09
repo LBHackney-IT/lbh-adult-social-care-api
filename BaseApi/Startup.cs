@@ -26,8 +26,10 @@ using BaseApi.V1.Gateways.Interfaces;
 
 namespace BaseApi
 {
+
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -36,42 +38,49 @@ namespace BaseApi
         }
 
         public IConfiguration Configuration { get; }
+
         private static List<ApiVersionDescription> _apiVersions { get; set; }
+
         //TODO update the below to the name of your API
         private const string ApiName = "Your API Name";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services.AddApiVersioning(o =>
             {
                 o.DefaultApiVersion = new ApiVersion(1, 0);
-                o.AssumeDefaultVersionWhenUnspecified = true; // assume that the caller wants the default version if they don't specify
-                o.ApiVersionReader = new UrlSegmentApiVersionReader(); // read the version number from the url segment header)
+
+                o.AssumeDefaultVersionWhenUnspecified =
+                    true; // assume that the caller wants the default version if they don't specify
+
+                o.ApiVersionReader =
+                    new UrlSegmentApiVersionReader(); // read the version number from the url segment header)
             });
 
             services.AddSingleton<IApiVersionDescriptionProvider, DefaultApiVersionDescriptionProvider>();
 
             services.AddSwaggerGen(c =>
             {
-                c.AddSecurityDefinition("Token",
-                    new OpenApiSecurityScheme
-                    {
-                        In = ParameterLocation.Header,
-                        Description = "Your Hackney API Key",
-                        Name = "X-Api-Key",
-                        Type = SecuritySchemeType.ApiKey
-                    });
+                c.AddSecurityDefinition("Token", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Your Hackney API Key",
+                    Name = "X-Api-Key",
+                    Type = SecuritySchemeType.ApiKey
+                });
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme
                         {
-                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Token" }
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme, Id = "Token"
+                            }
                         },
                         new List<string>()
                     }
@@ -84,10 +93,10 @@ namespace BaseApi
                 {
                     apiDesc.TryGetMethodInfo(out var methodInfo);
 
-                    var versions = methodInfo?
-                        .DeclaringType?.GetCustomAttributes()
+                    var versions = methodInfo?.DeclaringType?.GetCustomAttributes()
                         .OfType<ApiVersionAttribute>()
-                        .SelectMany(attr => attr.Versions).ToList();
+                        .SelectMany(attr => attr.Versions)
+                        .ToList();
 
                     return versions?.Any(v => $"{v.GetFormattedApiVersion()}" == docName) ?? false;
                 });
@@ -96,18 +105,22 @@ namespace BaseApi
                 foreach (var apiVersion in _apiVersions)
                 {
                     var version = $"v{apiVersion.ApiVersion.ToString()}";
+
                     c.SwaggerDoc(version, new OpenApiInfo
                     {
                         Title = $"{ApiName}-api {version}",
                         Version = version,
-                        Description = $"{ApiName} version {version}. Please check older versions for depreciated endpoints."
+                        Description =
+                            $"{ApiName} version {version}. Please check older versions for depreciated endpoints."
                     });
                 }
 
                 c.CustomSchemaIds(x => x.FullName);
+
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
                 if (File.Exists(xmlPath))
                     c.IncludeXmlComments(xmlPath);
             });
@@ -115,6 +128,7 @@ namespace BaseApi
             ConfigureLogging(services, Configuration);
 
             ConfigureDbContext(services);
+
             //TODO: For DynamoDb, remove the line above and uncomment the line below.
             // services.ConfigureDynamoDB();
 
@@ -170,75 +184,97 @@ namespace BaseApi
         {
             services.AddScoped<IGetAllUseCase, GetAllUseCase>();
             services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
+
             #region Package
+
             services.AddScoped<IUpsertPackageUseCase, UpsertPackageUseCase>();
             services.AddScoped<IGetPackageUseCase, GetPackageUseCase>();
             services.AddScoped<IGetAllPackageUseCase, GetAllPackageUseCase>();
             services.AddScoped<IDeletePackageUseCase, DeletePackageUseCase>();
+
             #endregion
+
             #region Service
+
             services.AddScoped<IUpsertServiceUseCase, UpsertServiceUseCase>();
             services.AddScoped<IGetServiceUseCase, GetServiceUseCase>();
             services.AddScoped<IGetAllServiceUseCase, GetAllServiceUseCase>();
             services.AddScoped<IDeleteServiceUseCase, DeleteServiceUseCase>();
+
             #endregion
 
             #region Role
+
             services.AddScoped<IUpsertRoleUseCase, UpsertRoleUseCase>();
             services.AddScoped<IGetRoleUseCase, GetRoleUseCase>();
             services.AddScoped<IGetAllRoleUseCase, GetAllRoleUseCase>();
             services.AddScoped<IDeleteRoleUseCase, DeleteRoleUseCase>();
+
             #endregion
 
             #region TimeSlotTypes
+
             services.AddScoped<IUpsertTimeSlotTypesUseCase, UpsertTimeSlotTypesUseCase>();
             services.AddScoped<IGetTimeSlotTypesUseCase, GetTimeSlotTypesUseCase>();
             services.AddScoped<IGetAllTimeSlotTypesUseCase, GetAllTimeSlotTypesUseCase>();
             services.AddScoped<IDeleteTimeSlotTypesUseCase, DeleteTimeSlotTypesUseCase>();
+
             #endregion
 
             #region HomeCarePackage
+
             services.AddScoped<IUpsertHomeCarePackageUseCase, UpsertHomeCarePackageUseCase>();
             services.AddScoped<IGetAllHomeCarePackageUseCase, GetAllHomeCarePackageUseCase>();
             services.AddScoped<IUpdateHomeCarePackageUseCase, UpdateHomeCarePackageUseCase>();
+
             #endregion
 
             #region HomeCarePackageSlots
+
             services.AddScoped<IUpsertHomeCarePackageSlotsUseCase, UpsertHomeCarePackageSlotsUseCase>();
             services.AddScoped<IDeleteHomeCarePackageSlotsUseCase, DeleteHomeCarePackageSlotsUseCase>();
+
             #endregion
 
             #region TimeSlotShift
+
             services.AddScoped<IUpsertTimeSlotShiftsUseCase, UpsertTimeSlotShiftsUseCase>();
             services.AddScoped<IGetTimeSlotShiftsUseCase, GetTimeSlotShiftsUseCase>();
             services.AddScoped<IGetAllTimeSlotShiftsUseCase, GetAllTimeSlotShiftsUseCase>();
             services.AddScoped<IDeleteTimeSlotShiftsUseCase, DeleteTimeSlotShiftsUseCase>();
+
             #endregion
 
             #region Clients
+
             services.AddScoped<IUpsertClientsUseCase, UpsertClientsUseCase>();
             services.AddScoped<IGetClientsUseCase, GetClientsUseCase>();
             services.AddScoped<IDeleteClientsUseCase, DeleteClientsUseCase>();
+
             #endregion
 
             #region Users
+
             services.AddScoped<IUpsertUsersUseCase, UpsertUsersUseCase>();
             services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
             services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();
+
             #endregion
 
             #region Status
+
             services.AddScoped<IUpsertStatusUseCase, UpsertStatusUseCase>();
             services.AddScoped<IGetStatusUseCase, GetStatusUseCase>();
             services.AddScoped<IGetAllStatusUseCase, GetAllStatusUseCase>();
             services.AddScoped<IDeleteStatusUseCase, DeleteStatusUseCase>();
-            #endregion
 
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyMethod());
             app.UseCorrelation();
 
             if (env.IsDevelopment())
@@ -253,7 +289,6 @@ namespace BaseApi
             // TODO
             // If you DON'T use the renaming script, PLEASE replace with your own API name manually
             app.UseXRay("base-api");
-
 
             //Get All ApiVersions,
             var api = app.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
@@ -271,11 +306,14 @@ namespace BaseApi
             });
             app.UseSwagger();
             app.UseRouting();
+
             app.UseEndpoints(endpoints =>
             {
                 // SwaggerGen won't find controllers that are routed via this technique.
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
+
 }
