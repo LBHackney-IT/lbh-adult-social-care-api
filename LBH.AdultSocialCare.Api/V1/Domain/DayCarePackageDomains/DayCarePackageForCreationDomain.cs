@@ -1,8 +1,8 @@
 using System;
 
-namespace LBH.AdultSocialCare.Api.V1.DataTransferObjects.DayCarePackageDtos
+namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
 {
-    public class DayCarePackageForCreationDto
+    public class DayCarePackageForCreationDomain
     {
         public Guid PackageId { get; set; }
         public Guid ClientId { get; set; }
