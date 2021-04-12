@@ -6,6 +6,7 @@ using System.Reflection;
 using LBH.AdultSocialCare.Api.V1.Controllers;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using AutoMapper;
+using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
@@ -56,6 +57,7 @@ namespace LBH.AdultSocialCare.Api
                 .AddMvc(config =>
                 {
                     config.ReturnHttpNotAcceptable = true;
+                    config.Filters.Add(typeof(LBHExceptionFilter));
                 })
                 .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
@@ -254,6 +256,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<ICreateDayCarePackageUseCase, CreateDayCarePackageUseCase>();
             services.AddScoped<IGetDayCarePackageUseCase, GetDayCarePackageUseCase>();
             services.AddScoped<IGetDayCarePackageListUseCase, GetDayCarePackageListUseCase>();
+            services.AddScoped<IUpdateDayCarePackageUseCase, UpdateDayCarePackageUseCase>();
             #endregion
 
             #region HomeCarePackageSlots
