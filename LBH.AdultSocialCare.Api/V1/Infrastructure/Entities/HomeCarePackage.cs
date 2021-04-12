@@ -27,13 +27,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Start Date
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTimeOffset StartDate { get; set; }
 
         /// <summary>
         /// Gets or sets the End Date
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTimeOffset? EndDate { get; set; }
 
         /// <summary>
@@ -75,6 +73,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Date Updated
         /// </summary>
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTimeOffset? DateUpdated { get; set; }
 
         /// <summary>
