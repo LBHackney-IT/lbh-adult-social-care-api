@@ -43,7 +43,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("/{nursingCarePackageId}")]
+        [Route("{nursingCarePackageId}")]
         public async Task<ActionResult<NursingCarePackageResponse>> Get(Guid nursingCarePackageId)
         {
             try

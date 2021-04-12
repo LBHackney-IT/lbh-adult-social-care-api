@@ -51,7 +51,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("/{statusId}")]
+        [Route("{statusId}")]
         public async Task<ActionResult<StatusResponse>> Get(Guid statusId)
         {
             try
@@ -65,6 +65,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
+        [Route("getAll")]
         public async Task<ActionResult<IList<Status>>> GetAll()
         {
             try
@@ -80,7 +81,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpDelete]
-        [Route("/{statusId}")]
+        [Route("{statusId}")]
         public async Task<ActionResult<bool>> Delete(Guid statusId)
         {
             try

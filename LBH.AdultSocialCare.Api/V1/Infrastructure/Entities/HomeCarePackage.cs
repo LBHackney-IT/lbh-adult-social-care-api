@@ -11,7 +11,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Id
         /// </summary>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [JsonProperty("Id")]
         public Guid Id { get; set; }
 
         /// <summary>
@@ -29,13 +28,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Start Date
         /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime StartDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
 
         /// <summary>
         /// Gets or sets the End Date
         /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime? EndDate { get; set; }
+        public DateTimeOffset? EndDate { get; set; }
 
         /// <summary>
         /// Gets or sets the Is Fixed Period
@@ -66,7 +65,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Date Created
         /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime? DateCreated { get; set; }
+        public DateTimeOffset? DateCreated { get; set; }
 
         /// <summary>
         /// Gets or sets the Updator Id
@@ -76,7 +75,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Date Updated
         /// </summary>
-        public DateTime? DateUpdated { get; set; }
+        public DateTimeOffset? DateUpdated { get; set; }
 
         /// <summary>
         /// Gets or sets the Status Id

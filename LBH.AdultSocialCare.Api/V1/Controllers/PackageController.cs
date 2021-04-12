@@ -48,7 +48,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("/{packageId}")]
+        [Route("{packageId}")]
         public async Task<ActionResult<PackageResponse>> Get(Guid packageId)
         {
             try
@@ -64,6 +64,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
+        [Route("getAll")]
         public async Task<ActionResult<IList<Package>>> GetAll()
         {
             try
@@ -79,7 +80,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpDelete]
-        [Route("/{packageId}")]
+        [Route("{packageId}")]
         public async Task<ActionResult<bool>> Delete(Guid packageId)
         {
             try
