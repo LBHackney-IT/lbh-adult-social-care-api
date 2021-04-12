@@ -45,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("/{clientId}")]
+        [Route("{clientId}")]
         public async Task<ActionResult<ClientsResponse>> Get(Guid clientId)
         {
             try
@@ -59,7 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpDelete]
-        [Route("/{clientId}")]
+        [Route("{clientId}")]
         public async Task<ActionResult<bool>> Delete(Guid clientId)
         {
             try
