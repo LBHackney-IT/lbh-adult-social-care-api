@@ -146,8 +146,8 @@ namespace LBH.AdultSocialCare.Api
 
         private void ConfigureDbContext(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("DatabaseConnectionString") ??
-                                   Environment.GetEnvironmentVariable("CONNECTION_STRING");
+            var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ??
+                                   Configuration.GetConnectionString("DatabaseConnectionString");
 
             // var assemblyName = typeof(DatabaseContext).Namespace ?? "LBH.AdultSocialCare.Api";
             var assemblyName = Assembly.GetCallingAssembly().GetName().Name;
@@ -190,9 +190,6 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IHomeCarePackageSlotsGateway, HomeCarePackageSlotsGateway>();
             services.AddScoped<IUsersGateway, UsersGateway>();
             services.AddScoped<IStatusGateway, StatusGateway>();
-
-            //TODO: For DynamoDb, remove the line above and uncomment the line below.
-            //services.AddScoped<IExampleGateway, DynamoDbGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
@@ -298,7 +295,6 @@ namespace LBH.AdultSocialCare.Api
             using (IServiceScope appScope = app.ApplicationServices.CreateScope())
             {
                 DatabaseContext databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                databaseContext.Database.EnsureCreated();
 
                 // Perform migrations
                 if (databaseContext.Database.GetPendingMigrations().Any())
