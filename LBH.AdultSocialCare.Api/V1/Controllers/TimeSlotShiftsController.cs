@@ -34,7 +34,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<ActionResult<TimeSlotShiftsResponse>> Create(TimeSlotShiftsRequest timeSlotShiftsRequest)
         {
             try
@@ -52,7 +51,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("get/{timeSlotShiftsId}")]
+        [Route("/{timeSlotShiftsId}")]
         public async Task<ActionResult<TimeSlotShiftsResponse>> Get(Guid timeSlotShiftsId)
         {
             try

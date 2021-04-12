@@ -46,27 +46,27 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<HomeCarePackage> UpsertAsync(HomeCarePackage homeCarePackage)
         {
-            HomeCarePackage homeCarePackageToUpdate = await _databaseContext.HomeCarePackage.
-                FirstOrDefaultAsync(item => item.Id == homeCarePackage.Id).ConfigureAwait(false);
+            HomeCarePackage homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
+                .Include(item => item.Status)
+                .Include(item => item.Clients)
+                .FirstOrDefaultAsync(item => item.Id == homeCarePackage.Id).ConfigureAwait(false);
             if (homeCarePackageToUpdate == null)
             {
                 homeCarePackageToUpdate = new HomeCarePackage();
-                homeCarePackageToUpdate.StartDate = homeCarePackage.StartDate;
-                homeCarePackageToUpdate.EndDate = homeCarePackage.EndDate;
-                homeCarePackageToUpdate.IsFixedPeriod = homeCarePackage.IsFixedPeriod;
-                homeCarePackageToUpdate.IsOngoingPeriod = homeCarePackage.IsOngoingPeriod;
-                homeCarePackageToUpdate.IsThisAnImmediateService = homeCarePackage.IsThisAnImmediateService;
-                homeCarePackageToUpdate.IsThisuserUnderS117 = homeCarePackage.IsThisuserUnderS117;
                 await _databaseContext.HomeCarePackage.AddAsync(homeCarePackageToUpdate).ConfigureAwait(false);
             }
+            homeCarePackageToUpdate.StartDate = homeCarePackage.StartDate;
+            homeCarePackageToUpdate.EndDate = homeCarePackage.EndDate;
+            homeCarePackageToUpdate.IsFixedPeriod = homeCarePackage.IsFixedPeriod;
+            homeCarePackageToUpdate.IsOngoingPeriod = homeCarePackage.IsOngoingPeriod;
+            homeCarePackageToUpdate.IsThisAnImmediateService = homeCarePackage.IsThisAnImmediateService;
+            homeCarePackageToUpdate.IsThisuserUnderS117 = homeCarePackage.IsThisuserUnderS117;
             homeCarePackageToUpdate.ClientId = homeCarePackage.ClientId;
-            homeCarePackageToUpdate.Clients = await _databaseContext.Clients.FirstOrDefaultAsync(item => item.Id == homeCarePackage.ClientId).ConfigureAwait(false);
             homeCarePackageToUpdate.CreatorId = homeCarePackage.CreatorId;
             homeCarePackageToUpdate.DateCreated = homeCarePackage.DateCreated;
             homeCarePackageToUpdate.UpdatorId = homeCarePackage.UpdatorId;
             homeCarePackageToUpdate.DateUpdated = homeCarePackage.DateUpdated;
             homeCarePackageToUpdate.StatusId = homeCarePackage.StatusId;
-            homeCarePackageToUpdate.Status = await _databaseContext.Status.FirstOrDefaultAsync(item => item.Id == homeCarePackageToUpdate.StatusId).ConfigureAwait(false);
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess ? homeCarePackageToUpdate : null;
         }

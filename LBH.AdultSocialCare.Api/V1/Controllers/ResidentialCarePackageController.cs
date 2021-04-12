@@ -17,14 +17,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     public class ResidentialCarePackageController : BaseController
     {
         private readonly IUpsertResidentialCarePackageUseCase _upsertResidentialCarePackageUseCase;
+        private readonly IGetResidentialCarePackageUseCase _getResidentialCarePackageUseCase;
 
-        public ResidentialCarePackageController(IUpsertResidentialCarePackageUseCase upsertResidentialCarePackageUseCase)
+
+        public ResidentialCarePackageController(IUpsertResidentialCarePackageUseCase upsertResidentialCarePackageUseCase,
+            IGetResidentialCarePackageUseCase getResidentialCarePackageUseCase)
         {
             _upsertResidentialCarePackageUseCase = upsertResidentialCarePackageUseCase;
+            _getResidentialCarePackageUseCase = getResidentialCarePackageUseCase;
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<ActionResult<ResidentialCarePackageResponse>> Create(ResidentialCarePackageRequest residentialCarePackageRequest)
         {
             try
@@ -39,5 +42,22 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("/{residentialCarePackageId}")]
+        public async Task<ActionResult<ResidentialCarePackageResponse>> Get(Guid residentialCarePackageId)
+        {
+            try
+            {
+                var residentialCarePackageResponse = ResidentialCarePackageFactory.ToResponse(await _getResidentialCarePackageUseCase.GetAsync(residentialCarePackageId).ConfigureAwait(false));
+                if (residentialCarePackageResponse == null) return NotFound();
+                return Ok(residentialCarePackageResponse);
+            }
+            catch (FormatException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

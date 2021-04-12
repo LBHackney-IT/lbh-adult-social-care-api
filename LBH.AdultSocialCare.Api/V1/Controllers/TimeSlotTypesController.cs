@@ -34,7 +34,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<ActionResult<TimeSlotTypesResponse>> Create(TimeSlotTypeRequest timeSlotTypeRequest)
         {
             try
@@ -52,7 +51,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("get/{timeSlotTypesId}")]
+        [Route("/{timeSlotTypesId}")]
         public async Task<ActionResult<TimeSlotTypesResponse>> Get(Guid timeSlotTypesId)
         {
             try
@@ -66,7 +65,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("getAll")]
         public async Task<ActionResult<IList<TimeSlotType>>> GetAll()
         {
             try
@@ -82,7 +80,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{timeSlotTypesId}")]
+        [Route("/{timeSlotTypesId}")]
         public async Task<ActionResult<bool>> Delete(Guid timeSlotTypesId)
         {
             try

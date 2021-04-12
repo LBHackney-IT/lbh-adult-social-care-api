@@ -18,17 +18,27 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             _databaseContext = databaseContext;
         }
 
+        public async Task<ResidentialCarePackage> GetAsync(Guid residentialCarePackageId)
+        {
+            var result = await _databaseContext.ResidentialCarePackage
+                .Include(item => item.Clients)
+                .Include(item => item.Status)
+                .FirstOrDefaultAsync(item => item.Id == residentialCarePackageId).ConfigureAwait(false);
+            return result;
+        }
+
         public async Task<ResidentialCarePackage> UpsertAsync(ResidentialCarePackage residentialCarePackage)
         {
-            ResidentialCarePackage residentialCarePackageToUpdate = await _databaseContext.ResidentialCarePackage.
-                FirstOrDefaultAsync(item => item.Id == residentialCarePackage.Id).ConfigureAwait(false);
+            ResidentialCarePackage residentialCarePackageToUpdate = await _databaseContext.ResidentialCarePackage
+                .Include(item => item.Clients)
+                .Include(item => item.Status)
+                .FirstOrDefaultAsync(item => item.Id == residentialCarePackage.Id).ConfigureAwait(false);
             if (residentialCarePackageToUpdate == null)
             {
                 residentialCarePackageToUpdate = new ResidentialCarePackage();
                 await _databaseContext.ResidentialCarePackage.AddAsync(residentialCarePackageToUpdate).ConfigureAwait(false);
             }
             residentialCarePackageToUpdate.ClientId = residentialCarePackage.ClientId;
-            residentialCarePackageToUpdate.Clients = await _databaseContext.Clients.FirstOrDefaultAsync(item => item.Id == residentialCarePackage.ClientId).ConfigureAwait(false);
             residentialCarePackageToUpdate.StartDate = residentialCarePackage.StartDate;
             residentialCarePackageToUpdate.EndDate = residentialCarePackage.EndDate;
             residentialCarePackageToUpdate.IsRespiteCare = residentialCarePackage.IsRespiteCare;
@@ -46,7 +56,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             residentialCarePackageToUpdate.UpdatorId = residentialCarePackage.UpdatorId;
             residentialCarePackageToUpdate.DateUpdated = residentialCarePackage.DateUpdated;
             residentialCarePackageToUpdate.StatusId = residentialCarePackage.StatusId;
-            residentialCarePackageToUpdate.Status = await _databaseContext.Status.FirstOrDefaultAsync(item => item.Id == residentialCarePackageToUpdate.StatusId).ConfigureAwait(false);
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess ? residentialCarePackageToUpdate : null;
         }

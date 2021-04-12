@@ -15,21 +15,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     public class HomeCarePackageController : BaseController
     {
         private readonly IUpsertHomeCarePackageUseCase _upsertHomeCarePackageUseCase;
-        private readonly IGetAllHomeCarePackageUseCase _getAllHomeCarePackageUseCase;
         private readonly IChangeStatusHomeCarePackageUseCase _updateHomeCarePackageUseCase;
-        
+
 
         public HomeCarePackageController(IUpsertHomeCarePackageUseCase upsertHomeCarePackageUseCase,
-            IGetAllHomeCarePackageUseCase getAllHomeCarePackageUseCase,
             IChangeStatusHomeCarePackageUseCase updateHomeCarePackageUseCase)
         {
             _upsertHomeCarePackageUseCase = upsertHomeCarePackageUseCase;
-            _getAllHomeCarePackageUseCase = getAllHomeCarePackageUseCase;
             _updateHomeCarePackageUseCase = updateHomeCarePackageUseCase;
         }
 
         [HttpPut]
-        [Route("changeStatus")]
         public async Task<ActionResult<HomeCarePackageResponse>> ChangeStatus(HomeCarePackageRequest homeCarePackageRequest)
         {
             try

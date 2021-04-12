@@ -34,7 +34,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<ActionResult<RolesResponse>> Create(RolesRequest rolesRequest)
         {
             try
@@ -42,7 +41,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                 RolesDomain roleDomain = RolesFactory.ToDomain(rolesRequest);
                 var roleResponse = RolesFactory.ToResponse(await _upsertRoleUseCase.ExecuteAsync(roleDomain).ConfigureAwait(false));
                 if (roleResponse == null) return NotFound();
-                //else if (!roleResponse.Success) return BadRequest(roleResponse.Message);
                 return Ok(roleResponse);
             }
             catch (FormatException ex)
@@ -52,7 +50,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("get/{roleId}")]
+        [Route("/{roleId}")]
         public async Task<ActionResult<RolesResponse>> Get(Guid roleId)
         {
             try
@@ -66,7 +64,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("getAll")]
         public async Task<ActionResult<IList<Roles>>> GetAll()
         {
             try
@@ -82,7 +79,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{roleId}")]
+        [Route("/{roleId}")]
         public async Task<ActionResult<bool>> Delete(Guid roleId)
         {
             try

@@ -191,6 +191,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IUsersGateway, UsersGateway>();
             services.AddScoped<IStatusGateway, StatusGateway>();
             services.AddScoped<IResidentialCarePackageGateway, ResidentialCarePackageGateway>();
+            services.AddScoped<INursingCarePackageGateway, NursingCarePackageGateway>();
 
             //TODO: For DynamoDb, remove the line above and uncomment the line below.
             //services.AddScoped<IExampleGateway, DynamoDbGateway>();
@@ -240,7 +241,6 @@ namespace LBH.AdultSocialCare.Api
             #region HomeCarePackage
 
             services.AddScoped<IUpsertHomeCarePackageUseCase, UpsertHomeCarePackageUseCase>();
-            services.AddScoped<IGetAllHomeCarePackageUseCase, GetAllHomeCarePackageUseCase>();
             services.AddScoped<IChangeStatusHomeCarePackageUseCase, ChangeStatusHomeCarePackageUseCase>();
 
             #endregion
@@ -293,6 +293,12 @@ namespace LBH.AdultSocialCare.Api
 
             #region ResidentialCarePackage
             services.AddScoped<IUpsertResidentialCarePackageUseCase, UpsertResidentialCarePackageUseCase>();
+            services.AddScoped<IGetResidentialCarePackageUseCase, GetResidentialCarePackageUseCase>();
+            #endregion
+
+            #region NursingCarePackage
+            services.AddScoped<IUpsertNursingCarePackageUseCase, UpsertNursingCarePackageUseCase>();
+            services.AddScoped<IGetNursingCarePackageUseCase, GetNursingCarePackageUseCase>();
             #endregion
 
         }

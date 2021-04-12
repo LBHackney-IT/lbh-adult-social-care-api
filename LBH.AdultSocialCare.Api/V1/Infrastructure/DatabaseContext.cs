@@ -29,6 +29,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<Status> Status { get; set; }
         public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
 
+        public DbSet<NursingCarePackage> NursingCarePackage { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

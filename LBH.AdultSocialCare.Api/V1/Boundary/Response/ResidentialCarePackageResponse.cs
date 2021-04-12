@@ -14,16 +14,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the Package Id
-        /// </summary>
-        public Guid PackageId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Package
-        /// </summary>
-        public Package Package { get; set; }
-
-        /// <summary>
         /// Gets or sets the Client Id
         /// </summary>
         public Guid ClientId { get; set; }

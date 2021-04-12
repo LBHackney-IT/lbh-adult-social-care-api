@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
 {
-    public class ResidentialCarePackageRequest
+    public class NursingCarePackageRequest
     {
         /// <summary>
         /// Gets or sets the Id
@@ -28,29 +28,24 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         public DateTime? EndDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is Respite Care
+        /// Gets or sets the Is Interim
         /// </summary>
-        public bool IsRespiteCare { get; set; }
+        public bool IsInterim { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is Discharge Package
+        /// Gets or sets the Is Expected Stay Over 8Weeks
         /// </summary>
-        public bool IsDischargePackage { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Is Immediate Reenablement Package
-        /// </summary>
-        public bool IsImmediateReenablementPackage { get; set; }
+        public bool IsUnder8Weeks { get; set; }
 
         /// <summary>
         /// Gets or sets the Is Expected Stay Over 52Weeks
         /// </summary>
-        public bool IsExpectedStayOver52Weeks { get; set; }
+        public bool IsUnder52Weeks { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is This User Under S117
+        /// Gets or sets the Is Long Stay
         /// </summary>
-        public bool IsThisUserUnderS117 { get; set; }
+        public bool IsLongStay { get; set; }
 
         /// <summary>
         /// Gets or sets the Need To Address
@@ -58,9 +53,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         public string NeedToAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets the Need To Address
+        /// Gets or sets the Type Of Nursing Home
         /// </summary>
-        public string TypeOfCareHome { get; set; }
+        public string TypeOfNursingHome { get; set; }
 
         /// <summary>
         /// Gets or sets the Weekly

@@ -72,8 +72,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return new ResidentialCarePackageResponse()
             {
                 Id = residentialCarePackageDomain.Id,
-                PackageId = residentialCarePackageDomain.PackageId,
-                Package = residentialCarePackageDomain.Package,
                 ClientId = residentialCarePackageDomain.ClientId,
                 Clients = residentialCarePackageDomain.Clients,
                 StartDate = residentialCarePackageDomain.StartDate,
@@ -102,7 +100,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return new ResidentialCarePackageDomain()
             {
                 Id = residentialCarePackageRequest.Id,
-                PackageId = residentialCarePackageRequest.PackageId,
                 ClientId = residentialCarePackageRequest.ClientId,
                 StartDate = residentialCarePackageRequest.StartDate,
                 EndDate = residentialCarePackageRequest.EndDate,
