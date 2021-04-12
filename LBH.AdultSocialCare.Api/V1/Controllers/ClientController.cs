@@ -12,7 +12,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/clients")]
     [Produces("application/json")]
     [ApiController]
-    public class ClientController : Controller
+    public class ClientController : BaseController
     {
         private readonly IUpsertClientsUseCase _upsertClientsUseCase;
         private readonly IGetClientsUseCase _getClientsUseCase;
@@ -28,7 +28,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<ActionResult<ClientsResponse>> Create(ClientsRequest clientsRequest)
         {
             try
@@ -46,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("get/{clientId}")]
+        [Route("{clientId}")]
         public async Task<ActionResult<ClientsResponse>> Get(Guid clientId)
         {
             try
@@ -60,7 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{clientId}")]
+        [Route("{clientId}")]
         public async Task<ActionResult<bool>> Delete(Guid clientId)
         {
             try

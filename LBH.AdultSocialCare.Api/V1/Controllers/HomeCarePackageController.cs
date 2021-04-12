@@ -12,24 +12,20 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/homeCarePackage")]
     [Produces("application/json")]
     [ApiController]
-    public class HomeCarePackageController : Controller
+    public class HomeCarePackageController : BaseController
     {
         private readonly IUpsertHomeCarePackageUseCase _upsertHomeCarePackageUseCase;
-        private readonly IGetAllHomeCarePackageUseCase _getAllHomeCarePackageUseCase;
         private readonly IChangeStatusHomeCarePackageUseCase _updateHomeCarePackageUseCase;
-        
+
 
         public HomeCarePackageController(IUpsertHomeCarePackageUseCase upsertHomeCarePackageUseCase,
-            IGetAllHomeCarePackageUseCase getAllHomeCarePackageUseCase,
             IChangeStatusHomeCarePackageUseCase updateHomeCarePackageUseCase)
         {
             _upsertHomeCarePackageUseCase = upsertHomeCarePackageUseCase;
-            _getAllHomeCarePackageUseCase = getAllHomeCarePackageUseCase;
             _updateHomeCarePackageUseCase = updateHomeCarePackageUseCase;
         }
 
         [HttpPut]
-        [Route("changeStatus")]
         public async Task<ActionResult<HomeCarePackageResponse>> ChangeStatus(HomeCarePackageRequest homeCarePackageRequest)
         {
             try
@@ -46,7 +42,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<ActionResult<HomeCarePackageResponse>> Create(HomeCarePackageRequest homeCarePackageRequest)
         {
             try

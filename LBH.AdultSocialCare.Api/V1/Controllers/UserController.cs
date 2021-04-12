@@ -12,7 +12,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/users")]
     [Produces("application/json")]
     [ApiController]
-    public class UserController : Controller
+    public class UserController : BaseController
     {
         private readonly IUpsertUsersUseCase _upsertUsersUseCase;
         private readonly IGetUsersUseCase _getUsersUseCase;
@@ -28,7 +28,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<ActionResult<UsersResponse>> Create(UsersRequest usersRequest)
         {
             try
@@ -46,14 +45,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("get/{userId}")]
+        [Route("{userId}")]
         public async Task<ActionResult<UsersResponse>> Get(Guid userId)
         {
             return UserFactory.ToResponse(await _getUsersUseCase.GetAsync(userId).ConfigureAwait(false));
         }
 
         [HttpDelete]
-        [Route("delete/{userId}")]
+        [Route("{userId}")]
         public async Task<ActionResult<bool>> Delete(Guid userId)
         {
             return await _deleteUsersUseCase.DeleteAsync(userId).ConfigureAwait(false);

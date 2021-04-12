@@ -31,7 +31,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<ActionResult<PackageResponse>> Create(PackageRequest packageRequest)
         {
             try
@@ -49,7 +48,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("get/{packageId}")]
+        [Route("{packageId}")]
         public async Task<ActionResult<PackageResponse>> Get(Guid packageId)
         {
             try
@@ -81,7 +80,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{packageId}")]
+        [Route("{packageId}")]
         public async Task<ActionResult<bool>> Delete(Guid packageId)
         {
             try

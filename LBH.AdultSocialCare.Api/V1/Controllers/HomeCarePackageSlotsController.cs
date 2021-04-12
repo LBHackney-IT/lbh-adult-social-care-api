@@ -12,7 +12,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/homeCarePackageSlots")]
     [Produces("application/json")]
     [ApiController]
-    public class HomeCarePackageSlotsController : Controller
+    public class HomeCarePackageSlotsController : BaseController
     {
         private readonly IUpsertHomeCarePackageSlotsUseCase _upsertHomeCarePackageSlotsUseCase;
         private readonly IDeleteHomeCarePackageSlotsUseCase _deleteHomeCarePackageSlotsUseCase;
@@ -26,7 +26,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<ActionResult<HomeCarePackageSlotsResponseList>> Create(HomeCarePackageSlotsRequestList homeCarePackageSlotsRequestList)
         {
             try

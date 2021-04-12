@@ -15,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/timeSlotTypes")]
     [Produces("application/json")]
     [ApiController]
-    public class TimeSlotTypesController : Controller
+    public class TimeSlotTypesController : BaseController
     {
         private readonly IUpsertTimeSlotTypesUseCase _upsertTimeSlotTypesUseCase;
         private readonly IGetTimeSlotTypesUseCase _getTimeSlotTypesUseCase;
@@ -34,7 +34,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<ActionResult<TimeSlotTypesResponse>> Create(TimeSlotTypeRequest timeSlotTypeRequest)
         {
             try
@@ -52,7 +51,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("get/{timeSlotTypesId}")]
+        [Route("{timeSlotTypesId}")]
         public async Task<ActionResult<TimeSlotTypesResponse>> Get(Guid timeSlotTypesId)
         {
             try
@@ -82,7 +81,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{timeSlotTypesId}")]
+        [Route("{timeSlotTypesId}")]
         public async Task<ActionResult<bool>> Delete(Guid timeSlotTypesId)
         {
             try

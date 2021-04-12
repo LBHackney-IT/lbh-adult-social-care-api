@@ -15,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/service")]
     [Produces("application/json")]
     [ApiController]
-    public class ServiceController : Controller
+    public class ServiceController : BaseController
     {
         private readonly IUpsertServiceUseCase _upsertServiceUseCase;
         private readonly IGetServiceUseCase _getServiceUseCase;
@@ -34,7 +34,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteServiceUseCase = deleteServiceUseCase;
         }
         [HttpPost]
-        [Route("create")]
         public async Task<ActionResult<ServiceResponse>> Create(ServiceRequest serviceRequest)
         {
             try
@@ -52,7 +51,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("get/{serviceId}")]
+        [Route("{serviceId}")]
         public async Task<ActionResult<ServiceResponse>> Get(Guid serviceId)
         {
             try
@@ -82,7 +81,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{serviceId}")]
+        [Route("{serviceId}")]
         public async Task<ActionResult<bool>> Delete(Guid serviceId)
         {
             try

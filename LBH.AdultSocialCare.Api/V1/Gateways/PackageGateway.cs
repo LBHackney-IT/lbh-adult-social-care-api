@@ -45,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         }
         public async Task<IList<Package>> ListAsync()
         {
-            return await _databaseContext.GetPackagesAsync().ConfigureAwait(false);
+            return await _databaseContext.Packages.ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<bool> DeleteAsync(Guid packageId)
