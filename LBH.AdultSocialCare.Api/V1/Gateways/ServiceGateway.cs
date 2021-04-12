@@ -27,14 +27,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<PackageServices> GetAsync(Guid serviceId)
         {
-            var result = await _databaseContext.PackageServices.FirstOrDefaultAsync(item => item.Id == serviceId).ConfigureAwait(false);
-            result.Package = await _databaseContext.Packages.FirstOrDefaultAsync(item => item.Id == result.PackageId).ConfigureAwait(false);
+            var result = await _databaseContext.PackageServices
+                .Include(item => item.Package)
+                .FirstOrDefaultAsync(item => item.Id == serviceId).ConfigureAwait(false);
             return result;
         }
 
         public async Task<IList<PackageServices>> ListAsync()
         {
-            return await _databaseContext.GetServicesAsync().ConfigureAwait(false);
+            return await _databaseContext.PackageServices.ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<PackageServices> UpsertAsync(PackageServices service)

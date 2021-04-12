@@ -13,26 +13,25 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the Package Id
-        /// </summary>
-        public Guid PackageId { get; set; }
-
-        /// <summary>
         /// Gets or sets the Client Id
         /// </summary>
         public Guid ClientId { get; set; }
 
         /// <summary>
+        /// Gets or sets the Clients
+        /// </summary>
+        [ForeignKey(nameof(ClientId))]
+        public Clients Clients { get; set; }
+
+        /// <summary>
         /// Gets or sets the Start Date
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime StartDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
 
         /// <summary>
         /// Gets or sets the End Date
         /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime? EndDate { get; set; }
+        public DateTimeOffset? EndDate { get; set; }
 
         /// <summary>
         /// Gets or sets the Is Interim
@@ -65,14 +64,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public string TypeOfNursingHome { get; set; }
 
         /// <summary>
-        /// Gets or sets the How Often
+        /// Gets or sets the Weekly
         /// </summary>
-        public string HowOften { get; set; }
+        public bool Weekly { get; set; }
 
         /// <summary>
-        /// Gets or sets the How Long
+        /// Gets or sets the One Off
         /// </summary>
-        public string HowLong { get; set; }
+        public bool OneOff { get; set; }
 
         /// <summary>
         /// Gets or sets the Additional Need To Address
@@ -88,7 +87,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Date Created
         /// </summary>
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTime? DateCreated { get; set; }
+        public DateTimeOffset? DateCreated { get; set; }
 
         /// <summary>
         /// Gets or sets the Updator Id
@@ -98,11 +97,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Date Updated
         /// </summary>
-        public DateTime? DateUpdated { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTimeOffset? DateUpdated { get; set; }
 
         /// <summary>
         /// Gets or sets the Status Id
         /// </summary>
         public Guid StatusId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Status Object
+        /// </summary>
+        public Status Status { get; set; }
     }
 }

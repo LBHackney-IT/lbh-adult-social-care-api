@@ -32,7 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<IList<TimeSlotType>> ListAsync()
         {
-            return await _databaseContext.GetTimeSlotTypesAsync().ConfigureAwait(false);
+            return await _databaseContext.TimeSlotType.ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<TimeSlotType> UpsertAsync(TimeSlotType timeSlotTypes)

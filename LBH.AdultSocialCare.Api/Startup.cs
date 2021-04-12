@@ -197,6 +197,11 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IHomeCarePackageSlotsGateway, HomeCarePackageSlotsGateway>();
             services.AddScoped<IUsersGateway, UsersGateway>();
             services.AddScoped<IStatusGateway, StatusGateway>();
+            services.AddScoped<IResidentialCarePackageGateway, ResidentialCarePackageGateway>();
+            services.AddScoped<INursingCarePackageGateway, NursingCarePackageGateway>();
+
+            //TODO: For DynamoDb, remove the line above and uncomment the line below.
+            //services.AddScoped<IExampleGateway, DynamoDbGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
@@ -243,7 +248,6 @@ namespace LBH.AdultSocialCare.Api
             #region HomeCarePackage
 
             services.AddScoped<IUpsertHomeCarePackageUseCase, UpsertHomeCarePackageUseCase>();
-            services.AddScoped<IGetAllHomeCarePackageUseCase, GetAllHomeCarePackageUseCase>();
             services.AddScoped<IChangeStatusHomeCarePackageUseCase, ChangeStatusHomeCarePackageUseCase>();
 
             #endregion
@@ -294,8 +298,18 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetStatusUseCase, GetStatusUseCase>();
             services.AddScoped<IGetAllStatusUseCase, GetAllStatusUseCase>();
             services.AddScoped<IDeleteStatusUseCase, DeleteStatusUseCase>();
-
             #endregion
+
+            #region ResidentialCarePackage
+            services.AddScoped<IUpsertResidentialCarePackageUseCase, UpsertResidentialCarePackageUseCase>();
+            services.AddScoped<IGetResidentialCarePackageUseCase, GetResidentialCarePackageUseCase>();
+            #endregion
+
+            #region NursingCarePackage
+            services.AddScoped<IUpsertNursingCarePackageUseCase, UpsertNursingCarePackageUseCase>();
+            services.AddScoped<IGetNursingCarePackageUseCase, GetNursingCarePackageUseCase>();
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

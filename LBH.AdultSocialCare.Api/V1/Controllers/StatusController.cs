@@ -15,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/status")]
     [Produces("application/json")]
     [ApiController]
-    public class StatusController : Controller
+    public class StatusController : BaseController
     {
         private readonly IUpsertStatusUseCase _upsertStatusUseCase;
         private readonly IGetStatusUseCase _getStatusUseCase;
@@ -34,7 +34,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpPost]
-        [Route("create")]
         public async Task<ActionResult<StatusResponse>> Create(StatusRequest statusRequest)
         {
             try
@@ -52,7 +51,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet]
-        [Route("get/{statusId}")]
+        [Route("{statusId}")]
         public async Task<ActionResult<StatusResponse>> Get(Guid statusId)
         {
             try
@@ -82,7 +81,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpDelete]
-        [Route("delete/{statusId}")]
+        [Route("{statusId}")]
         public async Task<ActionResult<bool>> Delete(Guid statusId)
         {
             try

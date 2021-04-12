@@ -11,16 +11,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the Package Id
-        /// </summary>
-        public Guid PackageId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Package
-        /// </summary>
-        public Package Package { get; set; }
-
-        /// <summary>
         /// Gets or sets the Client Id
         /// </summary>
         public Guid ClientId { get; set; }
@@ -33,12 +23,12 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         /// <summary>
         /// Gets or sets the Start Date
         /// </summary>
-        public DateTime StartDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
 
         /// <summary>
         /// Gets or sets the End Date
         /// </summary>
-        public DateTime? EndDate { get; set; }
+        public DateTimeOffset? EndDate { get; set; }
 
         /// <summary>
         /// Gets or sets the Is Fixed Period
@@ -68,7 +58,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         /// <summary>
         /// Gets or sets the Date Created
         /// </summary>
-        public DateTime? DateCreated { get; set; }
+        public DateTimeOffset? DateCreated { get; set; }
 
         /// <summary>
         /// Gets or sets the Updator Id

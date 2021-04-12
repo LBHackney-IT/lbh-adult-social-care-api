@@ -14,8 +14,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return new HomeCarePackageDomain
             {
                 Id = homeCarePackageEntity.Id,
-                PackageId = homeCarePackageEntity.PackageId,
-                Package = homeCarePackageEntity.Package,
                 ClientId = homeCarePackageEntity.ClientId,
                 Clients = homeCarePackageEntity.Clients,
                 StartDate = homeCarePackageEntity.StartDate,
@@ -38,8 +36,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return new HomeCarePackage
             {
                 Id = homeCarePackageDomain.Id,
-                PackageId = homeCarePackageDomain.PackageId,
-                Package = homeCarePackageDomain.Package,
                 ClientId = homeCarePackageDomain.ClientId,
                 Clients = homeCarePackageDomain.Clients,
                 StartDate = homeCarePackageDomain.StartDate,
@@ -62,8 +58,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return new HomeCarePackageResponse
             {
                 Id = homeCarePackageDomain.Id,
-                PackageId = homeCarePackageDomain.PackageId,
-                Package = homeCarePackageDomain.Package,
                 ClientId = homeCarePackageDomain.ClientId,
                 Clients = homeCarePackageDomain.Clients,
                 StartDate = homeCarePackageDomain.StartDate,
@@ -86,7 +80,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return new HomeCarePackageDomain
             {
                 Id = homeCarePackageEntity.Id,
-                PackageId = homeCarePackageEntity.PackageId,
                 ClientId = homeCarePackageEntity.ClientId,
                 StartDate = homeCarePackageEntity.StartDate,
                 EndDate = homeCarePackageEntity.EndDate,

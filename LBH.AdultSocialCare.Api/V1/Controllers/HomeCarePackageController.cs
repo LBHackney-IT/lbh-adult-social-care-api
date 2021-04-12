@@ -13,7 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    public class HomeCarePackageController : Controller
+    public class HomeCarePackageController : BaseController
     {
 
         private readonly IUpsertHomeCarePackageUseCase _upsertHomeCarePackageUseCase;

@@ -26,12 +26,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<Users> GetAsync(Guid userId)
         {
-            return await _databaseContext.Users.FirstOrDefaultAsync(item => item.Id == userId).ConfigureAwait(false);
+            return await _databaseContext.Users
+                .Include(item => item.Roles)
+                .FirstOrDefaultAsync(item => item.Id == userId).ConfigureAwait(false);
         }
 
         public async Task<Users> UpsertAsync(Users users)
         {
-            Users usersToUpdate = await _databaseContext.Users.FirstOrDefaultAsync(item => item.HackneyId == users.HackneyId).ConfigureAwait(false);
+            Users usersToUpdate = await _databaseContext.Users
+                .Include(item => item.Roles)
+                .FirstOrDefaultAsync(item => item.HackneyId == users.HackneyId).ConfigureAwait(false);
             if (usersToUpdate == null)
             {
                 usersToUpdate = new Users();
@@ -47,7 +51,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 usersToUpdate.County = users.County;
                 usersToUpdate.PostCode = users.PostCode;
                 usersToUpdate.RoleId = users.RoleId;
-                usersToUpdate.Roles = await _databaseContext.Roles.FirstOrDefaultAsync(item => item.Id == users.RoleId).ConfigureAwait(false);
                 usersToUpdate.CreatorId = users.CreatorId;
                 usersToUpdate.DateCreated = users.DateCreated;
                 usersToUpdate.UpdatorId = users.UpdatorId;

@@ -10,11 +10,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the Package Id
-        /// </summary>
-        public Guid PackageId { get; set; }
-
-        /// <summary>
         /// Gets or sets the Client Id
         /// </summary>
         public Guid ClientId { get; set; }
@@ -22,12 +17,12 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         /// <summary>
         /// Gets or sets the Start Date
         /// </summary>
-        public DateTime StartDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
 
         /// <summary>
         /// Gets or sets the End Date
         /// </summary>
-        public DateTime? EndDate { get; set; }
+        public DateTimeOffset? EndDate { get; set; }
 
         /// <summary>
         /// Gets or sets the Is Respite Care
@@ -87,7 +82,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         /// <summary>
         /// Gets or sets the Date Created
         /// </summary>
-        public DateTime? DateCreated { get; set; }
+        public DateTimeOffset? DateCreated { get; set; }
 
         /// <summary>
         /// Gets or sets the Updator Id
@@ -97,7 +92,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         /// <summary>
         /// Gets or sets the Date Updated
         /// </summary>
-        public DateTime? DateUpdated { get; set; }
+        public DateTimeOffset? DateUpdated { get; set; }
 
         /// <summary>
         /// Gets or sets the Status Id

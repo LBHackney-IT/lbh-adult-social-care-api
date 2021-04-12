@@ -32,7 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<IList<Roles>> ListAsync()
         {
-            return await _databaseContext.GetRolesAsync().ConfigureAwait(false);
+            return await _databaseContext.Roles.ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<Roles> UpsertAsync(Roles roles)
