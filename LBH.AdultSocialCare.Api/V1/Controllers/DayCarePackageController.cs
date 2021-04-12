@@ -1,4 +1,3 @@
-using Amazon.DynamoDBv2.Model;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -14,6 +13,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/day-care-packages")]
     [Produces("application/json")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
     public class DayCarePackageController : ControllerBase
     {
         private readonly ICreateDayCarePackageUseCase _createDayCarePackageUseCase;
@@ -35,17 +36,20 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
 
         /// <summary>Creates the day care package.</summary>
         /// <param name="dayCarePackageForCreation">The day care package for creation.</param>
-        /// <returns>
-        /// </returns>
+        /// <returns>A newly created day care package</returns>
+        /// <response code="200">Returns ID of the newly created item</response>
+        /// <response code="400">If the item is null</response>
+        /// <response code="422">If the model is invalid</response>
         [HttpPost]
         [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<Guid>> CreateDayCarePackage([FromBody] DayCarePackageForCreationRequest dayCarePackageForCreation)
         {
             if (dayCarePackageForCreation == null)
             {
-                return UnprocessableEntity("Object for creation cannot be null.");
+                return BadRequest("Object for creation cannot be null.");
             }
 
             if (!ModelState.IsValid)
@@ -58,13 +62,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             return Ok(result);
         }
 
-        /// <summary>
-        /// Get a day care package by Id
-        /// </summary>
-        /// <param name="dayCarePackageId"></param>
-        /// <returns></returns>
+        /// <summary>Get a day care package by Id</summary>
+        /// <param name="dayCarePackageId">The day care package ID</param>
+        /// <returns>A day care package</returns>
+        /// <response code="200">Returns day care package</response>
+        /// <response code="404">If the day care package is not found</response>
         [HttpGet("{dayCarePackageId}")]
-        [ProducesResponseType(typeof(DayCarePackageResponse), 200)]
+        [ProducesResponseType(typeof(DayCarePackageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         public async Task<IActionResult> GetSingleDayCarePackage(Guid dayCarePackageId)
@@ -73,10 +77,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             return Ok(dayCarePackage);
         }
 
-        /// <summary>
-        /// Gets the day care package list.
-        /// </summary>
+        /// <summary>Gets the day care package list.</summary>
         /// <returns>List of day care packages</returns>
+        /// <response code="200">Returns day care package list</response>
         [ProducesResponseType(typeof(IEnumerable<DayCarePackageResponse>), StatusCodes.Status200OK)]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DayCarePackageResponse>>> GetDayCarePackageList()
@@ -84,16 +87,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             return Ok(await _getDayCarePackageListUseCase.Execute().ConfigureAwait(false));
         }
 
-        /// <summary>
-        /// Updates the day care package.
-        /// </summary>
+        /// <summary>Updates the day care package.</summary>
         /// <param name="dayCarePackageId">The day care package identifier.</param>
         /// <param name="dayCarePackageForUpdate">The day care package for update.</param>
         /// <returns>Updated day care package</returns>
-        /// <returns>Day care not found</returns>
+        /// <response code="200">Returns updated day care package</response>
+        /// <response code="404">If day care package is not found</response>
+        /// <response code="400">If day care package for update is null</response>
+        /// <response code="422">If model for update is invalid</response>
         [HttpPut("{dayCarePackageId}")]
-        [ProducesResponseType(typeof(DayCarePackageResponse), 200)]
+        [ProducesResponseType(typeof(DayCarePackageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<DayCarePackageResponse>> UpdateDayCarePackage(
             Guid dayCarePackageId,
@@ -101,7 +107,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             if (dayCarePackageForUpdate == null)
             {
-                return UnprocessableEntity("Object for update cannot be null.");
+                return BadRequest("Object for update cannot be null.");
             }
 
             if (!ModelState.IsValid)
