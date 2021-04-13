@@ -26,9 +26,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public bool TransportNeeded { get; set; }
         public bool EscortNeeded { get; set; }
         public int TermTimeConsiderationOptionId { get; set; }
-        public string HowLong { get; set; }
-        public string HowManyTimesPerMonth { get; set; } // Daily, weekly, monthly
-        public string OpportunitiesNeedToAddress { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTimeOffset DateCreated { get; set; } = DateTimeOffset.UtcNow;
         public Guid CreatorId { get; set; }
