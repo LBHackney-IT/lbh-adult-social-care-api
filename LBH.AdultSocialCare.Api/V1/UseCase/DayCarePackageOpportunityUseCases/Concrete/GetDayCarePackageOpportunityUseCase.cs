@@ -16,9 +16,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.C
             _dayCarePackageOpportunityGateway = dayCarePackageOpportunityGateway;
         }
 
-        public async Task<DayCarePackageOpportunityResponse> Execute(Guid dayCarePackageOpportunityId)
+        public async Task<DayCarePackageOpportunityResponse> Execute(Guid dayCarePackageId, Guid dayCarePackageOpportunityId)
         {
-            var dayCarePackageOpportunity = await _dayCarePackageOpportunityGateway.GetDayCarePackageOpportunity(dayCarePackageOpportunityId).ConfigureAwait(false);
+            var dayCarePackageOpportunity = await _dayCarePackageOpportunityGateway.GetDayCarePackageOpportunity(dayCarePackageId, dayCarePackageOpportunityId).ConfigureAwait(false);
             return dayCarePackageOpportunity.ToResponse();
         }
     }

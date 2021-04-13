@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.I
 {
     public interface IGetDayCarePackageOpportunityUseCase
     {
-        Task<DayCarePackageOpportunityResponse> Execute(Guid dayCarePackageOpportunityId);
+        Task<DayCarePackageOpportunityResponse> Execute(Guid dayCarePackageId, Guid dayCarePackageOpportunityId);
     }
 }

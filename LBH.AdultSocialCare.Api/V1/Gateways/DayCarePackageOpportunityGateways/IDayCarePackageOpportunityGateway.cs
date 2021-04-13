@@ -12,7 +12,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways
 
         Task<DayCarePackageOpportunityDomain> UpdateDayCarePackageOpportunity(DayCarePackageOpportunityForUpdateDomain dayCarePackageOpportunityForUpdate);
 
-        Task<DayCarePackageOpportunityDomain> GetDayCarePackageOpportunity(Guid dayCarePackageOpportunityId);
+        Task<DayCarePackageOpportunityDomain> GetDayCarePackageOpportunity(Guid dayCarePackageId, Guid dayCarePackageOpportunityId);
 
         Task<IEnumerable<DayCarePackageOpportunityDomain>> GetDayCarePackageOpportunityList(Guid dayCarePackageId);
     }

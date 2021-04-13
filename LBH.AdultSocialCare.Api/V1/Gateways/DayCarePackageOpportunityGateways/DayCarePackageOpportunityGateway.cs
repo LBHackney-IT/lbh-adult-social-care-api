@@ -68,8 +68,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways
             }
         }
 
-        public async Task<DayCarePackageOpportunityDomain> GetDayCarePackageOpportunity(Guid dayCarePackageOpportunityId)
+        public async Task<DayCarePackageOpportunityDomain> GetDayCarePackageOpportunity(Guid dayCarePackageId, Guid dayCarePackageOpportunityId)
         {
+            var dayCarePackageEntity = await _dbContext.DayCarePackages
+                .Where(dc => dc.DayCarePackageId.Equals(dayCarePackageId))
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+            if (dayCarePackageEntity == null)
+            {
+                throw new EntityNotFoundException($"Unable to locate day care package {dayCarePackageId.ToString()}");
+            }
+
             var dayCarePackageOpportunity = await _dbContext.DayCarePackageOpportunities
                 .Where(dc => dc.DayCarePackageOpportunityId.Equals(dayCarePackageOpportunityId))
                 .AsNoTracking()
