@@ -20,7 +20,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<bool> DeleteAsync(Guid timeSlotShiftsId)
         {
-            var result = _databaseContext.TimeSlotShifts.Remove(new TimeSlotShifts() { Id = timeSlotShiftsId });
+            var result = _databaseContext.TimeSlotShifts.Remove(new TimeSlotShifts
+                { Id = timeSlotShiftsId });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }
@@ -44,7 +45,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 await _databaseContext.TimeSlotShifts.AddAsync(timeSlotShiftsToUpdate).ConfigureAwait(false);
                 timeSlotShiftsToUpdate.TimeSlotShiftName = timeSlotShifts.TimeSlotShiftName;
                 timeSlotShiftsToUpdate.CreatorId = timeSlotShifts.CreatorId;
-                timeSlotShiftsToUpdate.DateCreated = timeSlotShifts.DateCreated;
                 timeSlotShiftsToUpdate.UpdatorId = timeSlotShifts.UpdatorId;
                 timeSlotShiftsToUpdate.DateUpdated = timeSlotShifts.DateUpdated;
             }

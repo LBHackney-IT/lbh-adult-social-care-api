@@ -5,6 +5,7 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
@@ -33,14 +34,25 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             try
             {
                 ClientsDomain usersDomain = ClientsFactory.ToDomain(clientsRequest);
-                var clientsResponse = ClientsFactory.ToResponse(await _upsertClientsUseCase.ExecuteAsync(usersDomain).ConfigureAwait(false));
+
+                ClientsResponse clientsResponse =
+                    ClientsFactory.ToResponse(await _upsertClientsUseCase.ExecuteAsync(usersDomain)
+                        .ConfigureAwait(false));
+
                 if (clientsResponse == null) return NotFound();
+
                 //else if (!clientsResponse.Success) return BadRequest(clientsResponse.Message);
                 return Ok(clientsResponse);
             }
             catch (FormatException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception exc)
+            {
+                // TODO remove
+                Debugger.Break();
+                return BadRequest(exc.Message);
             }
         }
 

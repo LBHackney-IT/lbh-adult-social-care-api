@@ -19,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
         {
             return new DatabaseEntity
             {
-                Id = entity.Id, CreatedAt = entity.CreatedAt,
+                Id = entity.Id, CreatedAt = entity.CreatedAt
             };
         }
 

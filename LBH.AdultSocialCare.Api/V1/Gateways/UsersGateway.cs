@@ -19,7 +19,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<bool> DeleteAsync(Guid userId)
         {
-            _databaseContext.Users.Remove(new Users() { Id = userId });
+            _databaseContext.Users.Remove(new Users
+                { Id = userId });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }
@@ -52,7 +53,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 usersToUpdate.PostCode = users.PostCode;
                 usersToUpdate.RoleId = users.RoleId;
                 usersToUpdate.CreatorId = users.CreatorId;
-                usersToUpdate.DateCreated = users.DateCreated;
                 usersToUpdate.UpdatorId = users.UpdatorId;
                 usersToUpdate.DateUpdated = users.DateUpdated;
             }

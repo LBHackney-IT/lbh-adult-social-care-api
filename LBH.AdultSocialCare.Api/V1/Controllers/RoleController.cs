@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             try
             {
                 RolesDomain roleDomain = RolesFactory.ToDomain(rolesRequest);
-                var roleResponse = RolesFactory.ToResponse(await _upsertRoleUseCase.ExecuteAsync(roleDomain).ConfigureAwait(false));
+                RolesResponse roleResponse = RolesFactory.ToResponse(await _upsertRoleUseCase.ExecuteAsync(roleDomain).ConfigureAwait(false));
                 if (roleResponse == null) return NotFound();
                 return Ok(roleResponse);
             }
@@ -69,7 +69,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             try
             {
-                var result = await _getAllRoleUseCase.GetAllAsync().ConfigureAwait(false);
+                IList<Roles> result = await _getAllRoleUseCase.GetAllAsync().ConfigureAwait(false);
                 if (result == null) return NotFound();
                 return Ok(result.ToList());
             }

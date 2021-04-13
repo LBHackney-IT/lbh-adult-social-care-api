@@ -51,7 +51,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             nursingCarePackageToUpdate.OneOff = nursingCarePackage.OneOff;
             nursingCarePackageToUpdate.AdditionalNeedToAddress = nursingCarePackage.AdditionalNeedToAddress;
             nursingCarePackageToUpdate.CreatorId = nursingCarePackage.CreatorId;
-            nursingCarePackageToUpdate.DateCreated = nursingCarePackage.DateCreated;
             nursingCarePackageToUpdate.UpdatorId = nursingCarePackage.UpdatorId;
             nursingCarePackageToUpdate.DateUpdated = nursingCarePackage.DateUpdated;
             nursingCarePackageToUpdate.StatusId = nursingCarePackage.StatusId;

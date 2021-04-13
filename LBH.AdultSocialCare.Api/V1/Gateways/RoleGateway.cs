@@ -20,7 +20,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<bool> DeleteAsync(Guid roleId)
         {
-            var result = _databaseContext.Roles.Remove(new Roles() { Id = roleId });
+            var result = _databaseContext.Roles.Remove(new Roles
+                { Id = roleId });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }
@@ -46,7 +47,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 rolesToUpdate.Sequence = roles.Sequence;
                 rolesToUpdate.IsDefault = roles.IsDefault;
                 rolesToUpdate.CreatorId = roles.CreatorId;
-                rolesToUpdate.DateCreated = roles.DateCreated;
                 rolesToUpdate.UpdatorId = roles.UpdatorId;
                 rolesToUpdate.DateUpdated = roles.DateUpdated;
             }

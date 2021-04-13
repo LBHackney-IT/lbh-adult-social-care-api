@@ -12,35 +12,40 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
-    [Route("api/v1/service")]
+
+    [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
-    public class ServiceController : BaseController
+    public class HomeCareServiceController : BaseController
     {
+
         private readonly IUpsertServiceUseCase _upsertServiceUseCase;
         private readonly IGetServiceUseCase _getServiceUseCase;
         private readonly IGetAllServiceUseCase _getAllServiceUseCase;
         private readonly IDeleteServiceUseCase _deleteServiceUseCase;
 
-        public ServiceController
-            (IUpsertServiceUseCase upsertServiceUseCase,
-            IGetServiceUseCase getServiceUseCase,
-            IGetAllServiceUseCase getAllServiceUseCase,
-            IDeleteServiceUseCase deleteServiceUseCase)
+        public HomeCareServiceController(IUpsertServiceUseCase upsertServiceUseCase, IGetServiceUseCase getServiceUseCase,
+            IGetAllServiceUseCase getAllServiceUseCase, IDeleteServiceUseCase deleteServiceUseCase)
         {
             _upsertServiceUseCase = upsertServiceUseCase;
             _getServiceUseCase = getServiceUseCase;
             _getAllServiceUseCase = getAllServiceUseCase;
             _deleteServiceUseCase = deleteServiceUseCase;
         }
+
         [HttpPost]
         public async Task<ActionResult<ServiceResponse>> Create(ServiceRequest serviceRequest)
         {
             try
             {
                 ServiceDomain serviceDomain = ServiceFactory.ToDomain(serviceRequest);
-                var serviceResponse = ServiceFactory.ToResponse(await _upsertServiceUseCase.ExecuteAsync(serviceDomain).ConfigureAwait(false));
+
+                ServiceResponse serviceResponse =
+                    ServiceFactory.ToResponse(await _upsertServiceUseCase.ExecuteAsync(serviceDomain)
+                        .ConfigureAwait(false));
+
                 if (serviceResponse == null) return NotFound();
+
                 //else if (!serviceResponse.Success) return BadRequest(serviceResponse.Message);
                 return Ok(serviceResponse);
             }
@@ -50,8 +55,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("{serviceId}")]
+        [HttpGet("{serviceId}")]
         public async Task<ActionResult<ServiceResponse>> Get(Guid serviceId)
         {
             try
@@ -64,14 +68,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("getAll")]
+        [HttpGet("getAll")]
         public async Task<ActionResult<IList<PackageServices>>> GetAll()
         {
             try
             {
-                var result = await _getAllServiceUseCase.GetAllAsync().ConfigureAwait(false);
+                IList<PackageServices> result = await _getAllServiceUseCase.GetAllAsync().ConfigureAwait(false);
+
                 if (result == null) return NotFound();
+
                 return Ok(result.ToList());
             }
             catch (FormatException ex)
@@ -80,8 +85,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("{serviceId}")]
+        [HttpDelete("{serviceId}")]
         public async Task<ActionResult<bool>> Delete(Guid serviceId)
         {
             try
@@ -95,4 +99,5 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
     }
+
 }

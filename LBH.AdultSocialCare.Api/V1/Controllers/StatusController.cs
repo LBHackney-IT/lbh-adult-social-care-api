@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             try
             {
                 StatusDomain statusDomain = StatusFactory.ToDomain(statusRequest);
-                var statusResponse = StatusFactory.ToResponse(await _upsertStatusUseCase.ExecuteAsync(statusDomain).ConfigureAwait(false));
+                StatusResponse statusResponse = StatusFactory.ToResponse(await _upsertStatusUseCase.ExecuteAsync(statusDomain).ConfigureAwait(false));
                 if (statusResponse == null) return NotFound();
                 //else if (!statusResponse.Success) return BadRequest(statusResponse.Message);
                 return Ok(statusResponse);
@@ -70,7 +70,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             try
             {
-                var result = await _getAllStatusUseCase.GetAllAsync().ConfigureAwait(false);
+                IList<Status> result = await _getAllStatusUseCase.GetAllAsync().ConfigureAwait(false);
                 if (result == null) return NotFound();
                 return Ok(result.ToList());
             }
