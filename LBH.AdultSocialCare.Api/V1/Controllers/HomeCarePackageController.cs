@@ -60,7 +60,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         /// <param name="homeCarePackageRequest">The home care package request.</param>
         /// <returns>The home care package creation response.</returns>
         [HttpPost]
-        public async Task<ActionResult<HomeCarePackageResponse>> Create(HomeCarePackageRequest homeCarePackageRequest)
+        public async Task<ActionResult<HomeCarePackageResponse>> Create(
+            [FromBody] HomeCarePackageRequest homeCarePackageRequest)
         {
             try
             {
