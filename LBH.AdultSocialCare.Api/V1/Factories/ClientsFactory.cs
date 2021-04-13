@@ -47,9 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 County = clientsDomain.County,
                 PostCode = clientsDomain.PostCode,
                 CreatorId = clientsDomain.CreatorId,
-                DateCreated = clientsDomain.DateCreated,
                 UpdatorId = clientsDomain.UpdatorId,
-                DateUpdated = clientsDomain.DateUpdated
             };
         }
 
@@ -78,7 +76,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static ClientsDomain ToDomain(ClientsRequest clientsEntity)
         {
-            return new ClientsDomain()
+            return new ClientsDomain
             {
                 Id = clientsEntity.Id,
                 FirstName = clientsEntity.FirstName,

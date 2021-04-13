@@ -5,6 +5,7 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
@@ -72,13 +73,22 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                         .ExecuteAsync(homeCarePackageDomain)
                         .ConfigureAwait(false));
 
-                if (homeCarePackageResponse == null) return NotFound();
+                if (homeCarePackageResponse == null)
+                {
+                    return NotFound();
+                }
 
                 return Ok(homeCarePackageResponse);
             }
             catch (FormatException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (Exception exc)
+            {
+                // TODO remove
+                Debugger.Break();
+                return BadRequest(exc.Message);
             }
         }
 
