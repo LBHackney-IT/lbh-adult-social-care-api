@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -50,6 +51,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 
         [ForeignKey(nameof(StatusId))]
         public Status Status { get; set; }
+
+        public ICollection<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
 
     }
 
