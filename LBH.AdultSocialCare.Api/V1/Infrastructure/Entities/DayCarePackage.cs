@@ -4,10 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-    public class DayCarePackage
+
+    public class DayCarePackage : BaseEntity
     {
-        // [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key] [Column(nameof(DayCarePackageId))] public Guid DayCarePackageId { get; set; }
+
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid DayCarePackageId { get; set; }
+
         public Guid PackageId { get; set; }
         public Guid ClientId { get; set; }
         public bool IsFixedPeriodOrOngoing { get; set; }
@@ -26,17 +29,28 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public bool TransportNeeded { get; set; }
         public bool EscortNeeded { get; set; }
         public int TermTimeConsiderationOptionId { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTimeOffset DateCreated { get; set; } = DateTimeOffset.UtcNow;
         public Guid CreatorId { get; set; }
-        public DateTimeOffset? DateUpdated { get; set; }
         public Guid? UpdaterId { get; set; }
         public Guid StatusId { get; set; }
-        [ForeignKey((nameof(PackageId)))] public Package Package { get; set; }
-        [ForeignKey((nameof(ClientId)))] public Clients Client { get; set; }
-        [ForeignKey((nameof(TermTimeConsiderationOptionId)))] public TermTimeConsiderationOption TermTimeConsiderationOption { get; set; }
-        [ForeignKey((nameof(CreatorId)))] public Users Creator { get; set; }
-        [ForeignKey((nameof(UpdaterId)))] public Users Updater { get; set; }
-        [ForeignKey((nameof(StatusId)))] public Status Status { get; set; }
+
+        [ForeignKey(nameof(PackageId))]
+        public Package Package { get; set; }
+
+        [ForeignKey(nameof(ClientId))]
+        public Clients Client { get; set; }
+
+        [ForeignKey(nameof(TermTimeConsiderationOptionId))]
+        public TermTimeConsiderationOption TermTimeConsiderationOption { get; set; }
+
+        [ForeignKey(nameof(CreatorId))]
+        public Users Creator { get; set; }
+
+        [ForeignKey(nameof(UpdaterId))]
+        public Users Updater { get; set; }
+
+        [ForeignKey(nameof(StatusId))]
+        public Status Status { get; set; }
+
     }
+
 }

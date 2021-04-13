@@ -1,17 +1,23 @@
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
 
     public class DatabaseContext : DbContext
     {
+
         //TODO: rename DatabaseContext to reflect the data source it is representing. eg. MosaicContext.
         //Guidance on the context class can be found here https://github.com/LBHackney-IT/lbh-base-api/wiki/DatabaseContext
-        public DatabaseContext(DbContextOptions options) : base(options)
+        public DatabaseContext(DbContextOptions options)
+            : base(options)
         {
         }
 
@@ -29,7 +35,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<Clients> Clients { get; set; }
         public DbSet<Status> Status { get; set; }
         public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
-
+        public DbSet<ResidentialCarePackage> ResidentialCarePackage { get; set; }
         public DbSet<NursingCarePackage> NursingCarePackage { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,6 +47,56 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             modelBuilder.ApplyConfiguration(new TermTimeConsiderationOptionsSeed());
         }
 
-        public DbSet<ResidentialCarePackage> ResidentialCarePackage { get; set; }
+        public override int SaveChanges()
+        {
+            SetEntitiesUpdatedOnSave();
+
+            return base.SaveChanges();
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            SetEntitiesUpdatedOnSave();
+
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
+            CancellationToken cancellationToken = new CancellationToken())
+        {
+            SetEntitiesUpdatedOnSave();
+
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            SetEntitiesUpdatedOnSave();
+
+            return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        private void SetEntitiesUpdatedOnSave()
+        {
+            IList<EntityEntry> entries = ChangeTracker.Entries()
+                .Where(e => e.Entity is BaseEntity && e.State == EntityState.Modified)
+                .ToList();
+
+            Type baseEntityType = typeof(BaseEntity);
+
+            IList<Type> entityTypes = entries.Select(item => item.GetType())
+                .Distinct()
+                .Where(item => baseEntityType.IsAssignableFrom(item))
+                .ToList();
+
+            IList<EntityEntry> entitiesToUpdate = entries.Where(item => entityTypes.Contains(item.GetType())).ToList();
+
+            foreach (EntityEntry entityEntry in entitiesToUpdate)
+            {
+                ((BaseEntity) entityEntry.Entity).DateUpdated = DateTimeOffset.UtcNow;
+            }
+        }
+
     }
+
 }

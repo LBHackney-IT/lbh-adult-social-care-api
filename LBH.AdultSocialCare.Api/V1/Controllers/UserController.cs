@@ -33,7 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             try
             {
                 UsersDomain usersDomain = UserFactory.ToDomain(usersRequest);
-                var usersResponse = UserFactory.ToResponse(await _upsertUsersUseCase.ExecuteAsync(usersDomain).ConfigureAwait(false));
+                UsersResponse usersResponse = UserFactory.ToResponse(await _upsertUsersUseCase.ExecuteAsync(usersDomain).ConfigureAwait(false));
                 if (usersResponse == null) return NotFound();
                 //else if (!usersResponse.Success) return BadRequest(usersResponse.Message);
                 return Ok(usersResponse);

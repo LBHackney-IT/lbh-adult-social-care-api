@@ -1,4 +1,3 @@
-using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
@@ -10,14 +9,17 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
+
     public class HomeCarePackageGateway : IHomeCarePackageGateway
     {
+
         private readonly DatabaseContext _databaseContext;
 
         public HomeCarePackageGateway(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
         }
+
         public async Task<HomeCarePackage> GetAsync(Guid homeCarePackageId)
         {
             var result = await _databaseContext.HomeCarePackage.FirstOrDefaultAsync(item => item.Id == homeCarePackageId).ConfigureAwait(false);
@@ -31,16 +33,19 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<HomeCarePackage> ChangeStatusAsync(HomeCarePackage homeCarePackage)
         {
-            HomeCarePackage homeCarePackageToUpdate = await _databaseContext.HomeCarePackage.FirstOrDefaultAsync(item => item.Id == homeCarePackage.Id).ConfigureAwait(false);
+            HomeCarePackage homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
+                .FirstOrDefaultAsync(item => item.Id == homeCarePackage.Id)
+                .ConfigureAwait(false);
+
             if (homeCarePackageToUpdate != null)
             {
                 homeCarePackageToUpdate.StatusId = homeCarePackage.StatusId;
-                homeCarePackageToUpdate.Status = await _databaseContext.Status.FirstOrDefaultAsync(item => item.Id == homeCarePackage.StatusId).ConfigureAwait(false);
                 homeCarePackageToUpdate.CreatorId = homeCarePackage.CreatorId;
                 homeCarePackageToUpdate.UpdatorId = homeCarePackage.UpdatorId;
-                homeCarePackageToUpdate.DateUpdated = DateTime.Now;
             }
+
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
+
             return homeCarePackageToUpdate;
         }
 
@@ -63,12 +68,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             homeCarePackageToUpdate.IsThisuserUnderS117 = homeCarePackage.IsThisuserUnderS117;
             homeCarePackageToUpdate.ClientId = homeCarePackage.ClientId;
             homeCarePackageToUpdate.CreatorId = homeCarePackage.CreatorId;
-            homeCarePackageToUpdate.DateCreated = homeCarePackage.DateCreated;
             homeCarePackageToUpdate.UpdatorId = homeCarePackage.UpdatorId;
-            homeCarePackageToUpdate.DateUpdated = homeCarePackage.DateUpdated;
             homeCarePackageToUpdate.StatusId = homeCarePackage.StatusId;
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
-            return isSuccess ? homeCarePackageToUpdate : null;
+
+            return isSuccess
+                ? homeCarePackageToUpdate
+                : null;
         }
+
     }
+
 }

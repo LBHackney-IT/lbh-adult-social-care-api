@@ -36,7 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             try
             {
                 PackageDomain packageDomain = PackageFactory.ToDomain(packageRequest);
-                var packageResponse = PackageFactory.ToResponse(await _upsertPackageUseCase.ExecuteAsync(packageDomain).ConfigureAwait(false));
+                PackageResponse packageResponse = PackageFactory.ToResponse(await _upsertPackageUseCase.ExecuteAsync(packageDomain).ConfigureAwait(false));
                 if (packageResponse == null) return NotFound();
                 //else if (!packageResponse.Success) return BadRequest(packageResponse.Message);
                 return Ok(packageResponse);
@@ -53,7 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             try
             {
-                var packageResponse = PackageFactory.ToResponse(await _getPackageUseCase.GetAsync(packageId).ConfigureAwait(false));
+                PackageResponse packageResponse = PackageFactory.ToResponse(await _getPackageUseCase.GetAsync(packageId).ConfigureAwait(false));
                 if (packageResponse == null) return NotFound();
                 return Ok(packageResponse);
             }
@@ -69,7 +69,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             try
             {
-                var result = await _getAllPackageUseCase.GetAllAsync().ConfigureAwait(false);
+                IList<Package> result = await _getAllPackageUseCase.GetAllAsync().ConfigureAwait(false);
                 if (result == null) return NotFound();
                 return Ok(result.ToList());
             }
@@ -85,7 +85,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             try
             {
-                var result = await _deletePackageUseCase.DeleteAsync(packageId).ConfigureAwait(false);
+                bool result = await _deletePackageUseCase.DeleteAsync(packageId).ConfigureAwait(false);
                 return Ok(result);
             }
             catch (FormatException ex)

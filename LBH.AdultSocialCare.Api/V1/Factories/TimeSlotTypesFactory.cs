@@ -9,7 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
     {
         public static TimeSlotTypesDomain ToDomain(TimeSlotType timeSlotTypesEntity)
         {
-            return new TimeSlotTypesDomain()
+            return new TimeSlotTypesDomain
             {
                 Id = timeSlotTypesEntity.Id,
                 TimeSlotTypeName = timeSlotTypesEntity.TimeSlotTypeName,
@@ -22,20 +22,18 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static TimeSlotType ToEntity(TimeSlotTypesDomain timeSlotTypesDomain)
         {
-            return new TimeSlotType()
+            return new TimeSlotType
             {
                 Id = timeSlotTypesDomain.Id,
                 TimeSlotTypeName = timeSlotTypesDomain.TimeSlotTypeName,
                 CreatorId = timeSlotTypesDomain.CreatorId,
-                DateCreated = timeSlotTypesDomain.DateCreated,
-                UpdatorId = timeSlotTypesDomain.UpdatorId,
-                DateUpdated = timeSlotTypesDomain.DateUpdated
+                UpdatorId = timeSlotTypesDomain.UpdatorId
             };
         }
 
         public static TimeSlotTypesResponse ToResponse(TimeSlotTypesDomain timeSlotTypesDomain)
         {
-            return new TimeSlotTypesResponse()
+            return new TimeSlotTypesResponse
             {
                 Id = timeSlotTypesDomain.Id,
                 TimeSlotTypeName = timeSlotTypesDomain.TimeSlotTypeName,
@@ -48,7 +46,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static TimeSlotTypesDomain ToDomain(TimeSlotTypeRequest timeSlotTypesEntity)
         {
-            return new TimeSlotTypesDomain()
+            return new TimeSlotTypesDomain
             {
                 Id = timeSlotTypesEntity.Id,
                 TimeSlotTypeName = timeSlotTypesEntity.TimeSlotTypeName,

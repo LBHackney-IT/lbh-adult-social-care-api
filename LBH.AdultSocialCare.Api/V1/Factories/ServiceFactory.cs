@@ -9,7 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
     {
         public static ServiceDomain ToDomain(PackageServices serviceEntity)
         {
-            return new ServiceDomain()
+            return new ServiceDomain
             {
                 Id = serviceEntity.Id,
                 ServiceName = serviceEntity.ServiceName,
@@ -24,22 +24,20 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static PackageServices ToEntity(ServiceDomain serviceDomain)
         {
-            return new PackageServices()
+            return new PackageServices
             {
                 Id = serviceDomain.Id,
                 ServiceName = serviceDomain.ServiceName,
                 PackageId = serviceDomain.PackageId,
                 Package = serviceDomain.Package,
                 CreatorId = serviceDomain.CreatorId,
-                DateCreated = serviceDomain.DateCreated,
                 UpdatorId = serviceDomain.UpdatorId,
-                DateUpdated = serviceDomain.DateUpdated
             };
         }
 
         public static ServiceResponse ToResponse(ServiceDomain serviceDomain)
         {
-            return new ServiceResponse()
+            return new ServiceResponse
             {
                 Id = serviceDomain.Id,
                 ServiceName = serviceDomain.ServiceName,
@@ -54,7 +52,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static ServiceDomain ToDomain(ServiceRequest serviceEntity)
         {
-            return new ServiceDomain()
+            return new ServiceDomain
             {
                 Id = serviceEntity.Id,
                 ServiceName = serviceEntity.ServiceName,

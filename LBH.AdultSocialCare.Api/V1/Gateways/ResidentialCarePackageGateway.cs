@@ -52,7 +52,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             residentialCarePackageToUpdate.OneOff = residentialCarePackage.OneOff;
             residentialCarePackageToUpdate.AdditionalNeedToAddress = residentialCarePackage.AdditionalNeedToAddress;
             residentialCarePackageToUpdate.CreatorId = residentialCarePackage.CreatorId;
-            residentialCarePackageToUpdate.DateCreated = residentialCarePackage.DateCreated;
             residentialCarePackageToUpdate.UpdatorId = residentialCarePackage.UpdatorId;
             residentialCarePackageToUpdate.DateUpdated = residentialCarePackage.DateUpdated;
             residentialCarePackageToUpdate.StatusId = residentialCarePackage.StatusId;

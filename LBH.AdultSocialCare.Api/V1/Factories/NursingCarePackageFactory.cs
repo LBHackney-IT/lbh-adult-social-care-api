@@ -13,7 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
     {
         public static NursingCarePackageDomain ToDomain(NursingCarePackage nursingCarePackageEntity)
         {
-            return new NursingCarePackageDomain()
+            return new NursingCarePackageDomain
             {
                 Id = nursingCarePackageEntity.Id,
                 ClientId = nursingCarePackageEntity.ClientId,
@@ -40,7 +40,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static NursingCarePackage ToEntity(NursingCarePackageDomain nursingCarePackageDomain)
         {
-            return new NursingCarePackage()
+            return new NursingCarePackage
             {
                 Id = nursingCarePackageDomain.Id,
                 ClientId = nursingCarePackageDomain.ClientId,
@@ -57,9 +57,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 OneOff = nursingCarePackageDomain.OneOff,
                 AdditionalNeedToAddress = nursingCarePackageDomain.AdditionalNeedToAddress,
                 CreatorId = nursingCarePackageDomain.CreatorId,
-                DateCreated = nursingCarePackageDomain.DateCreated,
                 UpdatorId = nursingCarePackageDomain.UpdatorId,
-                DateUpdated = nursingCarePackageDomain.DateUpdated,
                 StatusId = nursingCarePackageDomain.StatusId,
                 Status = nursingCarePackageDomain.Status
             };
@@ -67,7 +65,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static NursingCarePackageResponse ToResponse(NursingCarePackageDomain nursingCarePackageDomain)
         {
-            return new NursingCarePackageResponse()
+            return new NursingCarePackageResponse
             {
                 Id = nursingCarePackageDomain.Id,
                 ClientId = nursingCarePackageDomain.ClientId,
@@ -94,7 +92,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static NursingCarePackageDomain ToDomain(NursingCarePackageRequest nursingCarePackageRequest)
         {
-            return new NursingCarePackageDomain()
+            return new NursingCarePackageDomain
             {
                 Id = nursingCarePackageRequest.Id,
                 ClientId = nursingCarePackageRequest.ClientId,

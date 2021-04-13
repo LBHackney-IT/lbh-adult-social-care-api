@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             try
             {
                 TimeSlotShiftsDomain timeSlotShiftsDomain = TimeSlotShiftsFactory.ToDomain(timeSlotShiftsRequest);
-                var timeSlotShiftsResponse = TimeSlotShiftsFactory.ToResponse(await _upsertTimeSlotShiftsUseCase.ExecuteAsync(timeSlotShiftsDomain).ConfigureAwait(false));
+                TimeSlotShiftsResponse timeSlotShiftsResponse = TimeSlotShiftsFactory.ToResponse(await _upsertTimeSlotShiftsUseCase.ExecuteAsync(timeSlotShiftsDomain).ConfigureAwait(false));
                 if (timeSlotShiftsResponse == null) return NotFound();
                 //else if (!timeSlotShiftsResponse.Success) return BadRequest(timeSlotShiftsResponse.Message);
                 return Ok(timeSlotShiftsResponse);
@@ -70,7 +70,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             try
             {
-                var result = await _getAllTimeSlotShiftsUseCase.GetAllAsync().ConfigureAwait(false);
+                IList<TimeSlotShifts> result = await _getAllTimeSlotShiftsUseCase.GetAllAsync().ConfigureAwait(false);
                 if (result == null) return NotFound();
                 return Ok(result.ToList());
             }

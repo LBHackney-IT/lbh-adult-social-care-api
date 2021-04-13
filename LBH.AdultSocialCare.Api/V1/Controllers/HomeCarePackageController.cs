@@ -5,18 +5,20 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
-    [Route("api/v1/homeCarePackage")]
+
+    [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
     public class HomeCarePackageController : BaseController
     {
+
         private readonly IUpsertHomeCarePackageUseCase _upsertHomeCarePackageUseCase;
         private readonly IChangeStatusHomeCarePackageUseCase _updateHomeCarePackageUseCase;
-
 
         public HomeCarePackageController(IUpsertHomeCarePackageUseCase upsertHomeCarePackageUseCase,
             IChangeStatusHomeCarePackageUseCase updateHomeCarePackageUseCase)
@@ -25,14 +27,26 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _updateHomeCarePackageUseCase = updateHomeCarePackageUseCase;
         }
 
-        [HttpPut]
-        public async Task<ActionResult<HomeCarePackageResponse>> ChangeStatus(HomeCarePackageRequest homeCarePackageRequest)
+        /// <summary>
+        /// Changes the home care package status.
+        /// </summary>
+        /// <param name="homeCarePackageRequest">The home care package request.</param>
+        /// <returns>The home care package response model.</returns>
+        [HttpPut("changeStatus")]
+        public async Task<ActionResult<HomeCarePackageResponse>> ChangeStatus(
+            HomeCarePackageRequest homeCarePackageRequest)
         {
             try
             {
                 HomeCarePackageDomain homeCarePackageDomain = HomeCarePackageFactory.ToDomain(homeCarePackageRequest);
-                var homeCarePackageResponse = HomeCarePackageFactory.ToResponse(await _updateHomeCarePackageUseCase.UpdateAsync(homeCarePackageDomain).ConfigureAwait(false));
+
+                HomeCarePackageResponse homeCarePackageResponse =
+                    HomeCarePackageFactory.ToResponse(await _updateHomeCarePackageUseCase
+                        .UpdateAsync(homeCarePackageDomain)
+                        .ConfigureAwait(false));
+
                 if (homeCarePackageResponse == null) return NotFound();
+
                 return Ok(homeCarePackageResponse);
             }
             catch (FormatException ex)
@@ -41,20 +55,43 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates the specified home care package request.
+        /// </summary>
+        /// <param name="homeCarePackageRequest">The home care package request.</param>
+        /// <returns>The home care package creation response.</returns>
         [HttpPost]
-        public async Task<ActionResult<HomeCarePackageResponse>> Create(HomeCarePackageRequest homeCarePackageRequest)
+        public async Task<ActionResult<HomeCarePackageResponse>> Create(
+            [FromBody] HomeCarePackageRequest homeCarePackageRequest)
         {
             try
             {
                 HomeCarePackageDomain homeCarePackageDomain = HomeCarePackageFactory.ToDomain(homeCarePackageRequest);
-                var homeCarePackageResponse = HomeCarePackageFactory.ToResponse(await _upsertHomeCarePackageUseCase.ExecuteAsync(homeCarePackageDomain).ConfigureAwait(false));
-                if (homeCarePackageResponse == null) return NotFound();
+
+                HomeCarePackageResponse homeCarePackageResponse =
+                    HomeCarePackageFactory.ToResponse(await _upsertHomeCarePackageUseCase
+                        .ExecuteAsync(homeCarePackageDomain)
+                        .ConfigureAwait(false));
+
+                if (homeCarePackageResponse == null)
+                {
+                    return NotFound();
+                }
+
                 return Ok(homeCarePackageResponse);
             }
             catch (FormatException ex)
             {
                 return BadRequest(ex.Message);
             }
+            catch (Exception exc)
+            {
+                // TODO remove
+                Debugger.Break();
+                return BadRequest(exc.Message);
+            }
         }
+
     }
+
 }

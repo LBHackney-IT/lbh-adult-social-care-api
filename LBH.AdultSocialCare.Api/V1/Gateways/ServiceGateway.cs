@@ -20,7 +20,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<bool> DeleteAsync(Guid serviceId)
         {
-            var result = _databaseContext.PackageServices.Remove(new PackageServices() { Id = serviceId });
+            var result = _databaseContext.PackageServices.Remove(new PackageServices
+                { Id = serviceId });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }
@@ -49,7 +50,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 serviceToUpdate.PackageId = service.PackageId;
                 serviceToUpdate.Package = await _databaseContext.Packages.FirstOrDefaultAsync(item => item.Id == service.PackageId).ConfigureAwait(false);
                 serviceToUpdate.CreatorId = service.CreatorId;
-                serviceToUpdate.DateCreated = service.DateCreated;
                 serviceToUpdate.UpdatorId = service.UpdatorId;
                 serviceToUpdate.DateUpdated = service.DateUpdated;
             }

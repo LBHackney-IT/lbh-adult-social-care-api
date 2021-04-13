@@ -10,7 +10,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
     {
         public static HomeCarePackageSlotsDomain ToDomain(HomeCarePackageSlotsList homeCarePackageSlotsEntity)
         {
-            return new HomeCarePackageSlotsDomain()
+            return new HomeCarePackageSlotsDomain
             {
                 Id = homeCarePackageSlotsEntity.Id,
                 HomeCarePackageId = homeCarePackageSlotsEntity.HomeCarePackageId,
@@ -36,7 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static HomeCarePackageSlotsList ToEntity(HomeCarePackageSlotsDomain homeCarePackageSlotsDomain)
         {
-            return new HomeCarePackageSlotsList()
+            return new HomeCarePackageSlotsList
             {
                 Id = homeCarePackageSlotsDomain.Id,
                 HomeCarePackageId = homeCarePackageSlotsDomain.HomeCarePackageId,
@@ -62,7 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static HomeCarePackageSlotsResponseList ToResponse(HomeCarePackageSlotsDomain homeCarePackageSlotsDomain)
         {
-            return new HomeCarePackageSlotsResponseList()
+            return new HomeCarePackageSlotsResponseList
             {
                 Id = homeCarePackageSlotsDomain.Id,
                 HomeCarePackageId = homeCarePackageSlotsDomain.HomeCarePackageId,
@@ -80,7 +80,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                     TimeSlotShiftId = item.TimeSlotShiftId,
                     TimeSlotShift = item.TimeSlotShift,
                     TimeSlotTypeId = item.TimeSlotTypeId,
-                    TimeSlotTypes = item.TimeSlotTypes,
+                    TimeSlotTypes = item.TimeSlotTypes
 
                 })
                 .ToList()
@@ -89,7 +89,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static HomeCarePackageSlotsDomain ToDomain(HomeCarePackageSlotsRequestList homeCarePackageSlotsResponseList)
         {
-            return new HomeCarePackageSlotsDomain()
+            return new HomeCarePackageSlotsDomain
             {
                 Id = homeCarePackageSlotsResponseList.Id,
                 HomeCarePackageId = homeCarePackageSlotsResponseList.HomeCarePackageId,

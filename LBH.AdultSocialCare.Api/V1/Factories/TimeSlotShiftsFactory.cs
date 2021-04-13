@@ -9,7 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
     {
         public static TimeSlotShiftsDomain ToDomain(TimeSlotShifts timeSlotShiftsEntity)
         {
-            return new TimeSlotShiftsDomain()
+            return new TimeSlotShiftsDomain
             {
                 Id = timeSlotShiftsEntity.Id,
                 TimeSlotShiftName = timeSlotShiftsEntity.TimeSlotShiftName,
@@ -22,20 +22,18 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static TimeSlotShifts ToEntity(TimeSlotShiftsDomain timeSlotShiftsDomain)
         {
-            return new TimeSlotShifts()
+            return new TimeSlotShifts
             {
                 Id = timeSlotShiftsDomain.Id,
                 TimeSlotShiftName = timeSlotShiftsDomain.TimeSlotShiftName,
                 CreatorId = timeSlotShiftsDomain.CreatorId,
-                DateCreated = timeSlotShiftsDomain.DateCreated,
-                UpdatorId = timeSlotShiftsDomain.UpdatorId,
-                DateUpdated = timeSlotShiftsDomain.DateUpdated
+                UpdatorId = timeSlotShiftsDomain.UpdatorId
             };
         }
 
         public static TimeSlotShiftsResponse ToResponse(TimeSlotShiftsDomain timeSlotShiftsDomain)
         {
-            return new TimeSlotShiftsResponse()
+            return new TimeSlotShiftsResponse
             {
                 Id = timeSlotShiftsDomain.Id,
                 TimeSlotShiftName = timeSlotShiftsDomain.TimeSlotShiftName,
@@ -48,7 +46,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static TimeSlotShiftsDomain ToDomain(TimeSlotShiftsRequest timeSlotShiftsEntity)
         {
-            return new TimeSlotShiftsDomain()
+            return new TimeSlotShiftsDomain
             {
                 Id = timeSlotShiftsEntity.Id,
                 TimeSlotShiftName = timeSlotShiftsEntity.TimeSlotShiftName,

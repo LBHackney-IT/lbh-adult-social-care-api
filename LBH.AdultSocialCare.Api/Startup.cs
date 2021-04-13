@@ -1,18 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using LBH.AdultSocialCare.Api.V1.Controllers;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using AutoMapper;
+using LBH.AdultSocialCare.Api.V1.Controllers;
 using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.UseCase;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using LBH.AdultSocialCare.Api.Versioning;
 using Microsoft.AspNetCore.Builder;
@@ -21,24 +21,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace LBH.AdultSocialCare.Api
 {
-
     public class Startup
     {
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -49,30 +49,29 @@ namespace LBH.AdultSocialCare.Api
         public IConfiguration Configuration { get; }
 
         private static List<ApiVersionDescription> _apiVersions { get; set; }
-
-        //TODO update the below to the name of your API
-        private const string ApiName = "Your API Name";
+        private const string ApiName = "Adult Social Care API";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddMvc(config =>
+            services.AddMvc(config =>
                 {
                     config.ReturnHttpNotAcceptable = true;
                     config.Filters.Add(typeof(LBHExceptionFilter));
                 })
-                .AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+                .AddNewtonsoftJson(x
+                    => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
             services.AddApiVersioning(o =>
             {
                 o.DefaultApiVersion = new ApiVersion(1, 0);
 
-                o.AssumeDefaultVersionWhenUnspecified =
-                    true; // assume that the caller wants the default version if they don't specify
+                // assume that the caller wants the default version if they don't specify
+                o.AssumeDefaultVersionWhenUnspecified = true;
 
-                o.ApiVersionReader =
-                    new UrlSegmentApiVersionReader(); // read the version number from the url segment header)
+                // read the version number from the url segment header)
+                o.ApiVersionReader = new UrlSegmentApiVersionReader();
             });
 
             services.AddSingleton<IApiVersionDescriptionProvider, DefaultApiVersionDescriptionProvider>();
@@ -101,14 +100,14 @@ namespace LBH.AdultSocialCare.Api
                     }
                 });
 
-                //Looks at the APIVersionAttribute [ApiVersion("x")] on controllers and decides whether or not
-                //to include it in that version of the swagger document
-                //Controllers must have this [ApiVersion("x")] to be included in swagger documentation!!
+                // Looks at the APIVersionAttribute [ApiVersion("x")] on controllers and decides whether or not
+                // to include it in that version of the swagger document
+                // Controllers must have this [ApiVersion("x")] to be included in swagger documentation!!
                 c.DocInclusionPredicate((docName, apiDesc) =>
                 {
-                    apiDesc.TryGetMethodInfo(out var methodInfo);
+                    apiDesc.TryGetMethodInfo(out MethodInfo methodInfo);
 
-                    var versions = methodInfo?.DeclaringType?.GetCustomAttributes()
+                    List<ApiVersion> versions = methodInfo?.DeclaringType?.GetCustomAttributes()
                         .OfType<ApiVersionAttribute>()
                         .SelectMany(attr => attr.Versions)
                         .ToList();
@@ -116,11 +115,9 @@ namespace LBH.AdultSocialCare.Api
                     return versions?.Any(v => $"{v.GetFormattedApiVersion()}" == docName) ?? false;
                 });
 
-                //Get every ApiVersion attribute specified and create swagger docs for them
-                foreach (var apiVersion in _apiVersions)
+                // Get every ApiVersion attribute specified and create swagger docs for them
+                foreach (string version in _apiVersions.Select(apiVersion => $"v{apiVersion.ApiVersion}"))
                 {
-                    var version = $"v{apiVersion.ApiVersion.ToString()}";
-
                     c.SwaggerDoc(version, new OpenApiInfo
                     {
                         Title = $"{ApiName}-api {version}",
@@ -133,8 +130,8 @@ namespace LBH.AdultSocialCare.Api
                 c.CustomSchemaIds(x => x.FullName);
 
                 // Set the comments path for the Swagger JSON and UI.
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
                 if (File.Exists(xmlPath))
                     c.IncludeXmlComments(xmlPath);
@@ -147,20 +144,16 @@ namespace LBH.AdultSocialCare.Api
 
             ConfigureDbContext(services);
 
-            //TODO: For DynamoDb, remove the line above and uncomment the line below.
-            // services.ConfigureDynamoDB();
-
             RegisterGateways(services);
             RegisterUseCases(services);
         }
 
         private void ConfigureDbContext(IServiceCollection services)
         {
-            var connectionString = Configuration.GetConnectionString("DatabaseConnectionString") ??
-                                   Environment.GetEnvironmentVariable("CONNECTION_STRING");
+            string connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ??
+                                      Configuration.GetConnectionString("DatabaseConnectionString");
 
-            // var assemblyName = typeof(DatabaseContext).Namespace ?? "LBH.AdultSocialCare.Api";
-            var assemblyName = Assembly.GetCallingAssembly().GetName().Name;
+            string assemblyName = Assembly.GetCallingAssembly().GetName().Name;
 
             services.AddDbContext<DatabaseContext>(opt
                 => opt.UseSqlServer(connectionString, b => b.MigrationsAssembly(assemblyName)));
@@ -172,7 +165,7 @@ namespace LBH.AdultSocialCare.Api
             // See here: https://weblog.west-wind.com/posts/2018/Dec/31/Dont-let-ASPNET-Core-Default-Console-Logging-Slow-your-App-down
             services.AddLogging(config =>
             {
-                // clear out default configuration
+                // Clear out default configuration
                 config.ClearProviders();
 
                 config.AddConfiguration(configuration.GetSection("Logging"));
@@ -203,9 +196,6 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IStatusGateway, StatusGateway>();
             services.AddScoped<IResidentialCarePackageGateway, ResidentialCarePackageGateway>();
             services.AddScoped<INursingCarePackageGateway, NursingCarePackageGateway>();
-
-            //TODO: For DynamoDb, remove the line above and uncomment the line below.
-            //services.AddScoped<IExampleGateway, DynamoDbGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
@@ -220,7 +210,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllPackageUseCase, GetAllPackageUseCase>();
             services.AddScoped<IDeletePackageUseCase, DeletePackageUseCase>();
 
-            #endregion
+            #endregion Package
 
             #region Service
 
@@ -229,7 +219,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllServiceUseCase, GetAllServiceUseCase>();
             services.AddScoped<IDeleteServiceUseCase, DeleteServiceUseCase>();
 
-            #endregion
+            #endregion Service
 
             #region Role
 
@@ -238,7 +228,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllRoleUseCase, GetAllRoleUseCase>();
             services.AddScoped<IDeleteRoleUseCase, DeleteRoleUseCase>();
 
-            #endregion
+            #endregion Role
 
             #region TimeSlotTypes
 
@@ -247,14 +237,14 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllTimeSlotTypesUseCase, GetAllTimeSlotTypesUseCase>();
             services.AddScoped<IDeleteTimeSlotTypesUseCase, DeleteTimeSlotTypesUseCase>();
 
-            #endregion
+            #endregion TimeSlotTypes
 
             #region HomeCarePackage
 
             services.AddScoped<IUpsertHomeCarePackageUseCase, UpsertHomeCarePackageUseCase>();
             services.AddScoped<IChangeStatusHomeCarePackageUseCase, ChangeStatusHomeCarePackageUseCase>();
 
-            #endregion
+            #endregion HomeCarePackage
 
             #region DayCarePackage
 
@@ -262,7 +252,8 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetDayCarePackageUseCase, GetDayCarePackageUseCase>();
             services.AddScoped<IGetDayCarePackageListUseCase, GetDayCarePackageListUseCase>();
             services.AddScoped<IUpdateDayCarePackageUseCase, UpdateDayCarePackageUseCase>();
-            #endregion
+
+            #endregion DayCarePackage
 
             #region DayCarePackageOpportunity
 
@@ -270,14 +261,15 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetDayCarePackageOpportunityListUseCase, GetDayCarePackageOpportunityListUseCase>();
             services.AddScoped<IGetDayCarePackageOpportunityUseCase, GetDayCarePackageOpportunityUseCase>();
             services.AddScoped<IUpdateDayCarePackageOpportunityUseCase, UpdateDayCarePackageOpportunityUseCase>();
-            #endregion
+
+            #endregion DayCarePackageOpportunity
 
             #region HomeCarePackageSlots
 
             services.AddScoped<IUpsertHomeCarePackageSlotsUseCase, UpsertHomeCarePackageSlotsUseCase>();
             services.AddScoped<IDeleteHomeCarePackageSlotsUseCase, DeleteHomeCarePackageSlotsUseCase>();
 
-            #endregion
+            #endregion HomeCarePackageSlots
 
             #region TimeSlotShift
 
@@ -286,7 +278,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllTimeSlotShiftsUseCase, GetAllTimeSlotShiftsUseCase>();
             services.AddScoped<IDeleteTimeSlotShiftsUseCase, DeleteTimeSlotShiftsUseCase>();
 
-            #endregion
+            #endregion TimeSlotShift
 
             #region Clients
 
@@ -294,7 +286,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetClientsUseCase, GetClientsUseCase>();
             services.AddScoped<IDeleteClientsUseCase, DeleteClientsUseCase>();
 
-            #endregion
+            #endregion Clients
 
             #region Users
 
@@ -302,7 +294,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
             services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();
 
-            #endregion
+            #endregion Users
 
             #region Status
 
@@ -310,18 +302,22 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetStatusUseCase, GetStatusUseCase>();
             services.AddScoped<IGetAllStatusUseCase, GetAllStatusUseCase>();
             services.AddScoped<IDeleteStatusUseCase, DeleteStatusUseCase>();
-            #endregion
+
+            #endregion Status
 
             #region ResidentialCarePackage
+
             services.AddScoped<IUpsertResidentialCarePackageUseCase, UpsertResidentialCarePackageUseCase>();
             services.AddScoped<IGetResidentialCarePackageUseCase, GetResidentialCarePackageUseCase>();
-            #endregion
+
+            #endregion ResidentialCarePackage
 
             #region NursingCarePackage
+
             services.AddScoped<IUpsertNursingCarePackageUseCase, UpsertNursingCarePackageUseCase>();
             services.AddScoped<IGetNursingCarePackageUseCase, GetNursingCarePackageUseCase>();
-            #endregion
 
+            #endregion NursingCarePackage
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -330,7 +326,12 @@ namespace LBH.AdultSocialCare.Api
             using (IServiceScope appScope = app.ApplicationServices.CreateScope())
             {
                 DatabaseContext databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
-                databaseContext.Database.EnsureCreated();
+
+                // Create if not exists
+                if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
+                {
+                    databaseContext.Database.EnsureCreated();
+                }
 
                 // Perform migrations
                 if (databaseContext.Database.GetPendingMigrations().Any())
@@ -339,7 +340,7 @@ namespace LBH.AdultSocialCare.Api
                 }
             }
 
-            app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyMethod());
+            app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader());
             app.UseCorrelation();
 
             if (env.IsDevelopment())
@@ -352,7 +353,7 @@ namespace LBH.AdultSocialCare.Api
             }
 
             // Configure extension methods to use auto mapper
-            var mapper = app.ApplicationServices.GetService<IMapper>();
+            IMapper mapper = app.ApplicationServices.GetService<IMapper>();
             ApiToDomainFactory.Configure(mapper);
             DomainToEntityFactory.Configure(mapper);
             EntityToDomainFactory.Configure(mapper);
@@ -363,15 +364,15 @@ namespace LBH.AdultSocialCare.Api
             app.UseXRay("base-api");
 
             //Get All ApiVersions,
-            var api = app.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
+            IApiVersionDescriptionProvider api = app.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
             _apiVersions = api.ApiVersionDescriptions.ToList();
 
-            //Swagger ui to view the swagger.json file
+            // Swagger ui to view the swagger.json file
             app.UseSwaggerUI(c =>
             {
-                foreach (var apiVersionDescription in _apiVersions)
+                foreach (ApiVersionDescription apiVersionDescription in _apiVersions)
                 {
-                    //Create a swagger endpoint for each swagger version
+                    // Create a swagger endpoint for each swagger version
                     c.SwaggerEndpoint($"{apiVersionDescription.GetFormattedApiVersion()}/swagger.json",
                         $"{ApiName}-api {apiVersionDescription.GetFormattedApiVersion()}");
                 }
@@ -385,7 +386,5 @@ namespace LBH.AdultSocialCare.Api
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
-
     }
-
 }
