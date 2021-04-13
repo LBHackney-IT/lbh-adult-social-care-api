@@ -10,6 +10,7 @@ using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.UseCase;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
@@ -27,6 +28,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
 
@@ -193,6 +196,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<ITimeSlotShiftsGateway, TimeSlotShiftsGateway>();
             services.AddScoped<IHomeCarePackageGateway, HomeCarePackageGateway>();
             services.AddScoped<IDayCarePackageGateway, DayCarePackageGateway>();
+            services.AddScoped<IDayCarePackageOpportunityGateway, DayCarePackageOpportunityGateway>();
             services.AddScoped<IClientsGateway, ClientsGateway>();
             services.AddScoped<IHomeCarePackageSlotsGateway, HomeCarePackageSlotsGateway>();
             services.AddScoped<IUsersGateway, UsersGateway>();
@@ -258,6 +262,11 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetDayCarePackageUseCase, GetDayCarePackageUseCase>();
             services.AddScoped<IGetDayCarePackageListUseCase, GetDayCarePackageListUseCase>();
             services.AddScoped<IUpdateDayCarePackageUseCase, UpdateDayCarePackageUseCase>();
+            #endregion
+
+            #region DayCarePackageOpportunity
+
+            services.AddScoped<ICreateDayCarePackageOpportunityUseCase, CreateDayCarePackageOpportunityUseCase>();
             #endregion
 
             #region HomeCarePackageSlots
