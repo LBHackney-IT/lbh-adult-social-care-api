@@ -1,8 +1,8 @@
 using System;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains
+namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Response
 {
-    public class DayCarePackageOpportunityForCreationDomain
+    public class DayCarePackageOpportunityResponse
     {
         public string HowLong { get; set; }
         public string HowManyTimesPerMonth { get; set; } // Daily, weekly, monthly

@@ -1,7 +1,10 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
@@ -27,6 +30,13 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DayCarePackageForCreationRequest, DayCarePackageForCreationDomain>();
             CreateMap<DayCarePackageForUpdateRequest, DayCarePackageForUpdateDomain>();
             CreateMap<DayCarePackageDomain, DayCarePackageResponse>();
+
+            CreateMap<DayCarePackageOpportunityForCreationDomain, DayCarePackageOpportunity>();
+            CreateMap<DayCarePackageForUpdateDomain, DayCarePackageOpportunity>();
+            CreateMap<DayCarePackageOpportunity, DayCarePackageDomain>();
+            CreateMap<DayCarePackageOpportunityForCreationRequest, DayCarePackageOpportunityForCreationDomain>();
+            CreateMap<DayCarePackageOpportunityForUpdateRequest, DayCarePackageOpportunityForUpdateDomain>();
+            CreateMap<DayCarePackageOpportunityDomain, DayCarePackageOpportunityResponse>();
 
             #endregion DayCarePackage
         }
