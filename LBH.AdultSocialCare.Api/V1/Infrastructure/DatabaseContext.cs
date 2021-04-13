@@ -16,6 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         }
 
         public DbSet<DayCarePackage> DayCarePackages { get; set; }
+        public DbSet<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
         public DbSet<DatabaseEntity> DatabaseEntities { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<PackageServices> PackageServices { get; set; }

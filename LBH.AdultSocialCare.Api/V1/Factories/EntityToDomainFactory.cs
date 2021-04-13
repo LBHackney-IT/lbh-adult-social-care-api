@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 
@@ -47,6 +48,20 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<DayCarePackageDomain> ToDomain(this List<DayCarePackage> dayCarePackageEntities)
         {
             return _mapper.Map<IEnumerable<DayCarePackageDomain>>(dayCarePackageEntities);
+        }
+
+        #endregion
+
+        #region DayCarePackegeOpportunity
+
+        public static DayCarePackageOpportunityDomain ToDomain(this DayCarePackageOpportunity dayCarePackageOpportunityEntity)
+        {
+            return _mapper.Map<DayCarePackageOpportunityDomain>(dayCarePackageOpportunityEntity);
+        }
+
+        public static IEnumerable<DayCarePackageOpportunityDomain> ToDomain(this List<DayCarePackageOpportunity> dayCarePackageOpportunityEntities)
+        {
+            return _mapper.Map<IEnumerable<DayCarePackageOpportunityDomain>>(dayCarePackageOpportunityEntities);
         }
 
         #endregion
