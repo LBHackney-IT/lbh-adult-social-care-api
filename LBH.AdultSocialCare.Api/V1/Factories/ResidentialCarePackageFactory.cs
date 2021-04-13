@@ -13,7 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
     {
         public static ResidentialCarePackageDomain ToDomain(ResidentialCarePackage residentialCarePackageEntity)
         {
-            return new ResidentialCarePackageDomain()
+            return new ResidentialCarePackageDomain
             {
                 Id = residentialCarePackageEntity.Id,
                 ClientId = residentialCarePackageEntity.ClientId,
@@ -41,7 +41,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static ResidentialCarePackage ToEntity(ResidentialCarePackageDomain residentialCarePackageDomain)
         {
-            return new ResidentialCarePackage()
+            return new ResidentialCarePackage
             {
                 Id = residentialCarePackageDomain.Id,
                 ClientId = residentialCarePackageDomain.ClientId,
@@ -59,9 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 OneOff = residentialCarePackageDomain.OneOff,
                 AdditionalNeedToAddress = residentialCarePackageDomain.AdditionalNeedToAddress,
                 CreatorId = residentialCarePackageDomain.CreatorId,
-                DateCreated = residentialCarePackageDomain.DateCreated,
                 UpdatorId = residentialCarePackageDomain.UpdatorId,
-                DateUpdated = residentialCarePackageDomain.DateUpdated,
                 StatusId = residentialCarePackageDomain.StatusId,
                 Status = residentialCarePackageDomain.Status
             };
@@ -69,7 +67,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static ResidentialCarePackageResponse ToResponse(ResidentialCarePackageDomain residentialCarePackageDomain)
         {
-            return new ResidentialCarePackageResponse()
+            return new ResidentialCarePackageResponse
             {
                 Id = residentialCarePackageDomain.Id,
                 ClientId = residentialCarePackageDomain.ClientId,
@@ -97,7 +95,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static ResidentialCarePackageDomain ToDomain(ResidentialCarePackageRequest residentialCarePackageRequest)
         {
-            return new ResidentialCarePackageDomain()
+            return new ResidentialCarePackageDomain
             {
                 Id = residentialCarePackageRequest.Id,
                 ClientId = residentialCarePackageRequest.ClientId,

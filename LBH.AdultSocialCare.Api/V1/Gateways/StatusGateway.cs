@@ -20,7 +20,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<bool> DeleteAsync(Guid statusId)
         {
-            var result = _databaseContext.Status.Remove(new Status() { Id = statusId });
+            var result = _databaseContext.Status.Remove(new Status
+                { Id = statusId });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }
@@ -44,7 +45,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 await _databaseContext.Status.AddAsync(statusToUpdate).ConfigureAwait(false);
                 statusToUpdate.StatusName = status.StatusName;
                 statusToUpdate.CreatorId = status.CreatorId;
-                statusToUpdate.DateCreated = status.DateCreated;
                 statusToUpdate.UpdatorId = status.UpdatorId;
                 statusToUpdate.DateUpdated = status.DateUpdated;
             }

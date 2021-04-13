@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
 
-    public class HomeCarePackage
+    public class HomeCarePackage : BaseEntity
     {
 
         /// <summary>
@@ -61,21 +61,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public int CreatorId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Date Created
-        /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public DateTimeOffset? DateCreated { get; set; }
-
-        /// <summary>
         /// Gets or sets the Updator Id
         /// </summary>
         public int UpdatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Date Updated
-        /// </summary>
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTimeOffset? DateUpdated { get; set; }
 
         /// <summary>
         /// Gets or sets the Status Id

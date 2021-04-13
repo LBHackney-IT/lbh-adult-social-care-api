@@ -27,7 +27,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 await _databaseContext.Packages.AddAsync(packageToUpdate).ConfigureAwait(false);
                 packageToUpdate.PackageName = package.PackageName;
                 packageToUpdate.CreatorId = package.CreatorId;
-                packageToUpdate.DateCreated = package.DateCreated;
                 packageToUpdate.UpdatorId = package.UpdatorId;
                 packageToUpdate.DateUpdated = package.DateUpdated;
             }
@@ -50,7 +49,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<bool> DeleteAsync(Guid packageId)
         {
-            var result = _databaseContext.Packages.Remove(new Package() { Id = packageId });
+            var result = _databaseContext.Packages.Remove(new Package
+                { Id = packageId });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }

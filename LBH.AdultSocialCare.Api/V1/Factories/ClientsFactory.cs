@@ -9,7 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
     {
         public static ClientsDomain ToDomain(Clients clientsEntity)
         {
-            return new ClientsDomain()
+            return new ClientsDomain
             {
                 Id = clientsEntity.Id,
                 FirstName = clientsEntity.FirstName,
@@ -32,7 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static Clients ToEntity(ClientsDomain clientsDomain)
         {
-            return new Clients()
+            return new Clients
             {
                 Id = clientsDomain.Id,
                 FirstName = clientsDomain.FirstName,
@@ -47,13 +47,13 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 County = clientsDomain.County,
                 PostCode = clientsDomain.PostCode,
                 CreatorId = clientsDomain.CreatorId,
-                UpdatorId = clientsDomain.UpdatorId,
+                UpdatorId = clientsDomain.UpdatorId
             };
         }
 
         public static ClientsResponse ToResponse(ClientsDomain clientsDomain)
         {
-            return new ClientsResponse()
+            return new ClientsResponse
             {
                 Id = clientsDomain.Id,
                 FirstName = clientsDomain.FirstName,

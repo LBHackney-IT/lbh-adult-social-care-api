@@ -45,9 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsThisAnImmediateService = homeCarePackageDomain.IsThisAnImmediateService,
                 IsThisuserUnderS117 = homeCarePackageDomain.IsThisuserUnderS117,
                 CreatorId = homeCarePackageDomain.CreatorId,
-                DateCreated = homeCarePackageDomain.DateCreated,
                 UpdatorId = homeCarePackageDomain.UpdatorId,
-                DateUpdated = homeCarePackageDomain.DateUpdated,
                 StatusId = homeCarePackageDomain.StatusId,
                 Status = homeCarePackageDomain.Status
             };

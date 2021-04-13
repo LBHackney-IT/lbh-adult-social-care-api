@@ -9,7 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
     {
         public static RolesDomain ToDomain(Roles rolesEntity)
         {
-            return new RolesDomain()
+            return new RolesDomain
             {
                 Id = rolesEntity.Id,
                 RoleName = rolesEntity.RoleName,
@@ -24,22 +24,20 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static Roles ToEntity(RolesDomain rolesDomain)
         {
-            return new Roles()
+            return new Roles
             {
                 Id = rolesDomain.Id,
                 RoleName = rolesDomain.RoleName,
                 IsDefault = rolesDomain.IsDefault,
                 Sequence = rolesDomain.Sequence,
                 CreatorId = rolesDomain.CreatorId,
-                DateCreated = rolesDomain.DateCreated,
-                UpdatorId = rolesDomain.UpdatorId,
-                DateUpdated = rolesDomain.DateUpdated
+                UpdatorId = rolesDomain.UpdatorId
             };
         }
 
         public static RolesResponse ToResponse(RolesDomain rolesDomain)
         {
-            return new RolesResponse()
+            return new RolesResponse
             {
                 Id = rolesDomain.Id,
                 RoleName = rolesDomain.RoleName,
@@ -54,7 +52,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static RolesDomain ToDomain(RolesRequest rolesEntity)
         {
-            return new RolesDomain()
+            return new RolesDomain
             {
                 Id = rolesEntity.Id,
                 RoleName = rolesEntity.RoleName,

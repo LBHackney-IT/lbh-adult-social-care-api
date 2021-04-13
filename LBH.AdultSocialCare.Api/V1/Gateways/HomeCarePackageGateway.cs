@@ -68,7 +68,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             homeCarePackageToUpdate.IsThisuserUnderS117 = homeCarePackage.IsThisuserUnderS117;
             homeCarePackageToUpdate.ClientId = homeCarePackage.ClientId;
             homeCarePackageToUpdate.CreatorId = homeCarePackage.CreatorId;
-            homeCarePackageToUpdate.DateCreated = homeCarePackage.DateCreated;
             homeCarePackageToUpdate.UpdatorId = homeCarePackage.UpdatorId;
             homeCarePackageToUpdate.StatusId = homeCarePackage.StatusId;
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
