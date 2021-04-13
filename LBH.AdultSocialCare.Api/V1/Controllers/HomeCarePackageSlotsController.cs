@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
-    [Route("api/v1/homeCarePackageSlots")]
+    [Route("api/v1/home-care-package-slots")]
     [Produces("application/json")]
     [ApiController]
     public class HomeCarePackageSlotsController : BaseController

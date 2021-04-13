@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
-    [Route("api/v1/timeSlotTypes")]
+    [Route("api/v1/time-slot-types")]
     [Produces("application/json")]
     [ApiController]
     public class TimeSlotTypesController : BaseController

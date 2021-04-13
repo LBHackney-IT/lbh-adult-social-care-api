@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
-    [Route("api/v1/timeSlotShifts")]
+    [Route("api/v1/time-slot-shifts")]
     [Produces("application/json")]
     [ApiController]
     public class TimeSlotShiftsController : BaseController
@@ -81,7 +81,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpDelete]
-        [Route("{timeSlotTypesId}")]
+        [Route("{timeSlotShiftsId}")]
         public async Task<ActionResult<bool>> Delete(Guid timeSlotShiftsId)
         {
             try

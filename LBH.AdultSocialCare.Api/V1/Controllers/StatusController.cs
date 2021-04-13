@@ -34,7 +34,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<StatusResponse>> Create(StatusRequest statusRequest)
+        public async Task<ActionResult<StatusResponse>> Create([FromBody] StatusRequest statusRequest)
         {
             try
             {

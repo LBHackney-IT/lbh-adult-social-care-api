@@ -38,7 +38,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                 PackageDomain packageDomain = PackageFactory.ToDomain(packageRequest);
                 PackageResponse packageResponse = PackageFactory.ToResponse(await _upsertPackageUseCase.ExecuteAsync(packageDomain).ConfigureAwait(false));
                 if (packageResponse == null) return NotFound();
-                //else if (!packageResponse.Success) return BadRequest(packageResponse.Message);
                 return Ok(packageResponse);
             }
             catch (FormatException ex)

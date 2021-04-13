@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
-    [Route("api/v1/residentialCarePackage")]
+    [Route("api/v1/residential-care-package")]
     [Produces("application/json")]
     [ApiController]
     public class ResidentialCarePackageController : BaseController
