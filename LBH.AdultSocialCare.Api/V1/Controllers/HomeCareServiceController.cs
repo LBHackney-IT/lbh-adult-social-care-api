@@ -21,15 +21,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
 
         private readonly IUpsertServiceUseCase _upsertServiceUseCase;
         private readonly IGetServiceUseCase _getServiceUseCase;
-        private readonly IGetAllServiceUseCase _getAllServiceUseCase;
+        private readonly IGetAllHomeCareServiceTypesUseCase _getAllHomeCareServiceTypesUseCase;
         private readonly IDeleteServiceUseCase _deleteServiceUseCase;
 
         public HomeCareServiceController(IUpsertServiceUseCase upsertServiceUseCase, IGetServiceUseCase getServiceUseCase,
-            IGetAllServiceUseCase getAllServiceUseCase, IDeleteServiceUseCase deleteServiceUseCase)
+            IGetAllHomeCareServiceTypesUseCase getAllHomeCareServiceTypesUseCase, IDeleteServiceUseCase deleteServiceUseCase)
         {
             _upsertServiceUseCase = upsertServiceUseCase;
             _getServiceUseCase = getServiceUseCase;
-            _getAllServiceUseCase = getAllServiceUseCase;
+            _getAllHomeCareServiceTypesUseCase = getAllHomeCareServiceTypesUseCase;
             _deleteServiceUseCase = deleteServiceUseCase;
         }
 
@@ -69,11 +69,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet("getAll")]
-        public async Task<ActionResult<IList<PackageServices>>> GetAll()
+        public async Task<ActionResult<IList<HomeCareServiceType>>> GetAll()
         {
             try
             {
-                IList<PackageServices> result = await _getAllServiceUseCase.GetAllAsync().ConfigureAwait(false);
+                IList<HomeCareServiceType> result = await _getAllHomeCareServiceTypesUseCase.GetAllAsync().ConfigureAwait(false);
 
                 if (result == null) return NotFound();
 

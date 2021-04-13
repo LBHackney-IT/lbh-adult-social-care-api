@@ -9,15 +9,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase
 {
     public class UpsertServiceUseCase : IUpsertServiceUseCase
     {
-        private readonly IServiceGateway _gateway;
-        public UpsertServiceUseCase(IServiceGateway serviceGateway)
+        private readonly IHomeCareServiceTypeGateway _typeGateway;
+        public UpsertServiceUseCase(IHomeCareServiceTypeGateway homeCareServiceTypeGateway)
         {
-            _gateway = serviceGateway;
+            _typeGateway = homeCareServiceTypeGateway;
         }
         public async Task<ServiceDomain> ExecuteAsync(ServiceDomain service)
         {
-            PackageServices serviceEntity = ServiceFactory.ToEntity(service);
-            serviceEntity = await _gateway.UpsertAsync(serviceEntity).ConfigureAwait(false);
+            HomeCareServiceType serviceEntity = ServiceFactory.ToEntity(service);
+            serviceEntity = await _typeGateway.UpsertAsync(serviceEntity).ConfigureAwait(false);
             if (serviceEntity == null) return service = null;
             else
             {

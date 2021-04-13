@@ -7,14 +7,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase
 {
     public class DeleteServiceUseCase : IDeleteServiceUseCase
     {
-        private readonly IServiceGateway _gateway;
-        public DeleteServiceUseCase(IServiceGateway serviceGateway)
+        private readonly IHomeCareServiceTypeGateway _typeGateway;
+        public DeleteServiceUseCase(IHomeCareServiceTypeGateway homeCareServiceTypeGateway)
         {
-            _gateway = serviceGateway;
+            _typeGateway = homeCareServiceTypeGateway;
         }
         public async Task<bool> DeleteAsync(Guid serviceId)
         {
-            return await _gateway.DeleteAsync(serviceId).ConfigureAwait(false);
+            return await _typeGateway.DeleteAsync(serviceId).ConfigureAwait(false);
         }
     }
 }

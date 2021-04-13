@@ -21,6 +21,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public string TimeSlotShiftName { get; set; }
 
         /// <summary>
+        /// Gets or sets the time slot time label.
+        /// </summary>
+        [Required]
+        public string TimeSlotTimeLabel { get; set; }
+
+        /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
         public int CreatorId { get; set; }

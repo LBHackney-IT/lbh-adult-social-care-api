@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
 {
-    public interface IServiceGateway
+    public interface IHomeCareServiceTypeGateway
     {
-        public Task<PackageServices> UpsertAsync(PackageServices service);
+        public Task<HomeCareServiceType> UpsertAsync(HomeCareServiceType service);
 
-        public Task<PackageServices> GetAsync(Guid serviceId);
+        public Task<HomeCareServiceType> GetAsync(Guid serviceId);
 
-        public Task<IList<PackageServices>> ListAsync();
+        public Task<IList<HomeCareServiceType>> ListAsync();
 
         public Task<bool> DeleteAsync(Guid serviceId);
     }

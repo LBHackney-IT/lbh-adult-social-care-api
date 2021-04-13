@@ -9,14 +9,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase
 {
     public class GetServiceUseCase : IGetServiceUseCase
     {
-        private readonly IServiceGateway _gateway;
-        public GetServiceUseCase(IServiceGateway serviceGateway)
+        private readonly IHomeCareServiceTypeGateway _typeGateway;
+        public GetServiceUseCase(IHomeCareServiceTypeGateway homeCareServiceTypeGateway)
         {
-            _gateway = serviceGateway;
+            _typeGateway = homeCareServiceTypeGateway;
         }
         public async Task<ServiceDomain> GetAsync(Guid serviceId)
         {
-            var packageEntity = await _gateway.GetAsync(serviceId).ConfigureAwait(false);
+            var packageEntity = await _typeGateway.GetAsync(serviceId).ConfigureAwait(false);
             return ServiceFactory.ToDomain(packageEntity);
         }
     }

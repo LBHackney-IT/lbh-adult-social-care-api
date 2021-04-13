@@ -26,7 +26,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Services
         /// </summary>
-        public PackageServices Services { get; set; }
+        public HomeCareServiceType Services { get; set; }
 
         /// <summary>
         /// Gets or sets the Primary Carer

@@ -8,7 +8,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
     /// <summary>
     /// Services object
     /// </summary>
-    public class PackageServices : BaseEntity
+    public class HomeCareServiceType : BaseEntity
     {
 
         /// <summary>
@@ -16,16 +16,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// </summary>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Package Id
-        /// </summary>
-        public Guid PackageId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Package object
-        /// </summary>
-        public Package Package { get; set; }
 
         /// <summary>
         /// Gets or sets the Service Name

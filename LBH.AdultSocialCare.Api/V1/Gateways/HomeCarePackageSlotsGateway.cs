@@ -45,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 await _databaseContext.HomeCarePackageSlots.AddAsync(homeCarePackageSlotsToUpdate).ConfigureAwait(false);
                 homeCarePackageSlotsToUpdate.HomeCarePackageId = homeCarePackageSlotsList.HomeCarePackageId;
                 homeCarePackageSlotsToUpdate.ServiceId = homeCarePackageSlotsList.ServiceId;
-                homeCarePackageSlots.Services = await _databaseContext.PackageServices.FirstOrDefaultAsync(item => item.Id == homeCarePackageSlotsList.ServiceId).ConfigureAwait(false);
+                homeCarePackageSlots.Services = await _databaseContext.HomeCareServiceTypes.FirstOrDefaultAsync(item => item.Id == homeCarePackageSlotsList.ServiceId).ConfigureAwait(false);
                 homeCarePackageSlotsToUpdate.PrimaryCarer = homeCarePackageSlotsList.PrimaryCarer;
                 homeCarePackageSlotsToUpdate.SecondaryCarer = homeCarePackageSlotsList.SecondaryCarer;
                 homeCarePackageSlotsToUpdate.NeedToAddress = homeCarePackageSlotsList.NeedToAddress;
