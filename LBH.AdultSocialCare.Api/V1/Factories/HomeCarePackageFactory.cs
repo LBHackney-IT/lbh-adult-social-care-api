@@ -86,7 +86,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsFixedPeriod = homeCarePackageEntity.IsFixedPeriod,
                 IsOngoingPeriod = homeCarePackageEntity.IsOngoingPeriod,
                 IsThisAnImmediateService = homeCarePackageEntity.IsThisAnImmediateService,
-                IsThisuserUnderS117 = homeCarePackageEntity.IsThisuserUnderS117,
+                IsThisuserUnderS117 = homeCarePackageEntity.IsThisClientUnderS117,
                 CreatorId = homeCarePackageEntity.CreatorId,
                 UpdatorId = homeCarePackageEntity.UpdatorId,
                 StatusId = homeCarePackageEntity.StatusId

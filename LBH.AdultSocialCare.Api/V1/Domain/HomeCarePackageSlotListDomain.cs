@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         /// <summary>
         /// Gets or sets the Service Id
         /// </summary>
-        public Guid ServiceId { get; set; }
+        public int ServiceId { get; set; }
 
         /// <summary>
         /// Gets or sets the Services

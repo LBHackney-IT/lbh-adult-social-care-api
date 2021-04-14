@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             _databaseContext = databaseContext;
         }
 
-        public async Task<bool> DeleteAsync(Guid serviceId)
+        public async Task<bool> DeleteAsync(int serviceId)
         {
             _databaseContext.HomeCareServiceTypes.Remove(new HomeCareServiceType
             {
@@ -33,7 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             return isSuccess;
         }
 
-        public async Task<HomeCareServiceType> GetAsync(Guid serviceId)
+        public async Task<HomeCareServiceType> GetAsync(int serviceId)
         {
             var result = await _databaseContext.HomeCareServiceTypes.FirstOrDefaultAsync(item => item.Id == serviceId)
                 .ConfigureAwait(false);

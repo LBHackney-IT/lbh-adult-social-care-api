@@ -4,8 +4,12 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Interfaces
 {
+
     public interface IGetServiceUseCase
     {
-        public Task<ServiceDomain> GetAsync(Guid serviceId);
+
+        public Task<ServiceDomain> GetAsync(int serviceId);
+
     }
+
 }

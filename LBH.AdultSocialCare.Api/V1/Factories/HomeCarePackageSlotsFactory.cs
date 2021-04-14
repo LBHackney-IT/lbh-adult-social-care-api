@@ -36,21 +36,22 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static HomeCarePackageSlotListDomain ToDomain(
             HomeCarePackageSlotsRequestList homeCarePackageSlotsResponseList)
         {
+            homeCarePackageSlotsResponseList = null;
             return new HomeCarePackageSlotListDomain
             {
-                Id = homeCarePackageSlotsResponseList.Id,
-                HomeCarePackageId = homeCarePackageSlotsResponseList.HomeCarePackageId,
-                ServiceId = homeCarePackageSlotsResponseList.ServiceId,
-                PrimaryCarer = homeCarePackageSlotsResponseList.PrimaryCarer,
-                SecondaryCarer = homeCarePackageSlotsResponseList.SecondaryCarer,
-                NeedToAddress = homeCarePackageSlotsResponseList.NeedToAddress,
-                WhatShouldBeDone = homeCarePackageSlotsResponseList.WhatShouldBeDone,
-                HomeCarePackageSlot = homeCarePackageSlotsResponseList.HomeCarePackageSlotRequest.Select(item
-                        => new HomeCarePackageSlotDomain
-                        {
-                            InMinutes = item.InMinutes, TimeSlotShiftId = item.TimeSlotShiftId,
-                        })
-                    .ToList()
+                //Id = homeCarePackageSlotsResponseList.Id,
+                //HomeCarePackageId = homeCarePackageSlotsResponseList.HomeCarePackageId,
+                //ServiceId = homeCarePackageSlotsResponseList.ServiceId,
+                //PrimaryCarer = homeCarePackageSlotsResponseList.PrimaryCarer,
+                //SecondaryCarer = homeCarePackageSlotsResponseList.SecondaryCarer,
+                //NeedToAddress = homeCarePackageSlotsResponseList.NeedToAddress,
+                //WhatShouldBeDone = homeCarePackageSlotsResponseList.WhatShouldBeDone,
+                //HomeCarePackageSlot = homeCarePackageSlotsResponseList.HomeCarePackageSlotRequest.Select(item
+                //        => new HomeCarePackageSlotDomain
+                //        {
+                //            InMinutes = item.InMinutes, TimeSlotShiftId = item.TimeSlotShiftId,
+                //        })
+                //    .ToList()
             };
         }
 

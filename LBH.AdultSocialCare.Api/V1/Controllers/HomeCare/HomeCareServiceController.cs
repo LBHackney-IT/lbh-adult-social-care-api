@@ -60,7 +60,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         }
 
         [HttpGet("{serviceId}")]
-        public async Task<ActionResult<ServiceResponse>> Get(Guid serviceId)
+        public async Task<ActionResult<ServiceResponse>> Get(int serviceId)
         {
             try
             {
@@ -90,7 +90,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         }
 
         [HttpDelete("{serviceId}")]
-        public async Task<ActionResult<bool>> Delete(Guid serviceId)
+        public async Task<ActionResult<bool>> Delete(int serviceId)
         {
             try
             {
