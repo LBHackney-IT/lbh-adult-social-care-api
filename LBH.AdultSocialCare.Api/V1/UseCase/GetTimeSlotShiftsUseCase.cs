@@ -15,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase
             _gateway = timeSlotShiftsGateway;
         }
 
-        public async Task<TimeSlotShiftsDomain> GetAsync(Guid timeSlotShiftsId)
+        public async Task<TimeSlotShiftsDomain> GetAsync(int timeSlotShiftsId)
         {
             var timeSlotShiftsEntity = await _gateway.GetAsync(timeSlotShiftsId).ConfigureAwait(false);
             return TimeSlotShiftsFactory.ToDomain(timeSlotShiftsEntity);

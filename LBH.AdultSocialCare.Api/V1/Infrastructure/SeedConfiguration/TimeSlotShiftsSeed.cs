@@ -13,7 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
         {
             builder.HasData(new TimeSlotShifts
             {
-                Id = Guid.NewGuid(),
+                Id = 1,
                 TimeSlotShiftName = "Morning",
                 TimeSlotTimeLabel = "08:00 - 10:00",
                 CreatorId = 1,
@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 DateUpdated = DateTimeOffset.UtcNow
             }, new TimeSlotShifts
             {
-                Id = Guid.NewGuid(),
+                Id = 2,
                 TimeSlotShiftName = "Mid Morning",
                 TimeSlotTimeLabel = "10:00 - 12:00",
                 CreatorId = 1,
@@ -29,7 +29,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 DateUpdated = DateTimeOffset.UtcNow
             }, new TimeSlotShifts
             {
-                Id = Guid.NewGuid(),
+                Id = 3,
                 TimeSlotShiftName = "Lunch",
                 TimeSlotTimeLabel = "12:00 - 14:00",
                 CreatorId = 1,
@@ -37,7 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 DateUpdated = DateTimeOffset.UtcNow
             }, new TimeSlotShifts
             {
-                Id = Guid.NewGuid(),
+                Id = 4,
                 TimeSlotShiftName = "Afternoon",
                 TimeSlotTimeLabel = "14:00 - 17:00",
                 CreatorId = 1,
@@ -45,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 DateUpdated = DateTimeOffset.UtcNow
             }, new TimeSlotShifts
             {
-                Id = Guid.NewGuid(),
+                Id = 5,
                 TimeSlotShiftName = "Evening",
                 TimeSlotTimeLabel = "17:00 - 20:00",
                 CreatorId = 1,
@@ -53,7 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 DateUpdated = DateTimeOffset.UtcNow
             }, new TimeSlotShifts
             {
-                Id = Guid.NewGuid(),
+                Id = 6,
                 TimeSlotShiftName = "Night",
                 TimeSlotTimeLabel = "20:00 - 22:00",
                 CreatorId = 1,

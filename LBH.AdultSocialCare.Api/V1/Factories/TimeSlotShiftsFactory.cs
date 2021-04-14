@@ -5,14 +5,17 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
+
     public static class TimeSlotShiftsFactory
     {
+
         public static TimeSlotShiftsDomain ToDomain(TimeSlotShifts timeSlotShiftsEntity)
         {
             return new TimeSlotShiftsDomain
             {
                 Id = timeSlotShiftsEntity.Id,
                 TimeSlotShiftName = timeSlotShiftsEntity.TimeSlotShiftName,
+                TimeSlotTimeLabel = timeSlotShiftsEntity.TimeSlotTimeLabel,
                 CreatorId = timeSlotShiftsEntity.CreatorId,
                 DateCreated = timeSlotShiftsEntity.DateCreated,
                 UpdatorId = timeSlotShiftsEntity.UpdatorId,
@@ -26,6 +29,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = timeSlotShiftsDomain.Id,
                 TimeSlotShiftName = timeSlotShiftsDomain.TimeSlotShiftName,
+                TimeSlotTimeLabel = timeSlotShiftsDomain.TimeSlotTimeLabel,
                 CreatorId = timeSlotShiftsDomain.CreatorId,
                 UpdatorId = timeSlotShiftsDomain.UpdatorId
             };
@@ -37,6 +41,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = timeSlotShiftsDomain.Id,
                 TimeSlotShiftName = timeSlotShiftsDomain.TimeSlotShiftName,
+                TimeSlotTimeLabel = timeSlotShiftsDomain.TimeSlotTimeLabel,
                 CreatorId = timeSlotShiftsDomain.CreatorId,
                 DateCreated = timeSlotShiftsDomain.DateCreated,
                 UpdatorId = timeSlotShiftsDomain.UpdatorId,
@@ -50,11 +55,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = timeSlotShiftsEntity.Id,
                 TimeSlotShiftName = timeSlotShiftsEntity.TimeSlotShiftName,
+                TimeSlotTimeLabel = timeSlotShiftsEntity.TimeSlotTimeLabel,
                 CreatorId = timeSlotShiftsEntity.CreatorId,
                 DateCreated = timeSlotShiftsEntity.DateCreated,
                 UpdatorId = timeSlotShiftsEntity.UpdatorId,
                 DateUpdated = timeSlotShiftsEntity.DateUpdated
             };
         }
+
     }
+
 }

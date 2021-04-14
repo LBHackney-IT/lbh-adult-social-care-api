@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
 {
+
     public class HomeCarePackageSlotsRequestList
     {
+
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
@@ -44,10 +46,12 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         /// Gets or sets the Home Care Package Slot Response
         /// </summary>
         public List<HomeCarePackageSlotRequest> HomeCarePackageSlotRequest { get; set; }
+
     }
 
     public class HomeCarePackageSlotRequest
     {
+
         /// <summary>
         /// Gets or sets the InMinutes
         /// </summary>
@@ -71,6 +75,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         /// <summary>
         /// Gets or sets the Time Slot Shift Id
         /// </summary>
-        public Guid TimeSlotShiftId { get; set; }
+        public int TimeSlotShiftId { get; set; }
+
     }
+
 }

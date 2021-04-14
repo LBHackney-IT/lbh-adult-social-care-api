@@ -57,7 +57,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
 
         [HttpGet]
         [Route("{timeSlotShiftsId}")]
-        public async Task<ActionResult<TimeSlotShiftsResponse>> Get(Guid timeSlotShiftsId)
+        public async Task<ActionResult<TimeSlotShiftsResponse>> Get(int timeSlotShiftsId)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
 
         [HttpDelete]
         [Route("{timeSlotTypesId}")]
-        public async Task<ActionResult<bool>> Delete(Guid timeSlotShiftsId)
+        public async Task<ActionResult<bool>> Delete(int timeSlotShiftsId)
         {
             try
             {

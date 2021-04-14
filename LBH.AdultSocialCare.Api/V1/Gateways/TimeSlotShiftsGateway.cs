@@ -3,14 +3,15 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
+
     public class TimeSlotShiftsGateway : ITimeSlotShiftsGateway
     {
+
         private readonly DatabaseContext _databaseContext;
 
         public TimeSlotShiftsGateway(DatabaseContext databaseContext)
@@ -18,17 +19,21 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             _databaseContext = databaseContext;
         }
 
-        public async Task<bool> DeleteAsync(Guid timeSlotShiftsId)
+        public async Task<bool> DeleteAsync(int timeSlotShiftsId)
         {
             var result = _databaseContext.TimeSlotShifts.Remove(new TimeSlotShifts
-                { Id = timeSlotShiftsId });
+            {
+                Id = timeSlotShiftsId
+            });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
+
             return isSuccess;
         }
 
-        public async Task<TimeSlotShifts> GetAsync(Guid timeSlotShiftsId)
+        public async Task<TimeSlotShifts> GetAsync(int timeSlotShiftsId)
         {
-            return await _databaseContext.TimeSlotShifts.FirstOrDefaultAsync(item => item.Id == timeSlotShiftsId).ConfigureAwait(false);
+            return await _databaseContext.TimeSlotShifts.FirstOrDefaultAsync(item => item.Id == timeSlotShiftsId)
+                .ConfigureAwait(false);
         }
 
         public async Task<IList<TimeSlotShifts>> ListAsync()
@@ -38,7 +43,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<TimeSlotShifts> UpsertAsync(TimeSlotShifts timeSlotShifts)
         {
-            TimeSlotShifts timeSlotShiftsToUpdate = await _databaseContext.TimeSlotShifts.FirstOrDefaultAsync(item => item.TimeSlotShiftName == timeSlotShifts.TimeSlotShiftName).ConfigureAwait(false);
+            TimeSlotShifts timeSlotShiftsToUpdate = await _databaseContext.TimeSlotShifts
+                .FirstOrDefaultAsync(item => item.TimeSlotShiftName == timeSlotShifts.TimeSlotShiftName)
+                .ConfigureAwait(false);
+
             if (timeSlotShiftsToUpdate == null)
             {
                 timeSlotShiftsToUpdate = new TimeSlotShifts();
@@ -50,10 +58,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             }
             else
             {
-                throw new ErrorException($"This record already exist Time Slot Shift Name: {timeSlotShifts.TimeSlotShiftName}");
+                throw new ErrorException(
+                    $"This record already exist Time Slot Shift Name: {timeSlotShifts.TimeSlotShiftName}");
             }
+
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
+
             return timeSlotShiftsToUpdate;
         }
+
     }
+
 }

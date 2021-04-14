@@ -5,8 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
+
     public class HomeCarePackageSlotsList
     {
+
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
@@ -57,10 +59,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         {
             HomeCarePackageSlot = new List<HomeCarePackageSlot>();
         }
+
     }
 
     public class HomeCarePackageSlot
     {
+
         /// <summary>
         /// Gets or sets the InMinutes
         /// </summary>
@@ -89,11 +93,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Time Slot Shift Id
         /// </summary>
-        public Guid TimeSlotShiftId { get; set; }
+        public int TimeSlotShiftId { get; set; }
 
         /// <summary>
         /// Gets or sets the Time Slot Shift
         /// </summary>
         public TimeSlotShifts TimeSlotShift { get; set; }
+
     }
+
 }

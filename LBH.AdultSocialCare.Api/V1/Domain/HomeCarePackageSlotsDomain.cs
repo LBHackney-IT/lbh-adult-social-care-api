@@ -82,7 +82,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         /// <summary>
         /// Gets or sets the Time Slot Shift Id
         /// </summary>
-        public Guid TimeSlotShiftId { get; set; }
+        public int TimeSlotShiftId { get; set; }
 
         /// <summary>
         /// Gets or sets the Time Slot Shift
