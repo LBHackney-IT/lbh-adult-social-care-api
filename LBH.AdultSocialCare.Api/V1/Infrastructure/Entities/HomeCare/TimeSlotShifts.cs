@@ -1,24 +1,28 @@
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
 {
 
-    public class TimeSlotType : BaseEntity
+    public class TimeSlotShifts : BaseEntity
     {
 
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the Time Slot Type Name
         /// </summary>
         [Required]
-        public string TimeSlotTypeName { get; set; }
+        public string TimeSlotShiftName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the time slot time label.
+        /// </summary>
+        [Required]
+        public string TimeSlotTimeLabel { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id
