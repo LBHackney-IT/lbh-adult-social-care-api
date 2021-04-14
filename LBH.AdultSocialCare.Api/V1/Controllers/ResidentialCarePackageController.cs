@@ -25,6 +25,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _getResidentialCarePackageUseCase = getResidentialCarePackageUseCase;
         }
 
+        /// <summary>Creates the specified residential care package request.</summary>
+        /// <param name="residentialCarePackageRequest">The residential care package request.</param>
+        /// <returns>The residential care package created response.</returns>
         [HttpPost]
         public async Task<ActionResult<ResidentialCarePackageResponse>> Create(ResidentialCarePackageRequest residentialCarePackageRequest)
         {
@@ -41,6 +44,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified residential care package identifier.</summary>
+        /// <param name="residentialCarePackageId">The residential care package identifier.</param>
+        /// <returns>The residential care package response.</returns>
         [HttpGet]
         [Route("{residentialCarePackageId}")]
         public async Task<ActionResult<ResidentialCarePackageResponse>> Get(Guid residentialCarePackageId)

@@ -33,6 +33,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteTimeSlotTypesUseCase = deleteTimeSlotTypesUseCase;
         }
 
+        /// <summary>Creates the specified time slot type request.</summary>
+        /// <param name="timeSlotTypeRequest">The time slot type request.</param>
+        /// <returns>The created Time Slot Type Response model</returns>
         [HttpPost]
         public async Task<ActionResult<TimeSlotTypesResponse>> Create(TimeSlotTypeRequest timeSlotTypeRequest)
         {
@@ -50,6 +53,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified time slot types identifier.</summary>
+        /// <param name="timeSlotTypesId">The time slot types identifier.</param>
+        /// <returns>The Time Slot Type Response model</returns>
         [HttpGet]
         [Route("{timeSlotTypesId}")]
         public async Task<ActionResult<TimeSlotTypesResponse>> Get(Guid timeSlotTypesId)
@@ -64,6 +70,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets all.</summary>
+        /// <returns>The List of Time Slot Type Response model</returns>
         [HttpGet]
         [Route("getAll")]
         public async Task<ActionResult<IList<TimeSlotType>>> GetAll()

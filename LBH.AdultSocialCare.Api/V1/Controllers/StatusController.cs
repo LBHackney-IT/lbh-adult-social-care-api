@@ -33,6 +33,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteStatusUseCase = deleteStatusUseCase;
         }
 
+        /// <summary>Creates the specified status request.</summary>
+        /// <param name="statusRequest">The status request.</param>
+        /// <returns>The created status response.</returns>
         [HttpPost]
         public async Task<ActionResult<StatusResponse>> Create([FromBody] StatusRequest statusRequest)
         {
@@ -50,6 +53,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified status identifier.</summary>
+        /// <param name="statusId">The status identifier.</param>
+        /// <returns>The created status response.</returns>
         [HttpGet]
         [Route("{statusId}")]
         public async Task<ActionResult<StatusResponse>> Get(Guid statusId)
@@ -64,6 +70,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets all.</summary>
+        /// <returns>The List of Status model</returns>
         [HttpGet]
         [Route("getAll")]
         public async Task<ActionResult<IList<Status>>> GetAll()

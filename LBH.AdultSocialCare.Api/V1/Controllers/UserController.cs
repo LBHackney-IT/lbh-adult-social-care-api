@@ -27,6 +27,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteUsersUseCase = deleteUsersUseCase;
         }
 
+        /// <summary>Creates the specified users request.</summary>
+        /// <param name="usersRequest">The users request.</param>
+        /// <returns>The created User Response model</returns>
         [HttpPost]
         public async Task<ActionResult<UsersResponse>> Create(UsersRequest usersRequest)
         {
@@ -44,6 +47,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified user identifier.</summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns>The User Response model</returns>
         [HttpGet]
         [Route("{userId}")]
         public async Task<ActionResult<UsersResponse>> Get(Guid userId)

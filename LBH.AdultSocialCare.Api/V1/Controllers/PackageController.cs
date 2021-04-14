@@ -30,6 +30,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deletePackageUseCase = deletePackageUseCase;
         }
 
+        /// <summary>Creates the specified package request.</summary>
+        /// <param name="packageRequest">The package request.</param>
+        /// <returns>The created package response.</returns>
         [HttpPost]
         public async Task<ActionResult<PackageResponse>> Create(PackageRequest packageRequest)
         {
@@ -46,6 +49,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified package identifier.</summary>
+        /// <param name="packageId">The package identifier.</param>
+        /// <returns>The package response.</returns>
         [HttpGet]
         [Route("{packageId}")]
         public async Task<ActionResult<PackageResponse>> Get(Guid packageId)
@@ -62,6 +68,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets all.</summary>
+        /// <returns>List of packages</returns>
         [HttpGet]
         [Route("getAll")]
         public async Task<ActionResult<IList<Package>>> GetAll()

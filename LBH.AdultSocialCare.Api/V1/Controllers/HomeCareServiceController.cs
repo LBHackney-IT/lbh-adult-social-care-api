@@ -33,6 +33,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteServiceUseCase = deleteServiceUseCase;
         }
 
+        /// <summary>Creates the specified service request.</summary>
+        /// <param name="serviceRequest">The service request.</param>
+        /// <returns>The home care service creation response.</returns>
         [HttpPost]
         public async Task<ActionResult<ServiceResponse>> Create(ServiceRequest serviceRequest)
         {
@@ -55,6 +58,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified service identifier.</summary>
+        /// <param name="serviceId">The service identifier.</param>
+        /// <returns>The home care service creation response.</returns>
         [HttpGet("{serviceId}")]
         public async Task<ActionResult<ServiceResponse>> Get(Guid serviceId)
         {
@@ -68,6 +74,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets all.</summary>
+        /// <returns>List of home care service response</returns>
         [HttpGet("getAll")]
         public async Task<ActionResult<IList<PackageServices>>> GetAll()
         {

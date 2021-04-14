@@ -28,6 +28,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteClientsUseCase = deleteClientsUseCase;
         }
 
+        /// <summary>Creates the specified clients request.</summary>
+        /// <param name="clientsRequest">The clients request.</param>
+        /// <returns>The client creation response.</returns>
         [HttpPost]
         public async Task<ActionResult<ClientsResponse>> Create(ClientsRequest clientsRequest)
         {
@@ -40,8 +43,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                         .ConfigureAwait(false));
 
                 if (clientsResponse == null) return NotFound();
-
-                //else if (!clientsResponse.Success) return BadRequest(clientsResponse.Message);
                 return Ok(clientsResponse);
             }
             catch (FormatException ex)
@@ -56,6 +57,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified client identifier.</summary>
+        /// <param name="clientId">The client identifier.</param>
+        /// <returns>The client creation response.</returns>
         [HttpGet]
         [Route("{clientId}")]
         public async Task<ActionResult<ClientsResponse>> Get(Guid clientId)
@@ -70,6 +74,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Deletes the specified client identifier.</summary>
+        /// <param name="clientId">The client identifier.</param>
+        /// <returns>the boolean value</returns>
         [HttpDelete]
         [Route("{clientId}")]
         public async Task<ActionResult<bool>> Delete(Guid clientId)

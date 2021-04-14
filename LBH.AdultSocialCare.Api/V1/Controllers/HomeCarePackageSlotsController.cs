@@ -25,6 +25,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteHomeCarePackageSlotsUseCase = deleteHomeCarePackageSlotsUseCase;
         }
 
+        /// <summary>Creates the specified home care package slots request list.</summary>
+        /// <param name="homeCarePackageSlotsRequestList">The home care package slots request list.</param>
+        /// <returns>The created Home Care Package Slots Response model</returns>
         [HttpPost]
         public async Task<ActionResult<HomeCarePackageSlotsResponseList>> Create(HomeCarePackageSlotsRequestList homeCarePackageSlotsRequestList)
         {

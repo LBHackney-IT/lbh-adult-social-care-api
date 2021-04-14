@@ -33,6 +33,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteRoleUseCase = deleteRoleUseCase;
         }
 
+        /// <summary>Creates the specified roles request.</summary>
+        /// <param name="rolesRequest">The roles request.</param>
+        /// <returns>The created role response.</returns>
         [HttpPost]
         public async Task<ActionResult<RolesResponse>> Create(RolesRequest rolesRequest)
         {
@@ -49,6 +52,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified role identifier.</summary>
+        /// <param name="roleId">The role identifier.</param>
+        /// <returns>The role response.</returns>
         [HttpGet]
         [Route("{roleId}")]
         public async Task<ActionResult<RolesResponse>> Get(Guid roleId)

@@ -33,6 +33,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteTimeSlotShiftsUseCase = deleteTimeSlotShiftsUseCase;
         }
 
+        /// <summary>Creates the specified time slot shifts request.</summary>
+        /// <param name="timeSlotShiftsRequest">The time slot shifts request.</param>
+        /// <returns>The created Time Slot Shifts Response model</returns>
         [HttpPost]
         public async Task<ActionResult<TimeSlotShiftsResponse>> Create(TimeSlotShiftsRequest timeSlotShiftsRequest)
         {
@@ -50,6 +53,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified time slot shifts identifier.</summary>
+        /// <param name="timeSlotShiftsId">The time slot shifts identifier.</param>
+        /// <returns>The Time Slot Shifts Response model</returns>
         [HttpGet]
         [Route("{timeSlotShiftsId}")]
         public async Task<ActionResult<TimeSlotShiftsResponse>> Get(Guid timeSlotShiftsId)
@@ -64,6 +70,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets all.</summary>
+        /// <returns>The List of Time Slot Shifts</returns>
         [HttpGet]
         [Route("getAll")]
         public async Task<ActionResult<IList<TimeSlotShifts>>> GetAll()

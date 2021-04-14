@@ -26,6 +26,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _getNursingCarePackageUseCase = getNursingCarePackageUseCase;
         }
 
+        /// <summary>Creates the specified nursing care package request.</summary>
+        /// <param name="nursingCarePackageRequest">The nursing care package request.</param>
+        /// <returns>The nursing care package creation response.</returns>
         [HttpPost]
         public async Task<ActionResult<NursingCarePackageResponse>> Create(NursingCarePackageRequest nursingCarePackageRequest)
         {
@@ -42,6 +45,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified nursing care package identifier.</summary>
+        /// <param name="nursingCarePackageId">The nursing care package identifier.</param>
+        /// <returns>The nursing care package response.</returns>
         [HttpGet]
         [Route("{nursingCarePackageId}")]
         public async Task<ActionResult<NursingCarePackageResponse>> Get(Guid nursingCarePackageId)
