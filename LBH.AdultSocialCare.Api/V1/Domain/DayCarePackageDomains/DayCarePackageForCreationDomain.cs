@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
 {
@@ -22,9 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
         public bool TransportNeeded { get; set; }
         public bool EscortNeeded { get; set; }
         public int TermTimeConsiderationOptionId { get; set; }
-        public string HowLong { get; set; }
-        public string HowManyTimesPerMonth { get; set; } // Daily, weekly, monthly
-        public string OpportunitiesNeedToAddress { get; set; }
+        public List<DayCarePackageOpportunityForCreationDomain> DayCarePackageOpportunities { get; set; }
         public Guid CreatorId { get; set; }
         public Guid StatusId { get; set; }
     }

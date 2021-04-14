@@ -1,15 +1,19 @@
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Controllers;
+using LBH.AdultSocialCare.Api.V1;
 using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.UseCase;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using LBH.AdultSocialCare.Api.Versioning;
 using Microsoft.AspNetCore.Builder;
@@ -18,6 +22,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,17 +34,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using LBH.AdultSocialCare.Api.V1;
-using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace LBH.AdultSocialCare.Api
 {
-
     public class Startup
     {
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -190,6 +189,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<ITimeSlotShiftsGateway, TimeSlotShiftsGateway>();
             services.AddScoped<IHomeCarePackageGateway, HomeCarePackageGateway>();
             services.AddScoped<IDayCarePackageGateway, DayCarePackageGateway>();
+            services.AddScoped<IDayCarePackageOpportunityGateway, DayCarePackageOpportunityGateway>();
             services.AddScoped<IClientsGateway, ClientsGateway>();
             services.AddScoped<IHomeCarePackageSlotsGateway, HomeCarePackageSlotsGateway>();
             services.AddScoped<IUsersGateway, UsersGateway>();
@@ -210,7 +210,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllPackageUseCase, GetAllPackageUseCase>();
             services.AddScoped<IDeletePackageUseCase, DeletePackageUseCase>();
 
-            #endregion
+            #endregion Package
 
             #region Service
 
@@ -219,7 +219,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllHomeCareServiceTypesUseCase, GetAllHomeCareServiceTypesUseCase>();
             services.AddScoped<IDeleteServiceUseCase, DeleteServiceUseCase>();
 
-            #endregion
+            #endregion Service
 
             #region Role
 
@@ -228,7 +228,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllRoleUseCase, GetAllRoleUseCase>();
             services.AddScoped<IDeleteRoleUseCase, DeleteRoleUseCase>();
 
-            #endregion
+            #endregion Role
 
             #region TimeSlotTypes
 
@@ -237,14 +237,14 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllTimeSlotTypesUseCase, GetAllTimeSlotTypesUseCase>();
             services.AddScoped<IDeleteTimeSlotTypesUseCase, DeleteTimeSlotTypesUseCase>();
 
-            #endregion
+            #endregion TimeSlotTypes
 
             #region HomeCarePackage
 
             services.AddScoped<IUpsertHomeCarePackageUseCase, UpsertHomeCarePackageUseCase>();
             services.AddScoped<IChangeStatusHomeCarePackageUseCase, ChangeStatusHomeCarePackageUseCase>();
 
-            #endregion
+            #endregion HomeCarePackage
 
             #region DayCarePackage
 
@@ -253,14 +253,23 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetDayCarePackageListUseCase, GetDayCarePackageListUseCase>();
             services.AddScoped<IUpdateDayCarePackageUseCase, UpdateDayCarePackageUseCase>();
 
-            #endregion
+            #endregion DayCarePackage
+
+            #region DayCarePackageOpportunity
+
+            services.AddScoped<ICreateDayCarePackageOpportunityUseCase, CreateDayCarePackageOpportunityUseCase>();
+            services.AddScoped<IGetDayCarePackageOpportunityListUseCase, GetDayCarePackageOpportunityListUseCase>();
+            services.AddScoped<IGetDayCarePackageOpportunityUseCase, GetDayCarePackageOpportunityUseCase>();
+            services.AddScoped<IUpdateDayCarePackageOpportunityUseCase, UpdateDayCarePackageOpportunityUseCase>();
+
+            #endregion DayCarePackageOpportunity
 
             #region HomeCarePackageSlots
 
             services.AddScoped<IUpsertHomeCarePackageSlotsUseCase, UpsertHomeCarePackageSlotsUseCase>();
             services.AddScoped<IDeleteHomeCarePackageSlotsUseCase, DeleteHomeCarePackageSlotsUseCase>();
 
-            #endregion
+            #endregion HomeCarePackageSlots
 
             #region TimeSlotShift
 
@@ -269,7 +278,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllTimeSlotShiftsUseCase, GetAllTimeSlotShiftsUseCase>();
             services.AddScoped<IDeleteTimeSlotShiftsUseCase, DeleteTimeSlotShiftsUseCase>();
 
-            #endregion
+            #endregion TimeSlotShift
 
             #region Clients
 
@@ -277,7 +286,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetClientsUseCase, GetClientsUseCase>();
             services.AddScoped<IDeleteClientsUseCase, DeleteClientsUseCase>();
 
-            #endregion
+            #endregion Clients
 
             #region Users
 
@@ -285,7 +294,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
             services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();
 
-            #endregion
+            #endregion Users
 
             #region Status
 
@@ -294,21 +303,21 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllStatusUseCase, GetAllStatusUseCase>();
             services.AddScoped<IDeleteStatusUseCase, DeleteStatusUseCase>();
 
-            #endregion
+            #endregion Status
 
             #region ResidentialCarePackage
 
             services.AddScoped<IUpsertResidentialCarePackageUseCase, UpsertResidentialCarePackageUseCase>();
             services.AddScoped<IGetResidentialCarePackageUseCase, GetResidentialCarePackageUseCase>();
 
-            #endregion
+            #endregion ResidentialCarePackage
 
             #region NursingCarePackage
 
             services.AddScoped<IUpsertNursingCarePackageUseCase, UpsertNursingCarePackageUseCase>();
             services.AddScoped<IGetNursingCarePackageUseCase, GetNursingCarePackageUseCase>();
 
-            #endregion
+            #endregion NursingCarePackage
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -319,10 +328,10 @@ namespace LBH.AdultSocialCare.Api
                 DatabaseContext databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
                 // Create if not exists
-                if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
+                /*if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
                 {
                     databaseContext.Database.EnsureCreated();
-                }
+                }*/
 
                 // Perform migrations
                 if (databaseContext.Database.GetPendingMigrations().Any())
@@ -377,7 +386,5 @@ namespace LBH.AdultSocialCare.Api
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
-
     }
-
 }

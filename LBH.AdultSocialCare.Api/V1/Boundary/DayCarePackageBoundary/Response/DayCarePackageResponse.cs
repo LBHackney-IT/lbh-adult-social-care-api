@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response
 {
@@ -23,9 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response
         public bool TransportNeeded { get; set; }
         public bool EscortNeeded { get; set; }
         public int TermTimeConsiderationOptionId { get; set; }
-        public string HowLong { get; set; }
-        public string HowManyTimesPerMonth { get; set; } // Daily, weekly, monthly
-        public string OpportunitiesNeedToAddress { get; set; }
+        public List<DayCarePackageOpportunityResponse> DayCarePackageOpportunities { get; set; }
         public DateTimeOffset DateCreated { get; set; } = DateTimeOffset.UtcNow;
         public Guid CreatorId { get; set; }
         public DateTimeOffset? DateUpdated { get; set; }

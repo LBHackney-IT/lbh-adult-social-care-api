@@ -1,5 +1,6 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -28,6 +29,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static DayCarePackage ToDb(this DayCarePackageForUpdateDomain dayCarePackageForUpdateDomain)
         {
             return _mapper.Map<DayCarePackage>(dayCarePackageForUpdateDomain);
+        }
+
+        public static DayCarePackageOpportunity ToDb(this DayCarePackageOpportunityForCreationDomain dayCarePackageOpportunityForCreationDomain)
+        {
+            return _mapper.Map<DayCarePackageOpportunity>(dayCarePackageOpportunityForCreationDomain);
+        }
+
+        public static DayCarePackageOpportunity ToDb(this DayCarePackageOpportunityForUpdateDomain dayCarePackageOpportunityForUpdateDomain)
+        {
+            return _mapper.Map<DayCarePackageOpportunity>(dayCarePackageOpportunityForUpdateDomain);
         }
     }
 }
