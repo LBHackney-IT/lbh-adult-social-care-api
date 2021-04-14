@@ -328,10 +328,10 @@ namespace LBH.AdultSocialCare.Api
                 DatabaseContext databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
                 // Create if not exists
-                if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
+                /*if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
                 {
                     databaseContext.Database.EnsureCreated();
-                }
+                }*/
 
                 // Perform migrations
                 if (databaseContext.Database.GetPendingMigrations().Any())
