@@ -51,17 +51,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// </summary>
         public string WhatShouldBeDone { get; set; }
 
-        ///// <summary>
-        ///// Gets or sets the Time Slot Type Id
-        ///// </summary>
-        //public Guid TimeSlotTypeId { get; set; }
-
-        ///// <summary>
-        ///// Gets or sets the Time Slot Types
-        ///// </summary>
-        //[ForeignKey(nameof(TimeSlotTypeId))]
-        //public TimeSlotType TimeSlotTypes { get; set; }
-
         /// <summary>
         /// Gets or sets the Time Slot Shift Id
         /// </summary>

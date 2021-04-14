@@ -1,7 +1,7 @@
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
@@ -13,28 +13,28 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
         {
             builder.HasData(new HomeCareServiceType
             {
-                Id = 1,
+                Id = (int) HomeCareServiceTypeEnum.Personal,
                 CreatorId = 1,
                 UpdatorId = 1,
                 DateUpdated = DateTimeOffset.UtcNow,
                 ServiceName = "Personal Home Care"
             }, new HomeCareServiceType
             {
-                Id = 2,
+                Id = (int) HomeCareServiceTypeEnum.Domestic,
                 CreatorId = 1,
                 UpdatorId = 1,
                 DateUpdated = DateTimeOffset.UtcNow,
                 ServiceName = "Domestic Care"
             }, new HomeCareServiceType
             {
-                Id = 3,
+                Id = (int) HomeCareServiceTypeEnum.LiveIn,
                 CreatorId = 1,
                 UpdatorId = 1,
                 DateUpdated = DateTimeOffset.UtcNow,
                 ServiceName = "Live-in Care"
             }, new HomeCareServiceType
             {
-                Id = 4,
+                Id = (int) HomeCareServiceTypeEnum.Escort,
                 CreatorId = 1,
                 UpdatorId = 1,
                 DateUpdated = DateTimeOffset.UtcNow,

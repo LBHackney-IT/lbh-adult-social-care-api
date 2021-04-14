@@ -20,23 +20,23 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 {
                     {
                         // Personal home care, primary
-                        (1, false), _upTo2Hours
+                        ((int) HomeCareServiceTypeEnum.Personal, false), _upTo2Hours
                     },
                     {
                         // Personal home care, secondary
-                        (1, true), _naUpTo2Hours
+                        ((int) HomeCareServiceTypeEnum.Personal, true), _naUpTo2Hours
                     },
                     {
                         // Domestic, primary
-                        (2, false), _upTo2Hours
+                        ((int) HomeCareServiceTypeEnum.Domestic, false), _upTo2Hours
                     },
                     {
                         // Live in, primary
-                        (3, false), _upTo2Hours
+                        ((int) HomeCareServiceTypeEnum.LiveIn, false), _upTo2Hours
                     },
                     {
                         // Escort, primary
-                        (4, false), _upTo2Hours
+                        ((int) HomeCareServiceTypeEnum.Escort, false), _upTo2Hours
                     }
                 };
 
