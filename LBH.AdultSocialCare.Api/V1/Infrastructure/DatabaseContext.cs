@@ -24,11 +24,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<DayCarePackage> DayCarePackages { get; set; }
         public DbSet<DatabaseEntity> DatabaseEntities { get; set; }
         public DbSet<Package> Packages { get; set; }
-        public DbSet<HomeCareServiceType> HomeCareServiceTypes { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<TimeSlotType> TimeSlotType { get; set; }
         public DbSet<TimeSlotShifts> TimeSlotShifts { get; set; }
         public DbSet<HomeCarePackage> HomeCarePackage { get; set; }
+        public DbSet<HomeCareServiceType> HomeCareServiceTypes { get; set; }
+        public DbSet<HomeCareServiceTypeMinutes> HomeCareServiceTypeMinutes { get; set; }
         public DbSet<HomeCarePackageSlots> HomeCarePackageSlots { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<Clients> Clients { get; set; }
@@ -40,6 +41,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Home care
+            modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.PrimaryCarerMinutes);
+            modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.SecondaryCarerMinutes);
 
             // Seed term time consideration options
             modelBuilder.ApplyConfiguration(new TermTimeConsiderationOptionsSeed());
