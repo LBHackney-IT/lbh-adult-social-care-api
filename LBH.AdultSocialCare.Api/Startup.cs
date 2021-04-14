@@ -30,6 +30,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using LBH.AdultSocialCare.Api.V1;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 

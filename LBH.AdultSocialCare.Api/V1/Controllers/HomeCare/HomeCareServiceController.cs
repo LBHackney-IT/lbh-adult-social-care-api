@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
@@ -5,12 +9,8 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Controllers
+namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
 
     [Route("api/v1/[controller]")]
@@ -25,7 +25,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         private readonly IDeleteServiceUseCase _deleteServiceUseCase;
 
         public HomeCareServiceController(IUpsertServiceUseCase upsertServiceUseCase, IGetServiceUseCase getServiceUseCase,
-            IGetAllHomeCareServiceTypesUseCase getAllHomeCareServiceTypesUseCase, IDeleteServiceUseCase deleteServiceUseCase)
+            IGetAllHomeCareServiceTypesUseCase getAllHomeCareServiceTypesUseCase,
+            IDeleteServiceUseCase deleteServiceUseCase)
         {
             _upsertServiceUseCase = upsertServiceUseCase;
             _getServiceUseCase = getServiceUseCase;
@@ -44,7 +45,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                     ServiceFactory.ToResponse(await _upsertServiceUseCase.ExecuteAsync(serviceDomain)
                         .ConfigureAwait(false));
 
-                if (serviceResponse == null) return NotFound();
+                if (serviceResponse == null)
+                {
+                    return NotFound();
+                }
 
                 //else if (!serviceResponse.Success) return BadRequest(serviceResponse.Message);
                 return Ok(serviceResponse);
@@ -73,7 +77,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             try
             {
-                IList<HomeCareServiceType> result = await _getAllHomeCareServiceTypesUseCase.GetAllAsync().ConfigureAwait(false);
+                var result = await _getAllHomeCareServiceTypesUseCase.GetAllAsync().ConfigureAwait(false);
 
                 if (result == null) return NotFound();
 

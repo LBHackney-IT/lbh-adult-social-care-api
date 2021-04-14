@@ -1,9 +1,9 @@
-using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 
-namespace LBH.AdultSocialCare.Api.V1.UseCase
+namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
 {
     public class DeleteHomeCarePackageSlotsUseCase : IDeleteHomeCarePackageSlotsUseCase
     {

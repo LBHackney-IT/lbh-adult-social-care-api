@@ -37,14 +37,14 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare
         public bool IsOngoingPeriod { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is This An Immediate Service
+        /// Gets or sets a value indicating whether this instance is this an immediate service.
         /// </summary>
         public bool IsThisAnImmediateService { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is This An Immediate Service
+        /// Gets or sets a value indicating whether this instance is this client under S117.
         /// </summary>
-        public bool IsThisuserUnderS117 { get; set; }
+        public bool IsThisClientUnderS117 { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

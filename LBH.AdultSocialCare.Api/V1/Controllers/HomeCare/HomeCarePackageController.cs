@@ -1,15 +1,14 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.Request;
+using System;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 
-namespace LBH.AdultSocialCare.Api.V1.Controllers
+namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
 
     [Route("api/v1/[controller]")]
