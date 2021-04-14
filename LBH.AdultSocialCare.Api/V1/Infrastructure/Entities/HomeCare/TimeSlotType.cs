@@ -2,13 +2,10 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
 {
 
-    /// <summary>
-    /// Services object
-    /// </summary>
-    public class HomeCareServiceType : BaseEntity
+    public class TimeSlotType : BaseEntity
     {
 
         /// <summary>
@@ -18,9 +15,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public Guid Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the Service Name
+        /// Gets or sets the Time Slot Type Name
         /// </summary>
-        public string ServiceName { get; set; }
+        [Required]
+        public string TimeSlotTypeName { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

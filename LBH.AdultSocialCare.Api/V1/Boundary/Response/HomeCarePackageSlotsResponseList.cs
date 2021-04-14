@@ -1,6 +1,7 @@
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
 {

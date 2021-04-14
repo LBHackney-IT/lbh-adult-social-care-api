@@ -1,29 +1,20 @@
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
+namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare
 {
 
-    public class HomeCarePackage : BaseEntity
+    public class HomeCarePackageRequest
     {
 
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets the Client Id
         /// </summary>
         public Guid ClientId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Clients
-        /// </summary>
-        [ForeignKey(nameof(ClientId))]
-        public Clients Clients { get; set; }
 
         /// <summary>
         /// Gets or sets the Start Date
@@ -69,11 +60,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Status Id
         /// </summary>
         public Guid StatusId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Status Object
-        /// </summary>
-        public Status Status { get; set; }
 
     }
 

@@ -6,17 +6,19 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
+
     [Route("api/v1/homeCarePackageSlots")]
     [Produces("application/json")]
     [ApiController]
     public class HomeCarePackageSlotsController : BaseController
     {
+
         private readonly IUpsertHomeCarePackageSlotsUseCase _upsertHomeCarePackageSlotsUseCase;
         private readonly IDeleteHomeCarePackageSlotsUseCase _deleteHomeCarePackageSlotsUseCase;
-
 
         public HomeCarePackageSlotsController(IUpsertHomeCarePackageSlotsUseCase upsertHomeCarePackageSlotsUseCase,
             IDeleteHomeCarePackageSlotsUseCase deleteHomeCarePackageSlotsUseCase)
@@ -26,13 +28,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<HomeCarePackageSlotsResponseList>> Create(HomeCarePackageSlotsRequestList homeCarePackageSlotsRequestList)
+        public async Task<ActionResult<HomeCarePackageSlotsResponseList>> Create(
+            HomeCarePackageSlotsRequestList homeCarePackageSlotsRequestList)
         {
             try
             {
-                HomeCarePackageSlotsDomain homeCarePackageSlotsDomain = HomeCarePackageSlotsFactory.ToDomain(homeCarePackageSlotsRequestList);
-                HomeCarePackageSlotsResponseList homeCarePackageSlotsResponse = HomeCarePackageSlotsFactory.ToResponse(await _upsertHomeCarePackageSlotsUseCase.ExecuteAsync(homeCarePackageSlotsDomain).ConfigureAwait(false));
+                HomeCarePackageSlotsDomain homeCarePackageSlotsDomain =
+                    HomeCarePackageSlotsFactory.ToDomain(homeCarePackageSlotsRequestList);
+
+                HomeCarePackageSlotsResponseList homeCarePackageSlotsResponse =
+                    HomeCarePackageSlotsFactory.ToResponse(await _upsertHomeCarePackageSlotsUseCase
+                        .ExecuteAsync(homeCarePackageSlotsDomain)
+                        .ConfigureAwait(false));
+
                 if (homeCarePackageSlotsResponse == null) return NotFound();
+
                 return Ok(homeCarePackageSlotsResponse);
             }
             catch (FormatException ex)
@@ -40,5 +50,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
     }
+
 }

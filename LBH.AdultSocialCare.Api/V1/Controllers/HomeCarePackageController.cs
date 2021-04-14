@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
