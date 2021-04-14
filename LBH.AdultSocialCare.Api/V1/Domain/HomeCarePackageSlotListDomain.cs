@@ -1,21 +1,21 @@
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
+namespace LBH.AdultSocialCare.Api.V1.Domain
 {
-    public class HomeCarePackageSlots
+
+    public class HomeCarePackageSlotListDomain
     {
+
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets the Home Care Package Id
         /// </summary>
-        [ForeignKey(nameof(HomeCarePackageId))]
         public Guid HomeCarePackageId { get; set; }
 
         /// <summary>
@@ -26,8 +26,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Services
         /// </summary>
-        [ForeignKey(nameof(ServiceId))]
-        public PackageServices Services { get; set; }
+        public HomeCareServiceType Services { get; set; }
 
         /// <summary>
         /// Gets or sets the Primary Carer
@@ -50,40 +49,40 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public string WhatShouldBeDone { get; set; }
 
         /// <summary>
-        /// Gets or sets the Time Slot Type Id
+        /// Gets or sets the Home Care Package Slot
         /// </summary>
-        public Guid TimeSlotTypeId { get; set; }
+        public List<HomeCarePackageSlotDomain> HomeCarePackageSlot { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Time Slot Types
-        /// </summary>
-        [ForeignKey(nameof(TimeSlotTypeId))]
-        public TimeSlotType TimeSlotTypes { get; set; }
+    }
 
-        /// <summary>
-        /// Gets or sets the Time Slot Shift Id
-        /// </summary>
-        public Guid TimeSlotShiftId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Time Slot Shift
-        /// </summary>
-        [ForeignKey(nameof(TimeSlotShiftId))]
-        public TimeSlotShifts TimeSlotShift { get; set; }
+    public class HomeCarePackageSlotDomain
+    {
 
         /// <summary>
         /// Gets or sets the InMinutes
         /// </summary>
         public int InMinutes { get; set; }
 
-        /// <summary>
-        /// Gets or sets the In Hours
-        /// </summary>
-        public int InHours { get; set; }
+        ///// <summary>
+        ///// Gets or sets the Time Slot Type Id
+        ///// </summary>
+        //public Guid TimeSlotTypeId { get; set; }
+
+        ///// <summary>
+        ///// Gets or sets the Time Slot Types
+        ///// </summary>
+        //public TimeSlotType TimeSlotTypes { get; set; }
 
         /// <summary>
-        /// Gets or sets the Time
+        /// Gets or sets the Time Slot Shift Id
         /// </summary>
-        public int Time { get; set; }
+        public int TimeSlotShiftId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Time Slot Shift
+        /// </summary>
+        public TimeSlotShifts TimeSlotShift { get; set; }
+
     }
+
 }

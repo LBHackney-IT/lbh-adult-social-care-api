@@ -3,10 +3,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
-namespace LBH.AdultSocialCare.Api.V1.Controllers
+namespace LBH.AdultSocialCare.Api.V1
 {
+
     public class CorrelationMiddleware
     {
+
         private readonly RequestDelegate _next;
 
         public CorrelationMiddleware(RequestDelegate next)
@@ -24,14 +26,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             if (_next != null)
                 await _next(context).ConfigureAwait(false);
         }
+
     }
 
     public static class CorrelationMiddlewareExtensions
     {
-        public static IApplicationBuilder UseCorrelation(
-            this IApplicationBuilder builder)
+
+        public static IApplicationBuilder UseCorrelation(this IApplicationBuilder builder)
         {
             return builder.UseMiddleware<CorrelationMiddleware>();
         }
+
     }
+
 }

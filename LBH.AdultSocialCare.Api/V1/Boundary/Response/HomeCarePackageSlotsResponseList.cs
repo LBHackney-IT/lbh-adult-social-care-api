@@ -1,11 +1,14 @@
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
 {
+
     public class HomeCarePackageSlotsResponseList
     {
+
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
@@ -24,7 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         /// <summary>
         /// Gets or sets the Services
         /// </summary>
-        public PackageServices Services { get; set; }
+        public HomeCareServiceType Services { get; set; }
 
         /// <summary>
         /// Gets or sets the Primary Carer
@@ -50,10 +53,12 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         /// Gets or sets the Home Care Package Slot Response
         /// </summary>
         public List<HomeCarePackageSlotResponse> HomeCarePackageSlotResponse { get; set; }
+
     }
 
     public class HomeCarePackageSlotResponse
     {
+
         /// <summary>
         /// Gets or sets the InMinutes
         /// </summary>
@@ -82,11 +87,13 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         /// <summary>
         /// Gets or sets the Time Slot Shift Id
         /// </summary>
-        public Guid TimeSlotShiftId { get; set; }
+        public int TimeSlotShiftId { get; set; }
 
         /// <summary>
         /// Gets or sets the Time Slot Shift
         /// </summary>
         public TimeSlotShifts TimeSlotShift { get; set; }
+
     }
+
 }

@@ -5,6 +5,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Interfaces
 {
     public interface IUpsertHomeCarePackageSlotsUseCase
     {
-        public Task<HomeCarePackageSlotsDomain> ExecuteAsync(HomeCarePackageSlotsDomain homeCarePackageSlots);
+        public Task<HomeCarePackageSlotListDomain> ExecuteAsync(HomeCarePackageSlotListDomain homeCarePackageSlotList);
     }
 }

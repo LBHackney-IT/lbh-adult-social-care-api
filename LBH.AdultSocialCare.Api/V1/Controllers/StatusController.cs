@@ -12,20 +12,20 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
-    [Route("api/v1/status")]
+
+    [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
     public class StatusController : BaseController
     {
+
         private readonly IUpsertStatusUseCase _upsertStatusUseCase;
         private readonly IGetStatusUseCase _getStatusUseCase;
         private readonly IGetAllStatusUseCase _getAllStatusUseCase;
         private readonly IDeleteStatusUseCase _deleteStatusUseCase;
 
-        public StatusController(IUpsertStatusUseCase upsertStatusUseCase,
-            IGetStatusUseCase getStatusUseCase,
-            IGetAllStatusUseCase getAllStatusUseCase,
-            IDeleteStatusUseCase deleteStatusUseCase)
+        public StatusController(IUpsertStatusUseCase upsertStatusUseCase, IGetStatusUseCase getStatusUseCase,
+            IGetAllStatusUseCase getAllStatusUseCase, IDeleteStatusUseCase deleteStatusUseCase)
         {
             _upsertStatusUseCase = upsertStatusUseCase;
             _getStatusUseCase = getStatusUseCase;
@@ -39,8 +39,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             try
             {
                 StatusDomain statusDomain = StatusFactory.ToDomain(statusRequest);
-                StatusResponse statusResponse = StatusFactory.ToResponse(await _upsertStatusUseCase.ExecuteAsync(statusDomain).ConfigureAwait(false));
+
+                StatusResponse statusResponse =
+                    StatusFactory.ToResponse(await _upsertStatusUseCase.ExecuteAsync(statusDomain).ConfigureAwait(false));
+
                 if (statusResponse == null) return NotFound();
+
                 //else if (!statusResponse.Success) return BadRequest(statusResponse.Message);
                 return Ok(statusResponse);
             }
@@ -71,7 +75,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             try
             {
                 IList<Status> result = await _getAllStatusUseCase.GetAllAsync().ConfigureAwait(false);
+
                 if (result == null) return NotFound();
+
                 return Ok(result.ToList());
             }
             catch (FormatException ex)
@@ -93,5 +99,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
     }
+
 }

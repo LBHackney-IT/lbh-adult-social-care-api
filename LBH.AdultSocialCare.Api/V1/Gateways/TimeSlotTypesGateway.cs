@@ -6,11 +6,14 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
+
     public class TimeSlotTypesGateway : ITimeSlotTypesGateway
     {
+
         private readonly DatabaseContext _databaseContext;
 
         public TimeSlotTypesGateway(DatabaseContext databaseContext)
@@ -21,14 +24,18 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<bool> DeleteAsync(Guid timeSlotTypesId)
         {
             var result = _databaseContext.TimeSlotType.Remove(new TimeSlotType
-                { Id = timeSlotTypesId });
+            {
+                Id = timeSlotTypesId
+            });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
+
             return isSuccess;
         }
 
         public async Task<TimeSlotType> GetAsync(Guid timeSlotTypesId)
         {
-            return await _databaseContext.TimeSlotType.FirstOrDefaultAsync(item => item.Id == timeSlotTypesId).ConfigureAwait(false);
+            return await _databaseContext.TimeSlotType.FirstOrDefaultAsync(item => item.Id == timeSlotTypesId)
+                .ConfigureAwait(false);
         }
 
         public async Task<IList<TimeSlotType>> ListAsync()
@@ -38,7 +45,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<TimeSlotType> UpsertAsync(TimeSlotType timeSlotTypes)
         {
-            TimeSlotType timeSlotTypesToUpdate = await _databaseContext.TimeSlotType.FirstOrDefaultAsync(item => item.TimeSlotTypeName == timeSlotTypes.TimeSlotTypeName).ConfigureAwait(false);
+            TimeSlotType timeSlotTypesToUpdate = await _databaseContext.TimeSlotType
+                .FirstOrDefaultAsync(item => item.TimeSlotTypeName == timeSlotTypes.TimeSlotTypeName)
+                .ConfigureAwait(false);
+
             if (timeSlotTypesToUpdate == null)
             {
                 timeSlotTypesToUpdate = new TimeSlotType();
@@ -50,10 +60,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             }
             else
             {
-                throw new ErrorException($"This record already exist Time Slot Type Name: {timeSlotTypes.TimeSlotTypeName}");
+                throw new ErrorException(
+                    $"This record already exist Time Slot Type Name: {timeSlotTypes.TimeSlotTypeName}");
             }
+
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
+
             return timeSlotTypesToUpdate;
         }
+
     }
+
 }

@@ -2,10 +2,10 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
 {
 
-    public class TimeSlotShifts : BaseEntity
+    public class TimeSlotType : BaseEntity
     {
 
         /// <summary>
@@ -18,7 +18,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Time Slot Type Name
         /// </summary>
         [Required]
-        public string TimeSlotShiftName { get; set; }
+        public string TimeSlotTypeName { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

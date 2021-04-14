@@ -1,29 +1,20 @@
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
+namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare
 {
 
-    public class HomeCarePackage : BaseEntity
+    public class HomeCarePackageRequest
     {
 
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets the Client Id
         /// </summary>
         public Guid ClientId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Clients
-        /// </summary>
-        [ForeignKey(nameof(ClientId))]
-        public Clients Clients { get; set; }
 
         /// <summary>
         /// Gets or sets the Start Date
@@ -46,14 +37,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public bool IsOngoingPeriod { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is This An Immediate Service
+        /// Gets or sets a value indicating whether this instance is this an immediate service.
         /// </summary>
         public bool IsThisAnImmediateService { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is This An Immediate Service
+        /// Gets or sets a value indicating whether this instance is this client under S117.
         /// </summary>
-        public bool IsThisuserUnderS117 { get; set; }
+        public bool IsThisClientUnderS117 { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id
@@ -69,11 +60,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Status Id
         /// </summary>
         public Guid StatusId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Status Object
-        /// </summary>
-        public Status Status { get; set; }
 
     }
 

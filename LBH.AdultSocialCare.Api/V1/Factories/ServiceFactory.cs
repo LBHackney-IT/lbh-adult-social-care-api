@@ -2,19 +2,18 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
     public static class ServiceFactory
     {
-        public static ServiceDomain ToDomain(PackageServices serviceEntity)
+        public static ServiceDomain ToDomain(HomeCareServiceType serviceEntity)
         {
             return new ServiceDomain
             {
                 Id = serviceEntity.Id,
                 ServiceName = serviceEntity.ServiceName,
-                PackageId = serviceEntity.PackageId,
-                Package = serviceEntity.Package,
                 CreatorId = serviceEntity.CreatorId,
                 DateCreated = serviceEntity.DateCreated,
                 UpdatorId = serviceEntity.UpdatorId,
@@ -22,14 +21,12 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        public static PackageServices ToEntity(ServiceDomain serviceDomain)
+        public static HomeCareServiceType ToEntity(ServiceDomain serviceDomain)
         {
-            return new PackageServices
+            return new HomeCareServiceType
             {
                 Id = serviceDomain.Id,
                 ServiceName = serviceDomain.ServiceName,
-                PackageId = serviceDomain.PackageId,
-                Package = serviceDomain.Package,
                 CreatorId = serviceDomain.CreatorId,
                 UpdatorId = serviceDomain.UpdatorId,
             };

@@ -1,16 +1,16 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain;
-using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Response;
+using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
+using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
-namespace LBH.AdultSocialCare.Api.V1.Controllers
+namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
 
     [Route("api/v1/[controller]")]
@@ -21,15 +21,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
 
         private readonly IUpsertServiceUseCase _upsertServiceUseCase;
         private readonly IGetServiceUseCase _getServiceUseCase;
-        private readonly IGetAllServiceUseCase _getAllServiceUseCase;
+        private readonly IGetAllHomeCareServiceTypesUseCase _getAllHomeCareServiceTypesUseCase;
         private readonly IDeleteServiceUseCase _deleteServiceUseCase;
 
         public HomeCareServiceController(IUpsertServiceUseCase upsertServiceUseCase, IGetServiceUseCase getServiceUseCase,
-            IGetAllServiceUseCase getAllServiceUseCase, IDeleteServiceUseCase deleteServiceUseCase)
+            IGetAllHomeCareServiceTypesUseCase getAllHomeCareServiceTypesUseCase,
+            IDeleteServiceUseCase deleteServiceUseCase)
         {
             _upsertServiceUseCase = upsertServiceUseCase;
             _getServiceUseCase = getServiceUseCase;
-            _getAllServiceUseCase = getAllServiceUseCase;
+            _getAllHomeCareServiceTypesUseCase = getAllHomeCareServiceTypesUseCase;
             _deleteServiceUseCase = deleteServiceUseCase;
         }
 
@@ -44,7 +45,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                     ServiceFactory.ToResponse(await _upsertServiceUseCase.ExecuteAsync(serviceDomain)
                         .ConfigureAwait(false));
 
-                if (serviceResponse == null) return NotFound();
+                if (serviceResponse == null)
+                {
+                    return NotFound();
+                }
 
                 //else if (!serviceResponse.Success) return BadRequest(serviceResponse.Message);
                 return Ok(serviceResponse);
@@ -69,11 +73,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet("getAll")]
-        public async Task<ActionResult<IList<PackageServices>>> GetAll()
+        public async Task<ActionResult<IList<HomeCareServiceType>>> GetAll()
         {
             try
             {
-                IList<PackageServices> result = await _getAllServiceUseCase.GetAllAsync().ConfigureAwait(false);
+                var result = await _getAllHomeCareServiceTypesUseCase.GetAllAsync().ConfigureAwait(false);
 
                 if (result == null) return NotFound();
 

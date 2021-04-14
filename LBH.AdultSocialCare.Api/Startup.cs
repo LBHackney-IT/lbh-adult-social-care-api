@@ -29,6 +29,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using LBH.AdultSocialCare.Api.V1;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
@@ -182,7 +184,7 @@ namespace LBH.AdultSocialCare.Api
         {
             services.AddScoped<IExampleGateway, ExampleGateway>();
             services.AddScoped<IPackageGateway, PackageGateway>();
-            services.AddScoped<IServiceGateway, ServiceGateway>();
+            services.AddScoped<IHomeCareServiceTypeGateway, HomeCareServiceTypeGateway>();
             services.AddScoped<IRolesGateway, RoleGateway>();
             services.AddScoped<ITimeSlotTypesGateway, TimeSlotTypesGateway>();
             services.AddScoped<ITimeSlotShiftsGateway, TimeSlotShiftsGateway>();
@@ -214,7 +216,7 @@ namespace LBH.AdultSocialCare.Api
 
             services.AddScoped<IUpsertServiceUseCase, UpsertServiceUseCase>();
             services.AddScoped<IGetServiceUseCase, GetServiceUseCase>();
-            services.AddScoped<IGetAllServiceUseCase, GetAllServiceUseCase>();
+            services.AddScoped<IGetAllHomeCareServiceTypesUseCase, GetAllHomeCareServiceTypesUseCase>();
             services.AddScoped<IDeleteServiceUseCase, DeleteServiceUseCase>();
 
             #endregion

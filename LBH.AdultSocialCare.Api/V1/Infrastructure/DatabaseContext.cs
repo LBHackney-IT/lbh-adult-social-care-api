@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -14,8 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
     public class DatabaseContext : DbContext
     {
 
-        //TODO: rename DatabaseContext to reflect the data source it is representing. eg. MosaicContext.
-        //Guidance on the context class can be found here https://github.com/LBHackney-IT/lbh-base-api/wiki/DatabaseContext
+        // TODO: rename DatabaseContext to reflect the data source it is representing. eg. MosaicContext.
         public DatabaseContext(DbContextOptions options)
             : base(options)
         {
@@ -24,11 +24,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<DayCarePackage> DayCarePackages { get; set; }
         public DbSet<DatabaseEntity> DatabaseEntities { get; set; }
         public DbSet<Package> Packages { get; set; }
-        public DbSet<PackageServices> PackageServices { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<TimeSlotType> TimeSlotType { get; set; }
         public DbSet<TimeSlotShifts> TimeSlotShifts { get; set; }
         public DbSet<HomeCarePackage> HomeCarePackage { get; set; }
+        public DbSet<HomeCareServiceType> HomeCareServiceTypes { get; set; }
+        public DbSet<HomeCareServiceTypeMinutes> HomeCareServiceTypeMinutes { get; set; }
         public DbSet<HomeCarePackageSlots> HomeCarePackageSlots { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<Clients> Clients { get; set; }
@@ -41,9 +42,18 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
-            // Seed database
+            // Home care
+            modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.PrimaryCarerMinutes);
+
             // Seed term time consideration options
             modelBuilder.ApplyConfiguration(new TermTimeConsiderationOptionsSeed());
+
+            // Seed home care service types
+            modelBuilder.ApplyConfiguration(new HomeCareServiceTypesSeed());
+            modelBuilder.ApplyConfiguration(new HomeCareServiceTypeMinutesSeed());
+
+            // Seed home care time slot shifts
+            modelBuilder.ApplyConfiguration(new TimeSlotShiftsSeed());
         }
 
         public override int SaveChanges()
