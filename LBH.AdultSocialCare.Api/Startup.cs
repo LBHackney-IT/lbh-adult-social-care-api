@@ -1,6 +1,6 @@
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Controllers;
+using LBH.AdultSocialCare.Api.V1;
 using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
@@ -13,6 +13,7 @@ using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Concr
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using LBH.AdultSocialCare.Api.Versioning;
 using Microsoft.AspNetCore.Builder;
@@ -22,7 +23,6 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,10 +34,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using LBH.AdultSocialCare.Api.V1;
-using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 
 namespace LBH.AdultSocialCare.Api
 {
