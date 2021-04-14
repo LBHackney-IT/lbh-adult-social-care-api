@@ -32,8 +32,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DayCarePackageDomain, DayCarePackageResponse>();
 
             CreateMap<DayCarePackageOpportunityForCreationDomain, DayCarePackageOpportunity>();
-            CreateMap<DayCarePackageForUpdateDomain, DayCarePackageOpportunity>();
-            CreateMap<DayCarePackageOpportunity, DayCarePackageDomain>();
+            CreateMap<DayCarePackageOpportunityForUpdateDomain, DayCarePackageOpportunity>();
+            CreateMap<DayCarePackageOpportunity, DayCarePackageOpportunityDomain>();
             CreateMap<DayCarePackageOpportunityForCreationRequest, DayCarePackageOpportunityForCreationDomain>();
             CreateMap<DayCarePackageOpportunityForUpdateRequest, DayCarePackageOpportunityForUpdateDomain>();
             CreateMap<DayCarePackageOpportunityDomain, DayCarePackageOpportunityResponse>();
