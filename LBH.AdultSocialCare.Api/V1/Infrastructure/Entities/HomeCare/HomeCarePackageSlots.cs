@@ -51,16 +51,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// </summary>
         public string WhatShouldBeDone { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Time Slot Type Id
-        /// </summary>
-        public Guid TimeSlotTypeId { get; set; }
+        ///// <summary>
+        ///// Gets or sets the Time Slot Type Id
+        ///// </summary>
+        //public Guid TimeSlotTypeId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Time Slot Types
-        /// </summary>
-        [ForeignKey(nameof(TimeSlotTypeId))]
-        public TimeSlotType TimeSlotTypes { get; set; }
+        ///// <summary>
+        ///// Gets or sets the Time Slot Types
+        ///// </summary>
+        //[ForeignKey(nameof(TimeSlotTypeId))]
+        //public TimeSlotType TimeSlotTypes { get; set; }
 
         /// <summary>
         /// Gets or sets the Time Slot Shift Id
@@ -77,16 +77,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// Gets or sets the InMinutes
         /// </summary>
         public int InMinutes { get; set; }
-
-        /// <summary>
-        /// Gets or sets the In Hours
-        /// </summary>
-        public int InHours { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Time
-        /// </summary>
-        public int Time { get; set; }
 
     }
 

@@ -1,12 +1,13 @@
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using System;
 using System.Collections.Generic;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain
 {
-    public class HomeCarePackageSlotsDomain
+
+    public class HomeCarePackageSlotListDomain
     {
+
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
@@ -51,34 +52,26 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         /// Gets or sets the Home Care Package Slot
         /// </summary>
         public List<HomeCarePackageSlotDomain> HomeCarePackageSlot { get; set; }
+
     }
 
     public class HomeCarePackageSlotDomain
     {
+
         /// <summary>
         /// Gets or sets the InMinutes
         /// </summary>
         public int InMinutes { get; set; }
 
-        /// <summary>
-        /// Gets or sets the In Hours
-        /// </summary>
-        public int InHours { get; set; }
+        ///// <summary>
+        ///// Gets or sets the Time Slot Type Id
+        ///// </summary>
+        //public Guid TimeSlotTypeId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Time
-        /// </summary>
-        public int Time { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Time Slot Type Id
-        /// </summary>
-        public Guid TimeSlotTypeId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Time Slot Types
-        /// </summary>
-        public TimeSlotType TimeSlotTypes { get; set; }
+        ///// <summary>
+        ///// Gets or sets the Time Slot Types
+        ///// </summary>
+        //public TimeSlotType TimeSlotTypes { get; set; }
 
         /// <summary>
         /// Gets or sets the Time Slot Shift Id
@@ -90,6 +83,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         /// </summary>
         public TimeSlotShifts TimeSlotShift { get; set; }
 
-
     }
+
 }

@@ -1,12 +1,12 @@
+using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
@@ -32,60 +32,71 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             return isSuccess;
         }
 
-        public async Task<HomeCarePackageSlotsList> UpsertAsync(HomeCarePackageSlotsList homeCarePackageSlotsList)
+        public async Task<HomeCarePackageSlotListDomain> UpsertAsync(HomeCarePackageSlotListDomain homeCarePackageSlotListList)
         {
-            List<HomeCarePackageSlots> deleteids = await _databaseContext.HomeCarePackageSlots
-                .Where(item => item.HomeCarePackageId == homeCarePackageSlotsList.HomeCarePackageId)
+            bool success;
+
+            IList<HomeCarePackageSlots> itemsToDelete = await _databaseContext.HomeCarePackageSlots
+                .Where(item => item.HomeCarePackageId == homeCarePackageSlotListList.HomeCarePackageId)
                 .ToListAsync()
                 .ConfigureAwait(false);
 
-            if (deleteids.Count > 0)
+            if (itemsToDelete.Count > 0)
             {
-                foreach (var item in deleteids)
+                foreach (var item in itemsToDelete)
                 {
                     _databaseContext.HomeCarePackageSlots.Remove(item);
-                    bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
+                }
+
+                success = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
+
+                if (!success)
+                {
+                    throw new Exception("Failed to delete existing time slot shift entries for home care package");
                 }
             }
 
-            HomeCarePackageSlotsList homeCarePackageSlots = new HomeCarePackageSlotsList
+            HomeCarePackageSlotListDomain homeCarePackageSlotList = new HomeCarePackageSlotListDomain
             {
-                HomeCarePackageId = homeCarePackageSlotsList.HomeCarePackageId
+                HomeCarePackageId = homeCarePackageSlotListList.HomeCarePackageId
             };
 
-            foreach (var items in homeCarePackageSlotsList.HomeCarePackageSlot)
+            foreach (HomeCarePackageSlotDomain homeCarePackageSlotInputItem in homeCarePackageSlotListList
+                .HomeCarePackageSlot)
             {
-                HomeCarePackageSlots homeCarePackageSlotsToUpdate = new HomeCarePackageSlots();
+                HomeCarePackageSlots homeCarePackageSlotsToUpdate = new HomeCarePackageSlots
+                {
+                    HomeCarePackageId = homeCarePackageSlotListList.HomeCarePackageId,
+                    ServiceId = homeCarePackageSlotListList.ServiceId,
+                    PrimaryCarer = homeCarePackageSlotListList.PrimaryCarer,
+                    SecondaryCarer = homeCarePackageSlotListList.SecondaryCarer,
+                    NeedToAddress = homeCarePackageSlotListList.NeedToAddress,
+                    WhatShouldBeDone = homeCarePackageSlotListList.WhatShouldBeDone,
+                    TimeSlotShiftId = homeCarePackageSlotInputItem.TimeSlotShiftId,
+                    InMinutes = homeCarePackageSlotInputItem.InMinutes,
+                };
+
+                homeCarePackageSlotList.Services = await _databaseContext.HomeCareServiceTypes
+                    .FirstOrDefaultAsync(item => item.Id == homeCarePackageSlotListList.ServiceId)
+                    .ConfigureAwait(false);
+
+                homeCarePackageSlotInputItem.TimeSlotShift = await _databaseContext.TimeSlotShifts
+                    .FirstOrDefaultAsync(item => item.Id == homeCarePackageSlotInputItem.TimeSlotShiftId)
+                    .ConfigureAwait(false);
+
+                //homeCarePackageSlotInputItem.TimeSlotTypes = await _databaseContext.TimeSlotType
+                //    .FirstOrDefaultAsync(item => item.Id == homeCarePackageSlotInputItem.TimeSlotTypeId)
+                //    .ConfigureAwait(false);
+
                 await _databaseContext.HomeCarePackageSlots.AddAsync(homeCarePackageSlotsToUpdate).ConfigureAwait(false);
-                homeCarePackageSlotsToUpdate.HomeCarePackageId = homeCarePackageSlotsList.HomeCarePackageId;
-                homeCarePackageSlotsToUpdate.ServiceId = homeCarePackageSlotsList.ServiceId;
-
-                homeCarePackageSlots.Services = await _databaseContext.HomeCareServiceTypes
-                    .FirstOrDefaultAsync(item => item.Id == homeCarePackageSlotsList.ServiceId)
-                    .ConfigureAwait(false);
-                homeCarePackageSlotsToUpdate.PrimaryCarer = homeCarePackageSlotsList.PrimaryCarer;
-                homeCarePackageSlotsToUpdate.SecondaryCarer = homeCarePackageSlotsList.SecondaryCarer;
-                homeCarePackageSlotsToUpdate.NeedToAddress = homeCarePackageSlotsList.NeedToAddress;
-                homeCarePackageSlotsToUpdate.WhatShouldBeDone = homeCarePackageSlotsList.WhatShouldBeDone;
-                homeCarePackageSlotsToUpdate.TimeSlotShiftId = items.TimeSlotShiftId;
-
-                items.TimeSlotShift = await _databaseContext.TimeSlotShifts
-                    .FirstOrDefaultAsync(item => item.Id == items.TimeSlotShiftId)
-                    .ConfigureAwait(false);
-                homeCarePackageSlotsToUpdate.TimeSlotTypeId = items.TimeSlotTypeId;
-
-                items.TimeSlotTypes = await _databaseContext.TimeSlotType
-                    .FirstOrDefaultAsync(item => item.Id == items.TimeSlotTypeId)
-                    .ConfigureAwait(false);
-                homeCarePackageSlotsToUpdate.InHours = items.InHours;
-                homeCarePackageSlotsToUpdate.InMinutes = items.InMinutes;
-                homeCarePackageSlotsToUpdate.Time = items.Time;
-                homeCarePackageSlots.HomeCarePackageSlot.Add(items);
+                homeCarePackageSlotList.HomeCarePackageSlot.Add(homeCarePackageSlotInputItem);
             }
 
-            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
+            success = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) > 0;
 
-            return homeCarePackageSlots;
+            return success
+                ? homeCarePackageSlotList
+                : null;
         }
 
     }

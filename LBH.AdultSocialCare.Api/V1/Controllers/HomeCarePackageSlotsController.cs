@@ -33,12 +33,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             try
             {
-                HomeCarePackageSlotsDomain homeCarePackageSlotsDomain =
+                HomeCarePackageSlotListDomain homeCarePackageSlotListDomain =
                     HomeCarePackageSlotsFactory.ToDomain(homeCarePackageSlotsRequestList);
 
                 HomeCarePackageSlotsResponseList homeCarePackageSlotsResponse =
                     HomeCarePackageSlotsFactory.ToResponse(await _upsertHomeCarePackageSlotsUseCase
-                        .ExecuteAsync(homeCarePackageSlotsDomain)
+                        .ExecuteAsync(homeCarePackageSlotListDomain)
                         .ConfigureAwait(false));
 
                 if (homeCarePackageSlotsResponse == null) return NotFound();

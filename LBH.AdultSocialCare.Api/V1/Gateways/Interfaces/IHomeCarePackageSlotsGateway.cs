@@ -1,14 +1,17 @@
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Domain;
 using System;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
 {
+
     public interface IHomeCarePackageSlotsGateway
     {
-        public Task<HomeCarePackageSlotsList> UpsertAsync(HomeCarePackageSlotsList homeCarePackageSlotsList);
+
+        public Task<HomeCarePackageSlotListDomain> UpsertAsync(HomeCarePackageSlotListDomain homeCarePackageSlotListList);
 
         public Task<bool> DeleteAsync(Guid homeCarePackageId);
+
     }
+
 }
