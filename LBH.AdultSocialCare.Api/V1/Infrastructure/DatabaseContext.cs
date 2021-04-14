@@ -44,7 +44,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Home care
             modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.PrimaryCarerMinutes);
-            modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.SecondaryCarerMinutes);
 
             // Seed term time consideration options
             modelBuilder.ApplyConfiguration(new TermTimeConsiderationOptionsSeed());

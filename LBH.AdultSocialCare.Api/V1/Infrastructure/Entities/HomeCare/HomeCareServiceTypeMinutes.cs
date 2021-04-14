@@ -28,6 +28,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         public int Minutes { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is secondary carer.
+        /// </summary>
+        public bool IsSecondaryCarer { get; set; }
+
+        /// <summary>
         /// Gets or sets the home care service type identifier.
         /// </summary>
         public int HomeCareServiceTypeId { get; set; }

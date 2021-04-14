@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
 {
@@ -37,11 +35,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// Gets or sets the primary carer minutes.
         /// </summary>
         public ICollection<HomeCareServiceTypeMinutes> PrimaryCarerMinutes { get; set; }
-
-        /// <summary>
-        /// Gets or sets the secondary carer minutes.
-        /// </summary>
-        public ICollection<HomeCareServiceTypeMinutes> SecondaryCarerMinutes { get; set; }
 
     }
 
