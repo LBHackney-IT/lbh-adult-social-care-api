@@ -23,7 +23,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
         public DbSet<DayCarePackage> DayCarePackages { get; set; }
         public DbSet<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
-        public DbSet<DatabaseEntity> DatabaseEntities { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<TimeSlotType> TimeSlotType { get; set; }
@@ -34,7 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<HomeCarePackageSlots> HomeCarePackageSlots { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<Clients> Clients { get; set; }
-        public DbSet<Status> Status { get; set; }
+        public DbSet<PackageStatus> Status { get; set; }
         public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
         public DbSet<ResidentialCarePackage> ResidentialCarePackage { get; set; }
         public DbSet<NursingCarePackage> NursingCarePackage { get; set; }

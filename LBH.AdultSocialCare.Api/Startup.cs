@@ -34,11 +34,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace LBH.AdultSocialCare.Api
 {
+
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -181,7 +184,6 @@ namespace LBH.AdultSocialCare.Api
 
         private static void RegisterGateways(IServiceCollection services)
         {
-            services.AddScoped<IExampleGateway, ExampleGateway>();
             services.AddScoped<IPackageGateway, PackageGateway>();
             services.AddScoped<IHomeCareServiceTypeGateway, HomeCareServiceTypeGateway>();
             services.AddScoped<IRolesGateway, RoleGateway>();
@@ -200,9 +202,6 @@ namespace LBH.AdultSocialCare.Api
 
         private static void RegisterUseCases(IServiceCollection services)
         {
-            services.AddScoped<IGetAllUseCase, GetAllUseCase>();
-            services.AddScoped<IGetByIdUseCase, GetByIdUseCase>();
-
             #region Package
 
             services.AddScoped<IUpsertPackageUseCase, UpsertPackageUseCase>();
@@ -328,14 +327,13 @@ namespace LBH.AdultSocialCare.Api
                 DatabaseContext databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
                 // Create if not exists
-                /*if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
+                if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
                 {
                     databaseContext.Database.EnsureCreated();
-                }*/
-
-                // Perform migrations
-                if (databaseContext.Database.GetPendingMigrations().Any())
+                }
+                else if (databaseContext.Database.GetPendingMigrations().Any())
                 {
+                    // Perform migrations
                     databaseContext.Database.Migrate();
                 }
             }
@@ -356,7 +354,6 @@ namespace LBH.AdultSocialCare.Api
             IMapper mapper = app.ApplicationServices.GetService<IMapper>();
             ApiToDomainFactory.Configure(mapper);
             DomainToEntityFactory.Configure(mapper);
-            EntityToDomainFactory.Configure(mapper);
             ResponseFactory.Configure(mapper);
 
             // TODO
@@ -386,5 +383,7 @@ namespace LBH.AdultSocialCare.Api
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
+
 }

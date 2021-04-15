@@ -20,28 +20,28 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<bool> DeleteAsync(Guid statusId)
         {
-            var result = _databaseContext.Status.Remove(new Status
+            var result = _databaseContext.Status.Remove(new PackageStatus
                 { Id = statusId });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }
 
-        public async Task<Status> GetAsync(Guid statusId)
+        public async Task<PackageStatus> GetAsync(Guid statusId)
         {
             return await _databaseContext.Status.FirstOrDefaultAsync(item => item.Id == statusId).ConfigureAwait(false);
         }
 
-        public async Task<IList<Status>> ListAsync()
+        public async Task<IList<PackageStatus>> ListAsync()
         {
             return await _databaseContext.Status.ToListAsync().ConfigureAwait(false);
         }
 
-        public async Task<Status> UpsertAsync(Status status)
+        public async Task<PackageStatus> UpsertAsync(PackageStatus status)
         {
-            Status statusToUpdate = await _databaseContext.Status.FirstOrDefaultAsync(item => item.StatusName == status.StatusName).ConfigureAwait(false);
+            PackageStatus statusToUpdate = await _databaseContext.Status.FirstOrDefaultAsync(item => item.StatusName == status.StatusName).ConfigureAwait(false);
             if (statusToUpdate == null)
             {
-                statusToUpdate = new Status();
+                statusToUpdate = new PackageStatus();
                 await _databaseContext.Status.AddAsync(statusToUpdate).ConfigureAwait(false);
                 statusToUpdate.StatusName = status.StatusName;
                 statusToUpdate.CreatorId = status.CreatorId;

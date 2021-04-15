@@ -54,8 +54,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("{statusId}")]
+        [HttpGet("{statusId}")]
         public async Task<ActionResult<StatusResponse>> Get(Guid statusId)
         {
             try
@@ -68,13 +67,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("getAll")]
-        public async Task<ActionResult<IList<Status>>> GetAll()
+        [HttpGet("getAll")]
+        public async Task<ActionResult<IList<PackageStatus>>> GetAll()
         {
             try
             {
-                IList<Status> result = await _getAllStatusUseCase.GetAllAsync().ConfigureAwait(false);
+                IList<PackageStatus> result = await _getAllStatusUseCase.GetAllAsync().ConfigureAwait(false);
 
                 if (result == null) return NotFound();
 
@@ -86,8 +84,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
-        [HttpDelete]
-        [Route("{statusId}")]
+        [HttpDelete("{statusId}")]
         public async Task<ActionResult<bool>> Delete(Guid statusId)
         {
             try

@@ -14,6 +14,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
+
         /// <summary>
         /// Gets or sets the Client Id
         /// </summary>
@@ -73,7 +74,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// <summary>
         /// Gets or sets the Status Object
         /// </summary>
-        public Status Status { get; set; }
+        public PackageStatus Status { get; set; }
 
     }
 

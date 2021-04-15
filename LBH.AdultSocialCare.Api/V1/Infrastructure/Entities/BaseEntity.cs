@@ -9,6 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public BaseEntity()
         {
             DateCreated = DateTimeOffset.UtcNow;
+            DateUpdated = DateTimeOffset.UtcNow;
         }
 
         /// <summary>

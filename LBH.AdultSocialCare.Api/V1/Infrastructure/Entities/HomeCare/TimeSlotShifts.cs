@@ -1,4 +1,6 @@
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
 {
@@ -21,8 +23,20 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// <summary>
         /// Gets or sets the time slot time label.
         /// </summary>
-        [Required]
         public string TimeSlotTimeLabel { get; set; }
+
+        /// <summary>
+        /// This allows us to determine if this time shift
+        /// should directly correspond to just one service.
+        /// </summary>
+        public int? LinkedToHomeCareServiceTypeId { get; set; }
+
+        /// <summary>
+        /// This allows us to determine if this time shift
+        /// should directly correspond to just one service.
+        /// </summary>
+        [ForeignKey(nameof(LinkedToHomeCareServiceTypeId))]
+        public HomeCareServiceType HomeCareServiceType { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

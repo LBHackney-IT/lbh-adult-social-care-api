@@ -67,6 +67,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// </summary>
         public int InMinutes { get; set; }
 
+        /// <summary>
+        /// Gets or sets the day of the week identifier.
+        /// </summary>
+        public int DayOfTheWeekId { get; set; }
+
+        /// <summary>
+        /// Gets the day of week.
+        /// </summary>
+        [NotMapped]
+        public DayOfWeek DayOfWeek => (DayOfWeek) DayOfTheWeekId;
+
     }
 
 }

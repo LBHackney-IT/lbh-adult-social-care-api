@@ -1,12 +1,10 @@
 using LBH.AdultSocialCare.Api.V1.Exceptions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
@@ -35,7 +33,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<HomeCareServiceType> GetAsync(int serviceId)
         {
-            var result = await _databaseContext.HomeCareServiceTypes.FirstOrDefaultAsync(item => item.Id == serviceId)
+            var result = await _databaseContext.HomeCareServiceTypes.Include(item => item.Minutes)
+                .FirstOrDefaultAsync(item => item.Id == serviceId)
                 .ConfigureAwait(false);
 
             return result;
@@ -43,7 +42,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<IList<HomeCareServiceType>> ListAsync()
         {
-            return await _databaseContext.HomeCareServiceTypes.ToListAsync().ConfigureAwait(false);
+            return await _databaseContext.HomeCareServiceTypes.Include(item => item.Minutes)
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
 
         public async Task<HomeCareServiceType> UpsertAsync(HomeCareServiceType service)
