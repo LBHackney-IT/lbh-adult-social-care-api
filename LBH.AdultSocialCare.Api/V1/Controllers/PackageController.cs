@@ -15,6 +15,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/package")]
     [Produces("application/json")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
     public class PackageController : BaseController
     {
         private readonly IUpsertPackageUseCase _upsertPackageUseCase;

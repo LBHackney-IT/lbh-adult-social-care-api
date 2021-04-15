@@ -38,6 +38,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<NursingCarePackage> NursingCarePackage { get; set; }
         public DbSet<NursingCareAdditionalNeeds> NursingCareAdditionalNeeds { get; set; }
         public DbSet<ResidentialCareAdditionalNeeds> ResidentialCareAdditionalNeeds { get; set; }
+        public DbSet<HomeCarePackageCost> HomeCarePackageCosts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

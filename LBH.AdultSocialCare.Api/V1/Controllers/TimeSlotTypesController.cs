@@ -4,6 +4,7 @@ using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/time-slot-types")]
     [Produces("application/json")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
     public class TimeSlotTypesController : BaseController
     {
         private readonly IUpsertTimeSlotTypesUseCase _upsertTimeSlotTypesUseCase;
@@ -36,6 +39,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         /// <summary>Creates the specified time slot type request.</summary>
         /// <param name="timeSlotTypeRequest">The time slot type request.</param>
         /// <returns>The created Time Slot Type Response model</returns>
+        [ProducesResponseType(typeof(TimeSlotTypesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         [HttpPost]
         public async Task<ActionResult<TimeSlotTypesResponse>> Create(TimeSlotTypeRequest timeSlotTypeRequest)
         {
@@ -44,7 +51,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                 TimeSlotTypesDomain timeSlotTypesDomain = TimeSlotTypesFactory.ToDomain(timeSlotTypeRequest);
                 TimeSlotTypesResponse timeSlotTypesResponse = TimeSlotTypesFactory.ToResponse(await _upsertTimeSlotTypesUseCase.ExecuteAsync(timeSlotTypesDomain).ConfigureAwait(false));
                 if (timeSlotTypesResponse == null) return NotFound();
-                //else if (!timeSlotTypesResponse.Success) return BadRequest(timeSlotTypesResponse.Message);
                 return Ok(timeSlotTypesResponse);
             }
             catch (FormatException ex)
@@ -56,6 +62,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         /// <summary>Gets the specified time slot types identifier.</summary>
         /// <param name="timeSlotTypesId">The time slot types identifier.</param>
         /// <returns>The Time Slot Type Response model</returns>
+        [ProducesResponseType(typeof(TimeSlotTypesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         [HttpGet]
         [Route("{timeSlotTypesId}")]
         public async Task<ActionResult<TimeSlotTypesResponse>> Get(Guid timeSlotTypesId)
@@ -72,6 +82,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
 
         /// <summary>Gets all.</summary>
         /// <returns>The List of Time Slot Type Response model</returns>
+        [ProducesResponseType(typeof(IList<TimeSlotType>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         [HttpGet]
         [Route("getAll")]
         public async Task<ActionResult<IList<TimeSlotType>>> GetAll()
@@ -88,6 +102,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         [HttpDelete]
         [Route("{timeSlotTypesId}")]
         public async Task<ActionResult<bool>> Delete(Guid timeSlotTypesId)
