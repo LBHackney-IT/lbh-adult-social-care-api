@@ -4,6 +4,7 @@ using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
     public class StatusController : BaseController
     {
 
@@ -33,8 +36,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteStatusUseCase = deleteStatusUseCase;
         }
 
+        /// <summary>Creates the specified status request.</summary>
+        /// <param name="statusRequest">The status request.</param>
+        /// <returns>The created status response.</returns>
+        [ProducesResponseType(typeof(StatusResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         [HttpPost]
-        public async Task<ActionResult<StatusResponse>> Create(StatusRequest statusRequest)
+        public async Task<ActionResult<StatusResponse>> Create([FromBody] StatusRequest statusRequest)
         {
             try
             {
@@ -44,8 +54,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                     StatusFactory.ToResponse(await _upsertStatusUseCase.ExecuteAsync(statusDomain).ConfigureAwait(false));
 
                 if (statusResponse == null) return NotFound();
-
-                //else if (!statusResponse.Success) return BadRequest(statusResponse.Message);
                 return Ok(statusResponse);
             }
             catch (FormatException ex)
@@ -54,7 +62,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
-        [HttpGet("{statusId}")]
+        /// <summary>Gets the specified status identifier.</summary>
+        /// <param name="statusId">The status identifier.</param>
+        /// <returns>The created status response.</returns>
+        [ProducesResponseType(typeof(StatusResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        [HttpGet]
+        [Route("{statusId}")]
         public async Task<ActionResult<StatusResponse>> Get(Guid statusId)
         {
             try
@@ -67,7 +83,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
-        [HttpGet("getAll")]
+        /// <summary>Gets all.</summary>
+        /// <returns>The List of Status model</returns>
+        [ProducesResponseType(typeof(IList<PackageStatus>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        [HttpGet]
+        [Route("getAll")]
         public async Task<ActionResult<IList<PackageStatus>>> GetAll()
         {
             try
@@ -84,7 +107,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
-        [HttpDelete("{statusId}")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        [HttpDelete]
+        [Route("{statusId}")]
         public async Task<ActionResult<bool>> Delete(Guid statusId)
         {
             try

@@ -15,6 +15,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/package")]
     [Produces("application/json")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
     public class PackageController : BaseController
     {
         private readonly IUpsertPackageUseCase _upsertPackageUseCase;
@@ -30,6 +32,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deletePackageUseCase = deletePackageUseCase;
         }
 
+        /// <summary>Creates the specified package request.</summary>
+        /// <param name="packageRequest">The package request.</param>
+        /// <returns>The created package response.</returns>
         [HttpPost]
         public async Task<ActionResult<PackageResponse>> Create(PackageRequest packageRequest)
         {
@@ -38,7 +43,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                 PackageDomain packageDomain = PackageFactory.ToDomain(packageRequest);
                 PackageResponse packageResponse = PackageFactory.ToResponse(await _upsertPackageUseCase.ExecuteAsync(packageDomain).ConfigureAwait(false));
                 if (packageResponse == null) return NotFound();
-                //else if (!packageResponse.Success) return BadRequest(packageResponse.Message);
                 return Ok(packageResponse);
             }
             catch (FormatException ex)
@@ -47,6 +51,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified package identifier.</summary>
+        /// <param name="packageId">The package identifier.</param>
+        /// <returns>The package response.</returns>
         [HttpGet]
         [Route("{packageId}")]
         public async Task<ActionResult<PackageResponse>> Get(Guid packageId)
@@ -63,6 +70,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets all.</summary>
+        /// <returns>List of packages</returns>
         [HttpGet]
         [Route("getAll")]
         public async Task<ActionResult<IList<Package>>> GetAll()

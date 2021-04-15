@@ -4,6 +4,7 @@ using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,11 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
-
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/time-slot-shifts")]
     [Produces("application/json")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
     public class TimeSlotShiftsController : BaseController
     {
 
@@ -36,6 +38,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteTimeSlotShiftsUseCase = deleteTimeSlotShiftsUseCase;
         }
 
+        /// <summary>Creates the specified time slot shifts request.</summary>
+        /// <param name="timeSlotShiftsRequest">The time slot shifts request.</param>
+        /// <returns>The created Time Slot Shifts Response model</returns>
+        [ProducesResponseType(typeof(TimeSlotShiftsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         [HttpPost]
         public async Task<ActionResult<TimeSlotShiftsResponse>> Create(TimeSlotShiftsRequest timeSlotShiftsRequest)
         {
@@ -57,6 +66,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified time slot shifts identifier.</summary>
+        /// <param name="timeSlotShiftsId">The time slot shifts identifier.</param>
+        /// <returns>The Time Slot Shifts Response model</returns>
+        [ProducesResponseType(typeof(TimeSlotShiftsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         [HttpGet]
         [Route("{timeSlotShiftsId}")]
         public async Task<ActionResult<TimeSlotShiftsResponse>> Get(int timeSlotShiftsId)
@@ -72,7 +88,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
-        [HttpGet("getAll")]
+        /// <summary>Gets all.</summary>
+        /// <returns>The List of Time Slot Shifts</returns>
+        [ProducesResponseType(typeof(IList<TimeSlotShifts>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        [HttpGet]
+        [Route("getAll")]
         public async Task<ActionResult<IList<TimeSlotShifts>>> GetAll()
         {
             try
@@ -89,8 +112,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
         [HttpDelete]
-        [Route("{timeSlotTypesId}")]
+        [Route("{timeSlotShiftsId}")]
         public async Task<ActionResult<bool>> Delete(int timeSlotShiftsId)
         {
             try

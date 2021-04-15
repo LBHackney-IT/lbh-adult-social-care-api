@@ -14,9 +14,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Id = statusEntity.Id,
                 StatusName = statusEntity.StatusName,
                 CreatorId = statusEntity.CreatorId,
-                DateCreated = statusEntity.DateCreated,
-                UpdatorId = statusEntity.UpdatorId,
-                DateUpdated = statusEntity.DateUpdated
+                UpdatorId = statusEntity.UpdatorId
             };
         }
 
@@ -38,9 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Id = statusDomain.Id,
                 StatusName = statusDomain.StatusName,
                 CreatorId = statusDomain.CreatorId,
-                DateCreated = statusDomain.DateCreated,
-                UpdatorId = statusDomain.UpdatorId,
-                DateUpdated = statusDomain.DateUpdated
+                UpdatorId = statusDomain.UpdatorId
             };
         }
 
@@ -51,9 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Id = statusEntity.Id,
                 StatusName = statusEntity.StatusName,
                 CreatorId = statusEntity.CreatorId,
-                DateCreated = statusEntity.DateCreated,
-                UpdatorId = statusEntity.UpdatorId,
-                DateUpdated = statusEntity.DateUpdated
+                UpdatorId = statusEntity.UpdatorId
             };
         }
     }

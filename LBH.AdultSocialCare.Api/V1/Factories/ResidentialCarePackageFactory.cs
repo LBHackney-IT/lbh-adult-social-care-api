@@ -27,15 +27,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsThisUserUnderS117 = residentialCarePackageEntity.IsThisUserUnderS117,
                 NeedToAddress = residentialCarePackageEntity.NeedToAddress,
                 TypeOfCareHome = residentialCarePackageEntity.TypeOfCareHome,
-                Weekly = residentialCarePackageEntity.Weekly,
-                OneOff = residentialCarePackageEntity.OneOff,
-                AdditionalNeedToAddress = residentialCarePackageEntity.AdditionalNeedToAddress,
                 CreatorId = residentialCarePackageEntity.CreatorId,
-                DateCreated = residentialCarePackageEntity.DateCreated,
                 UpdatorId = residentialCarePackageEntity.UpdatorId,
-                DateUpdated = residentialCarePackageEntity.DateUpdated,
                 StatusId = residentialCarePackageEntity.StatusId,
-                Status = residentialCarePackageEntity.Status
+                Status = residentialCarePackageEntity.Status,
+                ResidentialCareAdditionalNeeds = residentialCarePackageEntity.ResidentialCareAdditionalNeeds
             };
         }
 
@@ -55,13 +51,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsThisUserUnderS117 = residentialCarePackageDomain.IsThisUserUnderS117,
                 NeedToAddress = residentialCarePackageDomain.NeedToAddress,
                 TypeOfCareHome = residentialCarePackageDomain.TypeOfCareHome,
-                Weekly = residentialCarePackageDomain.Weekly,
-                OneOff = residentialCarePackageDomain.OneOff,
-                AdditionalNeedToAddress = residentialCarePackageDomain.AdditionalNeedToAddress,
                 CreatorId = residentialCarePackageDomain.CreatorId,
                 UpdatorId = residentialCarePackageDomain.UpdatorId,
                 StatusId = residentialCarePackageDomain.StatusId,
-                Status = residentialCarePackageDomain.Status
+                Status = residentialCarePackageDomain.Status,
+                ResidentialCareAdditionalNeeds = residentialCarePackageDomain.ResidentialCareAdditionalNeeds
             };
         }
 
@@ -81,15 +75,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsThisUserUnderS117 = residentialCarePackageDomain.IsThisUserUnderS117,
                 NeedToAddress = residentialCarePackageDomain.NeedToAddress,
                 TypeOfCareHome = residentialCarePackageDomain.TypeOfCareHome,
-                Weekly = residentialCarePackageDomain.Weekly,
-                OneOff = residentialCarePackageDomain.OneOff,
-                AdditionalNeedToAddress = residentialCarePackageDomain.AdditionalNeedToAddress,
                 CreatorId = residentialCarePackageDomain.CreatorId,
-                DateCreated = residentialCarePackageDomain.DateCreated,
                 UpdatorId = residentialCarePackageDomain.UpdatorId,
-                DateUpdated = residentialCarePackageDomain.DateUpdated,
                 StatusId = residentialCarePackageDomain.StatusId,
-                Status = residentialCarePackageDomain.Status
+                Status = residentialCarePackageDomain.Status,
+                ResidentialCareAdditionalNeeds = residentialCarePackageDomain.ResidentialCareAdditionalNeeds
             };
         }
 
@@ -108,13 +98,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsThisUserUnderS117 = residentialCarePackageRequest.IsThisUserUnderS117,
                 NeedToAddress = residentialCarePackageRequest.NeedToAddress,
                 TypeOfCareHome = residentialCarePackageRequest.TypeOfCareHome,
-                Weekly = residentialCarePackageRequest.Weekly,
-                OneOff = residentialCarePackageRequest.OneOff,
-                AdditionalNeedToAddress = residentialCarePackageRequest.AdditionalNeedToAddress,
                 CreatorId = residentialCarePackageRequest.CreatorId,
-                DateCreated = residentialCarePackageRequest.DateCreated,
                 UpdatorId = residentialCarePackageRequest.UpdatorId,
-                DateUpdated = residentialCarePackageRequest.DateUpdated,
                 StatusId = residentialCarePackageRequest.StatusId
             };
         }
