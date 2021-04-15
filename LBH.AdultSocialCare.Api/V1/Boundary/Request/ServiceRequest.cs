@@ -2,12 +2,14 @@ using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
 {
+
     public class ServiceRequest
     {
+
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the Package Id
@@ -38,5 +40,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         /// Gets or sets the Date Updated
         /// </summary>
         public DateTimeOffset? DateUpdated { get; set; }
+
     }
+
 }

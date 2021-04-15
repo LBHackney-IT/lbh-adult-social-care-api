@@ -17,7 +17,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase
 
         public async Task<StatusDomain> ExecuteAsync(StatusDomain status)
         {
-            Status statusEntity = StatusFactory.ToEntity(status);
+            PackageStatus statusEntity = StatusFactory.ToEntity(status);
             statusEntity = await _gateway.UpsertAsync(statusEntity).ConfigureAwait(false);
             if (statusEntity == null) return status = null;
             else

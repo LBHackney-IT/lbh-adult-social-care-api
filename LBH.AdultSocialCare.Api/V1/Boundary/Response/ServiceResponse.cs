@@ -3,12 +3,14 @@ using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
 {
+
     public class ServiceResponse
     {
+
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the Package Id
@@ -46,4 +48,5 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         public DateTimeOffset? DateUpdated { get; set; }
 
     }
+
 }

@@ -1,7 +1,9 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -84,7 +86,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsFixedPeriod = homeCarePackageEntity.IsFixedPeriod,
                 IsOngoingPeriod = homeCarePackageEntity.IsOngoingPeriod,
                 IsThisAnImmediateService = homeCarePackageEntity.IsThisAnImmediateService,
-                IsThisuserUnderS117 = homeCarePackageEntity.IsThisuserUnderS117,
+                IsThisuserUnderS117 = homeCarePackageEntity.IsThisClientUnderS117,
                 CreatorId = homeCarePackageEntity.CreatorId,
                 UpdatorId = homeCarePackageEntity.UpdatorId,
                 StatusId = homeCarePackageEntity.StatusId

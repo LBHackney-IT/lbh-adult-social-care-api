@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -29,12 +30,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public bool TransportNeeded { get; set; }
         public bool EscortNeeded { get; set; }
         public int TermTimeConsiderationOptionId { get; set; }
-        public string HowLong { get; set; }
-
-        // Daily, weekly, monthly
-        public string HowManyTimesPerMonth { get; set; }
-        public string OpportunitiesNeedToAddress { get; set; }
-
         public Guid CreatorId { get; set; }
         public Guid? UpdaterId { get; set; }
         public Guid StatusId { get; set; }
@@ -55,7 +50,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public Users Updater { get; set; }
 
         [ForeignKey(nameof(StatusId))]
-        public Status Status { get; set; }
+        public PackageStatus Status { get; set; }
+
+        public ICollection<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
 
     }
 

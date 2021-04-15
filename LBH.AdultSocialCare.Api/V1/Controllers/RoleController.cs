@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
+
     [Route("api/v1/role")]
     [Produces("application/json")]
     [ApiController]
@@ -20,15 +21,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [ApiVersion("1.0")]
     public class RoleController : BaseController
     {
+
         private readonly IUpsertRoleUseCase _upsertRoleUseCase;
         private readonly IGetRoleUseCase _getRoleUseCase;
         private readonly IGetAllRoleUseCase _getAllRoleUseCase;
         private readonly IDeleteRoleUseCase _deleteRoleUseCase;
 
-        public RoleController(IUpsertRoleUseCase upsertRoleUseCase,
-            IGetRoleUseCase getRoleUseCase,
-            IGetAllRoleUseCase getAllPackageUseCase,
-            IDeleteRoleUseCase deleteRoleUseCase)
+        public RoleController(IUpsertRoleUseCase upsertRoleUseCase, IGetRoleUseCase getRoleUseCase,
+            IGetAllRoleUseCase getAllPackageUseCase, IDeleteRoleUseCase deleteRoleUseCase)
         {
             _upsertRoleUseCase = upsertRoleUseCase;
             _getRoleUseCase = getRoleUseCase;
@@ -49,8 +49,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             try
             {
                 RolesDomain roleDomain = RolesFactory.ToDomain(rolesRequest);
-                RolesResponse roleResponse = RolesFactory.ToResponse(await _upsertRoleUseCase.ExecuteAsync(roleDomain).ConfigureAwait(false));
+
+                RolesResponse roleResponse =
+                    RolesFactory.ToResponse(await _upsertRoleUseCase.ExecuteAsync(roleDomain).ConfigureAwait(false));
+
                 if (roleResponse == null) return NotFound();
+
                 return Ok(roleResponse);
             }
             catch (FormatException ex)
@@ -92,7 +96,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             try
             {
                 IList<Roles> result = await _getAllRoleUseCase.GetAllAsync().ConfigureAwait(false);
+
                 if (result == null) return NotFound();
+
                 return Ok(result.ToList());
             }
             catch (FormatException ex)
@@ -116,5 +122,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
     }
+
 }

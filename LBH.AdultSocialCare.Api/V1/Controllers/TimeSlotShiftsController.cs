@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
@@ -20,14 +21,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [ApiVersion("1.0")]
     public class TimeSlotShiftsController : BaseController
     {
+
         private readonly IUpsertTimeSlotShiftsUseCase _upsertTimeSlotShiftsUseCase;
         private readonly IGetTimeSlotShiftsUseCase _getTimeSlotShiftsUseCase;
         private readonly IGetAllTimeSlotShiftsUseCase _getAllTimeSlotShiftsUseCase;
         private readonly IDeleteTimeSlotShiftsUseCase _deleteTimeSlotShiftsUseCase;
 
         public TimeSlotShiftsController(IUpsertTimeSlotShiftsUseCase upsertTimeSlotShiftsUseCase,
-            IGetTimeSlotShiftsUseCase getTimeSlotShiftsUseCase,
-            IGetAllTimeSlotShiftsUseCase getAllTimeSlotShiftsUseCase,
+            IGetTimeSlotShiftsUseCase getTimeSlotShiftsUseCase, IGetAllTimeSlotShiftsUseCase getAllTimeSlotShiftsUseCase,
             IDeleteTimeSlotShiftsUseCase deleteTimeSlotShiftsUseCase)
         {
             _upsertTimeSlotShiftsUseCase = upsertTimeSlotShiftsUseCase;
@@ -49,8 +50,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             try
             {
                 TimeSlotShiftsDomain timeSlotShiftsDomain = TimeSlotShiftsFactory.ToDomain(timeSlotShiftsRequest);
-                TimeSlotShiftsResponse timeSlotShiftsResponse = TimeSlotShiftsFactory.ToResponse(await _upsertTimeSlotShiftsUseCase.ExecuteAsync(timeSlotShiftsDomain).ConfigureAwait(false));
+
+                TimeSlotShiftsResponse timeSlotShiftsResponse = TimeSlotShiftsFactory.ToResponse(
+                    await _upsertTimeSlotShiftsUseCase.ExecuteAsync(timeSlotShiftsDomain).ConfigureAwait(false));
+
                 if (timeSlotShiftsResponse == null) return NotFound();
+
                 //else if (!timeSlotShiftsResponse.Success) return BadRequest(timeSlotShiftsResponse.Message);
                 return Ok(timeSlotShiftsResponse);
             }
@@ -69,11 +74,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("{timeSlotShiftsId}")]
-        public async Task<ActionResult<TimeSlotShiftsResponse>> Get(Guid timeSlotShiftsId)
+        public async Task<ActionResult<TimeSlotShiftsResponse>> Get(int timeSlotShiftsId)
         {
             try
             {
-                return Ok(TimeSlotShiftsFactory.ToResponse(await _getTimeSlotShiftsUseCase.GetAsync(timeSlotShiftsId).ConfigureAwait(false)));
+                return Ok(TimeSlotShiftsFactory.ToResponse(await _getTimeSlotShiftsUseCase.GetAsync(timeSlotShiftsId)
+                    .ConfigureAwait(false)));
             }
             catch (FormatException ex)
             {
@@ -94,7 +100,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             try
             {
                 IList<TimeSlotShifts> result = await _getAllTimeSlotShiftsUseCase.GetAllAsync().ConfigureAwait(false);
+
                 if (result == null) return NotFound();
+
                 return Ok(result.ToList());
             }
             catch (FormatException ex)
@@ -120,5 +128,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
     }
+
 }

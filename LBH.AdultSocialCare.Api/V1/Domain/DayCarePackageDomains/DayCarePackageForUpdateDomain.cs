@@ -22,9 +22,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
         public bool TransportNeeded { get; set; }
         public bool EscortNeeded { get; set; }
         public int TermTimeConsiderationOptionId { get; set; }
-        public string HowLong { get; set; }
-        public string HowManyTimesPerMonth { get; set; }
-        public string OpportunitiesNeedToAddress { get; set; }
         public Guid UpdaterId { get; set; }
         public Guid StatusId { get; set; }
     }
