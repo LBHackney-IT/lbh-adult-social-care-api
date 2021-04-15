@@ -19,6 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 NursingCarePackageId = nursingCareAdditionalNeedsEntity.NursingCarePackageId,
                 Weekly = nursingCareAdditionalNeedsEntity.Weekly,
                 OneOff = nursingCareAdditionalNeedsEntity.OneOff,
+                NeedToAddress = nursingCareAdditionalNeedsEntity.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsEntity.CreatorId,
                 UpdatorId = nursingCareAdditionalNeedsEntity.UpdatorId,
             };
@@ -32,6 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
                 Weekly = nursingCareAdditionalNeedsDomain.Weekly,
                 OneOff = nursingCareAdditionalNeedsDomain.OneOff,
+                NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
                 UpdatorId = nursingCareAdditionalNeedsDomain.UpdatorId,
             };
@@ -45,6 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
                 Weekly = nursingCareAdditionalNeedsDomain.Weekly,
                 OneOff = nursingCareAdditionalNeedsDomain.OneOff,
+                NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
                 UpdatorId = nursingCareAdditionalNeedsDomain.UpdatorId,
             };
@@ -58,6 +61,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 NursingCarePackageId = nursingCareAdditionalNeedsEntity.NursingCarePackageId,
                 Weekly = nursingCareAdditionalNeedsEntity.Weekly,
                 OneOff = nursingCareAdditionalNeedsEntity.OneOff,
+                NeedToAddress = nursingCareAdditionalNeedsEntity.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsEntity.CreatorId,
                 UpdatorId = nursingCareAdditionalNeedsEntity.UpdatorId,
             };

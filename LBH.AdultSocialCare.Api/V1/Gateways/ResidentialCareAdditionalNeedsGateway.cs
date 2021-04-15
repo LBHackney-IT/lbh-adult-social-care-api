@@ -37,6 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             residentialAdditionalNeedsToUpdate.ResidentialCarePackageId = residentialCareAdditionalNeeds.ResidentialCarePackageId;
             residentialAdditionalNeedsToUpdate.Weekly = residentialCareAdditionalNeeds.Weekly;
             residentialAdditionalNeedsToUpdate.OneOff = residentialCareAdditionalNeeds.OneOff;
+            residentialAdditionalNeedsToUpdate.NeedToAddress = residentialCareAdditionalNeeds.NeedToAddress;
             residentialAdditionalNeedsToUpdate.CreatorId = residentialCareAdditionalNeeds.CreatorId;
             residentialAdditionalNeedsToUpdate.UpdatorId = residentialCareAdditionalNeeds.UpdatorId;
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;

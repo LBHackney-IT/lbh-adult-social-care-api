@@ -74,39 +74,14 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         public string TypeOfCareHome { get; set; }
 
         /// <summary>
-        /// Gets or sets the Weekly
-        /// </summary>
-        public bool Weekly { get; set; }
-
-        /// <summary>
-        /// Gets or sets the One Off
-        /// </summary>
-        public bool OneOff { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Additional Need To Address
-        /// </summary>
-        public string AdditionalNeedToAddress { get; set; }
-
-        /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
         public int CreatorId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Date Created
-        /// </summary>
-        public DateTimeOffset? DateCreated { get; set; }
-
-        /// <summary>
         /// Gets or sets the Updator Id
         /// </summary>
         public int UpdatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Date Updated
-        /// </summary>
-        public DateTimeOffset? DateUpdated { get; set; }
 
         /// <summary>
         /// Gets or sets the Status Id
@@ -117,5 +92,10 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         /// Gets or sets the Status Object
         /// </summary>
         public Status Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Residential Care Additional Needs
+        /// </summary>
+        public List<ResidentialCareAdditionalNeeds> ResidentialCareAdditionalNeeds { get; set; }
     }
 }

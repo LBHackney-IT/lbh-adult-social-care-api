@@ -19,6 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 ResidentialCarePackageId = residentialCareAdditionalNeedsEntity.ResidentialCarePackageId,
                 Weekly = residentialCareAdditionalNeedsEntity.Weekly,
                 OneOff = residentialCareAdditionalNeedsEntity.OneOff,
+                NeedToAddress = residentialCareAdditionalNeedsEntity.NeedToAddress,
                 CreatorId = residentialCareAdditionalNeedsEntity.CreatorId,
                 UpdatorId = residentialCareAdditionalNeedsEntity.UpdatorId,
             };
@@ -32,6 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 ResidentialCarePackageId = residentialCareAdditionalNeedsDomain.ResidentialCarePackageId,
                 Weekly = residentialCareAdditionalNeedsDomain.Weekly,
                 OneOff = residentialCareAdditionalNeedsDomain.OneOff,
+                NeedToAddress = residentialCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = residentialCareAdditionalNeedsDomain.CreatorId,
                 UpdatorId = residentialCareAdditionalNeedsDomain.UpdatorId,
             };
@@ -45,6 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 ResidentialCarePackageId = residentialCareAdditionalNeedsDomain.ResidentialCarePackageId,
                 Weekly = residentialCareAdditionalNeedsDomain.Weekly,
                 OneOff = residentialCareAdditionalNeedsDomain.OneOff,
+                NeedToAddress = residentialCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = residentialCareAdditionalNeedsDomain.CreatorId,
                 UpdatorId = residentialCareAdditionalNeedsDomain.UpdatorId,
             };
@@ -58,6 +61,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 ResidentialCarePackageId = residentialCareAdditionalNeedsEntity.ResidentialCarePackageId,
                 Weekly = residentialCareAdditionalNeedsEntity.Weekly,
                 OneOff = residentialCareAdditionalNeedsEntity.OneOff,
+                NeedToAddress = residentialCareAdditionalNeedsEntity.NeedToAddress,
                 CreatorId = residentialCareAdditionalNeedsEntity.CreatorId,
                 UpdatorId = residentialCareAdditionalNeedsEntity.UpdatorId,
             };

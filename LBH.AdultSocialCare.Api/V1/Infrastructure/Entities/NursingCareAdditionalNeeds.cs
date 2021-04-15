@@ -31,6 +31,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public bool OneOff { get; set; }
 
         /// <summary>
+        /// Gets or sets the Need To Address
+        /// </summary>
+        public string NeedToAddress { get; set; }
+
+        /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
         public Guid CreatorId { get; set; }

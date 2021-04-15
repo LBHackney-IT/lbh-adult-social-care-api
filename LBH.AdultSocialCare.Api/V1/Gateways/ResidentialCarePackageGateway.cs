@@ -23,6 +23,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             var result = await _databaseContext.ResidentialCarePackage
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
+                .Include(item => item.ResidentialCareAdditionalNeeds)
                 .FirstOrDefaultAsync(item => item.Id == residentialCarePackageId).ConfigureAwait(false);
             return result;
         }
@@ -32,6 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             ResidentialCarePackage residentialCarePackageToUpdate = await _databaseContext.ResidentialCarePackage
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
+                .Include(item => item.ResidentialCareAdditionalNeeds)
                 .FirstOrDefaultAsync(item => item.Id == residentialCarePackage.Id).ConfigureAwait(false);
             if (residentialCarePackageToUpdate == null)
             {
@@ -48,9 +50,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             residentialCarePackageToUpdate.IsThisUserUnderS117 = residentialCarePackage.IsThisUserUnderS117;
             residentialCarePackageToUpdate.NeedToAddress = residentialCarePackage.NeedToAddress;
             residentialCarePackageToUpdate.TypeOfCareHome = residentialCarePackage.TypeOfCareHome;
-            residentialCarePackageToUpdate.Weekly = residentialCarePackage.Weekly;
-            residentialCarePackageToUpdate.OneOff = residentialCarePackage.OneOff;
-            residentialCarePackageToUpdate.AdditionalNeedToAddress = residentialCarePackage.AdditionalNeedToAddress;
             residentialCarePackageToUpdate.CreatorId = residentialCarePackage.CreatorId;
             residentialCarePackageToUpdate.UpdatorId = residentialCarePackage.UpdatorId;
             residentialCarePackageToUpdate.DateUpdated = residentialCarePackage.DateUpdated;

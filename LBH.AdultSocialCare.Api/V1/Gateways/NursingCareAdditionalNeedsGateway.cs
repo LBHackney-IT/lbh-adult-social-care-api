@@ -30,6 +30,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             nursingCareAdditionalNeedsToUpdate.NursingCarePackageId = nursingCareAdditionalNeeds.NursingCarePackageId;
             nursingCareAdditionalNeedsToUpdate.Weekly = nursingCareAdditionalNeeds.Weekly;
             nursingCareAdditionalNeedsToUpdate.OneOff = nursingCareAdditionalNeeds.OneOff;
+            nursingCareAdditionalNeedsToUpdate.NeedToAddress = nursingCareAdditionalNeeds.NeedToAddress;
             nursingCareAdditionalNeedsToUpdate.CreatorId = nursingCareAdditionalNeeds.CreatorId;
             nursingCareAdditionalNeedsToUpdate.UpdatorId = nursingCareAdditionalNeeds.UpdatorId;
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;

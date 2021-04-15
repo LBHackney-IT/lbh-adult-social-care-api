@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -71,21 +72,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public string TypeOfCareHome { get; set; }
 
         /// <summary>
-        /// Gets or sets the Weekly
-        /// </summary>
-        public bool Weekly { get; set; }
-
-        /// <summary>
-        /// Gets or sets the One Off
-        /// </summary>
-        public bool OneOff { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Additional Need To Address
-        /// </summary>
-        public string AdditionalNeedToAddress { get; set; }
-
-        /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
         public int CreatorId { get; set; }
@@ -105,6 +91,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// </summary>
         public Status Status { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Residential Care Additional Needs
+        /// </summary>
+        public List<ResidentialCareAdditionalNeeds> ResidentialCareAdditionalNeeds { get; set; }
     }
 
 }

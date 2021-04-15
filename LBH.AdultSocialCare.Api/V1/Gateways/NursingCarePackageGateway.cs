@@ -23,6 +23,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             var result = await _databaseContext.NursingCarePackage
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
+                .Include(item => item.NursingCareAdditionalNeeds)
                 .FirstOrDefaultAsync(item => item.Id == nursingCarePackageId).ConfigureAwait(false);
             return result;
         }
@@ -32,6 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             NursingCarePackage nursingCarePackageToUpdate = await _databaseContext.NursingCarePackage
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
+                .Include(item => item.NursingCareAdditionalNeeds)
                 .FirstOrDefaultAsync(item => item.Id == nursingCarePackage.Id).ConfigureAwait(false);
             if (nursingCarePackageToUpdate == null)
             {
@@ -47,9 +49,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             nursingCarePackageToUpdate.IsLongStay = nursingCarePackage.IsLongStay;
             nursingCarePackageToUpdate.NeedToAddress = nursingCarePackage.NeedToAddress;
             nursingCarePackageToUpdate.TypeOfNursingHome = nursingCarePackage.TypeOfNursingHome;
-            nursingCarePackageToUpdate.Weekly = nursingCarePackage.Weekly;
-            nursingCarePackageToUpdate.OneOff = nursingCarePackage.OneOff;
-            nursingCarePackageToUpdate.AdditionalNeedToAddress = nursingCarePackage.AdditionalNeedToAddress;
             nursingCarePackageToUpdate.CreatorId = nursingCarePackage.CreatorId;
             nursingCarePackageToUpdate.UpdatorId = nursingCarePackage.UpdatorId;
             nursingCarePackageToUpdate.DateUpdated = nursingCarePackage.DateUpdated;
