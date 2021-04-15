@@ -1,12 +1,11 @@
-using LBH.AdultSocialCare.Api.V1.Domain;
+using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
+using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 
-namespace LBH.AdultSocialCare.Api.V1.UseCase
+namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
 {
     public class UpsertTimeSlotTypesUseCase : IUpsertTimeSlotTypesUseCase
     {

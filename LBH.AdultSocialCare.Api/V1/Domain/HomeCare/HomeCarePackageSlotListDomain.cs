@@ -1,9 +1,26 @@
 using System;
+using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare
+namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCare
 {
 
-    public class HomeCarePackageSlotRequest
+    public class HomeCarePackageSlotListDomain
+    {
+
+        /// <summary>
+        /// Gets or sets the Home Care Package Id
+        /// </summary>
+        public Guid HomeCarePackageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Home Care Package Slots
+        /// </summary>
+        public List<HomeCarePackageSlotDomain> HomeCarePackageSlots { get; set; }
+
+    }
+
+    public class HomeCarePackageSlotDomain
     {
 
         /// <summary>
@@ -20,6 +37,11 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare
         /// Gets or sets the Time Slot Shift Id
         /// </summary>
         public int TimeSlotShiftId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Time Slot Shift
+        /// </summary>
+        public TimeSlotShifts TimeSlotShift { get; set; }
 
         /// <summary>
         /// Gets or sets the day identifier.

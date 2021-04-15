@@ -1,6 +1,6 @@
 using System;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain
+namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCare
 {
     public class TimeSlotTypesDomain
     {
