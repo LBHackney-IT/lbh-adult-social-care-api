@@ -3,6 +3,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Diagnostics;
@@ -13,6 +14,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [Route("api/v1/clients")]
     [Produces("application/json")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
     public class ClientController : BaseController
     {
         private readonly IUpsertClientsUseCase _upsertClientsUseCase;
@@ -28,6 +31,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteClientsUseCase = deleteClientsUseCase;
         }
 
+        /// <summary>Creates the specified clients request.</summary>
+        /// <param name="clientsRequest">The clients request.</param>
+        /// <returns>The client creation response.</returns>
+        [ProducesResponseType(typeof(ClientsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         [HttpPost]
         public async Task<ActionResult<ClientsResponse>> Create(ClientsRequest clientsRequest)
         {
@@ -40,8 +50,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                         .ConfigureAwait(false));
 
                 if (clientsResponse == null) return NotFound();
-
-                //else if (!clientsResponse.Success) return BadRequest(clientsResponse.Message);
                 return Ok(clientsResponse);
             }
             catch (FormatException ex)
@@ -56,6 +64,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified client identifier.</summary>
+        /// <param name="clientId">The client identifier.</param>
+        /// <returns>The client creation response.</returns>
+        [ProducesResponseType(typeof(ClientsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         [HttpGet]
         [Route("{clientId}")]
         public async Task<ActionResult<ClientsResponse>> Get(Guid clientId)
@@ -70,6 +84,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Deletes the specified client identifier.</summary>
+        /// <param name="clientId">The client identifier.</param>
+        /// <returns>the boolean value</returns>
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         [HttpDelete]
         [Route("{clientId}")]
         public async Task<ActionResult<bool>> Delete(Guid clientId)

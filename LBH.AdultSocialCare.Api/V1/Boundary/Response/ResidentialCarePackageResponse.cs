@@ -1,5 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
+using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
 {
@@ -66,21 +67,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         public string TypeOfCareHome { get; set; }
 
         /// <summary>
-        /// Gets or sets the Weekly
-        /// </summary>
-        public bool Weekly { get; set; }
-
-        /// <summary>
-        /// Gets or sets the One Off
-        /// </summary>
-        public bool OneOff { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Additional Need To Address
-        /// </summary>
-        public string AdditionalNeedToAddress { get; set; }
-
-        /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
         public int CreatorId { get; set; }
@@ -109,5 +95,11 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         /// Gets or sets the Status Object
         /// </summary>
         public PackageStatus Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ResidentialCareAdditionalNeeds Object
+        /// </summary>
+        public List<ResidentialCareAdditionalNeeds> ResidentialCareAdditionalNeeds { get; set; }
+
     }
 }

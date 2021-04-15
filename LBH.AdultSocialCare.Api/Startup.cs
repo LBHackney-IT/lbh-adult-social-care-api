@@ -198,6 +198,8 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IStatusGateway, StatusGateway>();
             services.AddScoped<IResidentialCarePackageGateway, ResidentialCarePackageGateway>();
             services.AddScoped<INursingCarePackageGateway, NursingCarePackageGateway>();
+            services.AddScoped<INursingCareAdditionalNeedsGateway, NursingCareAdditionalNeedsGateway>();
+            services.AddScoped<IResidentialCareAdditionalNeedsGateway, ResidentialCareAdditionalNeedsGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
@@ -308,6 +310,8 @@ namespace LBH.AdultSocialCare.Api
 
             services.AddScoped<IUpsertResidentialCarePackageUseCase, UpsertResidentialCarePackageUseCase>();
             services.AddScoped<IGetResidentialCarePackageUseCase, GetResidentialCarePackageUseCase>();
+            services.AddScoped<IGetResidentialCareAdditionalNeedsUseCase, GetResidentialCareAdditionalNeedsUseCase>();
+            services.AddScoped<IUpsertResidentialCareAdditionalNeedsUseCase, UpsertResidentialCareAdditionalNeedsUseCase>();
 
             #endregion ResidentialCarePackage
 
@@ -315,6 +319,8 @@ namespace LBH.AdultSocialCare.Api
 
             services.AddScoped<IUpsertNursingCarePackageUseCase, UpsertNursingCarePackageUseCase>();
             services.AddScoped<IGetNursingCarePackageUseCase, GetNursingCarePackageUseCase>();
+            services.AddScoped<IGetNursingCareAdditionalNeedsUseCase, GetNursingCareAdditionalNeedsUseCase>();
+            services.AddScoped<IUpsertNursingCareAdditionalNeedsUseCase, UpsertNursingCareAdditionalNeedsUseCase>();
 
             #endregion NursingCarePackage
         }

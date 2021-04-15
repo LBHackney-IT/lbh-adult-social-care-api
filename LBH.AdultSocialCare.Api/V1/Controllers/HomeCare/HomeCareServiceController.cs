@@ -8,6 +8,7 @@ using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
@@ -16,6 +17,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
     [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
     public class HomeCareServiceController : BaseController
     {
 
@@ -34,6 +37,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
             _deleteServiceUseCase = deleteServiceUseCase;
         }
 
+        /// <summary>Creates the specified service request.</summary>
+        /// <param name="serviceRequest">The service request.</param>
+        /// <returns>The home care service creation response.</returns>
         [HttpPost]
         public async Task<ActionResult<ServiceResponse>> Create(ServiceRequest serviceRequest)
         {
@@ -59,6 +65,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
             }
         }
 
+        /// <summary>Gets the specified service identifier.</summary>
+        /// <param name="serviceId">The service identifier.</param>
+        /// <returns>The home care service creation response.</returns>
         [HttpGet("{serviceId}")]
         public async Task<ActionResult<ServiceResponse>> Get(int serviceId)
         {
@@ -72,6 +81,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
             }
         }
 
+        /// <summary>Gets all.</summary>
+        /// <returns>List of home care service response</returns>
         [HttpGet("getAll")]
         public async Task<ActionResult<IList<HomeCareServiceType>>> GetAll()
         {

@@ -3,6 +3,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,11 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
-    [Route("api/v1/nursingCarePackage")]
+    [Route("api/v1/nursing-care-package")]
     [Produces("application/json")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
     public class NursingCarePackageController : BaseController
     {
         private readonly IUpsertNursingCarePackageUseCase _upsertNursingCarePackageUseCase;
@@ -26,6 +29,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _getNursingCarePackageUseCase = getNursingCarePackageUseCase;
         }
 
+        /// <summary>Creates the specified nursing care package request.</summary>
+        /// <param name="nursingCarePackageRequest">The nursing care package request.</param>
+        /// <returns>The nursing care package creation response.</returns>
+        [ProducesResponseType(typeof(NursingCarePackageResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         [HttpPost]
         public async Task<ActionResult<NursingCarePackageResponse>> Create(NursingCarePackageRequest nursingCarePackageRequest)
         {
@@ -42,6 +52,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
         }
 
+        /// <summary>Gets the specified nursing care package identifier.</summary>
+        /// <param name="nursingCarePackageId">The nursing care package identifier.</param>
+        /// <returns>The nursing care package response.</returns>
         [HttpGet]
         [Route("{nursingCarePackageId}")]
         public async Task<ActionResult<NursingCarePackageResponse>> Get(Guid nursingCarePackageId)

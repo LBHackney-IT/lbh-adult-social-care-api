@@ -26,15 +26,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsLongStay = nursingCarePackageEntity.IsLongStay,
                 NeedToAddress = nursingCarePackageEntity.NeedToAddress,
                 TypeOfNursingHome = nursingCarePackageEntity.TypeOfNursingHome,
-                Weekly = nursingCarePackageEntity.Weekly,
-                OneOff = nursingCarePackageEntity.OneOff,
-                AdditionalNeedToAddress = nursingCarePackageEntity.AdditionalNeedToAddress,
                 CreatorId = nursingCarePackageEntity.CreatorId,
-                DateCreated = nursingCarePackageEntity.DateCreated,
                 UpdatorId = nursingCarePackageEntity.UpdatorId,
-                DateUpdated = nursingCarePackageEntity.DateUpdated,
                 StatusId = nursingCarePackageEntity.StatusId,
-                Status = nursingCarePackageEntity.Status
+                Status = nursingCarePackageEntity.Status,
+                NursingCareAdditionalNeeds = nursingCarePackageEntity.NursingCareAdditionalNeeds
             };
         }
 
@@ -53,13 +49,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsLongStay = nursingCarePackageDomain.IsLongStay,
                 NeedToAddress = nursingCarePackageDomain.NeedToAddress,
                 TypeOfNursingHome = nursingCarePackageDomain.TypeOfNursingHome,
-                Weekly = nursingCarePackageDomain.Weekly,
-                OneOff = nursingCarePackageDomain.OneOff,
-                AdditionalNeedToAddress = nursingCarePackageDomain.AdditionalNeedToAddress,
                 CreatorId = nursingCarePackageDomain.CreatorId,
                 UpdatorId = nursingCarePackageDomain.UpdatorId,
                 StatusId = nursingCarePackageDomain.StatusId,
-                Status = nursingCarePackageDomain.Status
+                Status = nursingCarePackageDomain.Status,
+                NursingCareAdditionalNeeds = nursingCarePackageDomain.NursingCareAdditionalNeeds
             };
         }
 
@@ -78,15 +72,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsLongStay = nursingCarePackageDomain.IsLongStay,
                 NeedToAddress = nursingCarePackageDomain.NeedToAddress,
                 TypeOfNursingHome = nursingCarePackageDomain.TypeOfNursingHome,
-                Weekly = nursingCarePackageDomain.Weekly,
-                OneOff = nursingCarePackageDomain.OneOff,
-                AdditionalNeedToAddress = nursingCarePackageDomain.AdditionalNeedToAddress,
                 CreatorId = nursingCarePackageDomain.CreatorId,
-                DateCreated = nursingCarePackageDomain.DateCreated,
                 UpdatorId = nursingCarePackageDomain.UpdatorId,
-                DateUpdated = nursingCarePackageDomain.DateUpdated,
                 StatusId = nursingCarePackageDomain.StatusId,
-                Status = nursingCarePackageDomain.Status
+                Status = nursingCarePackageDomain.Status,
+                NursingCareAdditionalNeeds = nursingCarePackageDomain.NursingCareAdditionalNeeds
             };
         }
 
@@ -104,13 +94,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsLongStay = nursingCarePackageRequest.IsLongStay,
                 NeedToAddress = nursingCarePackageRequest.NeedToAddress,
                 TypeOfNursingHome = nursingCarePackageRequest.TypeOfNursingHome,
-                Weekly = nursingCarePackageRequest.Weekly,
-                OneOff = nursingCarePackageRequest.OneOff,
-                AdditionalNeedToAddress = nursingCarePackageRequest.AdditionalNeedToAddress,
                 CreatorId = nursingCarePackageRequest.CreatorId,
-                DateCreated = nursingCarePackageRequest.DateCreated,
                 UpdatorId = nursingCarePackageRequest.UpdatorId,
-                DateUpdated = nursingCarePackageRequest.DateUpdated,
                 StatusId = nursingCarePackageRequest.StatusId
             };
         }

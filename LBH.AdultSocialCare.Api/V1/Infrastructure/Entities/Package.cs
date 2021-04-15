@@ -13,7 +13,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Id
         /// </summary>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [JsonProperty("Id")]
         public Guid Id { get; set; }
 
         /// <summary>
