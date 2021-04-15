@@ -103,7 +103,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Status Object
         /// </summary>
-        public Status Status { get; set; }
+        public PackageStatus Status { get; set; }
 
     }
 

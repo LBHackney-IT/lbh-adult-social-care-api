@@ -7,7 +7,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 {
     public static class StatusFactory
     {
-        public static StatusDomain ToDomain(Status statusEntity)
+        public static StatusDomain ToDomain(PackageStatus statusEntity)
         {
             return new StatusDomain
             {
@@ -20,9 +20,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        public static Status ToEntity(StatusDomain statusDomain)
+        public static PackageStatus ToEntity(StatusDomain statusDomain)
         {
-            return new Status
+            return new PackageStatus
             {
                 Id = statusDomain.Id,
                 StatusName = statusDomain.StatusName,

@@ -34,7 +34,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<HomeCarePackageSlots> HomeCarePackageSlots { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<Clients> Clients { get; set; }
-        public DbSet<Status> Status { get; set; }
+        public DbSet<PackageStatus> Status { get; set; }
         public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
         public DbSet<ResidentialCarePackage> ResidentialCarePackage { get; set; }
         public DbSet<NursingCarePackage> NursingCarePackage { get; set; }

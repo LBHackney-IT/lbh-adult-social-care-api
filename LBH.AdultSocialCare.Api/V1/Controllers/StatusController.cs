@@ -70,11 +70,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
 
         [HttpGet]
         [Route("getAll")]
-        public async Task<ActionResult<IList<Status>>> GetAll()
+        public async Task<ActionResult<IList<PackageStatus>>> GetAll()
         {
             try
             {
-                IList<Status> result = await _getAllStatusUseCase.GetAllAsync().ConfigureAwait(false);
+                IList<PackageStatus> result = await _getAllStatusUseCase.GetAllAsync().ConfigureAwait(false);
 
                 if (result == null) return NotFound();
 

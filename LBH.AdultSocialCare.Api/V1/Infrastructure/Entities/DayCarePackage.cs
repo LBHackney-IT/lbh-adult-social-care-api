@@ -50,7 +50,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public Users Updater { get; set; }
 
         [ForeignKey(nameof(StatusId))]
-        public Status Status { get; set; }
+        public PackageStatus Status { get; set; }
 
         public ICollection<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
 

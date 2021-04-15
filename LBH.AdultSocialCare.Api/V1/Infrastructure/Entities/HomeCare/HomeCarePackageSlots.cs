@@ -57,17 +57,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         public int TimeSlotShiftId { get; set; }
 
         /// <summary>
-        /// Gets or sets the day of the week identifier.
-        /// </summary>
-        public int DayOfTheWeekId { get; set; }
-
-        /// <summary>
-        /// Gets the day of week.
-        /// </summary>
-        [NotMapped]
-        public DayOfWeek DayOfWeek => (DayOfWeek) DayOfTheWeekId;
-
-        /// <summary>
         /// Gets or sets the Time Slot Shift
         /// </summary>
         [ForeignKey(nameof(TimeSlotShiftId))]
@@ -77,6 +66,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// Gets or sets the InMinutes
         /// </summary>
         public int InMinutes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the day of the week identifier.
+        /// </summary>
+        public int DayOfTheWeekId { get; set; }
+
+        /// <summary>
+        /// Gets the day of week.
+        /// </summary>
+        [NotMapped]
+        public DayOfWeek DayOfWeek => (DayOfWeek) DayOfTheWeekId;
 
     }
 

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
 
-    public class Status : BaseEntity
+    public class PackageStatus : BaseEntity
     {
 
         /// <summary>
