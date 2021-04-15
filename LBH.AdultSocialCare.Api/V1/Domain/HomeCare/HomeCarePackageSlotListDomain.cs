@@ -8,6 +8,11 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCare
     {
 
         /// <summary>
+        /// Gets or sets the identifier.
+        /// </summary>
+        public Guid Id { get; set; }
+
+        /// <summary>
         /// Gets or sets the Home Care Package Id
         /// </summary>
         public Guid HomeCarePackageId { get; set; }
