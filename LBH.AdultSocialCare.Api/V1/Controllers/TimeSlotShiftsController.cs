@@ -117,7 +117,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         [HttpDelete]
         [Route("{timeSlotShiftsId}")]
-        public async Task<ActionResult<bool>> Delete(Guid timeSlotShiftsId)
+        public async Task<ActionResult<bool>> Delete(int timeSlotShiftsId)
         {
             try
             {
