@@ -10,7 +10,10 @@ namespace LBH.AdultSocialCare.Api.V1
         Personal = 1,
         Domestic = 2,
         LiveIn = 3,
-        Escort = 4
+        Escort = 4,
+        NightOwl = 5,
+        WakingNights = 6,
+        SleepingNights = 7
 
     }
 

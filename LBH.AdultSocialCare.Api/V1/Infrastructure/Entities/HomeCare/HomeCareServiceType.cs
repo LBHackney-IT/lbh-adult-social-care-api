@@ -32,6 +32,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         public int UpdatorId { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is a night service.
+        /// </summary>
+        public bool IsNightService { get; set; }
+
+        /// <summary>
         /// Gets or sets the minutes for this service type.
         /// </summary>
         public ICollection<HomeCareServiceTypeMinutes> Minutes { get; set; }

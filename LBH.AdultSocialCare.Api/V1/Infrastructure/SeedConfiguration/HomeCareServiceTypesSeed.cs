@@ -39,6 +39,27 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 UpdatorId = 1,
                 DateUpdated = DateTimeOffset.UtcNow,
                 ServiceName = "Escort Care"
+            }, new HomeCareServiceType
+            {
+                Id = (int) HomeCareServiceTypeEnum.NightOwl,
+                CreatorId = 1,
+                UpdatorId = 1,
+                DateUpdated = DateTimeOffset.UtcNow,
+                ServiceName = "Night Owl"
+            }, new HomeCareServiceType
+            {
+                Id = (int) HomeCareServiceTypeEnum.WakingNights,
+                CreatorId = 1,
+                UpdatorId = 1,
+                DateUpdated = DateTimeOffset.UtcNow,
+                ServiceName = "Waking Nights"
+            }, new HomeCareServiceType
+            {
+                Id = (int) HomeCareServiceTypeEnum.SleepingNights,
+                CreatorId = 1,
+                UpdatorId = 1,
+                DateUpdated = DateTimeOffset.UtcNow,
+                ServiceName = "Sleeping Nights"
             });
         }
 
