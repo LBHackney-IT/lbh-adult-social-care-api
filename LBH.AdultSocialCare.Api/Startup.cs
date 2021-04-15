@@ -354,6 +354,7 @@ namespace LBH.AdultSocialCare.Api
             IMapper mapper = app.ApplicationServices.GetService<IMapper>();
             ApiToDomainFactory.Configure(mapper);
             DomainToEntityFactory.Configure(mapper);
+            EntityToDomainFactory.Configure(mapper);
             ResponseFactory.Configure(mapper);
 
             // TODO
