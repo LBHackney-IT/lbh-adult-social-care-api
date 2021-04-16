@@ -33,7 +33,11 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             CreateMap<DayCarePackageOpportunityForCreationDomain, DayCarePackageOpportunity>();
             CreateMap<DayCarePackageOpportunityForUpdateDomain, DayCarePackageOpportunity>();
-            CreateMap<DayCarePackageOpportunity, DayCarePackageOpportunityDomain>();
+            CreateMap<DayCarePackageOpportunity, DayCarePackageOpportunityDomain>()
+                .ForMember(dco => dco.HowLong,
+                    opt => opt.MapFrom(b => b.OpportunityLengthOption))
+                .ForMember(dco => dco.HowManyTimesPerMonth,
+                    opt => opt.MapFrom(b => b.OpportunityTimesPerMonthOption));
             CreateMap<DayCarePackageOpportunityForCreationRequest, DayCarePackageOpportunityForCreationDomain>();
             CreateMap<DayCarePackageOpportunityForUpdateRequest, DayCarePackageOpportunityForUpdateDomain>();
             CreateMap<DayCarePackageOpportunityDomain, DayCarePackageOpportunityResponse>();

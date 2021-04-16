@@ -1,12 +1,14 @@
+using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using System;
+using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains
 {
     public class DayCarePackageOpportunityDomain
     {
         public Guid DayCarePackageOpportunityId { get; set; }
-        public string HowLong { get; set; }
-        public string HowManyTimesPerMonth { get; set; } // Daily, weekly, monthly
+        public OpportunityLengthOptionDomain HowLong { get; set; }
+        public OpportunityTimesPerMonthOptionDomain HowManyTimesPerMonth { get; set; } // Daily, weekly, monthly
         public string OpportunitiesNeedToAddress { get; set; }
         public Guid DayCarePackageId { get; set; }
     }

@@ -38,7 +38,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<ResidentialCarePackage> ResidentialCarePackage { get; set; }
         public DbSet<NursingCarePackage> NursingCarePackage { get; set; }
         public DbSet<OpportunityLengthOption> OpportunityLengthOptions { get; set; }
-        public DbSet<OpportunityTimePerMonthOption> OpportunityTimePerMonthOptions { get; set; }
+        public DbSet<OpportunityTimesPerMonthOption> OpportunityTimesPerMonthOptions { get; set; }
         public DbSet<NursingCareAdditionalNeeds> NursingCareAdditionalNeeds { get; set; }
         public DbSet<ResidentialCareAdditionalNeeds> ResidentialCareAdditionalNeeds { get; set; }
         public DbSet<HomeCarePackageCost> HomeCarePackageCosts { get; set; }
@@ -52,6 +52,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed term time consideration options
             modelBuilder.ApplyConfiguration(new TermTimeConsiderationOptionsSeed());
+
+            // Seed day care how long options
+            modelBuilder.ApplyConfiguration(new OpportunityLengthOptionsSeed());
+
+            // Seed day care how many times per month options
+            modelBuilder.ApplyConfiguration(new OpportunityTimesPerMonthOptionsSeed());
 
             // Seed home care service types
             modelBuilder.ApplyConfiguration(new HomeCareServiceTypesSeed());
@@ -69,7 +75,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                     .IsUnique();
             });
 
-            modelBuilder.Entity<OpportunityTimePerMonthOption>(entity =>
+            modelBuilder.Entity<OpportunityTimesPerMonthOption>(entity =>
             {
                 entity.HasKey(e => e.OpportunityTimePerMonthOptionId);
 

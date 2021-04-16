@@ -12,6 +12,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public Guid DayCarePackageId { get; set; }
         [ForeignKey((nameof(DayCarePackageId)))] public DayCarePackage DayCarePackage { get; set; }
         [ForeignKey((nameof(OpportunityLengthOptionId)))] public OpportunityLengthOption OpportunityLengthOption { get; set; }
-        [ForeignKey((nameof(OpportunityTimePerMonthOptionId)))] public OpportunityTimePerMonthOption OpportunityTimePerMonthOption { get; set; }
+        [ForeignKey((nameof(OpportunityTimePerMonthOptionId)))] public OpportunityTimesPerMonthOption OpportunityTimesPerMonthOption { get; set; }
     }
 }
