@@ -1,4 +1,4 @@
-using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
@@ -33,7 +32,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             return isSuccess;
         }
 
-        public async Task<HomeCarePackageSlotListDomain> UpsertAsync(HomeCarePackageSlotListDomain homeCarePackageSlotListList)
+        public async Task<HomeCarePackageSlotListDomain> UpsertAsync(
+            HomeCarePackageSlotListDomain homeCarePackageSlotListList)
         {
             bool success;
 
@@ -63,23 +63,19 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             };
 
             foreach (HomeCarePackageSlotDomain homeCarePackageSlotInputItem in homeCarePackageSlotListList
-                .HomeCarePackageSlot)
+                .HomeCarePackageSlots)
             {
                 HomeCarePackageSlots homeCarePackageSlotsToUpdate = new HomeCarePackageSlots
                 {
                     HomeCarePackageId = homeCarePackageSlotListList.HomeCarePackageId,
-                    ServiceId = homeCarePackageSlotListList.ServiceId,
-                    PrimaryCarer = homeCarePackageSlotListList.PrimaryCarer,
-                    SecondaryCarer = homeCarePackageSlotListList.SecondaryCarer,
-                    NeedToAddress = homeCarePackageSlotListList.NeedToAddress,
-                    WhatShouldBeDone = homeCarePackageSlotListList.WhatShouldBeDone,
+                    ServiceId = homeCarePackageSlotInputItem.ServiceId,
+                    PrimaryInMinutes = homeCarePackageSlotInputItem.PrimaryInMinutes,
+                    SecondaryInMinutes = homeCarePackageSlotInputItem.SecondaryInMinutes,
+                    NeedToAddress = homeCarePackageSlotInputItem.NeedToAddress,
+                    WhatShouldBeDone = homeCarePackageSlotInputItem.WhatShouldBeDone,
                     TimeSlotShiftId = homeCarePackageSlotInputItem.TimeSlotShiftId,
-                    InMinutes = homeCarePackageSlotInputItem.InMinutes,
+                    DayId = homeCarePackageSlotInputItem.DayId
                 };
-
-                homeCarePackageSlotList.Services = await _databaseContext.HomeCareServiceTypes
-                    .FirstOrDefaultAsync(item => item.Id == homeCarePackageSlotListList.ServiceId)
-                    .ConfigureAwait(false);
 
                 homeCarePackageSlotInputItem.TimeSlotShift = await _databaseContext.TimeSlotShifts
                     .FirstOrDefaultAsync(item => item.Id == homeCarePackageSlotInputItem.TimeSlotShiftId)
@@ -90,7 +86,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 //    .ConfigureAwait(false);
 
                 await _databaseContext.HomeCarePackageSlots.AddAsync(homeCarePackageSlotsToUpdate).ConfigureAwait(false);
-                homeCarePackageSlotList.HomeCarePackageSlot.Add(homeCarePackageSlotInputItem);
+                homeCarePackageSlotList.HomeCarePackageSlots.Add(homeCarePackageSlotInputItem);
             }
 
             success = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) > 0;

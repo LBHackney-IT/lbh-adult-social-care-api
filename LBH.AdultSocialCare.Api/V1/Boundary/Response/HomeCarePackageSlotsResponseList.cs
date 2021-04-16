@@ -66,7 +66,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         /// <summary>
         /// Gets or sets the Service Id
         /// </summary>
-        public Guid ServiceId { get; set; }
+        public int ServiceId { get; set; }
 
     }
 
