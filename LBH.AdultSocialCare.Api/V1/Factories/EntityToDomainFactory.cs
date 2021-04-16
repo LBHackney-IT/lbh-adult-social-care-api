@@ -3,6 +3,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -54,6 +55,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             this List<TermTimeConsiderationOption> termTimeConsiderationOptionEntities)
         {
             return _mapper.Map<IEnumerable<TermTimeConsiderationOptionDomain>>(termTimeConsiderationOptionEntities);
+        }
+
+        #endregion
+
+        #region OpportunityLengthOptions
+
+        public static IEnumerable<OpportunityLengthOptionDomain> ToDomain(
+            this List<OpportunityLengthOption> opportunityLengthOptionEntities)
+        {
+            return _mapper.Map<IEnumerable<OpportunityLengthOptionDomain>>(opportunityLengthOptionEntities);
         }
 
         #endregion
