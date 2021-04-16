@@ -37,6 +37,8 @@ using System.Linq;
 using System.Reflection;
 using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityLengthOptionGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.TermTimeConsiderationOptionGateways;
+using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
 
@@ -331,6 +333,12 @@ namespace LBH.AdultSocialCare.Api
             #region TermTimeConsiderationOptions
 
             services.AddScoped<IGetTermTimeConsiderationOptionsListUseCase, GetTermTimeConsiderationOptionsListUseCase>();
+
+            #endregion
+
+            #region OpportunityLengthOptions
+
+            services.AddScoped<IGetOpportunityLengthOptionsListUseCase, GetOpportunityLengthOptionsListUseCase>();
 
             #endregion
         }
