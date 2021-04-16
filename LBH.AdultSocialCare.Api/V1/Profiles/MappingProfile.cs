@@ -44,8 +44,16 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
                     opt => opt.MapFrom(b => b.OpportunityLengthOption))
                 .ForMember(dco => dco.HowManyTimesPerMonth,
                     opt => opt.MapFrom(b => b.OpportunityTimesPerMonthOption));
-            CreateMap<DayCarePackageOpportunityForCreationRequest, DayCarePackageOpportunityForCreationDomain>();
-            CreateMap<DayCarePackageOpportunityForUpdateRequest, DayCarePackageOpportunityForUpdateDomain>();
+            CreateMap<DayCarePackageOpportunityForCreationRequest, DayCarePackageOpportunityForCreationDomain>()
+                .ForMember(dco => dco.OpportunityLengthOptionId,
+                opt => opt.MapFrom(b => b.HowLongId))
+                .ForMember(dco => dco.OpportunityTimePerMonthOptionId,
+                opt => opt.MapFrom(b => b.HowManyTimesPerMonthId));
+            CreateMap<DayCarePackageOpportunityForUpdateRequest, DayCarePackageOpportunityForUpdateDomain>()
+                .ForMember(dco => dco.OpportunityLengthOptionId,
+                    opt => opt.MapFrom(b => b.HowLongId))
+                .ForMember(dco => dco.OpportunityTimePerMonthOptionId,
+                    opt => opt.MapFrom(b => b.HowManyTimesPerMonthId));
             CreateMap<DayCarePackageOpportunityDomain, DayCarePackageOpportunityResponse>();
 
             #endregion DayCarePackage
