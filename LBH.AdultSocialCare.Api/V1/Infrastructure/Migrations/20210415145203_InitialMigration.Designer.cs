@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210414102350_InitialMigration")]
+    [Migration("20210415145203_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,23 +20,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "3.1.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.DatabaseEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnName("id")
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnName("created_at")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("example_table");
-                });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Clients", b =>
                 {
@@ -211,7 +194,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("DayCarePackageOpportunities");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackage", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.HomeCarePackage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -262,17 +245,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("HomeCarePackage");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageSlots", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.HomeCarePackageSlots", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("DayOfTheWeekId")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("HomeCarePackageId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("InHours")
-                        .HasColumnType("int");
 
                     b.Property<int>("InMinutes")
                         .HasColumnType("int");
@@ -286,17 +269,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<string>("SecondaryCarer")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid>("ServiceId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Time")
+                    b.Property<int>("ServiceId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("TimeSlotShiftId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TimeSlotTypeId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("TimeSlotShiftId")
+                        .HasColumnType("int");
 
                     b.Property<string>("WhatShouldBeDone")
                         .HasColumnType("nvarchar(max)");
@@ -307,9 +284,355 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasIndex("TimeSlotShiftId");
 
-                    b.HasIndex("TimeSlotTypeId");
-
                     b.ToTable("HomeCarePackageSlots");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.HomeCareServiceType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("ServiceName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UpdatorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HomeCareServiceTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(2829), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(4308), new TimeSpan(0, 0, 0, 0, 0)),
+                            ServiceName = "Personal Home Care",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(4605), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(4643), new TimeSpan(0, 0, 0, 0, 0)),
+                            ServiceName = "Domestic Care",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(4655), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(4658), new TimeSpan(0, 0, 0, 0, 0)),
+                            ServiceName = "Live-in Care",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(4659), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(4661), new TimeSpan(0, 0, 0, 0, 0)),
+                            ServiceName = "Escort Care",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(4663), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(4665), new TimeSpan(0, 0, 0, 0, 0)),
+                            ServiceName = "Night Owl",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(4666), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(4668), new TimeSpan(0, 0, 0, 0, 0)),
+                            ServiceName = "Waking Nights",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(4669), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(4671), new TimeSpan(0, 0, 0, 0, 0)),
+                            ServiceName = "Sleeping Nights",
+                            UpdatorId = 1
+                        });
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.HomeCareServiceTypeMinutes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("HomeCareServiceTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsSecondaryCarer")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Label")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Minutes")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HomeCareServiceTypeId");
+
+                    b.ToTable("HomeCareServiceTypeMinutes");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.TimeSlotShifts", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int?>("LinkedToHomeCareServiceTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TimeSlotShiftName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TimeSlotTimeLabel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UpdatorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LinkedToHomeCareServiceTypeId");
+
+                    b.ToTable("TimeSlotShifts");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(8991), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 630, DateTimeKind.Unspecified).AddTicks(9000), new TimeSpan(0, 0, 0, 0, 0)),
+                            TimeSlotShiftName = "Morning",
+                            TimeSlotTimeLabel = "08:00 - 10:00",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(293), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(298), new TimeSpan(0, 0, 0, 0, 0)),
+                            TimeSlotShiftName = "Mid Morning",
+                            TimeSlotTimeLabel = "10:00 - 12:00",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(342), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(343), new TimeSpan(0, 0, 0, 0, 0)),
+                            TimeSlotShiftName = "Lunch",
+                            TimeSlotTimeLabel = "12:00 - 14:00",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(345), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(346), new TimeSpan(0, 0, 0, 0, 0)),
+                            TimeSlotShiftName = "Afternoon",
+                            TimeSlotTimeLabel = "14:00 - 17:00",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(348), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(349), new TimeSpan(0, 0, 0, 0, 0)),
+                            TimeSlotShiftName = "Evening",
+                            TimeSlotTimeLabel = "17:00 - 20:00",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(350), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(351), new TimeSpan(0, 0, 0, 0, 0)),
+                            TimeSlotShiftName = "Night",
+                            TimeSlotTimeLabel = "20:00 - 22:00",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(352), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(353), new TimeSpan(0, 0, 0, 0, 0)),
+                            LinkedToHomeCareServiceTypeId = 5,
+                            TimeSlotShiftName = "Night Owl",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(663), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(667), new TimeSpan(0, 0, 0, 0, 0)),
+                            LinkedToHomeCareServiceTypeId = 6,
+                            TimeSlotShiftName = "Waking Nights",
+                            UpdatorId = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatorId = 1,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(681), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 4, 15, 14, 52, 3, 631, DateTimeKind.Unspecified).AddTicks(682), new TimeSpan(0, 0, 0, 0, 0)),
+                            LinkedToHomeCareServiceTypeId = 7,
+                            TimeSlotShiftName = "Sleeping Nights",
+                            UpdatorId = 1
+                        });
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.TimeSlotType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("TimeSlotTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UpdatorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TimeSlotType");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageCost", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("CostPerHour")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("HomeCarePackageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("HoursPerWeek")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ServiceName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TotalCost")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("UpdatorId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HomeCarePackageCosts");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareAdditionalNeeds", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NeedToAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("NursingCarePackageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("OneOff")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("UpdatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Weekly")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NursingCarePackageId");
+
+                    b.ToTable("NursingCareAdditionalNeeds");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackage", b =>
@@ -317,9 +640,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AdditionalNeedToAddress")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
@@ -351,9 +671,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<string>("NeedToAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("OneOff")
-                        .HasColumnType("bit");
-
                     b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("datetimeoffset");
 
@@ -365,9 +682,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.Property<int>("UpdatorId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Weekly")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -408,7 +722,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("Packages");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageServices", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -423,10 +737,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("DateUpdated")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid>("PackageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ServiceName")
+                    b.Property<string>("StatusName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("UpdatorId")
@@ -434,9 +746,44 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PackageId");
+                    b.ToTable("Status");
+                });
 
-                    b.ToTable("PackageServices");
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareAdditionalNeeds", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NeedToAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("OneOff")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ResidentialCarePackageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UpdatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Weekly")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ResidentialCarePackageId");
+
+                    b.ToTable("ResidentialCareAdditionalNeeds");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackage", b =>
@@ -444,9 +791,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("AdditionalNeedToAddress")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uniqueidentifier");
@@ -481,9 +825,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<string>("NeedToAddress")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("OneOff")
-                        .HasColumnType("bit");
-
                     b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("datetimeoffset");
 
@@ -495,9 +836,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.Property<int>("UpdatorId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("Weekly")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -540,33 +878,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("Roles");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Status", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("DateCreated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("DateUpdated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("StatusName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UpdatorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Status");
-                });
-
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.TermTimeConsiderationOption", b =>
                 {
                     b.Property<int>("OptionId")
@@ -598,60 +909,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             OptionId = 3,
                             OptionName = "Holiday"
                         });
-                });
-
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.TimeSlotShifts", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("DateCreated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("DateUpdated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("TimeSlotShiftName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UpdatorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TimeSlotShifts");
-                });
-
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.TimeSlotType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("DateCreated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset>("DateUpdated")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("TimeSlotTypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UpdatorId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TimeSlotType");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Users", b =>
@@ -732,7 +989,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Status", "Status")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -758,7 +1015,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackage", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.HomeCarePackage", b =>
                 {
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Clients", "Clients")
                         .WithMany()
@@ -766,30 +1023,49 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Status", "Status")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageSlots", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.HomeCarePackageSlots", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageServices", "Services")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.HomeCareServiceType", "Services")
                         .WithMany()
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.TimeSlotShifts", "TimeSlotShift")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.TimeSlotShifts", "TimeSlotShift")
                         .WithMany()
                         .HasForeignKey("TimeSlotShiftId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.TimeSlotType", "TimeSlotTypes")
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.HomeCareServiceTypeMinutes", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.HomeCareServiceType", "HomeCareServiceType")
+                        .WithMany("Minutes")
+                        .HasForeignKey("HomeCareServiceTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.TimeSlotShifts", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.HomeCareServiceType", "HomeCareServiceType")
                         .WithMany()
-                        .HasForeignKey("TimeSlotTypeId")
+                        .HasForeignKey("LinkedToHomeCareServiceTypeId");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareAdditionalNeeds", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackage", null)
+                        .WithMany("NursingCareAdditionalNeeds")
+                        .HasForeignKey("NursingCarePackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -802,18 +1078,18 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Status", "Status")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageServices", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareAdditionalNeeds", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Package", "Package")
-                        .WithMany()
-                        .HasForeignKey("PackageId")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackage", null)
+                        .WithMany("ResidentialCareAdditionalNeeds")
+                        .HasForeignKey("ResidentialCarePackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -826,7 +1102,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Status", "Status")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", "Status")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
