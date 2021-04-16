@@ -4,6 +4,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System.Collections.Generic;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -65,6 +66,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             this List<OpportunityLengthOption> opportunityLengthOptionEntities)
         {
             return _mapper.Map<IEnumerable<OpportunityLengthOptionDomain>>(opportunityLengthOptionEntities);
+        }
+
+        #endregion
+
+        #region OpportunityTimesPerMonthOptions
+
+        public static IEnumerable<OpportunityTimesPerMonthOptionDomain> ToDomain(
+            this List<OpportunityTimesPerMonthOption> opportunityTimesPerMonthOptionEntities)
+        {
+            return _mapper.Map<IEnumerable<OpportunityTimesPerMonthOptionDomain>>(opportunityTimesPerMonthOptionEntities);
         }
 
         #endregion

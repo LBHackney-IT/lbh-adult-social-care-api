@@ -36,6 +36,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityLengthOptionGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityTimesPerMonthOptionGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.TermTimeConsiderationOptionGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Interfaces;
@@ -206,6 +207,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IResidentialCareAdditionalNeedsGateway, ResidentialCareAdditionalNeedsGateway>();
             services.AddScoped<ITermTimeConsiderationOptionGateway, TermTimeConsiderationOptionGateway>();
             services.AddScoped<IOpportunityLengthOptionGateway, OpportunityLengthOptionGateway>();
+            services.AddScoped<IOpportunityTimesPerMonthOptionGateway, OpportunityTimesPerMonthOptionGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
