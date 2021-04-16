@@ -35,6 +35,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using LBH.AdultSocialCare.Api.V1.Gateways.TermTimeConsiderationOptionGateways;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -198,6 +199,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<INursingCarePackageGateway, NursingCarePackageGateway>();
             services.AddScoped<INursingCareAdditionalNeedsGateway, NursingCareAdditionalNeedsGateway>();
             services.AddScoped<IResidentialCareAdditionalNeedsGateway, ResidentialCareAdditionalNeedsGateway>();
+            services.AddScoped<ITermTimeConsiderationOptionGateway, TermTimeConsiderationOptionGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)

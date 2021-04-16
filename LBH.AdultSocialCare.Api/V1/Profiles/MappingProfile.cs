@@ -3,8 +3,10 @@ using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
@@ -43,6 +45,13 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DayCarePackageOpportunityDomain, DayCarePackageOpportunityResponse>();
 
             #endregion DayCarePackage
+
+            #region TermTimeConsiderationOptions
+
+            CreateMap<TermTimeConsiderationOption, TermTimeConsiderationOptionDomain>();
+            CreateMap<TermTimeConsiderationOptionDomain, TermTimeConsiderationOptionResponse>();
+
+            #endregion
         }
     }
 }
