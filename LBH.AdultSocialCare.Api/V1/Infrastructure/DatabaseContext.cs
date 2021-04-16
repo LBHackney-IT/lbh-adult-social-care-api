@@ -75,6 +75,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                     .IsUnique();
             });
 
+
+            modelBuilder.Entity<TermTimeConsiderationOption>(entity =>
+            {
+                entity.HasIndex(e => e.OptionName)
+                    .IsUnique();
+            });
+
             modelBuilder.Entity<OpportunityTimesPerMonthOption>(entity =>
             {
                 entity.HasKey(e => e.OpportunityTimePerMonthOptionId);
