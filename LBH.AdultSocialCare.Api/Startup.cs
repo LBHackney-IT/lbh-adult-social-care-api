@@ -40,6 +40,8 @@ using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityTimesPerMonthOptionGateways
 using LBH.AdultSocialCare.Api.V1.Gateways.TermTimeConsiderationOptionGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
 
@@ -341,6 +343,12 @@ namespace LBH.AdultSocialCare.Api
             #region OpportunityLengthOptions
 
             services.AddScoped<IGetOpportunityLengthOptionsListUseCase, GetOpportunityLengthOptionsListUseCase>();
+
+            #endregion
+
+            #region OpportunityTimesPerMonthOptions
+
+            services.AddScoped<IGetOpportunityTimesPerMonthOptionsListUseCase, GetOpportunityTimesPerMonthOptionsListUseCase>();
 
             #endregion
         }

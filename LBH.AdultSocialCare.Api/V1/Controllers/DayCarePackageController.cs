@@ -8,8 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
@@ -27,6 +29,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         private readonly IUpdateDayCarePackageUseCase _updateDayCarePackageUseCase;
         private readonly IGetTermTimeConsiderationOptionsListUseCase _getTermTimeConsiderationOptionsListUseCase;
         private readonly IGetOpportunityLengthOptionsListUseCase _getOpportunityLengthOptionsListUseCase;
+        private readonly IGetOpportunityTimesPerMonthOptionsListUseCase _getOpportunityTimesPerMonthOptionsListUseCase;
 
         public DayCarePackageController(
             ICreateDayCarePackageUseCase createdDayCarePackageUseCase,
@@ -34,7 +37,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             IGetDayCarePackageListUseCase getDayCarePackageListUseCase,
             IUpdateDayCarePackageUseCase updateDayCarePackageUseCase,
             IGetTermTimeConsiderationOptionsListUseCase getTermTimeConsiderationOptionsListUseCase,
-            IGetOpportunityLengthOptionsListUseCase getOpportunityLengthOptionsListUseCase)
+            IGetOpportunityLengthOptionsListUseCase getOpportunityLengthOptionsListUseCase,
+            IGetOpportunityTimesPerMonthOptionsListUseCase getOpportunityTimesPerMonthOptionsListUseCase)
         {
             _createDayCarePackageUseCase = createdDayCarePackageUseCase;
             _getDayCarePackageUseCase = getDayCarePackageUseCase;
@@ -42,6 +46,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _updateDayCarePackageUseCase = updateDayCarePackageUseCase;
             _getTermTimeConsiderationOptionsListUseCase = getTermTimeConsiderationOptionsListUseCase;
             _getOpportunityLengthOptionsListUseCase = getOpportunityLengthOptionsListUseCase;
+            _getOpportunityTimesPerMonthOptionsListUseCase = getOpportunityTimesPerMonthOptionsListUseCase;
         }
 
         /// <summary>Creates the day care package.</summary>
@@ -156,6 +161,18 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         public async Task<ActionResult<IEnumerable<OpportunityLengthOptionResponse>>> GetOpportunityLengthOptionList()
         {
             return Ok(await _getOpportunityLengthOptionsListUseCase.Execute().ConfigureAwait(false));
+        }
+
+        /// <summary>
+        /// Gets the opportunity times per month option list.
+        /// </summary>
+        /// <returns>List of possible times per month e.g. daily, weekly</returns>
+        /// <response code="200">Returns Opportunity times per month list</response>
+        [ProducesResponseType(typeof(IEnumerable<OpportunityTimesPerMonthOptionResponse>), StatusCodes.Status200OK)]
+        [HttpGet("opportunity-times-per-month-options")]
+        public async Task<ActionResult<IEnumerable<OpportunityTimesPerMonthOptionResponse>>> GetOpportunityTimesPerMonthOptionList()
+        {
+            return Ok(await _getOpportunityTimesPerMonthOptionsListUseCase.Execute().ConfigureAwait(false));
         }
 
         #endregion
