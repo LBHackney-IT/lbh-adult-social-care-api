@@ -36,6 +36,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using LBH.AdultSocialCare.Api.V1.Gateways.TermTimeConsiderationOptionGateways;
+using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -323,6 +325,12 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IUpsertNursingCareAdditionalNeedsUseCase, UpsertNursingCareAdditionalNeedsUseCase>();
 
             #endregion NursingCarePackage
+
+            #region TermTimeConsiderationOptions
+
+            services.AddScoped<IGetTermTimeConsiderationOptionsListUseCase, GetTermTimeConsiderationOptionsListUseCase>();
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

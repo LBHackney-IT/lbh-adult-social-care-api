@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
@@ -21,17 +23,20 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         private readonly IGetDayCarePackageUseCase _getDayCarePackageUseCase;
         private readonly IGetDayCarePackageListUseCase _getDayCarePackageListUseCase;
         private readonly IUpdateDayCarePackageUseCase _updateDayCarePackageUseCase;
+        private readonly IGetTermTimeConsiderationOptionsListUseCase _getTermTimeConsiderationOptionsListUseCase;
 
         public DayCarePackageController(
             ICreateDayCarePackageUseCase createdDayCarePackageUseCase,
             IGetDayCarePackageUseCase getDayCarePackageUseCase,
             IGetDayCarePackageListUseCase getDayCarePackageListUseCase,
-            IUpdateDayCarePackageUseCase updateDayCarePackageUseCase)
+            IUpdateDayCarePackageUseCase updateDayCarePackageUseCase,
+            IGetTermTimeConsiderationOptionsListUseCase getTermTimeConsiderationOptionsListUseCase)
         {
             _createDayCarePackageUseCase = createdDayCarePackageUseCase;
             _getDayCarePackageUseCase = getDayCarePackageUseCase;
             _getDayCarePackageListUseCase = getDayCarePackageListUseCase;
             _updateDayCarePackageUseCase = updateDayCarePackageUseCase;
+            _getTermTimeConsiderationOptionsListUseCase = getTermTimeConsiderationOptionsListUseCase;
         }
 
         /// <summary>Creates the day care package.</summary>
@@ -119,5 +124,23 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             var result = await _updateDayCarePackageUseCase.Execute(dayCarePackageId, dayCarePackageForUpdateDomain).ConfigureAwait(false);
             return Ok(result);
         }
+
+
+
+        #region DayCarePackageOptions
+
+        /// <summary>
+        /// Gets the term time consideration option list.
+        /// </summary>
+        /// <returns>List of term time consideration options</returns>
+        /// <response code="200">Returns term time consideration option list</response>
+        [ProducesResponseType(typeof(IEnumerable<TermTimeConsiderationOptionResponse>), StatusCodes.Status200OK)]
+        [HttpGet("term-time-considerations")]
+        public async Task<ActionResult<IEnumerable<TermTimeConsiderationOptionResponse>>> GetTermTimeConsiderationOptionList()
+        {
+            return Ok(await _getTermTimeConsiderationOptionsListUseCase.Execute().ConfigureAwait(false));
+        }
+
+        #endregion
     }
 }
