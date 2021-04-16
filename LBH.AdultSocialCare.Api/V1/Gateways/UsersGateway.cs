@@ -20,7 +20,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<bool> DeleteAsync(Guid userId)
         {
             _databaseContext.Users.Remove(new Users
-                { Id = userId });
+            { Id = userId });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }
