@@ -61,7 +61,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed home care service types
             modelBuilder.ApplyConfiguration(new HomeCareServiceTypesSeed());
-            // modelBuilder.ApplyConfiguration(new HomeCareServiceTypeMinutesSeed());
+            modelBuilder.ApplyConfiguration(new HomeCareServiceTypeMinutesSeed());
 
             // Seed home care time slot shifts
             modelBuilder.ApplyConfiguration(new TimeSlotShiftsSeed());
