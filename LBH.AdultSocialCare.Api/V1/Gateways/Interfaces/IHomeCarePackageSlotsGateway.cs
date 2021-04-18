@@ -9,9 +9,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
     {
 
         public Task<HomeCarePackageSlotListDomain> UpsertAsync(HomeCarePackageSlotListDomain homeCarePackageSlotListList);
-
-        public Task<bool> DeleteAsync(Guid homeCarePackageId);
-
     }
 
 }

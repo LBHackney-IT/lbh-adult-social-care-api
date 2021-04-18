@@ -35,6 +35,13 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.EntityFrameworkCore.Storage;
+using LBH.AdultSocialCare.Api.V1.UseCase.RolesUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.PackageStatusUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -187,7 +194,6 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IPackageGateway, PackageGateway>();
             services.AddScoped<IHomeCareServiceTypeGateway, HomeCareServiceTypeGateway>();
             services.AddScoped<IRolesGateway, RoleGateway>();
-            services.AddScoped<ITimeSlotTypesGateway, TimeSlotTypesGateway>();
             services.AddScoped<ITimeSlotShiftsGateway, TimeSlotShiftsGateway>();
             services.AddScoped<IHomeCarePackageGateway, HomeCarePackageGateway>();
             services.AddScoped<IDayCarePackageGateway, DayCarePackageGateway>();
@@ -231,19 +237,11 @@ namespace LBH.AdultSocialCare.Api
 
             #endregion Role
 
-            #region TimeSlotTypes
-
-            services.AddScoped<IUpsertTimeSlotTypesUseCase, UpsertTimeSlotTypesUseCase>();
-            services.AddScoped<IGetTimeSlotTypesUseCase, GetTimeSlotTypesUseCase>();
-            services.AddScoped<IGetAllTimeSlotTypesUseCase, GetAllTimeSlotTypesUseCase>();
-            services.AddScoped<IDeleteTimeSlotTypesUseCase, DeleteTimeSlotTypesUseCase>();
-
-            #endregion TimeSlotTypes
-
             #region HomeCarePackage
 
             services.AddScoped<IUpsertHomeCarePackageUseCase, UpsertHomeCarePackageUseCase>();
             services.AddScoped<IChangeStatusHomeCarePackageUseCase, ChangeStatusHomeCarePackageUseCase>();
+            services.AddScoped<IGetAllHomeCarePackageUseCase, GetAllHomeCarePackageUseCase>();
 
             #endregion HomeCarePackage
 
@@ -268,7 +266,6 @@ namespace LBH.AdultSocialCare.Api
             #region HomeCarePackageSlots
 
             services.AddScoped<IUpsertHomeCarePackageSlotsUseCase, UpsertHomeCarePackageSlotsUseCase>();
-            services.AddScoped<IDeleteHomeCarePackageSlotsUseCase, DeleteHomeCarePackageSlotsUseCase>();
 
             #endregion HomeCarePackageSlots
 
@@ -312,6 +309,8 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetResidentialCarePackageUseCase, GetResidentialCarePackageUseCase>();
             services.AddScoped<IGetResidentialCareAdditionalNeedsUseCase, GetResidentialCareAdditionalNeedsUseCase>();
             services.AddScoped<IUpsertResidentialCareAdditionalNeedsUseCase, UpsertResidentialCareAdditionalNeedsUseCase>();
+            services.AddScoped<IChangeStatusResidentialCarePackageUseCase, ChangeStatusResidentialCarePackageUseCase>();
+            services.AddScoped<IGetAllResidentialCarePackageUseCase, GetAllResidentialCarePackageUseCase>();
 
             #endregion ResidentialCarePackage
 
@@ -321,6 +320,8 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetNursingCarePackageUseCase, GetNursingCarePackageUseCase>();
             services.AddScoped<IGetNursingCareAdditionalNeedsUseCase, GetNursingCareAdditionalNeedsUseCase>();
             services.AddScoped<IUpsertNursingCareAdditionalNeedsUseCase, UpsertNursingCareAdditionalNeedsUseCase>();
+            services.AddScoped<IChangeStatusNursingCarePackageUseCase, ChangeStatusNursingCarePackageUseCase>();
+            services.AddScoped<IGetAllNursingCarePackageUseCase, GetAllNursingCarePackageUseCase>();
 
             #endregion NursingCarePackage
         }

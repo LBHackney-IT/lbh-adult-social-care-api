@@ -1,8 +1,10 @@
+using LBH.AdultSocialCare.Api.V1.Exceptions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
@@ -20,7 +22,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<NursingCarePackage> GetAsync(Guid nursingCarePackageId)
         {
-            var result = await _databaseContext.NursingCarePackage.Include(item => item.Clients)
+            var result = await _databaseContext.NursingCarePackage
+                .Include(item => item.Clients)
                 .Include(item => item.Status)
                 .Include(item => item.NursingCareAdditionalNeeds)
                 .FirstOrDefaultAsync(item => item.Id == nursingCarePackageId).ConfigureAwait(false);
@@ -61,6 +64,32 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 : null;
         }
 
+        public async Task<NursingCarePackage> ChangeStatusAsync(Guid nursingCarePackageId, int statusId)
+        {
+            NursingCarePackage nursingCarePackageToUpdate = await _databaseContext.NursingCarePackage
+                .Include(item => item.Clients)
+                .Include(item => item.Status)
+                .Include(item => item.NursingCareAdditionalNeeds)
+                .FirstOrDefaultAsync(item => item.Id == nursingCarePackageId)
+                .ConfigureAwait(false);
+
+            if (nursingCarePackageToUpdate == null)
+            {
+                throw new ErrorException($"Couldn't find the record: {nursingCarePackageId}");
+            }
+            nursingCarePackageToUpdate.StatusId = statusId;
+            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
+            return nursingCarePackageToUpdate;
+        }
+
+        public async Task<IList<NursingCarePackage>> ListAsync()
+        {
+            return await _databaseContext.NursingCarePackage
+                .Include(item => item.Clients)
+                .Include(item => item.Status)
+                .Include(item => item.NursingCareAdditionalNeeds)
+                .ToListAsync().ConfigureAwait(false);
+        }
     }
 
 }

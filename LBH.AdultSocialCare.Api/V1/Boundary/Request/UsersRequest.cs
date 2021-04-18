@@ -62,7 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         /// <summary>
         /// Gets or sets the Role Id
         /// </summary>
-        public Guid RoleId { get; set; }
+        public int RoleId { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

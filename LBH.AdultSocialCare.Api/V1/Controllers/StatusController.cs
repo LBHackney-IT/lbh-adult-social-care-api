@@ -71,7 +71,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("{statusId}")]
-        public async Task<ActionResult<StatusResponse>> Get(Guid statusId)
+        public async Task<ActionResult<StatusResponse>> Get(int statusId)
         {
             try
             {
@@ -87,7 +87,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         /// <returns>The List of Status model</returns>
         [ProducesResponseType(typeof(IList<PackageStatus>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("getAll")]
@@ -112,7 +111,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         [HttpDelete]
         [Route("{statusId}")]
-        public async Task<ActionResult<bool>> Delete(Guid statusId)
+        public async Task<ActionResult<bool>> Delete(int statusId)
         {
             try
             {

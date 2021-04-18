@@ -59,7 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare
         /// <summary>
         /// Gets or sets the Status Id
         /// </summary>
-        public Guid StatusId { get; set; }
+        public int StatusId { get; set; }
 
     }
 

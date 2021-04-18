@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Interfaces
 {
     public interface IGetPackageUseCase
     {
-        public Task<PackageDomain> GetAsync(Guid packageId);
+        public Task<PackageDomain> GetAsync(int packageId);
     }
 }

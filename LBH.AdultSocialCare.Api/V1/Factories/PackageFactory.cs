@@ -12,7 +12,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return new PackageDomain
             {
                 Id = packageEntity.Id,
-                PackageName = packageEntity.PackageName,
+                PackageType = packageEntity.PackageType,
                 Sequence = packageEntity.Sequence,
                 CreatorId = packageEntity.CreatorId,
                 DateCreated = packageEntity.DateCreated,
@@ -26,7 +26,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return new Package
             {
                 Id = packageDomain.Id,
-                PackageName = packageDomain.PackageName,
+                PackageType = packageDomain.PackageType,
                 Sequence = packageDomain.Sequence,
                 CreatorId = packageDomain.CreatorId,
                 UpdatorId = packageDomain.UpdatorId
@@ -38,7 +38,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return new PackageResponse
             {
                 Id = packageDomain.Id,
-                PackageName = packageDomain.PackageName,
+                PackageName = packageDomain.PackageType,
                 Sequence = packageDomain.Sequence,
                 CreatorId = packageDomain.CreatorId,
                 DateCreated = packageDomain.DateCreated,
@@ -52,7 +52,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return new PackageDomain
             {
                 Id = packageEntity.Id,
-                PackageName = packageEntity.PackageName,
+                PackageType = packageEntity.PackageType,
                 CreatorId = packageEntity.CreatorId,
                 DateCreated = packageEntity.DateCreated,
                 UpdatorId = packageEntity.UpdatorId,

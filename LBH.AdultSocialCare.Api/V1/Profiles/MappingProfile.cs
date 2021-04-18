@@ -3,9 +3,12 @@ using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Response;
+using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {
@@ -18,7 +21,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DayCarePackageForCreationDomain, DayCarePackage>();
             CreateMap<DayCarePackageForUpdateDomain, DayCarePackage>();
             CreateMap<DayCarePackage, DayCarePackageDomain>()
-                .ForMember(dc => dc.PackageName, opt => opt.MapFrom(b => b.Package.PackageName))
                 .ForMember(dc => dc.ClientName,
                     opt => opt.MapFrom(b => $"{b.Client.FirstName} {b.Client.MiddleName} {b.Client.LastName}"))
                 .ForMember(dc => dc.TermTimeConsiderationOptionName,
@@ -39,6 +41,15 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DayCarePackageOpportunityDomain, DayCarePackageOpportunityResponse>();
 
             #endregion DayCarePackage
+
+            #region HomeCarePackage
+
+            CreateMap<HomeCarePackageResponse, HomeCarePackageDomain>();
+            CreateMap<HomeCarePackage, HomeCarePackageDomain>();
+            CreateMap<HomeCarePackageDomain, HomeCarePackage>();
+            CreateMap<HomeCarePackageDomain, HomeCarePackageResponse>();
+
+            #endregion HomeCarePackage
         }
     }
 }
