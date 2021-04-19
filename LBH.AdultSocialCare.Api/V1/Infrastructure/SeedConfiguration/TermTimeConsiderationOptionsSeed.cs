@@ -12,13 +12,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
         {
             builder.HasData(new TermTimeConsiderationOption
             {
-                OptionId = 1, OptionName = "N/A"
+                OptionId = 1,
+                OptionName = "N/A"
             }, new TermTimeConsiderationOption
             {
-                OptionId = 2, OptionName = "Term Time"
+                OptionId = 2,
+                OptionName = "Term Time"
             }, new TermTimeConsiderationOption
             {
-                OptionId = 3, OptionName = "Holiday"
+                OptionId = 3,
+                OptionName = "Holiday"
             });
         }
 

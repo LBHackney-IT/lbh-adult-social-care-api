@@ -3,6 +3,9 @@ using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -31,7 +34,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion
 
-        #region DayCarePackegeOpportunity
+        #region DayCarePackageOpportunity
 
         public static DayCarePackageOpportunityDomain ToDomain(
             this DayCarePackageOpportunity dayCarePackageOpportunityEntity)
@@ -43,6 +46,36 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             this List<DayCarePackageOpportunity> dayCarePackageOpportunityEntities)
         {
             return _mapper.Map<IEnumerable<DayCarePackageOpportunityDomain>>(dayCarePackageOpportunityEntities);
+        }
+
+        #endregion
+
+        #region TermTimeConsiderationOptions
+
+        public static IEnumerable<TermTimeConsiderationOptionDomain> ToDomain(
+            this List<TermTimeConsiderationOption> termTimeConsiderationOptionEntities)
+        {
+            return _mapper.Map<IEnumerable<TermTimeConsiderationOptionDomain>>(termTimeConsiderationOptionEntities);
+        }
+
+        #endregion
+
+        #region OpportunityLengthOptions
+
+        public static IEnumerable<OpportunityLengthOptionDomain> ToDomain(
+            this List<OpportunityLengthOption> opportunityLengthOptionEntities)
+        {
+            return _mapper.Map<IEnumerable<OpportunityLengthOptionDomain>>(opportunityLengthOptionEntities);
+        }
+
+        #endregion
+
+        #region OpportunityTimesPerMonthOptions
+
+        public static IEnumerable<OpportunityTimesPerMonthOptionDomain> ToDomain(
+            this List<OpportunityTimesPerMonthOption> opportunityTimesPerMonthOptionEntities)
+        {
+            return _mapper.Map<IEnumerable<OpportunityTimesPerMonthOptionDomain>>(opportunityTimesPerMonthOptionEntities);
         }
 
         #endregion
