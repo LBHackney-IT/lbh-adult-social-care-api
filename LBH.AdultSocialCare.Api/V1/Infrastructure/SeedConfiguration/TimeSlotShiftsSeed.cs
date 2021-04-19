@@ -56,21 +56,21 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
             {
                 Id = 7,
                 TimeSlotShiftName = "Night Owl",
-                LinkedToHomeCareServiceTypeId = (int)HomeCareServiceTypeEnum.NightOwl,
+                LinkedToHomeCareServiceTypeId = (int) HomeCareServiceTypeEnum.NightOwl,
                 CreatorId = 1,
                 UpdatorId = 1
             }, new TimeSlotShifts
             {
                 Id = 8,
                 TimeSlotShiftName = "Waking Nights",
-                LinkedToHomeCareServiceTypeId = (int)HomeCareServiceTypeEnum.WakingNights,
+                LinkedToHomeCareServiceTypeId = (int) HomeCareServiceTypeEnum.WakingNights,
                 CreatorId = 1,
                 UpdatorId = 1
             }, new TimeSlotShifts
             {
                 Id = 9,
                 TimeSlotShiftName = "Sleeping Nights",
-                LinkedToHomeCareServiceTypeId = (int)HomeCareServiceTypeEnum.SleepingNights,
+                LinkedToHomeCareServiceTypeId = (int) HomeCareServiceTypeEnum.SleepingNights,
                 CreatorId = 1,
                 UpdatorId = 1
             });

@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<bool> DeleteAsync(Guid roleId)
         {
             var result = _databaseContext.Roles.Remove(new Roles
-                { Id = roleId });
+            { Id = roleId });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }
