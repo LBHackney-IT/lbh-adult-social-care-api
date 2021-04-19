@@ -44,7 +44,6 @@ using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
-using Microsoft.EntityFrameworkCore.Storage;
 using LBH.AdultSocialCare.Api.V1.UseCase.RolesUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases;
