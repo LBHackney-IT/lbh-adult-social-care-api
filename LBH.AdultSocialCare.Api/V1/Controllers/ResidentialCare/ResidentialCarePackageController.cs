@@ -23,17 +23,20 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         private readonly IGetResidentialCarePackageUseCase _getResidentialCarePackageUseCase;
         private readonly IChangeStatusResidentialCarePackageUseCase _changeStatusResidentialCarePackageUseCase;
         private readonly IGetAllResidentialCarePackageUseCase _getAllResidentialCarePackageUseCase;
+        private readonly IGetAllResidentialCareHomeType _getAllResidentialCareHomeType;
 
 
         public ResidentialCarePackageController(IUpsertResidentialCarePackageUseCase upsertResidentialCarePackageUseCase,
             IGetResidentialCarePackageUseCase getResidentialCarePackageUseCase,
             IChangeStatusResidentialCarePackageUseCase changeStatusResidentialCarePackageUseCase,
-            IGetAllResidentialCarePackageUseCase getAllResidentialCarePackageUseCase)
+            IGetAllResidentialCarePackageUseCase getAllResidentialCarePackageUseCase,
+            IGetAllResidentialCareHomeType getAllResidentialCareHomeType)
         {
             _upsertResidentialCarePackageUseCase = upsertResidentialCarePackageUseCase;
             _getResidentialCarePackageUseCase = getResidentialCarePackageUseCase;
             _changeStatusResidentialCarePackageUseCase = changeStatusResidentialCarePackageUseCase;
             _getAllResidentialCarePackageUseCase = getAllResidentialCarePackageUseCase;
+            _getAllResidentialCareHomeType = getAllResidentialCareHomeType;
         }
 
         /// <summary>Creates the specified residential care package request.</summary>
@@ -123,6 +126,24 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
             {
                 IList<ResidentialCarePackageResponse> result = ResidentialCarePackageFactory.ToResponse(await _getAllResidentialCarePackageUseCase.
                     GetAllAsync().ConfigureAwait(false));
+                return Ok(result);
+            }
+            catch (FormatException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [ProducesResponseType(typeof(IList<TypeOfResidentialCareHomeResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        [HttpGet]
+        [Route("GetAllTypeOfResidentialCareHome")]
+        public async Task<ActionResult<IList<TypeOfResidentialCareHomeResponse>>> GetAllTypeOfResidentialCareHome()
+        {
+            try
+            {
+                IList<TypeOfResidentialCareHomeResponse> result = ResidentialCarePackageFactory.ToResponse(await _getAllResidentialCareHomeType.GetAllAsync().ConfigureAwait(false));
                 return Ok(result);
             }
             catch (FormatException ex)

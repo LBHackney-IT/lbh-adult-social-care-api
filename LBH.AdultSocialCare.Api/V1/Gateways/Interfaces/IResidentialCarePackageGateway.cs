@@ -1,4 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
         public Task<ResidentialCarePackage> ChangeStatusAsync(Guid residentialCarePackageId, int statusId);
 
         public Task<IList<ResidentialCarePackage>> ListAsync();
+
+        public Task<IList<TypeOfResidentialCareHome>> GetListOfTypeOfResidentialCareHomeAsync();
     }
 }

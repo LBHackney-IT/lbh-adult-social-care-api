@@ -55,9 +55,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         public string NeedToAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets the Need To Address
+        /// Gets or sets the Type Of Residential Home Id
         /// </summary>
-        public string TypeOfCareHome { get; set; }
+        public int TypeOfResidentialCareHomeId { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

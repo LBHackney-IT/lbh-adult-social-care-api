@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -41,6 +43,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<NursingCareAdditionalNeeds> NursingCareAdditionalNeeds { get; set; }
         public DbSet<ResidentialCareAdditionalNeeds> ResidentialCareAdditionalNeeds { get; set; }
         public DbSet<HomeCarePackageCost> HomeCarePackageCosts { get; set; }
+        public DbSet<TypeOfNursingCareHome> TypesOfNursingCareHome { get; set; }
+        public DbSet<TypeOfResidentialCareHome> TypesOfResidentialCareHome { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -92,6 +96,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed role types
             modelBuilder.ApplyConfiguration(new RoleTypesSeed());
+
+            // Seed Type Of Nursing Care Home
+            modelBuilder.ApplyConfiguration(new TypeOfNursingCareHomeSeed());
+
+            // Seed Type Of Residential Care Home
+            modelBuilder.ApplyConfiguration(new TypeOfResidentialCareHomeSeed());
         }
 
         public override int SaveChanges()

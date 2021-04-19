@@ -3,6 +3,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsUnder52Weeks = nursingCarePackageEntity.IsUnder52Weeks,
                 IsLongStay = nursingCarePackageEntity.IsLongStay,
                 NeedToAddress = nursingCarePackageEntity.NeedToAddress,
-                TypeOfNursingHome = nursingCarePackageEntity.TypeOfNursingHome,
+                TypeOfNursingCareHomeId = nursingCarePackageEntity.TypeOfNursingCareHomeId,
+                TypeOfCareHome = nursingCarePackageEntity.TypeOfCareHome,
                 CreatorId = nursingCarePackageEntity.CreatorId,
                 UpdatorId = nursingCarePackageEntity.UpdatorId,
                 StatusId = nursingCarePackageEntity.StatusId,
@@ -56,7 +58,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsUnder52Weeks = nursingCarePackageDomain.IsUnder52Weeks,
                 IsLongStay = nursingCarePackageDomain.IsLongStay,
                 NeedToAddress = nursingCarePackageDomain.NeedToAddress,
-                TypeOfNursingHome = nursingCarePackageDomain.TypeOfNursingHome,
+                TypeOfNursingCareHomeId = nursingCarePackageDomain.TypeOfNursingCareHomeId,
+                TypeOfCareHome = nursingCarePackageDomain.TypeOfCareHome,
                 CreatorId = nursingCarePackageDomain.CreatorId,
                 UpdatorId = nursingCarePackageDomain.UpdatorId,
                 StatusId = nursingCarePackageDomain.StatusId,
@@ -79,7 +82,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsUnder52Weeks = nursingCarePackageDomain.IsUnder52Weeks,
                 IsLongStay = nursingCarePackageDomain.IsLongStay,
                 NeedToAddress = nursingCarePackageDomain.NeedToAddress,
-                TypeOfNursingHome = nursingCarePackageDomain.TypeOfNursingHome,
+                TypeOfNursingCareHomeId = nursingCarePackageDomain.TypeOfNursingCareHomeId,
+                TypeOfCareHome = nursingCarePackageDomain.TypeOfCareHome,
                 CreatorId = nursingCarePackageDomain.CreatorId,
                 UpdatorId = nursingCarePackageDomain.UpdatorId,
                 StatusId = nursingCarePackageDomain.StatusId,
@@ -101,7 +105,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsUnder52Weeks = nursingCarePackageRequest.IsUnder52Weeks,
                 IsLongStay = nursingCarePackageRequest.IsLongStay,
                 NeedToAddress = nursingCarePackageRequest.NeedToAddress,
-                TypeOfNursingHome = nursingCarePackageRequest.TypeOfNursingHome,
+                TypeOfNursingCareHomeId = nursingCarePackageRequest.TypeOfNursingCareHomeId,
                 CreatorId = nursingCarePackageRequest.CreatorId,
                 UpdatorId = nursingCarePackageRequest.UpdatorId,
                 StatusId = nursingCarePackageRequest.StatusId
@@ -116,6 +120,26 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IList<NursingCarePackageResponse> ToResponse(this IList<NursingCarePackageDomain> nursingCarePackagesDomain)
         {
             return _mapper.Map<IList<NursingCarePackageResponse>>(nursingCarePackagesDomain);
+        }
+
+        public static IList<TypeOfNursingCareHomeDomain> ToDomain(IList<TypeOfNursingCareHome> typeOfNursingCareHome)
+        {
+            return typeOfNursingCareHome.Select(item
+             => new TypeOfNursingCareHomeDomain
+             {
+                 TypeOfCareHomeId = item.TypeOfCareHomeId,
+                 TypeOfCareHomeName = item.TypeOfCareHomeName
+             }).ToList();
+        }
+
+        public static IList<TypeOfNursingCareHomeResponse> ToResponse(IList<TypeOfNursingCareHomeDomain> typeOfNursingCareHomeDomain)
+        {
+            return typeOfNursingCareHomeDomain.Select(item
+             => new TypeOfNursingCareHomeResponse
+             {
+                 TypeOfCareHomeId = item.TypeOfCareHomeId,
+                 TypeOfCareHomeName = item.TypeOfCareHomeName
+             }).ToList();
         }
     }
 }

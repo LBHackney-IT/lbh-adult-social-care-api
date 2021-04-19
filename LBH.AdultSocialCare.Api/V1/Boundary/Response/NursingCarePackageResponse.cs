@@ -1,4 +1,6 @@
+using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,9 +61,14 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         public string NeedToAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets the Type Of Nursing Home
+        /// Gets or sets the Type Of Care Home Id
         /// </summary>
-        public string TypeOfNursingHome { get; set; }
+        public int TypeOfNursingCareHomeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Type Of Care Home
+        /// </summary>
+        public TypeOfNursingCareHome TypeOfCareHome { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

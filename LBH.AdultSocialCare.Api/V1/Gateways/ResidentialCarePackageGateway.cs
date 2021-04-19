@@ -2,6 +2,7 @@ using LBH.AdultSocialCare.Api.V1.Exceptions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<ResidentialCarePackage> GetAsync(Guid residentialCarePackageId)
         {
             var result = await _databaseContext.ResidentialCarePackage
+                .Include(item => item.TypeOfResidentialCareHome)
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
                 .Include(item => item.ResidentialCareAdditionalNeeds)
@@ -32,6 +34,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<ResidentialCarePackage> UpsertAsync(ResidentialCarePackage residentialCarePackage)
         {
             ResidentialCarePackage residentialCarePackageToUpdate = await _databaseContext.ResidentialCarePackage
+                .Include(item => item.TypeOfResidentialCareHome)
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
                 .Include(item => item.ResidentialCareAdditionalNeeds)
@@ -50,7 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             residentialCarePackageToUpdate.IsExpectedStayOver52Weeks = residentialCarePackage.IsExpectedStayOver52Weeks;
             residentialCarePackageToUpdate.IsThisUserUnderS117 = residentialCarePackage.IsThisUserUnderS117;
             residentialCarePackageToUpdate.NeedToAddress = residentialCarePackage.NeedToAddress;
-            residentialCarePackageToUpdate.TypeOfCareHome = residentialCarePackage.TypeOfCareHome;
+            residentialCarePackageToUpdate.TypeOfResidentialCareHomeId = residentialCarePackage.TypeOfResidentialCareHomeId;
             residentialCarePackageToUpdate.CreatorId = residentialCarePackage.CreatorId;
             residentialCarePackageToUpdate.UpdatorId = residentialCarePackage.UpdatorId;
             residentialCarePackageToUpdate.DateUpdated = residentialCarePackage.DateUpdated;
@@ -81,6 +84,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
                 .Include(item => item.ResidentialCareAdditionalNeeds)
+                .ToListAsync().ConfigureAwait(false);
+        }
+
+        public async Task<IList<TypeOfResidentialCareHome>> GetListOfTypeOfResidentialCareHomeAsync()
+        {
+            return await _databaseContext.TypesOfResidentialCareHome
                 .ToListAsync().ConfigureAwait(false);
         }
     }

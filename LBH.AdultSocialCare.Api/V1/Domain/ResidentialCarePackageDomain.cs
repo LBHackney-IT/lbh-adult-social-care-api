@@ -1,4 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         /// Gets or sets the Id
         /// </summary>
         public Guid Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Package
-        /// </summary>
-        public Package Package { get; set; }
 
         /// <summary>
         /// Gets or sets the Client Id
@@ -69,9 +65,14 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         public string NeedToAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets the Need To Address
+        /// Gets or sets the Type Of Residential Home Id
         /// </summary>
-        public string TypeOfCareHome { get; set; }
+        public int TypeOfResidentialCareHomeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Type Of Residential Home
+        /// </summary>
+        public TypeOfResidentialCareHome TypeOfResidentialCareHome { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id
