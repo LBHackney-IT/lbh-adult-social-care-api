@@ -90,8 +90,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        [HttpPut("changeStatus")]
-        public async Task<ActionResult<NursingCarePackageResponse>> ChangeStatus(
+        [HttpPut]
+        [Route("{residentialCarePackageId}/changeStatus/{statusId}")]
+        public async Task<ActionResult<ResidentialCarePackageResponse>> ChangeStatus(
             Guid residentialCarePackageId, int statusId)
         {
             try
@@ -111,16 +112,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
 
         /// <summary>Get all Residential Care Packages</summary>
         /// <returns>The list of Residential Care Package Response model</returns>
-        [ProducesResponseType(typeof(IList<ResidentialCarePackage>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IList<ResidentialCarePackageResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("getAll")]
-        public async Task<ActionResult<IList<ResidentialCarePackage>>> GetAll()
+        public async Task<ActionResult<IList<ResidentialCarePackageResponse>>> GetAll()
         {
             try
             {
-                IList<ResidentialCarePackage> result = await _getAllResidentialCarePackageUseCase.GetAllAsync().ConfigureAwait(false);
+                IList<ResidentialCarePackageResponse> result = ResidentialCarePackageFactory.ToResponse(await _getAllResidentialCarePackageUseCase.
+                    GetAllAsync().ConfigureAwait(false));
                 return Ok(result);
             }
             catch (FormatException ex)

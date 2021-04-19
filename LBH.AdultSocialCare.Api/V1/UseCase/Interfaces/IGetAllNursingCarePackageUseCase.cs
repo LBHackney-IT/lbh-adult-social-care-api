@@ -9,6 +9,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Interfaces
 {
     public interface IGetAllNursingCarePackageUseCase
     {
-        public Task<IList<NursingCarePackage>> GetAllAsync();
+        public Task<IList<NursingCarePackageDomain>> GetAllAsync();
     }
 }

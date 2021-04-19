@@ -11,5 +11,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
         public Task<NursingCareAdditionalNeeds> UpsertAsync(NursingCareAdditionalNeeds nursingCareAdditionalNeeds);
 
         public Task<NursingCareAdditionalNeeds> GetAsync(Guid nursingCareAdditionalNeedsId);
+
+        public Task<bool> DeleteAsync(Guid nursingCareAdditionalNeedsId);
     }
 }

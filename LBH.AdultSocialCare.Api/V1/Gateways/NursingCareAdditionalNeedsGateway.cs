@@ -46,5 +46,17 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 .FirstOrDefaultAsync(item => item.Id == nursingCareAdditionalNeedsId).ConfigureAwait(false);
             return result;
         }
+
+        public async Task<bool> DeleteAsync(Guid nursingCareAdditionalNeedsId)
+        {
+            _databaseContext.NursingCareAdditionalNeeds.Remove(new NursingCareAdditionalNeeds
+            {
+                Id = nursingCareAdditionalNeedsId
+            });
+
+            bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
+
+            return isSuccess;
+        }
     }
 }

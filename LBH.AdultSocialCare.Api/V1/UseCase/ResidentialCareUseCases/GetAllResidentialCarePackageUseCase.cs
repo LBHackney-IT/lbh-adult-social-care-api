@@ -18,10 +18,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases
             _gateway = residentialCarePackageGateway;
         }
 
-        public async Task<IList<ResidentialCarePackage>> GetAllAsync()
+        public async Task<IList<ResidentialCarePackageDomain>> GetAllAsync()
         {
             var result = await _gateway.ListAsync().ConfigureAwait(false);
-            return result;
+            return ResidentialCarePackageFactory.ToDomain(result);
         }
     }
 }

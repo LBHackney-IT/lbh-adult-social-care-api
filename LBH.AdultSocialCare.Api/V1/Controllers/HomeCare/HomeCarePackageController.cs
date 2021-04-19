@@ -36,21 +36,23 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         }
 
         /// <summary>Change the home care package status.</summary>
-        /// <param name="homeCarePackageRequest"></param>
+        /// <param name="homeCarePackageId"></param>
+        /// <param name="statusId"></param>
         /// <returns>The home care package response model.</returns>
         [ProducesResponseType(typeof(HomeCarePackageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPut]
+        [Route("{homeCarePackageId}/changeStatus/{statusId}")]
         public async Task<ActionResult<HomeCarePackageResponse>> ChangeStatus(
-            [FromBody] HomeCarePackageRequest homeCarePackageRequest)
+            Guid homeCarePackageId, int statusId)
         {
             try
             {
                 HomeCarePackageResponse homeCarePackageResponse =
                     HomeCarePackageFactory.ToResponse(await _updateHomeCarePackageUseCase
-                        .UpdateAsync(homeCarePackageRequest.Id, homeCarePackageRequest.StatusId)
+                        .UpdateAsync(homeCarePackageId, statusId)
                         .ConfigureAwait(false));
                 if (homeCarePackageResponse == null) return NotFound();
                 return Ok(homeCarePackageResponse);

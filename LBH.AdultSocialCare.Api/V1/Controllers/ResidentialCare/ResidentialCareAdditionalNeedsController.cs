@@ -21,12 +21,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
     {
         private readonly IUpsertResidentialCareAdditionalNeedsUseCase _upsertResidentialCareAdditionalNeedsUseCase;
         private readonly IGetResidentialCareAdditionalNeedsUseCase _getResidentialCareAdditionalNeedsUseCase;
+        private readonly IDeleteResidentialCareAdditionalNeedsUseCase _deleteResidentialCareAdditionalNeedsUseCase;
 
         public ResidentialCareAdditionalNeedsController(IUpsertResidentialCareAdditionalNeedsUseCase upsertResidentialCareAdditionalNeedsUseCase,
-            IGetResidentialCareAdditionalNeedsUseCase getResidentialCareAdditionalNeedsUseCase)
+            IGetResidentialCareAdditionalNeedsUseCase getResidentialCareAdditionalNeedsUseCase,
+            IDeleteResidentialCareAdditionalNeedsUseCase deleteResidentialCareAdditionalNeedsUseCase)
         {
             _upsertResidentialCareAdditionalNeedsUseCase = upsertResidentialCareAdditionalNeedsUseCase;
             _getResidentialCareAdditionalNeedsUseCase = getResidentialCareAdditionalNeedsUseCase;
+            _deleteResidentialCareAdditionalNeedsUseCase = deleteResidentialCareAdditionalNeedsUseCase;
         }
 
         /// <summary>Creates the specified residential care additional needs request.</summary>
@@ -70,6 +73,26 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
                 var residentialCareAdditionalNeedsResponse = ResidentialCareAdditionalNeedsFactory.ToResponse(await _getResidentialCareAdditionalNeedsUseCase.GetAsync(residentialCareAdditionalNeedsId).ConfigureAwait(false));
                 if (residentialCareAdditionalNeedsResponse == null) return NotFound();
                 return Ok(residentialCareAdditionalNeedsResponse);
+            }
+            catch (FormatException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>Deletes the specified nursing care additional needs identifier.</summary>
+        /// <param name="residentialCareAdditionalNeedsId">The nursing care additional needs identifier.</param>
+        /// <returns>bool</returns>
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [HttpDelete]
+        [Route("{residentialCareAdditionalNeedsId}")]
+        public async Task<ActionResult<bool>> Delete(Guid residentialCareAdditionalNeedsId)
+        {
+            try
+            {
+                bool result = await _deleteResidentialCareAdditionalNeedsUseCase.DeleteAsync(residentialCareAdditionalNeedsId).ConfigureAwait(false);
+                return Ok(result);
             }
             catch (FormatException ex)
             {

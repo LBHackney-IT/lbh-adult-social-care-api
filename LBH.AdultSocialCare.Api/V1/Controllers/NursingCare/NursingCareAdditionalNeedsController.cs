@@ -19,12 +19,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
     {
         private readonly IUpsertNursingCareAdditionalNeedsUseCase _upsertNursingCareAdditionalNeedsUseCase;
         private readonly IGetNursingCareAdditionalNeedsUseCase _getNursingCareAdditionalNeedsUseCase;
+        private readonly IDeleteNursingCareAdditionalNeedsUseCase _deleteNursingCareAdditionalNeedsUseCase;
 
         public NursingCareAdditionalNeedsController(IUpsertNursingCareAdditionalNeedsUseCase upsertNursingCareAdditionalNeedsUseCase,
-            IGetNursingCareAdditionalNeedsUseCase getNursingCareAdditionalNeedsUseCase)
+            IGetNursingCareAdditionalNeedsUseCase getNursingCareAdditionalNeedsUseCase,
+            IDeleteNursingCareAdditionalNeedsUseCase deleteNursingCareAdditionalNeedsUseCase)
         {
             _upsertNursingCareAdditionalNeedsUseCase = upsertNursingCareAdditionalNeedsUseCase;
             _getNursingCareAdditionalNeedsUseCase = getNursingCareAdditionalNeedsUseCase;
+            _deleteNursingCareAdditionalNeedsUseCase = deleteNursingCareAdditionalNeedsUseCase;
         }
 
         /// <summary>Creates the specified nursing care additional needs request.</summary>
@@ -67,6 +70,28 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
                 var nursingCareAdditionalNeedsResponse = NursingCareAdditionalNeedsFactory.ToResponse(await _getNursingCareAdditionalNeedsUseCase.GetAsync(nursingCareAdditionalNeedsId).ConfigureAwait(false));
                 if (nursingCareAdditionalNeedsResponse == null) return NotFound();
                 return Ok(nursingCareAdditionalNeedsResponse);
+            }
+            catch (FormatException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>Deletes the specified nursing care additional needs identifier.</summary>
+        /// <param name="nursingCareAdditionalNeedsId">The nursing care additional needs identifier.</param>
+        /// <returns>
+        ///  bool
+        /// </returns>
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [HttpDelete]
+        [Route("{nursingCareAdditionalNeedsId}")]
+        public async Task<ActionResult<bool>> Delete(Guid nursingCareAdditionalNeedsId)
+        {
+            try
+            {
+                bool result = await _deleteNursingCareAdditionalNeedsUseCase.DeleteAsync(nursingCareAdditionalNeedsId).ConfigureAwait(false);
+                return Ok(result);
             }
             catch (FormatException ex)
             {

@@ -69,8 +69,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 throw new ErrorException($"Couldn't find the record: {residentialCarePackageId}");
             }
             residentialCarePackageToUpdate.StatusId = statusId;
-            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
-            return residentialCarePackageToUpdate;
+            bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
+            return isSuccess
+                ? residentialCarePackageToUpdate
+                : null;
         }
 
         public async Task<IList<ResidentialCarePackage>> ListAsync()
