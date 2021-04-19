@@ -53,8 +53,10 @@ using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases;
 namespace LBH.AdultSocialCare.Api
 {
+
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -324,6 +326,9 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IChangeStatusResidentialCarePackageUseCase, ChangeStatusResidentialCarePackageUseCase>();
             services.AddScoped<IGetAllResidentialCarePackageUseCase, GetAllResidentialCarePackageUseCase>();
 
+            services
+                .AddScoped<IUpsertResidentialCareAdditionalNeedsUseCase, UpsertResidentialCareAdditionalNeedsUseCase>();
+
             #endregion ResidentialCarePackage
 
             #region NursingCarePackage
@@ -351,7 +356,9 @@ namespace LBH.AdultSocialCare.Api
 
             #region OpportunityTimesPerMonthOptions
 
-            services.AddScoped<IGetOpportunityTimesPerMonthOptionsListUseCase, GetOpportunityTimesPerMonthOptionsListUseCase>();
+            services
+                .AddScoped<IGetOpportunityTimesPerMonthOptionsListUseCase, GetOpportunityTimesPerMonthOptionsListUseCase
+                >();
 
             #endregion
         }
@@ -421,5 +428,7 @@ namespace LBH.AdultSocialCare.Api
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
+
 }

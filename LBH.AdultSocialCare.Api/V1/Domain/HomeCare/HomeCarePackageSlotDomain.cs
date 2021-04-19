@@ -1,31 +1,10 @@
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using System;
-using System.Collections.Generic;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
+namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCare
 {
 
-    public class HomeCarePackageSlotsResponseList
-    {
-
-        /// <summary>
-        /// Gets or sets the Id
-        /// </summary>
-        public Guid Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Home Care Package Id
-        /// </summary>
-        public Guid HomeCarePackageId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Home Care Package Slots
-        /// </summary>
-        public List<HomeCarePackageSlotResponse> HomeCarePackageSlots { get; set; }
-
-    }
-
-    public class HomeCarePackageSlotResponse
+    public class HomeCarePackageSlotDomain
     {
 
         /// <summary>

@@ -34,12 +34,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// <summary>
         /// Gets or sets the Primary Carer
         /// </summary>
-        public string PrimaryCarer { get; set; }
+        public int PrimaryInMinutes { get; set; }
 
         /// <summary>
         /// Gets or sets the Secondary Carer
         /// </summary>
-        public string SecondaryCarer { get; set; }
+        public int SecondaryInMinutes { get; set; }
 
         /// <summary>
         /// Gets or sets the Need To Address
@@ -63,20 +63,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         public TimeSlotShifts TimeSlotShift { get; set; }
 
         /// <summary>
-        /// Gets or sets the InMinutes
-        /// </summary>
-        public int InMinutes { get; set; }
-
-        /// <summary>
         /// Gets or sets the day of the week identifier.
         /// </summary>
-        public int DayOfTheWeekId { get; set; }
+        public int DayId { get; set; }
 
         /// <summary>
         /// Gets the day of week.
         /// </summary>
         [NotMapped]
-        public DayOfWeek DayOfWeek => (DayOfWeek) DayOfTheWeekId;
+        public DayOfWeek DayOfWeek => (DayOfWeek) DayId;
 
     }
 

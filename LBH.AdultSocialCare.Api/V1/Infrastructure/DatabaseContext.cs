@@ -65,28 +65,23 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed home care time slot shifts
             modelBuilder.ApplyConfiguration(new TimeSlotShiftsSeed());
 
-
             modelBuilder.Entity<OpportunityLengthOption>(entity =>
             {
                 entity.HasKey(e => e.OpportunityLengthOptionId);
 
-                entity.HasIndex(e => e.OptionName)
-                    .IsUnique();
+                entity.HasIndex(e => e.OptionName).IsUnique();
             });
-
 
             modelBuilder.Entity<TermTimeConsiderationOption>(entity =>
             {
-                entity.HasIndex(e => e.OptionName)
-                    .IsUnique();
+                entity.HasIndex(e => e.OptionName).IsUnique();
             });
 
             modelBuilder.Entity<OpportunityTimesPerMonthOption>(entity =>
             {
                 entity.HasKey(e => e.OpportunityTimePerMonthOptionId);
 
-                entity.HasIndex(e => e.OptionName)
-                    .IsUnique();
+                entity.HasIndex(e => e.OptionName).IsUnique();
             });
 
             // Seed package status types

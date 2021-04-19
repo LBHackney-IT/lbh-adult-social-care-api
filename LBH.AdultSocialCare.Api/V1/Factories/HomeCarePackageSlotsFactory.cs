@@ -1,6 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -9,6 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
     public static class HomeCarePackageSlotsFactory
     {
 
+        // TODO change to auto mapper
         public static HomeCarePackageSlotsResponseList ToResponse(
             HomeCarePackageSlotListDomain homeCarePackageSlotListDomain)
         {
@@ -16,27 +17,28 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = homeCarePackageSlotListDomain.Id,
                 HomeCarePackageId = homeCarePackageSlotListDomain.HomeCarePackageId,
-                ServiceId = homeCarePackageSlotListDomain.ServiceId,
-                Services = homeCarePackageSlotListDomain.Services,
-                PrimaryCarer = homeCarePackageSlotListDomain.PrimaryCarer,
-                SecondaryCarer = homeCarePackageSlotListDomain.SecondaryCarer,
-                NeedToAddress = homeCarePackageSlotListDomain.NeedToAddress,
-                WhatShouldBeDone = homeCarePackageSlotListDomain.WhatShouldBeDone,
-                HomeCarePackageSlotResponse = homeCarePackageSlotListDomain.HomeCarePackageSlot.Select(item
+                HomeCarePackageSlots = homeCarePackageSlotListDomain.HomeCarePackageSlots.Select(item
                         => new HomeCarePackageSlotResponse
                         {
-                            InMinutes = item.InMinutes,
+                            ServiceId = item.ServiceId,
+                            NeedToAddress = item.NeedToAddress,
+                            WhatShouldBeDone = item.WhatShouldBeDone,
+                            PrimaryInMinutes = item.PrimaryInMinutes,
+                            SecondaryInMinutes = item.SecondaryInMinutes,
                             TimeSlotShiftId = item.TimeSlotShiftId,
-                            TimeSlotShift = item.TimeSlotShift
+                            TimeSlotShift = item.TimeSlotShift,
+                            DayId = item.DayId
                         })
                     .ToList()
             };
         }
 
+        // TODO change to auto mapper
         public static HomeCarePackageSlotListDomain ToDomain(
             HomeCarePackageSlotsRequestList homeCarePackageSlotsResponseList)
         {
             homeCarePackageSlotsResponseList = null;
+
             return new HomeCarePackageSlotListDomain
             {
                 //Id = homeCarePackageSlotsResponseList.Id,
