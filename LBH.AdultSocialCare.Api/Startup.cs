@@ -47,8 +47,10 @@ using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Int
 
 namespace LBH.AdultSocialCare.Api
 {
+
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -350,7 +352,9 @@ namespace LBH.AdultSocialCare.Api
 
             #region OpportunityTimesPerMonthOptions
 
-            services.AddScoped<IGetOpportunityTimesPerMonthOptionsListUseCase, GetOpportunityTimesPerMonthOptionsListUseCase>();
+            services
+                .AddScoped<IGetOpportunityTimesPerMonthOptionsListUseCase, GetOpportunityTimesPerMonthOptionsListUseCase
+                >();
 
             #endregion
         }
@@ -362,7 +366,12 @@ namespace LBH.AdultSocialCare.Api
             {
                 DatabaseContext databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
-                if (databaseContext.Database.GetPendingMigrations().Any())
+                // Create if not exists
+                if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
+                {
+                    databaseContext.Database.EnsureCreated();
+                }
+                else if (databaseContext.Database.GetPendingMigrations().Any())
                 {
                     // Perform migrations
                     databaseContext.Database.Migrate();
@@ -415,5 +424,7 @@ namespace LBH.AdultSocialCare.Api
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
+
 }
