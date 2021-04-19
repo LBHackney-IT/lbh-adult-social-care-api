@@ -7,6 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
@@ -21,17 +27,26 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         private readonly IGetDayCarePackageUseCase _getDayCarePackageUseCase;
         private readonly IGetDayCarePackageListUseCase _getDayCarePackageListUseCase;
         private readonly IUpdateDayCarePackageUseCase _updateDayCarePackageUseCase;
+        private readonly IGetTermTimeConsiderationOptionsListUseCase _getTermTimeConsiderationOptionsListUseCase;
+        private readonly IGetOpportunityLengthOptionsListUseCase _getOpportunityLengthOptionsListUseCase;
+        private readonly IGetOpportunityTimesPerMonthOptionsListUseCase _getOpportunityTimesPerMonthOptionsListUseCase;
 
         public DayCarePackageController(
             ICreateDayCarePackageUseCase createdDayCarePackageUseCase,
             IGetDayCarePackageUseCase getDayCarePackageUseCase,
             IGetDayCarePackageListUseCase getDayCarePackageListUseCase,
-            IUpdateDayCarePackageUseCase updateDayCarePackageUseCase)
+            IUpdateDayCarePackageUseCase updateDayCarePackageUseCase,
+            IGetTermTimeConsiderationOptionsListUseCase getTermTimeConsiderationOptionsListUseCase,
+            IGetOpportunityLengthOptionsListUseCase getOpportunityLengthOptionsListUseCase,
+            IGetOpportunityTimesPerMonthOptionsListUseCase getOpportunityTimesPerMonthOptionsListUseCase)
         {
             _createDayCarePackageUseCase = createdDayCarePackageUseCase;
             _getDayCarePackageUseCase = getDayCarePackageUseCase;
             _getDayCarePackageListUseCase = getDayCarePackageListUseCase;
             _updateDayCarePackageUseCase = updateDayCarePackageUseCase;
+            _getTermTimeConsiderationOptionsListUseCase = getTermTimeConsiderationOptionsListUseCase;
+            _getOpportunityLengthOptionsListUseCase = getOpportunityLengthOptionsListUseCase;
+            _getOpportunityTimesPerMonthOptionsListUseCase = getOpportunityTimesPerMonthOptionsListUseCase;
         }
 
         /// <summary>Creates the day care package.</summary>
@@ -119,5 +134,47 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             var result = await _updateDayCarePackageUseCase.Execute(dayCarePackageId, dayCarePackageForUpdateDomain).ConfigureAwait(false);
             return Ok(result);
         }
+
+
+
+        #region DayCarePackageOptions
+
+        /// <summary>
+        /// Gets the term time consideration option list.
+        /// </summary>
+        /// <returns>List of term time consideration options</returns>
+        /// <response code="200">Returns term time consideration option list</response>
+        [ProducesResponseType(typeof(IEnumerable<TermTimeConsiderationOptionResponse>), StatusCodes.Status200OK)]
+        [HttpGet("term-time-considerations")]
+        public async Task<ActionResult<IEnumerable<TermTimeConsiderationOptionResponse>>> GetTermTimeConsiderationOptionList()
+        {
+            return Ok(await _getTermTimeConsiderationOptionsListUseCase.Execute().ConfigureAwait(false));
+        }
+
+        /// <summary>
+        /// Gets the opportunity length option list.
+        /// </summary>
+        /// <returns>List of possible day care opportunity length e.g 45 minutes, 1 hour</returns>
+        /// <response code="200">Returns opportunity length list</response>
+        [ProducesResponseType(typeof(IEnumerable<OpportunityLengthOptionResponse>), StatusCodes.Status200OK)]
+        [HttpGet("opportunity-length-options")]
+        public async Task<ActionResult<IEnumerable<OpportunityLengthOptionResponse>>> GetOpportunityLengthOptionList()
+        {
+            return Ok(await _getOpportunityLengthOptionsListUseCase.Execute().ConfigureAwait(false));
+        }
+
+        /// <summary>
+        /// Gets the opportunity times per month option list.
+        /// </summary>
+        /// <returns>List of possible times per month e.g. daily, weekly</returns>
+        /// <response code="200">Returns Opportunity times per month list</response>
+        [ProducesResponseType(typeof(IEnumerable<OpportunityTimesPerMonthOptionResponse>), StatusCodes.Status200OK)]
+        [HttpGet("opportunity-times-per-month-options")]
+        public async Task<ActionResult<IEnumerable<OpportunityTimesPerMonthOptionResponse>>> GetOpportunityTimesPerMonthOptionList()
+        {
+            return Ok(await _getOpportunityTimesPerMonthOptionsListUseCase.Execute().ConfigureAwait(false));
+        }
+
+        #endregion
     }
 }

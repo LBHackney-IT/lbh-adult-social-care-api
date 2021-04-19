@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<bool> DeleteAsync(int statusId)
         {
             var result = _databaseContext.Status.Remove(new PackageStatus
-                { Id = statusId });
+            { Id = statusId });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }

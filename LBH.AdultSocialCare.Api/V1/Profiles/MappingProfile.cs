@@ -3,10 +3,16 @@ using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
@@ -35,12 +41,45 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             CreateMap<DayCarePackageOpportunityForCreationDomain, DayCarePackageOpportunity>();
             CreateMap<DayCarePackageOpportunityForUpdateDomain, DayCarePackageOpportunity>();
-            CreateMap<DayCarePackageOpportunity, DayCarePackageOpportunityDomain>();
-            CreateMap<DayCarePackageOpportunityForCreationRequest, DayCarePackageOpportunityForCreationDomain>();
-            CreateMap<DayCarePackageOpportunityForUpdateRequest, DayCarePackageOpportunityForUpdateDomain>();
+            CreateMap<DayCarePackageOpportunity, DayCarePackageOpportunityDomain>()
+                .ForMember(dco => dco.HowLong,
+                    opt => opt.MapFrom(b => b.OpportunityLengthOption))
+                .ForMember(dco => dco.HowManyTimesPerMonth,
+                    opt => opt.MapFrom(b => b.OpportunityTimesPerMonthOption));
+            CreateMap<DayCarePackageOpportunityForCreationRequest, DayCarePackageOpportunityForCreationDomain>()
+                .ForMember(dco => dco.OpportunityLengthOptionId,
+                opt => opt.MapFrom(b => b.HowLongId))
+                .ForMember(dco => dco.OpportunityTimePerMonthOptionId,
+                opt => opt.MapFrom(b => b.HowManyTimesPerMonthId));
+            CreateMap<DayCarePackageOpportunityForUpdateRequest, DayCarePackageOpportunityForUpdateDomain>()
+                .ForMember(dco => dco.OpportunityLengthOptionId,
+                    opt => opt.MapFrom(b => b.HowLongId))
+                .ForMember(dco => dco.OpportunityTimePerMonthOptionId,
+                    opt => opt.MapFrom(b => b.HowManyTimesPerMonthId));
             CreateMap<DayCarePackageOpportunityDomain, DayCarePackageOpportunityResponse>();
 
             #endregion DayCarePackage
+
+            #region TermTimeConsiderationOptions
+
+            CreateMap<TermTimeConsiderationOption, TermTimeConsiderationOptionDomain>();
+            CreateMap<TermTimeConsiderationOptionDomain, TermTimeConsiderationOptionResponse>();
+
+            #endregion
+
+            #region OpportunityLengthOptions
+
+            CreateMap<OpportunityLengthOption, OpportunityLengthOptionDomain>();
+            CreateMap<OpportunityLengthOptionDomain, OpportunityLengthOptionResponse>();
+
+            #endregion
+
+            #region OpportunityTimesPerMonthOptions
+
+            CreateMap<OpportunityTimesPerMonthOption, OpportunityTimesPerMonthOptionDomain>();
+            CreateMap<OpportunityTimesPerMonthOptionDomain, OpportunityTimesPerMonthOptionResponse>();
+
+            #endregion
 
             #region HomeCarePackage
 

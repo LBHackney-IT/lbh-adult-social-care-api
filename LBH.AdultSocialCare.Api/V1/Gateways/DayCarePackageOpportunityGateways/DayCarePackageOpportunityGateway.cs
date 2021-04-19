@@ -80,6 +80,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways
 
             var dayCarePackageOpportunity = await _dbContext.DayCarePackageOpportunities
                 .Where(dc => dc.DayCarePackageOpportunityId.Equals(dayCarePackageOpportunityId))
+                .Include(dco => dco.OpportunityLengthOption)
+                .Include(dco => dco.OpportunityTimesPerMonthOption)
                 .AsNoTracking()
                 .SingleOrDefaultAsync().ConfigureAwait(false);
 
@@ -95,6 +97,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways
         {
             var dayCarePackageOpportunities = await _dbContext.DayCarePackageOpportunities
                 .Where(dc => dc.DayCarePackageId.Equals(dayCarePackageId))
+                .Include(dco => dco.OpportunityLengthOption)
+                .Include(dco => dco.OpportunityTimesPerMonthOption)
                 .AsNoTracking()
                 .ToListAsync().ConfigureAwait(false);
             return dayCarePackageOpportunities?.ToDomain();
