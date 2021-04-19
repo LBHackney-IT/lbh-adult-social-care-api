@@ -17,7 +17,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = homeCarePackageCostEntity.Id,
                 HomeCarePackageId = homeCarePackageCostEntity.HomeCarePackageId,
-                ServiceName = homeCarePackageCostEntity.ServiceName,
+                ServiceId = homeCarePackageCostEntity.ServiceId,
+                Services = homeCarePackageCostEntity.Services,
                 CostPerHour = homeCarePackageCostEntity.CostPerHour,
                 HoursPerWeek = homeCarePackageCostEntity.HoursPerWeek,
                 TotalCost = homeCarePackageCostEntity.TotalCost,
@@ -32,7 +33,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = homeCarePackageCostDomain.Id,
                 HomeCarePackageId = homeCarePackageCostDomain.HomeCarePackageId,
-                ServiceName = homeCarePackageCostDomain.ServiceName,
+                ServiceId = homeCarePackageCostDomain.ServiceId,
+                Services = homeCarePackageCostDomain.Services,
                 CostPerHour = homeCarePackageCostDomain.CostPerHour,
                 HoursPerWeek = homeCarePackageCostDomain.HoursPerWeek,
                 TotalCost = homeCarePackageCostDomain.TotalCost,
@@ -47,7 +49,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = homeCarePackageCostDomain.Id,
                 HomeCarePackageId = homeCarePackageCostDomain.HomeCarePackageId,
-                ServiceName = homeCarePackageCostDomain.ServiceName,
+                ServiceId = homeCarePackageCostDomain.ServiceId,
+                Services = homeCarePackageCostDomain.Services,
                 CostPerHour = homeCarePackageCostDomain.CostPerHour,
                 HoursPerWeek = homeCarePackageCostDomain.HoursPerWeek,
                 TotalCost = homeCarePackageCostDomain.TotalCost,
@@ -62,7 +65,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = homeCarePackageCostEntity.Id,
                 HomeCarePackageId = homeCarePackageCostEntity.HomeCarePackageId,
-                ServiceName = homeCarePackageCostEntity.ServiceName,
+                ServiceId = homeCarePackageCostEntity.ServiceId,
                 CostPerHour = homeCarePackageCostEntity.CostPerHour,
                 HoursPerWeek = homeCarePackageCostEntity.HoursPerWeek,
                 TotalCost = homeCarePackageCostEntity.TotalCost,

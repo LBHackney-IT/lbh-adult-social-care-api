@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,14 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         public Guid HomeCarePackageId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Service Name
+        /// Gets or sets the Service Id
         /// </summary>
-        public string ServiceName { get; set; }
+        public int ServiceId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Services
+        /// </summary>
+        public HomeCareServiceType Services { get; set; }
 
         /// <summary>
         /// Gets or sets the Cost Per Hour
