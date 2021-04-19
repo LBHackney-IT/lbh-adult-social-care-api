@@ -61,7 +61,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                                         .Select(cl => new HomeCarePackageCost
                                         {
                                             ServiceId = cl.Key,
-                                            HoursPerWeek = cl.Sum(c => c.InMinutes/60)
+                                            HoursPerWeek = cl.Sum(c => c.PrimaryInMinutes/60)
                                         }).ToListAsync().ConfigureAwait(false);
 
             foreach (var item in result)
