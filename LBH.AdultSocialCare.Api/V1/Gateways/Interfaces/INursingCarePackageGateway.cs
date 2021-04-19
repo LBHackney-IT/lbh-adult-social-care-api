@@ -1,4 +1,6 @@
+using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,5 +17,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
         public Task<NursingCarePackage> ChangeStatusAsync(Guid nursingCarePackageId, int statusId);
 
         public Task<IList<NursingCarePackage>> ListAsync();
+
+        public Task<IList<TypeOfNursingCareHome>> GetListOfTypeOfNursingCareHomeAsync();
     }
 }

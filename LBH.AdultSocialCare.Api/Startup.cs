@@ -325,6 +325,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IUpsertResidentialCareAdditionalNeedsUseCase, UpsertResidentialCareAdditionalNeedsUseCase>();
             services.AddScoped<IChangeStatusResidentialCarePackageUseCase, ChangeStatusResidentialCarePackageUseCase>();
             services.AddScoped<IGetAllResidentialCarePackageUseCase, GetAllResidentialCarePackageUseCase>();
+            services.AddScoped<IGetAllResidentialCareHomeType, GetAllResidentialCareHomeType>();
 
             services
                 .AddScoped<IUpsertResidentialCareAdditionalNeedsUseCase, UpsertResidentialCareAdditionalNeedsUseCase>();
@@ -339,6 +340,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IUpsertNursingCareAdditionalNeedsUseCase, UpsertNursingCareAdditionalNeedsUseCase>();
             services.AddScoped<IChangeStatusNursingCarePackageUseCase, ChangeStatusNursingCarePackageUseCase>();
             services.AddScoped<IGetAllNursingCarePackageUseCase, GetAllNursingCarePackageUseCase>();
+            services.AddScoped<IGetAllNursingCareHomeType, GetAllNursingCareHomeType>();
 
             #endregion NursingCarePackage
 

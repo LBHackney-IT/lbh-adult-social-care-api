@@ -2,6 +2,7 @@ using LBH.AdultSocialCare.Api.V1.Exceptions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<NursingCarePackage> GetAsync(Guid nursingCarePackageId)
         {
             var result = await _databaseContext.NursingCarePackage
+                .Include(item => item.TypeOfCareHome)
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
                 .Include(item => item.NursingCareAdditionalNeeds)
@@ -33,6 +35,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<NursingCarePackage> UpsertAsync(NursingCarePackage nursingCarePackage)
         {
             NursingCarePackage nursingCarePackageToUpdate = await _databaseContext.NursingCarePackage
+                .Include(item => item.TypeOfCareHome)
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
                 .Include(item => item.NursingCareAdditionalNeeds)
@@ -51,7 +54,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             nursingCarePackageToUpdate.IsUnder52Weeks = nursingCarePackage.IsUnder52Weeks;
             nursingCarePackageToUpdate.IsLongStay = nursingCarePackage.IsLongStay;
             nursingCarePackageToUpdate.NeedToAddress = nursingCarePackage.NeedToAddress;
-            nursingCarePackageToUpdate.TypeOfNursingHome = nursingCarePackage.TypeOfNursingHome;
+            nursingCarePackageToUpdate.TypeOfNursingCareHomeId = nursingCarePackage.TypeOfNursingCareHomeId;
             nursingCarePackageToUpdate.CreatorId = nursingCarePackage.CreatorId;
             nursingCarePackageToUpdate.UpdatorId = nursingCarePackage.UpdatorId;
             nursingCarePackageToUpdate.DateUpdated = nursingCarePackage.DateUpdated;
@@ -91,6 +94,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
                 .Include(item => item.NursingCareAdditionalNeeds)
+                .ToListAsync().ConfigureAwait(false);
+        }
+
+        public async Task<IList<TypeOfNursingCareHome>> GetListOfTypeOfNursingCareHomeAsync()
+        {
+            return await _databaseContext.TypesOfNursingCareHome
                 .ToListAsync().ConfigureAwait(false);
         }
     }

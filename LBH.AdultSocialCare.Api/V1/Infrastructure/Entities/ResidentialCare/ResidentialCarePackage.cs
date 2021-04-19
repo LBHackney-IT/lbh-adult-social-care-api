@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -67,9 +68,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public string NeedToAddress { get; set; }
 
         /// <summary>
-        /// Gets or sets the Need To Address
+        /// Gets or sets the Type Of Nursing Home Id
         /// </summary>
-        public string TypeOfCareHome { get; set; }
+        public int TypeOfResidentialCareHomeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Type Of Nursing Home
+        /// </summary>
+        [ForeignKey(nameof(TypeOfResidentialCareHomeId))]
+        public TypeOfResidentialCareHome TypeOfResidentialCareHome { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id
