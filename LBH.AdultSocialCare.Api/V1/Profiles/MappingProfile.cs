@@ -27,6 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DayCarePackageForCreationDomain, DayCarePackage>();
             CreateMap<DayCarePackageForUpdateDomain, DayCarePackage>();
             CreateMap<DayCarePackage, DayCarePackageDomain>()
+                .ForMember(dc => dc.PackageName, opt => opt.MapFrom(b => "Day Care package"))
                 .ForMember(dc => dc.ClientName,
                     opt => opt.MapFrom(b => $"{b.Client.FirstName} {b.Client.MiddleName} {b.Client.LastName}"))
                 .ForMember(dc => dc.TermTimeConsiderationOptionName,
