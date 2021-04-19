@@ -66,7 +66,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
             var dayCarePackage = await _dbContext.DayCarePackages
                 .Where(dc => dc.DayCarePackageId.Equals(dayCarePackageId))
                 .AsNoTracking()
-                .Include(dc => dc.Package)
                 .Include(dc => dc.Client)
                 .Include(dc => dc.TermTimeConsiderationOption)
                 .Include(dc => dc.Creator)
@@ -84,7 +83,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
         public async Task<IEnumerable<DayCarePackageDomain>> GetDayCarePackageList()
         {
             var dayCarePackages = await _dbContext.DayCarePackages
-                .Include(dc => dc.Package)
                 .Include(dc => dc.Client)
                 .Include(dc => dc.TermTimeConsiderationOption)
                 .Include(dc => dc.Creator)

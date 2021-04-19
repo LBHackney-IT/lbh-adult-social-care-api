@@ -12,7 +12,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid DayCarePackageId { get; set; }
 
-        public Guid PackageId { get; set; }
         public Guid ClientId { get; set; }
         public bool IsFixedPeriodOrOngoing { get; set; }
         public DateTimeOffset StartDate { get; set; }
@@ -32,10 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public int TermTimeConsiderationOptionId { get; set; }
         public Guid CreatorId { get; set; }
         public Guid? UpdaterId { get; set; }
-        public Guid StatusId { get; set; }
-
-        [ForeignKey(nameof(PackageId))]
-        public Package Package { get; set; }
+        public int StatusId { get; set; }
 
         [ForeignKey(nameof(ClientId))]
         public Clients Client { get; set; }

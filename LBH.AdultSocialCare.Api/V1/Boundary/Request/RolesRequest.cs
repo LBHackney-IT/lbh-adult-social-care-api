@@ -7,7 +7,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Gets or sets the Role Name

@@ -9,10 +9,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
     {
         public Task<Roles> UpsertAsync(Roles roles);
 
-        public Task<Roles> GetAsync(Guid roleId);
+        public Task<Roles> GetAsync(int roleId);
 
         public Task<IList<Roles>> ListAsync();
 
-        public Task<bool> DeleteAsync(Guid roleId);
+        public Task<bool> DeleteAsync(int roleId);
     }
 }

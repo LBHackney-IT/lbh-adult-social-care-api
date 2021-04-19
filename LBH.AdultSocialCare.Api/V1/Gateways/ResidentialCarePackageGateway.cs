@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.Exceptions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
@@ -56,6 +57,31 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             residentialCarePackageToUpdate.StatusId = residentialCarePackage.StatusId;
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess ? residentialCarePackageToUpdate : null;
+        }
+        public async Task<ResidentialCarePackage> ChangeStatusAsync(Guid residentialCarePackageId, int statusId)
+        {
+            ResidentialCarePackage residentialCarePackageToUpdate = await _databaseContext.ResidentialCarePackage
+                .FirstOrDefaultAsync(item => item.Id == residentialCarePackageId)
+                .ConfigureAwait(false);
+
+            if (residentialCarePackageToUpdate == null)
+            {
+                throw new ErrorException($"Couldn't find the record: {residentialCarePackageId}");
+            }
+            residentialCarePackageToUpdate.StatusId = statusId;
+            bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
+            return isSuccess
+                ? residentialCarePackageToUpdate
+                : null;
+        }
+
+        public async Task<IList<ResidentialCarePackage>> ListAsync()
+        {
+            return await _databaseContext.ResidentialCarePackage
+                .Include(item => item.Clients)
+                .Include(item => item.Status)
+                .Include(item => item.ResidentialCareAdditionalNeeds)
+                .ToListAsync().ConfigureAwait(false);
         }
     }
 }

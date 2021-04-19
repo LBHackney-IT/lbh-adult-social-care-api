@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
 {
 
-    public class HomeCarePackage : BaseEntity
+    public class HomeCarePackage 
     {
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// <summary>
         /// Gets or sets the Status Id
         /// </summary>
-        public Guid StatusId { get; set; }
+        public int StatusId { get; set; }
 
         /// <summary>
         /// Gets or sets the Status Object

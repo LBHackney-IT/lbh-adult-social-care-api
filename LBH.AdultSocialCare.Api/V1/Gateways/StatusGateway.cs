@@ -18,7 +18,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             _databaseContext = databaseContext;
         }
 
-        public async Task<bool> DeleteAsync(Guid statusId)
+        public async Task<bool> DeleteAsync(int statusId)
         {
             var result = _databaseContext.Status.Remove(new PackageStatus
             { Id = statusId });
@@ -26,7 +26,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             return isSuccess;
         }
 
-        public async Task<PackageStatus> GetAsync(Guid statusId)
+        public async Task<PackageStatus> GetAsync(int statusId)
         {
             return await _databaseContext.Status.FirstOrDefaultAsync(item => item.Id == statusId).ConfigureAwait(false);
         }

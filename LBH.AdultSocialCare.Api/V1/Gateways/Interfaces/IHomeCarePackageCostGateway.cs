@@ -9,5 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
     public interface IHomeCarePackageCostGateway
     {
         public Task<HomeCarePackageCost> UpsertAsync(HomeCarePackageCost homeCarePackageCost);
+
+        public Task<IList<HomeCarePackageCost>> GetListAsync(Guid homeCarePackageId);
     }
 }

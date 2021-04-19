@@ -73,7 +73,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         /// <summary>
         /// Gets or sets the Status Id
         /// </summary>
-        public Guid StatusId { get; set; }
+        public int StatusId { get; set; }
 
         /// <summary>
         /// Gets or sets the Status Object

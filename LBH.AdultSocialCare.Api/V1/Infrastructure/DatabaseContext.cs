@@ -25,7 +25,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<Roles> Roles { get; set; }
-        public DbSet<TimeSlotType> TimeSlotType { get; set; }
         public DbSet<TimeSlotShifts> TimeSlotShifts { get; set; }
         public DbSet<HomeCarePackage> HomeCarePackage { get; set; }
         public DbSet<HomeCareServiceType> HomeCareServiceTypes { get; set; }
@@ -89,6 +88,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 entity.HasIndex(e => e.OptionName)
                     .IsUnique();
             });
+
+            // Seed package status types
+            modelBuilder.ApplyConfiguration(new PackageStatusSeed());
+
+            // Seed package types
+            modelBuilder.ApplyConfiguration(new PackageTypesSeed());
+
+            // Seed role types
+            modelBuilder.ApplyConfiguration(new RoleTypesSeed());
         }
 
         public override int SaveChanges()

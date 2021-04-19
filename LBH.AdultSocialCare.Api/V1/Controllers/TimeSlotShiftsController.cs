@@ -91,7 +91,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         /// <returns>The List of Time Slot Shifts</returns>
         [ProducesResponseType(typeof(IList<TimeSlotShifts>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("getAll")]

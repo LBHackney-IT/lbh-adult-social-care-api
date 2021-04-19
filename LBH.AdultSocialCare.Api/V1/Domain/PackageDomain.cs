@@ -7,12 +7,12 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the Package Name
+        /// Gets or sets the Package Type
         /// </summary>
-        public string PackageName { get; set; }
+        public string PackageType { get; set; }
 
         /// <summary>
         /// Gets or sets the Sequence

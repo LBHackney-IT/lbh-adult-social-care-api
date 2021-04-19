@@ -1,3 +1,4 @@
+using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
@@ -11,6 +12,13 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 {
     public static class NursingCarePackageFactory
     {
+        private static IMapper _mapper { get; set; }
+
+        public static void Configure(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+
         public static NursingCarePackageDomain ToDomain(NursingCarePackage nursingCarePackageEntity)
         {
             return new NursingCarePackageDomain
@@ -98,6 +106,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 UpdatorId = nursingCarePackageRequest.UpdatorId,
                 StatusId = nursingCarePackageRequest.StatusId
             };
+        }
+
+        public static IList<NursingCarePackageDomain> ToDomain(this IList<NursingCarePackage> nursingCarePackagesEntity)
+        {
+            return _mapper.Map<IList<NursingCarePackageDomain>>(nursingCarePackagesEntity);
+        }
+
+        public static IList<NursingCarePackageResponse> ToResponse(this IList<NursingCarePackageDomain> nursingCarePackagesDomain)
+        {
+            return _mapper.Map<IList<NursingCarePackageResponse>>(nursingCarePackagesDomain);
         }
     }
 }

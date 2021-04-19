@@ -21,17 +21,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             _databaseContext = databaseContext;
         }
 
-        public async Task<bool> DeleteAsync(Guid homeCarePackageId)
-        {
-            _databaseContext.HomeCarePackageSlots.Remove(new HomeCarePackageSlots
-            {
-                HomeCarePackageId = homeCarePackageId
-            });
-            bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
-
-            return isSuccess;
-        }
-
         public async Task<HomeCarePackageSlotListDomain> UpsertAsync(HomeCarePackageSlotListDomain homeCarePackageSlotListList)
         {
             bool success;
