@@ -311,7 +311,9 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IUpsertResidentialCarePackageUseCase, UpsertResidentialCarePackageUseCase>();
             services.AddScoped<IGetResidentialCarePackageUseCase, GetResidentialCarePackageUseCase>();
             services.AddScoped<IGetResidentialCareAdditionalNeedsUseCase, GetResidentialCareAdditionalNeedsUseCase>();
-            services.AddScoped<IUpsertResidentialCareAdditionalNeedsUseCase, UpsertResidentialCareAdditionalNeedsUseCase>();
+
+            services
+                .AddScoped<IUpsertResidentialCareAdditionalNeedsUseCase, UpsertResidentialCareAdditionalNeedsUseCase>();
 
             #endregion ResidentialCarePackage
 
@@ -332,12 +334,7 @@ namespace LBH.AdultSocialCare.Api
             {
                 DatabaseContext databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
-                // Create if not exists
-                if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
-                {
-                    databaseContext.Database.EnsureCreated();
-                }
-                else if (databaseContext.Database.GetPendingMigrations().Any())
+                if (databaseContext.Database.GetPendingMigrations().Any())
                 {
                     // Perform migrations
                     databaseContext.Database.Migrate();

@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
+namespace LBH.AdultSocialCare.Api.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,16 +34,40 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "example_table",
+                name: "HomeCarePackageCosts",
                 columns: table => new
                 {
-                    id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    created_at = table.Column<DateTime>(nullable: false)
+                    Id = table.Column<Guid>(nullable: false),
+                    DateCreated = table.Column<DateTimeOffset>(nullable: false),
+                    DateUpdated = table.Column<DateTimeOffset>(nullable: false),
+                    HomeCarePackageId = table.Column<Guid>(nullable: false),
+                    ServiceName = table.Column<string>(nullable: true),
+                    CostPerHour = table.Column<decimal>(nullable: false),
+                    HoursPerWeek = table.Column<int>(nullable: false),
+                    TotalCost = table.Column<decimal>(nullable: false),
+                    CreatorId = table.Column<int>(nullable: false),
+                    UpdatorId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_example_table", x => x.id);
+                    table.PrimaryKey("PK_HomeCarePackageCosts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HomeCareServiceTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateCreated = table.Column<DateTimeOffset>(nullable: false),
+                    DateUpdated = table.Column<DateTimeOffset>(nullable: false),
+                    ServiceName = table.Column<string>(nullable: true),
+                    CreatorId = table.Column<int>(nullable: false),
+                    UpdatorId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HomeCareServiceTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -111,22 +135,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TimeSlotShifts",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    DateCreated = table.Column<DateTimeOffset>(nullable: false),
-                    DateUpdated = table.Column<DateTimeOffset>(nullable: false),
-                    TimeSlotShiftName = table.Column<string>(nullable: false),
-                    CreatorId = table.Column<int>(nullable: false),
-                    UpdatorId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TimeSlotShifts", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "TimeSlotType",
                 columns: table => new
                 {
@@ -143,26 +151,50 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PackageServices",
+                name: "HomeCareServiceTypeMinutes",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Label = table.Column<string>(nullable: true),
+                    Minutes = table.Column<int>(nullable: false),
+                    IsSecondaryCarer = table.Column<bool>(nullable: false),
+                    HomeCareServiceTypeId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HomeCareServiceTypeMinutes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HomeCareServiceTypeMinutes_HomeCareServiceTypes_HomeCareServiceTypeId",
+                        column: x => x.HomeCareServiceTypeId,
+                        principalTable: "HomeCareServiceTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TimeSlotShifts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     DateCreated = table.Column<DateTimeOffset>(nullable: false),
                     DateUpdated = table.Column<DateTimeOffset>(nullable: false),
-                    PackageId = table.Column<Guid>(nullable: false),
-                    ServiceName = table.Column<string>(nullable: true),
+                    TimeSlotShiftName = table.Column<string>(nullable: false),
+                    TimeSlotTimeLabel = table.Column<string>(nullable: true),
+                    LinkedToHomeCareServiceTypeId = table.Column<int>(nullable: true),
                     CreatorId = table.Column<int>(nullable: false),
                     UpdatorId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PackageServices", x => x.Id);
+                    table.PrimaryKey("PK_TimeSlotShifts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PackageServices_Packages_PackageId",
-                        column: x => x.PackageId,
-                        principalTable: "Packages",
+                        name: "FK_TimeSlotShifts_HomeCareServiceTypes_LinkedToHomeCareServiceTypeId",
+                        column: x => x.LinkedToHomeCareServiceTypeId,
+                        principalTable: "HomeCareServiceTypes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -248,9 +280,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     IsLongStay = table.Column<bool>(nullable: false),
                     NeedToAddress = table.Column<string>(nullable: true),
                     TypeOfNursingHome = table.Column<string>(nullable: true),
-                    Weekly = table.Column<bool>(nullable: false),
-                    OneOff = table.Column<bool>(nullable: false),
-                    AdditionalNeedToAddress = table.Column<string>(nullable: true),
                     CreatorId = table.Column<int>(nullable: false),
                     UpdatorId = table.Column<int>(nullable: false),
                     StatusId = table.Column<Guid>(nullable: false)
@@ -289,9 +318,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     IsThisUserUnderS117 = table.Column<bool>(nullable: false),
                     NeedToAddress = table.Column<string>(nullable: true),
                     TypeOfCareHome = table.Column<string>(nullable: true),
-                    Weekly = table.Column<bool>(nullable: false),
-                    OneOff = table.Column<bool>(nullable: false),
-                    AdditionalNeedToAddress = table.Column<string>(nullable: true),
                     CreatorId = table.Column<int>(nullable: false),
                     UpdatorId = table.Column<int>(nullable: false),
                     StatusId = table.Column<Guid>(nullable: false)
@@ -319,36 +345,27 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     HomeCarePackageId = table.Column<Guid>(nullable: false),
-                    ServiceId = table.Column<Guid>(nullable: false),
-                    PrimaryCarer = table.Column<string>(nullable: true),
-                    SecondaryCarer = table.Column<string>(nullable: true),
+                    ServiceId = table.Column<int>(nullable: false),
+                    PrimaryInMinutes = table.Column<int>(nullable: false),
+                    SecondaryInMinutes = table.Column<int>(nullable: false),
                     NeedToAddress = table.Column<string>(nullable: true),
                     WhatShouldBeDone = table.Column<string>(nullable: true),
-                    TimeSlotTypeId = table.Column<Guid>(nullable: false),
-                    TimeSlotShiftId = table.Column<Guid>(nullable: false),
-                    InMinutes = table.Column<int>(nullable: false),
-                    InHours = table.Column<int>(nullable: false),
-                    Time = table.Column<int>(nullable: false)
+                    TimeSlotShiftId = table.Column<int>(nullable: false),
+                    DayId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HomeCarePackageSlots", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HomeCarePackageSlots_PackageServices_ServiceId",
+                        name: "FK_HomeCarePackageSlots_HomeCareServiceTypes_ServiceId",
                         column: x => x.ServiceId,
-                        principalTable: "PackageServices",
+                        principalTable: "HomeCareServiceTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_HomeCarePackageSlots_TimeSlotShifts_TimeSlotShiftId",
                         column: x => x.TimeSlotShiftId,
                         principalTable: "TimeSlotShifts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_HomeCarePackageSlots_TimeSlotType_TimeSlotTypeId",
-                        column: x => x.TimeSlotTypeId,
-                        principalTable: "TimeSlotType",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -424,6 +441,56 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "NursingCareAdditionalNeeds",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    DateCreated = table.Column<DateTimeOffset>(nullable: false),
+                    DateUpdated = table.Column<DateTimeOffset>(nullable: false),
+                    NursingCarePackageId = table.Column<Guid>(nullable: false),
+                    Weekly = table.Column<bool>(nullable: false),
+                    OneOff = table.Column<bool>(nullable: false),
+                    NeedToAddress = table.Column<string>(nullable: true),
+                    CreatorId = table.Column<Guid>(nullable: false),
+                    UpdatorId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NursingCareAdditionalNeeds", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_NursingCareAdditionalNeeds_NursingCarePackage_NursingCarePackageId",
+                        column: x => x.NursingCarePackageId,
+                        principalTable: "NursingCarePackage",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ResidentialCareAdditionalNeeds",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    DateCreated = table.Column<DateTimeOffset>(nullable: false),
+                    DateUpdated = table.Column<DateTimeOffset>(nullable: false),
+                    ResidentialCarePackageId = table.Column<Guid>(nullable: false),
+                    Weekly = table.Column<bool>(nullable: false),
+                    OneOff = table.Column<bool>(nullable: false),
+                    NeedToAddress = table.Column<string>(nullable: true),
+                    CreatorId = table.Column<Guid>(nullable: false),
+                    UpdatorId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResidentialCareAdditionalNeeds", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ResidentialCareAdditionalNeeds_ResidentialCarePackage_ResidentialCarePackageId",
+                        column: x => x.ResidentialCarePackageId,
+                        principalTable: "ResidentialCarePackage",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "DayCarePackageOpportunities",
                 columns: table => new
                 {
@@ -445,19 +512,94 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "TermTimeConsiderationOptions",
-                columns: new[] { "OptionId", "OptionName" },
-                values: new object[] { 1, "N/A" });
+                table: "HomeCareServiceTypes",
+                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "ServiceName", "UpdatorId" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(1713), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(3696), new TimeSpan(0, 0, 0, 0, 0)), "Personal Home Care", 1 },
+                    { 2, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(4099), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(4143), new TimeSpan(0, 0, 0, 0, 0)), "Domestic Care", 1 },
+                    { 3, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(4150), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(4152), new TimeSpan(0, 0, 0, 0, 0)), "Live-in Care", 1 },
+                    { 4, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(4154), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(4156), new TimeSpan(0, 0, 0, 0, 0)), "Escort Care", 1 },
+                    { 5, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(4157), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(4159), new TimeSpan(0, 0, 0, 0, 0)), "Night Owl", 1 },
+                    { 6, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(4160), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(4162), new TimeSpan(0, 0, 0, 0, 0)), "Waking Nights", 1 },
+                    { 7, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(4163), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 177, DateTimeKind.Unspecified).AddTicks(4165), new TimeSpan(0, 0, 0, 0, 0)), "Sleeping Nights", 1 }
+                });
 
             migrationBuilder.InsertData(
                 table: "TermTimeConsiderationOptions",
                 columns: new[] { "OptionId", "OptionName" },
-                values: new object[] { 2, "Term Time" });
+                values: new object[,]
+                {
+                    { 1, "N/A" },
+                    { 2, "Term Time" },
+                    { 3, "Holiday" }
+                });
 
             migrationBuilder.InsertData(
-                table: "TermTimeConsiderationOptions",
-                columns: new[] { "OptionId", "OptionName" },
-                values: new object[] { 3, "Holiday" });
+                table: "TimeSlotShifts",
+                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "LinkedToHomeCareServiceTypeId", "TimeSlotShiftName", "TimeSlotTimeLabel", "UpdatorId" },
+                values: new object[,]
+                {
+                    { 1, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(7692), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(7712), new TimeSpan(0, 0, 0, 0, 0)), null, "Morning", "08:00 - 10:00", 1 },
+                    { 2, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(9559), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(9566), new TimeSpan(0, 0, 0, 0, 0)), null, "Mid Morning", "10:00 - 12:00", 1 },
+                    { 3, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(9611), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(9612), new TimeSpan(0, 0, 0, 0, 0)), null, "Lunch", "12:00 - 14:00", 1 },
+                    { 4, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(9614), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(9614), new TimeSpan(0, 0, 0, 0, 0)), null, "Afternoon", "14:00 - 17:00", 1 },
+                    { 5, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(9616), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(9617), new TimeSpan(0, 0, 0, 0, 0)), null, "Evening", "17:00 - 20:00", 1 },
+                    { 6, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(9618), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(9619), new TimeSpan(0, 0, 0, 0, 0)), null, "Night", "20:00 - 22:00", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "HomeCareServiceTypeMinutes",
+                columns: new[] { "Id", "HomeCareServiceTypeId", "IsSecondaryCarer", "Label", "Minutes" },
+                values: new object[,]
+                {
+                    { 1, 1, false, "30 minutes", 30 },
+                    { 22, 2, false, "2 hours", 120 },
+                    { 23, 3, false, "30 minutes", 30 },
+                    { 24, 3, false, "45 minutes", 45 },
+                    { 25, 3, false, "1 hour", 60 },
+                    { 26, 3, false, "1 hour 15 minutes", 75 },
+                    { 27, 3, false, "1 hour 30 minutes", 90 },
+                    { 28, 3, false, "1 hour 45 minutes", 105 },
+                    { 29, 3, false, "2 hours", 120 },
+                    { 30, 4, false, "30 minutes", 30 },
+                    { 31, 4, false, "45 minutes", 45 },
+                    { 32, 4, false, "1 hour", 60 },
+                    { 33, 4, false, "1 hour 15 minutes", 75 },
+                    { 34, 4, false, "1 hour 30 minutes", 90 },
+                    { 35, 4, false, "1 hour 45 minutes", 105 },
+                    { 36, 4, false, "2 hours", 120 },
+                    { 21, 2, false, "1 hour 45 minutes", 105 },
+                    { 19, 2, false, "1 hour 15 minutes", 75 },
+                    { 20, 2, false, "1 hour 30 minutes", 90 },
+                    { 9, 1, true, "30 minutes", 30 },
+                    { 4, 1, false, "1 hour 15 minutes", 75 },
+                    { 5, 1, false, "1 hour 30 minutes", 90 },
+                    { 6, 1, false, "1 hour 45 minutes", 105 },
+                    { 7, 1, false, "2 hours", 120 },
+                    { 8, 1, true, "N/A", 0 },
+                    { 18, 2, false, "1 hour", 60 },
+                    { 3, 1, false, "1 hour", 60 },
+                    { 10, 1, true, "45 minutes", 45 },
+                    { 12, 1, true, "1 hour 15 minutes", 75 },
+                    { 13, 1, true, "1 hour 30 minutes", 90 },
+                    { 14, 1, true, "1 hour 45 minutes", 105 },
+                    { 15, 1, true, "2 hours", 120 },
+                    { 16, 2, false, "30 minutes", 30 },
+                    { 17, 2, false, "45 minutes", 45 },
+                    { 11, 1, true, "1 hour", 60 },
+                    { 2, 1, false, "45 minutes", 45 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "TimeSlotShifts",
+                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "LinkedToHomeCareServiceTypeId", "TimeSlotShiftName", "TimeSlotTimeLabel", "UpdatorId" },
+                values: new object[,]
+                {
+                    { 8, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 184, DateTimeKind.Unspecified).AddTicks(31), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 184, DateTimeKind.Unspecified).AddTicks(36), new TimeSpan(0, 0, 0, 0, 0)), 6, "Waking Nights", null, 1 },
+                    { 7, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(9620), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 183, DateTimeKind.Unspecified).AddTicks(9621), new TimeSpan(0, 0, 0, 0, 0)), 5, "Night Owl", null, 1 },
+                    { 9, 1, new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 184, DateTimeKind.Unspecified).AddTicks(52), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 16, 10, 39, 25, 184, DateTimeKind.Unspecified).AddTicks(53), new TimeSpan(0, 0, 0, 0, 0)), 7, "Sleeping Nights", null, 1 }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_DayCarePackageOpportunities_DayCarePackageId",
@@ -515,9 +657,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 column: "TimeSlotShiftId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HomeCarePackageSlots_TimeSlotTypeId",
-                table: "HomeCarePackageSlots",
-                column: "TimeSlotTypeId");
+                name: "IX_HomeCareServiceTypeMinutes_HomeCareServiceTypeId",
+                table: "HomeCareServiceTypeMinutes",
+                column: "HomeCareServiceTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_NursingCareAdditionalNeeds_NursingCarePackageId",
+                table: "NursingCareAdditionalNeeds",
+                column: "NursingCarePackageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NursingCarePackage_ClientId",
@@ -530,9 +677,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PackageServices_PackageId",
-                table: "PackageServices",
-                column: "PackageId");
+                name: "IX_ResidentialCareAdditionalNeeds_ResidentialCarePackageId",
+                table: "ResidentialCareAdditionalNeeds",
+                column: "ResidentialCarePackageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ResidentialCarePackage_ClientId",
@@ -543,6 +690,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "IX_ResidentialCarePackage_StatusId",
                 table: "ResidentialCarePackage",
                 column: "StatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TimeSlotShifts_LinkedToHomeCareServiceTypeId",
+                table: "TimeSlotShifts",
+                column: "LinkedToHomeCareServiceTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_RoleId",
@@ -556,13 +708,31 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "DayCarePackageOpportunities");
 
             migrationBuilder.DropTable(
-                name: "example_table");
-
-            migrationBuilder.DropTable(
                 name: "HomeCarePackage");
 
             migrationBuilder.DropTable(
+                name: "HomeCarePackageCosts");
+
+            migrationBuilder.DropTable(
                 name: "HomeCarePackageSlots");
+
+            migrationBuilder.DropTable(
+                name: "HomeCareServiceTypeMinutes");
+
+            migrationBuilder.DropTable(
+                name: "NursingCareAdditionalNeeds");
+
+            migrationBuilder.DropTable(
+                name: "ResidentialCareAdditionalNeeds");
+
+            migrationBuilder.DropTable(
+                name: "TimeSlotType");
+
+            migrationBuilder.DropTable(
+                name: "DayCarePackages");
+
+            migrationBuilder.DropTable(
+                name: "TimeSlotShifts");
 
             migrationBuilder.DropTable(
                 name: "NursingCarePackage");
@@ -571,31 +741,22 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "ResidentialCarePackage");
 
             migrationBuilder.DropTable(
-                name: "DayCarePackages");
-
-            migrationBuilder.DropTable(
-                name: "PackageServices");
-
-            migrationBuilder.DropTable(
-                name: "TimeSlotShifts");
-
-            migrationBuilder.DropTable(
-                name: "TimeSlotType");
-
-            migrationBuilder.DropTable(
-                name: "Clients");
-
-            migrationBuilder.DropTable(
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Status");
+                name: "Packages");
 
             migrationBuilder.DropTable(
                 name: "TermTimeConsiderationOptions");
 
             migrationBuilder.DropTable(
-                name: "Packages");
+                name: "HomeCareServiceTypes");
+
+            migrationBuilder.DropTable(
+                name: "Clients");
+
+            migrationBuilder.DropTable(
+                name: "Status");
 
             migrationBuilder.DropTable(
                 name: "Roles");
