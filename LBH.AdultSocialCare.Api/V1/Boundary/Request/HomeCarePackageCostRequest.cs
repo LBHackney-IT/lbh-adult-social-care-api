@@ -18,9 +18,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         public Guid HomeCarePackageId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Service Name
+        /// Gets or sets the Service Id
         /// </summary>
-        public string ServiceName { get; set; }
+        public int ServiceId { get; set; }
 
         /// <summary>
         /// Gets or sets the Cost Per Hour

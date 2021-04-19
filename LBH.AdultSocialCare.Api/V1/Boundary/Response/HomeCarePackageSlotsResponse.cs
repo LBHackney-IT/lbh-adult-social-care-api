@@ -47,16 +47,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         public string WhatShouldBeDone { get; set; }
 
         /// <summary>
-        /// Gets or sets the Time Slot Type Id
-        /// </summary>
-        public Guid TimeSlotTypeId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Time Slot Types
-        /// </summary>
-        public TimeSlotType TimeSlotTypes { get; set; }
-
-        /// <summary>
         /// Gets or sets the Time Slot Shift Id
         /// </summary>
         public Guid TimeSlotShiftId { get; set; }

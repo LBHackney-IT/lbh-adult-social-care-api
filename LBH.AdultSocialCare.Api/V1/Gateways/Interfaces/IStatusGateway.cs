@@ -9,10 +9,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
     {
         public Task<PackageStatus> UpsertAsync(PackageStatus status);
 
-        public Task<PackageStatus> GetAsync(Guid statusId);
+        public Task<PackageStatus> GetAsync(int statusId);
 
         public Task<IList<PackageStatus>> ListAsync();
 
-        public Task<bool> DeleteAsync(Guid statusId);
+        public Task<bool> DeleteAsync(int statusId);
     }
 }

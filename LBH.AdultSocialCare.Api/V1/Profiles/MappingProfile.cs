@@ -6,12 +6,15 @@ using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Resp
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Response;
+using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {
@@ -24,7 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DayCarePackageForCreationDomain, DayCarePackage>();
             CreateMap<DayCarePackageForUpdateDomain, DayCarePackage>();
             CreateMap<DayCarePackage, DayCarePackageDomain>()
-                .ForMember(dc => dc.PackageName, opt => opt.MapFrom(b => b.Package.PackageName))
+                .ForMember(dc => dc.PackageName, opt => opt.MapFrom(b => "Day Care package"))
                 .ForMember(dc => dc.ClientName,
                     opt => opt.MapFrom(b => $"{b.Client.FirstName} {b.Client.MiddleName} {b.Client.LastName}"))
                 .ForMember(dc => dc.TermTimeConsiderationOptionName,
@@ -78,6 +81,15 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<OpportunityTimesPerMonthOptionDomain, OpportunityTimesPerMonthOptionResponse>();
 
             #endregion
+
+            #region HomeCarePackage
+
+            CreateMap<HomeCarePackageResponse, HomeCarePackageDomain>();
+            CreateMap<HomeCarePackage, HomeCarePackageDomain>();
+            CreateMap<HomeCarePackageDomain, HomeCarePackage>();
+            CreateMap<HomeCarePackageDomain, HomeCarePackageResponse>();
+
+            #endregion HomeCarePackage
         }
     }
 }

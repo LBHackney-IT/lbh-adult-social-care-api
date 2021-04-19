@@ -71,7 +71,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("{roleId}")]
-        public async Task<ActionResult<RolesResponse>> Get(Guid roleId)
+        public async Task<ActionResult<RolesResponse>> Get(int roleId)
         {
             try
             {
@@ -87,7 +87,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         /// <returns>The list of Roles response</returns>
         [ProducesResponseType(typeof(IList<Roles>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("getAll")]
@@ -96,9 +95,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             try
             {
                 IList<Roles> result = await _getAllRoleUseCase.GetAllAsync().ConfigureAwait(false);
-
-                if (result == null) return NotFound();
-
                 return Ok(result.ToList());
             }
             catch (FormatException ex)
@@ -111,7 +107,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpDelete]
         [Route("{roleId}")]
-        public async Task<ActionResult<bool>> Delete(Guid roleId)
+        public async Task<ActionResult<bool>> Delete(int roleId)
         {
             try
             {

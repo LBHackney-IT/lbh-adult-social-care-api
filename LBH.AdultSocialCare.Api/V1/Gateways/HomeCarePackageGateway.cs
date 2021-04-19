@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Exceptions;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
@@ -29,25 +30,29 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<IList<HomeCarePackage>> ListAsync()
         {
-            return await _databaseContext.HomeCarePackage.ToListAsync().ConfigureAwait(false);
+            return await _databaseContext.HomeCarePackage
+                .Include(item => item.Clients)
+                .Include(item => item.Status)
+                .ToListAsync().ConfigureAwait(false);
         }
 
-        public async Task<HomeCarePackage> ChangeStatusAsync(HomeCarePackage homeCarePackage)
+        public async Task<HomeCarePackage> ChangeStatusAsync(Guid homeCarePackageId, int statusId)
         {
             HomeCarePackage homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
-                .FirstOrDefaultAsync(item => item.Id == homeCarePackage.Id)
+                .Include(item => item.Clients)
+                .Include(item => item.Status)
+                .FirstOrDefaultAsync(item => item.Id == homeCarePackageId)
                 .ConfigureAwait(false);
 
-            if (homeCarePackageToUpdate != null)
+            if (homeCarePackageToUpdate == null)
             {
-                homeCarePackageToUpdate.StatusId = homeCarePackage.StatusId;
-                homeCarePackageToUpdate.CreatorId = homeCarePackage.CreatorId;
-                homeCarePackageToUpdate.UpdatorId = homeCarePackage.UpdatorId;
+                throw new ErrorException($"Couldn't find the record: {homeCarePackageId}");
             }
-
-            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
-
-            return homeCarePackageToUpdate;
+            homeCarePackageToUpdate.StatusId = statusId;
+            bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
+            return isSuccess
+                ? homeCarePackageToUpdate
+                : null;
         }
 
         public async Task<HomeCarePackage> UpsertAsync(HomeCarePackage homeCarePackage)

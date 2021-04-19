@@ -11,5 +11,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
         public Task<ResidentialCarePackage> UpsertAsync(ResidentialCarePackage residentialCarePackage);
 
         public Task<ResidentialCarePackage> GetAsync(Guid residentialCarePackageId);
+
+        public Task<ResidentialCarePackage> ChangeStatusAsync(Guid residentialCarePackageId, int statusId);
+
+        public Task<IList<ResidentialCarePackage>> ListAsync();
     }
 }

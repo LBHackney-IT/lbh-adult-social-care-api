@@ -35,7 +35,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         /// <returns>The created User Response model</returns>
         [ProducesResponseType(typeof(UsersResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [HttpPost]
         public async Task<ActionResult<UsersResponse>> Create(UsersRequest usersRequest)

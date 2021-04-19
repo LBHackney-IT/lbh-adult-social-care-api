@@ -1,3 +1,4 @@
+using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
@@ -5,12 +6,19 @@ using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
+using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
 
     public static class HomeCarePackageFactory
     {
+        private static IMapper _mapper { get; set; }
+
+        public static void Configure(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
 
         public static HomeCarePackageDomain ToDomain(HomeCarePackage homeCarePackageEntity)
         {
@@ -26,9 +34,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsThisAnImmediateService = homeCarePackageEntity.IsThisAnImmediateService,
                 IsThisuserUnderS117 = homeCarePackageEntity.IsThisuserUnderS117,
                 CreatorId = homeCarePackageEntity.CreatorId,
-                DateCreated = homeCarePackageEntity.DateCreated,
                 UpdatorId = homeCarePackageEntity.UpdatorId,
-                DateUpdated = homeCarePackageEntity.DateUpdated,
                 StatusId = homeCarePackageEntity.StatusId,
                 Status = homeCarePackageEntity.Status
             };
@@ -68,9 +74,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsThisAnImmediateService = homeCarePackageDomain.IsThisAnImmediateService,
                 IsThisuserUnderS117 = homeCarePackageDomain.IsThisuserUnderS117,
                 CreatorId = homeCarePackageDomain.CreatorId,
-                DateCreated = homeCarePackageDomain.DateCreated,
                 UpdatorId = homeCarePackageDomain.UpdatorId,
-                DateUpdated = homeCarePackageDomain.DateUpdated,
                 StatusId = homeCarePackageDomain.StatusId,
                 Status = homeCarePackageDomain.Status
             };
@@ -94,6 +98,15 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
+        public static IList<HomeCarePackageDomain> ToDomain(this IList<HomeCarePackage> homeCarePackagesEntity)
+        {
+            return _mapper.Map<IList<HomeCarePackageDomain>>(homeCarePackagesEntity);
+        }
+
+        public static IList<HomeCarePackageResponse> ToResponse(this IList<HomeCarePackageDomain> homeCarePackagesDomain)
+        {
+            return _mapper.Map<IList<HomeCarePackageResponse>>(homeCarePackagesDomain);
+        }
     }
 
 }

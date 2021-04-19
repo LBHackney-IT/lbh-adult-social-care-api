@@ -1,4 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Domain;
+using System;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 
@@ -6,6 +7,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Interfaces
 {
     public interface IChangeStatusHomeCarePackageUseCase
     {
-        public Task<HomeCarePackageDomain> UpdateAsync(HomeCarePackageDomain homeCarePackage);
+        public Task<HomeCarePackageDomain> UpdateAsync(Guid homeCarePackageId, int statusId);
     }
 }

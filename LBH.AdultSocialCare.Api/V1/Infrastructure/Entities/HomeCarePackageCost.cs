@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -21,9 +22,25 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public Guid HomeCarePackageId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Service Name
+        /// Gets or sets the Service Id
         /// </summary>
-        public string ServiceName { get; set; }
+        public int ServiceId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Services
+        /// </summary>
+        [ForeignKey(nameof(ServiceId))]
+        public HomeCareServiceType Services { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Primary Carer
+        /// </summary>
+        public string PrimaryCarer { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Secondary Carer
+        /// </summary>
+        public int SecondaryCarer { get; set; }
 
         /// <summary>
         /// Gets or sets the Cost Per Hour
