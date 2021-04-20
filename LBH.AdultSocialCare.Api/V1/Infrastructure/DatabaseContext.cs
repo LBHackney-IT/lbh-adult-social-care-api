@@ -105,6 +105,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed User
             modelBuilder.ApplyConfiguration(new UserSeed());
+
+            // Seed Client
+            modelBuilder.ApplyConfiguration(new ClientSeed());
         }
 
         public override int SaveChanges()

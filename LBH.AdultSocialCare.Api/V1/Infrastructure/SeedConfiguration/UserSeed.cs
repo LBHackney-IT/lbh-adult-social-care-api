@@ -14,7 +14,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
         {
             builder.HasData(new Users
             {
-                Id = Guid.NewGuid(),
+                Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 FirstName = "Furkan",
                 LastName = "Kayar",
                 HackneyId = 1111,
@@ -24,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 RoleId = 1
             }, new Users
             {
-                Id = Guid.NewGuid(),
+                Id = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"),
                 FirstName = "Duncan",
                 LastName = "Okeno",
                 HackneyId = 4444,
