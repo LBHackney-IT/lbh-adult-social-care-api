@@ -50,8 +50,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         {
             base.OnModelCreating(modelBuilder);
 
-            // Home care
-            modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.Minutes);
+            #region Database Seeds
 
             // Seed term time consideration options
             modelBuilder.ApplyConfiguration(new TermTimeConsiderationOptionsSeed());
@@ -68,26 +67,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed home care time slot shifts
             modelBuilder.ApplyConfiguration(new TimeSlotShiftsSeed());
-
-            modelBuilder.Entity<OpportunityLengthOption>(entity =>
-            {
-                entity.HasKey(e => e.OpportunityLengthOptionId);
-
-                entity.HasIndex(e => e.OptionName).IsUnique();
-            });
-
-            modelBuilder.Entity<TermTimeConsiderationOption>(entity =>
-            {
-                entity.HasIndex(e => e.OptionName).IsUnique();
-            });
-
-            modelBuilder.Entity<OpportunityTimesPerMonthOption>(entity =>
-            {
-                entity.HasKey(e => e.OpportunityTimePerMonthOptionId);
-
-                entity.HasIndex(e => e.OptionName).IsUnique();
-            });
-
             // Seed package status types
             modelBuilder.ApplyConfiguration(new PackageStatusSeed());
 
@@ -108,6 +87,35 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed Client
             modelBuilder.ApplyConfiguration(new ClientSeed());
+
+            #endregion
+
+            #region Entity Config
+
+            // Home care
+            modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.Minutes);
+
+            modelBuilder.Entity<OpportunityLengthOption>(entity =>
+            {
+                entity.HasKey(e => e.OpportunityLengthOptionId);
+
+                entity.HasIndex(e => e.OptionName).IsUnique();
+            });
+
+            modelBuilder.Entity<TermTimeConsiderationOption>(entity =>
+            {
+                entity.HasIndex(e => e.OptionName).IsUnique();
+            });
+
+            modelBuilder.Entity<OpportunityTimesPerMonthOption>(entity =>
+            {
+                entity.HasKey(e => e.OpportunityTimePerMonthOptionId);
+
+                entity.HasIndex(e => e.OptionName).IsUnique();
+            });
+
+            #endregion
+
         }
 
         public override int SaveChanges()

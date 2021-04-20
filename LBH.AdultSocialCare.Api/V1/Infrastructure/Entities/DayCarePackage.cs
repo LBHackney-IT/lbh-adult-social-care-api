@@ -5,13 +5,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-
     public class DayCarePackage : BaseEntity
     {
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid DayCarePackageId { get; set; }
-
+        public int PackageId { get; set; }
         public Guid ClientId { get; set; }
         public bool IsFixedPeriodOrOngoing { get; set; }
         public DateTimeOffset StartDate { get; set; }
@@ -33,6 +32,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public Guid? UpdaterId { get; set; }
         public int StatusId { get; set; }
 
+        [ForeignKey(nameof(PackageId))]
+        public Package Package { get; set; }
+
         [ForeignKey(nameof(ClientId))]
         public Clients Client { get; set; }
 
@@ -49,7 +51,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public PackageStatus Status { get; set; }
 
         public ICollection<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
-
     }
 
 }

@@ -7,7 +7,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response
     public class DayCarePackageResponse
     {
         public Guid DayCarePackageId { get; set; }
-        public Guid PackageId { get; set; }
+        public int PackageId { get; set; }
         public Guid ClientId { get; set; }
         public bool IsFixedPeriodOrOngoing { get; set; }
         public DateTimeOffset StartDate { get; set; }
