@@ -102,6 +102,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed Type Of Residential Care Home
             modelBuilder.ApplyConfiguration(new TypeOfResidentialCareHomeSeed());
+
+            // Seed User
+            modelBuilder.ApplyConfiguration(new UserSeed());
         }
 
         public override int SaveChanges()
