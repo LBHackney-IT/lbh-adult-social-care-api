@@ -42,13 +42,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 StatusName = "Supplier Sourced",
                 CreatorId = 1,
                 UpdatorId = 1
-            },new PackageStatus
+            }, new PackageStatus
             {
                 Id = 6,
                 StatusName = "Commercially Approved",
                 CreatorId = 1,
                 UpdatorId = 1
-            },new PackageStatus
+            }, new PackageStatus
             {
                 Id = 7,
                 StatusName = "Contracted",

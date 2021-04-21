@@ -18,7 +18,15 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static DayCarePackageForCreationDomain ToDomain(this DayCarePackageForCreationRequest dayCarePackageForCreation)
         {
-            return _mapper.Map<DayCarePackageForCreationDomain>(dayCarePackageForCreation);
+            var res = _mapper.Map<DayCarePackageForCreationDomain>(dayCarePackageForCreation);
+            // Set status to 1 for new package
+            if (res.StatusId == 0)
+            {
+                res.StatusId = 1;
+            }
+            // Set package id to 3 for day care package
+            res.PackageId = 3;
+            return res;
         }
 
         public static DayCarePackageForUpdateDomain ToDomain(this DayCarePackageForUpdateRequest dayCarePackageForUpdate)

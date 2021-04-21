@@ -6,7 +6,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
 {
     public class DayCarePackageForCreationDomain
     {
-        public Guid PackageId { get; set; }
+        public int PackageId { get; set; }
         public Guid ClientId { get; set; }
         public bool IsFixedPeriodOrOngoing { get; set; }
         public DateTimeOffset StartDate { get; set; }
@@ -26,6 +26,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
         public int TermTimeConsiderationOptionId { get; set; }
         public List<DayCarePackageOpportunityForCreationDomain> DayCarePackageOpportunities { get; set; }
         public Guid CreatorId { get; set; }
-        public Guid StatusId { get; set; }
+        public int StatusId { get; set; }
     }
 }
