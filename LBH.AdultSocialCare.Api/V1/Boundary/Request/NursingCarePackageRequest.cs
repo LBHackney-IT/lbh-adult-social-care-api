@@ -1,5 +1,7 @@
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,11 +17,16 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         /// <summary>
         /// Gets or sets the Client Id
         /// </summary>
-        public Guid ClientId { get; set; }
+        [Required]
+        public Guid? ClientId { get; set; }
+
+        [Required]
+        public bool IsFixedPeriod { get; set; }
 
         /// <summary>
         /// Gets or sets the Start Date
         /// </summary>
+        [Required]
         public DateTimeOffset StartDate { get; set; }
 
         /// <summary>
@@ -28,24 +35,25 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         public DateTimeOffset? EndDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is Interim
+        /// Gets or sets a value indicating whether this instance is respite care.
         /// </summary>
-        public bool IsInterim { get; set; }
+        public bool IsRespiteCare { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is Expected Stay Over 8Weeks
+        /// Gets or sets a value indicating whether this instance is discharge package.
         /// </summary>
-        public bool IsUnder8Weeks { get; set; }
+        public bool IsDischargePackage { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is Expected Stay Over 52Weeks
+        /// Gets or sets a value indicating whether this instance is this an immediate service.
         /// </summary>
-        public bool IsUnder52Weeks { get; set; }
+        public bool IsThisAnImmediateService { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Is Long Stay
-        /// </summary>
-        public bool IsLongStay { get; set; }
+        /// <summary>Gets or sets a value indicating whether this instance is this user under S117.</summary>
+        public bool IsThisUserUnderS117 { get; set; }
+
+        [Required]
+        public int? TypeOfStayId { get; set; }
 
         /// <summary>
         /// Gets or sets the Need To Address
@@ -55,46 +63,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         /// <summary>
         /// Gets or sets the Type Of Care Home Id
         /// </summary>
-        public int TypeOfNursingCareHomeId { get; set; }
+        [Required]
+        public int? TypeOfNursingCareHomeId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Weekly
-        /// </summary>
-        public bool Weekly { get; set; }
-
-        /// <summary>
-        /// Gets or sets the One Off
-        /// </summary>
-        public bool OneOff { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Additional Need To Address
-        /// </summary>
-        public string AdditionalNeedToAddress { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public int CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Date Created
-        /// </summary>
-        public DateTimeOffset? DateCreated { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updator Id
-        /// </summary>
-        public int UpdatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Date Updated
-        /// </summary>
-        public DateTimeOffset? DateUpdated { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Status Id
-        /// </summary>
-        public int StatusId { get; set; }
+        public List<NursingCareAdditionalNeedsRequest> NursingCareAdditionalNeeds { get; set; }
     }
 }

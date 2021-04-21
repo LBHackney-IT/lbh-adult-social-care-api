@@ -28,8 +28,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 await _databaseContext.NursingCareAdditionalNeeds.AddAsync(nursingCareAdditionalNeedsToUpdate).ConfigureAwait(false);
             }
             nursingCareAdditionalNeedsToUpdate.NursingCarePackageId = nursingCareAdditionalNeeds.NursingCarePackageId;
-            nursingCareAdditionalNeedsToUpdate.Weekly = nursingCareAdditionalNeeds.Weekly;
-            nursingCareAdditionalNeedsToUpdate.OneOff = nursingCareAdditionalNeeds.OneOff;
+            nursingCareAdditionalNeedsToUpdate.IsWeeklyCost = nursingCareAdditionalNeeds.IsWeeklyCost;
+            nursingCareAdditionalNeedsToUpdate.IsOneOffCost = nursingCareAdditionalNeeds.IsOneOffCost;
             nursingCareAdditionalNeedsToUpdate.NeedToAddress = nursingCareAdditionalNeeds.NeedToAddress;
             nursingCareAdditionalNeedsToUpdate.CreatorId = nursingCareAdditionalNeeds.CreatorId;
             nursingCareAdditionalNeedsToUpdate.UpdatorId = nursingCareAdditionalNeeds.UpdatorId;

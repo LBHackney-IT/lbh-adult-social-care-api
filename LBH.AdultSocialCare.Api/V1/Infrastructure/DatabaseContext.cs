@@ -45,6 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<HomeCarePackageCost> HomeCarePackageCosts { get; set; }
         public DbSet<TypeOfNursingCareHome> TypesOfNursingCareHome { get; set; }
         public DbSet<TypeOfResidentialCareHome> TypesOfResidentialCareHome { get; set; }
+        public DbSet<NursingCareTypeOfStayOption> NursingCareTypeOfStayOption { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -116,6 +117,23 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             #endregion
 
+            // Seed role types
+            modelBuilder.ApplyConfiguration(new RoleTypesSeed());
+
+            // Seed Type Of Nursing Care Home
+            modelBuilder.ApplyConfiguration(new TypeOfNursingCareHomeSeed());
+
+            // Seed Type Of Residential Care Home
+            modelBuilder.ApplyConfiguration(new TypeOfResidentialCareHomeSeed());
+
+            // Seed User
+            modelBuilder.ApplyConfiguration(new UserSeed());
+
+            // Seed Client
+            modelBuilder.ApplyConfiguration(new ClientSeed());
+
+            // Seed NursingCareTypeOfStayOptionSeed
+            modelBuilder.ApplyConfiguration(new NursingCareTypeOfStayOptionSeed());
         }
 
         public override int SaveChanges()

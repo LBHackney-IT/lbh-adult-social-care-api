@@ -36,6 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         {
             NursingCarePackage nursingCarePackageToUpdate = await _databaseContext.NursingCarePackage
                 .Include(item => item.TypeOfCareHome)
+                .Include(item => item.TypeOfStayOption)
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
                 .Include(item => item.NursingCareAdditionalNeeds)
@@ -47,12 +48,14 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             }
 
             nursingCarePackageToUpdate.ClientId = nursingCarePackage.ClientId;
+            nursingCarePackageToUpdate.IsFixedPeriod = nursingCarePackage.IsFixedPeriod;
             nursingCarePackageToUpdate.StartDate = nursingCarePackage.StartDate;
             nursingCarePackageToUpdate.EndDate = nursingCarePackage.EndDate;
-            nursingCarePackageToUpdate.IsInterim = nursingCarePackage.IsInterim;
-            nursingCarePackageToUpdate.IsUnder8Weeks = nursingCarePackage.IsUnder8Weeks;
-            nursingCarePackageToUpdate.IsUnder52Weeks = nursingCarePackage.IsUnder52Weeks;
-            nursingCarePackageToUpdate.IsLongStay = nursingCarePackage.IsLongStay;
+            nursingCarePackageToUpdate.IsRespiteCare = nursingCarePackage.IsRespiteCare;
+            nursingCarePackageToUpdate.IsDischargePackage = nursingCarePackage.IsDischargePackage;
+            nursingCarePackageToUpdate.IsThisAnImmediateService = nursingCarePackage.IsThisAnImmediateService;
+            nursingCarePackageToUpdate.IsThisUserUnderS117 = nursingCarePackage.IsThisUserUnderS117;
+            nursingCarePackageToUpdate.TypeOfStayId = nursingCarePackage.TypeOfStayId;
             nursingCarePackageToUpdate.NeedToAddress = nursingCarePackage.NeedToAddress;
             nursingCarePackageToUpdate.TypeOfNursingCareHomeId = nursingCarePackage.TypeOfNursingCareHomeId;
             nursingCarePackageToUpdate.CreatorId = nursingCarePackage.CreatorId;
@@ -70,6 +73,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<NursingCarePackage> ChangeStatusAsync(Guid nursingCarePackageId, int statusId)
         {
             NursingCarePackage nursingCarePackageToUpdate = await _databaseContext.NursingCarePackage
+                .Include(item => item.TypeOfCareHome)
+                .Include(item => item.TypeOfStayOption)
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
                 .Include(item => item.NursingCareAdditionalNeeds)
@@ -91,6 +96,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<IList<NursingCarePackage>> ListAsync()
         {
             return await _databaseContext.NursingCarePackage
+                .Include(item => item.TypeOfCareHome)
+                .Include(item => item.TypeOfStayOption)
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
                 .Include(item => item.NursingCareAdditionalNeeds)
@@ -100,6 +107,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<IList<TypeOfNursingCareHome>> GetListOfTypeOfNursingCareHomeAsync()
         {
             return await _databaseContext.TypesOfNursingCareHome
+                .ToListAsync().ConfigureAwait(false);
+        }
+
+        public async Task<IList<NursingCareTypeOfStayOption>> GetListOfNursingCareTypeOfStayOptionAsync()
+        {
+            return await _databaseContext.NursingCareTypeOfStayOption
                 .ToListAsync().ConfigureAwait(false);
         }
     }

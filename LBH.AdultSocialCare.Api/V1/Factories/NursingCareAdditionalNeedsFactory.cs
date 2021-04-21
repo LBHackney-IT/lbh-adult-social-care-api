@@ -17,8 +17,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = nursingCareAdditionalNeedsEntity.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedsEntity.NursingCarePackageId,
-                Weekly = nursingCareAdditionalNeedsEntity.Weekly,
-                OneOff = nursingCareAdditionalNeedsEntity.OneOff,
+                IsWeeklyCost = nursingCareAdditionalNeedsEntity.IsWeeklyCost,
+                IsOneOffCost = nursingCareAdditionalNeedsEntity.IsOneOffCost,
                 NeedToAddress = nursingCareAdditionalNeedsEntity.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsEntity.CreatorId,
                 UpdatorId = nursingCareAdditionalNeedsEntity.UpdatorId,
@@ -31,8 +31,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = nursingCareAdditionalNeedsDomain.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
-                Weekly = nursingCareAdditionalNeedsDomain.Weekly,
-                OneOff = nursingCareAdditionalNeedsDomain.OneOff,
+                IsWeeklyCost = nursingCareAdditionalNeedsDomain.IsWeeklyCost,
+                IsOneOffCost = nursingCareAdditionalNeedsDomain.IsOneOffCost,
                 NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
                 UpdatorId = nursingCareAdditionalNeedsDomain.UpdatorId,
@@ -45,8 +45,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = nursingCareAdditionalNeedsDomain.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
-                Weekly = nursingCareAdditionalNeedsDomain.Weekly,
-                OneOff = nursingCareAdditionalNeedsDomain.OneOff,
+                IsWeeklyCost = nursingCareAdditionalNeedsDomain.IsWeeklyCost,
+                IsOneOffCost = nursingCareAdditionalNeedsDomain.IsOneOffCost,
                 NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
                 UpdatorId = nursingCareAdditionalNeedsDomain.UpdatorId,
@@ -59,8 +59,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = nursingCareAdditionalNeedsEntity.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedsEntity.NursingCarePackageId,
-                Weekly = nursingCareAdditionalNeedsEntity.Weekly,
-                OneOff = nursingCareAdditionalNeedsEntity.OneOff,
+                IsWeeklyCost = nursingCareAdditionalNeedsEntity.IsWeeklyCost,
+                IsOneOffCost = nursingCareAdditionalNeedsEntity.IsOneOffCost,
                 NeedToAddress = nursingCareAdditionalNeedsEntity.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsEntity.CreatorId,
                 UpdatorId = nursingCareAdditionalNeedsEntity.UpdatorId,

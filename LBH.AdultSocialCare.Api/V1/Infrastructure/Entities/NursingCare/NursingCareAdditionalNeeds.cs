@@ -23,12 +23,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Weekly
         /// </summary>
-        public bool Weekly { get; set; }
+        public bool IsWeeklyCost { get; set; }
 
         /// <summary>
         /// Gets or sets the One Off
         /// </summary>
-        public bool OneOff { get; set; }
+        public bool IsOneOffCost { get; set; }
 
         /// <summary>
         /// Gets or sets the Need To Address
@@ -43,6 +43,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Updator Id
         /// </summary>
-        public Guid UpdatorId { get; set; }
+        public Guid? UpdatorId { get; set; }
     }
 }
