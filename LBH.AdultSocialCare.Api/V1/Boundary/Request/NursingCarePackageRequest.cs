@@ -66,6 +66,11 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         [Required]
         public int? TypeOfNursingCareHomeId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Status Id
+        /// </summary>
+        public int StatusId { get; set; }
+
         public List<NursingCareAdditionalNeedsRequest> NursingCareAdditionalNeeds { get; set; }
     }
 }

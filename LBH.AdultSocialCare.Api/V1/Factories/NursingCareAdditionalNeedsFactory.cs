@@ -62,8 +62,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsWeeklyCost = nursingCareAdditionalNeedsEntity.IsWeeklyCost,
                 IsOneOffCost = nursingCareAdditionalNeedsEntity.IsOneOffCost,
                 NeedToAddress = nursingCareAdditionalNeedsEntity.NeedToAddress,
-                CreatorId = nursingCareAdditionalNeedsEntity.CreatorId,
-                UpdatorId = nursingCareAdditionalNeedsEntity.UpdatorId,
             };
         }
     }

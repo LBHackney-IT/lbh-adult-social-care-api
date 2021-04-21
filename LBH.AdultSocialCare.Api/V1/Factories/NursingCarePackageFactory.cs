@@ -102,6 +102,12 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static NursingCarePackageDomain ToDomain(NursingCarePackageRequest nursingCarePackageRequest)
         {
+            // Set status to 1 for new package
+            if (nursingCarePackageRequest.StatusId == 0)
+            {
+                nursingCarePackageRequest.StatusId = 1;
+            }
+
             return new NursingCarePackageDomain
             {
                 Id = nursingCarePackageRequest.Id,
@@ -147,6 +153,28 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
              {
                  TypeOfCareHomeId = item.TypeOfCareHomeId,
                  TypeOfCareHomeName = item.TypeOfCareHomeName
+             }).ToList();
+        }
+
+        public static IList<NursingCareTypeOfStayOptionDomain> ToDomain(IList<NursingCareTypeOfStayOption> nursingCareTypeOfStayOptions)
+        {
+            return nursingCareTypeOfStayOptions.Select(item
+             => new NursingCareTypeOfStayOptionDomain
+             {
+                 TypeOfStayOptionId = item.TypeOfStayOptionId,
+                 OptionName = item.OptionName,
+                 OptionPeriod = item.OptionPeriod
+             }).ToList();
+        }
+
+        public static IList<NursingCareTypeOfStayOptionResponse> ToResponse(IList<NursingCareTypeOfStayOptionDomain> nursingCareTypeOfStayOptionDomains)
+        {
+            return nursingCareTypeOfStayOptionDomains.Select(item
+             => new NursingCareTypeOfStayOptionResponse
+             {
+                 TypeOfStayOptionId = item.TypeOfStayOptionId,
+                 OptionName = item.OptionName,
+                 OptionPeriod = item.OptionPeriod
              }).ToList();
         }
     }
