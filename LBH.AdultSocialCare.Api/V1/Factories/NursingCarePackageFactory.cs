@@ -22,6 +22,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             _mapper = mapper;
         }
 
-        
+
     }
 }
