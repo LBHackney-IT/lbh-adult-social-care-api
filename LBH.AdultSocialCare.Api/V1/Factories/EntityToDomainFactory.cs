@@ -107,13 +107,13 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 CreatorId = nursingCarePackageEntity.CreatorId,
                 UpdaterId = nursingCarePackageEntity.UpdaterId,
                 StatusId = nursingCarePackageEntity.StatusId,
-                ClientName = $"{nursingCarePackageEntity.Client.FirstName} {nursingCarePackageEntity.Client.MiddleName} {nursingCarePackageEntity.Client.LastName}",
-                StatusName = nursingCarePackageEntity.Status.StatusName,
-                CreatorName = $"{nursingCarePackageEntity.Creator.FirstName} {nursingCarePackageEntity.Creator.MiddleName} {nursingCarePackageEntity.Creator.LastName}",
-                UpdaterName = $"{nursingCarePackageEntity.Updater.FirstName} {nursingCarePackageEntity.Updater.MiddleName} {nursingCarePackageEntity.Updater.LastName}",
+                ClientName = nursingCarePackageEntity.Client != null ? $"{nursingCarePackageEntity.Client.FirstName} {nursingCarePackageEntity.Client.MiddleName} {nursingCarePackageEntity.Client.LastName}": null,
+                StatusName = nursingCarePackageEntity.Status?.StatusName,
+                CreatorName = nursingCarePackageEntity.Creator != null ? $"{nursingCarePackageEntity.Creator.FirstName} {nursingCarePackageEntity.Creator.MiddleName} {nursingCarePackageEntity.Creator.LastName}": null,
+                UpdaterName = nursingCarePackageEntity.Updater != null ? $"{nursingCarePackageEntity.Updater.FirstName} {nursingCarePackageEntity.Updater.MiddleName} {nursingCarePackageEntity.Updater.LastName}" : null,
                 PackageName = "Nursing Care Package",
-                TypeOfCareHomeName = nursingCarePackageEntity.TypeOfCareHome.TypeOfCareHomeName,
-                TypeOfStayOptionName = nursingCarePackageEntity.TypeOfStayOption.OptionName,
+                TypeOfCareHomeName = nursingCarePackageEntity.TypeOfCareHome?.TypeOfCareHomeName,
+                TypeOfStayOptionName = nursingCarePackageEntity.TypeOfStayOption?.OptionName,
                 NursingCareAdditionalNeeds = nursingCarePackageEntity.NursingCareAdditionalNeeds.ToDomain()
             };
             // return _mapper.Map<NursingCarePackageDomain>(nursingCarePackageEntity);

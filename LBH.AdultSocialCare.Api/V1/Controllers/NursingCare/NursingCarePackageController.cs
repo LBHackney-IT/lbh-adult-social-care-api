@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/nursing-care-packages")]
     [Produces("application/json")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
@@ -115,7 +115,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPut]
-        [Route("{nursingCarePackageId}/changeStatus/{statusId}")]
+        [Route("{nursingCarePackageId}/change-status/{statusId}")]
         public async Task<ActionResult<NursingCarePackageResponse>> ChangeNursingCarePackageStatus(
             Guid nursingCarePackageId, int statusId)
         {
@@ -131,7 +131,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpGet]
-        [Route("getAll")]
+        [Route("get-all")]
         public async Task<ActionResult<IList<NursingCarePackageResponse>>> GetNursingCareList()
         {
             var result = await _getAllNursingCarePackageUseCase.GetAllAsync().ConfigureAwait(false);
