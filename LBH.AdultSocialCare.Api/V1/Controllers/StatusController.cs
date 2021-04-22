@@ -84,7 +84,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         /// <summary>Gets all.</summary>
-        /// <returns>The List of Status model</returns>
+        /// <returns>The List of PackageStatuses model</returns>
         [ProducesResponseType(typeof(IList<PackageStatus>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]

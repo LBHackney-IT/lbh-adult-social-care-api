@@ -46,7 +46,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         public string AddressLine3 { get; set; }
 
         /// <summary>
-        /// Gets or sets the Town of Users.
+        /// Gets or sets the Town of User.
         /// </summary>
         public string Town { get; set; }
 
@@ -68,7 +68,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         /// <summary>
         /// Gets or sets the Role Object
         /// </summary>
-        public Roles Roles { get; set; }
+        public Role Role { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

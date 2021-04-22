@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<bool> DeleteAsync(Guid clientId)
         {
-            _databaseContext.Clients.Remove(new Clients
+            _databaseContext.Clients.Remove(new Client
             {
                 Id = clientId
             });
@@ -30,44 +30,44 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             return isSuccess;
         }
 
-        public async Task<Clients> GetAsync(Guid clientId)
+        public async Task<Client> GetAsync(Guid clientId)
         {
             return await _databaseContext.Clients.FirstOrDefaultAsync(item => item.Id == clientId).ConfigureAwait(false);
         }
 
-        public async Task<Clients> UpsertAsync(Clients clients)
+        public async Task<Client> UpsertAsync(Client client)
         {
-            Clients clientsToUpdate = await _databaseContext.Clients
-                .FirstOrDefaultAsync(item => item.HackneyId == clients.HackneyId)
+            Client clientToUpdate = await _databaseContext.Clients
+                .FirstOrDefaultAsync(item => item.HackneyId == client.HackneyId)
                 .ConfigureAwait(false);
 
-            if (clientsToUpdate == null)
+            if (clientToUpdate == null)
             {
-                clientsToUpdate = new Clients();
-                await _databaseContext.Clients.AddAsync(clientsToUpdate).ConfigureAwait(false);
-                clientsToUpdate.FirstName = clients.FirstName;
-                clientsToUpdate.MiddleName = clients.MiddleName;
-                clientsToUpdate.LastName = clients.LastName;
-                clientsToUpdate.DateOfBirth = clients.DateOfBirth;
-                clientsToUpdate.HackneyId = clients.HackneyId;
-                clientsToUpdate.AddressLine1 = clients.AddressLine1;
-                clientsToUpdate.AddressLine2 = clients.AddressLine2;
-                clientsToUpdate.AddressLine3 = clients.AddressLine3;
-                clientsToUpdate.Town = clients.Town;
-                clientsToUpdate.County = clients.County;
-                clientsToUpdate.PostCode = clients.PostCode;
-                clientsToUpdate.CreatorId = clients.CreatorId;
-                clientsToUpdate.UpdatorId = clients.UpdatorId;
+                clientToUpdate = new Client();
+                await _databaseContext.Clients.AddAsync(clientToUpdate).ConfigureAwait(false);
+                clientToUpdate.FirstName = client.FirstName;
+                clientToUpdate.MiddleName = client.MiddleName;
+                clientToUpdate.LastName = client.LastName;
+                clientToUpdate.DateOfBirth = client.DateOfBirth;
+                clientToUpdate.HackneyId = client.HackneyId;
+                clientToUpdate.AddressLine1 = client.AddressLine1;
+                clientToUpdate.AddressLine2 = client.AddressLine2;
+                clientToUpdate.AddressLine3 = client.AddressLine3;
+                clientToUpdate.Town = client.Town;
+                clientToUpdate.County = client.County;
+                clientToUpdate.PostCode = client.PostCode;
+                clientToUpdate.CreatorId = client.CreatorId;
+                clientToUpdate.UpdatorId = client.UpdatorId;
             }
             else
             {
-                throw new ErrorException($"This record already exist Hackney Id: {clients.HackneyId}");
+                throw new ErrorException($"This record already exist Hackney Id: {client.HackneyId}");
             }
 
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
 
             return isSuccess
-                ? clientsToUpdate
+                ? clientToUpdate
                 : null;
         }
 

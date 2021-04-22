@@ -3,9 +3,14 @@ using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System.Collections.Generic;
+using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Boundary.Response;
+using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -79,6 +84,87 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion
+
+
+        #region NursingCarePackage
+
+        public static NursingCarePackageDomain ToDomain(this NursingCarePackage nursingCarePackageEntity)
+        {
+            return new NursingCarePackageDomain
+            {
+                Id = nursingCarePackageEntity.Id,
+                ClientId = nursingCarePackageEntity.ClientId,
+                IsFixedPeriod = nursingCarePackageEntity.IsFixedPeriod,
+                StartDate = nursingCarePackageEntity.StartDate,
+                EndDate = nursingCarePackageEntity.EndDate,
+                HasRespiteCare = nursingCarePackageEntity.HasRespiteCare,
+                HasDischargePackage = nursingCarePackageEntity.HasDischargePackage,
+                IsThisAnImmediateService = nursingCarePackageEntity.IsThisAnImmediateService,
+                IsThisUserUnderS117 = nursingCarePackageEntity.IsThisUserUnderS117,
+                TypeOfStayId = nursingCarePackageEntity.TypeOfStayId,
+                NeedToAddress = nursingCarePackageEntity.NeedToAddress,
+                TypeOfNursingCareHomeId = nursingCarePackageEntity.TypeOfNursingCareHomeId,
+                CreatorId = nursingCarePackageEntity.CreatorId,
+                UpdaterId = nursingCarePackageEntity.UpdaterId,
+                StatusId = nursingCarePackageEntity.StatusId,
+                ClientName = $"{nursingCarePackageEntity.Client.FirstName} {nursingCarePackageEntity.Client.MiddleName} {nursingCarePackageEntity.Client.LastName}",
+                StatusName = nursingCarePackageEntity.Status.StatusName,
+                CreatorName = $"{nursingCarePackageEntity.Creator.FirstName} {nursingCarePackageEntity.Creator.MiddleName} {nursingCarePackageEntity.Creator.LastName}",
+                UpdaterName = $"{nursingCarePackageEntity.Updater.FirstName} {nursingCarePackageEntity.Updater.MiddleName} {nursingCarePackageEntity.Updater.LastName}",
+                PackageName = "Nursing Care Package",
+                TypeOfCareHomeName = nursingCarePackageEntity.TypeOfCareHome.TypeOfCareHomeName,
+                TypeOfStayOptionName = nursingCarePackageEntity.TypeOfStayOption.OptionName,
+                NursingCareAdditionalNeeds = nursingCarePackageEntity.NursingCareAdditionalNeeds.ToDomain()
+            };
+            // return _mapper.Map<NursingCarePackageDomain>(nursingCarePackageEntity);
+        }
+
+        public static IEnumerable<NursingCarePackageDomain> ToDomain(this List<NursingCarePackage> nursingCarePackageEntities)
+        {
+            return nursingCarePackageEntities.Select(entity => entity.ToDomain()).ToList();
+        }
+
+        #endregion
+
+        #region NursingCareAdditionalNeed
+
+        public static IEnumerable<NursingCareAdditionalNeedsDomain> ToDomain(this IEnumerable<NursingCareAdditionalNeed> nursingCareAdditionalNeedsEntities)
+        {
+            return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsDomain>>(nursingCareAdditionalNeedsEntities);
+        }
+
+        #endregion
+
+        #region TypeOfNursingCareHome
+
+        public static IEnumerable<TypeOfNursingCareHomeDomain> ToDomain(this ICollection<TypeOfNursingCareHome> typeOfNursingCareHome)
+        {
+            return typeOfNursingCareHome.Select(item
+                => new TypeOfNursingCareHomeDomain
+                {
+                    TypeOfCareHomeId = item.TypeOfCareHomeId,
+                    TypeOfCareHomeName = item.TypeOfCareHomeName
+                }).ToList();
+        }
+
+        #endregion
+
+        #region NursingCareTypeOfStayOptions
+
+        public static IEnumerable<NursingCareTypeOfStayOptionDomain> ToDomain(this ICollection<NursingCareTypeOfStayOption> nursingCareTypeOfStayOptions)
+        {
+            return nursingCareTypeOfStayOptions.Select(item
+                => new NursingCareTypeOfStayOptionDomain
+                {
+                    TypeOfStayOptionId = item.TypeOfStayOptionId,
+                    OptionName = item.OptionName,
+                    OptionPeriod = item.OptionPeriod
+                }).ToList();
+        }
+
+        #endregion
+
+
 
     }
 

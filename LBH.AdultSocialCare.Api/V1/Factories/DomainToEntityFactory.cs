@@ -1,6 +1,7 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -21,14 +22,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<T>(dto);
         }*/
 
+        #region DayCarePackage
+
         public static DayCarePackage ToDb(this DayCarePackageForCreationDomain dayCarePackageForCreationDomain)
         {
             return _mapper.Map<DayCarePackage>(dayCarePackageForCreationDomain);
-        }
-
-        public static DayCarePackage ToDb(this DayCarePackageForUpdateDomain dayCarePackageForUpdateDomain)
-        {
-            return _mapper.Map<DayCarePackage>(dayCarePackageForUpdateDomain);
         }
 
         public static DayCarePackageOpportunity ToDb(this DayCarePackageOpportunityForCreationDomain dayCarePackageOpportunityForCreationDomain)
@@ -36,9 +34,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<DayCarePackageOpportunity>(dayCarePackageOpportunityForCreationDomain);
         }
 
-        public static DayCarePackageOpportunity ToDb(this DayCarePackageOpportunityForUpdateDomain dayCarePackageOpportunityForUpdateDomain)
+        #endregion
+
+
+        #region NursingCarePackage
+
+        public static NursingCarePackage ToDb(this NursingCarePackageForCreationDomain nursingCarePackageForCreationDomain)
         {
-            return _mapper.Map<DayCarePackageOpportunity>(dayCarePackageOpportunityForUpdateDomain);
+            return _mapper.Map<NursingCarePackage>(nursingCarePackageForCreationDomain);
         }
+
+        #endregion
     }
 }

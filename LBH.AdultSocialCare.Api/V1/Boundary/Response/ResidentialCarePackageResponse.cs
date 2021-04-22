@@ -18,9 +18,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         public Guid ClientId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Clients
+        /// Gets or sets the Client
         /// </summary>
-        public Clients Clients { get; set; }
+        public Client Client { get; set; }
 
         /// <summary>
         /// Gets or sets the Start Date
@@ -93,19 +93,19 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         public DateTimeOffset? DateUpdated { get; set; }
 
         /// <summary>
-        /// Gets or sets the Status Id
+        /// Gets or sets the PackageStatuses Id
         /// </summary>
         public int StatusId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Status Object
+        /// Gets or sets the PackageStatuses Object
         /// </summary>
         public PackageStatus Status { get; set; }
 
         /// <summary>
-        /// Gets or sets the ResidentialCareAdditionalNeeds Object
+        /// Gets or sets the ResidentialCareAdditionalNeed Object
         /// </summary>
-        public List<ResidentialCareAdditionalNeeds> ResidentialCareAdditionalNeeds { get; set; }
+        public List<ResidentialCareAdditionalNeed> ResidentialCareAdditionalNeeds { get; set; }
 
     }
 }

@@ -17,7 +17,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.RolesUseCases
 
         public async Task<RolesDomain> ExecuteAsync(RolesDomain role)
         {
-            Roles roleEntity = RolesFactory.ToEntity(role);
+            Role roleEntity = RolesFactory.ToEntity(role);
             roleEntity = await _gateway.UpsertAsync(roleEntity).ConfigureAwait(false);
             if (roleEntity == null) return role = null;
             else

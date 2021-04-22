@@ -36,8 +36,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteRoleUseCase = deleteRoleUseCase;
         }
 
-        /// <summary>Creates the specified roles request.</summary>
-        /// <param name="rolesRequest">The roles request.</param>
+        /// <summary>Creates the specified role request.</summary>
+        /// <param name="rolesRequest">The role request.</param>
         /// <returns>The created role response.</returns>
         [ProducesResponseType(typeof(RolesResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
@@ -84,17 +84,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         /// <summary>Gets all.</summary>
-        /// <returns>The list of Roles response</returns>
-        [ProducesResponseType(typeof(IList<Roles>), StatusCodes.Status200OK)]
+        /// <returns>The list of Role response</returns>
+        [ProducesResponseType(typeof(IList<Role>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("getAll")]
-        public async Task<ActionResult<IList<Roles>>> GetAll()
+        public async Task<ActionResult<IList<Role>>> GetAll()
         {
             try
             {
-                IList<Roles> result = await _getAllRoleUseCase.GetAllAsync().ConfigureAwait(false);
+                IList<Role> result = await _getAllRoleUseCase.GetAllAsync().ConfigureAwait(false);
                 return Ok(result.ToList());
             }
             catch (FormatException ex)

@@ -13,7 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.RolesUseCases
         {
             _gateway = roleGateway;
         }
-        public async Task<IList<Roles>> GetAllAsync()
+        public async Task<IList<Role>> GetAllAsync()
         {
             return await _gateway.ListAsync().ConfigureAwait(false);
         }

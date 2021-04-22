@@ -7,11 +7,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
 {
     public interface IRolesGateway
     {
-        public Task<Roles> UpsertAsync(Roles roles);
+        public Task<Role> UpsertAsync(Role role);
 
-        public Task<Roles> GetAsync(int roleId);
+        public Task<Role> GetAsync(int roleId);
 
-        public Task<IList<Roles>> ListAsync();
+        public Task<IList<Role>> ListAsync();
 
         public Task<bool> DeleteAsync(int roleId);
     }

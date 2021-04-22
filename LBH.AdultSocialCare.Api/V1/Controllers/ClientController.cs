@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
-    [Route("api/v1/clients")]
+    [Route("api/v1/client")]
     [Produces("application/json")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
@@ -31,8 +31,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _deleteClientsUseCase = deleteClientsUseCase;
         }
 
-        /// <summary>Creates the specified clients request.</summary>
-        /// <param name="clientsRequest">The clients request.</param>
+        /// <summary>Creates the specified client request.</summary>
+        /// <param name="clientsRequest">The client request.</param>
         /// <returns>The client creation response.</returns>
         [ProducesResponseType(typeof(ClientsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]

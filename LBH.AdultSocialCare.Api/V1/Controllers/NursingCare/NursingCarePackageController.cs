@@ -1,14 +1,12 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
@@ -20,47 +18,81 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
     [ApiVersion("1.0")]
     public class NursingCarePackageController : BaseController
     {
-        private readonly IUpsertNursingCarePackageUseCase _upsertNursingCarePackageUseCase;
+        private readonly IUpdateNursingCarePackageUseCase _updateNursingCarePackageUseCase;
         private readonly IGetNursingCarePackageUseCase _getNursingCarePackageUseCase;
         private readonly IChangeStatusNursingCarePackageUseCase _changeStatusNursingCarePackageUseCase;
         private readonly IGetAllNursingCarePackageUseCase _getAllNursingCarePackageUseCase;
-        private readonly IGetAllNursingCareHomeType _getAllNursingCareHomeType;
+        private readonly IGetAllNursingCareHomeTypeUseCase _getAllNursingCareHomeTypeUseCase;
+        private readonly IGetAllNursingCareTypeOfStayOptionUseCase _getAllNursingCareTypeOfStayOptionUseCase;
+        private readonly ICreateNursingCarePackageUseCase _createNursingCarePackageUseCase;
 
-        public NursingCarePackageController(IUpsertNursingCarePackageUseCase upsertNursingCarePackageUseCase,
+        public NursingCarePackageController(IUpdateNursingCarePackageUseCase updateNursingCarePackageUseCase,
             IGetNursingCarePackageUseCase getNursingCarePackageUseCase,
             IChangeStatusNursingCarePackageUseCase changeStatusNursingCarePackageUseCase,
             IGetAllNursingCarePackageUseCase getAllNursingCarePackageUseCase,
-            IGetAllNursingCareHomeType getAllNursingCareHomeType
+            IGetAllNursingCareHomeTypeUseCase getAllNursingCareHomeTypeUseCase,
+            IGetAllNursingCareTypeOfStayOptionUseCase getAllNursingCareTypeOfStayOptionUseCase,
+            ICreateNursingCarePackageUseCase createNursingCarePackageUseCase
             )
         {
-            _upsertNursingCarePackageUseCase = upsertNursingCarePackageUseCase;
+            _updateNursingCarePackageUseCase = updateNursingCarePackageUseCase;
             _getNursingCarePackageUseCase = getNursingCarePackageUseCase;
             _changeStatusNursingCarePackageUseCase = changeStatusNursingCarePackageUseCase;
             _getAllNursingCarePackageUseCase = getAllNursingCarePackageUseCase;
-            _getAllNursingCareHomeType = getAllNursingCareHomeType;
+            _getAllNursingCareHomeTypeUseCase = getAllNursingCareHomeTypeUseCase;
+            _getAllNursingCareTypeOfStayOptionUseCase = getAllNursingCareTypeOfStayOptionUseCase;
+            _createNursingCarePackageUseCase = createNursingCarePackageUseCase;
         }
 
         /// <summary>Creates the specified nursing care package request.</summary>
-        /// <param name="nursingCarePackageRequest">The nursing care package request.</param>
-        /// <returns>The nursing care package creation response.</returns>
+        /// <param name="nursingCarePackageForCreationRequest">The nursing care package request.</param>
+        /// <returns>The nursing care package created.</returns>
         [ProducesResponseType(typeof(NursingCarePackageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        public async Task<ActionResult<NursingCarePackageResponse>> Create(NursingCarePackageRequest nursingCarePackageRequest)
+        public async Task<ActionResult<NursingCarePackageResponse>> CreateNursingCarePackage(NursingCarePackageForCreationRequest nursingCarePackageForCreationRequest)
         {
-            try
+            if (nursingCarePackageForCreationRequest == null)
             {
-                NursingCarePackageDomain nursingCarePackageDomain = NursingCarePackageFactory.ToDomain(nursingCarePackageRequest);
-                var nursingCarePackageResponse = NursingCarePackageFactory.ToResponse(await _upsertNursingCarePackageUseCase.ExecuteAsync(nursingCarePackageDomain).ConfigureAwait(false));
-                if (nursingCarePackageResponse == null) return NotFound();
-                return Ok(nursingCarePackageResponse);
+                return BadRequest("Object for creation cannot be null.");
             }
-            catch (FormatException ex)
+
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ex.Message);
+                return UnprocessableEntity(ModelState);
             }
+
+            var nursingCarePackageForCreationDomain = nursingCarePackageForCreationRequest.ToDomain();
+            var nursingCarePackageResponse = await _createNursingCarePackageUseCase.ExecuteAsync(nursingCarePackageForCreationDomain).ConfigureAwait(false);
+            return Ok(nursingCarePackageResponse);
+        }
+
+        [HttpPut("{nursingCarePackageId}")]
+        [ProducesResponseType(typeof(NursingCarePackageResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<NursingCarePackageResponse>> UpdateNursingCarePackage(
+            Guid nursingCarePackageId,
+            NursingCarePackageForUpdateRequest nursingCarePackageForUpdate)
+        {
+            if (nursingCarePackageForUpdate == null)
+            {
+                return BadRequest("Object for update cannot be null.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
+            var nursingCarePackageForUpdateDomain = nursingCarePackageForUpdate.ToDomain(nursingCarePackageId);
+            var result = await _updateNursingCarePackageUseCase.ExecuteAsync(nursingCarePackageForUpdateDomain).ConfigureAwait(false);
+            return Ok(result);
         }
 
         /// <summary>Gets the specified nursing care package identifier.</summary>
@@ -68,18 +100,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         /// <returns>The nursing care package response.</returns>
         [HttpGet]
         [Route("{nursingCarePackageId}")]
-        public async Task<ActionResult<NursingCarePackageResponse>> Get(Guid nursingCarePackageId)
+        public async Task<ActionResult<NursingCarePackageResponse>> GetSingleNursingCarePackage(Guid nursingCarePackageId)
         {
-            try
-            {
-                var nursingCarePackageResponse = NursingCarePackageFactory.ToResponse(await _getNursingCarePackageUseCase.GetAsync(nursingCarePackageId).ConfigureAwait(false));
-                if (nursingCarePackageResponse == null) return NotFound();
-                return Ok(nursingCarePackageResponse);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var nursingCarePackageResponse = await _getNursingCarePackageUseCase.GetAsync(nursingCarePackageId).ConfigureAwait(false);
+            return Ok(nursingCarePackageResponse);
         }
 
         /// <summary>Change the nursing care package status.</summary>
@@ -92,22 +116,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         [ProducesDefaultResponseType]
         [HttpPut]
         [Route("{nursingCarePackageId}/changeStatus/{statusId}")]
-        public async Task<ActionResult<NursingCarePackageResponse>> ChangeStatus(
+        public async Task<ActionResult<NursingCarePackageResponse>> ChangeNursingCarePackageStatus(
             Guid nursingCarePackageId, int statusId)
         {
-            try
-            {
-                NursingCarePackageResponse nursingCarePackageResponse =
-                    NursingCarePackageFactory.ToResponse(await _changeStatusNursingCarePackageUseCase
-                        .UpdateAsync(nursingCarePackageId, statusId)
-                        .ConfigureAwait(false));
-                if (nursingCarePackageResponse == null) return NotFound();
-                return Ok(nursingCarePackageResponse);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var nursingCarePackageResponse = await _changeStatusNursingCarePackageUseCase
+                .UpdateAsync(nursingCarePackageId, statusId)
+                .ConfigureAwait(false);
+            return Ok(nursingCarePackageResponse);
         }
 
         /// <summary>Get all Nursing Care Packages</summary>
@@ -117,35 +132,30 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("getAll")]
-        public async Task<ActionResult<IList<NursingCarePackageResponse>>> GetAll()
+        public async Task<ActionResult<IList<NursingCarePackageResponse>>> GetNursingCareList()
         {
-            try
-            {
-                IList<NursingCarePackageResponse> result = NursingCarePackageFactory.ToResponse(await _getAllNursingCarePackageUseCase.GetAllAsync().ConfigureAwait(false));
-                return Ok(result);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _getAllNursingCarePackageUseCase.GetAllAsync().ConfigureAwait(false);
+            return Ok(result);
         }
 
         [ProducesResponseType(typeof(IList<TypeOfNursingCareHomeResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpGet]
-        [Route("GetAllTypeOfNursingCareHome")]
-        public async Task<ActionResult<IList<TypeOfNursingCareHomeResponse>>> GetAllTypeOfNursingCareHome()
+        [Route("type-of-nursing-care-homes")]
+        public async Task<ActionResult<IList<TypeOfNursingCareHomeResponse>>> GetTypeOfNursingCareHomeOptionsList()
         {
-            try
-            {
-                IList<TypeOfNursingCareHomeResponse> result = NursingCarePackageFactory.ToResponse(await _getAllNursingCareHomeType.GetAllAsync().ConfigureAwait(false));
-                return Ok(result);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _getAllNursingCareHomeTypeUseCase.GetAllAsync().ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IList<NursingCareTypeOfStayOptionResponse>), StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        [HttpGet]
+        [Route("type-of-stay-options")]
+        public async Task<ActionResult<IList<NursingCareTypeOfStayOptionResponse>>> GetTypeOfStayOptionList()
+        {
+            var result = await _getAllNursingCareTypeOfStayOptionUseCase.GetAllAsync().ConfigureAwait(false);
+            return Ok(result);
         }
     }
 }

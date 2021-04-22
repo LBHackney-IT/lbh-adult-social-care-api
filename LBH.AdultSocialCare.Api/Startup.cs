@@ -7,14 +7,31 @@ using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityLengthOptionGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityTimesPerMonthOptionGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.TermTimeConsiderationOptionGateways;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.UseCase;
+using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.PackageStatusUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.RolesUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases;
 using LBH.AdultSocialCare.Api.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,28 +52,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityLengthOptionGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityTimesPerMonthOptionGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.TermTimeConsiderationOptionGateways;
-using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.RolesUseCases;
-using LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases;
-using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases;
-using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases;
-using LBH.AdultSocialCare.Api.V1.UseCase.PackageStatusUseCases;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases;
-using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases;
+
 namespace LBH.AdultSocialCare.Api
 {
-
     public class Startup
     {
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -292,32 +292,32 @@ namespace LBH.AdultSocialCare.Api
 
             #endregion TimeSlotShift
 
-            #region Clients
+            #region Client
 
             services.AddScoped<IUpsertClientsUseCase, UpsertClientsUseCase>();
             services.AddScoped<IGetClientsUseCase, GetClientsUseCase>();
             services.AddScoped<IDeleteClientsUseCase, DeleteClientsUseCase>();
 
-            #endregion Clients
+            #endregion Client
 
-            #region Users
+            #region User
 
             services.AddScoped<IUpsertUsersUseCase, UpsertUsersUseCase>();
             services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
             services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();
 
-            #endregion Users
+            #endregion User
 
-            #region Status
+            #region PackageStatuses
 
             services.AddScoped<IUpsertStatusUseCase, UpsertStatusUseCase>();
             services.AddScoped<IGetStatusUseCase, GetStatusUseCase>();
             services.AddScoped<IGetAllStatusUseCase, GetAllStatusUseCase>();
             services.AddScoped<IDeleteStatusUseCase, DeleteStatusUseCase>();
 
-            #endregion Status
+            #endregion PackageStatuses
 
-            #region ResidentialCarePackage
+            #region ResidentialCarePackages
 
             services.AddScoped<IUpsertResidentialCarePackageUseCase, UpsertResidentialCarePackageUseCase>();
             services.AddScoped<IGetResidentialCarePackageUseCase, GetResidentialCarePackageUseCase>();
@@ -330,31 +330,33 @@ namespace LBH.AdultSocialCare.Api
             services
                 .AddScoped<IUpsertResidentialCareAdditionalNeedsUseCase, UpsertResidentialCareAdditionalNeedsUseCase>();
 
-            #endregion ResidentialCarePackage
+            #endregion ResidentialCarePackages
 
-            #region NursingCarePackage
+            #region NursingCarePackages
 
-            services.AddScoped<IUpsertNursingCarePackageUseCase, UpsertNursingCarePackageUseCase>();
+            services.AddScoped<IUpdateNursingCarePackageUseCase, UpdateNursingCarePackageUseCase>();
             services.AddScoped<IGetNursingCarePackageUseCase, GetNursingCarePackageUseCase>();
             services.AddScoped<IGetNursingCareAdditionalNeedsUseCase, GetNursingCareAdditionalNeedsUseCase>();
             services.AddScoped<IUpsertNursingCareAdditionalNeedsUseCase, UpsertNursingCareAdditionalNeedsUseCase>();
             services.AddScoped<IChangeStatusNursingCarePackageUseCase, ChangeStatusNursingCarePackageUseCase>();
             services.AddScoped<IGetAllNursingCarePackageUseCase, GetAllNursingCarePackageUseCase>();
-            services.AddScoped<IGetAllNursingCareHomeType, GetAllNursingCareHomeType>();
+            services.AddScoped<IGetAllNursingCareHomeTypeUseCase, GetAllNursingCareHomeTypeUseCase>();
+            services.AddScoped<IGetAllNursingCareTypeOfStayOptionUseCase, GetAllNursingCareTypeOfStayOptionUseCase>();
+            services.AddScoped<ICreateNursingCarePackageUseCase, CreateNursingCarePackageUseCase>();
 
-            #endregion NursingCarePackage
+            #endregion NursingCarePackages
 
             #region TermTimeConsiderationOptions
 
             services.AddScoped<IGetTermTimeConsiderationOptionsListUseCase, GetTermTimeConsiderationOptionsListUseCase>();
 
-            #endregion
+            #endregion TermTimeConsiderationOptions
 
             #region OpportunityLengthOptions
 
             services.AddScoped<IGetOpportunityLengthOptionsListUseCase, GetOpportunityLengthOptionsListUseCase>();
 
-            #endregion
+            #endregion OpportunityLengthOptions
 
             #region OpportunityTimesPerMonthOptions
 
@@ -362,7 +364,7 @@ namespace LBH.AdultSocialCare.Api
                 .AddScoped<IGetOpportunityTimesPerMonthOptionsListUseCase, GetOpportunityTimesPerMonthOptionsListUseCase
                 >();
 
-            #endregion
+            #endregion OpportunityTimesPerMonthOptions
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -430,7 +432,5 @@ namespace LBH.AdultSocialCare.Api
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
-
     }
-
 }

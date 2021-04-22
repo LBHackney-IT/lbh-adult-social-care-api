@@ -20,42 +20,42 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<bool> DeleteAsync(int roleId)
         {
-            var result = _databaseContext.Roles.Remove(new Roles
+            var result = _databaseContext.Roles.Remove(new Role
             { Id = roleId });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }
 
-        public async Task<Roles> GetAsync(int roleId)
+        public async Task<Role> GetAsync(int roleId)
         {
             return await _databaseContext.Roles.FirstOrDefaultAsync(item => item.Id == roleId).ConfigureAwait(false);
         }
 
-        public async Task<IList<Roles>> ListAsync()
+        public async Task<IList<Role>> ListAsync()
         {
             return await _databaseContext.Roles.ToListAsync().ConfigureAwait(false);
         }
 
-        public async Task<Roles> UpsertAsync(Roles roles)
+        public async Task<Role> UpsertAsync(Role role)
         {
-            Roles rolesToUpdate = await _databaseContext.Roles.FirstOrDefaultAsync(item => item.RoleName == roles.RoleName).ConfigureAwait(false);
-            if (rolesToUpdate == null)
+            Role roleToUpdate = await _databaseContext.Roles.FirstOrDefaultAsync(item => item.RoleName == role.RoleName).ConfigureAwait(false);
+            if (roleToUpdate == null)
             {
-                rolesToUpdate = new Roles();
-                await _databaseContext.Roles.AddAsync(rolesToUpdate).ConfigureAwait(false);
-                rolesToUpdate.RoleName = roles.RoleName;
-                rolesToUpdate.Sequence = roles.Sequence;
-                rolesToUpdate.IsDefault = roles.IsDefault;
-                rolesToUpdate.CreatorId = roles.CreatorId;
-                rolesToUpdate.UpdatorId = roles.UpdatorId;
-                rolesToUpdate.DateUpdated = roles.DateUpdated;
+                roleToUpdate = new Role();
+                await _databaseContext.Roles.AddAsync(roleToUpdate).ConfigureAwait(false);
+                roleToUpdate.RoleName = role.RoleName;
+                roleToUpdate.Sequence = role.Sequence;
+                roleToUpdate.IsDefault = role.IsDefault;
+                roleToUpdate.CreatorId = role.CreatorId;
+                roleToUpdate.UpdatorId = role.UpdatorId;
+                roleToUpdate.DateUpdated = role.DateUpdated;
             }
             else
             {
-                throw new ErrorException($"This record already exist Role Name: {roles.RoleName}");
+                throw new ErrorException($"This record already exist Role Name: {role.RoleName}");
             }
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
-            return rolesToUpdate;
+            return roleToUpdate;
         }
     }
 }

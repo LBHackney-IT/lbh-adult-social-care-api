@@ -70,7 +70,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         public int UpdatorId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Status Id
+        /// Gets or sets the PackageStatuses Id
         /// </summary>
         public int StatusId { get; set; }
     }

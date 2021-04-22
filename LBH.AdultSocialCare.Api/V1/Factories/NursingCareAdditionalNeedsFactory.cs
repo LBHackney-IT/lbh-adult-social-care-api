@@ -1,41 +1,37 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
     public static class NursingCareAdditionalNeedsFactory
     {
-        public static NursingCareAdditionalNeedsDomain ToDomain(NursingCareAdditionalNeeds nursingCareAdditionalNeedsEntity)
+        public static NursingCareAdditionalNeedsDomain ToDomain(NursingCareAdditionalNeed nursingCareAdditionalNeedEntity)
         {
             return new NursingCareAdditionalNeedsDomain
             {
-                Id = nursingCareAdditionalNeedsEntity.Id,
-                NursingCarePackageId = nursingCareAdditionalNeedsEntity.NursingCarePackageId,
-                Weekly = nursingCareAdditionalNeedsEntity.Weekly,
-                OneOff = nursingCareAdditionalNeedsEntity.OneOff,
-                NeedToAddress = nursingCareAdditionalNeedsEntity.NeedToAddress,
-                CreatorId = nursingCareAdditionalNeedsEntity.CreatorId,
-                UpdatorId = nursingCareAdditionalNeedsEntity.UpdatorId,
+                Id = nursingCareAdditionalNeedEntity.Id,
+                NursingCarePackageId = nursingCareAdditionalNeedEntity.NursingCarePackageId,
+                IsWeeklyCost = nursingCareAdditionalNeedEntity.IsWeeklyCost,
+                IsOneOffCost = nursingCareAdditionalNeedEntity.IsOneOffCost,
+                NeedToAddress = nursingCareAdditionalNeedEntity.NeedToAddress,
+                CreatorId = nursingCareAdditionalNeedEntity.CreatorId,
+                UpdaterId = nursingCareAdditionalNeedEntity.UpdaterId,
             };
         }
 
-        public static NursingCareAdditionalNeeds ToEntity(NursingCareAdditionalNeedsDomain nursingCareAdditionalNeedsDomain)
+        public static NursingCareAdditionalNeed ToEntity(NursingCareAdditionalNeedsDomain nursingCareAdditionalNeedsDomain)
         {
-            return new NursingCareAdditionalNeeds
+            return new NursingCareAdditionalNeed
             {
                 Id = nursingCareAdditionalNeedsDomain.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
-                Weekly = nursingCareAdditionalNeedsDomain.Weekly,
-                OneOff = nursingCareAdditionalNeedsDomain.OneOff,
+                IsWeeklyCost = nursingCareAdditionalNeedsDomain.IsWeeklyCost,
+                IsOneOffCost = nursingCareAdditionalNeedsDomain.IsOneOffCost,
                 NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
-                UpdatorId = nursingCareAdditionalNeedsDomain.UpdatorId,
+                UpdaterId = nursingCareAdditionalNeedsDomain.UpdaterId,
             };
         }
 
@@ -45,11 +41,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = nursingCareAdditionalNeedsDomain.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
-                Weekly = nursingCareAdditionalNeedsDomain.Weekly,
-                OneOff = nursingCareAdditionalNeedsDomain.OneOff,
+                IsWeeklyCost = nursingCareAdditionalNeedsDomain.IsWeeklyCost,
+                IsOneOffCost = nursingCareAdditionalNeedsDomain.IsOneOffCost,
                 NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
-                UpdatorId = nursingCareAdditionalNeedsDomain.UpdatorId,
+                UpdatorId = nursingCareAdditionalNeedsDomain.UpdaterId,
             };
         }
 
@@ -59,11 +55,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = nursingCareAdditionalNeedsEntity.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedsEntity.NursingCarePackageId,
-                Weekly = nursingCareAdditionalNeedsEntity.Weekly,
-                OneOff = nursingCareAdditionalNeedsEntity.OneOff,
+                IsWeeklyCost = nursingCareAdditionalNeedsEntity.IsWeeklyCost,
+                IsOneOffCost = nursingCareAdditionalNeedsEntity.IsOneOffCost,
                 NeedToAddress = nursingCareAdditionalNeedsEntity.NeedToAddress,
-                CreatorId = nursingCareAdditionalNeedsEntity.CreatorId,
-                UpdatorId = nursingCareAdditionalNeedsEntity.UpdatorId,
             };
         }
     }

@@ -20,7 +20,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<bool> DeleteAsync(int statusId)
         {
-            var result = _databaseContext.Status.Remove(new PackageStatus
+            var result = _databaseContext.PackageStatuses.Remove(new PackageStatus
             { Id = statusId });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
@@ -28,29 +28,29 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<PackageStatus> GetAsync(int statusId)
         {
-            return await _databaseContext.Status.FirstOrDefaultAsync(item => item.Id == statusId).ConfigureAwait(false);
+            return await _databaseContext.PackageStatuses.FirstOrDefaultAsync(item => item.Id == statusId).ConfigureAwait(false);
         }
 
         public async Task<IList<PackageStatus>> ListAsync()
         {
-            return await _databaseContext.Status.ToListAsync().ConfigureAwait(false);
+            return await _databaseContext.PackageStatuses.ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<PackageStatus> UpsertAsync(PackageStatus status)
         {
-            PackageStatus statusToUpdate = await _databaseContext.Status.FirstOrDefaultAsync(item => item.StatusName == status.StatusName).ConfigureAwait(false);
+            PackageStatus statusToUpdate = await _databaseContext.PackageStatuses.FirstOrDefaultAsync(item => item.StatusName == status.StatusName).ConfigureAwait(false);
             if (statusToUpdate == null)
             {
                 statusToUpdate = new PackageStatus();
-                await _databaseContext.Status.AddAsync(statusToUpdate).ConfigureAwait(false);
+                await _databaseContext.PackageStatuses.AddAsync(statusToUpdate).ConfigureAwait(false);
                 statusToUpdate.StatusName = status.StatusName;
                 statusToUpdate.CreatorId = status.CreatorId;
-                statusToUpdate.UpdatorId = status.UpdatorId;
+                statusToUpdate.UpdaterId = status.UpdaterId;
                 statusToUpdate.DateUpdated = status.DateUpdated;
             }
             else
             {
-                throw new ErrorException($"This record already exist Status Name: {status.StatusName}");
+                throw new ErrorException($"This record already exist PackageStatuses Name: {status.StatusName}");
             }
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return statusToUpdate;

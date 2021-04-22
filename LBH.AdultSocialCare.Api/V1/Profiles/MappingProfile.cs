@@ -3,8 +3,12 @@ using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
@@ -16,6 +20,8 @@ using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {
@@ -91,6 +97,22 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<HomeCarePackageDomain, HomeCarePackageResponse>();
 
             #endregion HomeCarePackage
+
+            #region NursingCarePackage
+
+            CreateMap<TypeOfNursingCareHome, TypeOfNursingCareHomeDomain>();
+            CreateMap<NursingCarePackageDomain, NursingCarePackageResponse>();
+            CreateMap<NursingCarePackage, NursingCarePackageDomain>();
+            CreateMap<NursingCarePackageDomain, NursingCarePackage>();
+            CreateMap<NursingCareTypeOfStayOption, NursingCareTypeOfStayOptionDomain>();
+            CreateMap<NursingCareTypeOfStayOptionDomain, NursingCareTypeOfStayOptionResponse>();
+            CreateMap<NursingCarePackageForUpdateRequest, NursingCarePackageDomain>();
+            CreateMap<NursingCarePackageForCreationRequest, NursingCarePackageForCreationDomain>();
+            CreateMap<NursingCareAdditionalNeedForCreationRequest, NursingCarePackageForCreationDomain>();
+            CreateMap<NursingCarePackageForCreationDomain, NursingCarePackage>();
+            CreateMap<NursingCarePackageForUpdateDomain, NursingCarePackage>();
+
+            #endregion
         }
     }
 }

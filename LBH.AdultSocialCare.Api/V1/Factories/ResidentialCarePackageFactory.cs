@@ -26,7 +26,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCarePackageEntity.Id,
                 ClientId = residentialCarePackageEntity.ClientId,
-                Clients = residentialCarePackageEntity.Clients,
+                Client = residentialCarePackageEntity.Client,
                 StartDate = residentialCarePackageEntity.StartDate,
                 EndDate = residentialCarePackageEntity.EndDate,
                 IsRespiteCare = residentialCarePackageEntity.IsRespiteCare,
@@ -51,7 +51,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCarePackageDomain.Id,
                 ClientId = residentialCarePackageDomain.ClientId,
-                Clients = residentialCarePackageDomain.Clients,
+                Client = residentialCarePackageDomain.Client,
                 StartDate = residentialCarePackageDomain.StartDate,
                 EndDate = residentialCarePackageDomain.EndDate,
                 IsRespiteCare = residentialCarePackageDomain.IsRespiteCare,
@@ -76,7 +76,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCarePackageDomain.Id,
                 ClientId = residentialCarePackageDomain.ClientId,
-                Clients = residentialCarePackageDomain.Clients,
+                Client = residentialCarePackageDomain.Client,
                 StartDate = residentialCarePackageDomain.StartDate,
                 EndDate = residentialCarePackageDomain.EndDate,
                 IsRespiteCare = residentialCarePackageDomain.IsRespiteCare,

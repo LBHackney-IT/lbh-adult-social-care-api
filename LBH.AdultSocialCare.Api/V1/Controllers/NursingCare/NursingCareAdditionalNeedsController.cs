@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
 {

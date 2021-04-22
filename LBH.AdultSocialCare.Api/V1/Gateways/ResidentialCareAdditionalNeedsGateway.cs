@@ -18,38 +18,38 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             _databaseContext = databaseContext;
         }
 
-        public async Task<ResidentialCareAdditionalNeeds> GetAsync(Guid residentialCareAdditionalNeedsId)
+        public async Task<ResidentialCareAdditionalNeed> GetAsync(Guid residentialCareAdditionalNeedsId)
         {
             var result = await _databaseContext.ResidentialCareAdditionalNeeds
                 .FirstOrDefaultAsync(item => item.Id == residentialCareAdditionalNeedsId).ConfigureAwait(false);
             return result;
         }
 
-        public async Task<ResidentialCareAdditionalNeeds> UpsertAsync(ResidentialCareAdditionalNeeds residentialCareAdditionalNeeds)
+        public async Task<ResidentialCareAdditionalNeed> UpsertAsync(ResidentialCareAdditionalNeed residentialCareAdditionalNeed)
         {
-            ResidentialCareAdditionalNeeds residentialAdditionalNeedsToUpdate = await _databaseContext.ResidentialCareAdditionalNeeds
-                .FirstOrDefaultAsync(item => item.Id == residentialCareAdditionalNeeds.Id).ConfigureAwait(false);
-            if (residentialAdditionalNeedsToUpdate == null)
+            ResidentialCareAdditionalNeed residentialAdditionalNeedToUpdate = await _databaseContext.ResidentialCareAdditionalNeeds
+                .FirstOrDefaultAsync(item => item.Id == residentialCareAdditionalNeed.Id).ConfigureAwait(false);
+            if (residentialAdditionalNeedToUpdate == null)
             {
-                residentialAdditionalNeedsToUpdate = new ResidentialCareAdditionalNeeds();
-                await _databaseContext.ResidentialCareAdditionalNeeds.AddAsync(residentialAdditionalNeedsToUpdate).ConfigureAwait(false);
+                residentialAdditionalNeedToUpdate = new ResidentialCareAdditionalNeed();
+                await _databaseContext.ResidentialCareAdditionalNeeds.AddAsync(residentialAdditionalNeedToUpdate).ConfigureAwait(false);
             }
-            residentialAdditionalNeedsToUpdate.ResidentialCarePackageId = residentialCareAdditionalNeeds.ResidentialCarePackageId;
-            residentialAdditionalNeedsToUpdate.Weekly = residentialCareAdditionalNeeds.Weekly;
-            residentialAdditionalNeedsToUpdate.OneOff = residentialCareAdditionalNeeds.OneOff;
-            residentialAdditionalNeedsToUpdate.NeedToAddress = residentialCareAdditionalNeeds.NeedToAddress;
-            residentialAdditionalNeedsToUpdate.CreatorId = residentialCareAdditionalNeeds.CreatorId;
-            residentialAdditionalNeedsToUpdate.UpdatorId = residentialCareAdditionalNeeds.UpdatorId;
+            residentialAdditionalNeedToUpdate.ResidentialCarePackageId = residentialCareAdditionalNeed.ResidentialCarePackageId;
+            residentialAdditionalNeedToUpdate.Weekly = residentialCareAdditionalNeed.Weekly;
+            residentialAdditionalNeedToUpdate.OneOff = residentialCareAdditionalNeed.OneOff;
+            residentialAdditionalNeedToUpdate.NeedToAddress = residentialCareAdditionalNeed.NeedToAddress;
+            residentialAdditionalNeedToUpdate.CreatorId = residentialCareAdditionalNeed.CreatorId;
+            residentialAdditionalNeedToUpdate.UpdatorId = residentialCareAdditionalNeed.UpdatorId;
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
 
             return isSuccess
-                ? residentialAdditionalNeedsToUpdate
+                ? residentialAdditionalNeedToUpdate
                 : null;
         }
 
         public async Task<bool> DeleteAsync(Guid residentialCareAdditionalNeedsId)
         {
-            _databaseContext.ResidentialCareAdditionalNeeds.Remove(new ResidentialCareAdditionalNeeds
+            _databaseContext.ResidentialCareAdditionalNeeds.Remove(new ResidentialCareAdditionalNeed
             {
                 Id = residentialCareAdditionalNeedsId
             });

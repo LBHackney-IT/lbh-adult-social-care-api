@@ -18,29 +18,29 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             _databaseContext = databaseContext;
         }
 
-        public async Task<NursingCareAdditionalNeeds> UpsertAsync(NursingCareAdditionalNeeds nursingCareAdditionalNeeds)
+        public async Task<NursingCareAdditionalNeed> UpsertAsync(NursingCareAdditionalNeed nursingCareAdditionalNeed)
         {
-            NursingCareAdditionalNeeds nursingCareAdditionalNeedsToUpdate = await _databaseContext.NursingCareAdditionalNeeds
-                .FirstOrDefaultAsync(item => item.Id == nursingCareAdditionalNeeds.Id).ConfigureAwait(false);
-            if (nursingCareAdditionalNeedsToUpdate == null)
+            NursingCareAdditionalNeed nursingCareAdditionalNeedToUpdate = await _databaseContext.NursingCareAdditionalNeeds
+                .FirstOrDefaultAsync(item => item.Id == nursingCareAdditionalNeed.Id).ConfigureAwait(false);
+            if (nursingCareAdditionalNeedToUpdate == null)
             {
-                nursingCareAdditionalNeedsToUpdate = new NursingCareAdditionalNeeds();
-                await _databaseContext.NursingCareAdditionalNeeds.AddAsync(nursingCareAdditionalNeedsToUpdate).ConfigureAwait(false);
+                nursingCareAdditionalNeedToUpdate = new NursingCareAdditionalNeed();
+                await _databaseContext.NursingCareAdditionalNeeds.AddAsync(nursingCareAdditionalNeedToUpdate).ConfigureAwait(false);
             }
-            nursingCareAdditionalNeedsToUpdate.NursingCarePackageId = nursingCareAdditionalNeeds.NursingCarePackageId;
-            nursingCareAdditionalNeedsToUpdate.Weekly = nursingCareAdditionalNeeds.Weekly;
-            nursingCareAdditionalNeedsToUpdate.OneOff = nursingCareAdditionalNeeds.OneOff;
-            nursingCareAdditionalNeedsToUpdate.NeedToAddress = nursingCareAdditionalNeeds.NeedToAddress;
-            nursingCareAdditionalNeedsToUpdate.CreatorId = nursingCareAdditionalNeeds.CreatorId;
-            nursingCareAdditionalNeedsToUpdate.UpdatorId = nursingCareAdditionalNeeds.UpdatorId;
+            nursingCareAdditionalNeedToUpdate.NursingCarePackageId = nursingCareAdditionalNeed.NursingCarePackageId;
+            nursingCareAdditionalNeedToUpdate.IsWeeklyCost = nursingCareAdditionalNeed.IsWeeklyCost;
+            nursingCareAdditionalNeedToUpdate.IsOneOffCost = nursingCareAdditionalNeed.IsOneOffCost;
+            nursingCareAdditionalNeedToUpdate.NeedToAddress = nursingCareAdditionalNeed.NeedToAddress;
+            nursingCareAdditionalNeedToUpdate.CreatorId = nursingCareAdditionalNeed.CreatorId;
+            nursingCareAdditionalNeedToUpdate.UpdaterId = nursingCareAdditionalNeed.UpdaterId;
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
 
             return isSuccess
-                ? nursingCareAdditionalNeedsToUpdate
+                ? nursingCareAdditionalNeedToUpdate
                 : null;
         }
 
-        public async Task<NursingCareAdditionalNeeds> GetAsync(Guid nursingCareAdditionalNeedsId)
+        public async Task<NursingCareAdditionalNeed> GetAsync(Guid nursingCareAdditionalNeedsId)
         {
             var result = await _databaseContext.NursingCareAdditionalNeeds
                 .FirstOrDefaultAsync(item => item.Id == nursingCareAdditionalNeedsId).ConfigureAwait(false);
@@ -49,7 +49,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<bool> DeleteAsync(Guid nursingCareAdditionalNeedsId)
         {
-            _databaseContext.NursingCareAdditionalNeeds.Remove(new NursingCareAdditionalNeeds
+            _databaseContext.NursingCareAdditionalNeeds.Remove(new NursingCareAdditionalNeed
             {
                 Id = nursingCareAdditionalNeedsId
             });

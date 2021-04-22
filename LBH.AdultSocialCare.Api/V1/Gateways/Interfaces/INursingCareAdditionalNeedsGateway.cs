@@ -8,9 +8,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
 {
     public interface INursingCareAdditionalNeedsGateway
     {
-        public Task<NursingCareAdditionalNeeds> UpsertAsync(NursingCareAdditionalNeeds nursingCareAdditionalNeeds);
+        public Task<NursingCareAdditionalNeed> UpsertAsync(NursingCareAdditionalNeed nursingCareAdditionalNeed);
 
-        public Task<NursingCareAdditionalNeeds> GetAsync(Guid nursingCareAdditionalNeedsId);
+        public Task<NursingCareAdditionalNeed> GetAsync(Guid nursingCareAdditionalNeedsId);
 
         public Task<bool> DeleteAsync(Guid nursingCareAdditionalNeedsId);
     }
