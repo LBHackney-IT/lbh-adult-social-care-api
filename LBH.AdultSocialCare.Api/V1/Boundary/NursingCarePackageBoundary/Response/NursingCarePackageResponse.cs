@@ -16,9 +16,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Respons
 
         public DateTimeOffset? EndDate { get; set; }
 
-        public bool IsRespiteCare { get; set; }
+        public bool HasRespiteCare { get; set; }
 
-        public bool IsDischargePackage { get; set; }
+        public bool HasDischargePackage { get; set; }
 
         public bool IsThisAnImmediateService { get; set; }
 

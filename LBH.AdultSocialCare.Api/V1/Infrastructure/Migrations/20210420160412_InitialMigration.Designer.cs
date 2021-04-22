@@ -1333,7 +1333,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("EndDate")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<bool>("IsDischargePackage")
+                    b.Property<bool>("HasDischargePackage")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsExpectedStayOver52Weeks")
@@ -1342,7 +1342,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<bool>("IsImmediateReenablementPackage")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsRespiteCare")
+                    b.Property<bool>("HasRespiteCare")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsThisUserUnderS117")

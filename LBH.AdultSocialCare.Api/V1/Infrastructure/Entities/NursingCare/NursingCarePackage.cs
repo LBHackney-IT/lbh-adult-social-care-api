@@ -46,14 +46,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public DateTimeOffset? EndDate { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is respite care.
+        /// Gets or sets a value indicating whether this instance has respite care.
         /// </summary>
-        public bool IsRespiteCare { get; set; }
+        public bool HasRespiteCare { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this instance is discharge package.
+        /// Gets or sets a value indicating whether this instance has discharge package.
         /// </summary>
-        public bool IsDischargePackage { get; set; }
+        public bool HasDischargePackage { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is this an immediate service.

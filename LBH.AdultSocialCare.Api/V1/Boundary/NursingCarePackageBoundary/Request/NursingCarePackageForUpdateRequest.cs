@@ -9,8 +9,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request
         [Required] public bool? IsFixedPeriod { get; set; }
         [Required] public DateTimeOffset? StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
-        [Required] public bool? IsRespiteCare { get; set; }
-        [Required] public bool? IsDischargePackage { get; set; }
+        [Required] public bool? HasRespiteCare { get; set; }
+        [Required] public bool? HasDischargePackage { get; set; }
         [Required] public bool? IsThisAnImmediateService { get; set; }
         [Required] public bool? IsThisUserUnderS117 { get; set; }
         [Required] public int? TypeOfStayId { get; set; }
