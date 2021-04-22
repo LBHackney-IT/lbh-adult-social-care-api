@@ -118,6 +118,46 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 entity.HasIndex(e => e.OptionName).IsUnique();
             });
 
+            modelBuilder.Entity<DayCarePackage>(entity =>
+            {
+                entity.HasOne(d => d.Status)
+                    .WithMany()
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.ClientCascade);
+            });
+
+            modelBuilder.Entity<NursingCarePackage>(entity =>
+            {
+                entity.HasOne(n => n.Status)
+                    .WithMany()
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.ClientCascade);
+            });
+
+            modelBuilder.Entity<HomeCarePackage>(entity =>
+            {
+                entity.HasOne(h => h.Status)
+                    .WithMany()
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.ClientCascade);
+            });
+
+            modelBuilder.Entity<ResidentialCarePackage>(entity =>
+            {
+                entity.HasOne(r => r.Status)
+                    .WithMany()
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.ClientCascade);
+            });
+
+            modelBuilder.Entity<NursingCareAdditionalNeed>(entity =>
+            {
+                entity.HasOne(n => n.NursingCarePackage)
+                    .WithMany(n => n.NursingCareAdditionalNeeds)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.ClientCascade);
+            });
+
             #endregion
         }
 
