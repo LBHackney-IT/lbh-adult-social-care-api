@@ -17,7 +17,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases
 
         public async Task<UsersDomain> ExecuteAsync(UsersDomain users)
         {
-            Users userEntity = UserFactory.ToEntity(users);
+            User userEntity = UserFactory.ToEntity(users);
             userEntity = await _gateway.UpsertAsync(userEntity).ConfigureAwait(false);
             if (userEntity == null) return users = null;
             else

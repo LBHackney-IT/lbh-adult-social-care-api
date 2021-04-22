@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
-    public class ClientSeed : IEntityTypeConfiguration<Clients>
+    public class ClientSeed : IEntityTypeConfiguration<Client>
     {
-        public void Configure(EntityTypeBuilder<Clients> builder)
+        public void Configure(EntityTypeBuilder<Client> builder)
         {
-            builder.HasData(new Clients
+            builder.HasData(new Client
             {
                 Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb80"),
                 FirstName = "Furkan",

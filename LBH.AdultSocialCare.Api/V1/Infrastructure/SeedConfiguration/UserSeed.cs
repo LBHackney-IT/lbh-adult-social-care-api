@@ -5,11 +5,11 @@ using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
-    public class UserSeed : IEntityTypeConfiguration<Users>
+    public class UserSeed : IEntityTypeConfiguration<User>
     {
-        public void Configure(EntityTypeBuilder<Users> builder)
+        public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasData(new Users
+            builder.HasData(new User
             {
                 Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 FirstName = "Furkan",
@@ -19,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Town = "London",
                 PostCode = "W11",
                 RoleId = 1
-            }, new Users
+            }, new User
             {
                 Id = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"),
                 FirstName = "Duncan",

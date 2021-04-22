@@ -6,9 +6,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
 {
     public interface IClientsGateway
     {
-        public Task<Clients> UpsertAsync(Clients clients);
+        public Task<Client> UpsertAsync(Client client);
 
-        public Task<Clients> GetAsync(Guid clientId);
+        public Task<Client> GetAsync(Guid clientId);
 
         public Task<bool> DeleteAsync(Guid clientId);
     }

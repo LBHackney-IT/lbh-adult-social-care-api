@@ -31,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<IList<HomeCarePackage>> ListAsync()
         {
             return await _databaseContext.HomeCarePackage
-                .Include(item => item.Clients)
+                .Include(item => item.Client)
                 .Include(item => item.Status)
                 .ToListAsync().ConfigureAwait(false);
         }
@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<HomeCarePackage> ChangeStatusAsync(Guid homeCarePackageId, int statusId)
         {
             HomeCarePackage homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
-                .Include(item => item.Clients)
+                .Include(item => item.Client)
                 .Include(item => item.Status)
                 .FirstOrDefaultAsync(item => item.Id == homeCarePackageId)
                 .ConfigureAwait(false);
@@ -59,7 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         {
             HomeCarePackage homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
                 .Include(item => item.Status)
-                .Include(item => item.Clients)
+                .Include(item => item.Client)
                 .FirstOrDefaultAsync(item => item.Id == homeCarePackage.Id).ConfigureAwait(false);
             if (homeCarePackageToUpdate == null)
             {

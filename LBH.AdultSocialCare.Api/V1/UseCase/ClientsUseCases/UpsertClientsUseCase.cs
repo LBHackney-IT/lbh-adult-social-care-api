@@ -20,7 +20,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases
 
         public async Task<ClientsDomain> ExecuteAsync(ClientsDomain clients)
         {
-            Clients clientEntity = ClientsFactory.ToEntity(clients);
+            Client clientEntity = ClientsFactory.ToEntity(clients);
             clientEntity = await _gateway.UpsertAsync(clientEntity).ConfigureAwait(false);
 
             if (clientEntity == null)

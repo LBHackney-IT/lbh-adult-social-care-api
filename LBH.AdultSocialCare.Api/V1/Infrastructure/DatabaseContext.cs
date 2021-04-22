@@ -26,22 +26,22 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<DayCarePackage> DayCarePackages { get; set; }
         public DbSet<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
         public DbSet<Package> Packages { get; set; }
-        public DbSet<Roles> Roles { get; set; }
+        public DbSet<Role> Roles { get; set; }
         public DbSet<TimeSlotShifts> TimeSlotShifts { get; set; }
         public DbSet<HomeCarePackage> HomeCarePackage { get; set; }
         public DbSet<HomeCareServiceType> HomeCareServiceTypes { get; set; }
         public DbSet<HomeCareServiceTypeMinutes> HomeCareServiceTypeMinutes { get; set; }
         public DbSet<HomeCarePackageSlots> HomeCarePackageSlots { get; set; }
-        public DbSet<Users> Users { get; set; }
-        public DbSet<Clients> Clients { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Client> Clients { get; set; }
         public DbSet<PackageStatus> PackageStatuses { get; set; }
         public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
         public DbSet<ResidentialCarePackage> ResidentialCarePackages { get; set; }
         public DbSet<NursingCarePackage> NursingCarePackages { get; set; }
         public DbSet<OpportunityLengthOption> OpportunityLengthOptions { get; set; }
         public DbSet<OpportunityTimesPerMonthOption> OpportunityTimesPerMonthOptions { get; set; }
-        public DbSet<NursingCareAdditionalNeeds> NursingCareAdditionalNeeds { get; set; }
-        public DbSet<ResidentialCareAdditionalNeeds> ResidentialCareAdditionalNeeds { get; set; }
+        public DbSet<NursingCareAdditionalNeed> NursingCareAdditionalNeeds { get; set; }
+        public DbSet<ResidentialCareAdditionalNeed> ResidentialCareAdditionalNeeds { get; set; }
         public DbSet<HomeCarePackageCost> HomeCarePackageCosts { get; set; }
         public DbSet<TypeOfNursingCareHome> TypesOfNursingCareHomes { get; set; }
         public DbSet<TypeOfResidentialCareHome> TypesOfResidentialCareHomes { get; set; }

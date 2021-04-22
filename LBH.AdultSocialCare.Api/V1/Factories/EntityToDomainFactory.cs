@@ -107,7 +107,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 CreatorId = nursingCarePackageEntity.CreatorId,
                 UpdaterId = nursingCarePackageEntity.UpdaterId,
                 StatusId = nursingCarePackageEntity.StatusId,
-                ClientName = $"{nursingCarePackageEntity.Clients.FirstName} {nursingCarePackageEntity.Clients.MiddleName} {nursingCarePackageEntity.Clients.LastName}",
+                ClientName = $"{nursingCarePackageEntity.Client.FirstName} {nursingCarePackageEntity.Client.MiddleName} {nursingCarePackageEntity.Client.LastName}",
                 StatusName = nursingCarePackageEntity.Status.StatusName,
                 CreatorName = $"{nursingCarePackageEntity.Creator.FirstName} {nursingCarePackageEntity.Creator.MiddleName} {nursingCarePackageEntity.Creator.LastName}",
                 UpdaterName = $"{nursingCarePackageEntity.Updater.FirstName} {nursingCarePackageEntity.Updater.MiddleName} {nursingCarePackageEntity.Updater.LastName}",
@@ -126,9 +126,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion
 
-        #region NursingCareAdditionalNeeds
+        #region NursingCareAdditionalNeed
 
-        public static IEnumerable<NursingCareAdditionalNeedsDomain> ToDomain(this IEnumerable<NursingCareAdditionalNeeds> nursingCareAdditionalNeedsEntities)
+        public static IEnumerable<NursingCareAdditionalNeedsDomain> ToDomain(this IEnumerable<NursingCareAdditionalNeed> nursingCareAdditionalNeedsEntities)
         {
             return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsDomain>>(nursingCareAdditionalNeedsEntities);
         }

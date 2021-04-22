@@ -36,16 +36,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public Package Package { get; set; }
 
         [ForeignKey(nameof(ClientId))]
-        public Clients Client { get; set; }
+        public Client Client { get; set; }
 
         [ForeignKey(nameof(TermTimeConsiderationOptionId))]
         public TermTimeConsiderationOption TermTimeConsiderationOption { get; set; }
 
         [ForeignKey(nameof(CreatorId))]
-        public Users Creator { get; set; }
+        public User Creator { get; set; }
 
         [ForeignKey(nameof(UpdaterId))]
-        public Users Updater { get; set; }
+        public User Updater { get; set; }
 
         [ForeignKey(nameof(StatusId))]
         public PackageStatus Status { get; set; }

@@ -21,10 +21,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         public Guid ClientId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Clients
+        /// Gets or sets the Client
         /// </summary>
         [ForeignKey(nameof(ClientId))]
-        public Clients Clients { get; set; }
+        public Client Client { get; set; }
 
         /// <summary>
         /// Gets or sets the Start Date

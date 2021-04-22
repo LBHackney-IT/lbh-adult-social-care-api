@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-    public class NursingCareAdditionalNeeds : BaseEntity
+    public class NursingCareAdditionalNeed : BaseEntity
     {
         /// <summary>
         /// Gets or sets the Id
@@ -46,9 +46,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public NursingCarePackage NursingCarePackage { get; set; }
 
         [ForeignKey(nameof(CreatorId))]
-        public Users Creator { get; set; }
+        public User Creator { get; set; }
 
         [ForeignKey(nameof(UpdaterId))]
-        public Users Updater { get; set; }
+        public User Updater { get; set; }
     }
 }

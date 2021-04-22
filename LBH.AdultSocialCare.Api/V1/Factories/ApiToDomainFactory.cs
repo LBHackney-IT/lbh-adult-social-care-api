@@ -77,7 +77,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion
 
-        #region NursingCareAdditionalNeeds
+        #region NursingCareAdditionalNeed
 
         public static IEnumerable<NursingCareAdditionalNeedsDomain> ToDomain(this IEnumerable<NursingCareAdditionalNeedForCreationRequest> nursingCareAdditionalNeedsForCreation)
         {

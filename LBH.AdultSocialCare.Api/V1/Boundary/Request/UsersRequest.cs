@@ -45,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         public string AddressLine3 { get; set; }
 
         /// <summary>
-        /// Gets or sets the Town of Users.
+        /// Gets or sets the Town of User.
         /// </summary>
         public string Town { get; set; }
 

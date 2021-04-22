@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
-    public class RoleTypesSeed : IEntityTypeConfiguration<Roles>
+    public class RoleTypesSeed : IEntityTypeConfiguration<Role>
     {
-        public void Configure(EntityTypeBuilder<Roles> builder)
+        public void Configure(EntityTypeBuilder<Role> builder)
         {
-            builder.HasData(new Roles
+            builder.HasData(new Role
             {
                 Id = 1,
                 RoleName = "Social Worker",
@@ -20,7 +20,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Sequence = 1,
                 CreatorId = 1,
                 UpdatorId = 1
-            }, new Roles
+            }, new Role
             {
                 Id = 2,
                 RoleName = "Broker",

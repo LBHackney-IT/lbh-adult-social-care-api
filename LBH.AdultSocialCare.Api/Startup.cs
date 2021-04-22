@@ -292,21 +292,21 @@ namespace LBH.AdultSocialCare.Api
 
             #endregion TimeSlotShift
 
-            #region Clients
+            #region Client
 
             services.AddScoped<IUpsertClientsUseCase, UpsertClientsUseCase>();
             services.AddScoped<IGetClientsUseCase, GetClientsUseCase>();
             services.AddScoped<IDeleteClientsUseCase, DeleteClientsUseCase>();
 
-            #endregion Clients
+            #endregion Client
 
-            #region Users
+            #region User
 
             services.AddScoped<IUpsertUsersUseCase, UpsertUsersUseCase>();
             services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
             services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();
 
-            #endregion Users
+            #endregion User
 
             #region PackageStatuses
 

@@ -7,23 +7,23 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 {
     public static class NursingCareAdditionalNeedsFactory
     {
-        public static NursingCareAdditionalNeedsDomain ToDomain(NursingCareAdditionalNeeds nursingCareAdditionalNeedsEntity)
+        public static NursingCareAdditionalNeedsDomain ToDomain(NursingCareAdditionalNeed nursingCareAdditionalNeedEntity)
         {
             return new NursingCareAdditionalNeedsDomain
             {
-                Id = nursingCareAdditionalNeedsEntity.Id,
-                NursingCarePackageId = nursingCareAdditionalNeedsEntity.NursingCarePackageId,
-                IsWeeklyCost = nursingCareAdditionalNeedsEntity.IsWeeklyCost,
-                IsOneOffCost = nursingCareAdditionalNeedsEntity.IsOneOffCost,
-                NeedToAddress = nursingCareAdditionalNeedsEntity.NeedToAddress,
-                CreatorId = nursingCareAdditionalNeedsEntity.CreatorId,
-                UpdaterId = nursingCareAdditionalNeedsEntity.UpdaterId,
+                Id = nursingCareAdditionalNeedEntity.Id,
+                NursingCarePackageId = nursingCareAdditionalNeedEntity.NursingCarePackageId,
+                IsWeeklyCost = nursingCareAdditionalNeedEntity.IsWeeklyCost,
+                IsOneOffCost = nursingCareAdditionalNeedEntity.IsOneOffCost,
+                NeedToAddress = nursingCareAdditionalNeedEntity.NeedToAddress,
+                CreatorId = nursingCareAdditionalNeedEntity.CreatorId,
+                UpdaterId = nursingCareAdditionalNeedEntity.UpdaterId,
             };
         }
 
-        public static NursingCareAdditionalNeeds ToEntity(NursingCareAdditionalNeedsDomain nursingCareAdditionalNeedsDomain)
+        public static NursingCareAdditionalNeed ToEntity(NursingCareAdditionalNeedsDomain nursingCareAdditionalNeedsDomain)
         {
-            return new NursingCareAdditionalNeeds
+            return new NursingCareAdditionalNeed
             {
                 Id = nursingCareAdditionalNeedsDomain.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,

@@ -10,7 +10,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
     {
         public NursingCarePackage()
         {
-            NursingCareAdditionalNeeds = new HashSet<NursingCareAdditionalNeeds>();
+            NursingCareAdditionalNeeds = new HashSet<NursingCareAdditionalNeed>();
         }
 
         /// <summary>
@@ -25,10 +25,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public Guid? ClientId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Clients
+        /// Gets or sets the Client
         /// </summary>
         [ForeignKey(nameof(ClientId))]
-        public Clients Clients { get; set; }
+        public Client Client { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is fixed period.
@@ -111,14 +111,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public NursingCareTypeOfStayOption TypeOfStayOption { get; set; }
 
         [ForeignKey(nameof(CreatorId))]
-        public Users Creator { get; set; }
+        public User Creator { get; set; }
 
         [ForeignKey(nameof(UpdaterId))]
-        public Users Updater { get; set; }
+        public User Updater { get; set; }
 
         /// <summary>
-        /// Gets or sets the NursingCareAdditionalNeeds
+        /// Gets or sets the NursingCareAdditionalNeed
         /// </summary>
-        public virtual ICollection<NursingCareAdditionalNeeds> NursingCareAdditionalNeeds { get; set; }
+        public virtual ICollection<NursingCareAdditionalNeed> NursingCareAdditionalNeeds { get; set; }
     }
 }

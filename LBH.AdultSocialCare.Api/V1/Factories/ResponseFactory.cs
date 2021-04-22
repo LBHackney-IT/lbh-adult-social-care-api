@@ -131,7 +131,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion
 
-        #region NursingCareAdditionalNeeds
+        #region NursingCareAdditionalNeed
 
         public static IEnumerable<NursingCareAdditionalNeedsResponse> ToResponse(this IEnumerable<NursingCareAdditionalNeedsDomain> nursingCareAdditionalNeedsDomain)
         {

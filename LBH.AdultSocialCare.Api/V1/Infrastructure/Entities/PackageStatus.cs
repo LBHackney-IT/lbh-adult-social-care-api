@@ -28,9 +28,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public Guid? UpdaterId { get; set; }
 
         [ForeignKey(nameof(CreatorId))]
-        public Users Creator { get; set; }
+        public User Creator { get; set; }
 
         [ForeignKey(nameof(UpdaterId))]
-        public Users Updater { get; set; }
+        public User Updater { get; set; }
     }
 }

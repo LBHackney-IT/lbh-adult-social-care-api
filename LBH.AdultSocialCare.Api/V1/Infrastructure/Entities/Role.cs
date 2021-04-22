@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
 
-    public class Roles : BaseEntity
+    public class Role : BaseEntity
     {
 
         /// <summary>

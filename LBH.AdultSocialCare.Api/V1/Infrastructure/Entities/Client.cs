@@ -1,14 +1,10 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
 
-    /// <summary>
-    /// User object for domain
-    /// </summary>
-    public class Users : BaseEntity
+    public class Client : BaseEntity
     {
 
         /// <summary>
@@ -16,6 +12,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// </summary>
         [Key]
         public Guid Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Hackney Id
+        /// </summary>
+        public int HackneyId { get; set; }
 
         /// <summary>
         /// Gets or sets the First Name
@@ -33,9 +34,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public string LastName { get; set; }
 
         /// <summary>
-        /// Gets or sets the Hackney Id
+        /// Gets or sets the Date Of Birth
         /// </summary>
-        public int HackneyId { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         /// <summary>
         /// Gets or sets the Address Line1
@@ -53,7 +54,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public string AddressLine3 { get; set; }
 
         /// <summary>
-        /// Gets or sets the Town of Users.
+        /// Gets or sets the Town
         /// </summary>
         public string Town { get; set; }
 
@@ -66,17 +67,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Post Code
         /// </summary>
         public string PostCode { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Role Id
-        /// </summary>
-        public int RoleId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Role Object
-        /// </summary>
-        [ForeignKey(nameof(RoleId))]
-        public Roles Roles { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

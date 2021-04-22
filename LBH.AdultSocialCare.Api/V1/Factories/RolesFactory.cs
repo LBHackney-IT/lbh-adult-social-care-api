@@ -7,24 +7,24 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 {
     public static class RolesFactory
     {
-        public static RolesDomain ToDomain(Roles rolesEntity)
+        public static RolesDomain ToDomain(Role roleEntity)
         {
             return new RolesDomain
             {
-                Id = rolesEntity.Id,
-                RoleName = rolesEntity.RoleName,
-                IsDefault = rolesEntity.IsDefault,
-                Sequence = rolesEntity.Sequence,
-                CreatorId = rolesEntity.CreatorId,
-                DateCreated = rolesEntity.DateCreated,
-                UpdatorId = rolesEntity.UpdatorId,
-                DateUpdated = rolesEntity.DateUpdated
+                Id = roleEntity.Id,
+                RoleName = roleEntity.RoleName,
+                IsDefault = roleEntity.IsDefault,
+                Sequence = roleEntity.Sequence,
+                CreatorId = roleEntity.CreatorId,
+                DateCreated = roleEntity.DateCreated,
+                UpdatorId = roleEntity.UpdatorId,
+                DateUpdated = roleEntity.DateUpdated
             };
         }
 
-        public static Roles ToEntity(RolesDomain rolesDomain)
+        public static Role ToEntity(RolesDomain rolesDomain)
         {
-            return new Roles
+            return new Role
             {
                 Id = rolesDomain.Id,
                 RoleName = rolesDomain.RoleName,

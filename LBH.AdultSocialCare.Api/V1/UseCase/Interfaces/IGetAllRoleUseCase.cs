@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Interfaces
 {
     public interface IGetAllRoleUseCase
     {
-        public Task<IList<Roles>> GetAllAsync();
+        public Task<IList<Role>> GetAllAsync();
     }
 }

@@ -7,32 +7,32 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 {
     public static class ClientsFactory
     {
-        public static ClientsDomain ToDomain(Clients clientsEntity)
+        public static ClientsDomain ToDomain(Client clientEntity)
         {
             return new ClientsDomain
             {
-                Id = clientsEntity.Id,
-                FirstName = clientsEntity.FirstName,
-                MiddleName = clientsEntity.MiddleName,
-                LastName = clientsEntity.LastName,
-                DateOfBirth = clientsEntity.DateOfBirth,
-                HackneyId = clientsEntity.HackneyId,
-                AddressLine1 = clientsEntity.AddressLine1,
-                AddressLine2 = clientsEntity.AddressLine2,
-                AddressLine3 = clientsEntity.AddressLine3,
-                Town = clientsEntity.Town,
-                County = clientsEntity.County,
-                PostCode = clientsEntity.PostCode,
-                CreatorId = clientsEntity.CreatorId,
-                DateCreated = clientsEntity.DateCreated,
-                UpdatorId = clientsEntity.UpdatorId,
-                DateUpdated = clientsEntity.DateUpdated
+                Id = clientEntity.Id,
+                FirstName = clientEntity.FirstName,
+                MiddleName = clientEntity.MiddleName,
+                LastName = clientEntity.LastName,
+                DateOfBirth = clientEntity.DateOfBirth,
+                HackneyId = clientEntity.HackneyId,
+                AddressLine1 = clientEntity.AddressLine1,
+                AddressLine2 = clientEntity.AddressLine2,
+                AddressLine3 = clientEntity.AddressLine3,
+                Town = clientEntity.Town,
+                County = clientEntity.County,
+                PostCode = clientEntity.PostCode,
+                CreatorId = clientEntity.CreatorId,
+                DateCreated = clientEntity.DateCreated,
+                UpdatorId = clientEntity.UpdatorId,
+                DateUpdated = clientEntity.DateUpdated
             };
         }
 
-        public static Clients ToEntity(ClientsDomain clientsDomain)
+        public static Client ToEntity(ClientsDomain clientsDomain)
         {
-            return new Clients
+            return new Client
             {
                 Id = clientsDomain.Id,
                 FirstName = clientsDomain.FirstName,

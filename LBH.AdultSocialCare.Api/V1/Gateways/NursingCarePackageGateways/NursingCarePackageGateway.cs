@@ -65,7 +65,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
         {
             var result = await _databaseContext.NursingCarePackages
                 .Include(item => item.TypeOfCareHome)
-                .Include(item => item.Clients)
+                .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.NursingCareAdditionalNeeds)
                 .FirstOrDefaultAsync(item => item.Id == nursingCarePackageId).ConfigureAwait(false);
@@ -81,7 +81,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
             NursingCarePackage nursingCarePackageToUpdate = await _databaseContext.NursingCarePackages
                 .Include(item => item.TypeOfCareHome)
                 .Include(item => item.TypeOfStayOption)
-                .Include(item => item.Clients)
+                .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.NursingCareAdditionalNeeds)
                 .FirstOrDefaultAsync(item => item.Id == nursingCarePackageId)
@@ -109,7 +109,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
             var res = await _databaseContext.NursingCarePackages
                 .Include(item => item.TypeOfCareHome)
                 .Include(item => item.TypeOfStayOption)
-                .Include(item => item.Clients)
+                .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.NursingCareAdditionalNeeds)
                 .ToListAsync().ConfigureAwait(false);

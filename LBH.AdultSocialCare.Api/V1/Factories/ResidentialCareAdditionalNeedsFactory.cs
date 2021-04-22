@@ -11,23 +11,23 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 {
     public static class ResidentialCareAdditionalNeedsFactory
     {
-        public static ResidentialCareAdditionalNeedsDomain ToDomain(ResidentialCareAdditionalNeeds residentialCareAdditionalNeedsEntity)
+        public static ResidentialCareAdditionalNeedsDomain ToDomain(ResidentialCareAdditionalNeed residentialCareAdditionalNeedEntity)
         {
             return new ResidentialCareAdditionalNeedsDomain
             {
-                Id = residentialCareAdditionalNeedsEntity.Id,
-                ResidentialCarePackageId = residentialCareAdditionalNeedsEntity.ResidentialCarePackageId,
-                Weekly = residentialCareAdditionalNeedsEntity.Weekly,
-                OneOff = residentialCareAdditionalNeedsEntity.OneOff,
-                NeedToAddress = residentialCareAdditionalNeedsEntity.NeedToAddress,
-                CreatorId = residentialCareAdditionalNeedsEntity.CreatorId,
-                UpdatorId = residentialCareAdditionalNeedsEntity.UpdatorId,
+                Id = residentialCareAdditionalNeedEntity.Id,
+                ResidentialCarePackageId = residentialCareAdditionalNeedEntity.ResidentialCarePackageId,
+                Weekly = residentialCareAdditionalNeedEntity.Weekly,
+                OneOff = residentialCareAdditionalNeedEntity.OneOff,
+                NeedToAddress = residentialCareAdditionalNeedEntity.NeedToAddress,
+                CreatorId = residentialCareAdditionalNeedEntity.CreatorId,
+                UpdatorId = residentialCareAdditionalNeedEntity.UpdatorId,
             };
         }
 
-        public static ResidentialCareAdditionalNeeds ToEntity(ResidentialCareAdditionalNeedsDomain residentialCareAdditionalNeedsDomain)
+        public static ResidentialCareAdditionalNeed ToEntity(ResidentialCareAdditionalNeedsDomain residentialCareAdditionalNeedsDomain)
         {
-            return new ResidentialCareAdditionalNeeds
+            return new ResidentialCareAdditionalNeed
             {
                 Id = residentialCareAdditionalNeedsDomain.Id,
                 ResidentialCarePackageId = residentialCareAdditionalNeedsDomain.ResidentialCarePackageId,
