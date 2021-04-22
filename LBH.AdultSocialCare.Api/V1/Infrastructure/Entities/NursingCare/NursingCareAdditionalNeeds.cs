@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
@@ -41,8 +38,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public Guid CreatorId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Updator Id
+        /// Gets or sets the Updater Id
         /// </summary>
-        public Guid? UpdatorId { get; set; }
+        public Guid? UpdaterId { get; set; }
+
+        [ForeignKey(nameof(NursingCarePackageId))]
+        public NursingCarePackage NursingCarePackage { get; set; }
+
+        [ForeignKey(nameof(CreatorId))]
+        public Users Creator { get; set; }
+
+        [ForeignKey(nameof(UpdaterId))]
+        public Users Updater { get; set; }
     }
 }

@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-
     public class NursingCarePackage : BaseEntity
     {
         public NursingCarePackage()
@@ -71,9 +70,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// </summary>
         public int? TypeOfStayId { get; set; }
 
-        [ForeignKey(nameof(TypeOfStayId))]
-        public NursingCareTypeOfStayOption TypeOfStayOption { get; set; }
-
         /// <summary>
         /// Gets or sets the Need To Address
         /// </summary>
@@ -85,36 +81,44 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public int? TypeOfNursingCareHomeId { get; set; }
 
         /// <summary>
+        /// Gets or sets the Creator Id
+        /// </summary>
+        public Guid CreatorId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Updater Id
+        /// </summary>
+        public Guid? UpdaterId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the PackageStatuses Id
+        /// </summary>
+        public int StatusId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the PackageStatuses Object
+        /// </summary>
+        [ForeignKey(nameof(StatusId))]
+        public PackageStatus Status { get; set; }
+
+        /// <summary>
         /// Gets or sets the Type Of Nursing Home
         /// </summary>
         [ForeignKey(nameof(TypeOfNursingCareHomeId))]
         public TypeOfNursingCareHome TypeOfCareHome { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public int CreatorId { get; set; }
+        [ForeignKey(nameof(TypeOfStayId))]
+        public NursingCareTypeOfStayOption TypeOfStayOption { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Updator Id
-        /// </summary>
-        public int? UpdatorId { get; set; }
+        [ForeignKey(nameof(CreatorId))]
+        public Users Creator { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Status Id
-        /// </summary>
-        public int StatusId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Status Object
-        /// </summary>
-        public PackageStatus Status { get; set; }
+        [ForeignKey(nameof(UpdaterId))]
+        public Users Updater { get; set; }
 
         /// <summary>
         /// Gets or sets the NursingCareAdditionalNeeds
         /// </summary>
         public virtual ICollection<NursingCareAdditionalNeeds> NursingCareAdditionalNeeds { get; set; }
-
     }
-
 }

@@ -69,7 +69,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<string>("Town")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UpdatorId")
+                    b.Property<int>("UpdaterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -248,7 +248,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UpdatorId")
+                    b.Property<int>("UpdaterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -318,7 +318,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<string>("ServiceName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UpdatorId")
+                    b.Property<int>("UpdaterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -733,7 +733,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<string>("TimeSlotTimeLabel")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UpdatorId")
+                    b.Property<int>("UpdaterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -871,7 +871,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<decimal>("TotalCost")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("UpdatorId")
+                    b.Property<int>("UpdaterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -893,7 +893,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasKey("TypeOfCareHomeId");
 
-                    b.ToTable("TypesOfNursingCareHome");
+                    b.ToTable("TypesOfNursingCareHomes");
 
                     b.HasData(
                         new
@@ -932,7 +932,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<bool>("OneOff")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("UpdatorId")
+                    b.Property<Guid>("UpdaterId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Weekly")
@@ -945,7 +945,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("NursingCareAdditionalNeeds");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackage", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackages", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -990,7 +990,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<int>("TypeOfNursingCareHomeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UpdatorId")
+                    b.Property<int>("UpdaterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1001,7 +1001,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasIndex("TypeOfNursingCareHomeId");
 
-                    b.ToTable("NursingCarePackage");
+                    b.ToTable("NursingCarePackages");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.OpportunityLengthOption", b =>
@@ -1106,7 +1106,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<int>("Sequence")
                         .HasColumnType("int");
 
-                    b.Property<int>("UpdatorId")
+                    b.Property<int>("UpdaterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1175,12 +1175,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<string>("StatusName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UpdatorId")
+                    b.Property<int>("UpdaterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Status");
+                    b.ToTable("PackageStatuses");
 
                     b.HasData(
                         new
@@ -1260,7 +1260,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasKey("TypeOfCareHomeId");
 
-                    b.ToTable("TypesOfResidentialCareHome");
+                    b.ToTable("TypesOfResidentialCareHomes");
 
                     b.HasData(
                         new
@@ -1299,7 +1299,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("ResidentialCarePackageId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("UpdatorId")
+                    b.Property<Guid>("UpdaterId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<bool>("Weekly")
@@ -1312,7 +1312,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("ResidentialCareAdditionalNeeds");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackage", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackages", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1360,7 +1360,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<int>("TypeOfResidentialCareHomeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UpdatorId")
+                    b.Property<int>("UpdaterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1371,7 +1371,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasIndex("TypeOfResidentialCareHomeId");
 
-                    b.ToTable("ResidentialCarePackage");
+                    b.ToTable("ResidentialCarePackages");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Roles", b =>
@@ -1399,7 +1399,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<int>("Sequence")
                         .HasColumnType("int");
 
-                    b.Property<int>("UpdatorId")
+                    b.Property<int>("UpdaterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1516,7 +1516,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<string>("Town")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UpdatorId")
+                    b.Property<int>("UpdaterId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1578,7 +1578,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", "Status")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", "PackageStatuses")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1624,7 +1624,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", "Status")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", "PackageStatuses")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1673,14 +1673,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareAdditionalNeeds", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackage", null)
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackages", null)
                         .WithMany("NursingCareAdditionalNeeds")
                         .HasForeignKey("NursingCarePackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackage", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackages", b =>
                 {
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Clients", "Clients")
                         .WithMany()
@@ -1688,7 +1688,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", "Status")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", "PackageStatuses")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1703,14 +1703,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareAdditionalNeeds", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackage", null)
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackages", null)
                         .WithMany("ResidentialCareAdditionalNeeds")
                         .HasForeignKey("ResidentialCarePackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackage", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackages", b =>
                 {
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Clients", "Clients")
                         .WithMany()
@@ -1718,7 +1718,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", "Status")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", "PackageStatuses")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)

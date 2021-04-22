@@ -93,12 +93,12 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         public DateTimeOffset? DateUpdated { get; set; }
 
         /// <summary>
-        /// Gets or sets the Status Id
+        /// Gets or sets the PackageStatuses Id
         /// </summary>
         public int StatusId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Status Object
+        /// Gets or sets the PackageStatuses Object
         /// </summary>
         public PackageStatus Status { get; set; }
 

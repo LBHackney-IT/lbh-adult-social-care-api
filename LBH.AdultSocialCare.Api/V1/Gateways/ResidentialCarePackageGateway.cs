@@ -22,7 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<ResidentialCarePackage> GetAsync(Guid residentialCarePackageId)
         {
-            var result = await _databaseContext.ResidentialCarePackage
+            var result = await _databaseContext.ResidentialCarePackages
                 .Include(item => item.TypeOfResidentialCareHome)
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
@@ -33,7 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<ResidentialCarePackage> UpsertAsync(ResidentialCarePackage residentialCarePackage)
         {
-            ResidentialCarePackage residentialCarePackageToUpdate = await _databaseContext.ResidentialCarePackage
+            ResidentialCarePackage residentialCarePackageToUpdate = await _databaseContext.ResidentialCarePackages
                 .Include(item => item.TypeOfResidentialCareHome)
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
@@ -42,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             if (residentialCarePackageToUpdate == null)
             {
                 residentialCarePackageToUpdate = new ResidentialCarePackage();
-                await _databaseContext.ResidentialCarePackage.AddAsync(residentialCarePackageToUpdate).ConfigureAwait(false);
+                await _databaseContext.ResidentialCarePackages.AddAsync(residentialCarePackageToUpdate).ConfigureAwait(false);
             }
             residentialCarePackageToUpdate.ClientId = residentialCarePackage.ClientId;
             residentialCarePackageToUpdate.StartDate = residentialCarePackage.StartDate;
@@ -63,7 +63,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         }
         public async Task<ResidentialCarePackage> ChangeStatusAsync(Guid residentialCarePackageId, int statusId)
         {
-            ResidentialCarePackage residentialCarePackageToUpdate = await _databaseContext.ResidentialCarePackage
+            ResidentialCarePackage residentialCarePackageToUpdate = await _databaseContext.ResidentialCarePackages
                 .FirstOrDefaultAsync(item => item.Id == residentialCarePackageId)
                 .ConfigureAwait(false);
 
@@ -80,7 +80,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<IList<ResidentialCarePackage>> ListAsync()
         {
-            return await _databaseContext.ResidentialCarePackage
+            return await _databaseContext.ResidentialCarePackages
                 .Include(item => item.Clients)
                 .Include(item => item.Status)
                 .Include(item => item.ResidentialCareAdditionalNeeds)
@@ -89,7 +89,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<IList<TypeOfResidentialCareHome>> GetListOfTypeOfResidentialCareHomeAsync()
         {
-            return await _databaseContext.TypesOfResidentialCareHome
+            return await _databaseContext.TypesOfResidentialCareHomes
                 .ToListAsync().ConfigureAwait(false);
         }
     }

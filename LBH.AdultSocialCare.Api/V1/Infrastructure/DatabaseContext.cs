@@ -34,18 +34,18 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<HomeCarePackageSlots> HomeCarePackageSlots { get; set; }
         public DbSet<Users> Users { get; set; }
         public DbSet<Clients> Clients { get; set; }
-        public DbSet<PackageStatus> Status { get; set; }
+        public DbSet<PackageStatus> PackageStatuses { get; set; }
         public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
-        public DbSet<ResidentialCarePackage> ResidentialCarePackage { get; set; }
-        public DbSet<NursingCarePackage> NursingCarePackage { get; set; }
+        public DbSet<ResidentialCarePackage> ResidentialCarePackages { get; set; }
+        public DbSet<NursingCarePackage> NursingCarePackages { get; set; }
         public DbSet<OpportunityLengthOption> OpportunityLengthOptions { get; set; }
         public DbSet<OpportunityTimesPerMonthOption> OpportunityTimesPerMonthOptions { get; set; }
         public DbSet<NursingCareAdditionalNeeds> NursingCareAdditionalNeeds { get; set; }
         public DbSet<ResidentialCareAdditionalNeeds> ResidentialCareAdditionalNeeds { get; set; }
         public DbSet<HomeCarePackageCost> HomeCarePackageCosts { get; set; }
-        public DbSet<TypeOfNursingCareHome> TypesOfNursingCareHome { get; set; }
-        public DbSet<TypeOfResidentialCareHome> TypesOfResidentialCareHome { get; set; }
-        public DbSet<NursingCareTypeOfStayOption> NursingCareTypeOfStayOption { get; set; }
+        public DbSet<TypeOfNursingCareHome> TypesOfNursingCareHomes { get; set; }
+        public DbSet<TypeOfResidentialCareHome> TypesOfResidentialCareHomes { get; set; }
+        public DbSet<NursingCareTypeOfStayOption> NursingCareTypeOfStayOptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -89,6 +89,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed Client
             modelBuilder.ApplyConfiguration(new ClientSeed());
 
+            // Seed NursingCareTypeOfStayOptionSeed
+            modelBuilder.ApplyConfiguration(new NursingCareTypeOfStayOptionSeed());
+
             #endregion
 
             #region Entity Config
@@ -116,24 +119,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             });
 
             #endregion
-
-            // Seed role types
-            modelBuilder.ApplyConfiguration(new RoleTypesSeed());
-
-            // Seed Type Of Nursing Care Home
-            modelBuilder.ApplyConfiguration(new TypeOfNursingCareHomeSeed());
-
-            // Seed Type Of Residential Care Home
-            modelBuilder.ApplyConfiguration(new TypeOfResidentialCareHomeSeed());
-
-            // Seed User
-            modelBuilder.ApplyConfiguration(new UserSeed());
-
-            // Seed Client
-            modelBuilder.ApplyConfiguration(new ClientSeed());
-
-            // Seed NursingCareTypeOfStayOptionSeed
-            modelBuilder.ApplyConfiguration(new NursingCareTypeOfStayOptionSeed());
         }
 
         public override int SaveChanges()

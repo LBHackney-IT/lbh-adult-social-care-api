@@ -115,7 +115,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Status",
+                name: "PackageStatuses",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -145,7 +145,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TypesOfNursingCareHome",
+                name: "TypesOfNursingCareHomes",
                 columns: table => new
                 {
                     TypeOfCareHomeId = table.Column<int>(nullable: false)
@@ -158,7 +158,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TypesOfResidentialCareHome",
+                name: "TypesOfResidentialCareHomes",
                 columns: table => new
                 {
                     TypeOfCareHomeId = table.Column<int>(nullable: false)
@@ -305,13 +305,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_HomeCarePackage_Status_StatusId",
                         column: x => x.StatusId,
-                        principalTable: "Status",
+                        principalTable: "PackageStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "NursingCarePackage",
+                name: "NursingCarePackages",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -342,19 +342,19 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_NursingCarePackage_Status_StatusId",
                         column: x => x.StatusId,
-                        principalTable: "Status",
+                        principalTable: "PackageStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_NursingCarePackage_TypesOfNursingCareHome_TypeOfNursingCareHomeId",
                         column: x => x.TypeOfNursingCareHomeId,
-                        principalTable: "TypesOfNursingCareHome",
+                        principalTable: "TypesOfNursingCareHomes",
                         principalColumn: "TypeOfCareHomeId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ResidentialCarePackage",
+                name: "ResidentialCarePackages",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
@@ -386,13 +386,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_ResidentialCarePackage_Status_StatusId",
                         column: x => x.StatusId,
-                        principalTable: "Status",
+                        principalTable: "PackageStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_ResidentialCarePackage_TypesOfResidentialCareHome_TypeOfResidentialCareHomeId",
                         column: x => x.TypeOfResidentialCareHomeId,
-                        principalTable: "TypesOfResidentialCareHome",
+                        principalTable: "TypesOfResidentialCareHomes",
                         principalColumn: "TypeOfCareHomeId",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -481,7 +481,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_DayCarePackages_Status_StatusId",
                         column: x => x.StatusId,
-                        principalTable: "Status",
+                        principalTable: "PackageStatuses",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -518,7 +518,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_NursingCareAdditionalNeeds_NursingCarePackage_NursingCarePackageId",
                         column: x => x.NursingCarePackageId,
-                        principalTable: "NursingCarePackage",
+                        principalTable: "NursingCarePackages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -543,7 +543,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_ResidentialCareAdditionalNeeds_ResidentialCarePackage_ResidentialCarePackageId",
                         column: x => x.ResidentialCarePackageId,
-                        principalTable: "ResidentialCarePackage",
+                        principalTable: "ResidentialCarePackages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -583,12 +583,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Clients",
-                columns: new[] { "Id", "AddressLine1", "AddressLine2", "AddressLine3", "County", "CreatorId", "DateCreated", "DateOfBirth", "DateUpdated", "FirstName", "HackneyId", "LastName", "MiddleName", "PostCode", "Town", "UpdatorId" },
+                columns: new[] { "Id", "AddressLine1", "AddressLine2", "AddressLine3", "County", "CreatorId", "DateCreated", "DateOfBirth", "DateUpdated", "FirstName", "HackneyId", "LastName", "MiddleName", "PostCode", "Town", "UpdaterId" },
                 values: new object[] { new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb80"), "Queens Town Road", null, null, null, 0, new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 504, DateTimeKind.Unspecified).AddTicks(6812), new TimeSpan(0, 0, 0, 0, 0)), new DateTime(1990, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 504, DateTimeKind.Unspecified).AddTicks(6820), new TimeSpan(0, 0, 0, 0, 0)), "Furkan", 66666, "Kayar", null, "SW11", "London", 0 });
 
             migrationBuilder.InsertData(
                 table: "HomeCareServiceTypes",
-                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "ServiceName", "UpdatorId" },
+                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "ServiceName", "UpdaterId" },
                 values: new object[,]
                 {
                     { 1, 1, new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 485, DateTimeKind.Unspecified).AddTicks(322), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 485, DateTimeKind.Unspecified).AddTicks(1952), new TimeSpan(0, 0, 0, 0, 0)), "Personal Home Care", 1 },
@@ -622,7 +622,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Packages",
-                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "PackageType", "Sequence", "UpdatorId" },
+                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "PackageType", "Sequence", "UpdaterId" },
                 values: new object[,]
                 {
                     { 1, 1, new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 502, DateTimeKind.Unspecified).AddTicks(7341), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 502, DateTimeKind.Unspecified).AddTicks(7349), new TimeSpan(0, 0, 0, 0, 0)), "Home Care Package", 0, 1 },
@@ -633,7 +633,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Roles",
-                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "IsDefault", "RoleName", "Sequence", "UpdatorId" },
+                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "IsDefault", "RoleName", "Sequence", "UpdaterId" },
                 values: new object[,]
                 {
                     { 2, 1, new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 503, DateTimeKind.Unspecified).AddTicks(2268), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 503, DateTimeKind.Unspecified).AddTicks(2273), new TimeSpan(0, 0, 0, 0, 0)), false, "Broker", 2, 1 },
@@ -641,8 +641,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Status",
-                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "StatusName", "UpdatorId" },
+                table: "PackageStatuses",
+                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "StatusName", "UpdaterId" },
                 values: new object[,]
                 {
                     { 1, 1, new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 502, DateTimeKind.Unspecified).AddTicks(3490), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 502, DateTimeKind.Unspecified).AddTicks(3518), new TimeSpan(0, 0, 0, 0, 0)), "New", 1 },
@@ -666,7 +666,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "TimeSlotShifts",
-                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "LinkedToHomeCareServiceTypeId", "TimeSlotShiftName", "TimeSlotTimeLabel", "UpdatorId" },
+                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "LinkedToHomeCareServiceTypeId", "TimeSlotShiftName", "TimeSlotTimeLabel", "UpdaterId" },
                 values: new object[,]
                 {
                     { 1, 1, new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 491, DateTimeKind.Unspecified).AddTicks(4918), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 491, DateTimeKind.Unspecified).AddTicks(4949), new TimeSpan(0, 0, 0, 0, 0)), null, "Morning", "08:00 - 10:00", 1 },
@@ -678,7 +678,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "TypesOfNursingCareHome",
+                table: "TypesOfNursingCareHomes",
                 columns: new[] { "TypeOfCareHomeId", "TypeOfCareHomeName" },
                 values: new object[,]
                 {
@@ -687,7 +687,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "TypesOfResidentialCareHome",
+                table: "TypesOfResidentialCareHomes",
                 columns: new[] { "TypeOfCareHomeId", "TypeOfCareHomeName" },
                 values: new object[,]
                 {
@@ -740,7 +740,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "TimeSlotShifts",
-                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "LinkedToHomeCareServiceTypeId", "TimeSlotShiftName", "TimeSlotTimeLabel", "UpdatorId" },
+                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "LinkedToHomeCareServiceTypeId", "TimeSlotShiftName", "TimeSlotTimeLabel", "UpdaterId" },
                 values: new object[,]
                 {
                     { 7, 1, new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 491, DateTimeKind.Unspecified).AddTicks(6316), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 491, DateTimeKind.Unspecified).AddTicks(6317), new TimeSpan(0, 0, 0, 0, 0)), 5, "Night Owl", null, 1 },
@@ -750,7 +750,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AddressLine1", "AddressLine2", "AddressLine3", "County", "CreatorId", "DateCreated", "DateUpdated", "FirstName", "HackneyId", "LastName", "MiddleName", "PostCode", "RoleId", "Town", "UpdatorId" },
+                columns: new[] { "Id", "AddressLine1", "AddressLine2", "AddressLine3", "County", "CreatorId", "DateCreated", "DateUpdated", "FirstName", "HackneyId", "LastName", "MiddleName", "PostCode", "RoleId", "Town", "UpdaterId" },
                 values: new object[,]
                 {
                     { new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), "Queens Gate", null, null, null, 0, new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 504, DateTimeKind.Unspecified).AddTicks(791), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 20, 16, 4, 12, 504, DateTimeKind.Unspecified).AddTicks(798), new TimeSpan(0, 0, 0, 0, 0)), "Furkan", 1111, "Kayar", null, "W11", 1, "London", 0 },
@@ -839,17 +839,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_NursingCarePackage_ClientId",
-                table: "NursingCarePackage",
+                table: "NursingCarePackages",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NursingCarePackage_StatusId",
-                table: "NursingCarePackage",
+                table: "NursingCarePackages",
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NursingCarePackage_TypeOfNursingCareHomeId",
-                table: "NursingCarePackage",
+                table: "NursingCarePackages",
                 column: "TypeOfNursingCareHomeId");
 
             migrationBuilder.CreateIndex(
@@ -873,17 +873,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_ResidentialCarePackage_ClientId",
-                table: "ResidentialCarePackage",
+                table: "ResidentialCarePackages",
                 column: "ClientId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ResidentialCarePackage_StatusId",
-                table: "ResidentialCarePackage",
+                table: "ResidentialCarePackages",
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ResidentialCarePackage_TypeOfResidentialCareHomeId",
-                table: "ResidentialCarePackage",
+                table: "ResidentialCarePackages",
                 column: "TypeOfResidentialCareHomeId");
 
             migrationBuilder.CreateIndex(
@@ -940,10 +940,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "TimeSlotShifts");
 
             migrationBuilder.DropTable(
-                name: "NursingCarePackage");
+                name: "NursingCarePackages");
 
             migrationBuilder.DropTable(
-                name: "ResidentialCarePackage");
+                name: "ResidentialCarePackages");
 
             migrationBuilder.DropTable(
                 name: "Users");
@@ -958,16 +958,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "HomeCareServiceTypes");
 
             migrationBuilder.DropTable(
-                name: "TypesOfNursingCareHome");
+                name: "TypesOfNursingCareHomes");
 
             migrationBuilder.DropTable(
                 name: "Clients");
 
             migrationBuilder.DropTable(
-                name: "Status");
+                name: "PackageStatuses");
 
             migrationBuilder.DropTable(
-                name: "TypesOfResidentialCareHome");
+                name: "TypesOfResidentialCareHomes");
 
             migrationBuilder.DropTable(
                 name: "Roles");

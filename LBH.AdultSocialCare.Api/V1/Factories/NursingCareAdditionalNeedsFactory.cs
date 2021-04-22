@@ -1,11 +1,7 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -21,7 +17,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsOneOffCost = nursingCareAdditionalNeedsEntity.IsOneOffCost,
                 NeedToAddress = nursingCareAdditionalNeedsEntity.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsEntity.CreatorId,
-                UpdatorId = nursingCareAdditionalNeedsEntity.UpdatorId,
+                UpdaterId = nursingCareAdditionalNeedsEntity.UpdaterId,
             };
         }
 
@@ -35,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsOneOffCost = nursingCareAdditionalNeedsDomain.IsOneOffCost,
                 NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
-                UpdatorId = nursingCareAdditionalNeedsDomain.UpdatorId,
+                UpdaterId = nursingCareAdditionalNeedsDomain.UpdaterId,
             };
         }
 
@@ -49,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsOneOffCost = nursingCareAdditionalNeedsDomain.IsOneOffCost,
                 NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
-                UpdatorId = nursingCareAdditionalNeedsDomain.UpdatorId,
+                UpdatorId = nursingCareAdditionalNeedsDomain.UpdaterId,
             };
         }
 

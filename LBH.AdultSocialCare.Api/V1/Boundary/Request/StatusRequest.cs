@@ -10,18 +10,18 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the Status Name
+        /// Gets or sets the PackageStatuses Name
         /// </summary>
         public string StatusName { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
-        public int CreatorId { get; set; }
+        public Guid CreatorId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Updator Id
+        /// Gets or sets the Updater Id
         /// </summary>
-        public int UpdatorId { get; set; }
+        public Guid? UpdaterId { get; set; }
     }
 }
