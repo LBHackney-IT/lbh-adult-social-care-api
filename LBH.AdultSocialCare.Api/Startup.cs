@@ -343,6 +343,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllNursingCareHomeTypeUseCase, GetAllNursingCareHomeTypeUseCase>();
             services.AddScoped<IGetAllNursingCareTypeOfStayOptionUseCase, GetAllNursingCareTypeOfStayOptionUseCase>();
             services.AddScoped<ICreateNursingCarePackageUseCase, CreateNursingCarePackageUseCase>();
+            services.AddScoped<IDeleteNursingCareAdditionalNeedsUseCase, DeleteNursingCareAdditionalNeedsUseCase>();
 
             #endregion NursingCarePackages
 

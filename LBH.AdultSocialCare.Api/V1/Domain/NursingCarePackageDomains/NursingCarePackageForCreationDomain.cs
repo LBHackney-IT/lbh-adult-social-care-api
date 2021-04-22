@@ -1,4 +1,4 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCareAdditionalNeedsDomains;
 using System;
 using System.Collections.Generic;
 
@@ -19,6 +19,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains
         public int? TypeOfNursingCareHomeId { get; set; }
         public Guid CreatorId { get; set; }
         public int StatusId { get; set; }
-        public List<NursingCareAdditionalNeedForCreationRequest> NursingCareAdditionalNeeds { get; set; }
+        public IEnumerable<NursingCareAdditionalNeedForCreationDomain> NursingCareAdditionalNeeds { get; set; }
     }
 }

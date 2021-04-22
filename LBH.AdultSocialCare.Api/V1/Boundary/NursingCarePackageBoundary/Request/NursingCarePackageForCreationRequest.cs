@@ -19,6 +19,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request
         [Required] public string NeedToAddress { get; set; }
         [Required] public int? TypeOfNursingCareHomeId { get; set; }
         [Required] public Guid? CreatorId { get; set; }
-        public List<NursingCareAdditionalNeedForCreationRequest> NursingCareAdditionalNeeds { get; set; }
+        public IEnumerable<NursingCareAdditionalNeedForCreationRequest> NursingCareAdditionalNeeds { get; set; }
     }
 }

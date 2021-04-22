@@ -127,32 +127,32 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
 
         /// <summary>Get all Nursing Care Packages</summary>
         /// <returns>The list of Nursing Care Package Response model</returns>
-        [ProducesResponseType(typeof(IList<NursingCarePackageResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<NursingCarePackageResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("get-all")]
-        public async Task<ActionResult<IList<NursingCarePackageResponse>>> GetNursingCareList()
+        public async Task<ActionResult<IEnumerable<NursingCarePackageResponse>>> GetNursingCareList()
         {
             var result = await _getAllNursingCarePackageUseCase.GetAllAsync().ConfigureAwait(false);
             return Ok(result);
         }
 
-        [ProducesResponseType(typeof(IList<TypeOfNursingCareHomeResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<TypeOfNursingCareHomeResponse>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("type-of-nursing-care-homes")]
-        public async Task<ActionResult<IList<TypeOfNursingCareHomeResponse>>> GetTypeOfNursingCareHomeOptionsList()
+        public async Task<ActionResult<IEnumerable<TypeOfNursingCareHomeResponse>>> GetTypeOfNursingCareHomeOptionsList()
         {
             var result = await _getAllNursingCareHomeTypeUseCase.GetAllAsync().ConfigureAwait(false);
             return Ok(result);
         }
 
-        [ProducesResponseType(typeof(IList<NursingCareTypeOfStayOptionResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<NursingCareTypeOfStayOptionResponse>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("type-of-stay-options")]
-        public async Task<ActionResult<IList<NursingCareTypeOfStayOptionResponse>>> GetTypeOfStayOptionList()
+        public async Task<ActionResult<IEnumerable<NursingCareTypeOfStayOptionResponse>>> GetTypeOfStayOptionList()
         {
             var result = await _getAllNursingCareTypeOfStayOptionUseCase.GetAllAsync().ConfigureAwait(false);
             return Ok(result);

@@ -128,7 +128,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region NursingCareAdditionalNeed
 
-        public static IEnumerable<NursingCareAdditionalNeedsDomain> ToDomain(this IEnumerable<NursingCareAdditionalNeed> nursingCareAdditionalNeedsEntities)
+        public static IEnumerable<NursingCareAdditionalNeedsDomain> ToDomain(this ICollection<NursingCareAdditionalNeed> nursingCareAdditionalNeedsEntities)
         {
             return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsDomain>>(nursingCareAdditionalNeedsEntities);
         }
