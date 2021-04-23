@@ -1,19 +1,16 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
 {
-    [Route("api/v1/nursing-care-package/{nursingCarePackageId}/additional-needs")]
+    [Route("api/v1/nursing-care-packages/{nursingCarePackageId}/additional-needs")]
     [Produces("application/json")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
@@ -55,7 +52,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
                 return BadRequest(ex.Message);
             }
         }
-
 
         /// <summary>Gets the specified nursing care additional needs identifier.</summary>
         /// <param name="nursingCareAdditionalNeedsId">The nursing care additional needs identifier.</param>

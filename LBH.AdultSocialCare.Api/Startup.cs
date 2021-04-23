@@ -343,6 +343,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllNursingCareHomeTypeUseCase, GetAllNursingCareHomeTypeUseCase>();
             services.AddScoped<IGetAllNursingCareTypeOfStayOptionUseCase, GetAllNursingCareTypeOfStayOptionUseCase>();
             services.AddScoped<ICreateNursingCarePackageUseCase, CreateNursingCarePackageUseCase>();
+            services.AddScoped<IDeleteNursingCareAdditionalNeedsUseCase, DeleteNursingCareAdditionalNeedsUseCase>();
 
             #endregion NursingCarePackages
 
@@ -375,11 +376,13 @@ namespace LBH.AdultSocialCare.Api
                 DatabaseContext databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
                 // Create if not exists
-                if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
+                // This next section is the reason devs are forgetting to create migrations. Leave commented
+                /*if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
                 {
                     databaseContext.Database.EnsureCreated();
-                }
-                else if (databaseContext.Database.GetPendingMigrations().Any())
+                }*/
+
+                if (databaseContext.Database.GetPendingMigrations().Any())
                 {
                     // Perform migrations
                     databaseContext.Database.Migrate();

@@ -1,15 +1,14 @@
 using AutoMapper;
+using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Exceptions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
 {
