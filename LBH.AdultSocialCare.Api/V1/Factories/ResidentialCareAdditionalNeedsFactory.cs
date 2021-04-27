@@ -1,4 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarepackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
@@ -17,11 +19,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCareAdditionalNeedEntity.Id,
                 ResidentialCarePackageId = residentialCareAdditionalNeedEntity.ResidentialCarePackageId,
-                Weekly = residentialCareAdditionalNeedEntity.Weekly,
-                OneOff = residentialCareAdditionalNeedEntity.OneOff,
+                IsWeeklyCost = residentialCareAdditionalNeedEntity.IsWeeklyCost,
+                IsOneOffCost = residentialCareAdditionalNeedEntity.IsOneOffCost,
                 NeedToAddress = residentialCareAdditionalNeedEntity.NeedToAddress,
                 CreatorId = residentialCareAdditionalNeedEntity.CreatorId,
-                UpdatorId = residentialCareAdditionalNeedEntity.UpdatorId,
+                UpdatorId = residentialCareAdditionalNeedEntity.UpdaterId,
             };
         }
 
@@ -31,11 +33,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCareAdditionalNeedsDomain.Id,
                 ResidentialCarePackageId = residentialCareAdditionalNeedsDomain.ResidentialCarePackageId,
-                Weekly = residentialCareAdditionalNeedsDomain.Weekly,
-                OneOff = residentialCareAdditionalNeedsDomain.OneOff,
+                IsWeeklyCost = residentialCareAdditionalNeedsDomain.IsWeeklyCost,
+                IsOneOffCost = residentialCareAdditionalNeedsDomain.IsOneOffCost,
                 NeedToAddress = residentialCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = residentialCareAdditionalNeedsDomain.CreatorId,
-                UpdatorId = residentialCareAdditionalNeedsDomain.UpdatorId,
+                UpdaterId = residentialCareAdditionalNeedsDomain.UpdatorId,
             };
         }
 
@@ -45,8 +47,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCareAdditionalNeedsDomain.Id,
                 ResidentialCarePackageId = residentialCareAdditionalNeedsDomain.ResidentialCarePackageId,
-                Weekly = residentialCareAdditionalNeedsDomain.Weekly,
-                OneOff = residentialCareAdditionalNeedsDomain.OneOff,
+                IsWeeklyCost = residentialCareAdditionalNeedsDomain.IsWeeklyCost,
+                IsOneOffCost = residentialCareAdditionalNeedsDomain.IsOneOffCost,
                 NeedToAddress = residentialCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = residentialCareAdditionalNeedsDomain.CreatorId,
                 UpdatorId = residentialCareAdditionalNeedsDomain.UpdatorId,
@@ -59,11 +61,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCareAdditionalNeedsEntity.Id,
                 ResidentialCarePackageId = residentialCareAdditionalNeedsEntity.ResidentialCarePackageId,
-                Weekly = residentialCareAdditionalNeedsEntity.Weekly,
-                OneOff = residentialCareAdditionalNeedsEntity.OneOff,
+                IsWeeklyCost = residentialCareAdditionalNeedsEntity.IsWeeklyCost,
+                IsOneOffCost = residentialCareAdditionalNeedsEntity.IsOneOffCost,
                 NeedToAddress = residentialCareAdditionalNeedsEntity.NeedToAddress,
-                CreatorId = residentialCareAdditionalNeedsEntity.CreatorId,
-                UpdatorId = residentialCareAdditionalNeedsEntity.UpdatorId,
             };
         }
     }

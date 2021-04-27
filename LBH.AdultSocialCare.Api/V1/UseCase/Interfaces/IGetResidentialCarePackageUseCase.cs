@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Interfaces
 {
     public interface IGetResidentialCarePackageUseCase
     {
-        public Task<ResidentialCarePackageDomain> GetAsync(Guid residentialCarePackageId);
+        public Task<ResidentialCarePackageResponse> GetAsync(Guid residentialCarePackageId);
     }
 }

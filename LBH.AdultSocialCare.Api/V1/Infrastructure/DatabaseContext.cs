@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
@@ -46,6 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<TypeOfNursingCareHome> TypesOfNursingCareHomes { get; set; }
         public DbSet<TypeOfResidentialCareHome> TypesOfResidentialCareHomes { get; set; }
         public DbSet<NursingCareTypeOfStayOption> NursingCareTypeOfStayOptions { get; set; }
+        public DbSet<ResidentialCareTypeOfStayOption> ResidentialCareTypeOfStayOptions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -91,6 +93,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed NursingCareTypeOfStayOptionSeed
             modelBuilder.ApplyConfiguration(new NursingCareTypeOfStayOptionSeed());
+
+            // Seed ResidentialCareTypeOfStayOptionSeed
+            modelBuilder.ApplyConfiguration(new ResidentialCareTypeOfStayOptionSeed());
 
             #endregion
 

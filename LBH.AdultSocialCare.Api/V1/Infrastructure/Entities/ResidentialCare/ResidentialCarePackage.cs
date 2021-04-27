@@ -9,6 +9,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 
     public class ResidentialCarePackage : BaseEntity
     {
+        public ResidentialCarePackage()
+        {
+            ResidentialCareAdditionalNeeds = new HashSet<ResidentialCareAdditionalNeed>();
+        }
 
         /// <summary>
         /// Gets or sets the Id
@@ -19,13 +23,18 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Client Id
         /// </summary>
-        public Guid ClientId { get; set; }
+        public Guid? ClientId { get; set; }
 
         /// <summary>
         /// Gets or sets the Client
         /// </summary>
         [ForeignKey(nameof(ClientId))]
         public Client Client { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is fixed period.
+        /// </summary>
+        public bool IsFixedPeriod { get; set; }
 
         /// <summary>
         /// Gets or sets the Start Date
@@ -38,29 +47,29 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public DateTimeOffset? EndDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is Respite Care
+        /// Gets or sets a value indicating whether this instance has respite care.
         /// </summary>
-        public bool IsRespiteCare { get; set; }
+        public bool HasRespiteCare { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is Discharge Package
+        /// Gets or sets a value indicating whether this instance has discharge package.
         /// </summary>
-        public bool IsDischargePackage { get; set; }
+        public bool HasDischargePackage { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is Immediate Reenablement Package
+        /// Gets or sets a value indicating whether this instance is this an immediate service.
         /// </summary>
-        public bool IsImmediateReenablementPackage { get; set; }
+        public bool IsThisAnImmediateService { get; set; }
 
         /// <summary>
-        /// Gets or sets the Is Expected Stay Over 52Weeks
-        /// </summary>
-        public bool IsExpectedStayOver52Weeks { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Is This User Under S117
+        /// Gets or sets a value indicating whether this instance is this user under S117.
         /// </summary>
         public bool IsThisUserUnderS117 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the type of stay identifier.
+        /// </summary>
+        public int? TypeOfStayId { get; set; }
 
         /// <summary>
         /// Gets or sets the Need To Address
@@ -70,23 +79,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Type Of Nursing Home Id
         /// </summary>
-        public int TypeOfResidentialCareHomeId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Type Of Nursing Home
-        /// </summary>
-        [ForeignKey(nameof(TypeOfResidentialCareHomeId))]
-        public TypeOfResidentialCareHome TypeOfResidentialCareHome { get; set; }
+        public int? TypeOfResidentialCareHomeId { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
-        public int CreatorId { get; set; }
+        public Guid CreatorId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Updator Id
+        /// Gets or sets the Updater Id
         /// </summary>
-        public int UpdatorId { get; set; }
+        public Guid? UpdaterId { get; set; }
 
         /// <summary>
         /// Gets or sets the PackageStatuses Id
@@ -96,12 +99,28 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the PackageStatuses Object
         /// </summary>
+        [ForeignKey(nameof(StatusId))]
         public PackageStatus Status { get; set; }
 
         /// <summary>
-        /// Gets or sets the Residential Care Additional Needs
+        /// Gets or sets the Type Of Nursing Home
         /// </summary>
-        public List<ResidentialCareAdditionalNeed> ResidentialCareAdditionalNeeds { get; set; }
+        [ForeignKey(nameof(TypeOfResidentialCareHomeId))]
+        public TypeOfResidentialCareHome TypeOfCareHome { get; set; }
+
+        [ForeignKey(nameof(TypeOfStayId))]
+        public ResidentialCareTypeOfStayOption TypeOfStayOption { get; set; }
+
+        [ForeignKey(nameof(CreatorId))]
+        public User Creator { get; set; }
+
+        [ForeignKey(nameof(UpdaterId))]
+        public User Updater { get; set; }
+
+        /// <summary>
+        /// Gets or sets the NursingCareAdditionalNeed
+        /// </summary>
+        public virtual ICollection<ResidentialCareAdditionalNeed> ResidentialCareAdditionalNeeds { get; set; }
     }
 
 }

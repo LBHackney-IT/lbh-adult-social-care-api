@@ -35,11 +35,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 await _databaseContext.ResidentialCareAdditionalNeeds.AddAsync(residentialAdditionalNeedToUpdate).ConfigureAwait(false);
             }
             residentialAdditionalNeedToUpdate.ResidentialCarePackageId = residentialCareAdditionalNeed.ResidentialCarePackageId;
-            residentialAdditionalNeedToUpdate.Weekly = residentialCareAdditionalNeed.Weekly;
-            residentialAdditionalNeedToUpdate.OneOff = residentialCareAdditionalNeed.OneOff;
+            residentialAdditionalNeedToUpdate.IsWeeklyCost = residentialCareAdditionalNeed.IsWeeklyCost;
+            residentialAdditionalNeedToUpdate.IsOneOffCost = residentialCareAdditionalNeed.IsOneOffCost;
             residentialAdditionalNeedToUpdate.NeedToAddress = residentialCareAdditionalNeed.NeedToAddress;
             residentialAdditionalNeedToUpdate.CreatorId = residentialCareAdditionalNeed.CreatorId;
-            residentialAdditionalNeedToUpdate.UpdatorId = residentialCareAdditionalNeed.UpdatorId;
+            residentialAdditionalNeedToUpdate.UpdaterId = residentialCareAdditionalNeed.UpdaterId;
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
 
             return isSuccess

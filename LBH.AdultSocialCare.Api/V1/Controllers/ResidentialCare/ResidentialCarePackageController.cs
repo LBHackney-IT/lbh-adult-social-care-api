@@ -2,87 +2,109 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/v1/residential-care-packages")]
     [Produces("application/json")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
     public class ResidentialCarePackageController : BaseController
     {
-        private readonly IUpsertResidentialCarePackageUseCase _upsertResidentialCarePackageUseCase;
+        private readonly IUpdateResidentialCarePackageUseCase _updateResidentialCarePackageUseCase;
         private readonly IGetResidentialCarePackageUseCase _getResidentialCarePackageUseCase;
         private readonly IChangeStatusResidentialCarePackageUseCase _changeStatusResidentialCarePackageUseCase;
         private readonly IGetAllResidentialCarePackageUseCase _getAllResidentialCarePackageUseCase;
-        private readonly IGetAllResidentialCareHomeType _getAllResidentialCareHomeType;
+        private readonly IGetAllResidentialCareHomeTypeUseCase _getAllResidentialCareHomeTypeUseCase;
+        private readonly IGetAllResidentialCareTypeOfStayOptionUseCase _getAllResidentialCareTypeOfStayOptionUseCase;
+        private readonly ICreateResidentialCarePackageUseCase _createResidentialCarePackageUseCase;
 
-
-        public ResidentialCarePackageController(IUpsertResidentialCarePackageUseCase upsertResidentialCarePackageUseCase,
+        public ResidentialCarePackageController(IUpdateResidentialCarePackageUseCase updateResidentialCarePackageUseCase,
             IGetResidentialCarePackageUseCase getResidentialCarePackageUseCase,
             IChangeStatusResidentialCarePackageUseCase changeStatusResidentialCarePackageUseCase,
             IGetAllResidentialCarePackageUseCase getAllResidentialCarePackageUseCase,
-            IGetAllResidentialCareHomeType getAllResidentialCareHomeType)
+            IGetAllResidentialCareHomeTypeUseCase getAllResidentialCareHomeTypeUseCase,
+            IGetAllResidentialCareTypeOfStayOptionUseCase getAllResidentialCareTypeOfStayOptionUseCase,
+            ICreateResidentialCarePackageUseCase createResidentialCarePackageUseCase
+            )
         {
-            _upsertResidentialCarePackageUseCase = upsertResidentialCarePackageUseCase;
+            _updateResidentialCarePackageUseCase = updateResidentialCarePackageUseCase;
             _getResidentialCarePackageUseCase = getResidentialCarePackageUseCase;
             _changeStatusResidentialCarePackageUseCase = changeStatusResidentialCarePackageUseCase;
             _getAllResidentialCarePackageUseCase = getAllResidentialCarePackageUseCase;
-            _getAllResidentialCareHomeType = getAllResidentialCareHomeType;
+            _getAllResidentialCareHomeTypeUseCase = getAllResidentialCareHomeTypeUseCase;
+            _getAllResidentialCareTypeOfStayOptionUseCase = getAllResidentialCareTypeOfStayOptionUseCase;
+            _createResidentialCarePackageUseCase = createResidentialCarePackageUseCase;
         }
 
         /// <summary>Creates the specified residential care package request.</summary>
-        /// <param name="residentialCarePackageRequest">The residential care package request.</param>
-        /// <returns>The residential care package created response.</returns>
+        /// <param name="residentialCarePackageForCreationRequest">The residential care package request.</param>
+        /// <returns>The residential care package created.</returns>
         [ProducesResponseType(typeof(ResidentialCarePackageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        public async Task<ActionResult<ResidentialCarePackageResponse>> Create(ResidentialCarePackageRequest residentialCarePackageRequest)
+        public async Task<ActionResult<ResidentialCarePackageResponse>> CreateResidentialCarePackage(ResidentialCarePackageForCreationRequest residentialCarePackageForCreationRequest)
         {
-            try
+            if (residentialCarePackageForCreationRequest == null)
             {
-                ResidentialCarePackageDomain residentialCarePackageDomain = ResidentialCarePackageFactory.ToDomain(residentialCarePackageRequest);
-                var residentialCarePackageResponse = ResidentialCarePackageFactory.ToResponse(await _upsertResidentialCarePackageUseCase.ExecuteAsync(residentialCarePackageDomain).ConfigureAwait(false));
-                if (residentialCarePackageResponse == null) return NotFound();
-                return Ok(residentialCarePackageResponse);
+                return BadRequest("Object for creation cannot be null.");
             }
-            catch (FormatException ex)
+
+            if (!ModelState.IsValid)
             {
-                return BadRequest(ex.Message);
+                return UnprocessableEntity(ModelState);
             }
+
+            var residentialCarePackageForCreationDomain = residentialCarePackageForCreationRequest.ToDomain();
+            var residentialCarePackageResponse = await _createResidentialCarePackageUseCase.ExecuteAsync(residentialCarePackageForCreationDomain).ConfigureAwait(false);
+            return Ok(residentialCarePackageResponse);
+        }
+
+        [HttpPut("{residentialCarePackageId}")]
+        [ProducesResponseType(typeof(ResidentialCarePackageResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<ResidentialCarePackageResponse>> UpdateResidentialCarePackage(
+            Guid residentialCarePackageId,
+            ResidentialCarePackageForUpdateRequest residentialCarePackageForUpdate)
+        {
+            if (residentialCarePackageForUpdate == null)
+            {
+                return BadRequest("Object for update cannot be null.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
+            var residentialCarePackageForUpdateDomain = residentialCarePackageForUpdate.ToDomain(residentialCarePackageId);
+            var result = await _updateResidentialCarePackageUseCase.ExecuteAsync(residentialCarePackageForUpdateDomain).ConfigureAwait(false);
+            return Ok(result);
         }
 
         /// <summary>Gets the specified residential care package identifier.</summary>
         /// <param name="residentialCarePackageId">The residential care package identifier.</param>
         /// <returns>The residential care package response.</returns>
-        [ProducesResponseType(typeof(ResidentialCarePackageResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
         [HttpGet]
         [Route("{residentialCarePackageId}")]
-        public async Task<ActionResult<ResidentialCarePackageResponse>> Get(Guid residentialCarePackageId)
+        public async Task<ActionResult<ResidentialCarePackageResponse>> GetSingleResidentialCarePackage(Guid residentialCarePackageId)
         {
-            try
-            {
-                var residentialCarePackageResponse = ResidentialCarePackageFactory.ToResponse(await _getResidentialCarePackageUseCase.GetAsync(residentialCarePackageId).ConfigureAwait(false));
-                if (residentialCarePackageResponse == null) return NotFound();
-                return Ok(residentialCarePackageResponse);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var residentialCarePackageResponse = await _getResidentialCarePackageUseCase.GetAsync(residentialCarePackageId).ConfigureAwait(false);
+            return Ok(residentialCarePackageResponse);
         }
 
         /// <summary>Change the residential care package status.</summary>
@@ -94,63 +116,47 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPut]
-        [Route("{residentialCarePackageId}/changeStatus/{statusId}")]
-        public async Task<ActionResult<ResidentialCarePackageResponse>> ChangeStatus(
+        [Route("{residentialCarePackageId}/change-status/{statusId}")]
+        public async Task<ActionResult<ResidentialCarePackageResponse>> ChangeResidentialCarePackageStatus(
             Guid residentialCarePackageId, int statusId)
         {
-            try
-            {
-                ResidentialCarePackageResponse residentialCarePackageResponse =
-                    ResidentialCarePackageFactory.ToResponse(await _changeStatusResidentialCarePackageUseCase
-                        .UpdateAsync(residentialCarePackageId, statusId)
-                        .ConfigureAwait(false));
-                if (residentialCarePackageResponse == null) return NotFound();
-                return Ok(residentialCarePackageResponse);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var residentialCarePackageResponse = await _changeStatusResidentialCarePackageUseCase
+                .UpdateAsync(residentialCarePackageId, statusId)
+                .ConfigureAwait(false);
+            return Ok(residentialCarePackageResponse);
         }
 
         /// <summary>Get all Residential Care Packages</summary>
         /// <returns>The list of Residential Care Package Response model</returns>
-        [ProducesResponseType(typeof(IList<ResidentialCarePackageResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ResidentialCarePackageResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpGet]
-        [Route("getAll")]
-        public async Task<ActionResult<IList<ResidentialCarePackageResponse>>> GetAll()
+        [Route("get-all")]
+        public async Task<ActionResult<IEnumerable<ResidentialCarePackageResponse>>> GetResidentialCareList()
         {
-            try
-            {
-                IList<ResidentialCarePackageResponse> result = ResidentialCarePackageFactory.ToResponse(await _getAllResidentialCarePackageUseCase.
-                    GetAllAsync().ConfigureAwait(false));
-                return Ok(result);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _getAllResidentialCarePackageUseCase.GetAllAsync().ConfigureAwait(false);
+            return Ok(result);
         }
 
-        [ProducesResponseType(typeof(IList<TypeOfResidentialCareHomeResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(IEnumerable<TypeOfResidentialCareHomeResponse>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [HttpGet]
-        [Route("GetAllTypeOfResidentialCareHome")]
-        public async Task<ActionResult<IList<TypeOfResidentialCareHomeResponse>>> GetAllTypeOfResidentialCareHome()
+        [Route("type-of-residential-care-homes")]
+        public async Task<ActionResult<IEnumerable<TypeOfResidentialCareHomeResponse>>> GetTypeOfResidentialCareHomeOptionsList()
         {
-            try
-            {
-                IList<TypeOfResidentialCareHomeResponse> result = ResidentialCarePackageFactory.ToResponse(await _getAllResidentialCareHomeType.GetAllAsync().ConfigureAwait(false));
-                return Ok(result);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var result = await _getAllResidentialCareHomeTypeUseCase.GetAllAsync().ConfigureAwait(false);
+            return Ok(result);
         }
 
+        [ProducesResponseType(typeof(IEnumerable<ResidentialCareTypeOfStayOptionResponse>), StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        [HttpGet]
+        [Route("type-of-stay-options")]
+        public async Task<ActionResult<IEnumerable<ResidentialCareTypeOfStayOptionResponse>>> GetTypeOfStayOptionList()
+        {
+            var result = await _getAllResidentialCareTypeOfStayOptionUseCase.GetAllAsync().ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }

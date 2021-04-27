@@ -39,6 +39,7 @@
 
   <ItemGroup>
     <Folder Include="terraform\" />
+    <Folder Include="V1\Boundary\ResidentialCarePackageBoundary\Request\" />
   </ItemGroup>
 
 </Project>

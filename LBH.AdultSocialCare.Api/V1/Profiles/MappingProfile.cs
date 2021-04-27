@@ -24,6 +24,13 @@ using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareAdditionalNeedsDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarepackageBoundary.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {
@@ -117,6 +124,26 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<NursingCarePackageForCreationDomain, NursingCarePackage>();
             CreateMap<NursingCarePackageForUpdateDomain, NursingCarePackage>();
             CreateMap<TypeOfNursingCareHomeDomain, TypeOfNursingCareHomeResponse>();
+
+            #endregion
+
+            #region ResidentialCarePackage
+
+            CreateMap<TypeOfResidentialCareHome, TypeOfResidentialCareHomeDomain>();
+            CreateMap<ResidentialCarePackageDomain, ResidentialCarePackageResponse>();
+            CreateMap<ResidentialCarePackage, ResidentialCarePackageDomain>();
+            CreateMap<ResidentialCarePackageDomain, ResidentialCarePackage>();
+            CreateMap<ResidentialCareTypeOfStayOption, ResidentialCareTypeOfStayOptionDomain>();
+            CreateMap<ResidentialCareTypeOfStayOptionDomain, ResidentialCareTypeOfStayOptionResponse>();
+            CreateMap<ResidentialCarePackageForUpdateRequest, ResidentialCarePackageDomain>();
+            CreateMap<ResidentialCarePackageForCreationRequest, ResidentialCarePackageForCreationDomain>();
+            CreateMap<ResidentialCareAdditionalNeedForCreationRequest, ResidentialCareAdditionalNeedForCreationDomain>();
+            CreateMap<ResidentialCareAdditionalNeedForCreationDomain, ResidentialCareAdditionalNeed>();
+            CreateMap<ResidentialCareAdditionalNeed, ResidentialCareAdditionalNeedsDomain>();
+            CreateMap<ResidentialCareAdditionalNeedsDomain, ResidentialCareAdditionalNeedsResponse>();
+            CreateMap<ResidentialCarePackageForCreationDomain, ResidentialCarePackage>();
+            CreateMap<ResidentialCarePackageForUpdateDomain, ResidentialCarePackage>();
+            CreateMap<TypeOfResidentialCareHomeDomain, TypeOfResidentialCareHomeResponse>();
 
             #endregion
         }
