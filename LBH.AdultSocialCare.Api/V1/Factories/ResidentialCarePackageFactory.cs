@@ -1,5 +1,6 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
@@ -20,108 +21,12 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             _mapper = mapper;
         }
 
-        public static ResidentialCarePackageDomain ToDomain(ResidentialCarePackage residentialCarePackageEntity)
+        public static IList<ResidentialCarePackageForCreationDomain> ToDomain(this IList<ResidentialCarePackage> residentialCarePackagesEntity)
         {
-            return new ResidentialCarePackageDomain
-            {
-                Id = residentialCarePackageEntity.Id,
-                ClientId = residentialCarePackageEntity.ClientId,
-                Client = residentialCarePackageEntity.Client,
-                StartDate = residentialCarePackageEntity.StartDate,
-                EndDate = residentialCarePackageEntity.EndDate,
-                IsRespiteCare = residentialCarePackageEntity.IsRespiteCare,
-                IsDischargePackage = residentialCarePackageEntity.IsDischargePackage,
-                IsImmediateReenablementPackage = residentialCarePackageEntity.IsImmediateReenablementPackage,
-                IsExpectedStayOver52Weeks = residentialCarePackageEntity.IsExpectedStayOver52Weeks,
-                IsThisUserUnderS117 = residentialCarePackageEntity.IsThisUserUnderS117,
-                NeedToAddress = residentialCarePackageEntity.NeedToAddress,
-                TypeOfResidentialCareHomeId = residentialCarePackageEntity.TypeOfResidentialCareHomeId,
-                TypeOfResidentialCareHome = residentialCarePackageEntity.TypeOfResidentialCareHome,
-                CreatorId = residentialCarePackageEntity.CreatorId,
-                UpdatorId = residentialCarePackageEntity.UpdatorId,
-                StatusId = residentialCarePackageEntity.StatusId,
-                Status = residentialCarePackageEntity.Status,
-                ResidentialCareAdditionalNeeds = residentialCarePackageEntity.ResidentialCareAdditionalNeeds
-            };
+            return _mapper.Map<IList<ResidentialCarePackageForCreationDomain>>(residentialCarePackagesEntity);
         }
 
-        public static ResidentialCarePackage ToEntity(ResidentialCarePackageDomain residentialCarePackageDomain)
-        {
-            return new ResidentialCarePackage
-            {
-                Id = residentialCarePackageDomain.Id,
-                ClientId = residentialCarePackageDomain.ClientId,
-                Client = residentialCarePackageDomain.Client,
-                StartDate = residentialCarePackageDomain.StartDate,
-                EndDate = residentialCarePackageDomain.EndDate,
-                IsRespiteCare = residentialCarePackageDomain.IsRespiteCare,
-                IsDischargePackage = residentialCarePackageDomain.IsDischargePackage,
-                IsImmediateReenablementPackage = residentialCarePackageDomain.IsImmediateReenablementPackage,
-                IsExpectedStayOver52Weeks = residentialCarePackageDomain.IsExpectedStayOver52Weeks,
-                IsThisUserUnderS117 = residentialCarePackageDomain.IsThisUserUnderS117,
-                NeedToAddress = residentialCarePackageDomain.NeedToAddress,
-                TypeOfResidentialCareHomeId = residentialCarePackageDomain.TypeOfResidentialCareHomeId,
-                TypeOfResidentialCareHome = residentialCarePackageDomain.TypeOfResidentialCareHome,
-                CreatorId = residentialCarePackageDomain.CreatorId,
-                UpdatorId = residentialCarePackageDomain.UpdatorId,
-                StatusId = residentialCarePackageDomain.StatusId,
-                Status = residentialCarePackageDomain.Status,
-                ResidentialCareAdditionalNeeds = residentialCarePackageDomain.ResidentialCareAdditionalNeeds
-            };
-        }
-
-        public static ResidentialCarePackageResponse ToResponse(ResidentialCarePackageDomain residentialCarePackageDomain)
-        {
-            return new ResidentialCarePackageResponse
-            {
-                Id = residentialCarePackageDomain.Id,
-                ClientId = residentialCarePackageDomain.ClientId,
-                Client = residentialCarePackageDomain.Client,
-                StartDate = residentialCarePackageDomain.StartDate,
-                EndDate = residentialCarePackageDomain.EndDate,
-                IsRespiteCare = residentialCarePackageDomain.IsRespiteCare,
-                IsDischargePackage = residentialCarePackageDomain.IsDischargePackage,
-                IsImmediateReenablementPackage = residentialCarePackageDomain.IsImmediateReenablementPackage,
-                IsExpectedStayOver52Weeks = residentialCarePackageDomain.IsExpectedStayOver52Weeks,
-                IsThisUserUnderS117 = residentialCarePackageDomain.IsThisUserUnderS117,
-                NeedToAddress = residentialCarePackageDomain.NeedToAddress,
-                TypeOfResidentialCareHomeId = residentialCarePackageDomain.TypeOfResidentialCareHomeId,
-                TypeOfResidentialCareHome = residentialCarePackageDomain.TypeOfResidentialCareHome,
-                CreatorId = residentialCarePackageDomain.CreatorId,
-                UpdatorId = residentialCarePackageDomain.UpdatorId,
-                StatusId = residentialCarePackageDomain.StatusId,
-                Status = residentialCarePackageDomain.Status,
-                ResidentialCareAdditionalNeeds = residentialCarePackageDomain.ResidentialCareAdditionalNeeds
-            };
-        }
-
-        public static ResidentialCarePackageDomain ToDomain(ResidentialCarePackageRequest residentialCarePackageRequest)
-        {
-            return new ResidentialCarePackageDomain
-            {
-                Id = residentialCarePackageRequest.Id,
-                ClientId = residentialCarePackageRequest.ClientId,
-                StartDate = residentialCarePackageRequest.StartDate,
-                EndDate = residentialCarePackageRequest.EndDate,
-                IsRespiteCare = residentialCarePackageRequest.IsRespiteCare,
-                IsDischargePackage = residentialCarePackageRequest.IsDischargePackage,
-                IsImmediateReenablementPackage = residentialCarePackageRequest.IsImmediateReenablementPackage,
-                IsExpectedStayOver52Weeks = residentialCarePackageRequest.IsExpectedStayOver52Weeks,
-                IsThisUserUnderS117 = residentialCarePackageRequest.IsThisUserUnderS117,
-                NeedToAddress = residentialCarePackageRequest.NeedToAddress,
-                TypeOfResidentialCareHomeId = residentialCarePackageRequest.TypeOfResidentialCareHomeId,
-                CreatorId = residentialCarePackageRequest.CreatorId,
-                UpdatorId = residentialCarePackageRequest.UpdatorId,
-                StatusId = residentialCarePackageRequest.StatusId
-            };
-        }
-
-        public static IList<ResidentialCarePackageDomain> ToDomain(this IList<ResidentialCarePackage> residentialCarePackagesEntity)
-        {
-            return _mapper.Map<IList<ResidentialCarePackageDomain>>(residentialCarePackagesEntity);
-        }
-
-        public static IList<ResidentialCarePackageResponse> ToResponse(this IList<ResidentialCarePackageDomain> residentialCarePackagesDomain)
+        public static IList<ResidentialCarePackageResponse> ToResponse(this IList<ResidentialCarePackageForCreationDomain> residentialCarePackagesDomain)
         {
             return _mapper.Map<IList<ResidentialCarePackageResponse>>(residentialCarePackagesDomain);
         }

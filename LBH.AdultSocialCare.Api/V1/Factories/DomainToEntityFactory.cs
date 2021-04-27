@@ -1,4 +1,5 @@
 using AutoMapper;
+using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
@@ -42,6 +43,15 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static NursingCarePackage ToDb(this NursingCarePackageForCreationDomain nursingCarePackageForCreationDomain)
         {
             return _mapper.Map<NursingCarePackage>(nursingCarePackageForCreationDomain);
+        }
+
+        #endregion
+
+        #region ResidentialCarePackage
+
+        public static ResidentialCarePackage ToDb(this ResidentialCarePackageForCreationDomain residentialCarePackageForCreationDomain)
+        {
+            return _mapper.Map<ResidentialCarePackage>(residentialCarePackageForCreationDomain);
         }
 
         #endregion

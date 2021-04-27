@@ -1,4 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarepackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -12,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
 {
-    [Route("api/v1/residential-care-package/{residentialCarePackageId}/additional-needs")]
+    [Route("api/v1/residential-care-packages/{residentialCarePackageId}/additional-needs")]
     [Produces("application/json")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
@@ -34,7 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
 
         /// <summary>Creates the specified residential care additional needs request.</summary>
         /// <param name="residentialCareAdditionalNeedsRequest">The residential care additional needs request.</param>
-        /// <returns>The residential care additional needs  Response</returns>
+        /// <returns>The Residential Care Additional Needs Response</returns>
         [ProducesResponseType(typeof(ResidentialCareAdditionalNeedsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -57,9 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
 
         /// <summary>Gets the specified residential care additional needs identifier.</summary>
         /// <param name="residentialCareAdditionalNeedsId">The residential care additional needs identifier.</param>
-        /// <returns>
-        ///   A residential care additional needs response model
-        /// </returns>
+        /// <returns>A Residential Care Additional Needs Response model</returns>
         [ProducesResponseType(typeof(ResidentialCareAdditionalNeedsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -80,9 +80,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
             }
         }
 
-        /// <summary>Deletes the specified nursing care additional needs identifier.</summary>
-        /// <param name="residentialCareAdditionalNeedsId">The nursing care additional needs identifier.</param>
-        /// <returns>bool</returns>
+        /// <summary>Deletes the specified residential care additional needs identifier.</summary>
+        /// <param name="residentialCareAdditionalNeedsId">The residential care additional needs identifier.</param>
+        /// <returns>
+        ///  bool
+        /// </returns>
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpDelete]

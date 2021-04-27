@@ -7,6 +7,8 @@ using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Res
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarepackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
@@ -15,6 +17,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -158,6 +161,75 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<TypeOfNursingCareHomeResponse> ToResponse(this IEnumerable<TypeOfNursingCareHomeDomain> typeOfNursingCareHomeDomain)
         {
             return _mapper.Map<IEnumerable<TypeOfNursingCareHomeResponse>>(typeOfNursingCareHomeDomain);
+        }
+
+        #region ResidentialCarePackage
+
+        public static ResidentialCarePackageResponse ToResponse(this ResidentialCarePackageDomain residentialCarePackageDomain)
+        {
+            // return _mapper.Map<NursingCarePackageResponse>(nursingCarePackageDomain);
+            return new ResidentialCarePackageResponse
+            {
+                Id = residentialCarePackageDomain.Id,
+                ClientId = residentialCarePackageDomain.ClientId,
+                IsFixedPeriod = residentialCarePackageDomain.IsFixedPeriod,
+                StartDate = residentialCarePackageDomain.StartDate,
+                EndDate = residentialCarePackageDomain.EndDate,
+                HasRespiteCare = residentialCarePackageDomain.HasRespiteCare,
+                HasDischargePackage = residentialCarePackageDomain.HasDischargePackage,
+                IsThisAnImmediateService = residentialCarePackageDomain.IsThisAnImmediateService,
+                IsThisUserUnderS117 = residentialCarePackageDomain.IsThisUserUnderS117,
+                TypeOfStayId = residentialCarePackageDomain.TypeOfStayId,
+                NeedToAddress = residentialCarePackageDomain.NeedToAddress,
+                TypeOfResidentialCareHomeId = residentialCarePackageDomain.TypeOfResidentialCareHomeId,
+                CreatorId = residentialCarePackageDomain.CreatorId,
+                UpdaterId = residentialCarePackageDomain.UpdaterId,
+                StatusId = residentialCarePackageDomain.StatusId,
+                ClientName = residentialCarePackageDomain.ClientName,
+                StatusName = residentialCarePackageDomain.StatusName,
+                CreatorName = residentialCarePackageDomain.CreatorName,
+                UpdaterName = residentialCarePackageDomain.UpdaterName,
+                PackageName = residentialCarePackageDomain.PackageName,
+                TypeOfCareHomeName = residentialCarePackageDomain.TypeOfCareHomeName,
+                TypeOfStayOptionName = residentialCarePackageDomain.TypeOfStayOptionName,
+                ResidentialCareAdditionalNeeds = residentialCarePackageDomain.ResidentialCareAdditionalNeeds.ToResponse()
+            };
+        }
+
+        public static IEnumerable<ResidentialCarePackageResponse> ToResponse(this IEnumerable<ResidentialCarePackageDomain> residentialCarePackageDomains)
+        {
+            return _mapper.Map<IEnumerable<ResidentialCarePackageResponse>>(residentialCarePackageDomains);
+        }
+
+        #endregion
+
+        #region ResidentialCareAdditionalNeed
+
+        public static IEnumerable<ResidentialCareAdditionalNeedsResponse> ToResponse(this IEnumerable<ResidentialCareAdditionalNeedsDomain> residentialCareAdditionalNeedsDomain)
+        {
+            return _mapper.Map<IEnumerable<ResidentialCareAdditionalNeedsResponse>>(residentialCareAdditionalNeedsDomain);
+        }
+
+        #endregion
+
+        #region ResidentialCareTypeOfStayOptions
+
+        public static IEnumerable<ResidentialCareTypeOfStayOptionResponse> ToResponse(this IEnumerable<ResidentialCareTypeOfStayOptionDomain> residentialCareTypeOfStayOptionDomains)
+        {
+            return residentialCareTypeOfStayOptionDomains.Select(item
+                => new ResidentialCareTypeOfStayOptionResponse
+                {
+                    TypeOfStayOptionId = item.TypeOfStayOptionId,
+                    OptionName = item.OptionName,
+                    OptionPeriod = item.OptionPeriod
+                }).ToList();
+        }
+
+        #endregion
+
+        public static IEnumerable<TypeOfResidentialCareHomeResponse> ToResponse(this IEnumerable<TypeOfResidentialCareHomeDomain> typeOfResidentialCareHomeDomain)
+        {
+            return _mapper.Map<IEnumerable<TypeOfResidentialCareHomeResponse>>(typeOfResidentialCareHomeDomain);
         }
     }
 }

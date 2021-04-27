@@ -11,6 +11,8 @@ using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -84,7 +86,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion
-
 
         #region NursingCarePackage
 
@@ -164,7 +165,82 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion
 
+        #region ResidentialCarePackage
 
+        public static ResidentialCarePackageDomain ToDomain(this ResidentialCarePackage residentialCarePackageEntity)
+        {
+            return new ResidentialCarePackageDomain
+            {
+                Id = residentialCarePackageEntity.Id,
+                ClientId = residentialCarePackageEntity.ClientId,
+                IsFixedPeriod = residentialCarePackageEntity.IsFixedPeriod,
+                StartDate = residentialCarePackageEntity.StartDate,
+                EndDate = residentialCarePackageEntity.EndDate,
+                HasRespiteCare = residentialCarePackageEntity.HasRespiteCare,
+                HasDischargePackage = residentialCarePackageEntity.HasDischargePackage,
+                IsThisAnImmediateService = residentialCarePackageEntity.IsThisAnImmediateService,
+                IsThisUserUnderS117 = residentialCarePackageEntity.IsThisUserUnderS117,
+                TypeOfStayId = residentialCarePackageEntity.TypeOfStayId,
+                NeedToAddress = residentialCarePackageEntity.NeedToAddress,
+                TypeOfResidentialCareHomeId = residentialCarePackageEntity.TypeOfResidentialCareHomeId,
+                CreatorId = residentialCarePackageEntity.CreatorId,
+                UpdaterId = residentialCarePackageEntity.UpdaterId,
+                StatusId = residentialCarePackageEntity.StatusId,
+                ClientName = residentialCarePackageEntity.Client != null ? $"{residentialCarePackageEntity.Client.FirstName} {residentialCarePackageEntity.Client.MiddleName} {residentialCarePackageEntity.Client.LastName}" : null,
+                StatusName = residentialCarePackageEntity.Status?.StatusName,
+                CreatorName = residentialCarePackageEntity.Creator != null ? $"{residentialCarePackageEntity.Creator.FirstName} {residentialCarePackageEntity.Creator.MiddleName} {residentialCarePackageEntity.Creator.LastName}" : null,
+                UpdaterName = residentialCarePackageEntity.Updater != null ? $"{residentialCarePackageEntity.Updater.FirstName} {residentialCarePackageEntity.Updater.MiddleName} {residentialCarePackageEntity.Updater.LastName}" : null,
+                PackageName = "Residential Care Package",
+                TypeOfCareHomeName = residentialCarePackageEntity.TypeOfCareHome?.TypeOfCareHomeName,
+                TypeOfStayOptionName = residentialCarePackageEntity.TypeOfStayOption?.OptionName,
+                ResidentialCareAdditionalNeeds = residentialCarePackageEntity.ResidentialCareAdditionalNeeds.ToDomain()
+            };
+        }
+
+        public static IEnumerable<ResidentialCarePackageDomain> ToDomain(this List<ResidentialCarePackage> nursingCarePackageEntities)
+        {
+            return nursingCarePackageEntities.Select(entity => entity.ToDomain()).ToList();
+        }
+
+        #endregion
+
+        #region ResidentialCareAdditionalNeed
+
+        public static IEnumerable<ResidentialCareAdditionalNeedsDomain> ToDomain(this ICollection<ResidentialCareAdditionalNeed> residentialCareAdditionalNeedsEntities)
+        {
+            return _mapper.Map<IEnumerable<ResidentialCareAdditionalNeedsDomain>>(residentialCareAdditionalNeedsEntities);
+        }
+
+        #endregion
+
+        #region TypeOfResidentialCareHome
+
+        public static IEnumerable<TypeOfResidentialCareHomeDomain> ToDomain(this ICollection<TypeOfResidentialCareHome> typeOfResidentialCareHome)
+        {
+            return typeOfResidentialCareHome.Select(item
+                => new TypeOfResidentialCareHomeDomain
+                {
+                    TypeOfCareHomeId = item.TypeOfCareHomeId,
+                    TypeOfCareHomeName = item.TypeOfCareHomeName
+                }).ToList();
+        }
+
+        #endregion
+
+        #region ResidentialCareTypeOfStayOptions
+
+        public static IEnumerable<ResidentialCareTypeOfStayOptionDomain> ToDomain(this ICollection<ResidentialCareTypeOfStayOption> residentialCareTypeOfStayOptions)
+        {
+            return residentialCareTypeOfStayOptions.Select(item
+                => new ResidentialCareTypeOfStayOptionDomain
+                {
+                    TypeOfStayOptionId = item.TypeOfStayOptionId,
+                    OptionName = item.OptionName,
+                    OptionPeriod = item.OptionPeriod
+                }).ToList();
+        }
+
+        #endregion
 
     }
 

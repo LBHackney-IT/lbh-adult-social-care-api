@@ -27,7 +27,7 @@ using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.PackageStatusUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases;
-using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.RolesUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
@@ -217,7 +217,6 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<ITermTimeConsiderationOptionGateway, TermTimeConsiderationOptionGateway>();
             services.AddScoped<IOpportunityLengthOptionGateway, OpportunityLengthOptionGateway>();
             services.AddScoped<IOpportunityTimesPerMonthOptionGateway, OpportunityTimesPerMonthOptionGateway>();
-            services.AddScoped<IHomeCarePackageCostGateway, HomeCarePackageCostGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
@@ -254,8 +253,6 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IUpsertHomeCarePackageUseCase, UpsertHomeCarePackageUseCase>();
             services.AddScoped<IChangeStatusHomeCarePackageUseCase, ChangeStatusHomeCarePackageUseCase>();
             services.AddScoped<IGetAllHomeCarePackageUseCase, GetAllHomeCarePackageUseCase>();
-            services.AddScoped<IGetHomeCarePackageCostUseCase, GetHomeCarePackageCostUseCase>();
-            services.AddScoped<IUpsertHomeCarePackageCostUseCase, UpsertHomeCarePackageCostUseCase>();
 
             #endregion HomeCarePackage
 
@@ -319,16 +316,16 @@ namespace LBH.AdultSocialCare.Api
 
             #region ResidentialCarePackages
 
-            services.AddScoped<IUpsertResidentialCarePackageUseCase, UpsertResidentialCarePackageUseCase>();
+            services.AddScoped<IUpdateResidentialCarePackageUseCase, UpdateResidentialCarePackageUseCase>();
             services.AddScoped<IGetResidentialCarePackageUseCase, GetResidentialCarePackageUseCase>();
             services.AddScoped<IGetResidentialCareAdditionalNeedsUseCase, GetResidentialCareAdditionalNeedsUseCase>();
             services.AddScoped<IUpsertResidentialCareAdditionalNeedsUseCase, UpsertResidentialCareAdditionalNeedsUseCase>();
             services.AddScoped<IChangeStatusResidentialCarePackageUseCase, ChangeStatusResidentialCarePackageUseCase>();
             services.AddScoped<IGetAllResidentialCarePackageUseCase, GetAllResidentialCarePackageUseCase>();
-            services.AddScoped<IGetAllResidentialCareHomeType, GetAllResidentialCareHomeType>();
-
-            services
-                .AddScoped<IUpsertResidentialCareAdditionalNeedsUseCase, UpsertResidentialCareAdditionalNeedsUseCase>();
+            services.AddScoped<IGetAllResidentialCareHomeTypeUseCase, GetAllResidentialCareHomeTypeUseCase>();
+            services.AddScoped<IGetAllResidentialCareTypeOfStayOptionUseCase, GetAllResidentialCareTypeOfStayOptionUseCase>();
+            services.AddScoped<ICreateResidentialCarePackageUseCase, CreateResidentialCarePackageUseCase>();
+            services.AddScoped<IDeleteResidentialCareAdditionalNeedsUseCase, DeleteResidentialCareAdditionalNeedsUseCase>();
 
             #endregion ResidentialCarePackages
 
