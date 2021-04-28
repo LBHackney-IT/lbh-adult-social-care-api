@@ -163,6 +163,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                     .OnDelete(DeleteBehavior.ClientCascade);
             });
 
+            modelBuilder.Entity<ResidentialCareAdditionalNeed>(entity =>
+            {
+                entity.HasOne(r => r.ResidentialCarePackage)
+                    .WithMany(r => r.ResidentialCareAdditionalNeeds)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.ClientCascade);
+            });
+
             #endregion
         }
 
