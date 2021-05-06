@@ -27,7 +27,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _createSupplierUseCase = createSupplierUseCase;
             _getAllSupplierUseCase = getAllSupplierUseCase;
         }
-
         
         [ProducesResponseType(typeof(SupplierResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
