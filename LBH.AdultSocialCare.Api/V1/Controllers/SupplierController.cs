@@ -27,14 +27,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _createSupplierUseCase = createSupplierUseCase;
             _getAllSupplierUseCase = getAllSupplierUseCase;
         }
-        
+
         [ProducesResponseType(typeof(SupplierResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        public async Task<ActionResult<SupplierResponse>> CreateResidentialCarePackage(SupplierCreationRequest supplierCreationRequest)
+        public async Task<ActionResult<SupplierResponse>> CreateResidentialCarePackage(
+            SupplierCreationRequest supplierCreationRequest)
         {
             if (supplierCreationRequest == null)
             {
@@ -47,7 +48,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
 
             var supplierForCreationDomain = supplierCreationRequest.ToDomain();
-            var supplierResponse = await _createSupplierUseCase.ExecuteAsync(supplierForCreationDomain).ConfigureAwait(false);
+            var supplierResponse =
+                await _createSupplierUseCase.ExecuteAsync(supplierForCreationDomain).ConfigureAwait(false);
             return Ok(supplierResponse);
         }
 

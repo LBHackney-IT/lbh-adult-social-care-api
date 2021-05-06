@@ -24,7 +24,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways
             _mapper = mapper;
         }
 
-        public async Task<HomeCareBrokerageCreationDomain> CreateAsync(Guid homeCarePackageId, HomeCareBrokerageCreationDomain homeCareBrokerageCreation)
+        public async Task<HomeCareBrokerageCreationDomain> CreateAsync(Guid homeCarePackageId,
+            HomeCareBrokerageCreationDomain homeCareBrokerageCreation)
         {
             bool success;
             IList<HomeCarePackageCost> itemsToDelete = await _databaseContext.HomeCarePackageCosts
@@ -86,65 +87,67 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways
 
             //Calculate home care services primary carer hours
             List<HomeCarePackageCost> serviceHoursPerWeek = await _databaseContext.HomeCarePackageSlots
-                            .Where(item => item.HomeCarePackageId == homeCarePackageId)
-                            .GroupBy(l => l.ServiceId)
-                            .Select(cl => new HomeCarePackageCost
-                            {
-                                HomeCareServiceTypeId = cl.Key,
-                                HoursPerWeek = cl.Sum(c => c.PrimaryInMinutes)
-                            }).ToListAsync().ConfigureAwait(false);
+                .Where(item => item.HomeCarePackageId == homeCarePackageId)
+                .GroupBy(l => l.ServiceId)
+                .Select(cl => new HomeCarePackageCost
+                {
+                    HomeCareServiceTypeId = cl.Key, HoursPerWeek = cl.Sum(c => c.PrimaryInMinutes)
+                }).ToListAsync().ConfigureAwait(false);
 
             foreach (var item in serviceHoursPerWeek)
             {
-                var homeCarePackageCostPrimary = new HomeCarePackageCost();
-                homeCarePackageCostPrimary.HomeCarePackageId = homeCarePackageId;
-                homeCarePackageCostPrimary.HomeCareServiceTypeId = item.HomeCareServiceTypeId;
-                homeCarePackageCostPrimary.HoursPerWeek = (double) item.HoursPerWeek / 60;
+                var homeCarePackageCostPrimary = new HomeCarePackageCost
+                {
+                    HomeCarePackageId = homeCarePackageId,
+                    HomeCareServiceTypeId = item.HomeCareServiceTypeId,
+                    HoursPerWeek = (double) item.HoursPerWeek / 60
+                };
                 homeCarePackageCostList.Add(homeCarePackageCostPrimary);
             }
 
             //Calculate home care services secondary carer hours
             List<HomeCarePackageCost> secondaryCarerHours = await _databaseContext.HomeCarePackageSlots
-                            .Where(item => item.HomeCarePackageId == homeCarePackageId)
-                            .GroupBy(l => l.ServiceId)
-                            .Select(cl => new HomeCarePackageCost
-                            {
-                                HomeCareServiceTypeId = cl.Key,
-                                HoursPerWeek = cl.Sum(c => c.SecondaryInMinutes)
-                            }).ToListAsync().ConfigureAwait(false);
+                .Where(item => item.HomeCarePackageId == homeCarePackageId)
+                .GroupBy(l => l.ServiceId)
+                .Select(cl => new HomeCarePackageCost
+                {
+                    HomeCareServiceTypeId = cl.Key, HoursPerWeek = cl.Sum(c => c.SecondaryInMinutes)
+                }).ToListAsync().ConfigureAwait(false);
 
             foreach (var item in secondaryCarerHours)
             {
-                var homeCarePackageCostSecondary = new HomeCarePackageCost();
-                homeCarePackageCostSecondary.HomeCarePackageId = homeCarePackageId;
-                homeCarePackageCostSecondary.HomeCareServiceTypeId = item.HomeCareServiceTypeId;
-                homeCarePackageCostSecondary.IsSecondaryCarer = true;
-                homeCarePackageCostSecondary.HoursPerWeek = (double)item.HoursPerWeek / 60;
+                var homeCarePackageCostSecondary = new HomeCarePackageCost
+                {
+                    HomeCarePackageId = homeCarePackageId,
+                    HomeCareServiceTypeId = item.HomeCareServiceTypeId,
+                    IsSecondaryCarer = true,
+                    HoursPerWeek = (double) item.HoursPerWeek / 60
+                };
                 homeCarePackageCostList.Add(homeCarePackageCostSecondary);
             }
 
-            IList <HomeCarePackageSlots> timeSlotList = await _databaseContext.HomeCarePackageSlots
-                            .Where(item => item.HomeCarePackageId == homeCarePackageId)
-                            .ToListAsync()
-                            .ConfigureAwait(false);
+            IList<HomeCarePackageSlots> timeSlotList = await _databaseContext.HomeCarePackageSlots
+                .Where(item => item.HomeCarePackageId == homeCarePackageId)
+                .ToListAsync()
+                .ConfigureAwait(false);
 
             if (timeSlotList.Count > 0)
             {
-                var callTypes = new Dictionary<int, int>(){
-                    {1, 30},
-                    {2, 45},
-                    {3, 60}
-                };
+                var callTypes = new Dictionary<int, int>() {{1, 30}, {2, 45}, {3, 60}};
 
                 foreach (var item in callTypes)
                 {
                     var items = timeSlotList.Where(minutes => minutes.PrimaryInMinutes == item.Value);
-                    var homeCarePackageCostPrimaryDetail = new HomeCarePackageCost();
-                    homeCarePackageCostPrimaryDetail.HomeCarePackageId = homeCarePackageId;
-                    homeCarePackageCostPrimaryDetail.HomeCareServiceTypeId = 1;
-                    homeCarePackageCostPrimaryDetail.CarerTypeId = item.Key;
-                    homeCarePackageCostPrimaryDetail.CarerType = await _databaseContext.CarerTypes.FirstOrDefaultAsync(item => item.CarerTypeId == homeCarePackageCostPrimaryDetail.CarerTypeId).ConfigureAwait(false);
-                    homeCarePackageCostPrimaryDetail.HoursPerWeek = (double)items.Sum(c => c.PrimaryInMinutes) / 60;
+                    var homeCarePackageCostPrimaryDetail =
+                        new HomeCarePackageCost
+                        {
+                            HomeCarePackageId = homeCarePackageId, HomeCareServiceTypeId = 1, CarerTypeId = item.Key
+                        };
+                    homeCarePackageCostPrimaryDetail.CarerType = await _databaseContext.CarerTypes
+                        .FirstOrDefaultAsync(carerType =>
+                            carerType.CarerTypeId == homeCarePackageCostPrimaryDetail.CarerTypeId)
+                        .ConfigureAwait(false);
+                    homeCarePackageCostPrimaryDetail.HoursPerWeek = (double) items.Sum(c => c.PrimaryInMinutes) / 60;
                     homeCarePackageCostList.Add(homeCarePackageCostPrimaryDetail);
                 }
             }
