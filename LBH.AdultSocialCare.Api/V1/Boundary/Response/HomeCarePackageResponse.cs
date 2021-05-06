@@ -1,3 +1,5 @@
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response.SupplierBoundary;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
 
@@ -79,5 +81,25 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         /// Gets or sets the PackageStatuses Object
         /// </summary>
         public PackageStatus Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Stage Id
+        /// </summary>
+        public int? StageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the HomeCareStage Object
+        /// </summary>
+        public HomeCareStageResponse HomeCareStage { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Supplier Id
+        /// </summary>
+        public int? SupplierId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Supplier Object
+        /// </summary>
+        public SupplierResponse Supplier { get; set; }
     }
 }
