@@ -2,8 +2,11 @@ using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -37,7 +40,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion
 
-
         #region NursingCarePackage
 
         public static NursingCarePackage ToDb(this NursingCarePackageForCreationDomain nursingCarePackageForCreationDomain)
@@ -52,6 +54,24 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static ResidentialCarePackage ToDb(this ResidentialCarePackageForCreationDomain residentialCarePackageForCreationDomain)
         {
             return _mapper.Map<ResidentialCarePackage>(residentialCarePackageForCreationDomain);
+        }
+
+        #endregion
+
+        #region Supplier
+
+        public static Supplier ToDb(this SupplierCreationDomain supplierCreationDomain)
+        {
+            return _mapper.Map<Supplier>(supplierCreationDomain);
+        }
+
+        #endregion
+
+        #region HomeCareBrokerage
+
+        public static HomeCarePackageCost ToDb(this HomeCareBrokerageCreationDomain supplierCreationDomain)
+        {
+            return _mapper.Map<HomeCarePackageCost>(supplierCreationDomain);
         }
 
         #endregion

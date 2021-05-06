@@ -3,6 +3,10 @@ using System.Linq;
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApproveBrokeredBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovePackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
@@ -10,14 +14,19 @@ using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarepackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response.SupplierBoundary;
 using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -231,5 +240,60 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             return _mapper.Map<IEnumerable<TypeOfResidentialCareHomeResponse>>(typeOfResidentialCareHomeDomain);
         }
+
+        #region Supplier
+        public static SupplierResponse ToResponse(this SupplierDomain supplierDomain)
+        {
+            return _mapper.Map<SupplierResponse>(supplierDomain);
+        }
+
+        public static IEnumerable<SupplierResponse> ToResponse(this IEnumerable<SupplierDomain> supplierDomain)
+        {
+            return _mapper.Map<IEnumerable<SupplierResponse>>(supplierDomain);
+        }
+
+        #endregion
+
+        #region HomeCareBrokerage
+
+        public static IEnumerable<HomeCareStageResponse> ToResponse(this IEnumerable<HomeCareStageDomain> homeCareStageDomains)
+        {
+            return _mapper.Map<IEnumerable<HomeCareStageResponse>>(homeCareStageDomains);
+        }
+
+        public static HomeCareBrokerageResponse ToResponse(this HomeCareBrokerageDomain homeCareBrokerageDomain)
+        {
+            return _mapper.Map<HomeCareBrokerageResponse>(homeCareBrokerageDomain);
+        }
+
+        public static HomeCareBrokerageResponse ToResponse(this HomeCareBrokerageCreationDomain homeCareBrokerageDomain)
+        {
+            return _mapper.Map<HomeCareBrokerageResponse>(homeCareBrokerageDomain);
+        }
+
+        public static IEnumerable<HomeCareApprovalHistoryResponse> ToResponse(this IEnumerable<HomeCareApprovalHistoryDomain> homeCareApprovalHistoryDomain)
+        {
+            return _mapper.Map<IEnumerable<HomeCareApprovalHistoryResponse>>(homeCareApprovalHistoryDomain);
+        }
+
+        #endregion
+
+        #region HomeCareApprovePackage
+
+        public static HomeCareApprovePackageResponse ToResponse(this HomeCareApprovePackageDomain homeCareApprovePackageDomain)
+        {
+            return _mapper.Map<HomeCareApprovePackageResponse>(homeCareApprovePackageDomain);
+        }
+
+        #endregion
+
+        #region HomeCareApproveBrokered
+
+        public static HomeCareApproveBrokeredResponse ToResponse(this HomeCareApproveBrokeredDomain homeCareApproveBrokeredDomain)
+        {
+            return _mapper.Map<HomeCareApproveBrokeredResponse>(homeCareApproveBrokeredDomain);
+        }
+
+        #endregion
     }
 }
