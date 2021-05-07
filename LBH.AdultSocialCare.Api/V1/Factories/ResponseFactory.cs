@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApprovePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
@@ -17,6 +19,8 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response.SupplierBoundary;
 using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCareApproveBrokeredDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
@@ -292,6 +296,24 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static HomeCareApproveBrokeredResponse ToResponse(this HomeCareApproveBrokeredDomain homeCareApproveBrokeredDomain)
         {
             return _mapper.Map<HomeCareApproveBrokeredResponse>(homeCareApproveBrokeredDomain);
+        }
+
+        #endregion
+
+        #region DayCareApproveBrokered
+
+        public static DayCareApproveBrokeredResponse ToResponse(this DayCareApproveBrokeredDomain dayCareApproveBrokeredDomain)
+        {
+            return _mapper.Map<DayCareApproveBrokeredResponse>(dayCareApproveBrokeredDomain);
+        }
+
+        #endregion
+
+        #region DayCareApprovePackage
+
+        public static DayCareApprovePackageResponse ToResponse(this DayCareApprovePackageDomain dayCareApprovePackageDomain)
+        {
+            return _mapper.Map<DayCareApprovePackageResponse>(dayCareApprovePackageDomain);
         }
 
         #endregion
