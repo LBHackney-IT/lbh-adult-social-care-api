@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomain
+namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains
 {
     public class NursingCareBrokerageDomain
     {
