@@ -1,4 +1,6 @@
 using AutoMapper;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApprovePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Request;
@@ -43,6 +45,8 @@ using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response.SupplierBoun
 using LBH.AdultSocialCare.Api.V1.Boundary.Response.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApproveBrokeredBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCareApproveBrokeredDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCareApprovePackageDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {
@@ -220,6 +224,24 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<HomeCarePackageBreakDownResponse, HomeCarePackageBreakDownDomain>();
             CreateMap<HomeCarePackageElementsCostingDomain, HomeCarePackageElementsCostingResponse>();
             CreateMap<HomeCarePackageElementsCostingResponse, HomeCarePackageElementsCostingDomain>();
+
+            #endregion
+
+            #region DayCareApproveBrokered
+
+            CreateMap<DayCareApproveBrokeredDomain, DayCareApproveBrokeredResponse>();
+            CreateMap<DayCareApproveBrokeredResponse, DayCareApproveBrokeredDomain>();
+            CreateMap<DayCarePackageBreakDownDomain, DayCarePackageBreakDownResponse>();
+            CreateMap<DayCarePackageBreakDownResponse, DayCarePackageBreakDownDomain>();
+            CreateMap<DayCarePackageElementsCostingDomain, DayCarePackageElementsCostingResponse>();
+            CreateMap<DayCarePackageElementsCostingResponse, DayCarePackageElementsCostingDomain>();
+
+            #endregion
+
+            #region DayCareApprovePackage
+
+            CreateMap<DayCareApprovePackageDomain, DayCareApprovePackageResponse>();
+            CreateMap<DayCareApprovePackageResponse, DayCareApprovePackageDomain>();
 
             #endregion
         }
