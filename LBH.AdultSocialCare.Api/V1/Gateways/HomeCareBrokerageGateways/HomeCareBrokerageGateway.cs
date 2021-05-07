@@ -86,7 +86,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways
                 .GroupBy(l => l.ServiceId)
                 .Select(cl => new HomeCarePackageCost
                 {
-                    HomeCareServiceTypeId = cl.Key, HoursPerWeek = cl.Sum(c => c.PrimaryInMinutes)
+                    HomeCareServiceTypeId = cl.Key,
+                    HoursPerWeek = cl.Sum(c => c.PrimaryInMinutes)
                 }).ToListAsync().ConfigureAwait(false);
 
             foreach (var item in serviceHoursPerWeek)
@@ -106,7 +107,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways
                 .GroupBy(l => l.ServiceId)
                 .Select(cl => new HomeCarePackageCost
                 {
-                    HomeCareServiceTypeId = cl.Key, HoursPerWeek = cl.Sum(c => c.SecondaryInMinutes)
+                    HomeCareServiceTypeId = cl.Key,
+                    HoursPerWeek = cl.Sum(c => c.SecondaryInMinutes)
                 }).ToListAsync().ConfigureAwait(false);
 
             foreach (var item in secondaryCarerHours)
@@ -128,7 +130,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways
 
             if (timeSlotList.Count > 0)
             {
-                var callTypes = new Dictionary<int, int> {{1, 30}, {2, 45}, {3, 60}};
+                var callTypes = new Dictionary<int, int> { { 1, 30 }, { 2, 45 }, { 3, 60 } };
 
                 foreach (var item in callTypes)
                 {
@@ -136,7 +138,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways
                     var homeCarePackageCostPrimaryDetail =
                         new HomeCarePackageCost
                         {
-                            HomeCarePackageId = homeCarePackageId, HomeCareServiceTypeId = 1, CarerTypeId = item.Key
+                            HomeCarePackageId = homeCarePackageId,
+                            HomeCareServiceTypeId = 1,
+                            CarerTypeId = item.Key
                         };
                     homeCarePackageCostPrimaryDetail.CarerType = await _databaseContext.CarerTypes
                         .FirstOrDefaultAsync(carerType =>
