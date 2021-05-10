@@ -1,5 +1,4 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response.SupplierBoundary;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
@@ -34,7 +34,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        public async Task<ActionResult<SupplierResponse>> CreateResidentialCarePackage(
+        public async Task<ActionResult<SupplierResponse>> CreateSupplier(
             SupplierCreationRequest supplierCreationRequest)
         {
             if (supplierCreationRequest == null)
