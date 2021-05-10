@@ -18,6 +18,11 @@ using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -259,13 +264,19 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<SupplierDomain>>(supplierEntities);
         }
 
+        public static IEnumerable<HomeCareSupplierCostDomain> ToDomain(
+            this List<HomeCareSupplierCost> homeCareSupplierCostEntities)
+        {
+            return _mapper.Map<IEnumerable<HomeCareSupplierCostDomain>>(homeCareSupplierCostEntities);
+        }
+
         #endregion
 
         #region HomeCareBrokerage
 
-        public static IEnumerable<HomeCareStageDomain> ToDomain(this List<HomeCareStage> homeCareStageEntities)
+        public static IEnumerable<StageDomain> ToDomain(this List<Stage> homeCareStageEntities)
         {
-            return _mapper.Map<IEnumerable<HomeCareStageDomain>>(homeCareStageEntities);
+            return _mapper.Map<IEnumerable<StageDomain>>(homeCareStageEntities);
         }
 
         public static HomeCarePackageCostDomain ToDomain(this HomeCarePackageCost homeCarePackageCostEntity)
@@ -291,6 +302,39 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion
 
+        #region NursingCareBrokerage
+
+        public static IEnumerable<NursingCareApprovalHistoryDomain> ToDomain(
+            this List<NursingCareApprovalHistory> nursingCareApprovalHistoryEntities)
+        {
+            return _mapper.Map<IEnumerable<NursingCareApprovalHistoryDomain>>(nursingCareApprovalHistoryEntities);
+        }
+
+        #endregion
+
+        #region ResidentialCareBrokerage
+
+        public static IEnumerable<ResidentialCareApprovalHistoryDomain> ToDomain(
+            this List<ResidentialCareApprovalHistory> residentialCareApprovalHistoryEntities)
+        {
+            return _mapper.Map<IEnumerable<ResidentialCareApprovalHistoryDomain>>(residentialCareApprovalHistoryEntities);
+        }
+
+        #endregion
+
+        #region DayCareCollege
+
+        public static DayCareCollegeDomain ToDomain(this DayCareCollege dayCareCollegeEntity)
+        {
+            return _mapper.Map<DayCareCollegeDomain>(dayCareCollegeEntity);
+        }
+
+        public static IEnumerable<DayCareCollegeDomain> ToDomain(this List<DayCareCollege> dayCareCollegeEntities)
+        {
+            return _mapper.Map<IEnumerable<DayCareCollegeDomain>>(dayCareCollegeEntities);
+        }
+
+        #endregion
     }
 
 }
