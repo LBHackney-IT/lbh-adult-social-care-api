@@ -18,6 +18,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
     [ApiVersion("1.0")]
     public class NursingCareBrokerageController : Controller
     {
-        
+
     }
 }

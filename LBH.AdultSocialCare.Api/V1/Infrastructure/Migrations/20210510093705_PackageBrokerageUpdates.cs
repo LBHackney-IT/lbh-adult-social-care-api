@@ -238,7 +238,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 keyValue: 7,
                 columns: new[] { "DateCreated", "DateUpdated", "StatusName" },
                 values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 9, 37, 4, 884, DateTimeKind.Unspecified).AddTicks(7718), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 9, 37, 4, 884, DateTimeKind.Unspecified).AddTicks(7719), new TimeSpan(0, 0, 0, 0, 0)), "Clarifying Commercials" });
-            
+
             migrationBuilder.UpdateData(
                 table: "Packages",
                 keyColumn: "Id",

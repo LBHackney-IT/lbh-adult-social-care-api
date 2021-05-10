@@ -16,12 +16,12 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains
         /// Gets or sets the Home Care Service Type Id
         /// </summary>
         public int HomeCareServiceTypeId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the Carer Type Id
         /// </summary>
         public int? CarerTypeId { get; set; }
-        
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is secondary carer.
         /// </summary>

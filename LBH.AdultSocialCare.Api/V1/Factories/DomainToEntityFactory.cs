@@ -71,7 +71,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             return _mapper.Map<Supplier>(supplierCreationDomain);
         }
-        
+
         public static List<HomeCareSupplierCost> ToDb(
             this IEnumerable<HomeCareSupplierCostDomain> homeCareSupplierCostDomain)
         {

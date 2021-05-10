@@ -22,7 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCareApproveCommercialDomains
         /// Gets or sets the Additional Needs Cost
         /// </summary>
         public decimal CostOfAdditionalNeeds { get; set; }
-        
+
         /// <summary>
         /// Gets or sets the Total Per Week
         /// </summary>

@@ -29,7 +29,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways
                 .Where(item => item.Id == nursingCarePackageId)
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
-            
+
             if (nursingCarePackage == null)
             {
                 throw new ErrorException($"Could not find the Nursing Care Package {nursingCarePackageId}");
