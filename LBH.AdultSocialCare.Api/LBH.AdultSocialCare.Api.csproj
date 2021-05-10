@@ -41,6 +41,10 @@
     <Folder Include="terraform\" />
     <Folder Include="V1\Boundary\HomeCareApprovalHistoryBoundary\Request\" />
     <Folder Include="V1\Boundary\ResidentialCarePackageBoundary\Request\" />
+    <Folder Include="V1\UseCase\DayCareApproveBrokeredUseCase\Concrete\" />
+    <Folder Include="V1\UseCase\DayCareApproveBrokeredUseCase\Interfaces\" />
+    <Folder Include="V1\UseCase\DayCareApprovePackageUseCase\Concrete\" />
+    <Folder Include="V1\UseCase\DayCareApprovePackageUseCase\Interfaces\" />
   </ItemGroup>
 
 </Project>

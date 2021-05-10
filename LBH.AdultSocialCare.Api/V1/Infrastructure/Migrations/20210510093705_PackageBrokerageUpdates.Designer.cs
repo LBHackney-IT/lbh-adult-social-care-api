@@ -4,14 +4,16 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210510093705_PackageBrokerageUpdates")]
+    partial class PackageBrokerageUpdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1061,75 +1063,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasIndex("HomeCareServiceTypeId");
 
                     b.ToTable("HomeCareSupplierCosts");
-                });
-
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage.HomeCareStage", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<Guid>("CreatorId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("StageName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("UpdaterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("UpdaterId");
-
-                    b.ToTable("HomeCareStages");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            StageName = "New",
-                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            StageName = "Assigned",
-                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            StageName = "Querying",
-                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            StageName = "Supplier Sourced",
-                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            StageName = "Pricing agreed",
-                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            StageName = "Submitted For Approval",
-                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
-                        });
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare.NursingCareTypeOfStayOption", b =>
@@ -2308,10 +2241,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasForeignKey("HomeCareServiceTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Updater")
-                        .WithMany()
-                        .HasForeignKey("UpdaterId");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareAdditionalNeed", b =>
