@@ -61,6 +61,16 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare
         /// </summary>
         public int StatusId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the Stage Id
+        /// </summary>
+        public int? StageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Supplier Id
+        /// </summary>
+        public int? SupplierId { get; set; }
+
     }
 
 }

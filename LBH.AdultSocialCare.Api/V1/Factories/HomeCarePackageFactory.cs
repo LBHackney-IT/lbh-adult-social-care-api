@@ -36,7 +36,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 CreatorId = homeCarePackageEntity.CreatorId,
                 UpdatorId = homeCarePackageEntity.UpdatorId,
                 StatusId = homeCarePackageEntity.StatusId,
-                Status = homeCarePackageEntity.Status
+                Status = homeCarePackageEntity.Status,
+                StageId = homeCarePackageEntity.StageId,
+                SupplierId = homeCarePackageEntity.SupplierId
             };
         }
 
@@ -56,7 +58,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 CreatorId = homeCarePackageDomain.CreatorId,
                 UpdatorId = homeCarePackageDomain.UpdatorId,
                 StatusId = homeCarePackageDomain.StatusId,
-                Status = homeCarePackageDomain.Status
+                Status = homeCarePackageDomain.Status,
+                StageId = homeCarePackageDomain.StageId,
+                SupplierId = homeCarePackageDomain.SupplierId
             };
         }
 
@@ -76,7 +80,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 CreatorId = homeCarePackageDomain.CreatorId,
                 UpdatorId = homeCarePackageDomain.UpdatorId,
                 StatusId = homeCarePackageDomain.StatusId,
-                Status = homeCarePackageDomain.Status
+                Status = homeCarePackageDomain.Status,
+                StageId = homeCarePackageDomain.StageId,
+                SupplierId = homeCarePackageDomain.SupplierId
             };
         }
 
@@ -94,7 +100,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsThisuserUnderS117 = homeCarePackageEntity.IsThisClientUnderS117,
                 CreatorId = homeCarePackageEntity.CreatorId,
                 UpdatorId = homeCarePackageEntity.UpdatorId,
-                StatusId = homeCarePackageEntity.StatusId
+                StatusId = homeCarePackageEntity.StatusId,
+                StageId = homeCarePackageEntity.StageId,
+                SupplierId = homeCarePackageEntity.SupplierId
             };
         }
 

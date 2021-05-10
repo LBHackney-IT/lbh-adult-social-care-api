@@ -33,6 +33,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             return await _databaseContext.HomeCarePackage
                 .Include(item => item.Client)
                 .Include(item => item.Status)
+                .Include(item => item.HomeCareStage)
+                .Include(item => item.Supplier)
                 .ToListAsync().ConfigureAwait(false);
         }
 
@@ -41,6 +43,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             HomeCarePackage homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
                 .Include(item => item.Client)
                 .Include(item => item.Status)
+                .Include(item => item.HomeCareStage)
+                .Include(item => item.Supplier)
                 .FirstOrDefaultAsync(item => item.Id == homeCarePackageId)
                 .ConfigureAwait(false);
 
@@ -60,6 +64,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             HomeCarePackage homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
                 .Include(item => item.Status)
                 .Include(item => item.Client)
+                .Include(item => item.HomeCareStage)
+                .Include(item => item.Supplier)
                 .FirstOrDefaultAsync(item => item.Id == homeCarePackage.Id).ConfigureAwait(false);
             if (homeCarePackageToUpdate == null)
             {
@@ -76,6 +82,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             homeCarePackageToUpdate.CreatorId = homeCarePackage.CreatorId;
             homeCarePackageToUpdate.UpdatorId = homeCarePackage.UpdatorId;
             homeCarePackageToUpdate.StatusId = homeCarePackage.StatusId;
+            homeCarePackageToUpdate.SupplierId = homeCarePackage.SupplierId;
+            homeCarePackageToUpdate.StageId = homeCarePackage.StageId;
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
 
             return isSuccess

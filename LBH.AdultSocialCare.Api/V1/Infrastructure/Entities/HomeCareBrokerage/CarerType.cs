@@ -11,6 +11,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage
         [Key]
         public int CarerTypeId { get; set; }
 
+        // 30, 45, 60
+        public int CarerTypeMinutes { get; set; }
+
         // 30m Call, 45m Call, 60m+ Call
         public string CarerTypeName { get; set; }
     }

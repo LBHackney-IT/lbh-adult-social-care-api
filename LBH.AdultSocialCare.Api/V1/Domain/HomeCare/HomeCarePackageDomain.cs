@@ -1,4 +1,6 @@
 using System;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCare
@@ -69,5 +71,25 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCare
         /// Gets or sets the PackageStatuses Object
         /// </summary>
         public PackageStatus Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Stage Id
+        /// </summary>
+        public int? StageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the HomeCareStage Object
+        /// </summary>
+        public HomeCareStageDomain HomeCareStage { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Supplier Id
+        /// </summary>
+        public int? SupplierId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Supplier Object
+        /// </summary>
+        public SupplierDomain Supplier { get; set; }
     }
 }

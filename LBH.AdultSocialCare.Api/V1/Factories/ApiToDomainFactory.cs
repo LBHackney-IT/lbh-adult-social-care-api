@@ -4,16 +4,20 @@ using System.Text.RegularExpressions;
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -120,5 +124,17 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion
+
+        public static SupplierCreationDomain ToDomain(this SupplierCreationRequest supplierCreationRequest)
+        {
+            var res = _mapper.Map<SupplierCreationDomain>(supplierCreationRequest);
+            return res;
+        }
+
+        public static HomeCareBrokerageCreationDomain ToDomain(this HomeCareBrokerageCreationRequest homeCareBrokerageCreationRequest)
+        {
+            var domain = _mapper.Map<HomeCareBrokerageCreationDomain>(homeCareBrokerageCreationRequest);
+            return domain;
+        }
     }
 }

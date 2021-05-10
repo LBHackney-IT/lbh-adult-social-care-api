@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -75,6 +76,28 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// Gets or sets the PackageStatuses Object
         /// </summary>
         public PackageStatus Status { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Stage Id
+        /// </summary>
+        public int? StageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the HomeCareStage Object
+        /// </summary>
+        [ForeignKey(nameof(StageId))]
+        public HomeCareStage HomeCareStage { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Supplier Id
+        /// </summary>
+        public int? SupplierId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Supplier Object
+        /// </summary>
+        [ForeignKey(nameof(SupplierId))]
+        public Supplier Supplier { get; set; }
 
     }
 

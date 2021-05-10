@@ -4,12 +4,18 @@ using LBH.AdultSocialCare.Api.V1;
 using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ApprovalHistoryGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApproveBrokeredGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareStageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityLengthOptionGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityTimesPerMonthOptionGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.TermTimeConsiderationOptionGateways;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases;
@@ -18,6 +24,14 @@ using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Inter
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovalHistoryUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovalHistoryUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApproveBrokeredUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApproveBrokeredUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovePackageUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovePackageUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareBrokerageUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareBrokerageUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
@@ -29,6 +43,8 @@ using LBH.AdultSocialCare.Api.V1.UseCase.PackageStatusUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.RolesUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases;
@@ -217,6 +233,12 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<ITermTimeConsiderationOptionGateway, TermTimeConsiderationOptionGateway>();
             services.AddScoped<IOpportunityLengthOptionGateway, OpportunityLengthOptionGateway>();
             services.AddScoped<IOpportunityTimesPerMonthOptionGateway, OpportunityTimesPerMonthOptionGateway>();
+            services.AddScoped<IHomeCareBrokerageGateway, HomeCareBrokerageGateway>();
+            services.AddScoped<ISupplierGateway, SupplierGateway>();
+            services.AddScoped<IHomeCareStageGateway, HomeCareStageGateway>();
+            services.AddScoped<IApprovalHistoryGateway, ApprovalHistoryGateway>();
+            services.AddScoped<IHomeCareApprovePackageGateway, HomeCareApprovePackageGateway>();
+            services.AddScoped<IHomeCareApproveBrokeredGateway, HomeCareApproveBrokeredGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
@@ -363,6 +385,39 @@ namespace LBH.AdultSocialCare.Api
                 >();
 
             #endregion OpportunityTimesPerMonthOptions
+
+            #region HomeCareBrokerage
+
+            services.AddScoped<IGetAllHomeCareStageUseCase, GetAllHomeCareStageUseCase>();
+            services.AddScoped<IGetHomeCareBrokerageUseCase, GetHomeCareBrokerageUseCase>();
+            services.AddScoped<ICreateHomeCareBrokerageUseCase, CreateHomeCareBrokerageUseCase>();
+
+            #endregion
+
+            #region Supplier
+
+            services.AddScoped<ICreateSupplierUseCase, CreateSupplierUseCase>();
+            services.AddScoped<IGetAllSupplierUseCase, GetAllSupplierUseCase>();
+
+            #endregion
+
+            #region HomeCareApprovalHistory
+
+            services.AddScoped<IGetAllHomeCareApprovalHistoryUseCase, GetAllHomeCareApprovalHistoryUseCase>();
+
+            #endregion
+
+            #region HomeCareApprovePackage
+
+            services.AddScoped<IGetHomeCareApprovePackageUseCase, GetHomeCareApprovePackageUseCase>();
+
+            #endregion
+
+            #region HomeCareApproveBrokered
+
+            services.AddScoped<IGetHomeCareApproveBrokeredUseCase, GetHomeCareApproveBrokeredUseCase>();
+
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

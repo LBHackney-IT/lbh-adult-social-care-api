@@ -1,9 +1,10 @@
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage
 {
     public class HomeCarePackageCost : BaseEntity
     {
@@ -19,25 +20,31 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public Guid HomeCarePackageId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Service Id
+        /// Gets or sets the Home Care Service Type Id
         /// </summary>
-        public int ServiceId { get; set; }
+        public int HomeCareServiceTypeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the HomeCare Service Type
+        /// </summary>
+        [ForeignKey(nameof(HomeCareServiceTypeId))]
+        public HomeCareServiceType HomeCareServiceType { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Carer Type Id
+        /// </summary>
+        public int? CarerTypeId { get; set; }
 
         /// <summary>
         /// Gets or sets the Services
         /// </summary>
-        [ForeignKey(nameof(ServiceId))]
-        public HomeCareServiceType Services { get; set; }
+        [ForeignKey(nameof(CarerTypeId))]
+        public CarerType CarerType { get; set; }
 
         /// <summary>
-        /// Gets or sets the Primary Carer
+        /// Gets or sets a value indicating whether this instance is secondary carer.
         /// </summary>
-        public string PrimaryCarer { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Secondary Carer
-        /// </summary>
-        public int SecondaryCarer { get; set; }
+        public bool IsSecondaryCarer { get; set; }
 
         /// <summary>
         /// Gets or sets the Cost Per Hour
@@ -47,7 +54,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// <summary>
         /// Gets or sets the Hour Per Week
         /// </summary>
-        public int HoursPerWeek { get; set; }
+        public double HoursPerWeek { get; set; }
 
         /// <summary>
         /// Gets or sets the Total Cost

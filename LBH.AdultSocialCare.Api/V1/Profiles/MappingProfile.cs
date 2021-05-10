@@ -1,4 +1,6 @@
 using AutoMapper;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApprovePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Request;
@@ -31,6 +33,20 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarepackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovePackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
+using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response.SupplierBoundary;
+using LBH.AdultSocialCare.Api.V1.Boundary.Response.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApproveBrokeredBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCareApproveBrokeredDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCareApprovePackageDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {
@@ -144,6 +160,88 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ResidentialCarePackageForCreationDomain, ResidentialCarePackage>();
             CreateMap<ResidentialCarePackageForUpdateDomain, ResidentialCarePackage>();
             CreateMap<TypeOfResidentialCareHomeDomain, TypeOfResidentialCareHomeResponse>();
+
+            #endregion
+
+            #region HomeCareBrokerage
+
+            CreateMap<HomeCarePackageCost, HomeCarePackageCostDomain>();
+            CreateMap<HomeCarePackageCostDomain, HomeCarePackageCostResponse>();
+            CreateMap<HomeCarePackageCostDomain, HomeCarePackageCost>();
+            CreateMap<HomeCareBrokerageDomain, HomeCareBrokerageResponse>();
+            CreateMap<HomeCareBrokerageCreationDomain, HomeCareBrokerageCreationRequest>();
+            CreateMap<HomeCareBrokerageCreationRequest, HomeCareBrokerageCreationDomain>();
+            CreateMap<HomeCarePackageCostCreationDomain, HomeCarePackageCostCreationRequest>();
+            CreateMap<HomeCarePackageCostCreationRequest, HomeCarePackageCostCreationDomain>();
+            CreateMap<HomeCareBrokerageResponse, HomeCareBrokerageCreationDomain>();
+            CreateMap<HomeCareBrokerageCreationDomain, HomeCareBrokerageResponse>();
+            CreateMap<HomeCarePackageCostCreationDomain, HomeCarePackageCostResponse>();
+            CreateMap<HomeCarePackageCostResponse, HomeCarePackageCostCreationDomain>();
+            CreateMap<HomeCareStage, HomeCareStageDomain>();
+            CreateMap<HomeCareStageDomain, HomeCareStage>();
+            CreateMap<HomeCareStageDomain, HomeCareStageResponse>();
+            CreateMap<HomeCareStageResponse, HomeCareStageDomain>();
+            CreateMap<HomeCareApprovalHistory, HomeCareApprovalHistoryDomain>();
+            CreateMap<HomeCareApprovalHistoryDomain, HomeCareApprovalHistory>();
+            CreateMap<HomeCareApprovalHistoryResponse, HomeCareApprovalHistoryDomain>();
+            CreateMap<HomeCareApprovalHistoryDomain, HomeCareApprovalHistoryResponse>();
+            CreateMap<CarerTypeDomain, CarerType>();
+            CreateMap<CarerType, CarerTypeDomain>();
+            CreateMap<CarerTypeResponse, CarerTypeDomain>();
+            CreateMap<CarerTypeDomain, CarerTypeResponse>();
+
+            #endregion
+
+            #region HomeCareApprovalHistory
+
+            CreateMap<HomeCareApprovalHistoryDomain, HomeCareApprovalHistory>();
+            CreateMap<HomeCareApprovalHistory, HomeCareApprovalHistoryDomain>();
+            CreateMap<HomeCareApprovalHistoryDomain, HomeCareApprovalHistoryResponse>();
+
+            #endregion
+
+            #region HomeCareApprovePackage
+
+            CreateMap<HomeCareApprovePackageDomain, HomeCareApprovePackageResponse>();
+            CreateMap<HomeCareApprovePackageResponse, HomeCareApprovePackageDomain>();
+
+            #endregion
+
+            #region Supplier
+
+            CreateMap<Supplier, SupplierDomain>();
+            CreateMap<SupplierDomain, Supplier>();
+            CreateMap<SupplierDomain, SupplierResponse>();
+            CreateMap<SupplierResponse, SupplierDomain>();
+
+            #endregion
+
+            #region HomeCareApproveBrokered
+
+            CreateMap<HomeCareApproveBrokeredDomain, HomeCareApproveBrokeredResponse>();
+            CreateMap<HomeCareApproveBrokeredResponse, HomeCareApproveBrokeredDomain>();
+            CreateMap<HomeCarePackageBreakDownDomain, HomeCarePackageBreakDownResponse>();
+            CreateMap<HomeCarePackageBreakDownResponse, HomeCarePackageBreakDownDomain>();
+            CreateMap<HomeCarePackageElementsCostingDomain, HomeCarePackageElementsCostingResponse>();
+            CreateMap<HomeCarePackageElementsCostingResponse, HomeCarePackageElementsCostingDomain>();
+
+            #endregion
+
+            #region DayCareApproveBrokered
+
+            CreateMap<DayCareApproveBrokeredDomain, DayCareApproveBrokeredResponse>();
+            CreateMap<DayCareApproveBrokeredResponse, DayCareApproveBrokeredDomain>();
+            CreateMap<DayCarePackageBreakDownDomain, DayCarePackageBreakDownResponse>();
+            CreateMap<DayCarePackageBreakDownResponse, DayCarePackageBreakDownDomain>();
+            CreateMap<DayCarePackageElementsCostingDomain, DayCarePackageElementsCostingResponse>();
+            CreateMap<DayCarePackageElementsCostingResponse, DayCarePackageElementsCostingDomain>();
+
+            #endregion
+
+            #region DayCareApprovePackage
+
+            CreateMap<DayCareApprovePackageDomain, DayCareApprovePackageResponse>();
+            CreateMap<DayCareApprovePackageResponse, DayCareApprovePackageDomain>();
 
             #endregion
         }
