@@ -1,13 +1,12 @@
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCareApprovePackageDomains
+namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCareApproveCommercialDomains
 {
-    public class NursingCareApprovePackageDomain
+    public class NursingCareApproveCommercialDomain
     {
         /// <summary>
         /// Gets or sets the Nursing Care package
@@ -23,12 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCareApprovePackageDomains
         /// Gets or sets the Additional Needs Cost
         /// </summary>
         public decimal CostOfAdditionalNeeds { get; set; }
-
-        /// <summary>
-        /// Gets or sets the One Off Cost
-        /// </summary>
-        public decimal CostOfOneOff { get; set; }
-
+        
         /// <summary>
         /// Gets or sets the Total Per Week
         /// </summary>
