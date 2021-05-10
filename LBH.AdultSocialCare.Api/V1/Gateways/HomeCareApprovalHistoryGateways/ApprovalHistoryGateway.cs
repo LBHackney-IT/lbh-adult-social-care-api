@@ -1,6 +1,5 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -9,24 +8,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareStageGateways
+namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways
 {
-    public class HomeCareStageGateway : IHomeCareStageGateway
+    public class ApprovalHistoryGateway : IApprovalHistoryGateway
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IMapper _mapper;
 
-        public HomeCareStageGateway(DatabaseContext databaseContext, IMapper mapper)
+        public ApprovalHistoryGateway(DatabaseContext databaseContext, IMapper mapper)
         {
             _databaseContext = databaseContext;
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<StageDomain>> ListAsync()
+        public async Task<IEnumerable<HomeCareApprovalHistoryDomain>> ListAsync(Guid homeCarePackageId)
         {
-            var res = await _databaseContext.HomeCareStages
+            var homeCareApprovalHistories = await _databaseContext.HomeCareApprovalHistories
+                .Where(ah => ah.HomeCarePackageId.Equals(homeCarePackageId))
                 .ToListAsync().ConfigureAwait(false);
-            return res?.ToDomain();
+            return homeCareApprovalHistories?.ToDomain();
         }
     }
 }

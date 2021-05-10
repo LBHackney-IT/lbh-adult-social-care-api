@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.StageBoundary.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCareBrokerageUseCase.Concrete
 {
@@ -18,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCareBrokerageUseCase.Concrete
             _homeCareStageGateway = homeCareStageGateway;
         }
 
-        public async Task<IEnumerable<HomeCareStageResponse>> GetAllAsync()
+        public async Task<IEnumerable<StageResponse>> GetAllAsync()
         {
             var result = await _homeCareStageGateway.ListAsync().ConfigureAwait(false);
             return result.ToResponse();

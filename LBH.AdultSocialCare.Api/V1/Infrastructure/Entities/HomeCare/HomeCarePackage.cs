@@ -83,10 +83,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         public int? StageId { get; set; }
 
         /// <summary>
-        /// Gets or sets the HomeCareStage Object
+        /// Gets or sets the Stage Object
         /// </summary>
         [ForeignKey(nameof(StageId))]
-        public HomeCareStage HomeCareStage { get; set; }
+        public Stage Stage { get; set; }
 
         /// <summary>
         /// Gets or sets the Supplier Id
