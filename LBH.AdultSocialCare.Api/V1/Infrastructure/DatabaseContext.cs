@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
@@ -26,6 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
         public DbSet<DayCarePackage> DayCarePackages { get; set; }
         public DbSet<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
+        public DbSet<DayCarePackageStatus> DayCarePackageStatuses { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<TimeSlotShifts> TimeSlotShifts { get; set; }
@@ -182,6 +184,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                     .WithMany(r => r.ResidentialCareAdditionalNeeds)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.ClientCascade);
+            });
+
+            modelBuilder.Entity<DayCarePackageStatus>(entity =>
+            {
+                entity.HasIndex(e => new {e.SequenceNumber, e.Stage, e.PackageAction})
+                    .IsUnique();
             });
 
             #endregion
