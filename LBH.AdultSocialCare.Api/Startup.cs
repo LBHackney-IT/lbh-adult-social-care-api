@@ -226,7 +226,7 @@ namespace LBH.AdultSocialCare.Api
             string assemblyName = Assembly.GetCallingAssembly().GetName().Name;
 
             services.AddDbContext<DatabaseContext>(opt
-                => opt.UseSqlServer(connectionString, b => b.MigrationsAssembly(assemblyName)));
+                => opt.UseNpgsql(connectionString, b => b.MigrationsAssembly(assemblyName)));
         }
 
         private static void ConfigureLogging(IServiceCollection services, IConfiguration configuration)
@@ -546,12 +546,11 @@ namespace LBH.AdultSocialCare.Api
                 {
                     databaseContext.Database.EnsureCreated();
                 }
-
-                //if (databaseContext.Database.GetPendingMigrations().Any())
-                //{
-                //    // Perform migrations
-                //    databaseContext.Database.Migrate();
-                //}
+                else if (databaseContext.Database.GetPendingMigrations().Any())
+                {
+                    // Perform migrations
+                    databaseContext.Database.Migrate();
+                }
             }
 
             app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader());
