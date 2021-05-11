@@ -284,6 +284,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetDayCarePackageUseCase, GetDayCarePackageUseCase>();
             services.AddScoped<IGetDayCarePackageListUseCase, GetDayCarePackageListUseCase>();
             services.AddScoped<IUpdateDayCarePackageUseCase, UpdateDayCarePackageUseCase>();
+            services.AddScoped<IGetDayCarePackageForApprovalDetailsUseCase, GetDayCarePackageForApprovalDetailsUseCase>();
 
             #endregion DayCarePackage
 

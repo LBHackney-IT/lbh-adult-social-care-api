@@ -242,6 +242,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             CreateMap<DayCareApprovePackageDomain, DayCareApprovePackageResponse>();
             CreateMap<DayCareApprovePackageResponse, DayCareApprovePackageDomain>();
+            CreateMap<DayCarePackageForApprovalDetailsDomain, DayCarePackageForApprovalDetailsResponse>();
 
             #endregion
         }

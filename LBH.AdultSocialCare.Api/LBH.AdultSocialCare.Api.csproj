@@ -10,6 +10,16 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
     </PropertyGroup>
+    <ItemGroup>
+      <Compile Remove="V1\Infrastructure\Migrations\20210511061525_DayCareApprovalUpdates.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210511061525_DayCareApprovalUpdates.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210511061934_DayCareApprovalUpdates.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210511061934_DayCareApprovalUpdates.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210511063315_DayCareApprovalUpdates.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210511063315_DayCareApprovalUpdates.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210511063659_DayCareApprovalUpdates.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210511063659_DayCareApprovalUpdates.Designer.cs" />
+    </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="5.1.1" />

@@ -8,6 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
 {
@@ -78,6 +81,84 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
             }
 
             return dayCarePackage.ToDomain();
+        }
+
+        public async Task<DayCarePackageForApprovalDetailsDomain> GetDayCarePackageForApprovalDetails(Guid dayCarePackageId)
+        {
+            var dayCarePackage = await _dbContext.DayCarePackages
+                .Where(dc => dc.DayCarePackageId.Equals(dayCarePackageId))
+                .AsNoTracking()
+                .Select(dc => new DayCarePackageForApprovalDetailsDomain
+                {
+                    PackageDetails = new PackageDetailsDto
+                    {
+                        DayCarePackageId = dc.DayCarePackageId,
+                        IsFixedPeriodOrOngoing = dc.IsFixedPeriodOrOngoing,
+                        StartDate = dc.StartDate,
+                        EndDate = dc.EndDate,
+                        Monday = dc.Monday,
+                        Tuesday = dc.Tuesday,
+                        Wednesday = dc.Wednesday,
+                        Thursday = dc.Thursday,
+                        Friday = dc.Friday,
+                        Saturday = dc.Saturday,
+                        Sunday = dc.Sunday,
+                        TransportNeeded = dc.TransportNeeded,
+                        EscortNeeded = dc.EscortNeeded,
+                        TermTimeConsiderationOptionName = dc.TermTimeConsiderationOption.OptionName,
+                        DayCareOpportunities = dc.DayCarePackageOpportunities.Select(dco => new DayCarePackageOpportunityDomain
+                        {
+                            DayCarePackageOpportunityId = dco.DayCarePackageOpportunityId,
+                            HowLong = new OpportunityLengthOptionDomain
+                            {
+                                OpportunityLengthOptionId = dco.OpportunityLengthOptionId,
+                                OptionName = dco.OpportunityLengthOption.OptionName,
+                                TimeInMinutes = dco.OpportunityLengthOption.TimeInMinutes
+                            },
+                            HowManyTimesPerMonth = new OpportunityTimesPerMonthOptionDomain
+                            {
+                                OpportunityTimePerMonthOptionId = dco.OpportunityTimePerMonthOptionId,
+                                OptionName = dco.OpportunityTimesPerMonthOption.OptionName
+                            },
+                            OpportunitiesNeedToAddress = dco.OpportunitiesNeedToAddress,
+                            DayCarePackageId = dco.DayCarePackageId
+                        })
+                    },
+                    ClientDetails = new ClientDetailsDto
+                    {
+                        ClientName = dc.Client != null ? $"{dc.Client.FirstName} {dc.Client.MiddleName} {dc.Client.LastName}" : null,
+                        HackneyId = dc.Client.HackneyId,
+                        DateOfBirth = dc.Client.DateOfBirth,
+                        PostCode = dc.Client.PostCode
+                    },
+                    CostSummary = new CostSummaryDto
+                    {
+                        CostOfCarePerWeek = 0,
+                        ANPPerWeek = 0,
+                        TransportCostPerWeek = 0,
+                        TotalCostPerWeek = 0
+                    },
+                    PackageApprovalHistory = dc.DayCareApprovalHistories.Select(ah => new PackageApprovalHistoryDto
+                    {
+                        HistoryId = ah.HistoryId,
+                        DayCarePackageId = ah.DayCarePackageId,
+                        DateCreated = ah.DateCreated,
+                        CreatorId = ah.CreatorId,
+                        CreatorName = ah.Creator.FirstName,
+                        PackageStatusId = ah.PackageStatusId,
+                        PackageStatusName = ah.PackageStatus.StatusName,
+                        LogText = ah.LogText,
+                        LogSubText = ah.LogSubText,
+                        CreatorRole = ah.CreatorRole
+                    })
+                }).SingleOrDefaultAsync().ConfigureAwait(false);
+
+            if (dayCarePackage == null)
+            {
+                throw new EntityNotFoundException($"Unable to locate day care package {dayCarePackageId.ToString()}");
+            }
+
+            return dayCarePackage;
         }
 
         public async Task<IEnumerable<DayCarePackageDomain>> GetDayCarePackageList()

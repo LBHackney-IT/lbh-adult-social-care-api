@@ -52,6 +52,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public DayCarePackageStatus Status { get; set; }
 
         public ICollection<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
+        public ICollection<DayCareApprovalHistory> DayCareApprovalHistories { get; set; }
     }
 
 }

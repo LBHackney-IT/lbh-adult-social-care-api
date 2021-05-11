@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20210510124215_DayCarePackageHistory")]
-    partial class DayCarePackageHistory
+    [Migration("20210511064615_SeedDayCarePackageStatus")]
+    partial class SeedDayCarePackageStatus
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -82,9 +82,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb80"),
                             AddressLine1 = "Queens Town Road",
                             CreatorId = 0,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 125, DateTimeKind.Unspecified).AddTicks(6399), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 912, DateTimeKind.Unspecified).AddTicks(850), new TimeSpan(0, 0, 0, 0, 0)),
                             DateOfBirth = new DateTime(1990, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 125, DateTimeKind.Unspecified).AddTicks(6407), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 912, DateTimeKind.Unspecified).AddTicks(857), new TimeSpan(0, 0, 0, 0, 0)),
                             FirstName = "Furkan",
                             HackneyId = 66666,
                             LastName = "Kayar",
@@ -92,6 +92,54 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             Town = "London",
                             UpdatorId = 0
                         });
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare.DayCareApprovalHistory", b =>
+                {
+                    b.Property<Guid>("HistoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatorRole")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid>("DayCarePackageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("DayCarePackageId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("LogSubText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LogText")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PackageStatusId")
+                        .HasColumnType("int");
+
+                    b.HasKey("HistoryId");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("DayCarePackageId");
+
+                    b.HasIndex("DayCarePackageId1");
+
+                    b.HasIndex("PackageStatusId");
+
+                    b.ToTable("DayCareApprovalHistory");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare.DayCarePackageStatus", b =>
@@ -143,6 +191,218 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasFilter("[Stage] IS NOT NULL AND [PackageAction] IS NOT NULL");
 
                     b.ToTable("DayCarePackageStatuses");
+
+                    b.HasData(
+                        new
+                        {
+                            PackageStatusId = 1,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(4042), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(4053), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "Created",
+                            SequenceNumber = 1,
+                            Stage = "PACKAGE BUILDER",
+                            StatusName = "New Package",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 2,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6584), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6592), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "New",
+                            SequenceNumber = 2,
+                            Stage = "NEW PACKAGE DETAIL APPROVAL",
+                            StatusName = "Submitted for Approval",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 3,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6674), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6676), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "Approve",
+                            SequenceNumber = 3,
+                            Stage = "PACKAGE DETAIL APPROVAL",
+                            StatusName = "Approve Package",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 4,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6680), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6681), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "Reject",
+                            SequenceNumber = 3,
+                            Stage = "PACKAGE DETAIL APPROVAL",
+                            StatusName = "Reject Package",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 5,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6685), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6686), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "Request More Information",
+                            SequenceNumber = 3,
+                            Stage = "PACKAGE DETAIL APPROVAL",
+                            StatusName = "Request More Information",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 6,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6690), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6691), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "New",
+                            SequenceNumber = 4,
+                            Stage = "NEW BROKERAGE",
+                            StatusName = "Brokerage - New",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 7,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6695), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6696), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "Assigned",
+                            SequenceNumber = 5,
+                            Stage = "NEW BROKERAGE",
+                            StatusName = "Brokerage - Assigned",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 8,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6700), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6701), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "Querying",
+                            SequenceNumber = 6,
+                            Stage = "PACKAGE BROKERING",
+                            StatusName = "Brokerage - Querying",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 9,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6705), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6705), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "SupplierSourced",
+                            SequenceNumber = 6,
+                            Stage = "PACKAGE BROKERING",
+                            StatusName = "Brokerage - Supplier Sourced",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 10,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6709), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6710), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "PricingAgreed",
+                            SequenceNumber = 6,
+                            Stage = "PACKAGE BROKERING",
+                            StatusName = "Brokerage - Pricing Agreed",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 11,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6714), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6715), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "New",
+                            SequenceNumber = 7,
+                            Stage = "NEW BROKERAGE APPROVAL",
+                            StatusName = "Brokerage - Submitted for Approval",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 12,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6719), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6720), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "Approved",
+                            SequenceNumber = 8,
+                            Stage = "BROKERAGE APPROVAL",
+                            StatusName = "Brokerage Approval - Approved",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 13,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6724), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6724), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "Rejected",
+                            SequenceNumber = 8,
+                            Stage = "BROKERAGE APPROVAL",
+                            StatusName = "Brokerage Approval - Rejected",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 14,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6728), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6729), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "Request More Information",
+                            SequenceNumber = 8,
+                            Stage = "BROKERAGE APPROVAL",
+                            StatusName = "Brokerage Approval - Request more information",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        },
+                        new
+                        {
+                            PackageStatusId = 15,
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6733), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 915, DateTimeKind.Unspecified).AddTicks(6734), new TimeSpan(0, 0, 0, 0, 0)),
+                            IsDayCareStatus = true,
+                            IsStatusActive = true,
+                            PackageAction = "Contracted",
+                            SequenceNumber = 9,
+                            Stage = "CONTRACTION",
+                            StatusName = "Package Contracted",
+                            UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                        });
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackage", b =>
@@ -391,8 +651,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 1,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(3311), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(4936), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(8078), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(9496), new TimeSpan(0, 0, 0, 0, 0)),
                             ServiceName = "Personal Home Care",
                             UpdatorId = 1
                         },
@@ -400,8 +660,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 2,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5273), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5309), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(9788), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(9824), new TimeSpan(0, 0, 0, 0, 0)),
                             ServiceName = "Domestic Care",
                             UpdatorId = 1
                         },
@@ -409,8 +669,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 3,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5318), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5321), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(9832), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(9834), new TimeSpan(0, 0, 0, 0, 0)),
                             ServiceName = "Live-in Care",
                             UpdatorId = 1
                         },
@@ -418,8 +678,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 4,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5322), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5324), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(9835), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(9837), new TimeSpan(0, 0, 0, 0, 0)),
                             ServiceName = "Escort Care",
                             UpdatorId = 1
                         },
@@ -427,8 +687,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 5,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5325), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5328), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(9839), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(9841), new TimeSpan(0, 0, 0, 0, 0)),
                             ServiceName = "Night Owl",
                             UpdatorId = 1
                         },
@@ -436,8 +696,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 6,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5329), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5331), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(9842), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(9844), new TimeSpan(0, 0, 0, 0, 0)),
                             ServiceName = "Waking Nights",
                             UpdatorId = 1
                         },
@@ -445,8 +705,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 7,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5332), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5335), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(9845), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 901, DateTimeKind.Unspecified).AddTicks(9847), new TimeSpan(0, 0, 0, 0, 0)),
                             ServiceName = "Sleeping Nights",
                             UpdatorId = 1
                         });
@@ -808,8 +1068,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 1,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(2445), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(2475), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(7781), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(7802), new TimeSpan(0, 0, 0, 0, 0)),
                             TimeSlotShiftName = "Morning",
                             TimeSlotTimeLabel = "08:00 - 10:00",
                             UpdatorId = 1
@@ -818,8 +1078,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 2,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3900), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3905), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9035), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9041), new TimeSpan(0, 0, 0, 0, 0)),
                             TimeSlotShiftName = "Mid Morning",
                             TimeSlotTimeLabel = "10:00 - 12:00",
                             UpdatorId = 1
@@ -828,8 +1088,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 3,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3946), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3947), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9083), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9084), new TimeSpan(0, 0, 0, 0, 0)),
                             TimeSlotShiftName = "Lunch",
                             TimeSlotTimeLabel = "12:00 - 14:00",
                             UpdatorId = 1
@@ -838,8 +1098,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 4,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3949), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3950), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9086), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9087), new TimeSpan(0, 0, 0, 0, 0)),
                             TimeSlotShiftName = "Afternoon",
                             TimeSlotTimeLabel = "14:00 - 17:00",
                             UpdatorId = 1
@@ -848,8 +1108,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 5,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3951), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3952), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9088), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9089), new TimeSpan(0, 0, 0, 0, 0)),
                             TimeSlotShiftName = "Evening",
                             TimeSlotTimeLabel = "17:00 - 20:00",
                             UpdatorId = 1
@@ -858,8 +1118,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 6,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3954), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3955), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9090), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9091), new TimeSpan(0, 0, 0, 0, 0)),
                             TimeSlotShiftName = "Night",
                             TimeSlotTimeLabel = "20:00 - 22:00",
                             UpdatorId = 1
@@ -868,8 +1128,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 7,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3956), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3957), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9093), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9094), new TimeSpan(0, 0, 0, 0, 0)),
                             LinkedToHomeCareServiceTypeId = 5,
                             TimeSlotShiftName = "Night Owl",
                             UpdatorId = 1
@@ -878,8 +1138,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 8,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(4285), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(4290), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9391), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9396), new TimeSpan(0, 0, 0, 0, 0)),
                             LinkedToHomeCareServiceTypeId = 6,
                             TimeSlotShiftName = "Waking Nights",
                             UpdatorId = 1
@@ -888,8 +1148,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 9,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(4306), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(4307), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9408), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 908, DateTimeKind.Unspecified).AddTicks(9409), new TimeSpan(0, 0, 0, 0, 0)),
                             LinkedToHomeCareServiceTypeId = 7,
                             TimeSlotShiftName = "Sleeping Nights",
                             UpdatorId = 1
@@ -1366,8 +1626,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 1,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(6952), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(6962), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(9615), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(9625), new TimeSpan(0, 0, 0, 0, 0)),
                             PackageType = "Home Care Package",
                             Sequence = 0,
                             UpdatorId = 1
@@ -1376,8 +1636,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 2,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(8195), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(8202), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 910, DateTimeKind.Unspecified).AddTicks(761), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 910, DateTimeKind.Unspecified).AddTicks(766), new TimeSpan(0, 0, 0, 0, 0)),
                             PackageType = "Residential Care Package",
                             Sequence = 0,
                             UpdatorId = 1
@@ -1386,8 +1646,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 3,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(8233), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(8234), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 910, DateTimeKind.Unspecified).AddTicks(795), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 910, DateTimeKind.Unspecified).AddTicks(796), new TimeSpan(0, 0, 0, 0, 0)),
                             PackageType = "Day Care Package",
                             Sequence = 0,
                             UpdatorId = 1
@@ -1396,8 +1656,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 4,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(8236), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(8237), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 910, DateTimeKind.Unspecified).AddTicks(798), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 910, DateTimeKind.Unspecified).AddTicks(799), new TimeSpan(0, 0, 0, 0, 0)),
                             PackageType = "Nursing Care Package",
                             Sequence = 0,
                             UpdatorId = 1
@@ -1439,8 +1699,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 1,
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(148), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(156), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(5234), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(5245), new TimeSpan(0, 0, 0, 0, 0)),
                             StatusName = "New",
                             UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                         },
@@ -1448,8 +1708,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 2,
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1759), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1765), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(6737), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(6742), new TimeSpan(0, 0, 0, 0, 0)),
                             StatusName = "Package Confirmation",
                             UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                         },
@@ -1457,8 +1717,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 3,
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1826), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1828), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(6800), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(6801), new TimeSpan(0, 0, 0, 0, 0)),
                             StatusName = "Approved For Brokerage",
                             UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                         },
@@ -1466,8 +1726,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 4,
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1832), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1833), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(6805), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(6806), new TimeSpan(0, 0, 0, 0, 0)),
                             StatusName = "Brokering",
                             UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                         },
@@ -1475,8 +1735,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 5,
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1837), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1838), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(6809), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(6810), new TimeSpan(0, 0, 0, 0, 0)),
                             StatusName = "Supplier Sourced",
                             UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                         },
@@ -1484,8 +1744,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 6,
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1842), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1843), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(6814), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(6815), new TimeSpan(0, 0, 0, 0, 0)),
                             StatusName = "Commercially Approved",
                             UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                         },
@@ -1493,8 +1753,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 7,
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1847), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1848), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(6819), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 909, DateTimeKind.Unspecified).AddTicks(6819), new TimeSpan(0, 0, 0, 0, 0)),
                             StatusName = "Contracted",
                             UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                         });
@@ -1714,8 +1974,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 1,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 124, DateTimeKind.Unspecified).AddTicks(660), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 124, DateTimeKind.Unspecified).AddTicks(669), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 910, DateTimeKind.Unspecified).AddTicks(3134), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 910, DateTimeKind.Unspecified).AddTicks(3141), new TimeSpan(0, 0, 0, 0, 0)),
                             IsDefault = true,
                             RoleName = "Social Worker",
                             Sequence = 1,
@@ -1725,8 +1985,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 2,
                             CreatorId = 1,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 124, DateTimeKind.Unspecified).AddTicks(2203), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 124, DateTimeKind.Unspecified).AddTicks(2209), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 910, DateTimeKind.Unspecified).AddTicks(4744), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 910, DateTimeKind.Unspecified).AddTicks(4749), new TimeSpan(0, 0, 0, 0, 0)),
                             IsDefault = false,
                             RoleName = "Broker",
                             Sequence = 2,
@@ -1776,8 +2036,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 1,
                             CreatorId = 0,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 126, DateTimeKind.Unspecified).AddTicks(8373), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 126, DateTimeKind.Unspecified).AddTicks(8388), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 913, DateTimeKind.Unspecified).AddTicks(1266), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 913, DateTimeKind.Unspecified).AddTicks(1274), new TimeSpan(0, 0, 0, 0, 0)),
                             HasSupplierFrameworkContractedRates = true,
                             IsSupplierInternal = true,
                             PackageTypeId = 1,
@@ -1886,8 +2146,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             AddressLine1 = "Queens Gate",
                             CreatorId = 0,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 125, DateTimeKind.Unspecified).AddTicks(1311), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 125, DateTimeKind.Unspecified).AddTicks(1321), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 911, DateTimeKind.Unspecified).AddTicks(3666), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 911, DateTimeKind.Unspecified).AddTicks(3735), new TimeSpan(0, 0, 0, 0, 0)),
                             FirstName = "Furkan",
                             HackneyId = 1111,
                             LastName = "Kayar",
@@ -1901,8 +2161,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             Id = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"),
                             AddressLine1 = "Nairobi",
                             CreatorId = 0,
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 125, DateTimeKind.Unspecified).AddTicks(3511), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 125, DateTimeKind.Unspecified).AddTicks(3516), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 911, DateTimeKind.Unspecified).AddTicks(5975), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 11, 6, 46, 14, 911, DateTimeKind.Unspecified).AddTicks(5981), new TimeSpan(0, 0, 0, 0, 0)),
                             FirstName = "Duncan",
                             HackneyId = 4444,
                             LastName = "Okeno",
@@ -1911,6 +2171,31 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             Town = "Nairobi",
                             UpdatorId = 0
                         });
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare.DayCareApprovalHistory", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackage", "DayCarePackage")
+                        .WithMany()
+                        .HasForeignKey("DayCarePackageId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackage", null)
+                        .WithMany("DayCareApprovalHistories")
+                        .HasForeignKey("DayCarePackageId1");
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare.DayCarePackageStatus", "PackageStatus")
+                        .WithMany()
+                        .HasForeignKey("PackageStatusId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare.DayCarePackageStatus", b =>

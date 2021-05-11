@@ -28,6 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<DayCarePackage> DayCarePackages { get; set; }
         public DbSet<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
         public DbSet<DayCarePackageStatus> DayCarePackageStatuses { get; set; }
+        public DbSet<DayCareApprovalHistory> DayCareApprovalHistory { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<TimeSlotShifts> TimeSlotShifts { get; set; }
@@ -112,6 +113,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed CarerType
             modelBuilder.ApplyConfiguration(new CarerTypeSeed());
 
+            // Seed day care package status
+            modelBuilder.ApplyConfiguration(new DayCarePackageStatusSeed());
+
             #endregion
 
             #region Entity Config
@@ -182,6 +186,19 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             {
                 entity.HasOne(r => r.ResidentialCarePackage)
                     .WithMany(r => r.ResidentialCareAdditionalNeeds)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.ClientCascade);
+            });
+
+            modelBuilder.Entity<DayCareApprovalHistory>(entity =>
+            {
+                entity.HasOne(r => r.DayCarePackage)
+                    .WithMany()
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.ClientCascade);
+
+                entity.HasOne(r => r.PackageStatus)
+                    .WithMany()
                     .IsRequired()
                     .OnDelete(DeleteBehavior.ClientCascade);
             });

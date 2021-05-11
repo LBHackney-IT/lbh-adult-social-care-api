@@ -30,6 +30,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         private readonly IGetTermTimeConsiderationOptionsListUseCase _getTermTimeConsiderationOptionsListUseCase;
         private readonly IGetOpportunityLengthOptionsListUseCase _getOpportunityLengthOptionsListUseCase;
         private readonly IGetOpportunityTimesPerMonthOptionsListUseCase _getOpportunityTimesPerMonthOptionsListUseCase;
+        private readonly IGetDayCarePackageForApprovalDetailsUseCase _getDayCarePackageForApprovalDetailsUseCase;
 
         public DayCarePackageController(
             ICreateDayCarePackageUseCase createdDayCarePackageUseCase,
@@ -38,7 +39,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             IUpdateDayCarePackageUseCase updateDayCarePackageUseCase,
             IGetTermTimeConsiderationOptionsListUseCase getTermTimeConsiderationOptionsListUseCase,
             IGetOpportunityLengthOptionsListUseCase getOpportunityLengthOptionsListUseCase,
-            IGetOpportunityTimesPerMonthOptionsListUseCase getOpportunityTimesPerMonthOptionsListUseCase)
+            IGetOpportunityTimesPerMonthOptionsListUseCase getOpportunityTimesPerMonthOptionsListUseCase,
+            IGetDayCarePackageForApprovalDetailsUseCase getDayCarePackageForApprovalDetailsUseCase)
         {
             _createDayCarePackageUseCase = createdDayCarePackageUseCase;
             _getDayCarePackageUseCase = getDayCarePackageUseCase;
@@ -47,6 +49,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _getTermTimeConsiderationOptionsListUseCase = getTermTimeConsiderationOptionsListUseCase;
             _getOpportunityLengthOptionsListUseCase = getOpportunityLengthOptionsListUseCase;
             _getOpportunityTimesPerMonthOptionsListUseCase = getOpportunityTimesPerMonthOptionsListUseCase;
+            _getDayCarePackageForApprovalDetailsUseCase = getDayCarePackageForApprovalDetailsUseCase;
         }
 
         /// <summary>Creates the day care package.</summary>
@@ -89,6 +92,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         public async Task<IActionResult> GetSingleDayCarePackage(Guid dayCarePackageId)
         {
             var dayCarePackage = await _getDayCarePackageUseCase.Execute(dayCarePackageId).ConfigureAwait(false);
+            return Ok(dayCarePackage);
+        }
+
+        /// <summary>Get a day care package by Id</summary>
+        /// <param name="dayCarePackageId">The day care package ID</param>
+        /// <returns>A day care package</returns>
+        /// <response code="200">Returns day care package</response>
+        /// <response code="404">If the day care package is not found</response>
+        [HttpGet("{dayCarePackageId}/approval-details")]
+        [ProducesResponseType(typeof(DayCarePackageForApprovalDetailsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<DayCarePackageForApprovalDetailsResponse>> GetSingleDayCarePackageDetailsForApproval(Guid dayCarePackageId)
+        {
+            var dayCarePackage = await _getDayCarePackageForApprovalDetailsUseCase.Execute(dayCarePackageId).ConfigureAwait(false);
             return Ok(dayCarePackage);
         }
 

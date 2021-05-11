@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
-    public partial class DayCarePackageHistory : Migration
+    public partial class DayCareApprovalUpdates : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,236 +52,300 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "DayCareApprovalHistory",
+                columns: table => new
+                {
+                    HistoryId = table.Column<Guid>(nullable: false),
+                    DateCreated = table.Column<DateTimeOffset>(nullable: false),
+                    DateUpdated = table.Column<DateTimeOffset>(nullable: false),
+                    DayCarePackageId = table.Column<Guid>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: false),
+                    PackageStatusId = table.Column<int>(nullable: false),
+                    LogText = table.Column<string>(nullable: false),
+                    LogSubText = table.Column<string>(nullable: true),
+                    CreatorRole = table.Column<string>(nullable: false),
+                    DayCarePackageId1 = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DayCareApprovalHistory", x => x.HistoryId);
+                    table.ForeignKey(
+                        name: "FK_DayCareApprovalHistory_Users_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DayCareApprovalHistory_DayCarePackages_DayCarePackageId",
+                        column: x => x.DayCarePackageId,
+                        principalTable: "DayCarePackages",
+                        principalColumn: "DayCarePackageId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DayCareApprovalHistory_DayCarePackages_DayCarePackageId1",
+                        column: x => x.DayCarePackageId1,
+                        principalTable: "DayCarePackages",
+                        principalColumn: "DayCarePackageId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DayCareApprovalHistory_DayCarePackageStatuses_PackageStatusId",
+                        column: x => x.PackageStatusId,
+                        principalTable: "DayCarePackageStatuses",
+                        principalColumn: "PackageStatusId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.UpdateData(
                 table: "Clients",
                 keyColumn: "Id",
                 keyValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb80"),
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 125, DateTimeKind.Unspecified).AddTicks(6399), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 125, DateTimeKind.Unspecified).AddTicks(6407), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 405, DateTimeKind.Unspecified).AddTicks(3012), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 405, DateTimeKind.Unspecified).AddTicks(3020), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "HomeCareServiceTypes",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(3311), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(4936), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(1224), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(2815), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "HomeCareServiceTypes",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5273), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5309), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(3125), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(3159), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "HomeCareServiceTypes",
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5318), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5321), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(3168), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(3171), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "HomeCareServiceTypes",
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5322), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5324), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(3172), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(3174), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "HomeCareServiceTypes",
                 keyColumn: "Id",
                 keyValue: 5,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5325), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5328), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(3175), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(3177), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "HomeCareServiceTypes",
                 keyColumn: "Id",
                 keyValue: 6,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5329), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5331), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(3178), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(3181), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "HomeCareServiceTypes",
                 keyColumn: "Id",
                 keyValue: 7,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5332), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 115, DateTimeKind.Unspecified).AddTicks(5335), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(3182), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 395, DateTimeKind.Unspecified).AddTicks(3184), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "PackageStatuses",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(148), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(156), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(4826), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(4836), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "PackageStatuses",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1759), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1765), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(7447), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(7454), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "PackageStatuses",
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1826), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1828), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(7608), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(7609), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "PackageStatuses",
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1832), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1833), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(7614), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(7615), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "PackageStatuses",
                 keyColumn: "Id",
                 keyValue: 5,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1837), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1838), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(7618), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(7619), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "PackageStatuses",
                 keyColumn: "Id",
                 keyValue: 6,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1842), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1843), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(7623), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(7624), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "PackageStatuses",
                 keyColumn: "Id",
                 keyValue: 7,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1847), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(1848), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(7628), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 402, DateTimeKind.Unspecified).AddTicks(7629), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "Packages",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(6952), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(6962), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 403, DateTimeKind.Unspecified).AddTicks(983), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 403, DateTimeKind.Unspecified).AddTicks(992), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "Packages",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(8195), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(8202), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 403, DateTimeKind.Unspecified).AddTicks(2157), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 403, DateTimeKind.Unspecified).AddTicks(2162), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "Packages",
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(8233), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(8234), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 403, DateTimeKind.Unspecified).AddTicks(2191), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 403, DateTimeKind.Unspecified).AddTicks(2192), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "Packages",
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(8236), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 123, DateTimeKind.Unspecified).AddTicks(8237), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 403, DateTimeKind.Unspecified).AddTicks(2194), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 403, DateTimeKind.Unspecified).AddTicks(2195), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "Roles",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 124, DateTimeKind.Unspecified).AddTicks(660), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 124, DateTimeKind.Unspecified).AddTicks(669), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 403, DateTimeKind.Unspecified).AddTicks(7135), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 403, DateTimeKind.Unspecified).AddTicks(7143), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "Roles",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 124, DateTimeKind.Unspecified).AddTicks(2203), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 124, DateTimeKind.Unspecified).AddTicks(2209), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 403, DateTimeKind.Unspecified).AddTicks(8628), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 403, DateTimeKind.Unspecified).AddTicks(8633), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "Suppliers",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 126, DateTimeKind.Unspecified).AddTicks(8373), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 126, DateTimeKind.Unspecified).AddTicks(8388), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 406, DateTimeKind.Unspecified).AddTicks(3945), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 406, DateTimeKind.Unspecified).AddTicks(3954), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "TimeSlotShifts",
                 keyColumn: "Id",
                 keyValue: 1,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(2445), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(2475), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(6784), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(6796), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "TimeSlotShifts",
                 keyColumn: "Id",
                 keyValue: 2,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3900), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3905), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8106), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8111), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "TimeSlotShifts",
                 keyColumn: "Id",
                 keyValue: 3,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3946), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3947), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8150), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8151), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "TimeSlotShifts",
                 keyColumn: "Id",
                 keyValue: 4,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3949), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3950), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8153), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8154), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "TimeSlotShifts",
                 keyColumn: "Id",
                 keyValue: 5,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3951), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3952), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8155), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8157), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "TimeSlotShifts",
                 keyColumn: "Id",
                 keyValue: 6,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3954), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3955), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8158), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8159), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "TimeSlotShifts",
                 keyColumn: "Id",
                 keyValue: 7,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3956), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(3957), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8160), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8161), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "TimeSlotShifts",
                 keyColumn: "Id",
                 keyValue: 8,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(4285), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(4290), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8475), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8480), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "TimeSlotShifts",
                 keyColumn: "Id",
                 keyValue: 9,
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(4306), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 122, DateTimeKind.Unspecified).AddTicks(4307), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8493), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 401, DateTimeKind.Unspecified).AddTicks(8494), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"),
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 125, DateTimeKind.Unspecified).AddTicks(3511), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 125, DateTimeKind.Unspecified).AddTicks(3516), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 405, DateTimeKind.Unspecified).AddTicks(233), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 405, DateTimeKind.Unspecified).AddTicks(238), new TimeSpan(0, 0, 0, 0, 0)) });
 
             migrationBuilder.UpdateData(
                 table: "Users",
                 keyColumn: "Id",
                 keyValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 columns: new[] { "DateCreated", "DateUpdated" },
-                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 125, DateTimeKind.Unspecified).AddTicks(1311), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 10, 12, 42, 14, 125, DateTimeKind.Unspecified).AddTicks(1321), new TimeSpan(0, 0, 0, 0, 0)) });
+                values: new object[] { new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 404, DateTimeKind.Unspecified).AddTicks(8121), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 11, 6, 38, 26, 404, DateTimeKind.Unspecified).AddTicks(8129), new TimeSpan(0, 0, 0, 0, 0)) });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DayCareApprovalHistory_CreatorId",
+                table: "DayCareApprovalHistory",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DayCareApprovalHistory_DayCarePackageId",
+                table: "DayCareApprovalHistory",
+                column: "DayCarePackageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DayCareApprovalHistory_DayCarePackageId1",
+                table: "DayCareApprovalHistory",
+                column: "DayCarePackageId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DayCareApprovalHistory_PackageStatusId",
+                table: "DayCareApprovalHistory",
+                column: "PackageStatusId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DayCarePackageStatuses_CreatorId",
@@ -314,6 +378,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_DayCarePackages_DayCarePackageStatuses_StatusId",
                 table: "DayCarePackages");
+
+            migrationBuilder.DropTable(
+                name: "DayCareApprovalHistory");
 
             migrationBuilder.DropTable(
                 name: "DayCarePackageStatuses");
