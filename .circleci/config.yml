@@ -176,7 +176,7 @@ workflows:
             - assume-role-development
           filters:
             branches:
-              only: development
+              only: develop
       - deploy-to-development:
           context: api-assume-role-housing-development-context
           requires:
