@@ -73,36 +73,5 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
             var result = await _createHomeCareBrokerageUseCase.ExecuteAsync(homeCarePackageId, homeCareBrokerageCreationDomain).ConfigureAwait(false);
             return Ok(result);
         }
-
-        /// <summary>
-        /// Creates the home care request more information.
-        /// </summary>
-        /// <param name="homeCareRequestMoreInformationForCreationRequest">The home care package brokerage for creation.</param>
-        /// <returns>A boolean value if home care request more information succeed</returns>
-        /// <response code="200">Returns boolean value</response>
-        /// <response code="400">If the item is null</response>
-        /// <response code="422">If the model is invalid</response>
-        [HttpPost]
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesDefaultResponseType]
-        public async Task<ActionResult<bool>> CreateHomeCareRequestMoreInformation([FromBody] HomeCareRequestMoreInformationForCreationRequest homeCareRequestMoreInformationForCreationRequest)
-        {
-            if (homeCareRequestMoreInformationForCreationRequest == null)
-            {
-                return BadRequest("Object for creation cannot be null.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return UnprocessableEntity(ModelState);
-            }
-
-            var homeCareBrokerageCreationDomain = homeCareRequestMoreInformationForCreationRequest.ToDomain();
-            var result = await _createHomeCareRequestMoreInformationUseCase.Execute(homeCareBrokerageCreationDomain).ConfigureAwait(false);
-            return Ok(result);
-        }
-
     }
 }
