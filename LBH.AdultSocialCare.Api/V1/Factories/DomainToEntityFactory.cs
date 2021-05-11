@@ -6,6 +6,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -36,6 +37,10 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static DayCarePackageOpportunity ToDb(this DayCarePackageOpportunityForCreationDomain dayCarePackageOpportunityForCreationDomain)
         {
             return _mapper.Map<DayCarePackageOpportunity>(dayCarePackageOpportunityForCreationDomain);
+        }
+        public static DayCareApprovalHistory ToDb(this DayCareApprovalHistoryForCreationDomain dayCareApprovalHistoryForCreationDomain)
+        {
+            return _mapper.Map<DayCareApprovalHistory>(dayCareApprovalHistoryForCreationDomain);
         }
 
         #endregion

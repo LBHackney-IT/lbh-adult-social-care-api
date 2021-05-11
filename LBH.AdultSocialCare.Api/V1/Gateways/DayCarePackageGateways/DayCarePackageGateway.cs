@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
 {
@@ -37,6 +38,21 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
             catch (Exception)
             {
                 throw new DbSaveFailedException("Could not save day care package to database");
+            }
+        }
+
+        public async Task<Guid> CreateDayCarePackageHistory(DayCareApprovalHistory dayCareApprovalHistory)
+        {
+            var entry = await _dbContext.DayCareApprovalHistory.AddAsync(dayCareApprovalHistory).ConfigureAwait(false);
+            try
+            {
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+
+                return entry.Entity.HistoryId;
+            }
+            catch (Exception)
+            {
+                throw new DbSaveFailedException("Could not save day care package history to database");
             }
         }
 
@@ -72,6 +88,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
                 .Include(dc => dc.Client)
                 .Include(dc => dc.TermTimeConsiderationOption)
                 .Include(dc => dc.Creator)
+                .ThenInclude(cr => cr.Role)
                 .Include(dc => dc.Updater)
                 .SingleOrDefaultAsync().ConfigureAwait(false);
 
@@ -81,6 +98,37 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
             }
 
             return dayCarePackage.ToDomain();
+        }
+
+        public async Task<Guid> UpdateDayCarePackageStatus(Guid dayCarePackageId, int newStatusId)
+        {
+            // Check if status exists
+            var statusEntity = await _dbContext.DayCarePackageStatuses.Where(ds => ds.PackageStatusId.Equals(newStatusId))
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+            if (statusEntity == null)
+            {
+                throw new EntityNotFoundException($"Unable to locate package status with Id {newStatusId}");
+            }
+
+            // Get package to update
+            var dayCarePackageEntity = await _dbContext.DayCarePackages
+                .Where(dc => dc.DayCarePackageId.Equals(dayCarePackageId))
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+            if (dayCarePackageEntity == null)
+            {
+                throw new EntityNotFoundException($"Unable to locate day care package {dayCarePackageId.ToString()}");
+            }
+
+            dayCarePackageEntity.StatusId = newStatusId;
+            try
+            {
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+                return dayCarePackageEntity.DayCarePackageId;
+            }
+            catch (Exception)
+            {
+                throw new DbSaveFailedException($"Update status for day care package {dayCarePackageEntity.DayCarePackageId.ToString()} failed");
+            }
         }
 
         public async Task<DayCarePackageForApprovalDetailsDomain> GetDayCarePackageForApprovalDetails(Guid dayCarePackageId)

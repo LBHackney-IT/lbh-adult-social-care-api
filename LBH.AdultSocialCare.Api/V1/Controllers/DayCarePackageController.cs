@@ -59,11 +59,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         /// <response code="400">If the item is null</response>
         /// <response code="422">If the model is invalid</response>
         [HttpPost]
-        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DayCarePackageResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<Guid>> CreateDayCarePackage([FromBody] DayCarePackageForCreationRequest dayCarePackageForCreation)
+        public async Task<ActionResult<DayCarePackageResponse>> CreateDayCarePackage([FromBody] DayCarePackageForCreationRequest dayCarePackageForCreation)
         {
             if (dayCarePackageForCreation == null)
             {

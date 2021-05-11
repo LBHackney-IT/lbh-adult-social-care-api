@@ -5,6 +5,11 @@ using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApproveBrokeredBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovePackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request;
@@ -12,41 +17,37 @@ using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareAdditionalNeedsDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarepackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
-using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response.SupplierBoundary;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response.HomeCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApproveBrokeredBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response.SupplierBoundary;
+using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareApprovePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCareAdditionalNeedsDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {
@@ -64,6 +65,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
                     opt => opt.MapFrom(b => $"{b.Client.FirstName} {b.Client.MiddleName} {b.Client.LastName}"))
                 .ForMember(dc => dc.TermTimeConsiderationOptionName,
                     opt => opt.MapFrom(b => b.TermTimeConsiderationOption.OptionName))
+                .ForMember(dc => dc.CreatorRole,
+                    opt => opt.MapFrom(b => b.Creator.Role.RoleName))
                 .ForMember(dc => dc.CreatorName,
                     opt => opt.MapFrom(b => $"{b.Creator.FirstName} {b.Creator.MiddleName} {b.Creator.LastName}"))
                 .ForMember(dc => dc.UpdaterName,
@@ -98,21 +101,21 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<TermTimeConsiderationOption, TermTimeConsiderationOptionDomain>();
             CreateMap<TermTimeConsiderationOptionDomain, TermTimeConsiderationOptionResponse>();
 
-            #endregion
+            #endregion TermTimeConsiderationOptions
 
             #region OpportunityLengthOptions
 
             CreateMap<OpportunityLengthOption, OpportunityLengthOptionDomain>();
             CreateMap<OpportunityLengthOptionDomain, OpportunityLengthOptionResponse>();
 
-            #endregion
+            #endregion OpportunityLengthOptions
 
             #region OpportunityTimesPerMonthOptions
 
             CreateMap<OpportunityTimesPerMonthOption, OpportunityTimesPerMonthOptionDomain>();
             CreateMap<OpportunityTimesPerMonthOptionDomain, OpportunityTimesPerMonthOptionResponse>();
 
-            #endregion
+            #endregion OpportunityTimesPerMonthOptions
 
             #region HomeCarePackage
 
@@ -141,7 +144,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<NursingCarePackageForUpdateDomain, NursingCarePackage>();
             CreateMap<TypeOfNursingCareHomeDomain, TypeOfNursingCareHomeResponse>();
 
-            #endregion
+            #endregion NursingCarePackage
 
             #region ResidentialCarePackage
 
@@ -161,7 +164,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ResidentialCarePackageForUpdateDomain, ResidentialCarePackage>();
             CreateMap<TypeOfResidentialCareHomeDomain, TypeOfResidentialCareHomeResponse>();
 
-            #endregion
+            #endregion ResidentialCarePackage
 
             #region HomeCareBrokerage
 
@@ -190,7 +193,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CarerTypeResponse, CarerTypeDomain>();
             CreateMap<CarerTypeDomain, CarerTypeResponse>();
 
-            #endregion
+            #endregion HomeCareBrokerage
 
             #region HomeCareApprovalHistory
 
@@ -198,14 +201,14 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<HomeCareApprovalHistory, HomeCareApprovalHistoryDomain>();
             CreateMap<HomeCareApprovalHistoryDomain, HomeCareApprovalHistoryResponse>();
 
-            #endregion
+            #endregion HomeCareApprovalHistory
 
             #region HomeCareApprovePackage
 
             CreateMap<HomeCareApprovePackageDomain, HomeCareApprovePackageResponse>();
             CreateMap<HomeCareApprovePackageResponse, HomeCareApprovePackageDomain>();
 
-            #endregion
+            #endregion HomeCareApprovePackage
 
             #region Supplier
 
@@ -214,7 +217,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<SupplierDomain, SupplierResponse>();
             CreateMap<SupplierResponse, SupplierDomain>();
 
-            #endregion
+            #endregion Supplier
 
             #region HomeCareApproveBrokered
 
@@ -225,7 +228,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<HomeCarePackageElementsCostingDomain, HomeCarePackageElementsCostingResponse>();
             CreateMap<HomeCarePackageElementsCostingResponse, HomeCarePackageElementsCostingDomain>();
 
-            #endregion
+            #endregion HomeCareApproveBrokered
 
             #region DayCareApproveBrokered
 
@@ -236,15 +239,16 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DayCarePackageElementsCostingDomain, DayCarePackageElementsCostingResponse>();
             CreateMap<DayCarePackageElementsCostingResponse, DayCarePackageElementsCostingDomain>();
 
-            #endregion
+            #endregion DayCareApproveBrokered
 
             #region DayCareApprovePackage
 
             CreateMap<DayCareApprovePackageDomain, DayCareApprovePackageResponse>();
             CreateMap<DayCareApprovePackageResponse, DayCareApprovePackageDomain>();
             CreateMap<DayCarePackageForApprovalDetailsDomain, DayCarePackageForApprovalDetailsResponse>();
+            CreateMap<DayCareApprovalHistoryForCreationDomain, DayCareApprovalHistory>();
 
-            #endregion
+            #endregion DayCareApprovePackage
         }
     }
 }

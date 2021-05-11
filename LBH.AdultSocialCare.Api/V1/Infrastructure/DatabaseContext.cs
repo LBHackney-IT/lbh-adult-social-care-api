@@ -193,7 +193,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             modelBuilder.Entity<DayCareApprovalHistory>(entity =>
             {
                 entity.HasOne(r => r.DayCarePackage)
-                    .WithMany()
+                    .WithMany(da => da.DayCareApprovalHistories)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.ClientCascade);
 

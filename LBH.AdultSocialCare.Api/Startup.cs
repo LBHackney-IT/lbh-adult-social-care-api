@@ -56,7 +56,6 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -189,6 +188,9 @@ namespace LBH.AdultSocialCare.Api
 
             string assemblyName = Assembly.GetCallingAssembly().GetName().Name;
 
+            /*services.AddDbContext<DatabaseContext>(
+                opt => opt.UseNpgsql(connectionString, b => b.MigrationsAssembly(assemblyName)).AddXRayInterceptor(true));*/
+
             services.AddDbContext<DatabaseContext>(opt
                 => opt.UseSqlServer(connectionString, b => b.MigrationsAssembly(assemblyName)));
         }
@@ -285,6 +287,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetDayCarePackageListUseCase, GetDayCarePackageListUseCase>();
             services.AddScoped<IUpdateDayCarePackageUseCase, UpdateDayCarePackageUseCase>();
             services.AddScoped<IGetDayCarePackageForApprovalDetailsUseCase, GetDayCarePackageForApprovalDetailsUseCase>();
+            services.AddScoped<ICreateDayCarePackageHistoryUseCase, CreateDayCarePackageHistoryUseCase>();
 
             #endregion DayCarePackage
 
@@ -393,32 +396,32 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetHomeCareBrokerageUseCase, GetHomeCareBrokerageUseCase>();
             services.AddScoped<ICreateHomeCareBrokerageUseCase, CreateHomeCareBrokerageUseCase>();
 
-            #endregion
+            #endregion HomeCareBrokerage
 
             #region Supplier
 
             services.AddScoped<ICreateSupplierUseCase, CreateSupplierUseCase>();
             services.AddScoped<IGetAllSupplierUseCase, GetAllSupplierUseCase>();
 
-            #endregion
+            #endregion Supplier
 
             #region HomeCareApprovalHistory
 
             services.AddScoped<IGetAllHomeCareApprovalHistoryUseCase, GetAllHomeCareApprovalHistoryUseCase>();
 
-            #endregion
+            #endregion HomeCareApprovalHistory
 
             #region HomeCareApprovePackage
 
             services.AddScoped<IGetHomeCareApprovePackageUseCase, GetHomeCareApprovePackageUseCase>();
 
-            #endregion
+            #endregion HomeCareApprovePackage
 
             #region HomeCareApproveBrokered
 
             services.AddScoped<IGetHomeCareApproveBrokeredUseCase, GetHomeCareApproveBrokeredUseCase>();
 
-            #endregion
+            #endregion HomeCareApproveBrokered
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

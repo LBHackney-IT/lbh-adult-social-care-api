@@ -36,6 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response
         public string ClientName { get; set; }
         public string TermTimeConsiderationOptionName { get; set; }
         public string CreatorName { get; set; }
+        public string CreatorRole { get; set; }
         public string UpdaterName { get; set; }
         public string StatusName { get; set; }
     }
