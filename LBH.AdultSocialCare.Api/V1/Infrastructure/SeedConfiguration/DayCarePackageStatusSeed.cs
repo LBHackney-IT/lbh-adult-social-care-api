@@ -13,8 +13,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
             builder.HasData(
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 1,
-                    StatusName = "New Package",
+                    PackageStatusId = PackageStatusConstants.NewPackageId,
+                    StatusName = PackageStatusConstants.NewPackage,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 1,
@@ -25,8 +25,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 2,
-                    StatusName = "Submitted for Approval",
+                    PackageStatusId = PackageStatusConstants.SubmittedForApprovalId,
+                    StatusName = PackageStatusConstants.SubmittedForApproval,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 2,
@@ -37,8 +37,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 3,
-                    StatusName = "Approve Package",
+                    PackageStatusId = PackageStatusConstants.ApprovePackageId,
+                    StatusName = PackageStatusConstants.ApprovePackage,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 3,
@@ -49,8 +49,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 4,
-                    StatusName = "Reject Package",
+                    PackageStatusId = PackageStatusConstants.RejectPackageId,
+                    StatusName = PackageStatusConstants.RejectPackage,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 3,
@@ -61,8 +61,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 5,
-                    StatusName = "Request More Information",
+                    PackageStatusId = PackageStatusConstants.RequestMoreInformationId,
+                    StatusName = PackageStatusConstants.RequestMoreInformation,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 3,
@@ -73,8 +73,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 6,
-                    StatusName = "Brokerage - New",
+                    PackageStatusId = PackageStatusConstants.BrokerageNewId,
+                    StatusName = PackageStatusConstants.BrokerageNew,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 4,
@@ -85,8 +85,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 7,
-                    StatusName = "Brokerage - Assigned",
+                    PackageStatusId = PackageStatusConstants.BrokerageAssignedId,
+                    StatusName = PackageStatusConstants.BrokerageAssigned,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 5,
@@ -97,8 +97,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 8,
-                    StatusName = "Brokerage - Querying",
+                    PackageStatusId = PackageStatusConstants.BrokerageQueryingId,
+                    StatusName = PackageStatusConstants.BrokerageQuerying,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 6,
@@ -109,8 +109,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 9,
-                    StatusName = "Brokerage - Supplier Sourced",
+                    PackageStatusId = PackageStatusConstants.BrokerageSupplierSourcedId,
+                    StatusName = PackageStatusConstants.BrokerageSupplierSourced,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 6,
@@ -121,8 +121,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 10,
-                    StatusName = "Brokerage - Pricing Agreed",
+                    PackageStatusId = PackageStatusConstants.BrokeragePricingAgreedId,
+                    StatusName = PackageStatusConstants.BrokeragePricingAgreed,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 6,
@@ -133,8 +133,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 11,
-                    StatusName = "Brokerage - Submitted for Approval",
+                    PackageStatusId = PackageStatusConstants.BrokerageSubmittedForApprovalId,
+                    StatusName = PackageStatusConstants.BrokerageSubmittedForApproval,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 7,
@@ -145,8 +145,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 12,
-                    StatusName = "Brokerage Approval - Approved",
+                    PackageStatusId = PackageStatusConstants.BrokeredDealApprovedId,
+                    StatusName = PackageStatusConstants.BrokeredDealApproved,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 8,
@@ -157,8 +157,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 13,
-                    StatusName = "Brokerage Approval - Rejected",
+                    PackageStatusId = PackageStatusConstants.BrokeredDealRejectedId,
+                    StatusName = PackageStatusConstants.BrokeredDealRejected,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 8,
@@ -169,8 +169,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 14,
-                    StatusName = "Brokerage Approval - Request more information",
+                    PackageStatusId = PackageStatusConstants.BrokeredDealRequestMoreInformationId,
+                    StatusName = PackageStatusConstants.BrokeredDealRequestMoreInformation,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 8,
@@ -181,8 +181,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 },
                 new DayCarePackageStatus
                 {
-                    PackageStatusId = 15,
-                    StatusName = "Package Contracted",
+                    PackageStatusId = PackageStatusConstants.PackageContractedId,
+                    StatusName = PackageStatusConstants.PackageContracted,
                     CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                     SequenceNumber = 9,

@@ -14,6 +14,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
         Task<DayCarePackageDomain> UpdateDayCarePackage(DayCarePackageForUpdateDomain dayCarePackageForUpdate);
         Task<DayCarePackageDomain> GetDayCarePackage(Guid dayCarePackageId);
         Task<Guid> UpdateDayCarePackageStatus(Guid dayCarePackageId, int newStatusId);
+        Task<int> GetDayCareStatusByName(string statusName);
         Task<DayCarePackageForApprovalDetailsDomain> GetDayCarePackageForApprovalDetails(Guid dayCarePackageId);
         Task<IEnumerable<DayCarePackageDomain>> GetDayCarePackageList();
     }

@@ -12,14 +12,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete
     {
         private readonly IDayCarePackageGateway _dayCarePackageGateway;
         private readonly ICreateDayCarePackageHistoryUseCase _createDayCarePackageHistoryUseCase;
-        private readonly IGetDayCarePackageUseCase _iGetDayCarePackageUseCase;
 
-        public CreateDayCarePackageUseCase(IDayCarePackageGateway dayCarePackageGateway, ICreateDayCarePackageHistoryUseCase createDayCarePackageHistoryUseCase,
-            IGetDayCarePackageUseCase iGetDayCarePackageUseCase)
+        public CreateDayCarePackageUseCase(IDayCarePackageGateway dayCarePackageGateway, ICreateDayCarePackageHistoryUseCase createDayCarePackageHistoryUseCase)
         {
             _dayCarePackageGateway = dayCarePackageGateway;
             _createDayCarePackageHistoryUseCase = createDayCarePackageHistoryUseCase;
-            _iGetDayCarePackageUseCase = iGetDayCarePackageUseCase;
         }
 
         public async Task<DayCarePackageResponse> Execute(DayCarePackageForCreationDomain dayCarePackageForCreationDomain)

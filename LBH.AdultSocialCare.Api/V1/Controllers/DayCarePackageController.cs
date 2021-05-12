@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Interfaces;
@@ -31,6 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         private readonly IGetOpportunityLengthOptionsListUseCase _getOpportunityLengthOptionsListUseCase;
         private readonly IGetOpportunityTimesPerMonthOptionsListUseCase _getOpportunityTimesPerMonthOptionsListUseCase;
         private readonly IGetDayCarePackageForApprovalDetailsUseCase _getDayCarePackageForApprovalDetailsUseCase;
+        private readonly IChangeDayCarePackageStatusUseCase _changeDayCarePackageStatusUseCase;
 
         public DayCarePackageController(
             ICreateDayCarePackageUseCase createdDayCarePackageUseCase,
@@ -40,7 +42,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             IGetTermTimeConsiderationOptionsListUseCase getTermTimeConsiderationOptionsListUseCase,
             IGetOpportunityLengthOptionsListUseCase getOpportunityLengthOptionsListUseCase,
             IGetOpportunityTimesPerMonthOptionsListUseCase getOpportunityTimesPerMonthOptionsListUseCase,
-            IGetDayCarePackageForApprovalDetailsUseCase getDayCarePackageForApprovalDetailsUseCase)
+            IGetDayCarePackageForApprovalDetailsUseCase getDayCarePackageForApprovalDetailsUseCase,
+            IChangeDayCarePackageStatusUseCase changeDayCarePackageStatusUseCase)
         {
             _createDayCarePackageUseCase = createdDayCarePackageUseCase;
             _getDayCarePackageUseCase = getDayCarePackageUseCase;
@@ -50,6 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _getOpportunityLengthOptionsListUseCase = getOpportunityLengthOptionsListUseCase;
             _getOpportunityTimesPerMonthOptionsListUseCase = getOpportunityTimesPerMonthOptionsListUseCase;
             _getDayCarePackageForApprovalDetailsUseCase = getDayCarePackageForApprovalDetailsUseCase;
+            _changeDayCarePackageStatusUseCase = changeDayCarePackageStatusUseCase;
         }
 
         /// <summary>Creates the day care package.</summary>
@@ -191,6 +195,88 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         public async Task<ActionResult<IEnumerable<OpportunityTimesPerMonthOptionResponse>>> GetOpportunityTimesPerMonthOptionList()
         {
             return Ok(await _getOpportunityTimesPerMonthOptionsListUseCase.Execute().ConfigureAwait(false));
+        }
+
+        #endregion
+
+        #region DayCarePackageStatus
+
+        /// <summary>
+        /// Changes the day care package status.
+        /// </summary>
+        /// <param name="dayCarePackageId">The day care package identifier.</param>
+        /// <param name="newStatusId">The new status identifier.</param>
+        /// <returns>Guid of the day care package</returns>
+        [HttpPut("{dayCarePackageId}/change-status/{newStatusId}")]
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<Guid>> ChangeDayCarePackageStatus(Guid dayCarePackageId, int newStatusId)
+        {
+            var res = await _changeDayCarePackageStatusUseCase.ChangeDayCarePackageStatus(dayCarePackageId, newStatusId).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// Approves the day care package details.
+        /// </summary>
+        /// <param name="dayCarePackageId">The day care package identifier.</param>
+        /// <returns>Guid of the day care package</returns>
+        [HttpPut("{dayCarePackageId}/change-status/approve-package-details")]
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<Guid>> ApproveDayCarePackageDetails(Guid dayCarePackageId)
+        {
+            var res = await _changeDayCarePackageStatusUseCase.ApproveDayCarePackageDetails(dayCarePackageId).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// Approves the day care package brokered deal.
+        /// </summary>
+        /// <param name="dayCarePackageId">The day care package identifier.</param>
+        /// <returns>Guid of the day care package</returns>
+        [HttpPut("{dayCarePackageId}/change-status/approve-brokered-deal")]
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<Guid>> ApproveDayCarePackageBrokeredDeal(Guid dayCarePackageId)
+        {
+            var res = await _changeDayCarePackageStatusUseCase.DayCarePackageBrokeredDealApproved(dayCarePackageId).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// Day care package details request more information.
+        /// </summary>
+        /// <param name="dayCarePackageId">The day care package identifier.</param>
+        /// <param name="packageRequestMoreInformation">Information request object</param>
+        /// <returns>Guid of the day care package</returns>
+        [HttpPut("{dayCarePackageId}/change-status/package-details-request-more-information")]
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<Guid>> DayCarePackageDetailsRequestMoreInformation(Guid dayCarePackageId, [FromBody] PackageRequestMoreInformationRequest packageRequestMoreInformation)
+        {
+            var res = await _changeDayCarePackageStatusUseCase.RequestMoreInformationDayCarePackageDetails(dayCarePackageId, packageRequestMoreInformation.InformationText).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// Day care package brokerage request more information.
+        /// </summary>
+        /// <param name="dayCarePackageId">The day care package identifier.</param>
+        /// <param name="packageRequestMoreInformation">Information request object</param>
+        /// <returns>Guid of the day care package</returns>
+        [HttpPut("{dayCarePackageId}/change-status/package-brokerage-request-more-information")]
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<Guid>> DayCarePackageBrokerageRequestMoreInformation(Guid dayCarePackageId, [FromBody] PackageRequestMoreInformationRequest packageRequestMoreInformation)
+        {
+            var res = await _changeDayCarePackageStatusUseCase.DayCarePackageBrokeredDealRequestMoreInformation(dayCarePackageId, packageRequestMoreInformation.InformationText).ConfigureAwait(false);
+            return Ok(res);
         }
 
         #endregion

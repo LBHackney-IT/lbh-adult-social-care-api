@@ -131,6 +131,22 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
             }
         }
 
+        public async Task<int> GetDayCareStatusByName(string statusName)
+        {
+            var dayCareStatus = await _dbContext.DayCarePackageStatuses
+                .Where(ps => ps.StatusName.ToLower().Equals(statusName.ToLower()))
+                .AsNoTracking()
+                .SingleOrDefaultAsync()
+                .ConfigureAwait(false);
+
+            if (dayCareStatus == null)
+            {
+                throw new EntityNotFoundException($"Unable to locate day care package status with name {statusName}");
+            }
+
+            return dayCareStatus.PackageStatusId;
+        }
+
         public async Task<DayCarePackageForApprovalDetailsDomain> GetDayCarePackageForApprovalDetails(Guid dayCarePackageId)
         {
             var dayCarePackage = await _dbContext.DayCarePackages
