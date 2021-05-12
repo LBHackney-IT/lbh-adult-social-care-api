@@ -1,7 +1,8 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response.SupplierBoundary;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
+using LBH.AdultSocialCare.Api.V1.Boundary.StageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
 {
@@ -88,9 +89,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         public int? StageId { get; set; }
 
         /// <summary>
-        /// Gets or sets the HomeCareStage Object
+        /// Gets or sets the Stage Object
         /// </summary>
-        public HomeCareStageResponse HomeCareStage { get; set; }
+        public StageResponse Stage { get; set; }
 
         /// <summary>
         /// Gets or sets the Supplier Id

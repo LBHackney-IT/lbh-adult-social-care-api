@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareApprovalHistoryUseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +29,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         private readonly IGetAllResidentialCareHomeTypeUseCase _getAllResidentialCareHomeTypeUseCase;
         private readonly IGetAllResidentialCareTypeOfStayOptionUseCase _getAllResidentialCareTypeOfStayOptionUseCase;
         private readonly ICreateResidentialCarePackageUseCase _createResidentialCarePackageUseCase;
+        private readonly IGetAllResidentialCareApprovalHistoryUseCase _getAllResidentialCareApprovalHistoryUseCase;
 
         public ResidentialCarePackageController(IUpdateResidentialCarePackageUseCase updateResidentialCarePackageUseCase,
             IGetResidentialCarePackageUseCase getResidentialCarePackageUseCase,
@@ -33,7 +37,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
             IGetAllResidentialCarePackageUseCase getAllResidentialCarePackageUseCase,
             IGetAllResidentialCareHomeTypeUseCase getAllResidentialCareHomeTypeUseCase,
             IGetAllResidentialCareTypeOfStayOptionUseCase getAllResidentialCareTypeOfStayOptionUseCase,
-            ICreateResidentialCarePackageUseCase createResidentialCarePackageUseCase
+            ICreateResidentialCarePackageUseCase createResidentialCarePackageUseCase,
+            IGetAllResidentialCareApprovalHistoryUseCase getAllResidentialCareApprovalHistoryUseCase
             )
         {
             _updateResidentialCarePackageUseCase = updateResidentialCarePackageUseCase;
@@ -43,6 +48,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
             _getAllResidentialCareHomeTypeUseCase = getAllResidentialCareHomeTypeUseCase;
             _getAllResidentialCareTypeOfStayOptionUseCase = getAllResidentialCareTypeOfStayOptionUseCase;
             _createResidentialCarePackageUseCase = createResidentialCarePackageUseCase;
+            _getAllResidentialCareApprovalHistoryUseCase = getAllResidentialCareApprovalHistoryUseCase;
         }
 
         /// <summary>Creates the specified residential care package request.</summary>
@@ -156,6 +162,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         public async Task<ActionResult<IEnumerable<ResidentialCareTypeOfStayOptionResponse>>> GetTypeOfStayOptionList()
         {
             var result = await _getAllResidentialCareTypeOfStayOptionUseCase.GetAllAsync().ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<ResidentialCareApprovalHistoryResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        [HttpGet]
+        [Route("approval-history/{residentialCarePackageId}")]
+        public async Task<ActionResult<IEnumerable<ResidentialCareApprovalHistoryResponse>>> GetApprovalHistoryList(Guid residentialCarePackageId)
+        {
+            var result = await _getAllResidentialCareApprovalHistoryUseCase.GetAllAsync(residentialCarePackageId).ConfigureAwait(false);
             return Ok(result);
         }
     }

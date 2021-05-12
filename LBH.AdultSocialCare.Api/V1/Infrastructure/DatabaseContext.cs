@@ -4,10 +4,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -49,9 +52,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<NursingCareTypeOfStayOption> NursingCareTypeOfStayOptions { get; set; }
         public DbSet<ResidentialCareTypeOfStayOption> ResidentialCareTypeOfStayOptions { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
-        public DbSet<HomeCareStage> HomeCareStages { get; set; }
+        public DbSet<HomeCareSupplierCost> HomeCareSupplierCosts { get; set; }
+        public DbSet<Stage> HomeCareStages { get; set; }
         public DbSet<CarerType> CarerTypes { get; set; }
         public DbSet<HomeCareApprovalHistory> HomeCareApprovalHistories { get; set; }
+        public DbSet<NursingCareApprovalHistory> NursingCareApprovalHistories { get; set; }
+        public DbSet<ResidentialCareApprovalHistory> ResidentialCareApprovalHistories { get; set; }
+        public DbSet<HomeCareRequestMoreInformation> HomeCareRequestMoreInformations { get; set; }
+        public DbSet<DayCareRequestMoreInformation> DayCareRequestMoreInformations { get; set; }
+        public DbSet<ResidentialCareRequestMoreInformation> ResidentialCareRequestMoreInformations { get; set; }
+        public DbSet<NursingCareRequestMoreInformation> NursingCareRequestMoreInformations { get; set; }
+        public DbSet<DayCareCollege> DayCareColleges { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -105,7 +116,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             modelBuilder.ApplyConfiguration(new SupplierSeed());
 
             // Seed HomeCareStage
-            modelBuilder.ApplyConfiguration(new HomeCareStageSeed());
+            modelBuilder.ApplyConfiguration(new StageSeed());
 
             // Seed CarerType
             modelBuilder.ApplyConfiguration(new CarerTypeSeed());

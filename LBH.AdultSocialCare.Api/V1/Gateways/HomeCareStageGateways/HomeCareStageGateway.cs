@@ -1,5 +1,6 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareStageGateways
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<HomeCareStageDomain>> ListAsync()
+        public async Task<IEnumerable<StageDomain>> ListAsync()
         {
             var res = await _databaseContext.HomeCareStages
                 .ToListAsync().ConfigureAwait(false);
