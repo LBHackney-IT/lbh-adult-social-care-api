@@ -158,6 +158,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
                     {
                         DayCarePackageId = dc.DayCarePackageId,
                         IsFixedPeriodOrOngoing = dc.IsFixedPeriodOrOngoing,
+                        NeedToAddress = dc.NeedToAddress,
                         StartDate = dc.StartDate,
                         EndDate = dc.EndDate,
                         Monday = dc.Monday,

@@ -54,7 +54,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete
         public async Task<Guid> ApproveDayCarePackageDetails(Guid dayCarePackageId)
         {
             var res = await ChangeDayCarePackageStatus(dayCarePackageId, PackageStatusConstants.ApprovePackage,
-                "Package details approved by ", null).ConfigureAwait(false);
+                "Package contents approved by ", null).ConfigureAwait(false);
+
+            // Move package to brokerage new
+            await DayCarePackageBrokerageNew(dayCarePackageId).ConfigureAwait(false);
 
             return res;
         }
@@ -126,7 +129,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete
         public async Task<Guid> DayCarePackageBrokeredDealApproved(Guid dayCarePackageId)
         {
             var res = await ChangeDayCarePackageStatus(dayCarePackageId, PackageStatusConstants.BrokeredDealApproved,
-                "Brokered deal approval - Package approved by ", null).ConfigureAwait(false);
+                "Package commercials approved by ", null).ConfigureAwait(false);
 
             return res;
         }
@@ -134,7 +137,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete
         public async Task<Guid> DayCarePackageBrokeredDealRejected(Guid dayCarePackageId)
         {
             var res = await ChangeDayCarePackageStatus(dayCarePackageId, PackageStatusConstants.BrokeredDealRejected,
-                "Brokered deal approval - Package rejected by ", null).ConfigureAwait(false);
+                "Package commercials rejected by ", null).ConfigureAwait(false);
 
             return res;
         }
@@ -142,7 +145,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete
         public async Task<Guid> DayCarePackageBrokeredDealRequestMoreInformation(Guid dayCarePackageId, string informationText)
         {
             var res = await ChangeDayCarePackageStatus(dayCarePackageId, PackageStatusConstants.BrokeredDealRequestMoreInformation,
-                "Brokered deal approval - Further information requested by ", informationText).ConfigureAwait(false);
+                "Package commercials - Further information requested by ", informationText).ConfigureAwait(false);
 
             return res;
         }

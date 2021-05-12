@@ -18,6 +18,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
         public bool IsFixedPeriodOrOngoing { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
+        public string NeedToAddress { get; set; }
         public bool Monday { get; set; }
         public bool Tuesday { get; set; }
         public bool Wednesday { get; set; }
