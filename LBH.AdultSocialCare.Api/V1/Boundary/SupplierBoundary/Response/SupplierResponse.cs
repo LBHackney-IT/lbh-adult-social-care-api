@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response.SupplierBoundary
+namespace LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response
 {
     public class SupplierResponse
     {

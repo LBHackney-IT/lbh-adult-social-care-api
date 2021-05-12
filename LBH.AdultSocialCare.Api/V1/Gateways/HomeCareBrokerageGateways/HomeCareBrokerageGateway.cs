@@ -27,7 +27,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways
         public async Task<HomeCareBrokerageCreationDomain> CreateAsync(Guid homeCarePackageId,
             HomeCareBrokerageCreationDomain homeCareBrokerageCreation)
         {
-            bool success;
             IList<HomeCarePackageCost> itemsToDelete = await _databaseContext.HomeCarePackageCosts
                 .Where(item => item.HomeCarePackageId == homeCarePackageId)
                 .ToListAsync()
@@ -56,7 +55,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways
                 await _databaseContext.HomeCarePackageCosts.AddAsync(homeCarePackageCostToCreate).ConfigureAwait(false);
             }
 
-            success = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) > 0;
+            var success = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) > 0;
 
             return success
                 ? homeCareBrokerageCreation
@@ -67,8 +66,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways
         {
             var homeCarePackage = await _databaseContext.HomeCarePackage
                 .Where(item => item.Id == homeCarePackageId)
+                .Include(item => item.Client)
+                .Include(item => item.Supplier)
+                .Include(item => item.Status)
+                .Include(item => item.Stage)
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
+
+            if (homeCarePackage == null)
+                throw new ErrorException($"Could not find the Home Care Package {homeCarePackageId}");
 
             var homeCarePackageSlot = await _databaseContext.HomeCarePackageSlots
                 .Where(item => item.HomeCarePackageId == homeCarePackageId)
@@ -103,7 +109,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways
 
             //Calculate home care services secondary carer hours
             var secondaryCarerHours = await _databaseContext.HomeCarePackageSlots
-                .Where(item => item.HomeCarePackageId == homeCarePackageId)
+                .Where(item => item.HomeCarePackageId == homeCarePackageId
+                               && item.ServiceId == 1)
                 .GroupBy(l => l.ServiceId)
                 .Select(cl => new HomeCarePackageCost
                 {
@@ -124,22 +131,23 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways
             }
 
             IList<HomeCarePackageSlots> timeSlotList = await _databaseContext.HomeCarePackageSlots
-                .Where(item => item.HomeCarePackageId == homeCarePackageId)
+                .Where(item => item.HomeCarePackageId == homeCarePackageId
+                               && item.ServiceId == 1)
                 .ToListAsync()
                 .ConfigureAwait(false);
 
             if (timeSlotList.Count > 0)
             {
                 var callTypes = new Dictionary<int, int> { { 1, 30 }, { 2, 45 }, { 3, 60 } };
-
+                var homeCareServiceType = 1;
                 foreach (var item in callTypes)
                 {
-                    var items = timeSlotList.Where(minutes => minutes.PrimaryInMinutes == item.Value);
+                    var items = item.Value != 60 ? timeSlotList.Where(minutes => minutes.PrimaryInMinutes == item.Value) : timeSlotList.Where(minutes => minutes.PrimaryInMinutes >= item.Value);
                     var homeCarePackageCostPrimaryDetail =
                         new HomeCarePackageCost
                         {
                             HomeCarePackageId = homeCarePackageId,
-                            HomeCareServiceTypeId = 1,
+                            HomeCareServiceTypeId = homeCareServiceType,
                             CarerTypeId = item.Key
                         };
                     homeCarePackageCostPrimaryDetail.CarerType = await _databaseContext.CarerTypes

@@ -12,43 +12,67 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
             builder.HasData(new PackageStatus
             {
                 Id = 1,
-                StatusName = "New",
+                StatusName = "Draft",
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
             }, new PackageStatus
             {
                 Id = 2,
-                StatusName = "Package Confirmation",
+                StatusName = "For Contents Approval",
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
             }, new PackageStatus
             {
                 Id = 3,
-                StatusName = "Approved For Brokerage",
+                StatusName = "Clarification Needed",
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
             }, new PackageStatus
             {
                 Id = 4,
-                StatusName = "Brokering",
+                StatusName = "Contents Approved",
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
             }, new PackageStatus
             {
                 Id = 5,
-                StatusName = "Supplier Sourced",
+                StatusName = "Brokering",
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
             }, new PackageStatus
             {
                 Id = 6,
-                StatusName = "Commercially Approved",
+                StatusName = "Commercially Approved Needed",
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
             }, new PackageStatus
             {
                 Id = 7,
-                StatusName = "Contracted",
+                StatusName = "Clarifying Commercials",
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+            }, new PackageStatus
+            {
+                Id = 8,
+                StatusName = "Commercials Approved",
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+            }, new PackageStatus
+            {
+                Id = 9,
+                StatusName = "PO Issued",
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+            }, new PackageStatus
+            {
+                Id = 10,
+                StatusName = "Suspended",
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+            }, new PackageStatus
+            {
+                Id = 11,
+                StatusName = "Ended",
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
             });

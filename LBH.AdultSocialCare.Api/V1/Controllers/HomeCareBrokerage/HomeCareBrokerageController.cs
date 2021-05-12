@@ -8,44 +8,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
 {
-    [Route("api/v1/home-care-brokerage")]
+    [Route("api/v1/home-care-packages/{homeCarePackageId}/brokerage")]
     [Produces("application/json")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
     public class HomeCareBrokerageController : BaseController
     {
-        private readonly IGetAllHomeCareStageUseCase _getAllHomeCareStageUseCase;
         private readonly IGetHomeCareBrokerageUseCase _getHomeCareBrokerageUseCase;
         private readonly ICreateHomeCareBrokerageUseCase _createHomeCareBrokerageUseCase;
+        private readonly ICreateHomeCareRequestMoreInformationUseCase _createHomeCareRequestMoreInformationUseCase;
 
-        public HomeCareBrokerageController(IGetAllHomeCareStageUseCase getAllHomeCareStageUseCase,
-            IGetHomeCareBrokerageUseCase getHomeCareBrokerageUseCase,
-            ICreateHomeCareBrokerageUseCase createHomeCareBrokerageUseCase)
+        public HomeCareBrokerageController(IGetHomeCareBrokerageUseCase getHomeCareBrokerageUseCase,
+            ICreateHomeCareBrokerageUseCase createHomeCareBrokerageUseCase,
+            ICreateHomeCareRequestMoreInformationUseCase createHomeCareRequestMoreInformationUseCase)
         {
-            _getAllHomeCareStageUseCase = getAllHomeCareStageUseCase;
             _getHomeCareBrokerageUseCase = getHomeCareBrokerageUseCase;
             _createHomeCareBrokerageUseCase = createHomeCareBrokerageUseCase;
-        }
-
-        [ProducesResponseType(typeof(IEnumerable<HomeCareStageResponse>), StatusCodes.Status200OK)]
-        [ProducesDefaultResponseType]
-        [HttpGet]
-        [Route("stages")]
-        public async Task<ActionResult<IEnumerable<HomeCareStageResponse>>> GetHomeCareStageList()
-        {
-            var result = await _getAllHomeCareStageUseCase.GetAllAsync().ConfigureAwait(false);
-            return Ok(result);
+            _createHomeCareRequestMoreInformationUseCase = createHomeCareRequestMoreInformationUseCase;
         }
 
         /// <summary>Gets the specified home care package identifier.</summary>
         /// <param name="homeCarePackageId">The home care package identifier.</param>
         /// <returns>The home care brokerage response.</returns>
         [HttpGet]
-        [Route("{homeCarePackageId}")]
         public async Task<ActionResult<HomeCareBrokerageResponse>> GetHomeCareBrokerage(Guid homeCarePackageId)
         {
             var homeCareBrokerageResponse = await _getHomeCareBrokerageUseCase.Execute(homeCarePackageId).ConfigureAwait(false);
@@ -83,6 +73,5 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
             var result = await _createHomeCareBrokerageUseCase.ExecuteAsync(homeCarePackageId, homeCareBrokerageCreationDomain).ConfigureAwait(false);
             return Ok(result);
         }
-
     }
 }

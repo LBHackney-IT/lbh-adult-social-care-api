@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareApproveBrokered
 {
-    [Route("api/v1/home-care-approve-brokered")]
+    [Route("api/v1/home-care-packages/{homeCarePackageId}/approve-brokered")]
     [Produces("application/json")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
@@ -26,7 +26,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareApproveBrokered
         /// <param name="homeCarePackageId">The home care package identifier.</param>
         /// <returns>The home care approve brokered response.</returns>
         [HttpGet]
-        [Route("{homeCarePackageId}")]
         public async Task<ActionResult<HomeCareApproveBrokeredResponse>> GetHomeCareBrokerage(Guid homeCarePackageId)
         {
             var homeCareApprovePackageResponse = await _getHomeCareApproveBrokeredUseCase.Execute(homeCarePackageId).ConfigureAwait(false);

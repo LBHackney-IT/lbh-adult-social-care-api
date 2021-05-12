@@ -18,7 +18,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DynamoDb_LocalMode": "true",
         "DynamoDb_LocalServiceUrl": "http://localhost:8000",
-        "CONNECTION_STRING": "Server=(localdb)\\mssqllocaldb;Database=AdultSocialCare;Trusted_Connection=True;ConnectRetryCount=0"
+        "CONNECTION_STRING": "Server=localhost;Port=5432;Database=AdultSocialCare;User Id=postgres;Password=123456;"
       }
     }
   }
