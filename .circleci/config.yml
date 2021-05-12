@@ -171,16 +171,16 @@ workflows:
           filters:
             branches:
               only: develop
-      - terraform-init-and-apply-to-development:
-          requires:
-            - assume-role-development
-          filters:
-            branches:
-              only: develop
+      # - terraform-init-and-apply-to-development:
+          # requires:
+            # - assume-role-development
+          # filters:
+            # branches:
+              # only: develop
       - deploy-to-development:
           context: api-assume-role-housing-development-context
           requires:
-            - terraform-init-and-apply-to-development
+            - assume-role-development
           filters:
             branches:
               only: develop
