@@ -165,7 +165,7 @@ workflows:
       - check-code-formatting
       - build-and-test
       - assume-role-development:
-          context: api-assume-role-housing-development-context
+          context: mosaic-development-context
           requires:
             - build-and-test
           filters:
@@ -178,7 +178,7 @@ workflows:
             # branches:
               # only: develop
       - deploy-to-development:
-          context: api-assume-role-housing-development-context
+          context: mosaic-development-context
           requires:
             - assume-role-development
           filters:
