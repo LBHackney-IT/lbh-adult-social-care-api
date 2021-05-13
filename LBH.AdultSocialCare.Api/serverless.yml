@@ -93,14 +93,20 @@ resources:
 custom:
   vpc:
     development:
+      securityGroupIds:
+        - sg-
       subnetIds:
         - subnet-0d4086ab96db46047
         - subnet-0f5eeab6b619d5e1a
     staging:
+      securityGroupIds:
+        - sg-0630857460fcc6b3e
       subnetIds:
         - subnet-0d4086ab96db46047
         - subnet-0f5eeab6b619d5e1a
     production:
+      securityGroupIds:
+        - sg-
       subnetIds:
         - subnet-01d3657f97a243261
         - subnet-0b7b8fea07efabf34
