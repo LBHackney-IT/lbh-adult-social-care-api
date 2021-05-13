@@ -38,29 +38,47 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCareCollegeGateways
 
         public async Task<DayCareCollegeDomain> GetDayCareCollege(int dayCareCollegeId)
         {
-            var dayCareCollege = await _dbContext.DayCareColleges
+            var dayCareCollegeDomain = await _dbContext.DayCareColleges
                 .Where(dc => dc.Id.Equals(dayCareCollegeId))
-                .Include(dc => dc.Creator)
-                .Include(dc => dc.Updater)
+                .Select(dcc => new DayCareCollegeDomain
+                {
+                    Id = dcc.Id,
+                    CollegeName = dcc.CollegeName,
+                    StartDate = dcc.StartDate,
+                    EndDate = dcc.EndDate,
+                    CreatorId = dcc.CreatorId,
+                    UpdaterId = dcc.UpdaterId,
+                    CreatorName = $"{dcc.Creator.FirstName} {dcc.Creator.MiddleName} {dcc.Creator.LastName}",
+                    UpdaterName = dcc.Updater != null ? $"{dcc.Updater.FirstName} {dcc.Updater.MiddleName} {dcc.Updater.LastName}" : null
+                })
                 .AsNoTracking()
                 .SingleOrDefaultAsync().ConfigureAwait(false);
 
-            if (dayCareCollege == null)
+            if (dayCareCollegeDomain == null)
             {
                 throw new EntityNotFoundException($"Unable to locate day care college {dayCareCollegeId.ToString()}");
             }
 
-            return dayCareCollege.ToDomain();
+            return dayCareCollegeDomain;
         }
 
         public async Task<IEnumerable<DayCareCollegeDomain>> GetDayCareCollegeList()
         {
             var dayCarePackages = await _dbContext.DayCareColleges
-                .Include(dc => dc.Creator)
-                .Include(dc => dc.Updater)
+                .Select(dcc => new DayCareCollegeDomain
+                {
+                    Id = dcc.Id,
+                    CollegeName = dcc.CollegeName,
+                    StartDate = dcc.StartDate,
+                    EndDate = dcc.EndDate,
+                    CreatorId = dcc.CreatorId,
+                    UpdaterId = dcc.UpdaterId,
+                    CreatorName = $"{dcc.Creator.FirstName} {dcc.Creator.MiddleName} {dcc.Creator.LastName}",
+                    UpdaterName = dcc.Updater != null ? $"{dcc.Updater.FirstName} {dcc.Updater.MiddleName} {dcc.Updater.LastName}" : null
+                })
                 .AsNoTracking()
                 .ToListAsync().ConfigureAwait(false);
-            return dayCarePackages?.ToDomain();
+            return dayCarePackages;
         }
     }
 }

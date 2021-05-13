@@ -341,9 +341,17 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DayCarePackageForUpdateDomain, DayCareCollege>();
             CreateMap<DayCareCollege, DayCareCollegeDomain>();
             CreateMap<DayCareCollegeForCreationRequest, DayCareCollegeForCreationDomain>();
+            CreateMap<DayCareCollegeForCreationDomain, DayCareCollege>();
             CreateMap<DayCareCollegeDomain, DayCareCollegeResponse>();
 
             #endregion DayCareCollege
+
+            #region Users
+
+            CreateMap<User, UsersDomain>();
+            CreateMap<UsersDomain, UsersResponse>();
+
+            #endregion
 
             #region DayCareBrokerage
 

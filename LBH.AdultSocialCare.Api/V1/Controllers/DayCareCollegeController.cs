@@ -1,17 +1,15 @@
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
-    [Route("api/v1/day-care-packages/{dayCarePackageId}/college")]
+    [Route("api/v1/day-care-packages/colleges")]
     [Produces("application/json")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
@@ -43,7 +41,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<int>> CreateDayCarePackage([FromBody] DayCareCollegeForCreationRequest dayCareCollegeForCreation)
+        public async Task<ActionResult<int>> CreateDayCareCollege([FromBody] DayCareCollegeForCreationRequest dayCareCollegeForCreation)
         {
             if (dayCareCollegeForCreation == null)
             {
@@ -64,14 +62,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         /// <returns>A day care package</returns>
         /// <response code="200">Returns day care package</response>
         /// <response code="404">If the day care package is not found</response>
-        [HttpGet]
-        [ProducesResponseType(typeof(DayCarePackageResponse), StatusCodes.Status200OK)]
+        [HttpGet("{dayCareCollegeId}")]
+        [ProducesResponseType(typeof(DayCareCollegeResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> GetSingleDayCarePackage(int dayCarePackageId)
+        public async Task<ActionResult> GetSingleDayCareCollege(int dayCareCollegeId)
         {
-            var dayCarePackage = await _getDayCareCollegeUseCase.Execute(dayCarePackageId).ConfigureAwait(false);
-            return Ok(dayCarePackage);
+            var dayCareCollege = await _getDayCareCollegeUseCase.Execute(dayCareCollegeId).ConfigureAwait(false);
+            return Ok(dayCareCollege);
         }
 
         /// <summary>Gets the day care college list.</summary>
