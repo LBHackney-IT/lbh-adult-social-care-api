@@ -98,8 +98,8 @@ custom:
         - subnet-0f5eeab6b619d5e1a
     staging:
       subnetIds:
-        - subnet-06d3de1bd9181b0d7
-        - subnet-0ed7d7713d1127656
+        - subnet-0d4086ab96db46047
+        - subnet-0f5eeab6b619d5e1a
     production:
       subnetIds:
         - subnet-01d3657f97a243261
