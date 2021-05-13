@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovalHistoryBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovalHistoryUseCase.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
 {
@@ -25,6 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         private readonly IGetAllNursingCareHomeTypeUseCase _getAllNursingCareHomeTypeUseCase;
         private readonly IGetAllNursingCareTypeOfStayOptionUseCase _getAllNursingCareTypeOfStayOptionUseCase;
         private readonly ICreateNursingCarePackageUseCase _createNursingCarePackageUseCase;
+        private readonly IGetAllNursingCareApprovalHistoryUseCase _getAllNursingCareApprovalHistoryUseCase;
 
         public NursingCarePackageController(IUpdateNursingCarePackageUseCase updateNursingCarePackageUseCase,
             IGetNursingCarePackageUseCase getNursingCarePackageUseCase,
@@ -32,7 +36,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
             IGetAllNursingCarePackageUseCase getAllNursingCarePackageUseCase,
             IGetAllNursingCareHomeTypeUseCase getAllNursingCareHomeTypeUseCase,
             IGetAllNursingCareTypeOfStayOptionUseCase getAllNursingCareTypeOfStayOptionUseCase,
-            ICreateNursingCarePackageUseCase createNursingCarePackageUseCase
+            ICreateNursingCarePackageUseCase createNursingCarePackageUseCase,
+            IGetAllNursingCareApprovalHistoryUseCase getAllNursingCareApprovalHistoryUseCase
             )
         {
             _updateNursingCarePackageUseCase = updateNursingCarePackageUseCase;
@@ -42,6 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
             _getAllNursingCareHomeTypeUseCase = getAllNursingCareHomeTypeUseCase;
             _getAllNursingCareTypeOfStayOptionUseCase = getAllNursingCareTypeOfStayOptionUseCase;
             _createNursingCarePackageUseCase = createNursingCarePackageUseCase;
+            _getAllNursingCareApprovalHistoryUseCase = getAllNursingCareApprovalHistoryUseCase;
         }
 
         /// <summary>Creates the specified nursing care package request.</summary>
@@ -155,6 +161,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         public async Task<ActionResult<IEnumerable<NursingCareTypeOfStayOptionResponse>>> GetTypeOfStayOptionList()
         {
             var result = await _getAllNursingCareTypeOfStayOptionUseCase.GetAllAsync().ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<NursingCareApprovalHistoryResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        [HttpGet]
+        [Route("approval-history/{nursingCarePackageId}")]
+        public async Task<ActionResult<IEnumerable<NursingCareApprovalHistoryResponse>>> GetApprovalHistoryList(Guid nursingCarePackageId)
+        {
+            var result = await _getAllNursingCareApprovalHistoryUseCase.GetAllAsync(nursingCarePackageId).ConfigureAwait(false);
             return Ok(result);
         }
     }

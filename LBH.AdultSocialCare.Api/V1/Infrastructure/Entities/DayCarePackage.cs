@@ -28,7 +28,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public bool Sunday { get; set; }
         public bool TransportNeeded { get; set; }
         public bool EscortNeeded { get; set; }
+        public bool TransportEscortNeeded { get; set; }
         public int TermTimeConsiderationOptionId { get; set; }
+        public int? CollegeId { get; set; }
         public Guid CreatorId { get; set; }
         public Guid? UpdaterId { get; set; }
         public int StatusId { get; set; }

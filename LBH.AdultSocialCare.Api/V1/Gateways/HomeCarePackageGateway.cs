@@ -33,7 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             return await _databaseContext.HomeCarePackage
                 .Include(item => item.Client)
                 .Include(item => item.Status)
-                .Include(item => item.HomeCareStage)
+                .Include(item => item.Stage)
                 .Include(item => item.Supplier)
                 .ToListAsync().ConfigureAwait(false);
         }
@@ -43,7 +43,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             HomeCarePackage homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
                 .Include(item => item.Client)
                 .Include(item => item.Status)
-                .Include(item => item.HomeCareStage)
+                .Include(item => item.Stage)
                 .Include(item => item.Supplier)
                 .FirstOrDefaultAsync(item => item.Id == homeCarePackageId)
                 .ConfigureAwait(false);
@@ -64,7 +64,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             HomeCarePackage homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
                 .Include(item => item.Status)
                 .Include(item => item.Client)
-                .Include(item => item.HomeCareStage)
+                .Include(item => item.Stage)
                 .Include(item => item.Supplier)
                 .FirstOrDefaultAsync(item => item.Id == homeCarePackage.Id).ConfigureAwait(false);
             if (homeCarePackageToUpdate == null)
