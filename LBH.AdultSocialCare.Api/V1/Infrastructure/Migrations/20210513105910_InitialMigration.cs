@@ -1,5 +1,6 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
@@ -7,6 +8,20 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "CarerTypes",
+                columns: table => new
+                {
+                    CarerTypeId = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CarerTypeMinutes = table.Column<int>(nullable: false),
+                    CarerTypeName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CarerTypes", x => x.CarerTypeId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Clients",
                 columns: table => new
@@ -34,11 +49,55 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DayCareRequestMoreInformations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DayCarePackageId = table.Column<Guid>(nullable: false),
+                    InformationText = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DayCareRequestMoreInformations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HomeCareApprovalHistories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    HomeCarePackageId = table.Column<Guid>(nullable: false),
+                    ApprovedDate = table.Column<DateTimeOffset>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    LogText = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HomeCareApprovalHistories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HomeCareRequestMoreInformations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    HomeCarePackageId = table.Column<Guid>(nullable: false),
+                    InformationText = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HomeCareRequestMoreInformations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "HomeCareServiceTypes",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DateCreated = table.Column<DateTimeOffset>(nullable: false),
                     DateUpdated = table.Column<DateTimeOffset>(nullable: false),
                     ServiceName = table.Column<string>(nullable: true),
@@ -51,11 +110,41 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "NursingCareApprovalHistories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    NursingCarePackageId = table.Column<Guid>(nullable: false),
+                    ApprovedDate = table.Column<DateTimeOffset>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    LogText = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NursingCareApprovalHistories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NursingCareRequestMoreInformations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    NursingCarePackageId = table.Column<Guid>(nullable: false),
+                    InformationText = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NursingCareRequestMoreInformations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "NursingCareTypeOfStayOptions",
                 columns: table => new
                 {
                     TypeOfStayOptionId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     OptionName = table.Column<string>(nullable: true),
                     OptionPeriod = table.Column<string>(nullable: true)
                 },
@@ -69,7 +158,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: table => new
                 {
                     OpportunityLengthOptionId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     OptionName = table.Column<string>(nullable: true),
                     TimeInMinutes = table.Column<int>(nullable: false)
                 },
@@ -83,7 +172,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: table => new
                 {
                     OpportunityTimePerMonthOptionId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     OptionName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -96,7 +185,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DateCreated = table.Column<DateTimeOffset>(nullable: false),
                     DateUpdated = table.Column<DateTimeOffset>(nullable: false),
                     PackageType = table.Column<string>(nullable: true),
@@ -110,11 +199,41 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ResidentialCareApprovalHistories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ResidentialCarePackageId = table.Column<Guid>(nullable: false),
+                    ApprovedDate = table.Column<DateTimeOffset>(nullable: false),
+                    UserId = table.Column<Guid>(nullable: false),
+                    LogText = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResidentialCareApprovalHistories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ResidentialCareRequestMoreInformations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ResidentialCarePackageId = table.Column<Guid>(nullable: false),
+                    InformationText = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ResidentialCareRequestMoreInformations", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ResidentialCareTypeOfStayOptions",
                 columns: table => new
                 {
                     TypeOfStayOptionId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     OptionName = table.Column<string>(nullable: true),
                     OptionPeriod = table.Column<string>(nullable: true)
                 },
@@ -128,7 +247,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DateCreated = table.Column<DateTimeOffset>(nullable: false),
                     DateUpdated = table.Column<DateTimeOffset>(nullable: false),
                     RoleName = table.Column<string>(nullable: true),
@@ -147,7 +266,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: table => new
                 {
                     OptionId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     OptionName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -160,7 +279,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: table => new
                 {
                     TypeOfCareHomeId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     TypeOfCareHomeName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -173,7 +292,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: table => new
                 {
                     TypeOfCareHomeId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     TypeOfCareHomeName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -189,11 +308,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     DateCreated = table.Column<DateTimeOffset>(nullable: false),
                     DateUpdated = table.Column<DateTimeOffset>(nullable: false),
                     HomeCarePackageId = table.Column<Guid>(nullable: false),
-                    ServiceId = table.Column<int>(nullable: false),
-                    PrimaryCarer = table.Column<string>(nullable: true),
-                    SecondaryCarer = table.Column<int>(nullable: false),
+                    HomeCareServiceTypeId = table.Column<int>(nullable: false),
+                    CarerTypeId = table.Column<int>(nullable: true),
+                    IsSecondaryCarer = table.Column<bool>(nullable: false),
                     CostPerHour = table.Column<decimal>(nullable: false),
-                    HoursPerWeek = table.Column<int>(nullable: false),
+                    HoursPerWeek = table.Column<double>(nullable: false),
                     TotalCost = table.Column<decimal>(nullable: false),
                     CreatorId = table.Column<int>(nullable: false),
                     UpdatorId = table.Column<int>(nullable: false)
@@ -202,8 +321,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_HomeCarePackageCosts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HomeCarePackageCosts_HomeCareServiceTypes_ServiceId",
-                        column: x => x.ServiceId,
+                        name: "FK_HomeCarePackageCosts_CarerTypes_CarerTypeId",
+                        column: x => x.CarerTypeId,
+                        principalTable: "CarerTypes",
+                        principalColumn: "CarerTypeId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HomeCarePackageCosts_HomeCareServiceTypes_HomeCareServiceTy~",
+                        column: x => x.HomeCareServiceTypeId,
                         principalTable: "HomeCareServiceTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -214,7 +339,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Label = table.Column<string>(nullable: true),
                     Minutes = table.Column<int>(nullable: false),
                     IsSecondaryCarer = table.Column<bool>(nullable: false),
@@ -224,7 +349,38 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_HomeCareServiceTypeMinutes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_HomeCareServiceTypeMinutes_HomeCareServiceTypes_HomeCareServiceTypeId",
+                        name: "FK_HomeCareServiceTypeMinutes_HomeCareServiceTypes_HomeCareSer~",
+                        column: x => x.HomeCareServiceTypeId,
+                        principalTable: "HomeCareServiceTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HomeCareSupplierCosts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    SupplierId = table.Column<int>(nullable: false),
+                    HomeCareServiceTypeId = table.Column<int>(nullable: false),
+                    CarerTypeId = table.Column<int>(nullable: true),
+                    IsSecondaryCarer = table.Column<bool>(nullable: false),
+                    CostPerHour = table.Column<decimal>(nullable: false),
+                    CreatorId = table.Column<int>(nullable: false),
+                    UpdatorId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HomeCareSupplierCosts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HomeCareSupplierCosts_CarerTypes_CarerTypeId",
+                        column: x => x.CarerTypeId,
+                        principalTable: "CarerTypes",
+                        principalColumn: "CarerTypeId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HomeCareSupplierCosts_HomeCareServiceTypes_HomeCareServiceT~",
                         column: x => x.HomeCareServiceTypeId,
                         principalTable: "HomeCareServiceTypes",
                         principalColumn: "Id",
@@ -236,7 +392,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DateCreated = table.Column<DateTimeOffset>(nullable: false),
                     DateUpdated = table.Column<DateTimeOffset>(nullable: false),
                     TimeSlotShiftName = table.Column<string>(nullable: false),
@@ -249,11 +405,37 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_TimeSlotShifts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TimeSlotShifts_HomeCareServiceTypes_LinkedToHomeCareServiceTypeId",
+                        name: "FK_TimeSlotShifts_HomeCareServiceTypes_LinkedToHomeCareService~",
                         column: x => x.LinkedToHomeCareServiceTypeId,
                         principalTable: "HomeCareServiceTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Suppliers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DateCreated = table.Column<DateTimeOffset>(nullable: false),
+                    DateUpdated = table.Column<DateTimeOffset>(nullable: false),
+                    SupplierName = table.Column<string>(nullable: true),
+                    PackageTypeId = table.Column<int>(nullable: false),
+                    IsSupplierInternal = table.Column<bool>(nullable: false),
+                    HasSupplierFrameworkContractedRates = table.Column<bool>(nullable: false),
+                    CreatorId = table.Column<int>(nullable: false),
+                    UpdatorId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Suppliers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Suppliers_Packages_PackageTypeId",
+                        column: x => x.PackageTypeId,
+                        principalTable: "Packages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -320,11 +502,101 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "DayCareColleges",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CollegeName = table.Column<string>(nullable: true),
+                    StartDate = table.Column<DateTimeOffset>(nullable: false),
+                    EndDate = table.Column<DateTimeOffset>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: false),
+                    UpdaterId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DayCareColleges", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DayCareColleges_Users_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DayCareColleges_Users_UpdaterId",
+                        column: x => x.UpdaterId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DayCarePackageStatuses",
+                columns: table => new
+                {
+                    PackageStatusId = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DateCreated = table.Column<DateTimeOffset>(nullable: false),
+                    DateUpdated = table.Column<DateTimeOffset>(nullable: false),
+                    StatusName = table.Column<string>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: false),
+                    UpdaterId = table.Column<Guid>(nullable: true),
+                    SequenceNumber = table.Column<int>(nullable: false),
+                    IsDayCareStatus = table.Column<bool>(nullable: false),
+                    IsStatusActive = table.Column<bool>(nullable: false),
+                    Stage = table.Column<string>(nullable: true),
+                    PackageAction = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DayCarePackageStatuses", x => x.PackageStatusId);
+                    table.ForeignKey(
+                        name: "FK_DayCarePackageStatuses_Users_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DayCarePackageStatuses_Users_UpdaterId",
+                        column: x => x.UpdaterId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HomeCareStages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    StageName = table.Column<string>(nullable: true),
+                    CreatorId = table.Column<Guid>(nullable: false),
+                    UpdaterId = table.Column<Guid>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HomeCareStages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HomeCareStages_Users_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_HomeCareStages_Users_UpdaterId",
+                        column: x => x.UpdaterId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PackageStatuses",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     DateCreated = table.Column<DateTimeOffset>(nullable: false),
                     DateUpdated = table.Column<DateTimeOffset>(nullable: false),
                     StatusName = table.Column<string>(nullable: true),
@@ -372,7 +644,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     Sunday = table.Column<bool>(nullable: false),
                     TransportNeeded = table.Column<bool>(nullable: false),
                     EscortNeeded = table.Column<bool>(nullable: false),
+                    TransportEscortNeeded = table.Column<bool>(nullable: false),
                     TermTimeConsiderationOptionId = table.Column<int>(nullable: false),
+                    CollegeId = table.Column<int>(nullable: true),
                     CreatorId = table.Column<Guid>(nullable: false),
                     UpdaterId = table.Column<Guid>(nullable: true),
                     StatusId = table.Column<int>(nullable: false)
@@ -399,13 +673,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DayCarePackages_PackageStatuses_StatusId",
+                        name: "FK_DayCarePackages_DayCarePackageStatuses_StatusId",
                         column: x => x.StatusId,
-                        principalTable: "PackageStatuses",
-                        principalColumn: "Id",
+                        principalTable: "DayCarePackageStatuses",
+                        principalColumn: "PackageStatusId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_DayCarePackages_TermTimeConsiderationOptions_TermTimeConsiderationOptionId",
+                        name: "FK_DayCarePackages_TermTimeConsiderationOptions_TermTimeConsid~",
                         column: x => x.TermTimeConsiderationOptionId,
                         principalTable: "TermTimeConsiderationOptions",
                         principalColumn: "OptionId",
@@ -432,7 +706,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     IsThisuserUnderS117 = table.Column<bool>(nullable: false),
                     CreatorId = table.Column<int>(nullable: false),
                     UpdatorId = table.Column<int>(nullable: false),
-                    StatusId = table.Column<int>(nullable: false)
+                    StatusId = table.Column<int>(nullable: false),
+                    StageId = table.Column<int>(nullable: true),
+                    SupplierId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -444,9 +720,21 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_HomeCarePackage_HomeCareStages_StageId",
+                        column: x => x.StageId,
+                        principalTable: "HomeCareStages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_HomeCarePackage_PackageStatuses_StatusId",
                         column: x => x.StatusId,
                         principalTable: "PackageStatuses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_HomeCarePackage_Suppliers_SupplierId",
+                        column: x => x.SupplierId,
+                        principalTable: "Suppliers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -495,13 +783,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_NursingCarePackages_TypesOfNursingCareHomes_TypeOfNursingCareHomeId",
+                        name: "FK_NursingCarePackages_TypesOfNursingCareHomes_TypeOfNursingCa~",
                         column: x => x.TypeOfNursingCareHomeId,
                         principalTable: "TypesOfNursingCareHomes",
                         principalColumn: "TypeOfCareHomeId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_NursingCarePackages_NursingCareTypeOfStayOptions_TypeOfStayId",
+                        name: "FK_NursingCarePackages_NursingCareTypeOfStayOptions_TypeOfStay~",
                         column: x => x.TypeOfStayId,
                         principalTable: "NursingCareTypeOfStayOptions",
                         principalColumn: "TypeOfStayOptionId",
@@ -558,13 +846,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ResidentialCarePackages_TypesOfResidentialCareHomes_TypeOfResidentialCareHomeId",
+                        name: "FK_ResidentialCarePackages_TypesOfResidentialCareHomes_TypeOfR~",
                         column: x => x.TypeOfResidentialCareHomeId,
                         principalTable: "TypesOfResidentialCareHomes",
                         principalColumn: "TypeOfCareHomeId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ResidentialCarePackages_ResidentialCareTypeOfStayOptions_TypeOfStayId",
+                        name: "FK_ResidentialCarePackages_ResidentialCareTypeOfStayOptions_Ty~",
                         column: x => x.TypeOfStayId,
                         principalTable: "ResidentialCareTypeOfStayOptions",
                         principalColumn: "TypeOfStayOptionId",
@@ -574,6 +862,43 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         column: x => x.UpdaterId,
                         principalTable: "Users",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DayCareApprovalHistory",
+                columns: table => new
+                {
+                    HistoryId = table.Column<Guid>(nullable: false),
+                    DateCreated = table.Column<DateTimeOffset>(nullable: false),
+                    DateUpdated = table.Column<DateTimeOffset>(nullable: false),
+                    DayCarePackageId = table.Column<Guid>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: false),
+                    PackageStatusId = table.Column<int>(nullable: false),
+                    LogText = table.Column<string>(nullable: false),
+                    LogSubText = table.Column<string>(nullable: true),
+                    CreatorRole = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DayCareApprovalHistory", x => x.HistoryId);
+                    table.ForeignKey(
+                        name: "FK_DayCareApprovalHistory_Users_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DayCareApprovalHistory_DayCarePackages_DayCarePackageId",
+                        column: x => x.DayCarePackageId,
+                        principalTable: "DayCarePackages",
+                        principalColumn: "DayCarePackageId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DayCareApprovalHistory_DayCarePackageStatuses_PackageStatus~",
+                        column: x => x.PackageStatusId,
+                        principalTable: "DayCarePackageStatuses",
+                        principalColumn: "PackageStatusId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -597,13 +922,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         principalColumn: "DayCarePackageId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DayCarePackageOpportunities_OpportunityLengthOptions_OpportunityLengthOptionId",
+                        name: "FK_DayCarePackageOpportunities_OpportunityLengthOptions_Opport~",
                         column: x => x.OpportunityLengthOptionId,
                         principalTable: "OpportunityLengthOptions",
                         principalColumn: "OpportunityLengthOptionId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_DayCarePackageOpportunities_OpportunityTimesPerMonthOptions_OpportunityTimePerMonthOptionId",
+                        name: "FK_DayCarePackageOpportunities_OpportunityTimesPerMonthOptions~",
                         column: x => x.OpportunityTimePerMonthOptionId,
                         principalTable: "OpportunityTimesPerMonthOptions",
                         principalColumn: "OpportunityTimePerMonthOptionId",
@@ -634,7 +959,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_NursingCareAdditionalNeeds_NursingCarePackages_NursingCarePackageId",
+                        name: "FK_NursingCareAdditionalNeeds_NursingCarePackages_NursingCareP~",
                         column: x => x.NursingCarePackageId,
                         principalTable: "NursingCarePackages",
                         principalColumn: "Id",
@@ -671,7 +996,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ResidentialCareAdditionalNeeds_ResidentialCarePackages_ResidentialCarePackageId",
+                        name: "FK_ResidentialCareAdditionalNeeds_ResidentialCarePackages_Resi~",
                         column: x => x.ResidentialCarePackageId,
                         principalTable: "ResidentialCarePackages",
                         principalColumn: "Id",
@@ -685,22 +1010,32 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "CarerTypes",
+                columns: new[] { "CarerTypeId", "CarerTypeMinutes", "CarerTypeName" },
+                values: new object[,]
+                {
+                    { 1, 30, "30m Call" },
+                    { 3, 60, "60m+ Call" },
+                    { 2, 45, "45m Call" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Clients",
                 columns: new[] { "Id", "AddressLine1", "AddressLine2", "AddressLine3", "County", "CreatorId", "DateCreated", "DateOfBirth", "DateUpdated", "FirstName", "HackneyId", "LastName", "MiddleName", "PostCode", "Town", "UpdatorId" },
-                values: new object[] { new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb80"), "Queens Town Road", null, null, null, 0, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 877, DateTimeKind.Unspecified).AddTicks(1585), new TimeSpan(0, 0, 0, 0, 0)), new DateTime(1990, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 877, DateTimeKind.Unspecified).AddTicks(1594), new TimeSpan(0, 0, 0, 0, 0)), "Furkan", 66666, "Kayar", null, "SW11", "London", 0 });
+                values: new object[] { new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb80"), "Queens Town Road", null, null, null, 0, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 462, DateTimeKind.Unspecified).AddTicks(6805), new TimeSpan(0, 0, 0, 0, 0)), new DateTime(1990, 5, 5, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 462, DateTimeKind.Unspecified).AddTicks(6812), new TimeSpan(0, 0, 0, 0, 0)), "Furkan", 66666, "Kayar", null, "SW11", "London", 0 });
 
             migrationBuilder.InsertData(
                 table: "HomeCareServiceTypes",
                 columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "ServiceName", "UpdatorId" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(2112), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(6572), new TimeSpan(0, 0, 0, 0, 0)), "Personal Home Care", 1 },
-                    { 2, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(7517), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(7580), new TimeSpan(0, 0, 0, 0, 0)), "Domestic Care", 1 },
-                    { 3, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(7593), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(7598), new TimeSpan(0, 0, 0, 0, 0)), "Live-in Care", 1 },
-                    { 4, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(7600), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(7603), new TimeSpan(0, 0, 0, 0, 0)), "Escort Care", 1 },
-                    { 5, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(7605), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(7609), new TimeSpan(0, 0, 0, 0, 0)), "Night Owl", 1 },
-                    { 6, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(7611), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(7614), new TimeSpan(0, 0, 0, 0, 0)), "Waking Nights", 1 },
-                    { 7, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(7616), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 852, DateTimeKind.Unspecified).AddTicks(7619), new TimeSpan(0, 0, 0, 0, 0)), "Sleeping Nights", 1 }
+                    { 4, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(1865), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(1867), new TimeSpan(0, 0, 0, 0, 0)), "Escort Care", 1 },
+                    { 3, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(1861), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(1863), new TimeSpan(0, 0, 0, 0, 0)), "Live-in Care", 1 },
+                    { 2, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(1821), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(1854), new TimeSpan(0, 0, 0, 0, 0)), "Domestic Care", 1 },
+                    { 1, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(17), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(1518), new TimeSpan(0, 0, 0, 0, 0)), "Personal Home Care", 1 },
+                    { 6, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(1871), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(1873), new TimeSpan(0, 0, 0, 0, 0)), "Waking Nights", 1 },
+                    { 5, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(1868), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(1870), new TimeSpan(0, 0, 0, 0, 0)), "Night Owl", 1 },
+                    { 7, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(1875), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 452, DateTimeKind.Unspecified).AddTicks(1877), new TimeSpan(0, 0, 0, 0, 0)), "Sleeping Nights", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -708,9 +1043,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: new[] { "TypeOfStayOptionId", "OptionName", "OptionPeriod" },
                 values: new object[,]
                 {
-                    { 3, "Long Term", "52+ weeks" },
                     { 2, "Temporary", "Expected under 52 weeks" },
-                    { 1, "Interim", "Under 6 weeks" }
+                    { 1, "Interim", "Under 6 weeks" },
+                    { 3, "Long Term", "52+ weeks" }
                 });
 
             migrationBuilder.InsertData(
@@ -728,9 +1063,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: new[] { "OpportunityTimePerMonthOptionId", "OptionName" },
                 values: new object[,]
                 {
-                    { 1, "Daily" },
+                    { 3, "Monthly" },
                     { 2, "Weekly" },
-                    { 3, "Monthly" }
+                    { 1, "Daily" }
                 });
 
             migrationBuilder.InsertData(
@@ -738,10 +1073,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "PackageType", "Sequence", "UpdatorId" },
                 values: new object[,]
                 {
-                    { 2, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 872, DateTimeKind.Unspecified).AddTicks(7433), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 872, DateTimeKind.Unspecified).AddTicks(7450), new TimeSpan(0, 0, 0, 0, 0)), "Residential Care Package", 0, 1 },
-                    { 4, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 872, DateTimeKind.Unspecified).AddTicks(7519), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 872, DateTimeKind.Unspecified).AddTicks(7521), new TimeSpan(0, 0, 0, 0, 0)), "Nursing Care Package", 0, 1 },
-                    { 1, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 872, DateTimeKind.Unspecified).AddTicks(4075), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 872, DateTimeKind.Unspecified).AddTicks(4095), new TimeSpan(0, 0, 0, 0, 0)), "Home Care Package", 0, 1 },
-                    { 3, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 872, DateTimeKind.Unspecified).AddTicks(7514), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 872, DateTimeKind.Unspecified).AddTicks(7516), new TimeSpan(0, 0, 0, 0, 0)), "Day Care Package", 0, 1 }
+                    { 3, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(8745), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(8746), new TimeSpan(0, 0, 0, 0, 0)), "Day Care Package", 0, 1 },
+                    { 2, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(8704), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(8709), new TimeSpan(0, 0, 0, 0, 0)), "Residential Care Package", 0, 1 },
+                    { 1, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(7672), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(7680), new TimeSpan(0, 0, 0, 0, 0)), "Home Care Package", 0, 1 },
+                    { 4, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(8747), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(8748), new TimeSpan(0, 0, 0, 0, 0)), "Nursing Care Package", 0, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -749,9 +1084,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: new[] { "TypeOfStayOptionId", "OptionName", "OptionPeriod" },
                 values: new object[,]
                 {
-                    { 3, "Long Term", "52+ weeks" },
+                    { 1, "Interim", "Under 6 weeks" },
                     { 2, "Temporary", "Expected under 52 weeks" },
-                    { 1, "Interim", "Under 6 weeks" }
+                    { 3, "Long Term", "52+ weeks" }
                 });
 
             migrationBuilder.InsertData(
@@ -759,8 +1094,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "IsDefault", "RoleName", "Sequence", "UpdatorId" },
                 values: new object[,]
                 {
-                    { 2, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 873, DateTimeKind.Unspecified).AddTicks(8585), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 873, DateTimeKind.Unspecified).AddTicks(8600), new TimeSpan(0, 0, 0, 0, 0)), false, "Broker", 2, 1 },
-                    { 1, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 873, DateTimeKind.Unspecified).AddTicks(3461), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 873, DateTimeKind.Unspecified).AddTicks(3480), new TimeSpan(0, 0, 0, 0, 0)), true, "Social Worker", 1, 1 }
+                    { 1, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 461, DateTimeKind.Unspecified).AddTicks(1039), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 461, DateTimeKind.Unspecified).AddTicks(1045), new TimeSpan(0, 0, 0, 0, 0)), true, "Social Worker", 1, 1 },
+                    { 2, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 461, DateTimeKind.Unspecified).AddTicks(2479), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 461, DateTimeKind.Unspecified).AddTicks(2484), new TimeSpan(0, 0, 0, 0, 0)), false, "Broker", 2, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -778,12 +1113,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "LinkedToHomeCareServiceTypeId", "TimeSlotShiftName", "TimeSlotTimeLabel", "UpdatorId" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 868, DateTimeKind.Unspecified).AddTicks(8431), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 868, DateTimeKind.Unspecified).AddTicks(8469), new TimeSpan(0, 0, 0, 0, 0)), null, "Morning", "08:00 - 10:00", 1 },
-                    { 2, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(3020), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(3037), new TimeSpan(0, 0, 0, 0, 0)), null, "Mid Morning", "10:00 - 12:00", 1 },
-                    { 3, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(3114), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(3117), new TimeSpan(0, 0, 0, 0, 0)), null, "Lunch", "12:00 - 14:00", 1 },
-                    { 4, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(3120), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(3122), new TimeSpan(0, 0, 0, 0, 0)), null, "Afternoon", "14:00 - 17:00", 1 },
-                    { 6, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(3129), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(3131), new TimeSpan(0, 0, 0, 0, 0)), null, "Night", "20:00 - 22:00", 1 },
-                    { 5, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(3124), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(3127), new TimeSpan(0, 0, 0, 0, 0)), null, "Evening", "17:00 - 20:00", 1 }
+                    { 6, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(5674), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(5675), new TimeSpan(0, 0, 0, 0, 0)), null, "Night", "20:00 - 22:00", 1 },
+                    { 5, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(5672), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(5672), new TimeSpan(0, 0, 0, 0, 0)), null, "Evening", "17:00 - 20:00", 1 },
+                    { 4, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(5669), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(5670), new TimeSpan(0, 0, 0, 0, 0)), null, "Afternoon", "14:00 - 17:00", 1 },
+                    { 3, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(5666), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(5667), new TimeSpan(0, 0, 0, 0, 0)), null, "Lunch", "12:00 - 14:00", 1 },
+                    { 2, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(5618), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(5625), new TimeSpan(0, 0, 0, 0, 0)), null, "Mid Morning", "10:00 - 12:00", 1 },
+                    { 1, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(3990), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(4014), new TimeSpan(0, 0, 0, 0, 0)), null, "Morning", "08:00 - 10:00", 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -834,10 +1169,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     { 4, 1, false, "1 hour 15 minutes", 75 },
                     { 5, 1, false, "1 hour 30 minutes", 90 },
                     { 6, 1, false, "1 hour 45 minutes", 105 },
-                    { 7, 1, false, "2 hours", 120 },
                     { 18, 2, false, "1 hour", 60 },
-                    { 9, 1, true, "30 minutes", 30 },
                     { 8, 1, true, "N/A", 0 },
+                    { 9, 1, true, "30 minutes", 30 },
+                    { 7, 1, false, "2 hours", 120 },
                     { 11, 1, true, "1 hour", 60 },
                     { 12, 1, true, "1 hour 15 minutes", 75 },
                     { 13, 1, true, "1 hour 30 minutes", 90 },
@@ -848,13 +1183,18 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Suppliers",
+                columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "HasSupplierFrameworkContractedRates", "IsSupplierInternal", "PackageTypeId", "SupplierName", "UpdatorId" },
+                values: new object[] { 1, 0, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 463, DateTimeKind.Unspecified).AddTicks(7891), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 463, DateTimeKind.Unspecified).AddTicks(7899), new TimeSpan(0, 0, 0, 0, 0)), true, true, 1, "Furkan", 0 });
+
+            migrationBuilder.InsertData(
                 table: "TimeSlotShifts",
                 columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "LinkedToHomeCareServiceTypeId", "TimeSlotShiftName", "TimeSlotTimeLabel", "UpdatorId" },
                 values: new object[,]
                 {
-                    { 7, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(3134), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(3136), new TimeSpan(0, 0, 0, 0, 0)), 5, "Night Owl", null, 1 },
-                    { 8, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(4088), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(4100), new TimeSpan(0, 0, 0, 0, 0)), 6, "Waking Nights", null, 1 },
-                    { 9, 1, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(4127), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 869, DateTimeKind.Unspecified).AddTicks(4129), new TimeSpan(0, 0, 0, 0, 0)), 7, "Sleeping Nights", null, 1 }
+                    { 7, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(5676), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(5677), new TimeSpan(0, 0, 0, 0, 0)), 5, "Night Owl", null, 1 },
+                    { 8, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(6018), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(6022), new TimeSpan(0, 0, 0, 0, 0)), 6, "Waking Nights", null, 1 },
+                    { 9, 1, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(6037), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 459, DateTimeKind.Unspecified).AddTicks(6038), new TimeSpan(0, 0, 0, 0, 0)), 7, "Sleeping Nights", null, 1 }
                 });
 
             migrationBuilder.InsertData(
@@ -862,8 +1202,43 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: new[] { "Id", "AddressLine1", "AddressLine2", "AddressLine3", "County", "CreatorId", "DateCreated", "DateUpdated", "FirstName", "HackneyId", "LastName", "MiddleName", "PostCode", "RoleId", "Town", "UpdatorId" },
                 values: new object[,]
                 {
-                    { new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), "Queens Gate", null, null, null, 0, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 876, DateTimeKind.Unspecified).AddTicks(2510), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 876, DateTimeKind.Unspecified).AddTicks(2550), new TimeSpan(0, 0, 0, 0, 0)), "Furkan", 1111, "Kayar", null, "W11", 1, "London", 0 },
-                    { new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"), "Nairobi", null, null, null, 0, new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 876, DateTimeKind.Unspecified).AddTicks(7248), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 876, DateTimeKind.Unspecified).AddTicks(7256), new TimeSpan(0, 0, 0, 0, 0)), "Duncan", 4444, "Okeno", null, "W11", 2, "Nairobi", 0 }
+                    { new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), "Queens Gate", null, null, null, 0, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 462, DateTimeKind.Unspecified).AddTicks(1675), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 462, DateTimeKind.Unspecified).AddTicks(1683), new TimeSpan(0, 0, 0, 0, 0)), "Furkan", 1111, "Kayar", null, "W11", 1, "London", 0 },
+                    { new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"), "Nairobi", null, null, null, 0, new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 462, DateTimeKind.Unspecified).AddTicks(3781), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 462, DateTimeKind.Unspecified).AddTicks(3787), new TimeSpan(0, 0, 0, 0, 0)), "Duncan", 4444, "Okeno", null, "W11", 2, "Nairobi", 0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "DayCarePackageStatuses",
+                columns: new[] { "PackageStatusId", "CreatorId", "DateCreated", "DateUpdated", "IsDayCareStatus", "IsStatusActive", "PackageAction", "SequenceNumber", "Stage", "StatusName", "UpdaterId" },
+                values: new object[,]
+                {
+                    { 1, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(1168), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(1177), new TimeSpan(0, 0, 0, 0, 0)), true, true, "Created", 1, "PACKAGE BUILDER", "New Package", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 15, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3916), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3917), new TimeSpan(0, 0, 0, 0, 0)), true, true, "Contracted", 9, "CONTRACTION", "Package Contracted", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 14, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3911), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3912), new TimeSpan(0, 0, 0, 0, 0)), true, true, "Request More Information", 8, "BROKERAGE APPROVAL", "Clarifying Commercials", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 13, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3905), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3906), new TimeSpan(0, 0, 0, 0, 0)), true, true, "Rejected", 8, "BROKERAGE APPROVAL", "Package Commercials - Rejected", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 12, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3797), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3798), new TimeSpan(0, 0, 0, 0, 0)), true, true, "Approved", 8, "BROKERAGE APPROVAL", "Commercials Approved", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 11, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3792), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3793), new TimeSpan(0, 0, 0, 0, 0)), true, true, "New", 7, "NEW BROKERAGE APPROVAL", "Brokerage - Submitted for Approval", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 9, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3782), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3783), new TimeSpan(0, 0, 0, 0, 0)), true, true, "SupplierSourced", 6, "PACKAGE BROKERING", "Brokerage - Supplier Sourced", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 10, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3787), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3788), new TimeSpan(0, 0, 0, 0, 0)), true, true, "PricingAgreed", 6, "PACKAGE BROKERING", "Brokerage - Pricing Agreed", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 7, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3773), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3774), new TimeSpan(0, 0, 0, 0, 0)), true, true, "Assigned", 5, "NEW BROKERAGE", "Brokerage - Assigned", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 6, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3768), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3769), new TimeSpan(0, 0, 0, 0, 0)), true, true, "New", 4, "NEW BROKERAGE", "Brokerage - New", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 5, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3763), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3764), new TimeSpan(0, 0, 0, 0, 0)), true, true, "Request More Information", 3, "PACKAGE DETAIL APPROVAL", "Clarification Needed", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 4, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3758), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3759), new TimeSpan(0, 0, 0, 0, 0)), true, true, "Reject", 3, "PACKAGE DETAIL APPROVAL", "Reject Package", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 3, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3751), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3753), new TimeSpan(0, 0, 0, 0, 0)), true, true, "Approve", 3, "PACKAGE DETAIL APPROVAL", "Contents Approved", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 2, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3678), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3683), new TimeSpan(0, 0, 0, 0, 0)), true, true, "New", 2, "NEW PACKAGE DETAIL APPROVAL", "Submitted for Approval", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 8, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3778), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 466, DateTimeKind.Unspecified).AddTicks(3778), new TimeSpan(0, 0, 0, 0, 0)), true, true, "Querying", 6, "PACKAGE BROKERING", "Brokerage - Querying", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") }
+                });
+
+            migrationBuilder.InsertData(
+                table: "HomeCareStages",
+                columns: new[] { "Id", "CreatorId", "StageName", "UpdaterId" },
+                values: new object[,]
+                {
+                    { 2, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), "Assigned", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 4, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), "Supplier Sourced", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 3, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), "Querying", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 1, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), "New", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 6, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), "Submitted For Approval", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 5, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), "Pricing agreed", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") }
                 });
 
             migrationBuilder.InsertData(
@@ -871,14 +1246,43 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "StatusName", "UpdaterId" },
                 values: new object[,]
                 {
-                    { 1, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 870, DateTimeKind.Unspecified).AddTicks(8350), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 870, DateTimeKind.Unspecified).AddTicks(8378), new TimeSpan(0, 0, 0, 0, 0)), "New", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
-                    { 2, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 871, DateTimeKind.Unspecified).AddTicks(6500), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 871, DateTimeKind.Unspecified).AddTicks(6526), new TimeSpan(0, 0, 0, 0, 0)), "Package Confirmation", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
-                    { 3, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 871, DateTimeKind.Unspecified).AddTicks(6648), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 871, DateTimeKind.Unspecified).AddTicks(6651), new TimeSpan(0, 0, 0, 0, 0)), "Approved For Brokerage", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
-                    { 4, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 871, DateTimeKind.Unspecified).AddTicks(6661), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 871, DateTimeKind.Unspecified).AddTicks(6663), new TimeSpan(0, 0, 0, 0, 0)), "Brokering", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
-                    { 5, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 871, DateTimeKind.Unspecified).AddTicks(6672), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 871, DateTimeKind.Unspecified).AddTicks(6674), new TimeSpan(0, 0, 0, 0, 0)), "Supplier Sourced", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
-                    { 6, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 871, DateTimeKind.Unspecified).AddTicks(6681), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 871, DateTimeKind.Unspecified).AddTicks(6682), new TimeSpan(0, 0, 0, 0, 0)), "Commercially Approved", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
-                    { 7, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 871, DateTimeKind.Unspecified).AddTicks(6689), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 4, 27, 13, 25, 53, 871, DateTimeKind.Unspecified).AddTicks(6691), new TimeSpan(0, 0, 0, 0, 0)), "Contracted", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") }
+                    { 6, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4966), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4967), new TimeSpan(0, 0, 0, 0, 0)), "Commercially Approved Needed", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 7, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4971), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4972), new TimeSpan(0, 0, 0, 0, 0)), "Clarifying Commercials", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 8, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4975), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4976), new TimeSpan(0, 0, 0, 0, 0)), "Commercials Approved", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 9, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4980), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4981), new TimeSpan(0, 0, 0, 0, 0)), "PO Issued", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 10, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4985), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4986), new TimeSpan(0, 0, 0, 0, 0)), "Suspended", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 11, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4990), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4991), new TimeSpan(0, 0, 0, 0, 0)), "Ended", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 4, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4957), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4958), new TimeSpan(0, 0, 0, 0, 0)), "Contents Approved", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 3, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4951), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4952), new TimeSpan(0, 0, 0, 0, 0)), "Clarification Needed", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 2, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4892), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4898), new TimeSpan(0, 0, 0, 0, 0)), "For Contents Approval", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 5, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4961), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(4962), new TimeSpan(0, 0, 0, 0, 0)), "Brokering", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
+                    { 1, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(3272), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 13, 10, 59, 9, 460, DateTimeKind.Unspecified).AddTicks(3282), new TimeSpan(0, 0, 0, 0, 0)), "Draft", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DayCareApprovalHistory_CreatorId",
+                table: "DayCareApprovalHistory",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DayCareApprovalHistory_DayCarePackageId",
+                table: "DayCareApprovalHistory",
+                column: "DayCarePackageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DayCareApprovalHistory_PackageStatusId",
+                table: "DayCareApprovalHistory",
+                column: "PackageStatusId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DayCareColleges_CreatorId",
+                table: "DayCareColleges",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DayCareColleges_UpdaterId",
+                table: "DayCareColleges",
+                column: "UpdaterId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DayCarePackageOpportunities_DayCarePackageId",
@@ -926,9 +1330,30 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 column: "UpdaterId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_DayCarePackageStatuses_CreatorId",
+                table: "DayCarePackageStatuses",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DayCarePackageStatuses_UpdaterId",
+                table: "DayCarePackageStatuses",
+                column: "UpdaterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DayCarePackageStatuses_SequenceNumber_Stage_PackageAction",
+                table: "DayCarePackageStatuses",
+                columns: new[] { "SequenceNumber", "Stage", "PackageAction" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_HomeCarePackage_ClientId",
                 table: "HomeCarePackage",
                 column: "ClientId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HomeCarePackage_StageId",
+                table: "HomeCarePackage",
+                column: "StageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HomeCarePackage_StatusId",
@@ -936,9 +1361,19 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_HomeCarePackageCosts_ServiceId",
+                name: "IX_HomeCarePackage_SupplierId",
+                table: "HomeCarePackage",
+                column: "SupplierId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HomeCarePackageCosts_CarerTypeId",
                 table: "HomeCarePackageCosts",
-                column: "ServiceId");
+                column: "CarerTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HomeCarePackageCosts_HomeCareServiceTypeId",
+                table: "HomeCarePackageCosts",
+                column: "HomeCareServiceTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_HomeCarePackageSlots_ServiceId",
@@ -953,6 +1388,26 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_HomeCareServiceTypeMinutes_HomeCareServiceTypeId",
                 table: "HomeCareServiceTypeMinutes",
+                column: "HomeCareServiceTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HomeCareStages_CreatorId",
+                table: "HomeCareStages",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HomeCareStages_UpdaterId",
+                table: "HomeCareStages",
+                column: "UpdaterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HomeCareSupplierCosts_CarerTypeId",
+                table: "HomeCareSupplierCosts",
+                column: "CarerTypeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HomeCareSupplierCosts_HomeCareServiceTypeId",
+                table: "HomeCareSupplierCosts",
                 column: "HomeCareServiceTypeId");
 
             migrationBuilder.CreateIndex(
@@ -1004,15 +1459,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "IX_OpportunityLengthOptions_OptionName",
                 table: "OpportunityLengthOptions",
                 column: "OptionName",
-                unique: true,
-                filter: "[OptionName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_OpportunityTimesPerMonthOptions_OptionName",
                 table: "OpportunityTimesPerMonthOptions",
                 column: "OptionName",
-                unique: true,
-                filter: "[OptionName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PackageStatuses_CreatorId",
@@ -1070,11 +1523,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 column: "UpdaterId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Suppliers_PackageTypeId",
+                table: "Suppliers",
+                column: "PackageTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TermTimeConsiderationOptions_OptionName",
                 table: "TermTimeConsiderationOptions",
                 column: "OptionName",
-                unique: true,
-                filter: "[OptionName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TimeSlotShifts_LinkedToHomeCareServiceTypeId",
@@ -1090,7 +1547,19 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "DayCareApprovalHistory");
+
+            migrationBuilder.DropTable(
+                name: "DayCareColleges");
+
+            migrationBuilder.DropTable(
                 name: "DayCarePackageOpportunities");
+
+            migrationBuilder.DropTable(
+                name: "DayCareRequestMoreInformations");
+
+            migrationBuilder.DropTable(
+                name: "HomeCareApprovalHistories");
 
             migrationBuilder.DropTable(
                 name: "HomeCarePackage");
@@ -1102,13 +1571,31 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "HomeCarePackageSlots");
 
             migrationBuilder.DropTable(
+                name: "HomeCareRequestMoreInformations");
+
+            migrationBuilder.DropTable(
                 name: "HomeCareServiceTypeMinutes");
+
+            migrationBuilder.DropTable(
+                name: "HomeCareSupplierCosts");
 
             migrationBuilder.DropTable(
                 name: "NursingCareAdditionalNeeds");
 
             migrationBuilder.DropTable(
+                name: "NursingCareApprovalHistories");
+
+            migrationBuilder.DropTable(
+                name: "NursingCareRequestMoreInformations");
+
+            migrationBuilder.DropTable(
                 name: "ResidentialCareAdditionalNeeds");
+
+            migrationBuilder.DropTable(
+                name: "ResidentialCareApprovalHistories");
+
+            migrationBuilder.DropTable(
+                name: "ResidentialCareRequestMoreInformations");
 
             migrationBuilder.DropTable(
                 name: "DayCarePackages");
@@ -1120,7 +1607,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "OpportunityTimesPerMonthOptions");
 
             migrationBuilder.DropTable(
+                name: "HomeCareStages");
+
+            migrationBuilder.DropTable(
+                name: "Suppliers");
+
+            migrationBuilder.DropTable(
                 name: "TimeSlotShifts");
+
+            migrationBuilder.DropTable(
+                name: "CarerTypes");
 
             migrationBuilder.DropTable(
                 name: "NursingCarePackages");
@@ -1129,10 +1625,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "ResidentialCarePackages");
 
             migrationBuilder.DropTable(
-                name: "Packages");
+                name: "DayCarePackageStatuses");
 
             migrationBuilder.DropTable(
                 name: "TermTimeConsiderationOptions");
+
+            migrationBuilder.DropTable(
+                name: "Packages");
 
             migrationBuilder.DropTable(
                 name: "HomeCareServiceTypes");
