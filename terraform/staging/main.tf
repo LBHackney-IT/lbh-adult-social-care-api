@@ -27,8 +27,8 @@ data "aws_vpc" "staging_vpc" {
 data "aws_subnet_ids" "staging_private_subnets" {
   vpc_id = data.aws_vpc.staging_vpc.id
   filter {
-    name   = "tag:environment"
-    values = ["stg"]
+    name   = "tag:Name"
+    values = ["mosaic-stg-private-eu-west-2a", "mosaic-stg-private-eu-west-2b"]
   }
 }
 

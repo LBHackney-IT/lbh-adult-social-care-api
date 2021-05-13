@@ -188,9 +188,9 @@ workflows:
       jobs:      
       - check-code-formatting
       - build-and-test:
-          filters:
-            branches:
-              only: develop
+          # filters:
+            # branches:
+              # only: develop
       - assume-role-staging:
           context: mosaic-staging-context
           requires:
