@@ -4,24 +4,41 @@ using LBH.AdultSocialCare.Api.V1;
 using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.DayCareCollegeGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.DayCareRequestMoreInformationGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApproveBrokeredGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovePackageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareRequestMoreInformationGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareStageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovalHistoryGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareRequestMoreInformationGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityLengthOptionGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityTimesPerMonthOptionGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovalHistoryGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareRequestMoreInformationGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.SupplierCostGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.TermTimeConsiderationOptionGateways;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCareRequestMoreInformationUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCareRequestMoreInformationUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovalHistoryUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovalHistoryUseCase.Interfaces;
@@ -31,7 +48,17 @@ using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovePackageUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovePackageUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareBrokerageUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareBrokerageUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovalHistoryUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovalHistoryUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApproveCommercialUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApproveCommercialUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovePackageUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovePackageUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareRequestMoreInformationUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareRequestMoreInformationUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Concrete;
@@ -40,8 +67,18 @@ using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.PackageStatusUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApproveBrokeredUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApproveBrokeredUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApprovePackageUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApprovePackageUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareApprovalHistoryUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareApprovalHistoryUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareRequestMoreInformationUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareRequestMoreInformationUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.RolesUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.SupplierCostUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.SupplierCostUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Concrete;
@@ -55,7 +92,6 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -67,43 +103,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using LBH.AdultSocialCare.Api.V1.Gateways.DayCareCollegeGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.DayCareRequestMoreInformationGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareRequestMoreInformationGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovalHistoryGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareRequestMoreInformationGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovalHistoryGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovePackageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareRequestMoreInformationGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.SupplierCostGateways;
-using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.DayCareRequestMoreInformationUseCase.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.DayCareRequestMoreInformationUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovalHistoryUseCase.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovalHistoryUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApproveCommercialUseCase.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApproveCommercialUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovePackageUseCase.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovePackageUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareRequestMoreInformationUseCase.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareRequestMoreInformationUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApproveBrokeredUseCase.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApproveBrokeredUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApprovePackageUseCase.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApprovePackageUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareApprovalHistoryUseCase.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareApprovalHistoryUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareRequestMoreInformationUseCase.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareRequestMoreInformationUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.SupplierCostUseCase.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.SupplierCostUseCase.Interfaces;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -225,6 +225,9 @@ namespace LBH.AdultSocialCare.Api
 
             string assemblyName = Assembly.GetCallingAssembly().GetName().Name;
 
+            /*services.AddDbContext<DatabaseContext>(
+                opt => opt.UseNpgsql(connectionString, b => b.MigrationsAssembly(assemblyName)).AddXRayInterceptor(true));*/
+
             services.AddDbContext<DatabaseContext>(opt
                 => opt.UseNpgsql(connectionString, b => b.MigrationsAssembly(assemblyName)));
         }
@@ -332,6 +335,9 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetDayCarePackageUseCase, GetDayCarePackageUseCase>();
             services.AddScoped<IGetDayCarePackageListUseCase, GetDayCarePackageListUseCase>();
             services.AddScoped<IUpdateDayCarePackageUseCase, UpdateDayCarePackageUseCase>();
+            services.AddScoped<IGetDayCarePackageForApprovalDetailsUseCase, GetDayCarePackageForApprovalDetailsUseCase>();
+            services.AddScoped<ICreateDayCarePackageHistoryUseCase, CreateDayCarePackageHistoryUseCase>();
+            services.AddScoped<IChangeDayCarePackageStatusUseCase, ChangeDayCarePackageStatusUseCase>();
 
             #endregion DayCarePackage
 
@@ -441,7 +447,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<ICreateHomeCareBrokerageUseCase, CreateHomeCareBrokerageUseCase>();
             services.AddScoped<ICreateHomeCareRequestMoreInformationUseCase, CreateHomeCareRequestMoreInformationUseCase>();
 
-            #endregion
+            #endregion HomeCareBrokerage
 
             #region Supplier
 
@@ -450,61 +456,61 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetSupplierCostUseCase, GetSupplierCostUseCase>();
             services.AddScoped<ICreateSupplierCostUseCase, CreateSupplierCostUseCase>();
 
-            #endregion
+            #endregion Supplier
 
             #region HomeCareApprovalHistory
 
             services.AddScoped<IGetAllHomeCareApprovalHistoryUseCase, GetAllHomeCareApprovalHistoryUseCase>();
 
-            #endregion
+            #endregion HomeCareApprovalHistory
 
             #region HomeCareApprovePackage
 
             services.AddScoped<IGetHomeCareApprovePackageUseCase, GetHomeCareApprovePackageUseCase>();
 
-            #endregion
+            #endregion HomeCareApprovePackage
 
             #region HomeCareApproveBrokered
 
             services.AddScoped<IGetHomeCareApproveBrokeredUseCase, GetHomeCareApproveBrokeredUseCase>();
 
-            #endregion
+            #endregion HomeCareApproveBrokered
 
             #region NursingCareApprovalHistory
 
             services.AddScoped<IGetAllNursingCareApprovalHistoryUseCase, GetAllNursingCareApprovalHistoryUseCase>();
 
-            #endregion
+            #endregion NursingCareApprovalHistory
 
             #region NursingCareApprovePackage
 
             services.AddScoped<IGetNursingCareApprovePackageUseCase, GetNursingCareApprovePackageUseCase>();
 
-            #endregion
+            #endregion NursingCareApprovePackage
 
             #region NursingCareApproveCommercial
 
             services.AddScoped<IGetNursingCareApproveCommercialUseCase, GetNursingCareApproveCommercialUseCase>();
 
-            #endregion
+            #endregion NursingCareApproveCommercial
 
             #region ResidentialCareApprovalHistory
 
             services.AddScoped<IGetAllResidentialCareApprovalHistoryUseCase, GetAllResidentialCareApprovalHistoryUseCase>();
 
-            #endregion
+            #endregion ResidentialCareApprovalHistory
 
             #region ResidentialCareApprovePackage
 
             services.AddScoped<IGetResidentialCareApprovePackageUseCase, GetResidentialCareApprovePackageUseCase>();
 
-            #endregion
+            #endregion ResidentialCareApprovePackage
 
             #region ResidentialCareApproveBrokered
 
             services.AddScoped<IGetResidentialCareApproveBrokeredUseCase, GetResidentialCareApproveBrokeredUseCase>();
 
-            #endregion
+            #endregion ResidentialCareApproveBrokered
 
             #region DayCareCollege
 
@@ -518,19 +524,19 @@ namespace LBH.AdultSocialCare.Api
 
             services.AddScoped<ICreateDayCareRequestMoreInformationUseCase, CreateDayCareRequestMoreInformationUseCase>();
 
-            #endregion
+            #endregion DayCareBrokerage
 
             #region NursingCareBrokerage
 
             services.AddScoped<ICreateNursingCareRequestMoreInformationUseCase, CreateNursingCareRequestMoreInformationUseCase>();
 
-            #endregion
+            #endregion NursingCareBrokerage
 
             #region ResidentialCareBrokerage
 
             services.AddScoped<ICreateResidentialCareRequestMoreInformationUseCase, CreateResidentialCareRequestMoreInformationUseCase>();
 
-            #endregion
+            #endregion ResidentialCareBrokerage
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
@@ -14,13 +10,16 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerag
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
-
     public class DatabaseContext : DbContext
     {
-
         // TODO: rename DatabaseContext to reflect the data source it is representing. eg. MosaicContext.
         public DatabaseContext(DbContextOptions options)
             : base(options)
@@ -29,6 +28,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
         public DbSet<DayCarePackage> DayCarePackages { get; set; }
         public DbSet<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
+        public DbSet<DayCarePackageStatus> DayCarePackageStatuses { get; set; }
+        public DbSet<DayCareApprovalHistory> DayCareApprovalHistory { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<TimeSlotShifts> TimeSlotShifts { get; set; }
@@ -121,7 +122,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed CarerType
             modelBuilder.ApplyConfiguration(new CarerTypeSeed());
 
-            #endregion
+            // Seed day care package status
+            modelBuilder.ApplyConfiguration(new DayCarePackageStatusSeed());
+
+            #endregion Database Seeds
 
             #region Entity Config
 
@@ -195,7 +199,26 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                     .OnDelete(DeleteBehavior.ClientCascade);
             });
 
-            #endregion
+            modelBuilder.Entity<DayCareApprovalHistory>(entity =>
+            {
+                entity.HasOne(r => r.DayCarePackage)
+                    .WithMany(da => da.DayCareApprovalHistories)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.ClientCascade);
+
+                entity.HasOne(r => r.PackageStatus)
+                    .WithMany()
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.ClientCascade);
+            });
+
+            modelBuilder.Entity<DayCarePackageStatus>(entity =>
+            {
+                entity.HasIndex(e => new { e.SequenceNumber, e.Stage, e.PackageAction })
+                    .IsUnique();
+            });
+
+            #endregion Entity Config
         }
 
         public override int SaveChanges()
@@ -247,7 +270,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 ((BaseEntity) entityEntry.Entity).DateUpdated = DateTimeOffset.UtcNow;
             }
         }
-
     }
-
 }

@@ -38,8 +38,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response
         /// </summary>
         public Guid? UpdaterId { get; set; }
 
-        public UsersResponse Creator { get; set; }
+        public string CreatorName { get; set; }
 
-        public UsersResponse Updater { get; set; }
+        public string UpdaterName { get; set; }
     }
 }

@@ -37,8 +37,8 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
         /// </summary>
         public Guid? UpdaterId { get; set; }
 
-        public UsersDomain Creator { get; set; }
+        public string CreatorName { get; set; }
 
-        public UsersDomain Updater { get; set; }
+        public string UpdaterName { get; set; }
     }
 }

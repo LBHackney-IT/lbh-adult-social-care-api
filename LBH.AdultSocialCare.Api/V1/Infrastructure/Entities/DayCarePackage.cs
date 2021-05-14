@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
@@ -50,9 +51,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public User Updater { get; set; }
 
         [ForeignKey(nameof(StatusId))]
-        public PackageStatus Status { get; set; }
+        public DayCarePackageStatus Status { get; set; }
 
         public ICollection<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
+        public ICollection<DayCareApprovalHistory> DayCareApprovalHistories { get; set; }
     }
 
 }

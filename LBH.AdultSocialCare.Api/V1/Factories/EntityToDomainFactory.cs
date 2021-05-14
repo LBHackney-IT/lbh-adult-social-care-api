@@ -1,35 +1,32 @@
 using AutoMapper;
+using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using System.Collections.Generic;
-using System.Linq;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
-
     public static class EntityToDomainFactory
     {
-
         private static IMapper _mapper { get; set; }
 
         public static void Configure(IMapper mapper)
@@ -49,7 +46,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<DayCarePackageDomain>>(dayCarePackageEntities);
         }
 
-        #endregion
+        #endregion DayCarePackage
 
         #region DayCarePackageOpportunity
 
@@ -65,7 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<DayCarePackageOpportunityDomain>>(dayCarePackageOpportunityEntities);
         }
 
-        #endregion
+        #endregion DayCarePackageOpportunity
 
         #region TermTimeConsiderationOptions
 
@@ -75,7 +72,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<TermTimeConsiderationOptionDomain>>(termTimeConsiderationOptionEntities);
         }
 
-        #endregion
+        #endregion TermTimeConsiderationOptions
 
         #region OpportunityLengthOptions
 
@@ -85,7 +82,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<OpportunityLengthOptionDomain>>(opportunityLengthOptionEntities);
         }
 
-        #endregion
+        #endregion OpportunityLengthOptions
 
         #region OpportunityTimesPerMonthOptions
 
@@ -95,7 +92,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<OpportunityTimesPerMonthOptionDomain>>(opportunityTimesPerMonthOptionEntities);
         }
 
-        #endregion
+        #endregion OpportunityTimesPerMonthOptions
 
         #region NursingCarePackage
 
@@ -135,7 +132,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return nursingCarePackageEntities.Select(entity => entity.ToDomain()).ToList();
         }
 
-        #endregion
+        #endregion NursingCarePackage
 
         #region NursingCareAdditionalNeed
 
@@ -144,7 +141,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsDomain>>(nursingCareAdditionalNeedsEntities);
         }
 
-        #endregion
+        #endregion NursingCareAdditionalNeed
 
         #region TypeOfNursingCareHome
 
@@ -158,7 +155,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 }).ToList();
         }
 
-        #endregion
+        #endregion TypeOfNursingCareHome
 
         #region NursingCareTypeOfStayOptions
 
@@ -173,7 +170,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 }).ToList();
         }
 
-        #endregion
+        #endregion NursingCareTypeOfStayOptions
 
         #region ResidentialCarePackage
 
@@ -212,7 +209,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return nursingCarePackageEntities.Select(entity => entity.ToDomain()).ToList();
         }
 
-        #endregion
+        #endregion ResidentialCarePackage
 
         #region ResidentialCareAdditionalNeed
 
@@ -221,7 +218,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<ResidentialCareAdditionalNeedsDomain>>(residentialCareAdditionalNeedsEntities);
         }
 
-        #endregion
+        #endregion ResidentialCareAdditionalNeed
 
         #region TypeOfResidentialCareHome
 
@@ -235,7 +232,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 }).ToList();
         }
 
-        #endregion
+        #endregion TypeOfResidentialCareHome
 
         #region ResidentialCareTypeOfStayOptions
 
@@ -250,7 +247,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 }).ToList();
         }
 
-        #endregion
+        #endregion ResidentialCareTypeOfStayOptions
 
         #region Supplier
 
@@ -270,7 +267,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<HomeCareSupplierCostDomain>>(homeCareSupplierCostEntities);
         }
 
-        #endregion
+        #endregion Supplier
 
         #region HomeCareBrokerage
 
@@ -300,7 +297,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<HomeCareApprovalHistoryDomain>>(homeCareApprovalHistoryEntities);
         }
 
-        #endregion
+        #endregion HomeCareBrokerage
 
         #region NursingCareBrokerage
 
@@ -310,7 +307,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<NursingCareApprovalHistoryDomain>>(nursingCareApprovalHistoryEntities);
         }
 
-        #endregion
+        #endregion NursingCareBrokerage
 
         #region ResidentialCareBrokerage
 
@@ -320,7 +317,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<ResidentialCareApprovalHistoryDomain>>(residentialCareApprovalHistoryEntities);
         }
 
-        #endregion
+        #endregion ResidentialCareBrokerage
 
         #region DayCareCollege
 
@@ -334,7 +331,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<DayCareCollegeDomain>>(dayCareCollegeEntities);
         }
 
-        #endregion
+        #endregion DayCareCollege
     }
-
 }

@@ -77,6 +77,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<DayCarePackageResponse>(dayCarePackageDomain);
         }
 
+        public static DayCarePackageForApprovalDetailsResponse ToResponse(this DayCarePackageForApprovalDetailsDomain dayCarePackageForApprovalDetailsDomain)
+        {
+            return _mapper.Map<DayCarePackageForApprovalDetailsResponse>(dayCarePackageForApprovalDetailsDomain);
+        }
+
         public static IEnumerable<DayCarePackageResponse> ToResponse(this IEnumerable<DayCarePackageDomain> dayCarePackageDomains)
         {
             return _mapper.Map<IEnumerable<DayCarePackageResponse>>(dayCarePackageDomains);

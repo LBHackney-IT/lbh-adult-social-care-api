@@ -22,10 +22,12 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
         public bool Saturday { get; set; }
         public bool Sunday { get; set; }
         public bool TransportNeeded { get; set; }
+        public bool TransportEscortNeeded { get; set; }
         public bool EscortNeeded { get; set; }
         public int TermTimeConsiderationOptionId { get; set; }
         public List<DayCarePackageOpportunityForCreationDomain> DayCarePackageOpportunities { get; set; }
         public Guid CreatorId { get; set; }
         public int StatusId { get; set; }
+        public int? CollegeId { get; set; }
     }
 }
