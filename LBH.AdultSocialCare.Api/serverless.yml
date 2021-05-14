@@ -22,10 +22,10 @@ provider:
 
 package:
 # TODO: Rename zipfile in build.sh and build.cmd to match this
-  artifact: ./bin/release/netcoreapp3.1/your-api-name.zip
+  artifact: ./bin/release/netcoreapp3.1/hasc.zip
 
 functions:
-  LBH.AdultSocialCare.Api:
+  AdultSocialCareApi:
     name: ${self:service}-${self:provider.stage}
     handler: LBH.AdultSocialCare.Api::LBH.AdultSocialCare.Api.LambdaEntryPoint::FunctionHandlerAsync
     role: lambdaExecutionRole
@@ -93,14 +93,20 @@ resources:
 custom:
   vpc:
     development:
+      securityGroupIds:
+        - sg-
       subnetIds:
         - subnet-0d4086ab96db46047
         - subnet-0f5eeab6b619d5e1a
     staging:
+      securityGroupIds:
+        - sg-0630857460fcc6b3e
       subnetIds:
-        - subnet-06d3de1bd9181b0d7
-        - subnet-0ed7d7713d1127656
+        - subnet-0d4086ab96db46047
+        - subnet-0f5eeab6b619d5e1a
     production:
+      securityGroupIds:
+        - sg-
       subnetIds:
         - subnet-01d3657f97a243261
         - subnet-0b7b8fea07efabf34
