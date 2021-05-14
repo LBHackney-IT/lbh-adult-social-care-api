@@ -22,9 +22,11 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request
         public bool Saturday { get; set; }
         public bool Sunday { get; set; }
         public bool TransportNeeded { get; set; }
+        public bool TransportEscortNeeded { get; set; }
         public bool EscortNeeded { get; set; }
         [Required] public int? TermTimeConsiderationOptionId { get; set; }
         public List<DayCarePackageOpportunityForCreationRequest> DayCarePackageOpportunities { get; set; }
         [Required] public Guid? CreatorId { get; set; }
+        public int? CollegeId { get; set; }
     }
 }
