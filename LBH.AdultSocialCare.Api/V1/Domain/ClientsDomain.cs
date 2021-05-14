@@ -34,6 +34,9 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         /// </summary>
         public DateTime DateOfBirth { get; set; }
 
+        public string PreferredContact { get; set; }  // eg phone
+        public string CanSpeakEnglish { get; set; }  // eg fluent
+
         /// <summary>
         /// Gets or sets the Address Line1
         /// </summary>

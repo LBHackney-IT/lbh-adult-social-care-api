@@ -154,7 +154,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
                 .AsNoTracking()
                 .Select(dc => new DayCarePackageForApprovalDetailsDomain
                 {
-                    PackageDetails = new PackageDetailsDto
+                    PackageDetails = new ApprovalPackageDetailsDto
                     {
                         DayCarePackageId = dc.DayCarePackageId,
                         IsFixedPeriodOrOngoing = dc.IsFixedPeriodOrOngoing,
@@ -189,21 +189,21 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
                             DayCarePackageId = dco.DayCarePackageId
                         })
                     },
-                    ClientDetails = new ClientDetailsDto
+                    ClientDetails = new ApproveClientDetailsDto
                     {
                         ClientName = dc.Client != null ? $"{dc.Client.FirstName} {dc.Client.MiddleName} {dc.Client.LastName}" : null,
                         HackneyId = dc.Client.HackneyId,
                         DateOfBirth = dc.Client.DateOfBirth,
                         PostCode = dc.Client.PostCode
                     },
-                    CostSummary = new CostSummaryDto
+                    CostSummary = new DayCareApproveCostSummaryDto
                     {
                         CostOfCarePerWeek = 0,
                         ANPPerWeek = 0,
                         TransportCostPerWeek = 0,
                         TotalCostPerWeek = 0
                     },
-                    PackageApprovalHistory = dc.DayCareApprovalHistories.Select(ah => new PackageApprovalHistoryDto
+                    PackageApprovalHistory = dc.DayCareApprovalHistories.Select(ah => new DayCarePackageApprovalHistoryDto
                     {
                         HistoryId = ah.HistoryId,
                         DayCarePackageId = ah.DayCarePackageId,

@@ -6,13 +6,13 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
 {
     public class DayCarePackageForApprovalDetailsDomain
     {
-        public PackageDetailsDto PackageDetails { get; set; }
-        public ClientDetailsDto ClientDetails { get; set; }
-        public CostSummaryDto CostSummary { get; set; }
-        public IEnumerable<PackageApprovalHistoryDto> PackageApprovalHistory { get; set; }
+        public ApprovalPackageDetailsDto PackageDetails { get; set; }
+        public ApproveClientDetailsDto ClientDetails { get; set; }
+        public DayCareApproveCostSummaryDto CostSummary { get; set; }
+        public IEnumerable<DayCarePackageApprovalHistoryDto> PackageApprovalHistory { get; set; }
     }
 
-    public class PackageDetailsDto
+    public class ApprovalPackageDetailsDto
     {
         public Guid DayCarePackageId { get; set; }
         public bool IsFixedPeriodOrOngoing { get; set; }
@@ -32,15 +32,17 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
         public IEnumerable<DayCarePackageOpportunityDomain> DayCareOpportunities { get; set; }
     }
 
-    public class ClientDetailsDto
+    public class ApproveClientDetailsDto
     {
         public string ClientName { get; set; }
         public int HackneyId { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string PostCode { get; set; }
+        public string PreferredContact { get; set; }  // eg phone
+        public string CanSpeakEnglish { get; set; }  // eg fluent
     }
 
-    public class CostSummaryDto
+    public class DayCareApproveCostSummaryDto
     {
         public decimal CostOfCarePerWeek { get; set; }
         public decimal ANPPerWeek { get; set; }
@@ -48,7 +50,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
         public decimal TotalCostPerWeek { get; set; }
     }
 
-    public class PackageApprovalHistoryDto
+    public class DayCarePackageApprovalHistoryDto
     {
         public Guid HistoryId { get; set; }
         public Guid DayCarePackageId { get; set; }

@@ -2,9 +2,6 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
@@ -18,6 +15,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 FirstName = "Furkan",
                 LastName = "Kayar",
                 DateOfBirth = new DateTime(1990, 5, 5),
+                CanSpeakEnglish = "Fluent",
+                PreferredContact = "Phone",
                 HackneyId = 66666,
                 AddressLine1 = "Queens Town Road",
                 Town = "London",

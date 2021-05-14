@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
@@ -34,6 +35,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public Guid CreatorId { get; set; }
         public Guid? UpdaterId { get; set; }
         public int StatusId { get; set; }
+        public DayCareBrokerageInfo DayCareBrokerageInfo { get; set; }
 
         [ForeignKey(nameof(PackageId))]
         public Package Package { get; set; }

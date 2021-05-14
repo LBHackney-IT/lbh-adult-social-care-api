@@ -5,9 +5,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response
 {
     public class DayCarePackageForApprovalDetailsResponse
     {
-        public PackageDetailsDto PackageDetails { get; set; }
-        public ClientDetailsDto ClientDetails { get; set; }
-        public CostSummaryDto CostSummary { get; set; }
-        public IEnumerable<PackageApprovalHistoryDto> PackageApprovalHistory { get; set; }
+        public ApprovalPackageDetailsDto PackageDetails { get; set; }
+        public ApproveClientDetailsDto ClientDetails { get; set; }
+        public DayCareApproveCostSummaryDto CostSummary { get; set; }
+        public IEnumerable<DayCarePackageApprovalHistoryDto> PackageApprovalHistory { get; set; }
     }
 }

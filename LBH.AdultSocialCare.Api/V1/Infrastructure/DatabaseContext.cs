@@ -157,6 +157,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                     .WithMany()
                     .IsRequired()
                     .OnDelete(DeleteBehavior.ClientCascade);
+
+                entity.HasOne(a => a.DayCareBrokerageInfo)
+                    .WithOne(b => b.DayCarePackage)
+                    .HasForeignKey<DayCareBrokerageInfo>(b => b.DayCarePackageId);
             });
 
             modelBuilder.Entity<NursingCarePackage>(entity =>

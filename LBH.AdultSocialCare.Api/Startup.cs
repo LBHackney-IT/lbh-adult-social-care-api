@@ -548,11 +548,11 @@ namespace LBH.AdultSocialCare.Api
 
                 // Create if not exists
                 // This next section is the reason devs are forgetting to create migrations. Leave commented
-                if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
+                /*if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
                 {
                     databaseContext.Database.EnsureCreated();
-                }
-                else if (databaseContext.Database.GetPendingMigrations().Any())
+                }*/
+                if (databaseContext.Database.GetPendingMigrations().Any())
                 {
                     // Perform migrations
                     databaseContext.Database.Migrate();
