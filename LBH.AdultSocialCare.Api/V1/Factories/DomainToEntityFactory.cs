@@ -121,6 +121,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<DayCareRequestMoreInformation>(dayCareRequestMoreInformationDomain);
         }
 
+        public static DayCareBrokerageInfo ToDb(this DayCareBrokerageInfoForCreationDomain dayCareBrokerageInfoForCreationDomain)
+        {
+            return _mapper.Map<DayCareBrokerageInfo>(dayCareBrokerageInfoForCreationDomain);
+        }
+
         #endregion
 
         #region NursingCareBrokerage

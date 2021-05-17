@@ -260,6 +260,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<ITimeSlotShiftsGateway, TimeSlotShiftsGateway>();
             services.AddScoped<IHomeCarePackageGateway, HomeCarePackageGateway>();
             services.AddScoped<IDayCarePackageGateway, DayCarePackageGateway>();
+            services.AddScoped<IDayCareBrokerageInfoGateway, DayCareBrokerageInfoGateway>();
             services.AddScoped<IDayCarePackageOpportunityGateway, DayCarePackageOpportunityGateway>();
             services.AddScoped<IClientsGateway, ClientsGateway>();
             services.AddScoped<IHomeCarePackageSlotsGateway, HomeCarePackageSlotsGateway>();
@@ -523,6 +524,7 @@ namespace LBH.AdultSocialCare.Api
             #region DayCareBrokerage
 
             services.AddScoped<ICreateDayCareRequestMoreInformationUseCase, CreateDayCareRequestMoreInformationUseCase>();
+            services.AddScoped<IDayCarePackageBrokerageUseCase, DayCarePackageBrokerageUseCase>();
 
             #endregion DayCareBrokerage
 

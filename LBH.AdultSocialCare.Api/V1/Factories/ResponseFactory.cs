@@ -3,6 +3,7 @@ using System.Linq;
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApprovePackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
@@ -28,6 +29,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Re
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareApprovePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
@@ -406,6 +408,20 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<DayCareCollegeResponse> ToResponse(this IEnumerable<DayCareCollegeDomain> dayCareCollegeDomain)
         {
             return _mapper.Map<IEnumerable<DayCareCollegeResponse>>(dayCareCollegeDomain);
+        }
+
+        #endregion
+
+        #region DayCareBrokerage
+
+        public static DayCarePackageForBrokerageResponse ToResponse(this DayCarePackageForBrokerageDomain dayCarePackageForBrokerageDomain)
+        {
+            return _mapper.Map<DayCarePackageForBrokerageResponse>(dayCarePackageForBrokerageDomain);
+        }
+
+        public static IEnumerable<DayCareBrokerageStageResponse> ToResponse(this IEnumerable<DayCareBrokerageStageDomain> dayCareBrokerageStageDomains)
+        {
+            return _mapper.Map<IEnumerable<DayCareBrokerageStageResponse>>(dayCareBrokerageStageDomains);
         }
 
         #endregion

@@ -22,6 +22,8 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -332,5 +334,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion DayCareCollege
+
+        #region DayCareBrokerage
+
+        public static DayCareBrokerageInfoDomain ToDomain(this DayCareBrokerageInfo dayCareBrokerageInfoEntity)
+        {
+            return _mapper.Map<DayCareBrokerageInfoDomain>(dayCareBrokerageInfoEntity);
+        }
+
+        #endregion
     }
 }
