@@ -19,17 +19,20 @@ namespace LBH.AdultSocialCare.Api.V1.Exceptions.Filters
             var statusCode = HttpStatusCode.InternalServerError;
             var message = context.Exception.Message;
 
-            if (context.Exception is EntityNotFoundException)
+            switch (context.Exception)
             {
-                statusCode = HttpStatusCode.NotFound;
-            }
-            else if (context.Exception is DbSaveFailedException)
-            {
-                statusCode = HttpStatusCode.InternalServerError;
-            }
-            else
-            {
-                message = "Internal Server Error";
+                case EntityNotFoundException _:
+                    statusCode = HttpStatusCode.NotFound;
+                    break;
+                case DbSaveFailedException _:
+                    statusCode = HttpStatusCode.InternalServerError;
+                    break;
+                case EntityConflictException _:
+                    statusCode = HttpStatusCode.Conflict;
+                    break;
+                default:
+                    message = "Internal Server Error";
+                    break;
             }
 
             context.HttpContext.Response.ContentType = "application/json";
