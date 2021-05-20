@@ -103,6 +103,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageReclaimGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCarePackageReclaimGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageReclaimGateways;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageReclaimUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageReclaimUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCarePackageReclaimUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCarePackageReclaimUseCase.Interfaces;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace LBH.AdultSocialCare.Api
@@ -290,6 +299,9 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IDayCareRequestMoreInformationGateway, DayCareRequestMoreInformationGateway>();
             services.AddScoped<INursingCareRequestMoreInformationGateway, NursingCareRequestMoreInformationGateway>();
             services.AddScoped<IResidentialCareRequestMoreInformationGateway, ResidentialCareRequestMoreInformationGateway>();
+            services.AddScoped<IHomeCarePackageReclaimGateway, HomeCarePackageReclaimGateway>();
+            services.AddScoped<IDayCarePackageReclaimGateway, DayCarePackageReclaimGateway>();
+            services.AddScoped<INursingCarePackageReclaimGateway, NursingCarePackageReclaimGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
@@ -537,6 +549,18 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<ICreateResidentialCareRequestMoreInformationUseCase, CreateResidentialCareRequestMoreInformationUseCase>();
 
             #endregion ResidentialCareBrokerage
+
+            #region PackageReclaim
+
+            services.AddScoped<ICreateHomeCarePackageReclaimUseCase, CreateHomeCarePackageReclaimUseCase>();
+            services.AddScoped<IGetAllHomeCareAmountOptionUseCase, GetAllHomeCareAmountOptionUseCase>();
+            services.AddScoped<IGetAllHomeCareReclaimCategoryUseCase, GetAllHomeCareReclaimCategoryUseCase>();
+            services.AddScoped<IGetAllHomeCareReclaimFromUseCase, GetAllHomeCareReclaimFromUseCase>();
+            services.AddScoped<ICreateDayCarePackageReclaimUseCase, CreateDayCarePackageReclaimUseCase>();
+            services.AddScoped<ICreateNursingCarePackageReclaimUseCase, CreateNursingCarePackageReclaimUseCase>();
+
+            #endregion PackageReclaim
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -547,11 +571,16 @@ namespace LBH.AdultSocialCare.Api
                 DatabaseContext databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
                 // Create if not exists
-                if (databaseContext.Database.GetPendingMigrations().Any())
+                // This next section is the reason devs are forgetting to create migrations. Leave commented
+                if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
                 {
-                    // Perform migrations
-                    databaseContext.Database.Migrate();
+                    databaseContext.Database.EnsureCreated();
                 }
+                //else if (databaseContext.Database.GetPendingMigrations().Any())
+                //{
+                //    // Perform migrations
+                //    databaseContext.Database.Migrate();
+                //}
             }
 
             app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader());

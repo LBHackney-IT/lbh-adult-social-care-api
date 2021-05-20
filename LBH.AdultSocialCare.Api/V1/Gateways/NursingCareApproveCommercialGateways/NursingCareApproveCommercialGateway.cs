@@ -27,6 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGatewa
         {
             var nursingCarePackage = await _databaseContext.NursingCarePackages
                 .Where(item => item.Id == nursingCarePackageId)
+                .Include(item => item.NursingCareAdditionalNeeds)
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
 
@@ -38,9 +39,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGatewa
             var nursingCareApproveCommercialDomain = new NursingCareApproveCommercialDomain()
             {
                 NursingCarePackage = nursingCarePackage.ToDomain(),
-                CostOfCare = 0,
-                CostOfAdditionalNeeds = 0,
-                TotalPerWeek = 0
+                CostOfCare = 1000,
+                CostOfAdditionalNeeds = 200,
+                TotalPerWeek = 500
             };
 
             return nursingCareApproveCommercialDomain;

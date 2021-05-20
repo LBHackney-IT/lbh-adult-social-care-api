@@ -25,6 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovePackageGatew
         {
             var residentialCarePackage = await _databaseContext.ResidentialCarePackages
                 .Where(item => item.Id == residentialCarePackageId)
+                .Include(item => item.ResidentialCareAdditionalNeeds)
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
 
@@ -36,10 +37,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovePackageGatew
             var residentialCareApprovePackageDomain = new ResidentialCareApprovePackageDomain()
             {
                 ResidentialCarePackage = residentialCarePackage.ToDomain(),
-                CostOfCare = 0,
-                CostOfAdditionalNeeds = 0,
-                CostOfOneOff = 0,
-                TotalPerWeek = 0
+                CostOfCare = 1200,
+                CostOfAdditionalNeeds = 350,
+                CostOfOneOff = 330,
+                TotalPerWeek = 600
             };
 
             return residentialCareApprovePackageDomain;

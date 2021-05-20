@@ -22,6 +22,12 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -332,5 +338,54 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion DayCareCollege
+
+        #region PackageReclaim
+
+        public static HomeCarePackageClaimDomain ToDomain(this HomeCarePackageReclaim homeCarePackageReclaim)
+        {
+            return _mapper.Map<HomeCarePackageClaimDomain>(homeCarePackageReclaim);
+        }
+
+        public static IEnumerable<HomeCarePackageReclaimAmountOptionDomain> ToDomain(this ICollection<HomeCarePackageReclaimAmountOption> homeCarePackageReclaimAmountOptions)
+        {
+            return homeCarePackageReclaimAmountOptions.Select(item
+                => new HomeCarePackageReclaimAmountOptionDomain
+                {
+                    AmountOptionId = item.AmountOptionId,
+                    AmountOptionName = item.AmountOptionName
+                }).ToList();
+        }
+
+        public static IEnumerable<HomeCarePackageReclaimCategoryDomain> ToDomain(this ICollection<HomeCarePackageReclaimCategory> homeCarePackageReclaimCategories)
+        {
+            return homeCarePackageReclaimCategories.Select(item
+                => new HomeCarePackageReclaimCategoryDomain
+                {
+                    ReclaimCategoryId = item.ReclaimCategoryId,
+                    ReclaimCategoryName = item.ReclaimCategoryName
+                }).ToList();
+        }
+
+        public static IEnumerable<HomeCarePackageReclaimFromDomain> ToDomain(this ICollection<HomeCarePackageReclaimFrom> homeCarePackageReclaimFroms)
+        {
+            return homeCarePackageReclaimFroms.Select(item
+                => new HomeCarePackageReclaimFromDomain
+                {
+                    ReclaimFromId = item.ReclaimFromId,
+                    ReclaimFromName = item.ReclaimFromName
+                }).ToList();
+        }
+
+        public static DayCarePackageClaimDomain ToDomain(this DayCarePackageReclaim dayCarePackageReclaim)
+        {
+            return _mapper.Map<DayCarePackageClaimDomain>(dayCarePackageReclaim);
+        }
+
+        public static NursingCarePackageClaimDomain ToDomain(this NursingCarePackageReclaim nursingCarePackageReclaim)
+        {
+            return _mapper.Map<NursingCarePackageClaimDomain>(nursingCarePackageReclaim);
+        }
+
+        #endregion PackageReclaim
     }
 }
