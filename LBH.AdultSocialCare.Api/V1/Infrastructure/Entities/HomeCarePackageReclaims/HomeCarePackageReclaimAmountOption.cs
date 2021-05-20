@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims
 {
-    public class HomeCarePackageReclaimAmountOption 
+    public class HomeCarePackageReclaimAmountOption
     {
         [Key]
         public int AmountOptionId { get; set; }
