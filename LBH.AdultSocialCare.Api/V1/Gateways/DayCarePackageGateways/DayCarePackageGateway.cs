@@ -251,6 +251,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
                         Friday = dc.Friday,
                         Saturday = dc.Saturday,
                         Sunday = dc.Sunday,
+                        TermTimeConsiderationOptionName = dc.TermTimeConsiderationOption.OptionName,
+                        NeedToAddress = dc.NeedToAddress,
                         DayCareOpportunities = dc.DayCarePackageOpportunities.Select(dco => new DayCarePackageOpportunityDomain
                         {
                             DayCarePackageOpportunityId = dco.DayCarePackageOpportunityId,

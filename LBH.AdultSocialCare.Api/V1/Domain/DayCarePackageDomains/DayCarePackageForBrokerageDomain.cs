@@ -17,11 +17,13 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
         public bool IsFixedPeriodOrOngoing { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
+        public string NeedToAddress { get; set; }
         public int DaysPerWeek { get; set; }
         public int DayCareOpportunitiesHoursPerWeek { get; set; }
         public bool TransportNeeded { get; set; }
         public bool TransportEscortNeeded { get; set; }
         public bool EscortNeeded { get; set; }
+        public string TermTimeConsiderationOptionName { get; set; }
 
         public bool Monday { get; set; }
         public bool Tuesday { get; set; }

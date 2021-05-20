@@ -18,10 +18,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
     public class DayCareBrokerageController : ControllerBase
     {
         private readonly IDayCarePackageBrokerageUseCase _dayCarePackageBrokerageUseCase;
+        private readonly IChangeDayCarePackageStatusUseCase _changeDayCarePackageStatusUseCase;
 
-        public DayCareBrokerageController(IDayCarePackageBrokerageUseCase dayCarePackageBrokerageUseCase)
+        public DayCareBrokerageController(IDayCarePackageBrokerageUseCase dayCarePackageBrokerageUseCase, IChangeDayCarePackageStatusUseCase changeDayCarePackageStatusUseCase)
         {
             _dayCarePackageBrokerageUseCase = dayCarePackageBrokerageUseCase;
+            _changeDayCarePackageStatusUseCase = changeDayCarePackageStatusUseCase;
         }
 
         /// <summary>Creates the day care package brokerage information.</summary>
@@ -50,6 +52,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
 
             var dayCarePackageDomain = dayCareBrokerageInfoForCreation.ToDomain(dayCarePackageId);
             var result = await _dayCarePackageBrokerageUseCase.CreateDayPackageBrokerageInfo(dayCarePackageDomain).ConfigureAwait(false);
+            await _changeDayCarePackageStatusUseCase.DayCarePackageBrokerageSubmittedForApproval(dayCarePackageId).ConfigureAwait(false);
             return Ok(result);
         }
 
