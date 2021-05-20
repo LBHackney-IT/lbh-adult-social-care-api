@@ -134,6 +134,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed day care package status
             modelBuilder.ApplyConfiguration(new DayCarePackageStatusSeed());
 
+            // Seed package reclaim amount option
+            modelBuilder.ApplyConfiguration(new PackageReclaimAmountOptionSeed());
+
+            // Seed package reclaim category
+            modelBuilder.ApplyConfiguration(new PackageReclaimCategorySeed());
+
+            // Seed package reclaim from
+            modelBuilder.ApplyConfiguration(new PackageReclaimFromSeed());
+
             #endregion Database Seeds
 
             #region Entity Config

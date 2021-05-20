@@ -9,7 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageRecl
 {
     public class HomeCarePackageReclaimAmountOption 
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
         public int AmountOptionId { get; set; }
 
         // Percentage, Fixed Amount - one off, Fixed amount weekly
