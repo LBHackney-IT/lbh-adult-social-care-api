@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Response
 {
@@ -16,10 +17,10 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.
         public string Notes { get; set; }
         public decimal Amount { get; set; }
 
-        public HomeCarePackageReclaimFromResponse HomeCarePackageReclaimFrom { get; set; }
+        public ReclaimFromResponse ReclaimFrom { get; set; }
 
-        public HomeCarePackageReclaimCategoryResponse HomeCarePackageReclaimCategory { get; set; }
+        public ReclaimCategoryResponse ReclaimCategory { get; set; }
 
-        public HomeCarePackageReclaimAmountOptionResponse HomeCarePackageReclaimAmountOption { get; set; }
+        public ReclaimAmountOptionResponse ReclaimAmountOption { get; set; }
     }
 }

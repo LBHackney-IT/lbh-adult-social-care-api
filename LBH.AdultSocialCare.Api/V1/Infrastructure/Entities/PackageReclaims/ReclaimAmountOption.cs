@@ -5,9 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims
 {
-    public class HomeCarePackageReclaimAmountOption
+    public class ReclaimAmountOption
     {
         [Key]
         public int AmountOptionId { get; set; }

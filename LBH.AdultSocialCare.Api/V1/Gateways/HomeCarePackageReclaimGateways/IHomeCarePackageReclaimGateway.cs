@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCarePackageReclaimGateways
@@ -11,11 +12,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCarePackageReclaimGateways
     {
         public Task<HomeCarePackageClaimDomain> CreateAsync(HomeCarePackageReclaim homeCarePackageReclaim);
 
-        public Task<IEnumerable<HomeCarePackageReclaimAmountOptionDomain>> GetListOfAmountOptionAsync();
+        public Task<IEnumerable<ReclaimAmountOptionDomain>> GetListOfAmountOptionAsync();
 
-        public Task<IEnumerable<HomeCarePackageReclaimCategoryDomain>>
+        public Task<IEnumerable<ReclaimCategoryDomain>>
             GetListOfPackageReclaimCategoryOptionAsync();
 
-        public Task<IEnumerable<HomeCarePackageReclaimFromDomain>> GetListOfPackageReclaimFromOptionAsync();
+        public Task<IEnumerable<ReclaimFromDomain>> GetListOfPackageReclaimFromOptionAsync();
     }
 }

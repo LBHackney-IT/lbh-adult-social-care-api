@@ -19,6 +19,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovePackageBoundary.Response;
@@ -45,6 +46,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
@@ -423,19 +425,19 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<HomeCarePackageClaimResponse>(homeCarePackageClaimDomain);
         }
 
-        public static IEnumerable<HomeCarePackageReclaimFromResponse> ToResponse(this IEnumerable<HomeCarePackageReclaimFromDomain> homeCarePackageReclaimFromDomain)
+        public static IEnumerable<ReclaimFromResponse> ToResponse(this IEnumerable<ReclaimFromDomain> reclaimFromDomain)
         {
-            return _mapper.Map<IEnumerable<HomeCarePackageReclaimFromResponse>>(homeCarePackageReclaimFromDomain);
+            return _mapper.Map<IEnumerable<ReclaimFromResponse>>(reclaimFromDomain);
         }
 
-        public static IEnumerable<HomeCarePackageReclaimCategoryResponse> ToResponse(this IEnumerable<HomeCarePackageReclaimCategoryDomain> homeCarePackageReclaimCategoryDomain)
+        public static IEnumerable<ReclaimCategoryResponse> ToResponse(this IEnumerable<ReclaimCategoryDomain> homeCarePackageReclaimCategoryDomain)
         {
-            return _mapper.Map<IEnumerable<HomeCarePackageReclaimCategoryResponse>>(homeCarePackageReclaimCategoryDomain);
+            return _mapper.Map<IEnumerable<ReclaimCategoryResponse>>(homeCarePackageReclaimCategoryDomain);
         }
 
-        public static IEnumerable<HomeCarePackageReclaimAmountOptionResponse> ToResponse(this IEnumerable<HomeCarePackageReclaimAmountOptionDomain> homeCarePackageReclaimAmountOptionDomain)
+        public static IEnumerable<ReclaimAmountOptionResponse> ToResponse(this IEnumerable<ReclaimAmountOptionDomain> reclaimAmountOptionDomain)
         {
-            return _mapper.Map<IEnumerable<HomeCarePackageReclaimAmountOptionResponse>>(homeCarePackageReclaimAmountOptionDomain);
+            return _mapper.Map<IEnumerable<ReclaimAmountOptionResponse>>(reclaimAmountOptionDomain);
         }
 
         public static DayCarePackageClaimResponse ToResponse(this DayCarePackageClaimDomain dayCarePackageClaimDomain)

@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
@@ -68,9 +69,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<NursingCareRequestMoreInformation> NursingCareRequestMoreInformations { get; set; }
         public DbSet<DayCareCollege> DayCareColleges { get; set; }
         public DbSet<HomeCarePackageReclaim> HomeCarePackageReclaims { get; set; }
-        public DbSet<HomeCarePackageReclaimAmountOption> HomeCarePackageReclaimAmountOptions { get; set; }
-        public DbSet<HomeCarePackageReclaimCategory> HomeCarePackageReclaimCategories { get; set; }
-        public DbSet<HomeCarePackageReclaimFrom> HomeCarePackageReclaimFroms { get; set; }
+        public DbSet<ReclaimAmountOption> ReclaimAmountOptions { get; set; }
+        public DbSet<ReclaimCategory> ReclaimCategories { get; set; }
+        public DbSet<ReclaimFrom> ReclaimFroms { get; set; }
         public DbSet<DayCarePackageReclaim> DayCarePackageReclaims { get; set; }
         public DbSet<NursingCarePackageReclaim> NursingCarePackageReclaims { get; set; }
 

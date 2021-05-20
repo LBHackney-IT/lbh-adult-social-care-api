@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains
 {
@@ -15,10 +16,10 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains
         public string Notes { get; set; }
         public decimal Amount { get; set; }
 
-        public HomeCarePackageReclaimFromDomain HomeCarePackageReclaimFrom { get; set; }
+        public ReclaimFromDomain ReclaimFrom { get; set; }
 
-        public HomeCarePackageReclaimCategoryDomain HomeCarePackageReclaimCategory { get; set; }
+        public ReclaimCategoryDomain ReclaimCategory { get; set; }
 
-        public HomeCarePackageReclaimAmountOptionDomain HomeCarePackageReclaimAmountOption { get; set; }
+        public ReclaimAmountOptionDomain ReclaimAmountOption { get; set; }
     }
 }

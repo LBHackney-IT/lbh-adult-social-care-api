@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageReclaimBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageReclaimBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageReclaimUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
@@ -21,19 +23,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     public class DayCarePackageReclaimController : Controller
     {
         private readonly ICreateDayCarePackageReclaimUseCase _createDayCarePackageReclaimUseCase;
-        private readonly IGetAllHomeCareAmountOptionUseCase _getAllHomeCareAmountOptionUseCase;
-        private readonly IGetAllHomeCareReclaimCategoryUseCase _getAllHomeCareReclaimCategoryUseCase;
-        private readonly IGetAllHomeCareReclaimFromUseCase _getAllHomeCareReclaimFromUseCase;
+        private readonly IGetAllAmountOptionUseCase _getAllAmountOptionUseCase;
+        private readonly IGetAllReclaimCategoryUseCase _getAllReclaimCategoryUseCase;
+        private readonly IGetAllReclaimFromUseCase _getAllReclaimFromUseCase;
 
         public DayCarePackageReclaimController(ICreateDayCarePackageReclaimUseCase createDayCarePackageReclaimUseCase,
-            IGetAllHomeCareAmountOptionUseCase getAllHomeCareAmountOptionUseCase,
-            IGetAllHomeCareReclaimCategoryUseCase getAllHomeCareReclaimCategoryUseCase,
-            IGetAllHomeCareReclaimFromUseCase getAllHomeCareReclaimFromUseCase)
+            IGetAllAmountOptionUseCase getAllAmountOptionUseCase,
+            IGetAllReclaimCategoryUseCase getAllReclaimCategoryUseCase,
+            IGetAllReclaimFromUseCase getAllReclaimFromUseCase)
         {
             _createDayCarePackageReclaimUseCase = createDayCarePackageReclaimUseCase;
-            _getAllHomeCareAmountOptionUseCase = getAllHomeCareAmountOptionUseCase;
-            _getAllHomeCareReclaimCategoryUseCase = getAllHomeCareReclaimCategoryUseCase;
-            _getAllHomeCareReclaimFromUseCase = getAllHomeCareReclaimFromUseCase;
+            _getAllAmountOptionUseCase = getAllAmountOptionUseCase;
+            _getAllReclaimCategoryUseCase = getAllReclaimCategoryUseCase;
+            _getAllReclaimFromUseCase = getAllReclaimFromUseCase;
         }
 
         [ProducesResponseType(typeof(DayCarePackageClaimResponse), StatusCodes.Status200OK)]
@@ -61,33 +63,33 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             return Ok(dayCarePackageClaimResponse);
         }
 
-        [ProducesResponseType(typeof(IEnumerable<HomeCarePackageReclaimAmountOptionResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ReclaimAmountOptionResponse>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("amount-option")]
-        public async Task<ActionResult<IEnumerable<HomeCarePackageReclaimAmountOptionResponse>>> GetAmountOptionsList()
+        public async Task<ActionResult<IEnumerable<ReclaimAmountOptionResponse>>> GetAmountOptionsList()
         {
-            var result = await _getAllHomeCareAmountOptionUseCase.GetAllAsync().ConfigureAwait(false);
+            var result = await _getAllAmountOptionUseCase.GetAllAsync().ConfigureAwait(false);
             return Ok(result);
         }
 
-        [ProducesResponseType(typeof(IEnumerable<HomeCarePackageReclaimFromResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ReclaimFromResponse>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("reclaim-from")]
-        public async Task<ActionResult<IEnumerable<HomeCarePackageReclaimFromResponse>>> GetTypeOfReclaimFromOptionList()
+        public async Task<ActionResult<IEnumerable<ReclaimFromResponse>>> GetTypeOfReclaimFromOptionList()
         {
-            var result = await _getAllHomeCareReclaimFromUseCase.GetAllAsync().ConfigureAwait(false);
+            var result = await _getAllReclaimFromUseCase.GetAllAsync().ConfigureAwait(false);
             return Ok(result);
         }
 
-        [ProducesResponseType(typeof(IEnumerable<HomeCarePackageReclaimCategoryResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ReclaimCategoryResponse>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("reclaim-category")]
-        public async Task<ActionResult<IEnumerable<HomeCarePackageReclaimCategoryResponse>>> GetTypeOfReclaimCategoryOptionList()
+        public async Task<ActionResult<IEnumerable<ReclaimCategoryResponse>>> GetTypeOfReclaimCategoryOptionList()
         {
-            var result = await _getAllHomeCareReclaimCategoryUseCase.GetAllAsync().ConfigureAwait(false);
+            var result = await _getAllReclaimCategoryUseCase.GetAllAsync().ConfigureAwait(false);
             return Ok(result);
         }
     }

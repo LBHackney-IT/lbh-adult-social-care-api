@@ -112,7 +112,9 @@ using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCarePackageReclaimUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCarePackageReclaimUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Concrete;
 using Microsoft.EntityFrameworkCore.Storage;
+using LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Interfaces;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -553,9 +555,9 @@ namespace LBH.AdultSocialCare.Api
             #region PackageReclaim
 
             services.AddScoped<ICreateHomeCarePackageReclaimUseCase, CreateHomeCarePackageReclaimUseCase>();
-            services.AddScoped<IGetAllHomeCareAmountOptionUseCase, GetAllHomeCareAmountOptionUseCase>();
-            services.AddScoped<IGetAllHomeCareReclaimCategoryUseCase, GetAllHomeCareReclaimCategoryUseCase>();
-            services.AddScoped<IGetAllHomeCareReclaimFromUseCase, GetAllHomeCareReclaimFromUseCase>();
+            services.AddScoped<IGetAllAmountOptionUseCase, GetAllAmountOptionUseCase>();
+            services.AddScoped<IGetAllReclaimCategoryUseCase, GetAllReclaimCategoryUseCase>();
+            services.AddScoped<IGetAllReclaimFromUseCase, GetAllReclaimFromUseCase>();
             services.AddScoped<ICreateDayCarePackageReclaimUseCase, CreateDayCarePackageReclaimUseCase>();
             services.AddScoped<ICreateNursingCarePackageReclaimUseCase, CreateNursingCarePackageReclaimUseCase>();
 

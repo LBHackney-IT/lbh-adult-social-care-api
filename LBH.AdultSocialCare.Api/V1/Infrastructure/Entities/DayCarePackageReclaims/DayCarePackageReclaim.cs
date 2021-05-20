@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims
 {
@@ -20,12 +21,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageRecla
         public decimal Amount { get; set; }
 
         [ForeignKey(nameof(ReclaimFromId))]
-        public HomeCarePackageReclaimFrom HomeCarePackageReclaimFrom { get; set; }
+        public ReclaimFrom ReclaimFrom { get; set; }
 
         [ForeignKey(nameof(ReclaimCategoryId))]
-        public HomeCarePackageReclaimCategory HomeCarePackageReclaimCategory { get; set; }
+        public ReclaimCategory ReclaimCategory { get; set; }
 
         [ForeignKey(nameof(ReclaimAmountOptionId))]
-        public HomeCarePackageReclaimAmountOption HomeCarePackageReclaimAmountOption { get; set; }
+        public ReclaimAmountOption ReclaimAmountOption { get; set; }
     }
 }

@@ -5,13 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims
 {
-    public class HomeCarePackageReclaimCategory
+    public class ReclaimFrom
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ReclaimCategoryId { get; set; }
+        public int ReclaimFromId { get; set; }
 
-        public string ReclaimCategoryName { get; set; }
+        public string ReclaimFromName { get; set; }
     }
 }

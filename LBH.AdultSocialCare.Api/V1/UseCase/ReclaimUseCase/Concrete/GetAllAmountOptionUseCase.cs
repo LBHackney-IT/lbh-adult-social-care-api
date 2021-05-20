@@ -3,24 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCarePackageReclaimGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Interfaces;
 
-namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Concrete
+namespace LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Concrete
 {
-    public class GetAllHomeCareReclaimCategoryUseCase : IGetAllHomeCareReclaimCategoryUseCase
+    public class GetAllAmountOptionUseCase : IGetAllAmountOptionUseCase
     {
         private readonly IHomeCarePackageReclaimGateway _gateway;
 
-        public GetAllHomeCareReclaimCategoryUseCase(IHomeCarePackageReclaimGateway homeCarePackageReclaimGateway)
+        public GetAllAmountOptionUseCase(IHomeCarePackageReclaimGateway homeCarePackageReclaimGateway)
         {
             _gateway = homeCarePackageReclaimGateway;
         }
 
-        public async Task<IEnumerable<HomeCarePackageReclaimCategoryResponse>> GetAllAsync()
+        public async Task<IEnumerable<ReclaimAmountOptionResponse>> GetAllAsync()
         {
-            var result = await _gateway.GetListOfPackageReclaimCategoryOptionAsync().ConfigureAwait(false);
+            var result = await _gateway.GetListOfAmountOptionAsync().ConfigureAwait(false);
             return result.ToResponse();
         }
     }
