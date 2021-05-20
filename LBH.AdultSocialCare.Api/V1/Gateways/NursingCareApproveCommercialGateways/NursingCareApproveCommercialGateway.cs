@@ -39,9 +39,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGatewa
             var nursingCareApproveCommercialDomain = new NursingCareApproveCommercialDomain()
             {
                 NursingCarePackage = nursingCarePackage.ToDomain(),
-                CostOfCare = 1000,
-                CostOfAdditionalNeeds = 200,
-                TotalPerWeek = 500
+                CostOfCare = 0,
+                CostOfAdditionalNeeds = 0,
+                TotalPerWeek = 0
             };
 
             return nursingCareApproveCommercialDomain;

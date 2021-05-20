@@ -37,10 +37,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovePackageGatew
             var residentialCareApprovePackageDomain = new ResidentialCareApprovePackageDomain()
             {
                 ResidentialCarePackage = residentialCarePackage.ToDomain(),
-                CostOfCare = 1200,
-                CostOfAdditionalNeeds = 350,
-                CostOfOneOff = 330,
-                TotalPerWeek = 600
+                CostOfCare = 0,
+                CostOfAdditionalNeeds = 0,
+                CostOfOneOff = 0,
+                TotalPerWeek = 0
             };
 
             return residentialCareApprovePackageDomain;
