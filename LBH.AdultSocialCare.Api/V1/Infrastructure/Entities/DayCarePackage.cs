@@ -1,17 +1,18 @@
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
     public class DayCarePackage : BaseEntity
     {
-
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid DayCarePackageId { get; set; }
+
         public int PackageId { get; set; }
         public Guid ClientId { get; set; }
         public bool IsFixedPeriodOrOngoing { get; set; }
@@ -57,6 +58,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 
         public ICollection<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
         public ICollection<DayCareApprovalHistory> DayCareApprovalHistories { get; set; }
+        public ICollection<DayCarePackageReclaim> PackageReclaims { get; set; }
     }
-
 }
