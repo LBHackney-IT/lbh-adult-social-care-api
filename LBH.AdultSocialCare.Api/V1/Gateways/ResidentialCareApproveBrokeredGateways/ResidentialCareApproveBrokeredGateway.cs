@@ -24,6 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGate
         {
             var residentialCarePackage = await _databaseContext.ResidentialCarePackages
                 .Where(item => item.Id == residentialCarePackageId)
+                .Include(item => item.ResidentialCareAdditionalNeeds)
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
 

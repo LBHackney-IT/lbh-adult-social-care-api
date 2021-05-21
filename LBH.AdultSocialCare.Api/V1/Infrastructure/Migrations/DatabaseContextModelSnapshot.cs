@@ -663,6 +663,47 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("DayCarePackageOpportunities");
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims.DayCarePackageReclaim", b =>
+                {
+                    b.Property<Guid>("DayCarePackageReclaimId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DayCarePackageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ReclaimAmountOptionId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ReclaimCategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ReclaimFromId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("DayCarePackageReclaimId");
+
+                    b.HasIndex("ReclaimAmountOptionId");
+
+                    b.HasIndex("ReclaimCategoryId");
+
+                    b.HasIndex("ReclaimFromId");
+
+                    b.ToTable("DayCarePackageReclaims");
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.HomeCarePackage", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1421,6 +1462,47 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("HomeCareRequestMoreInformations");
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims.HomeCarePackageReclaim", b =>
+                {
+                    b.Property<Guid>("HomeCarePackageReclaimId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("HomeCarePackageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ReclaimAmountOptionId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ReclaimCategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ReclaimFromId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("HomeCarePackageReclaimId");
+
+                    b.HasIndex("ReclaimAmountOptionId");
+
+                    b.HasIndex("ReclaimCategoryId");
+
+                    b.HasIndex("ReclaimFromId");
+
+                    b.ToTable("HomeCarePackageReclaims");
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareSupplierCost", b =>
                 {
                     b.Property<int>("Id")
@@ -1677,6 +1759,41 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("NursingCarePackages");
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims.NursingCarePackageReclaim", b =>
+                {
+                    b.Property<Guid>("NursingCarePackageReclaimId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Notes")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("NursingCarePackageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ReclaimAmountOptionId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ReclaimCategoryId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ReclaimFromId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("NursingCarePackageReclaimId");
+
+                    b.HasIndex("ReclaimAmountOptionId");
+
+                    b.HasIndex("ReclaimCategoryId");
+
+                    b.HasIndex("ReclaimFromId");
+
+                    b.ToTable("NursingCarePackageReclaims");
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.OpportunityLengthOption", b =>
                 {
                     b.Property<int>("OpportunityLengthOptionId")
@@ -1824,6 +1941,92 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             PackageType = "Nursing Care Package",
                             Sequence = 0,
                             UpdatorId = 1
+                        });
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims.ReclaimAmountOption", b =>
+                {
+                    b.Property<int>("AmountOptionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("AmountOptionName")
+                        .HasColumnType("text");
+
+                    b.HasKey("AmountOptionId");
+
+                    b.ToTable("ReclaimAmountOptions");
+
+                    b.HasData(
+                        new
+                        {
+                            AmountOptionId = 1,
+                            AmountOptionName = "Percentage"
+                        },
+                        new
+                        {
+                            AmountOptionId = 2,
+                            AmountOptionName = "Fixed amount - one off"
+                        },
+                        new
+                        {
+                            AmountOptionId = 3,
+                            AmountOptionName = "Fixed amount - weekly"
+                        });
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims.ReclaimCategory", b =>
+                {
+                    b.Property<int>("ReclaimCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("ReclaimCategoryName")
+                        .HasColumnType("text");
+
+                    b.HasKey("ReclaimCategoryId");
+
+                    b.ToTable("ReclaimCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            ReclaimCategoryId = 1,
+                            ReclaimCategoryName = "Option 1"
+                        },
+                        new
+                        {
+                            ReclaimCategoryId = 2,
+                            ReclaimCategoryName = "Option 2"
+                        });
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims.ReclaimFrom", b =>
+                {
+                    b.Property<int>("ReclaimFromId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("ReclaimFromName")
+                        .HasColumnType("text");
+
+                    b.HasKey("ReclaimFromId");
+
+                    b.ToTable("ReclaimFroms");
+
+                    b.HasData(
+                        new
+                        {
+                            ReclaimFromId = 1,
+                            ReclaimFromName = "NHS"
+                        },
+                        new
+                        {
+                            ReclaimFromId = 2,
+                            ReclaimFromName = "CCG"
                         });
                 });
 
@@ -2628,6 +2831,27 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims.DayCarePackageReclaim", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims.ReclaimAmountOption", "ReclaimAmountOption")
+                        .WithMany()
+                        .HasForeignKey("ReclaimAmountOptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims.ReclaimCategory", "ReclaimCategory")
+                        .WithMany()
+                        .HasForeignKey("ReclaimCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims.ReclaimFrom", "ReclaimFrom")
+                        .WithMany()
+                        .HasForeignKey("ReclaimFromId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.HomeCarePackage", b =>
                 {
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Client", "Client")
@@ -2695,6 +2919,27 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims.HomeCarePackageReclaim", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims.ReclaimAmountOption", "ReclaimAmountOption")
+                        .WithMany()
+                        .HasForeignKey("ReclaimAmountOptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims.ReclaimCategory", "ReclaimCategory")
+                        .WithMany()
+                        .HasForeignKey("ReclaimCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims.ReclaimFrom", "ReclaimFrom")
+                        .WithMany()
+                        .HasForeignKey("ReclaimFromId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareSupplierCost", b =>
                 {
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage.CarerType", "CarerType")
@@ -2756,6 +3001,27 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims.NursingCarePackageReclaim", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims.ReclaimAmountOption", "ReclaimAmountOption")
+                        .WithMany()
+                        .HasForeignKey("ReclaimAmountOptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims.ReclaimCategory", "ReclaimCategory")
+                        .WithMany()
+                        .HasForeignKey("ReclaimCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims.ReclaimFrom", "ReclaimFrom")
+                        .WithMany()
+                        .HasForeignKey("ReclaimFromId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageStatus", b =>

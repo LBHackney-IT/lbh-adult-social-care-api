@@ -12,10 +12,5 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Respo
         /// Gets or sets the Nursing Care package
         /// </summary>
         public NursingCarePackageResponse NursingCarePackage { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Nursing Care package
-        /// </summary>
-        public NursingCarePackageCostResponse NursingCarePackageCost { get; set; }
     }
 }
