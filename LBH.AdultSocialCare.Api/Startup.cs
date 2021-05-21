@@ -271,6 +271,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<ITimeSlotShiftsGateway, TimeSlotShiftsGateway>();
             services.AddScoped<IHomeCarePackageGateway, HomeCarePackageGateway>();
             services.AddScoped<IDayCarePackageGateway, DayCarePackageGateway>();
+            services.AddScoped<IDayCareBrokerageInfoGateway, DayCareBrokerageInfoGateway>();
             services.AddScoped<IDayCarePackageOpportunityGateway, DayCarePackageOpportunityGateway>();
             services.AddScoped<IClientsGateway, ClientsGateway>();
             services.AddScoped<IHomeCarePackageSlotsGateway, HomeCarePackageSlotsGateway>();
@@ -537,6 +538,7 @@ namespace LBH.AdultSocialCare.Api
             #region DayCareBrokerage
 
             services.AddScoped<ICreateDayCareRequestMoreInformationUseCase, CreateDayCareRequestMoreInformationUseCase>();
+            services.AddScoped<IDayCarePackageBrokerageUseCase, DayCarePackageBrokerageUseCase>();
 
             #endregion DayCareBrokerage
 
@@ -572,17 +574,12 @@ namespace LBH.AdultSocialCare.Api
             {
                 DatabaseContext databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
-                // Create if not exists
-                // This next section is the reason devs are forgetting to create migrations. Leave commented
-                if (!((RelationalDatabaseCreator) databaseContext.Database.GetService<IDatabaseCreator>()).Exists())
+                // Run pending database migrations
+                if (databaseContext.Database.GetPendingMigrations().Any())
                 {
-                    databaseContext.Database.EnsureCreated();
+                    // Perform migrations
+                    databaseContext.Database.Migrate();
                 }
-                //else if (databaseContext.Database.GetPendingMigrations().Any())
-                //{
-                //    // Perform migrations
-                //    databaseContext.Database.Migrate();
-                //}
             }
 
             app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader());

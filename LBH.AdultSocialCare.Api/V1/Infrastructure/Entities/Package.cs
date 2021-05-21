@@ -1,14 +1,10 @@
-using Newtonsoft.Json;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-
     public class Package : BaseEntity
     {
-
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
@@ -34,7 +30,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Updator Id
         /// </summary>
         public int UpdatorId { get; set; }
-
     }
-
 }

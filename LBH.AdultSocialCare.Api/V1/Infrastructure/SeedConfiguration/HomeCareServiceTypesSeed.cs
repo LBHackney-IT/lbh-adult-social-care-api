@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
@@ -11,55 +12,63 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 
         public void Configure(EntityTypeBuilder<HomeCareServiceType> builder)
         {
+            var dateTimeOffset = new DateTimeOffset(AppTimeConstants.CreateUpdateDefaultDateTime).ToOffset(TimeSpan.Zero);
             builder.HasData(new HomeCareServiceType
             {
                 Id = (int) HomeCareServiceTypeEnum.Personal,
                 CreatorId = 1,
                 UpdatorId = 1,
-                DateUpdated = DateTimeOffset.UtcNow,
-                ServiceName = "Personal Home Care"
+                ServiceName = "Personal Home Care",
+                DateCreated = dateTimeOffset,
+                DateUpdated = dateTimeOffset
             }, new HomeCareServiceType
             {
                 Id = (int) HomeCareServiceTypeEnum.Domestic,
                 CreatorId = 1,
                 UpdatorId = 1,
-                DateUpdated = DateTimeOffset.UtcNow,
-                ServiceName = "Domestic Care"
+                ServiceName = "Domestic Care",
+                DateCreated = dateTimeOffset,
+                DateUpdated = dateTimeOffset
             }, new HomeCareServiceType
             {
                 Id = (int) HomeCareServiceTypeEnum.LiveIn,
                 CreatorId = 1,
                 UpdatorId = 1,
-                DateUpdated = DateTimeOffset.UtcNow,
-                ServiceName = "Live-in Care"
+                ServiceName = "Live-in Care",
+                DateCreated = dateTimeOffset,
+                DateUpdated = dateTimeOffset
             }, new HomeCareServiceType
             {
                 Id = (int) HomeCareServiceTypeEnum.Escort,
                 CreatorId = 1,
                 UpdatorId = 1,
-                DateUpdated = DateTimeOffset.UtcNow,
-                ServiceName = "Escort Care"
+                ServiceName = "Escort Care",
+                DateCreated = dateTimeOffset,
+                DateUpdated = dateTimeOffset
             }, new HomeCareServiceType
             {
                 Id = (int) HomeCareServiceTypeEnum.NightOwl,
                 CreatorId = 1,
                 UpdatorId = 1,
-                DateUpdated = DateTimeOffset.UtcNow,
-                ServiceName = "Night Owl"
+                ServiceName = "Night Owl",
+                DateCreated = dateTimeOffset,
+                DateUpdated = dateTimeOffset
             }, new HomeCareServiceType
             {
                 Id = (int) HomeCareServiceTypeEnum.WakingNights,
                 CreatorId = 1,
                 UpdatorId = 1,
-                DateUpdated = DateTimeOffset.UtcNow,
-                ServiceName = "Waking Nights"
+                ServiceName = "Waking Nights",
+                DateCreated = dateTimeOffset,
+                DateUpdated = dateTimeOffset
             }, new HomeCareServiceType
             {
                 Id = (int) HomeCareServiceTypeEnum.SleepingNights,
                 CreatorId = 1,
                 UpdatorId = 1,
-                DateUpdated = DateTimeOffset.UtcNow,
-                ServiceName = "Sleeping Nights"
+                ServiceName = "Sleeping Nights",
+                DateCreated = dateTimeOffset,
+                DateUpdated = dateTimeOffset
             });
         }
 

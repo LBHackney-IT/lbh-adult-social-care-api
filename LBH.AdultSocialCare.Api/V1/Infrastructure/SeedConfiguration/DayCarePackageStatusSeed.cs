@@ -10,6 +10,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
     {
         public void Configure(EntityTypeBuilder<DayCarePackageStatus> builder)
         {
+            var dateTimeOffset = new DateTimeOffset(AppTimeConstants.CreateUpdateDefaultDateTime).ToOffset(TimeSpan.Zero);
             builder.HasData(
                 new DayCarePackageStatus
                 {
@@ -21,7 +22,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.PackageBuilder,
-                    PackageAction = PackageActionNameConstants.Created
+                    PackageAction = PackageActionNameConstants.Created,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -33,7 +36,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.NewPackageDetailApproval,
-                    PackageAction = PackageActionNameConstants.NewPackage
+                    PackageAction = PackageActionNameConstants.NewPackage,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -45,7 +50,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.PackageDetailApproval,
-                    PackageAction = PackageActionNameConstants.Approve
+                    PackageAction = PackageActionNameConstants.Approve,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -57,7 +64,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.PackageDetailApproval,
-                    PackageAction = PackageActionNameConstants.Reject
+                    PackageAction = PackageActionNameConstants.Reject,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -69,7 +78,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.PackageDetailApproval,
-                    PackageAction = PackageActionNameConstants.RequestMoreInformation
+                    PackageAction = PackageActionNameConstants.RequestMoreInformation,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -81,7 +92,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.NewBrokerage,
-                    PackageAction = PackageActionNameConstants.NewPackage
+                    PackageAction = PackageActionNameConstants.NewPackage,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -93,7 +106,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.NewBrokerage,
-                    PackageAction = PackageActionNameConstants.Assigned
+                    PackageAction = PackageActionNameConstants.Assigned,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -105,7 +120,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.PackageBrokering,
-                    PackageAction = PackageActionNameConstants.Querying
+                    PackageAction = PackageActionNameConstants.Querying,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -117,7 +134,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.PackageBrokering,
-                    PackageAction = PackageActionNameConstants.SupplierSourced
+                    PackageAction = PackageActionNameConstants.SupplierSourced,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -129,7 +148,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.PackageBrokering,
-                    PackageAction = PackageActionNameConstants.PricingAgreed
+                    PackageAction = PackageActionNameConstants.PricingAgreed,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -141,7 +162,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.NewBrokerageApproval,
-                    PackageAction = PackageActionNameConstants.NewPackage
+                    PackageAction = PackageActionNameConstants.NewPackage,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -153,7 +176,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.BrokerageApproval,
-                    PackageAction = PackageActionNameConstants.Approved
+                    PackageAction = PackageActionNameConstants.Approved,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -165,7 +190,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.BrokerageApproval,
-                    PackageAction = PackageActionNameConstants.Rejected
+                    PackageAction = PackageActionNameConstants.Rejected,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -177,7 +204,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.BrokerageApproval,
-                    PackageAction = PackageActionNameConstants.RequestMoreInformation
+                    PackageAction = PackageActionNameConstants.RequestMoreInformation,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 },
                 new DayCarePackageStatus
                 {
@@ -189,7 +218,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                     IsDayCareStatus = true,
                     IsStatusActive = true,
                     Stage = PackageStageNameConstants.Contracting,
-                    PackageAction = PackageActionNameConstants.Contracted
+                    PackageAction = PackageActionNameConstants.Contracted,
+                    DateCreated = dateTimeOffset,
+                    DateUpdated = dateTimeOffset
                 }
             );
         }

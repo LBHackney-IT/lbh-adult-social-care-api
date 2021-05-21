@@ -200,6 +200,13 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return domain;
         }
 
+        public static DayCareBrokerageInfoForCreationDomain ToDomain(this DayCareBrokerageInfoForCreationRequest dayCareBrokerageInfoForCreationRequest, Guid dayCarePackageId)
+        {
+            var domain = _mapper.Map<DayCareBrokerageInfoForCreationDomain>(dayCareBrokerageInfoForCreationRequest);
+            domain.DayCarePackageId = dayCarePackageId;
+            return domain;
+        }
+
         #endregion
 
         #region PackageReclaim

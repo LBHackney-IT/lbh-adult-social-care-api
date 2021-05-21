@@ -2,6 +2,7 @@ using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApprovePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Request;
@@ -75,6 +76,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
@@ -294,6 +296,16 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DayCareApprovalHistoryForCreationDomain, DayCareApprovalHistory>();
 
             #endregion DayCareApprovePackage
+
+            #region DayCarePackageBrokerage
+
+            CreateMap<DayCarePackageForBrokerageDomain, DayCarePackageForBrokerageResponse>();
+            CreateMap<DayCareBrokerageInfoForCreationRequest, DayCareBrokerageInfoForCreationDomain>();
+            CreateMap<DayCareBrokerageInfoForCreationDomain, DayCareBrokerageInfo>();
+            CreateMap<DayCareBrokerageInfo, DayCareBrokerageInfoDomain>();
+            CreateMap<DayCareBrokerageStageDomain, DayCareBrokerageStageResponse>();
+
+            #endregion
 
             #region NursingCareApprovePackage
 

@@ -30,6 +30,8 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -389,5 +391,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion PackageReclaim
+
+        #region DayCareBrokerage
+
+        public static DayCareBrokerageInfoDomain ToDomain(this DayCareBrokerageInfo dayCareBrokerageInfoEntity)
+        {
+            return _mapper.Map<DayCareBrokerageInfoDomain>(dayCareBrokerageInfoEntity);
+        }
+
+        #endregion
     }
 }

@@ -37,6 +37,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Date Of Birth
         /// </summary>
         public DateTime DateOfBirth { get; set; }
+        /// <summary>
+        /// Gets or sets the preferred contact.
+        /// </summary>
+        public string PreferredContact { get; set; }  // eg phone        
+        /// <summary>
+        /// Gets or sets the english speaking fluency of user.
+        /// </summary>
+        public string CanSpeakEnglish { get; set; }  // eg fluent
 
         /// <summary>
         /// Gets or sets the Address Line1

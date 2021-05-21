@@ -1,13 +1,10 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
 {
-
     public class TimeSlotShifts : BaseEntity
     {
-
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
@@ -47,7 +44,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// Gets or sets the Updator Id
         /// </summary>
         public int UpdatorId { get; set; }
-
     }
-
 }
