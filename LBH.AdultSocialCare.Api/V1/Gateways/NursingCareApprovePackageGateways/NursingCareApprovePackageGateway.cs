@@ -27,6 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways
         {
             var nursingCarePackage = await _databaseContext.NursingCarePackages
                 .Where(item => item.Id == nursingCarePackageId)
+                .Include(item => item.NursingCareAdditionalNeeds)
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
 

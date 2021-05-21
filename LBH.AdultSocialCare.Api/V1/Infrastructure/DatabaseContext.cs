@@ -15,6 +15,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
@@ -64,6 +68,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<ResidentialCareRequestMoreInformation> ResidentialCareRequestMoreInformations { get; set; }
         public DbSet<NursingCareRequestMoreInformation> NursingCareRequestMoreInformations { get; set; }
         public DbSet<DayCareCollege> DayCareColleges { get; set; }
+        public DbSet<HomeCarePackageReclaim> HomeCarePackageReclaims { get; set; }
+        public DbSet<ReclaimAmountOption> ReclaimAmountOptions { get; set; }
+        public DbSet<ReclaimCategory> ReclaimCategories { get; set; }
+        public DbSet<ReclaimFrom> ReclaimFroms { get; set; }
+        public DbSet<DayCarePackageReclaim> DayCarePackageReclaims { get; set; }
+        public DbSet<NursingCarePackageReclaim> NursingCarePackageReclaims { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -124,6 +134,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed day care package status
             modelBuilder.ApplyConfiguration(new DayCarePackageStatusSeed());
+
+            // Seed package reclaim amount option
+            modelBuilder.ApplyConfiguration(new PackageReclaimAmountOptionSeed());
+
+            // Seed package reclaim category
+            modelBuilder.ApplyConfiguration(new PackageReclaimCategorySeed());
+
+            // Seed package reclaim from
+            modelBuilder.ApplyConfiguration(new PackageReclaimFromSeed());
 
             #endregion Database Seeds
 

@@ -10,6 +10,9 @@
         <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
     </PropertyGroup>
+    <ItemGroup>
+      <Compile Remove="V1\Controllers\NursingCareBrokerage\NursingCareBrokerageController.cs" />
+    </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="5.1.1" />

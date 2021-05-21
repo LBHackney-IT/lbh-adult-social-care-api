@@ -5,10 +5,13 @@ using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageReclaimBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
@@ -18,9 +21,12 @@ using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
@@ -192,6 +198,28 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             var domain = _mapper.Map<DayCareRequestMoreInformationDomain>(dayCareRequestMoreInformationForCreationRequest);
             return domain;
+        }
+
+        #endregion
+
+        #region PackageReclaim
+
+        public static HomeCarePackageClaimCreationDomain ToDomain(this HomeCarePackageClaimCreationRequest homeCarePackageClaimCreationRequest)
+        {
+            var res = _mapper.Map<HomeCarePackageClaimCreationDomain>(homeCarePackageClaimCreationRequest);
+            return res;
+        }
+
+        public static DayCarePackageClaimCreationDomain ToDomain(this DayCarePackageClaimCreationRequest dayCarePackageClaimCreationRequest)
+        {
+            var res = _mapper.Map<DayCarePackageClaimCreationDomain>(dayCarePackageClaimCreationRequest);
+            return res;
+        }
+
+        public static NursingCarePackageClaimCreationDomain ToDomain(this NursingCarePackageClaimCreationRequest nursingCarePackageClaimCreationRequest)
+        {
+            var res = _mapper.Map<NursingCarePackageClaimCreationDomain>(nursingCarePackageClaimCreationRequest);
+            return res;
         }
 
         #endregion
