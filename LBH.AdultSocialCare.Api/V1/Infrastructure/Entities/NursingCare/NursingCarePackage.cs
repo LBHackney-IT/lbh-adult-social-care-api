@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
 {
@@ -119,5 +120,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
         /// Gets or sets the NursingCareAdditionalNeed
         /// </summary>
         public virtual ICollection<NursingCareAdditionalNeed> NursingCareAdditionalNeeds { get; set; }
+        public virtual ICollection<NursingCarePackageReclaim> PackageReclaims { get; set; }
     }
 }
