@@ -416,5 +416,32 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion
+
+        #region Clients
+
+        public static ClientsDomain ToDomain(this Client clientEntity)
+        {
+            return new ClientsDomain
+            {
+                Id = clientEntity.Id,
+                FirstName = clientEntity.FirstName,
+                MiddleName = clientEntity.MiddleName,
+                LastName = clientEntity.LastName,
+                DateOfBirth = clientEntity.DateOfBirth,
+                HackneyId = clientEntity.HackneyId,
+                AddressLine1 = clientEntity.AddressLine1,
+                AddressLine2 = clientEntity.AddressLine2,
+                AddressLine3 = clientEntity.AddressLine3,
+                Town = clientEntity.Town,
+                County = clientEntity.County,
+                PostCode = clientEntity.PostCode,
+                CreatorId = clientEntity.CreatorId,
+                DateCreated = clientEntity.DateCreated,
+                UpdatorId = clientEntity.UpdatorId,
+                DateUpdated = clientEntity.DateUpdated
+            };
+        }
+
+        #endregion
     }
 }
