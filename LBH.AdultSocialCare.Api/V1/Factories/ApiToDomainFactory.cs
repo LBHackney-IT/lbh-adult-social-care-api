@@ -439,6 +439,24 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion
+        #endregion PackageStatus
+
+        #region TimeSlotShifts
+
+        public static TimeSlotShiftsDomain ToDomain(this TimeSlotShiftsRequest timeSlotShiftsEntity)
+        {
+            return new TimeSlotShiftsDomain
+            {
+                Id = timeSlotShiftsEntity.Id,
+                TimeSlotShiftName = timeSlotShiftsEntity.TimeSlotShiftName,
+                TimeSlotTimeLabel = timeSlotShiftsEntity.TimeSlotTimeLabel,
+                CreatorId = timeSlotShiftsEntity.CreatorId,
+                DateCreated = timeSlotShiftsEntity.DateCreated,
+                UpdatorId = timeSlotShiftsEntity.UpdatorId,
+                DateUpdated = timeSlotShiftsEntity.DateUpdated
+            };
+        }
+
+        #endregion TimeSlotShifts
     }
 }
