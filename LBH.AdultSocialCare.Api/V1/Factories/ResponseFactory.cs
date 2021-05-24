@@ -696,5 +696,20 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Users
+
+        #region PackageStatus
+
+        public static StatusResponse ToResponse(this StatusDomain statusDomain)
+        {
+            return new StatusResponse
+            {
+                Id = statusDomain.Id,
+                StatusName = statusDomain.StatusName,
+                CreatorId = statusDomain.CreatorId,
+                UpdaterId = statusDomain.UpdaterId
+            };
+        }
+
+        #endregion
     }
 }

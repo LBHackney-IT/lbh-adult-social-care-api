@@ -580,5 +580,20 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Users
+
+        #region PackageStatus
+
+        public static StatusDomain ToDomain(this PackageStatus statusEntity)
+        {
+            return new StatusDomain
+            {
+                Id = statusEntity.Id,
+                StatusName = statusEntity.StatusName,
+                CreatorId = statusEntity.CreatorId,
+                UpdaterId = statusEntity.UpdaterId
+            };
+        }
+
+        #endregion PackageStatus
     }
 }
