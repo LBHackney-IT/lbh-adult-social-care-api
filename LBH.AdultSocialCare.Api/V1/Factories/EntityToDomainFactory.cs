@@ -407,5 +407,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion
+
+        #region HomeCare
+
+        public static IList<HomeCarePackageDomain> ToDomain(this IList<HomeCarePackage> homeCarePackagesEntity)
+        {
+            return _mapper.Map<IList<HomeCarePackageDomain>>(homeCarePackagesEntity);
+        }
+
+        #endregion
     }
 }

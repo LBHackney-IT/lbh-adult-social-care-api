@@ -38,6 +38,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
@@ -471,6 +472,37 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<DayCareBrokerageStageResponse> ToResponse(this IEnumerable<DayCareBrokerageStageDomain> dayCareBrokerageStageDomains)
         {
             return _mapper.Map<IEnumerable<DayCareBrokerageStageResponse>>(dayCareBrokerageStageDomains);
+        }
+
+        #endregion
+
+        #region HomeCare
+
+        public static HomeCarePackageResponse ToResponse(this HomeCarePackageDomain homeCarePackageDomain)
+        {
+            return new HomeCarePackageResponse
+            {
+                Id = homeCarePackageDomain.Id,
+                ClientId = homeCarePackageDomain.ClientId,
+                Client = homeCarePackageDomain.Client,
+                StartDate = homeCarePackageDomain.StartDate,
+                EndDate = homeCarePackageDomain.EndDate,
+                IsFixedPeriod = homeCarePackageDomain.IsFixedPeriod,
+                IsOngoingPeriod = homeCarePackageDomain.IsOngoingPeriod,
+                IsThisAnImmediateService = homeCarePackageDomain.IsThisAnImmediateService,
+                IsThisuserUnderS117 = homeCarePackageDomain.IsThisuserUnderS117,
+                CreatorId = homeCarePackageDomain.CreatorId,
+                UpdatorId = homeCarePackageDomain.UpdatorId,
+                StatusId = homeCarePackageDomain.StatusId,
+                Status = homeCarePackageDomain.Status,
+                StageId = homeCarePackageDomain.StageId,
+                SupplierId = homeCarePackageDomain.SupplierId
+            };
+        }
+
+        public static IList<HomeCarePackageResponse> ToResponse(this IList<HomeCarePackageDomain> homeCarePackagesDomain)
+        {
+            return _mapper.Map<IList<HomeCarePackageResponse>>(homeCarePackagesDomain);
         }
 
         #endregion

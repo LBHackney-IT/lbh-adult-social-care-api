@@ -5,6 +5,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
@@ -18,6 +19,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
@@ -177,6 +179,32 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static ResidentialCarePackageReclaim ToDb(this ResidentialCarePackageClaimCreationDomain residentialCarePackageClaimCreationDomain)
         {
             return _mapper.Map<ResidentialCarePackageReclaim>(residentialCarePackageClaimCreationDomain);
+        }
+
+        #endregion
+
+        #region HomeCare
+
+        public static HomeCarePackage ToEntity(this HomeCarePackageDomain homeCarePackageDomain)
+        {
+            return new HomeCarePackage
+            {
+                Id = homeCarePackageDomain.Id,
+                ClientId = homeCarePackageDomain.ClientId,
+                Client = homeCarePackageDomain.Client,
+                StartDate = homeCarePackageDomain.StartDate,
+                EndDate = homeCarePackageDomain.EndDate,
+                IsFixedPeriod = homeCarePackageDomain.IsFixedPeriod,
+                IsOngoingPeriod = homeCarePackageDomain.IsOngoingPeriod,
+                IsThisAnImmediateService = homeCarePackageDomain.IsThisAnImmediateService,
+                IsThisuserUnderS117 = homeCarePackageDomain.IsThisuserUnderS117,
+                CreatorId = homeCarePackageDomain.CreatorId,
+                UpdatorId = homeCarePackageDomain.UpdatorId,
+                StatusId = homeCarePackageDomain.StatusId,
+                Status = homeCarePackageDomain.Status,
+                StageId = homeCarePackageDomain.StageId,
+                SupplierId = homeCarePackageDomain.SupplierId
+            };
         }
 
         #endregion

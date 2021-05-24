@@ -13,6 +13,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Request;
@@ -23,6 +24,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
@@ -235,6 +237,30 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             var res = _mapper.Map<ResidentialCarePackageClaimCreationDomain>(residentialCarePackageClaimCreationRequest);
             return res;
+        }
+
+        #endregion
+
+        #region HomeCare
+
+        public static HomeCarePackageDomain ToDomain(this HomeCarePackageRequest homeCarePackageEntity)
+        {
+            return new HomeCarePackageDomain
+            {
+                Id = homeCarePackageEntity.Id,
+                ClientId = homeCarePackageEntity.ClientId,
+                StartDate = homeCarePackageEntity.StartDate,
+                EndDate = homeCarePackageEntity.EndDate,
+                IsFixedPeriod = homeCarePackageEntity.IsFixedPeriod,
+                IsOngoingPeriod = homeCarePackageEntity.IsOngoingPeriod,
+                IsThisAnImmediateService = homeCarePackageEntity.IsThisAnImmediateService,
+                IsThisuserUnderS117 = homeCarePackageEntity.IsThisClientUnderS117,
+                CreatorId = homeCarePackageEntity.CreatorId,
+                UpdatorId = homeCarePackageEntity.UpdatorId,
+                StatusId = homeCarePackageEntity.StatusId,
+                StageId = homeCarePackageEntity.StageId,
+                SupplierId = homeCarePackageEntity.SupplierId
+            };
         }
 
         #endregion
