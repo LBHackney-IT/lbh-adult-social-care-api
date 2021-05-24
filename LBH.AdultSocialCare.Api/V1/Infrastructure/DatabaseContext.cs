@@ -19,6 +19,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
@@ -75,6 +76,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<ReclaimFrom> ReclaimFroms { get; set; }
         public DbSet<DayCarePackageReclaim> DayCarePackageReclaims { get; set; }
         public DbSet<NursingCarePackageReclaim> NursingCarePackageReclaims { get; set; }
+        public DbSet<ResidentialCarePackageReclaim> ResidentialCarePackageReclaims { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

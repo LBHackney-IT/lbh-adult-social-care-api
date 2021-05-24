@@ -13,7 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    public class NursingCarePackageReclaimController : Controller
+    public class NursingCarePackageReclaimController : BaseController
     {
         private readonly ICreateNursingCarePackageReclaimUseCase _createNursingCarePackageReclaimUseCase;
 

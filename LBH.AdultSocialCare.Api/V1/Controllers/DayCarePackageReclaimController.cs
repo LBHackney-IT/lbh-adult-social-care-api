@@ -13,7 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    public class DayCarePackageReclaimController : Controller
+    public class DayCarePackageReclaimController : BaseController
     {
         private readonly ICreateDayCarePackageReclaimUseCase _createDayCarePackageReclaimUseCase;
 

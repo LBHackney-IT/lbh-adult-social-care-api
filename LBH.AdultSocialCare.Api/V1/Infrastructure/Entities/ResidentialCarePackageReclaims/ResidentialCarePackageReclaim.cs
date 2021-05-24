@@ -4,16 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims
 {
-    public class NursingCarePackageReclaim : BaseEntity
+    public class ResidentialCarePackageReclaim : BaseEntity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid NursingCarePackageReclaimId { get; set; }
-        public Guid NursingCarePackageId { get; set; }
+        public Guid ResidentialCarePackageReclaimId { get; set; }
+        public Guid ResidentialCarePackageId { get; set; }
         public int ReclaimFromId { get; set; }
         public int ReclaimCategoryId { get; set; }
         public int ReclaimAmountOptionId { get; set; }

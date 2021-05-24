@@ -26,6 +26,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovalHistoryBoundary
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.StageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
@@ -53,6 +54,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
@@ -450,6 +452,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static NursingCarePackageClaimResponse ToResponse(this NursingCarePackageClaimDomain nursingCarePackageClaimDomain)
         {
             return _mapper.Map<NursingCarePackageClaimResponse>(nursingCarePackageClaimDomain);
+        }
+
+        public static ResidentialCarePackageClaimResponse ToResponse(this ResidentialCarePackageClaimDomain residentialCarePackageClaimDomain)
+        {
+            return _mapper.Map<ResidentialCarePackageClaimResponse>(residentialCarePackageClaimDomain);
         }
 
         #endregion
