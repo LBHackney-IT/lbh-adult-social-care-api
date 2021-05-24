@@ -1,6 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -41,8 +40,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             try
             {
-                UsersDomain usersDomain = UserFactory.ToDomain(usersRequest);
-                UsersResponse usersResponse = UserFactory.ToResponse(await _upsertUsersUseCase.ExecuteAsync(usersDomain).ConfigureAwait(false));
+                var usersDomain = usersRequest.ToDomain();
+                var res = await _upsertUsersUseCase.ExecuteAsync(usersDomain).ConfigureAwait(false);
+                var usersResponse = res?.ToResponse();
                 if (usersResponse == null) return NotFound();
                 return Ok(usersResponse);
             }
@@ -63,7 +63,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [Route("{userId}")]
         public async Task<ActionResult<UsersResponse>> Get(Guid userId)
         {
-            return UserFactory.ToResponse(await _getUsersUseCase.GetAsync(userId).ConfigureAwait(false));
+            var res = await _getUsersUseCase.GetAsync(userId).ConfigureAwait(false);
+            return Ok(res?.ToResponse());
         }
 
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]

@@ -302,7 +302,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion
+        #endregion Roles
 
         #region HomeCareServiceTypes
 
@@ -317,6 +317,32 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion
+        #endregion HomeCareServiceTypes
+
+        #region Users
+
+        public static User ToEntity(this UsersDomain usersDomain)
+        {
+            return new User
+            {
+                Id = usersDomain.Id,
+                FirstName = usersDomain.FirstName,
+                MiddleName = usersDomain.MiddleName,
+                LastName = usersDomain.LastName,
+                HackneyId = usersDomain.HackneyId,
+                AddressLine1 = usersDomain.AddressLine1,
+                AddressLine2 = usersDomain.AddressLine2,
+                AddressLine3 = usersDomain.AddressLine3,
+                Town = usersDomain.Town,
+                County = usersDomain.County,
+                PostCode = usersDomain.PostCode,
+                RoleId = usersDomain.RoleId,
+                Role = usersDomain.Role,
+                CreatorId = usersDomain.CreatorId,
+                UpdatorId = usersDomain.UpdatorId,
+            };
+        }
+
+        #endregion Users
     }
 }

@@ -552,5 +552,33 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion HomeCareServiceTypes
+
+        #region Users
+
+        public static UsersDomain ToDomain(this User userEntity)
+        {
+            return new UsersDomain
+            {
+                Id = userEntity.Id,
+                FirstName = userEntity.FirstName,
+                MiddleName = userEntity.MiddleName,
+                LastName = userEntity.LastName,
+                HackneyId = userEntity.HackneyId,
+                AddressLine1 = userEntity.AddressLine1,
+                AddressLine2 = userEntity.AddressLine2,
+                AddressLine3 = userEntity.AddressLine3,
+                Town = userEntity.Town,
+                County = userEntity.County,
+                PostCode = userEntity.PostCode,
+                RoleId = userEntity.RoleId,
+                Role = userEntity.Role,
+                CreatorId = userEntity.CreatorId,
+                DateCreated = userEntity.DateCreated,
+                UpdatorId = userEntity.UpdatorId,
+                DateUpdated = userEntity.DateUpdated
+            };
+        }
+
+        #endregion Users
     }
 }
