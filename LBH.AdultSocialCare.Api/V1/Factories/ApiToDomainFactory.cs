@@ -346,5 +346,21 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Packages
+
+        #region ResidentialCareAdditionalNeeds
+
+        public static ResidentialCareAdditionalNeedsDomain ToDomain(this ResidentialCareAdditionalNeedsRequest residentialCareAdditionalNeedsEntity)
+        {
+            return new ResidentialCareAdditionalNeedsDomain
+            {
+                Id = residentialCareAdditionalNeedsEntity.Id,
+                ResidentialCarePackageId = residentialCareAdditionalNeedsEntity.ResidentialCarePackageId,
+                IsWeeklyCost = residentialCareAdditionalNeedsEntity.IsWeeklyCost,
+                IsOneOffCost = residentialCareAdditionalNeedsEntity.IsOneOffCost,
+                NeedToAddress = residentialCareAdditionalNeedsEntity.NeedToAddress,
+            };
+        }
+
+        #endregion ResidentialCareAdditionalNeeds
     }
 }
