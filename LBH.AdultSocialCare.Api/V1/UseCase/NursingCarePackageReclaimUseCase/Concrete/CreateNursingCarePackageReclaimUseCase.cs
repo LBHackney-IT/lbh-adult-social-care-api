@@ -21,8 +21,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCarePackageReclaimUseCase.Co
 
         public async Task<NursingCarePackageClaimResponse> ExecuteAsync(NursingCarePackageClaimCreationDomain nursingCarePackageClaimCreationDomain)
         {
-            var dayCarePackageClaimEntity = nursingCarePackageClaimCreationDomain.ToDb();
-            var res = await _nursingCarePackageReclaimGateway.CreateAsync(dayCarePackageClaimEntity).ConfigureAwait(false);
+            var residentialCarePackageClaimEntity = nursingCarePackageClaimCreationDomain.ToDb();
+            var res = await _nursingCarePackageReclaimGateway.CreateAsync(residentialCarePackageClaimEntity).ConfigureAwait(false);
             return res.ToResponse();
         }
     }

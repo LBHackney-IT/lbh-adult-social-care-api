@@ -9,7 +9,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims
 {
-    public class NursingCarePackageReclaim
+    public class NursingCarePackageReclaim : BaseEntity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid NursingCarePackageReclaimId { get; set; }
