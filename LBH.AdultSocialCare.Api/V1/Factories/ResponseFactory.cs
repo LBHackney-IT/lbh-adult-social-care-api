@@ -556,5 +556,23 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion
+
+        #region NursingCareAdditionalNeeds
+
+        public static NursingCareAdditionalNeedsResponse ToResponse(this NursingCareAdditionalNeedsDomain nursingCareAdditionalNeedsDomain)
+        {
+            return new NursingCareAdditionalNeedsResponse
+            {
+                Id = nursingCareAdditionalNeedsDomain.Id,
+                NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
+                IsWeeklyCost = nursingCareAdditionalNeedsDomain.IsWeeklyCost,
+                IsOneOffCost = nursingCareAdditionalNeedsDomain.IsOneOffCost,
+                NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
+                CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
+                UpdatorId = nursingCareAdditionalNeedsDomain.UpdaterId,
+            };
+        }
+
+        #endregion
     }
 }

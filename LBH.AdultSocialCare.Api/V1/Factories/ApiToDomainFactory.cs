@@ -280,7 +280,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 HomeCarePackageSlots =
                     homeCarePackageSlotsRequestList.HomeCarePackageSlots.Select(opt => opt.ToDomain()).ToList()
             };
-            
+
             return res;
         }
 
@@ -308,6 +308,22 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 DateCreated = clientsEntity.DateCreated,
                 UpdatorId = clientsEntity.UpdatorId,
                 DateUpdated = clientsEntity.DateUpdated
+            };
+        }
+
+        #endregion
+
+        #region NursingCareAdditionalNeeds
+
+        public static NursingCareAdditionalNeedsDomain ToDomain(this NursingCareAdditionalNeedsRequest nursingCareAdditionalNeedsEntity)
+        {
+            return new NursingCareAdditionalNeedsDomain
+            {
+                Id = nursingCareAdditionalNeedsEntity.Id,
+                NursingCarePackageId = nursingCareAdditionalNeedsEntity.NursingCarePackageId,
+                IsWeeklyCost = nursingCareAdditionalNeedsEntity.IsWeeklyCost,
+                IsOneOffCost = nursingCareAdditionalNeedsEntity.IsOneOffCost,
+                NeedToAddress = nursingCareAdditionalNeedsEntity.NeedToAddress,
             };
         }
 

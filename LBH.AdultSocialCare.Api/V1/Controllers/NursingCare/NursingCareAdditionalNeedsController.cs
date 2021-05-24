@@ -1,6 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -42,8 +41,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         {
             try
             {
-                NursingCareAdditionalNeedsDomain nursingCareAdditionalNeedsDomain = NursingCareAdditionalNeedsFactory.ToDomain(nursingCareAdditionalNeedsRequest);
-                var nursingCareAdditionalNeedsResponse = NursingCareAdditionalNeedsFactory.ToResponse(await _upsertNursingCareAdditionalNeedsUseCase.ExecuteAsync(nursingCareAdditionalNeedsDomain).ConfigureAwait(false));
+                var nursingCareAdditionalNeedsDomain = nursingCareAdditionalNeedsRequest.ToDomain();
+                var res = await _upsertNursingCareAdditionalNeedsUseCase.ExecuteAsync(nursingCareAdditionalNeedsDomain)
+                    .ConfigureAwait(false);
+                var nursingCareAdditionalNeedsResponse = res?.ToResponse();
                 if (nursingCareAdditionalNeedsResponse == null) return NotFound();
                 return Ok(nursingCareAdditionalNeedsResponse);
             }
@@ -66,7 +67,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         {
             try
             {
-                var nursingCareAdditionalNeedsResponse = NursingCareAdditionalNeedsFactory.ToResponse(await _getNursingCareAdditionalNeedsUseCase.GetAsync(nursingCareAdditionalNeedsId).ConfigureAwait(false));
+                var res = await _getNursingCareAdditionalNeedsUseCase.GetAsync(nursingCareAdditionalNeedsId)
+                    .ConfigureAwait(false);
+                var nursingCareAdditionalNeedsResponse = res?.ToResponse();
                 if (nursingCareAdditionalNeedsResponse == null) return NotFound();
                 return Ok(nursingCareAdditionalNeedsResponse);
             }
