@@ -630,5 +630,24 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion ResidentialCarePackage
+
+        #region Roles
+
+        public static RolesResponse ToResponse(this RolesDomain rolesDomain)
+        {
+            return new RolesResponse
+            {
+                Id = rolesDomain.Id,
+                RoleName = rolesDomain.RoleName,
+                IsDefault = rolesDomain.IsDefault,
+                Sequence = rolesDomain.Sequence,
+                CreatorId = rolesDomain.CreatorId,
+                DateCreated = rolesDomain.DateCreated,
+                UpdatorId = rolesDomain.UpdatorId,
+                DateUpdated = rolesDomain.DateUpdated
+            };
+        }
+
+        #endregion
     }
 }

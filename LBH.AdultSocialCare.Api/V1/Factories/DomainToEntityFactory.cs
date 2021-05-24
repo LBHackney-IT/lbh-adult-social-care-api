@@ -286,5 +286,22 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion ResidentialCareAdditionalNeeds
+
+        #region Roles
+
+        public static Role ToEntity(this RolesDomain rolesDomain)
+        {
+            return new Role
+            {
+                Id = rolesDomain.Id,
+                RoleName = rolesDomain.RoleName,
+                IsDefault = rolesDomain.IsDefault,
+                Sequence = rolesDomain.Sequence,
+                CreatorId = rolesDomain.CreatorId,
+                UpdatorId = rolesDomain.UpdatorId
+            };
+        }
+
+        #endregion
     }
 }
