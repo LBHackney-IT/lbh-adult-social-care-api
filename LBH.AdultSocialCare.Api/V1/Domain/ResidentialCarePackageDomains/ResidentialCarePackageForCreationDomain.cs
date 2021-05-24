@@ -1,6 +1,7 @@
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
 using System;
 using System.Collections.Generic;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains
 {
@@ -20,5 +21,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains
         public Guid CreatorId { get; set; }
         public int StatusId { get; set; }
         public IEnumerable<ResidentialCareAdditionalNeedForCreationDomain> ResidentialCareAdditionalNeeds { get; set; }
+        public IEnumerable<ResidentialCarePackageClaimCreationDomain> PackageReclaims { get; set; }
     }
 }
