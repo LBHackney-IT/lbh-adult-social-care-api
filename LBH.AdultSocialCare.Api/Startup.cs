@@ -106,6 +106,7 @@ using System.Reflection;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageReclaimGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCarePackageReclaimGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageReclaimGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageReclaimUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageReclaimUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Concrete;

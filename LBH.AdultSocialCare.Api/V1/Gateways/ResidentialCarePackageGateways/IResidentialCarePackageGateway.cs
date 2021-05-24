@@ -1,12 +1,10 @@
-using LBH.AdultSocialCare.Api.V1.Domain;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 
-namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
+namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
 {
     public interface IResidentialCarePackageGateway
     {
