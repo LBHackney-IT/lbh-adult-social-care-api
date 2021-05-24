@@ -10,6 +10,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases
     public class UpsertPackageUseCase : IUpsertPackageUseCase
     {
         private readonly IPackageGateway _gateway;
+
         public UpsertPackageUseCase(IPackageGateway packageGateway)
         {
             _gateway = packageGateway;
@@ -17,14 +18,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases
 
         public async Task<PackageDomain> ExecuteAsync(PackageDomain package)
         {
-            Package packageEntity = PackageFactory.ToEntity(package);
+            Package packageEntity = package.ToEntity();
             packageEntity = await _gateway.UpsertAsync(packageEntity).ConfigureAwait(false);
-            if (packageEntity == null) return package = null;
-            else
-            {
-                package = PackageFactory.ToDomain(packageEntity);
-            }
-            return package;
+            return packageEntity?.ToDomain();
         }
     }
 }

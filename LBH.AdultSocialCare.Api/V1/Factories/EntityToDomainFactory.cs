@@ -1,39 +1,39 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using System.Collections.Generic;
 using System.Linq;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -406,7 +406,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<DayCareBrokerageInfoDomain>(dayCareBrokerageInfoEntity);
         }
 
-        #endregion
+        #endregion DayCareBrokerage
 
         #region HomeCare
 
@@ -415,7 +415,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IList<HomeCarePackageDomain>>(homeCarePackagesEntity);
         }
 
-        #endregion
+        #endregion HomeCare
 
         #region Clients
 
@@ -442,7 +442,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion
+        #endregion Clients
 
         #region NursingCareAdditionalNeeds
 
@@ -460,6 +460,24 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion
+        #endregion NursingCareAdditionalNeeds
+
+        #region Packages
+
+        public static PackageDomain ToDomain(this Package packageEntity)
+        {
+            return new PackageDomain
+            {
+                Id = packageEntity.Id,
+                PackageType = packageEntity.PackageType,
+                Sequence = packageEntity.Sequence,
+                CreatorId = packageEntity.CreatorId,
+                DateCreated = packageEntity.DateCreated,
+                UpdatorId = packageEntity.UpdatorId,
+                DateUpdated = packageEntity.DateUpdated
+            };
+        }
+
+        #endregion Packages
     }
 }

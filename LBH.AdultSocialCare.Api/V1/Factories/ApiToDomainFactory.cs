@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
@@ -35,6 +31,9 @@ using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -100,7 +99,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return res;
         }
 
-        #endregion
+        #endregion NursingCarePackage
 
         #region NursingCareAdditionalNeed
 
@@ -109,7 +108,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsDomain>>(nursingCareAdditionalNeedsForCreation);
         }
 
-        #endregion
+        #endregion NursingCareAdditionalNeed
 
         #region ResidentialCarePackage
 
@@ -131,7 +130,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return res;
         }
 
-        #endregion
+        #endregion ResidentialCarePackage
 
         #region ResidentialCareAdditionalNeed
 
@@ -140,9 +139,10 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<ResidentialCareAdditionalNeedsDomain>>(residentialCareAdditionalNeedsForCreation);
         }
 
-        #endregion
+        #endregion ResidentialCareAdditionalNeed
 
         #region Supplier
+
         public static SupplierCreationDomain ToDomain(this SupplierCreationRequest supplierCreationRequest)
         {
             var res = _mapper.Map<SupplierCreationDomain>(supplierCreationRequest);
@@ -154,9 +154,10 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<HomeCareSupplierCostCreationDomain>>(supplierCostCreationRequests);
         }
 
-        #endregion
+        #endregion Supplier
 
         #region HomeCareBrokerage
+
         public static HomeCareBrokerageCreationDomain ToDomain(this HomeCareBrokerageCreationRequest homeCareBrokerageCreationRequest)
         {
             var domain = _mapper.Map<HomeCareBrokerageCreationDomain>(homeCareBrokerageCreationRequest);
@@ -169,7 +170,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return domain;
         }
 
-        #endregion
+        #endregion HomeCareBrokerage
 
         public static DayCareCollegeForCreationDomain ToDomain(this DayCareCollegeForCreationRequest dayCareCollegeForCreation)
         {
@@ -185,7 +186,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return domain;
         }
 
-        #endregion
+        #endregion NursingCareBrokerage
 
         #region ResidentialCareBrokerage
 
@@ -195,7 +196,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return domain;
         }
 
-        #endregion
+        #endregion ResidentialCareBrokerage
 
         #region DayCareBrokerage
 
@@ -212,7 +213,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return domain;
         }
 
-        #endregion
+        #endregion DayCareBrokerage
 
         #region PackageReclaim
 
@@ -240,7 +241,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return res;
         }
 
-        #endregion
+        #endregion PackageReclaim
 
         #region HomeCare
 
@@ -284,7 +285,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return res;
         }
 
-        #endregion
+        #endregion HomeCare
 
         #region Clients
 
@@ -311,7 +312,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion
+        #endregion Clients
 
         #region NursingCareAdditionalNeeds
 
@@ -327,6 +328,23 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion
+        #endregion NursingCareAdditionalNeeds
+
+        #region Packages
+
+        public static PackageDomain ToDomain(this PackageRequest packageEntity)
+        {
+            return new PackageDomain
+            {
+                Id = packageEntity.Id,
+                PackageType = packageEntity.PackageType,
+                CreatorId = packageEntity.CreatorId,
+                DateCreated = packageEntity.DateCreated,
+                UpdatorId = packageEntity.UpdatorId,
+                DateUpdated = packageEntity.DateUpdated
+            };
+        }
+
+        #endregion Packages
     }
 }

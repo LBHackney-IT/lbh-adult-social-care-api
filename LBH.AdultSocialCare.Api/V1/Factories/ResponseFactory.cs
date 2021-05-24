@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApprovePackageBoundary.Response;
@@ -59,6 +57,8 @@ using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -100,7 +100,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<DayCarePackageResponse>>(dayCarePackageDomains);
         }
 
-        #endregion
+        #endregion DayCarePackage
 
         public static DayCarePackageOpportunityResponse ToResponse(this DayCarePackageOpportunityDomain dayCarePackageOpportunityDomain)
         {
@@ -119,7 +119,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<TermTimeConsiderationOptionResponse>>(termTimeConsiderationDomains);
         }
 
-        #endregion
+        #endregion TermTimeConsiderations
 
         #region OpportunityLengthOptions
 
@@ -128,7 +128,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<OpportunityLengthOptionResponse>>(opportunityLengthOptionDomains);
         }
 
-        #endregion
+        #endregion OpportunityLengthOptions
 
         #region OpportunityTimesPerMonthOptions
 
@@ -137,7 +137,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<OpportunityTimesPerMonthOptionResponse>>(opportunityTimesPerMonthOptionDomains);
         }
 
-        #endregion
+        #endregion OpportunityTimesPerMonthOptions
 
         #region NursingCarePackage
 
@@ -177,7 +177,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<NursingCarePackageResponse>>(nursingCarePackageDomains);
         }
 
-        #endregion
+        #endregion NursingCarePackage
 
         #region NursingCareAdditionalNeed
 
@@ -186,7 +186,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsResponse>>(nursingCareAdditionalNeedsDomain);
         }
 
-        #endregion
+        #endregion NursingCareAdditionalNeed
 
         #region NursingCareTypeOfStayOptions
 
@@ -201,7 +201,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 }).ToList();
         }
 
-        #endregion
+        #endregion NursingCareTypeOfStayOptions
 
         public static IEnumerable<TypeOfNursingCareHomeResponse> ToResponse(this IEnumerable<TypeOfNursingCareHomeDomain> typeOfNursingCareHomeDomain)
         {
@@ -246,7 +246,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<ResidentialCarePackageResponse>>(residentialCarePackageDomains);
         }
 
-        #endregion
+        #endregion ResidentialCarePackage
 
         #region ResidentialCareAdditionalNeed
 
@@ -255,7 +255,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<ResidentialCareAdditionalNeedsResponse>>(residentialCareAdditionalNeedsDomain);
         }
 
-        #endregion
+        #endregion ResidentialCareAdditionalNeed
 
         #region ResidentialCareTypeOfStayOptions
 
@@ -270,7 +270,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 }).ToList();
         }
 
-        #endregion
+        #endregion ResidentialCareTypeOfStayOptions
 
         public static IEnumerable<TypeOfResidentialCareHomeResponse> ToResponse(this IEnumerable<TypeOfResidentialCareHomeDomain> typeOfResidentialCareHomeDomain)
         {
@@ -278,6 +278,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #region Supplier
+
         public static SupplierResponse ToResponse(this SupplierDomain supplierDomain)
         {
             return _mapper.Map<SupplierResponse>(supplierDomain);
@@ -293,7 +294,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<HomeCareSupplierCostResponse>>(homeCareSupplierCostDomains);
         }
 
-        #endregion
+        #endregion Supplier
 
         #region HomeCareBrokerage
 
@@ -317,7 +318,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<HomeCareApprovalHistoryResponse>>(homeCareApprovalHistoryDomain);
         }
 
-        #endregion
+        #endregion HomeCareBrokerage
 
         #region HomeCareApprovePackage
 
@@ -326,7 +327,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<HomeCareApprovePackageResponse>(homeCareApprovePackageDomain);
         }
 
-        #endregion
+        #endregion HomeCareApprovePackage
 
         #region HomeCareApproveBrokered
 
@@ -335,7 +336,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<HomeCareApproveBrokeredResponse>(homeCareApproveBrokeredDomain);
         }
 
-        #endregion
+        #endregion HomeCareApproveBrokered
 
         #region DayCareApproveBrokered
 
@@ -344,7 +345,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<DayCareApproveBrokeredResponse>(dayCareApproveBrokeredDomain);
         }
 
-        #endregion
+        #endregion DayCareApproveBrokered
 
         #region DayCareApprovePackage
 
@@ -353,7 +354,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<DayCareApprovePackageResponse>(dayCareApprovePackageDomain);
         }
 
-        #endregion
+        #endregion DayCareApprovePackage
 
         #region NursingCareApprovePackage
 
@@ -362,7 +363,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<NursingCareApprovePackageResponse>(nursingCareApprovePackageDomain);
         }
 
-        #endregion
+        #endregion NursingCareApprovePackage
 
         #region NursingCareApproveCommercial
 
@@ -371,7 +372,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<NursingCareApproveCommercialResponse>(nursingCareApproveCommercialDomain);
         }
 
-        #endregion
+        #endregion NursingCareApproveCommercial
 
         #region ResidentialCareApprovePackage
 
@@ -380,7 +381,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ResidentialCareApprovePackageResponse>(residentialCareApprovePackageDomain);
         }
 
-        #endregion
+        #endregion ResidentialCareApprovePackage
 
         #region ResidentialCareApproveBrokered
 
@@ -389,7 +390,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ResidentialCareApproveBrokeredResponse>(residentialCareApproveBrokeredDomain);
         }
 
-        #endregion
+        #endregion ResidentialCareApproveBrokered
 
         #region NursingCareBrokerage
 
@@ -398,7 +399,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<NursingCareApprovalHistoryResponse>>(nursingCareApprovalHistoryDomain);
         }
 
-        #endregion
+        #endregion NursingCareBrokerage
 
         #region ResidentialCareBrokerage
 
@@ -407,7 +408,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<ResidentialCareApprovalHistoryResponse>>(residentialCareApprovalHistoryDomain);
         }
 
-        #endregion
+        #endregion ResidentialCareBrokerage
 
         #region DayCareCollege
 
@@ -421,7 +422,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<DayCareCollegeResponse>>(dayCareCollegeDomain);
         }
 
-        #endregion
+        #endregion DayCareCollege
 
         #region PackageReclaim
 
@@ -460,7 +461,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ResidentialCarePackageClaimResponse>(residentialCarePackageClaimDomain);
         }
 
-        #endregion
+        #endregion PackageReclaim
 
         #region DayCareBrokerage
 
@@ -474,7 +475,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<DayCareBrokerageStageResponse>>(dayCareBrokerageStageDomains);
         }
 
-        #endregion
+        #endregion DayCareBrokerage
 
         #region HomeCare
 
@@ -528,7 +529,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion
+        #endregion HomeCare
 
         #region Clients
 
@@ -555,7 +556,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion
+        #endregion Clients
 
         #region NursingCareAdditionalNeeds
 
@@ -573,6 +574,24 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion
+        #endregion NursingCareAdditionalNeeds
+
+        #region Packages
+
+        public static PackageResponse ToResponse(this PackageDomain packageDomain)
+        {
+            return new PackageResponse
+            {
+                Id = packageDomain.Id,
+                PackageName = packageDomain.PackageType,
+                Sequence = packageDomain.Sequence,
+                CreatorId = packageDomain.CreatorId,
+                DateCreated = packageDomain.DateCreated,
+                UpdatorId = packageDomain.UpdatorId,
+                DateUpdated = packageDomain.DateUpdated
+            };
+        }
+
+        #endregion Packages
     }
 }

@@ -1,6 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
@@ -40,8 +39,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             try
             {
-                PackageDomain packageDomain = PackageFactory.ToDomain(packageRequest);
-                PackageResponse packageResponse = PackageFactory.ToResponse(await _upsertPackageUseCase.ExecuteAsync(packageDomain).ConfigureAwait(false));
+                var packageDomain = packageRequest.ToDomain();
+                var res = await _upsertPackageUseCase.ExecuteAsync(packageDomain).ConfigureAwait(false);
+                var packageResponse = res?.ToResponse();
                 if (packageResponse == null) return NotFound();
                 return Ok(packageResponse);
             }
@@ -60,7 +60,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             try
             {
-                PackageResponse packageResponse = PackageFactory.ToResponse(await _getPackageUseCase.GetAsync(packageId).ConfigureAwait(false));
+                var res = await _getPackageUseCase.GetAsync(packageId).ConfigureAwait(false);
+                var packageResponse = res.ToResponse();
                 if (packageResponse == null) return NotFound();
                 return Ok(packageResponse);
             }
