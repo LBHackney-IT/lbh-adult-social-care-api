@@ -30,6 +30,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Respon
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Response;
@@ -439,6 +440,12 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
 
             #endregion Supplier
+
+            #region HomeCarePackageSlots
+
+            CreateMap<HomeCarePackageSlotRequest, HomeCarePackageSlotDomain>();
+
+            #endregion
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Request;
@@ -261,6 +262,26 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 StageId = homeCarePackageEntity.StageId,
                 SupplierId = homeCarePackageEntity.SupplierId
             };
+        }
+
+        public static HomeCarePackageSlotDomain ToDomain(this HomeCarePackageSlotRequest homeCarePackageSlotRequest)
+        {
+            var res = _mapper.Map<HomeCarePackageSlotDomain>(homeCarePackageSlotRequest);
+            return res;
+        }
+
+        public static HomeCarePackageSlotListDomain ToDomain(this HomeCarePackageSlotsRequestList homeCarePackageSlotsRequestList)
+        {
+            // var res = _mapper.Map<HomeCarePackageSlotListDomain>(homeCarePackageSlotsRequestList);
+            var res = new HomeCarePackageSlotListDomain
+            {
+                Id = default,
+                HomeCarePackageId = homeCarePackageSlotsRequestList.HomeCarePackageId,
+                HomeCarePackageSlots =
+                    homeCarePackageSlotsRequestList.HomeCarePackageSlots.Select(opt => opt.ToDomain()).ToList()
+            };
+            
+            return res;
         }
 
         #endregion

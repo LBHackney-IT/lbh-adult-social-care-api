@@ -505,6 +505,29 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IList<HomeCarePackageResponse>>(homeCarePackagesDomain);
         }
 
+        public static HomeCarePackageSlotsResponseList ToResponse(
+            this HomeCarePackageSlotListDomain homeCarePackageSlotListDomain)
+        {
+            return new HomeCarePackageSlotsResponseList
+            {
+                Id = homeCarePackageSlotListDomain.Id,
+                HomeCarePackageId = homeCarePackageSlotListDomain.HomeCarePackageId,
+                HomeCarePackageSlots = homeCarePackageSlotListDomain.HomeCarePackageSlots.Select(item
+                        => new HomeCarePackageSlotResponse
+                        {
+                            ServiceId = item.ServiceId,
+                            NeedToAddress = item.NeedToAddress,
+                            WhatShouldBeDone = item.WhatShouldBeDone,
+                            PrimaryInMinutes = item.PrimaryInMinutes,
+                            SecondaryInMinutes = item.SecondaryInMinutes,
+                            TimeSlotShiftId = item.TimeSlotShiftId,
+                            TimeSlotShift = item.TimeSlotShift,
+                            DayId = item.DayId
+                        })
+                    .ToList()
+            };
+        }
+
         #endregion
 
         #region Clients
