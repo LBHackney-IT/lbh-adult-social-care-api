@@ -648,6 +648,25 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion
+        #endregion Roles
+
+        #region HomeCareServiceTypes
+
+        public static HomeCareServiceResponse ToResponse(this HomeCareServiceDomain homeCareServiceDomain)
+        {
+            return new HomeCareServiceResponse
+            {
+                Id = homeCareServiceDomain.Id,
+                ServiceName = homeCareServiceDomain.ServiceName,
+                PackageId = homeCareServiceDomain.PackageId,
+                Package = homeCareServiceDomain.Package,
+                CreatorId = homeCareServiceDomain.CreatorId,
+                DateCreated = homeCareServiceDomain.DateCreated,
+                UpdatorId = homeCareServiceDomain.UpdatorId,
+                DateUpdated = homeCareServiceDomain.DateUpdated
+            };
+        }
+
+        #endregion HomeCareServiceTypes
     }
 }

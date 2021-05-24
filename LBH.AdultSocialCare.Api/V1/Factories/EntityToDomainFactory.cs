@@ -496,7 +496,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion ResidentialCareAdditionalNeedsFactory
+        #endregion ResidentialCareAdditionalNeeds
 
         #region ResidentialCarePackage
 
@@ -515,7 +515,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 }).ToList();
         }
 
-        #endregion
+        #endregion ResidentialCarePackage
 
         #region Roles
 
@@ -534,6 +534,23 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion
+        #endregion Roles
+
+        #region HomeCareServiceTypes
+
+        public static HomeCareServiceDomain ToDomain(this HomeCareServiceType serviceEntity)
+        {
+            return new HomeCareServiceDomain
+            {
+                Id = serviceEntity.Id,
+                ServiceName = serviceEntity.ServiceName,
+                CreatorId = serviceEntity.CreatorId,
+                DateCreated = serviceEntity.DateCreated,
+                UpdatorId = serviceEntity.UpdatorId,
+                DateUpdated = serviceEntity.DateUpdated
+            };
+        }
+
+        #endregion HomeCareServiceTypes
     }
 }
