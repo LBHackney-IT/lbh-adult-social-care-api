@@ -3,51 +3,49 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageReclaimBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageReclaimBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageReclaimUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCarePackageReclaimUseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 
-namespace LBH.AdultSocialCare.Api.V1.Controllers
+namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
 {
-    [Route("api/v1/day-care-packages/{dayCarePackageId}/package-reclaim")]
+    [Route("api/v1/residential-care-packages/{residentialCarePackageId}/package-reclaim")]
     [Produces("application/json")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    public class DayCarePackageReclaimController : BaseController
+    public class ResidentialCarePackageReclaimController : BaseController
     {
-        private readonly ICreateDayCarePackageReclaimUseCase _createDayCarePackageReclaimUseCase;
+        private readonly ICreateResidentialCarePackageReclaimUseCase _createResidentialCarePackageReclaimUseCase;
         private readonly IGetAllAmountOptionUseCase _getAllAmountOptionUseCase;
         private readonly IGetAllReclaimCategoryUseCase _getAllReclaimCategoryUseCase;
         private readonly IGetAllReclaimFromUseCase _getAllReclaimFromUseCase;
 
-        public DayCarePackageReclaimController(ICreateDayCarePackageReclaimUseCase createDayCarePackageReclaimUseCase,
+        public ResidentialCarePackageReclaimController(ICreateResidentialCarePackageReclaimUseCase createResidentialCarePackageReclaimUseCase,
             IGetAllAmountOptionUseCase getAllAmountOptionUseCase,
             IGetAllReclaimCategoryUseCase getAllReclaimCategoryUseCase,
             IGetAllReclaimFromUseCase getAllReclaimFromUseCase)
         {
-            _createDayCarePackageReclaimUseCase = createDayCarePackageReclaimUseCase;
+            _createResidentialCarePackageReclaimUseCase = createResidentialCarePackageReclaimUseCase;
             _getAllAmountOptionUseCase = getAllAmountOptionUseCase;
             _getAllReclaimCategoryUseCase = getAllReclaimCategoryUseCase;
             _getAllReclaimFromUseCase = getAllReclaimFromUseCase;
         }
 
-        [ProducesResponseType(typeof(DayCarePackageClaimResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResidentialCarePackageClaimResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        public async Task<ActionResult<DayCarePackageClaimResponse>> CreateDayCarePackageReclaim(
-            DayCarePackageClaimCreationRequest dayCarePackageClaimCreationRequest)
+        public async Task<ActionResult<ResidentialCarePackageClaimResponse>> CreateResidentialCarePackageReclaim(
+            ResidentialCarePackageClaimCreationRequest residentialCarePackageClaimCreationRequest)
         {
-            if (dayCarePackageClaimCreationRequest == null)
+            if (residentialCarePackageClaimCreationRequest == null)
             {
                 return BadRequest("Object for creation cannot be null.");
             }
@@ -57,10 +55,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
                 return UnprocessableEntity(ModelState);
             }
 
-            var dayCarePackageClaimForCreationDomain = dayCarePackageClaimCreationRequest.ToDomain();
-            var dayCarePackageClaimResponse =
-                await _createDayCarePackageReclaimUseCase.ExecuteAsync(dayCarePackageClaimForCreationDomain).ConfigureAwait(false);
-            return Ok(dayCarePackageClaimResponse);
+            var residentialCarePackageClaimForCreationDomain = residentialCarePackageClaimCreationRequest.ToDomain();
+            var residentialCarePackageClaimResponse =
+                await _createResidentialCarePackageReclaimUseCase.ExecuteAsync(residentialCarePackageClaimForCreationDomain).ConfigureAwait(false);
+            return Ok(residentialCarePackageClaimResponse);
         }
 
         [ProducesResponseType(typeof(IEnumerable<ReclaimAmountOptionResponse>), StatusCodes.Status200OK)]

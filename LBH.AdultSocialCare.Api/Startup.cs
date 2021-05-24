@@ -106,6 +106,7 @@ using System.Reflection;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageReclaimGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCarePackageReclaimGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageReclaimGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageReclaimGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageReclaimUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageReclaimUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Concrete;
@@ -115,6 +116,8 @@ using LBH.AdultSocialCare.Api.V1.UseCase.NursingCarePackageReclaimUseCase.Interf
 using LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Concrete;
 using Microsoft.EntityFrameworkCore.Storage;
 using LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCarePackageReclaimUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCarePackageReclaimUseCase.Interfaces;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -305,6 +308,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IHomeCarePackageReclaimGateway, HomeCarePackageReclaimGateway>();
             services.AddScoped<IDayCarePackageReclaimGateway, DayCarePackageReclaimGateway>();
             services.AddScoped<INursingCarePackageReclaimGateway, NursingCarePackageReclaimGateway>();
+            services.AddScoped<IResidentialCarePackageReclaimGateway, ResidentialCarePackageReclaimGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
@@ -562,6 +566,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IGetAllReclaimFromUseCase, GetAllReclaimFromUseCase>();
             services.AddScoped<ICreateDayCarePackageReclaimUseCase, CreateDayCarePackageReclaimUseCase>();
             services.AddScoped<ICreateNursingCarePackageReclaimUseCase, CreateNursingCarePackageReclaimUseCase>();
+            services.AddScoped<ICreateResidentialCarePackageReclaimUseCase, CreateResidentialCarePackageReclaimUseCase>();
 
             #endregion PackageReclaim
 
