@@ -223,6 +223,12 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return res;
         }
 
+        public static IEnumerable<HomeCarePackageClaimCreationDomain> ToDomain(this IEnumerable<HomeCarePackageClaimCreationRequest> homeCarePackageClaimsCreationRequest)
+        {
+            var res = _mapper.Map<IEnumerable<HomeCarePackageClaimCreationDomain>>(homeCarePackageClaimsCreationRequest);
+            return res;
+        }
+
         public static DayCarePackageClaimCreationDomain ToDomain(this DayCarePackageClaimCreationRequest dayCarePackageClaimCreationRequest)
         {
             var res = _mapper.Map<DayCarePackageClaimCreationDomain>(dayCarePackageClaimCreationRequest);
@@ -261,7 +267,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 UpdatorId = homeCarePackageEntity.UpdatorId,
                 StatusId = homeCarePackageEntity.StatusId,
                 StageId = homeCarePackageEntity.StageId,
-                SupplierId = homeCarePackageEntity.SupplierId
+                SupplierId = homeCarePackageEntity.SupplierId,
+                PackageReclaims = homeCarePackageEntity.PackageReclaims.ToDomain()
             };
         }
 

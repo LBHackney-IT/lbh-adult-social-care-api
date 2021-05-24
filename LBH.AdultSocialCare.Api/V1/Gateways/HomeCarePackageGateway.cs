@@ -61,7 +61,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<HomeCarePackage> UpsertAsync(HomeCarePackage homeCarePackage)
         {
-            HomeCarePackage homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
+            var homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
                 .Include(item => item.Status)
                 .Include(item => item.Client)
                 .Include(item => item.Stage)
@@ -69,8 +69,18 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 .FirstOrDefaultAsync(item => item.Id == homeCarePackage.Id).ConfigureAwait(false);
             if (homeCarePackageToUpdate == null)
             {
-                homeCarePackageToUpdate = new HomeCarePackage();
+                homeCarePackageToUpdate = homeCarePackage;
                 await _databaseContext.HomeCarePackage.AddAsync(homeCarePackageToUpdate).ConfigureAwait(false);
+                try
+                {
+                    await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
+
+                    return homeCarePackageToUpdate;
+                }
+                catch (Exception)
+                {
+                    throw new DbSaveFailedException("Could not save day care package to database");
+                }
             }
             homeCarePackageToUpdate.StartDate = homeCarePackage.StartDate;
             homeCarePackageToUpdate.EndDate = homeCarePackage.EndDate;

@@ -28,6 +28,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -167,6 +168,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<HomeCarePackageReclaim>(homeCarePackageClaimCreationDomain);
         }
 
+        public static IEnumerable<HomeCarePackageReclaim> ToDb(this IEnumerable<HomeCarePackageClaimCreationDomain> homeCarePackageClaimsCreationDomain)
+        {
+            return _mapper.Map<IEnumerable<HomeCarePackageReclaim>>(homeCarePackageClaimsCreationDomain);
+        }
+
         public static DayCarePackageReclaim ToDb(this DayCarePackageClaimCreationDomain dayCarePackageClaimCreationDomain)
         {
             return _mapper.Map<DayCarePackageReclaim>(dayCarePackageClaimCreationDomain);
@@ -204,7 +210,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 StatusId = homeCarePackageDomain.StatusId,
                 Status = homeCarePackageDomain.Status,
                 StageId = homeCarePackageDomain.StageId,
-                SupplierId = homeCarePackageDomain.SupplierId
+                SupplierId = homeCarePackageDomain.SupplierId,
+                PackageReclaims = homeCarePackageDomain.PackageReclaims.ToDb().ToList()
             };
         }
 

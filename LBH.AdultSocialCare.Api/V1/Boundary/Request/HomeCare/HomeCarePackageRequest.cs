@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Request;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare
 {
@@ -70,6 +72,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare
         /// Gets or sets the Supplier Id
         /// </summary>
         public int? SupplierId { get; set; }
+
+        public IEnumerable<HomeCarePackageClaimCreationRequest> PackageReclaims { get; set; }
 
     }
 
