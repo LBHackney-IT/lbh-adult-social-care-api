@@ -611,5 +611,24 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion ResidentialCareAdditionalNeeds
+
+        #region ResidentialCarePackage
+
+        public static IList<ResidentialCarePackageResponse> ToResponse(this IList<ResidentialCarePackageForCreationDomain> residentialCarePackagesDomain)
+        {
+            return _mapper.Map<IList<ResidentialCarePackageResponse>>(residentialCarePackagesDomain);
+        }
+
+        public static IList<TypeOfResidentialCareHomeResponse> ToResponse(this IList<TypeOfResidentialCareHomeDomain> typeOfResidentialCareHomesDomain)
+        {
+            return typeOfResidentialCareHomesDomain.Select(item
+                => new TypeOfResidentialCareHomeResponse
+                {
+                    TypeOfCareHomeId = item.TypeOfCareHomeId,
+                    TypeOfCareHomeName = item.TypeOfCareHomeName
+                }).ToList();
+        }
+
+        #endregion ResidentialCarePackage
     }
 }
