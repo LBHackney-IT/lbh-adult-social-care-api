@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare
 {
@@ -17,6 +18,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare
         [Required] public string NeedToAddress { get; set; }
         [Required] public int? TypeOfResidentialCareHomeId { get; set; }
         [Required] public Guid? CreatorId { get; set; }
-        public IEnumerable<ResidentialCareAdditionalNeedsCreationRequest> ResidentialCareAdditionalNeeds { get; set; }
+        public IEnumerable<ResidentialCareAdditionalNeedForCreationRequest> ResidentialCareAdditionalNeeds { get; set; }
     }
 }

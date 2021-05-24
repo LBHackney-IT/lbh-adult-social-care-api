@@ -195,6 +195,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ResidentialCarePackageForUpdateRequest, ResidentialCarePackageDomain>();
             CreateMap<ResidentialCarePackageForCreationRequest, ResidentialCarePackageForCreationDomain>();
             CreateMap<ResidentialCareAdditionalNeedForCreationRequest, ResidentialCareAdditionalNeedForCreationDomain>();
+            CreateMap<ResidentialCareAdditionalNeedsCreationRequest, ResidentialCareAdditionalNeedForCreationDomain>();
             CreateMap<ResidentialCareAdditionalNeedForCreationDomain, ResidentialCareAdditionalNeed>();
             CreateMap<ResidentialCareAdditionalNeed, ResidentialCareAdditionalNeedsDomain>();
             CreateMap<ResidentialCareAdditionalNeedsDomain, ResidentialCareAdditionalNeedsResponse>();
