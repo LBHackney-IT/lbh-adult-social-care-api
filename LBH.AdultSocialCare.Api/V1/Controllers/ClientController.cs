@@ -1,6 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
-    [Route("api/v1/client")]
+    [Route("api/v1/clients")]
     [Produces("application/json")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
@@ -43,11 +42,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             try
             {
-                ClientsDomain usersDomain = ClientsFactory.ToDomain(clientsRequest);
+                var usersDomain = clientsRequest.ToDomain();
+                var res = await _upsertClientsUseCase.ExecuteAsync(usersDomain)
+                    .ConfigureAwait(false);
 
-                ClientsResponse clientsResponse =
-                    ClientsFactory.ToResponse(await _upsertClientsUseCase.ExecuteAsync(usersDomain)
-                        .ConfigureAwait(false));
+                var clientsResponse = res.ToResponse();
 
                 if (clientsResponse == null) return NotFound();
                 return Ok(clientsResponse);
@@ -76,7 +75,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             try
             {
-                return Ok(ClientsFactory.ToResponse(await _getClientsUseCase.GetAsync(clientId).ConfigureAwait(false)));
+                var res = await _getClientsUseCase.GetAsync(clientId).ConfigureAwait(false);
+                return Ok(res?.ToResponse());
             }
             catch (FormatException ex)
             {

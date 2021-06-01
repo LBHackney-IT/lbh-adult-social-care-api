@@ -1,13 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 
-namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
+namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete
 {
     public class ChangeStatusResidentialCarePackageUseCase : IChangeStatusResidentialCarePackageUseCase
     {

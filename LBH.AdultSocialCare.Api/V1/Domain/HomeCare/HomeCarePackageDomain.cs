@@ -1,8 +1,9 @@
-using System;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using System;
+using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCare
 {
@@ -92,5 +93,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCare
         /// Gets or sets the Supplier Object
         /// </summary>
         public SupplierDomain Supplier { get; set; }
+
+        public IEnumerable<HomeCarePackageClaimCreationDomain> PackageReclaims { get; set; }
     }
 }

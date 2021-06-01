@@ -1,6 +1,7 @@
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
 using System;
 using System.Collections.Generic;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
 {
@@ -26,6 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
         public bool EscortNeeded { get; set; }
         public int TermTimeConsiderationOptionId { get; set; }
         public List<DayCarePackageOpportunityForCreationDomain> DayCarePackageOpportunities { get; set; }
+        public List<DayCarePackageClaimCreationDomain> PackageReclaims { get; set; }
         public Guid CreatorId { get; set; }
         public int StatusId { get; set; }
         public int? CollegeId { get; set; }

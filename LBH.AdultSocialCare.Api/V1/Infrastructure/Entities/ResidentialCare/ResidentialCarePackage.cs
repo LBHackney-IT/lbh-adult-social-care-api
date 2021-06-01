@@ -1,12 +1,11 @@
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
 {
-
     public class ResidentialCarePackage : BaseEntity
     {
         public ResidentialCarePackage()
@@ -121,6 +120,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the NursingCareAdditionalNeed
         /// </summary>
         public virtual ICollection<ResidentialCareAdditionalNeed> ResidentialCareAdditionalNeeds { get; set; }
-    }
 
+        public virtual ICollection<ResidentialCarePackageReclaim> PackageReclaims { get; set; }
+    }
 }

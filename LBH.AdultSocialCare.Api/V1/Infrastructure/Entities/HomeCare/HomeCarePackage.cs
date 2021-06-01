@@ -1,20 +1,18 @@
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
 {
-
     public class HomeCarePackage
     {
-
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
-
 
         /// <summary>
         /// Gets or sets the Client Id
@@ -99,6 +97,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         [ForeignKey(nameof(SupplierId))]
         public Supplier Supplier { get; set; }
 
+        public ICollection<HomeCarePackageReclaim> PackageReclaims { get; set; }
     }
-
 }

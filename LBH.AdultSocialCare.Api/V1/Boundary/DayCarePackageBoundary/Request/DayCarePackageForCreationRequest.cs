@@ -2,6 +2,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Requ
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageReclaimBoundary.Request;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request
 {
@@ -26,6 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request
         public bool EscortNeeded { get; set; }
         [Required] public int? TermTimeConsiderationOptionId { get; set; }
         public List<DayCarePackageOpportunityForCreationRequest> DayCarePackageOpportunities { get; set; }
+        public List<DayCarePackageClaimCreationRequest> PackageReclaims { get; set; }
         [Required] public Guid? CreatorId { get; set; }
         public int? CollegeId { get; set; }
     }

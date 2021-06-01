@@ -1,16 +1,13 @@
-using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
 {
-
     public class GetTimeSlotShiftsUseCase : IGetTimeSlotShiftsUseCase
     {
-
         private readonly ITimeSlotShiftsGateway _gateway;
 
         public GetTimeSlotShiftsUseCase(ITimeSlotShiftsGateway timeSlotShiftsGateway)
@@ -22,9 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
         {
             var timeSlotShiftsEntity = await _gateway.GetAsync(timeSlotShiftsId).ConfigureAwait(false);
 
-            return TimeSlotShiftsFactory.ToDomain(timeSlotShiftsEntity);
+            return timeSlotShiftsEntity?.ToDomain();
         }
-
     }
-
 }
