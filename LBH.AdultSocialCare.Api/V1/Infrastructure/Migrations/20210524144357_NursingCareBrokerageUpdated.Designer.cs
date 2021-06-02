@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210524144357_NursingCareBrokerageUpdated")]
+    partial class NursingCareBrokerageUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2345,43 +2347,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("ResidentialCareApprovalHistories");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage.ResidentialCareBrokerageInfo", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("AdditionalNeedsPayment")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("AdditionalNeedsPaymentOneOff")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTimeOffset>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTimeOffset>("DateUpdated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("ResidentialCarePackageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("ResidentialCore")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("UpdatorId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ResidentialCarePackageId");
-
-                    b.ToTable("ResidentialCareBrokerageInfos");
-                });
-
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage.ResidentialCareRequestMoreInformation", b =>
                 {
                     b.Property<int>("Id")
@@ -2695,7 +2660,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             HasSupplierFrameworkContractedRates = true,
                             IsSupplierInternal = true,
                             PackageTypeId = 1,
-                            SupplierName = "ABC Limited",
+                            SupplierName = "Furkan",
                             UpdatorId = 0
                         });
                 });
@@ -3212,15 +3177,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
-                });
-
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage.ResidentialCareBrokerageInfo", b =>
-                {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackage", "ResidentialCarePackage")
-                        .WithMany()
-                        .HasForeignKey("ResidentialCarePackageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackage", b =>

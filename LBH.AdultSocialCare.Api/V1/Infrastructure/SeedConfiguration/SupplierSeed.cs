@@ -15,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
             {
                 Id = 1,
                 PackageTypeId = 1,
-                SupplierName = "Furkan",
+                SupplierName = "ABC Limited",
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
                 DateCreated = dateTimeOffset,
