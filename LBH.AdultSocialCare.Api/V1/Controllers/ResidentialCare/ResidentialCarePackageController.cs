@@ -8,10 +8,16 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovalHistoryBoundary
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareApprovalHistoryUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ICreateResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.ICreateResidentialCarePackageUseCase;
+using IGetAllResidentialCareHomeTypeUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetAllResidentialCareHomeTypeUseCase;
+using IGetAllResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetAllResidentialCarePackageUseCase;
+using IGetAllResidentialCareTypeOfStayOptionUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetAllResidentialCareTypeOfStayOptionUseCase;
+using IGetResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetResidentialCarePackageUseCase;
+using IUpdateResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IUpdateResidentialCarePackageUseCase;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
 {
@@ -74,6 +80,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
 
             var residentialCarePackageForCreationDomain = residentialCarePackageForCreationRequest.ToDomain();
             var residentialCarePackageResponse = await _createResidentialCarePackageUseCase.ExecuteAsync(residentialCarePackageForCreationDomain).ConfigureAwait(false);
+            //Change status of package
+            await _changeStatusResidentialCarePackageUseCase
+                .UpdateAsync(residentialCarePackageResponse.Id, 1)
+                .ConfigureAwait(false);
             return Ok(residentialCarePackageResponse);
         }
 

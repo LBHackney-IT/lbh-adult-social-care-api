@@ -77,6 +77,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<DayCarePackageReclaim> DayCarePackageReclaims { get; set; }
         public DbSet<NursingCarePackageReclaim> NursingCarePackageReclaims { get; set; }
         public DbSet<ResidentialCarePackageReclaim> ResidentialCarePackageReclaims { get; set; }
+        public DbSet<NursingCareBrokerageInfo> NursingCareBrokerageInfos { get; set; }
+        public DbSet<ResidentialCareBrokerageInfo> ResidentialCareBrokerageInfos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
