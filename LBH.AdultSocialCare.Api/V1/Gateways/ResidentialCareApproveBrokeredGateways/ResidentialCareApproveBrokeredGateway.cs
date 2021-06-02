@@ -33,12 +33,22 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGate
                 throw new ErrorException($"Could not find the Residential Care Package {residentialCarePackageId}");
             }
 
+            var costOfCare = await _databaseContext.ResidentialCareBrokerageInfos
+                .Where(a => a.ResidentialCarePackageId.Equals(residentialCarePackageId))
+                .Select(a => a.ResidentialCore)
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+
+            var costOfAdditionalNeeds = await _databaseContext.ResidentialCareBrokerageInfos
+                .Where(a => a.ResidentialCarePackageId.Equals(residentialCarePackageId))
+                .Select(a => a.AdditionalNeedsPayment)
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+            
             var residentialCareApproveBrokeredDomain = new ResidentialCareApproveBrokeredDomain()
             {
                 ResidentialCarePackage = residentialCarePackage.ToDomain(),
-                CostOfCare = 0,
-                CostOfAdditionalNeeds = 0,
-                TotalPerWeek = 0
+                CostOfCare = costOfCare,
+                CostOfAdditionalNeeds = costOfAdditionalNeeds,
+                TotalPerWeek = costOfCare + costOfAdditionalNeeds
             };
 
             return residentialCareApproveBrokeredDomain;
