@@ -67,6 +67,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<NursingCarePackage>(nursingCarePackageForCreationDomain);
         }
 
+        public static NursingCareApprovalHistory ToDb(this NursingCareApprovalHistoryDomain nursingCareApprovalHistoryDomain)
+        {
+            return _mapper.Map<NursingCareApprovalHistory>(nursingCareApprovalHistoryDomain);
+        }
+
         #endregion
 
         #region ResidentialCarePackage
@@ -74,6 +79,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static ResidentialCarePackage ToDb(this ResidentialCarePackageForCreationDomain residentialCarePackageForCreationDomain)
         {
             return _mapper.Map<ResidentialCarePackage>(residentialCarePackageForCreationDomain);
+        }
+
+        public static ResidentialCareApprovalHistory ToDb(this ResidentialCareApprovalHistoryDomain residentialCareApprovalHistory)
+        {
+            return _mapper.Map<ResidentialCareApprovalHistory>(residentialCareApprovalHistory);
         }
 
         #endregion
@@ -143,6 +153,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<NursingCareRequestMoreInformation>(nursingCareRequestMoreInformationDomain);
         }
 
+        public static NursingCareBrokerageInfo ToDb(this NursingCareBrokerageInfoCreationDomain nursingCareBrokerageInfoCreationDomain)
+        {
+            return _mapper.Map<NursingCareBrokerageInfo>(nursingCareBrokerageInfoCreationDomain);
+        }
+
         #endregion
 
         #region ResidentialCareBrokerage
@@ -150,6 +165,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static ResidentialCareRequestMoreInformation ToDb(this ResidentialCareRequestMoreInformationDomain residentialCareRequestMoreInformationDomain)
         {
             return _mapper.Map<ResidentialCareRequestMoreInformation>(residentialCareRequestMoreInformationDomain);
+        }
+
+        public static ResidentialCareBrokerageInfo ToDb(this ResidentialCareBrokerageInfoCreationDomain residentialCareBrokerageInfoCreationDomain)
+        {
+            return _mapper.Map<ResidentialCareBrokerageInfo>(residentialCareBrokerageInfoCreationDomain);
         }
 
         #endregion

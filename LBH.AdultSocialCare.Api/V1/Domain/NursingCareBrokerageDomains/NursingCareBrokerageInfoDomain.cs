@@ -2,33 +2,34 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request
+namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains
 {
-    public class NursingCareBrokerageCreationRequest
+    public class NursingCareBrokerageInfoDomain
     {
+        /// <summary>
+        /// Gets or sets the Nursing Care Brokerage Id
+        /// </summary>
+        public Guid NursingCareBrokerageId { get; set; }
+
         /// <summary>
         /// Gets or sets the Nursing Care Package Id
         /// </summary>
         public Guid NursingCarePackageId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Supplier Id
+        /// Gets or sets the Nursing Care package
         /// </summary>
-        public int SupplierId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Stage Id
-        /// </summary>
-        public int StageId { get; set; }
-
+        public NursingCarePackageDomain NursingCarePackage { get; set; }
+        
         /// <summary>
         /// Gets or sets the Nursing Core Per Week
         /// </summary>
         public decimal NursingCore { get; set; }
 
         /// <summary>
-        /// Gets or sets the Hour Per Week
+        /// Gets or sets the Additional Needs Payment
         /// </summary>
         public decimal AdditionalNeedsPayment { get; set; }
 
@@ -41,5 +42,10 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Reque
         /// Gets or sets the Creator Id
         /// </summary>
         public int CreatorId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Updator Id
+        /// </summary>
+        public int UpdatorId { get; set; }
     }
 }

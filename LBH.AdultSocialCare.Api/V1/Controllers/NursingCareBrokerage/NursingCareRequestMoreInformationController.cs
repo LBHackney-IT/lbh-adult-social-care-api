@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareRequestMoreInformationUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
@@ -18,10 +19,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
     public class NursingCareRequestMoreInformationController : BaseController
     {
         private readonly ICreateNursingCareRequestMoreInformationUseCase _createNursingCareRequestMoreInformationUseCase;
+        private readonly IChangeStatusNursingCarePackageUseCase _changeStatusNursingCarePackageUseCase;
 
-        public NursingCareRequestMoreInformationController(ICreateNursingCareRequestMoreInformationUseCase createNursingCareRequestMoreInformationUseCase)
+        public NursingCareRequestMoreInformationController(ICreateNursingCareRequestMoreInformationUseCase createNursingCareRequestMoreInformationUseCase,
+            IChangeStatusNursingCarePackageUseCase changeStatusNursingCarePackageUseCase)
         {
             _createNursingCareRequestMoreInformationUseCase = createNursingCareRequestMoreInformationUseCase;
+            _changeStatusNursingCarePackageUseCase = changeStatusNursingCarePackageUseCase;
         }
 
         /// <summary>
@@ -51,6 +55,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
 
             var nursingCareBrokerageCreationDomain = nursingCareRequestMoreInformationForCreationRequest.ToDomain();
             var result = await _createNursingCareRequestMoreInformationUseCase.Execute(nursingCareBrokerageCreationDomain).ConfigureAwait(false);
+            await _changeStatusNursingCarePackageUseCase
+                .UpdateAsync(nursingCareRequestMoreInformationForCreationRequest.NursingCarePackageId, 3)
+                .ConfigureAwait(false);
             return Ok(result);
         }
     }

@@ -73,6 +73,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
 
             var nursingCarePackageForCreationDomain = nursingCarePackageForCreationRequest.ToDomain();
             var nursingCarePackageResponse = await _createNursingCarePackageUseCase.ExecuteAsync(nursingCarePackageForCreationDomain).ConfigureAwait(false);
+            //Change status of package
+            await _changeStatusNursingCarePackageUseCase
+                .UpdateAsync(nursingCarePackageResponse.Id, 1)
+                .ConfigureAwait(false);
             return Ok(nursingCarePackageResponse);
         }
 
