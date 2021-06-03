@@ -45,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGatewa
                 .Where(a => a.NursingCarePackageId.Equals(nursingCarePackageId))
                 .Select(a => a.AdditionalNeedsPayment)
                 .SingleOrDefaultAsync().ConfigureAwait(false);
-            
+
             var nursingCareApproveCommercialDomain = new NursingCareApproveCommercialDomain()
             {
                 NursingCarePackage = nursingCarePackage.ToDomain(),

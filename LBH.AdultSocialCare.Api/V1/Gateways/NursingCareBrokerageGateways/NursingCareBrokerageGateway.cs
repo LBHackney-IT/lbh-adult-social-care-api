@@ -63,10 +63,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways
                 .AsNoTracking()
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false) ?? new NursingCareBrokerageInfoDomain()
-            {
-                NursingCarePackageId = nursingCarePackageId,
-                NursingCarePackage = nursingCarePackage.ToDomain()
-            };
+                {
+                    NursingCarePackageId = nursingCarePackageId,
+                    NursingCarePackage = nursingCarePackage.ToDomain()
+                };
             return nursingCareBrokerageInfoDomain;
         }
     }

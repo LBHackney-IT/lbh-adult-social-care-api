@@ -44,6 +44,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
             return nursingCarePackageDomain.ToResponse();
         }
 
-        
+
     }
 }

@@ -42,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGate
                 .Where(a => a.ResidentialCarePackageId.Equals(residentialCarePackageId))
                 .Select(a => a.AdditionalNeedsPayment)
                 .SingleOrDefaultAsync().ConfigureAwait(false);
-            
+
             var residentialCareApproveBrokeredDomain = new ResidentialCareApproveBrokeredDomain()
             {
                 ResidentialCarePackage = residentialCarePackage.ToDomain(),
