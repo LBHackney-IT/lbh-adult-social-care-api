@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -73,7 +74,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
             var result = await _createResidentialCareBrokerageUseCase.ExecuteAsync(residentialCareBrokerageCreationDomain).ConfigureAwait(false);
             //Change status of package
             await _changeStatusResidentialCarePackageUseCase
-                .UpdateAsync(residentialCareBrokerageCreationRequest.ResidentialCarePackageId, 6)
+                .UpdateAsync(residentialCareBrokerageCreationRequest.ResidentialCarePackageId, ApprovalHistoryConstants.ApprovedForBrokerageId)
                 .ConfigureAwait(false);
             return Ok(result);
         }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -57,7 +58,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
             var residentialCareBrokerageCreationDomain = residentialCareRequestMoreInformationForCreationRequest.ToDomain();
             var result = await _createResidentialCareRequestMoreInformationUseCase.Execute(residentialCareBrokerageCreationDomain).ConfigureAwait(false);
             await _changeStatusResidentialCarePackageUseCase
-                .UpdateAsync(residentialCareRequestMoreInformationForCreationRequest.ResidentialCarePackageId, 3)
+                .UpdateAsync(residentialCareRequestMoreInformationForCreationRequest.ResidentialCarePackageId, ApprovalHistoryConstants.RequestMoreInformationId)
                 .ConfigureAwait(false);
             return Ok(result);
         }

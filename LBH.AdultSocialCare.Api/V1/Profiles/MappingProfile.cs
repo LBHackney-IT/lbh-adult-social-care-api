@@ -168,6 +168,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<HomeCarePackage, HomeCarePackageDomain>();
             CreateMap<HomeCarePackageDomain, HomeCarePackage>();
             CreateMap<HomeCarePackageDomain, HomeCarePackageResponse>();
+            CreateMap<HomeCareApprovalHistory, HomeCareApprovalHistoryDomain>();
+            CreateMap<HomeCareApprovalHistoryDomain, HomeCareApprovalHistory>();
 
             #endregion HomeCarePackage
 

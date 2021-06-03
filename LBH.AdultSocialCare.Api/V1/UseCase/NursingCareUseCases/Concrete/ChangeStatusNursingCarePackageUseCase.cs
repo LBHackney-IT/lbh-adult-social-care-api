@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
@@ -30,34 +31,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
         public async Task<NursingCarePackageResponse> UpdateAsync(Guid nursingCarePackageId, int statusId)
         {
             var nursingCarePackageDomain = await _gateway.ChangeStatusAsync(nursingCarePackageId, statusId).ConfigureAwait(false);
-            var logText = "";
             var userId = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8");
             var user = await _usersGateway.GetAsync(userId).ConfigureAwait(false);
-            switch (statusId)
-            {
-                case 1:
-                    logText = "Package Requested by ";
-                    break;
-                case 2:
-                    logText = "Package Submitted for approval";
-                    break;
-                case 3:
-                    logText = "Further information requested by ";
-                    break;
-                case 4:
-                    logText = "Care package Approved by ";
-                    break;
-                case 6:
-                    logText = "Care Package Approved for Brokerage by ";
-                    break;
-                case 8:
-                    logText = "Care Package Brokered by ";
-                    break;
-                case 10:
-                    logText = "Care Package rejected by ";
-                    break;
-            }
-
+            var logText = ApprovalHistoryConstants.GetLogText(statusId);
             var newPackageHistory = new NursingCareApprovalHistoryDomain()
             {
                 NursingCarePackageId = nursingCarePackageId,
@@ -67,5 +43,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
             await _nursingCareApprovalHistoryGateway.CreateAsync(newPackageHistory.ToDb()).ConfigureAwait(false);
             return nursingCarePackageDomain.ToResponse();
         }
+
+        
     }
 }

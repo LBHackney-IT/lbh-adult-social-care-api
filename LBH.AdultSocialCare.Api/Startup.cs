@@ -307,7 +307,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<ISupplierGateway, SupplierGateway>();
             services.AddScoped<ISupplierCostGateway, SupplierCostGateway>();
             services.AddScoped<IHomeCareStageGateway, HomeCareStageGateway>();
-            services.AddScoped<IApprovalHistoryGateway, ApprovalHistoryGateway>();
+            services.AddScoped<IHomeCareApprovalHistoryGateway, HomeCareApprovalHistoryGateway>();
             services.AddScoped<IHomeCareApprovePackageGateway, HomeCareApprovePackageGateway>();
             services.AddScoped<IHomeCareApproveBrokeredGateway, HomeCareApproveBrokeredGateway>();
             services.AddScoped<INursingCareApprovalHistoryGateway, NursingCareApprovalHistoryGateway>();

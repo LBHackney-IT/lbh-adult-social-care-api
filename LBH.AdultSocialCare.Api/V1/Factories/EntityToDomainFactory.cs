@@ -323,6 +323,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<HomeCareApprovalHistoryDomain>>(homeCareApprovalHistoryEntities);
         }
 
+        public static HomeCareApprovalHistoryDomain ToDomain(this HomeCareApprovalHistory homeCareApprovalHistory)
+        {
+            return _mapper.Map<HomeCareApprovalHistoryDomain>(homeCareApprovalHistory);
+        }
+
         #endregion HomeCareBrokerage
 
         #region NursingCareBrokerage

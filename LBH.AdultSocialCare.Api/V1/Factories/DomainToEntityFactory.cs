@@ -42,6 +42,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<T>(dto);
         }*/
 
+        #region HomeCarePackage
+        public static HomeCareApprovalHistory ToDb(this HomeCareApprovalHistoryDomain homeCareApprovalHistoryDomain)
+        {
+            return _mapper.Map<HomeCareApprovalHistory>(homeCareApprovalHistoryDomain);
+        }
+
+        #endregion
+
         #region DayCarePackage
 
         public static DayCarePackage ToDb(this DayCarePackageForCreationDomain dayCarePackageForCreationDomain)
