@@ -2,6 +2,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Respon
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovalHistoryUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
@@ -11,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
@@ -26,15 +28,26 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         private readonly IGetAllHomeCarePackageUseCase _getAllHomeCarePackageUseCase;
         private readonly IGetAllHomeCareApprovalHistoryUseCase _getAllHomeCareApprovalHistoryUseCases;
 
+        // TODO remove
+        private readonly DatabaseContext _context;
+
         public HomeCarePackageController(IUpsertHomeCarePackageUseCase upsertHomeCarePackageUseCase,
             IChangeStatusHomeCarePackageUseCase updateHomeCarePackageUseCase,
             IGetAllHomeCarePackageUseCase getAllHomeCarePackageUseCase,
-            IGetAllHomeCareApprovalHistoryUseCase getAllHomeCareApprovalHistoryUseCases)
+            IGetAllHomeCareApprovalHistoryUseCase getAllHomeCareApprovalHistoryUseCases, DatabaseContext context)
         {
             _upsertHomeCarePackageUseCase = upsertHomeCarePackageUseCase;
             _updateHomeCarePackageUseCase = updateHomeCarePackageUseCase;
             _getAllHomeCarePackageUseCase = getAllHomeCarePackageUseCase;
             _getAllHomeCareApprovalHistoryUseCases = getAllHomeCareApprovalHistoryUseCases;
+            _context = context;
+        }
+
+        // TODO remove
+        [HttpGet("{id}")]
+        public async Task<HomeCarePackage> GetAsync(Guid id)
+        {
+            return await _context.HomeCarePackage.FirstOrDefaultAsync(item => item.Id == id).ConfigureAwait(false);
         }
 
         /// <summary>Change the home care package status.</summary>
@@ -47,8 +60,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         [ProducesDefaultResponseType]
         [HttpPut]
         [Route("{homeCarePackageId}/changeStatus/{statusId}")]
-        public async Task<ActionResult<HomeCarePackageResponse>> ChangeStatus(
-            Guid homeCarePackageId, int statusId)
+        public async Task<ActionResult<HomeCarePackageResponse>> ChangeStatus(Guid homeCarePackageId, int statusId)
         {
             try
             {
@@ -58,6 +70,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
                 var homeCarePackageResponse =
                     res.ToResponse();
                 if (homeCarePackageResponse == null) return NotFound();
+
                 return Ok(homeCarePackageResponse);
             }
             catch (FormatException ex)
@@ -104,6 +117,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
             {
                 // TODO remove
                 Debugger.Break();
+
                 return BadRequest(exc.Message);
             }
         }
@@ -133,10 +147,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("approval-history/{homeCarePackageId}")]
-        public async Task<ActionResult<IEnumerable<HomeCareApprovalHistoryResponse>>> GetApprovalHistoryList(Guid homeCarePackageId)
+        public async Task<ActionResult<IEnumerable<HomeCareApprovalHistoryResponse>>> GetApprovalHistoryList(
+            Guid homeCarePackageId)
         {
-            var result = await _getAllHomeCareApprovalHistoryUseCases.GetAllAsync(homeCarePackageId).ConfigureAwait(false);
+            var result = await _getAllHomeCareApprovalHistoryUseCases.GetAllAsync(homeCarePackageId)
+                .ConfigureAwait(false);
+
             return Ok(result);
         }
+
     }
 }
