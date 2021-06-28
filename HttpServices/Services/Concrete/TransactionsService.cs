@@ -23,7 +23,7 @@ namespace HttpServices.Services.Concrete
             var httpRequestMessage = new HttpRequestMessage()
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{_httpClient.BaseAddress}/api/v1/departments/payment-departments"),
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/departments/payment-departments"),
                 Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
             };
 

@@ -47,7 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways
         public async Task<IEnumerable<SupplierMinimalDomain>> GetSupplierMinimalList()
         {
             return await _databaseContext.Suppliers
-                .Select(s => new SupplierMinimalDomain {Id = s.Id, SupplierName = s.SupplierName}).ToListAsync()
+                .Select(s => new SupplierMinimalDomain { Id = s.Id, SupplierName = s.SupplierName }).ToListAsync()
                 .ConfigureAwait(false);
         }
     }

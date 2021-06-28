@@ -1,3 +1,4 @@
+using System;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1;
@@ -16,7 +17,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -59,7 +64,7 @@ namespace LBH.AdultSocialCare.Api
 
             services.AddSingleton<IApiVersionDescriptionProvider, DefaultApiVersionDescriptionProvider>();
 
-            services.ConfigureSwagger(_apiVersions, ApiName);
+            ConfigureSwagger(services);
 
             // Add auto mapper
             services.AddAutoMapper(typeof(Startup));
@@ -74,6 +79,67 @@ namespace LBH.AdultSocialCare.Api
             // Http Services
             services.ConfigureTransactionsService(Configuration);
         }
+
+        private static void ConfigureSwagger(IServiceCollection services) => services.AddSwaggerGen(c =>
+        {
+            c.AddSecurityDefinition("Token", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Description = "Your Hackney API Key",
+                Name = "X-Api-Key",
+                Type = SecuritySchemeType.ApiKey
+            });
+
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme, Id = "Token"
+                            }
+                        },
+                        new List<string>()
+                    }
+                });
+
+            // Looks at the APIVersionAttribute [ApiVersion("x")] on controllers and decides whether or not
+            // to include it in that version of the swagger document
+            // Controllers must have this [ApiVersion("x")] to be included in swagger documentation!!
+            c.DocInclusionPredicate((docName, apiDesc) =>
+            {
+                apiDesc.TryGetMethodInfo(out MethodInfo methodInfo);
+
+                List<ApiVersion> versions = methodInfo?.DeclaringType?.GetCustomAttributes()
+                    .OfType<ApiVersionAttribute>()
+                    .SelectMany(attr => attr.Versions)
+                    .ToList();
+
+                return versions?.Any(v => $"{v.GetFormattedApiVersion()}" == docName) ?? false;
+            });
+
+            // Get every ApiVersion attribute specified and create swagger docs for them
+            foreach (string version in _apiVersions.Select(apiVersion => $"v{apiVersion.ApiVersion}"))
+            {
+                c.SwaggerDoc(version, new OpenApiInfo
+                {
+                    Title = $"{ApiName}-api {version}",
+                    Version = version,
+                    Description =
+                        $"{ApiName} version {version}. Please check older versions for depreciated endpoints."
+                });
+            }
+
+            c.CustomSchemaIds(x => x.FullName);
+
+            // Set the comments path for the Swagger JSON and UI.
+            string xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            string xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+            if (File.Exists(xmlPath))
+                c.IncludeXmlComments(xmlPath);
+        });
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
