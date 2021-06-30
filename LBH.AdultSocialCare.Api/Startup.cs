@@ -1,6 +1,6 @@
-using System;
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using AutoMapper;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1;
 using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
 using LBH.AdultSocialCare.Api.V1.Extensions;
@@ -16,12 +16,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -49,6 +50,8 @@ namespace LBH.AdultSocialCare.Api
                 })
                 .AddNewtonsoftJson(x
                     => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+                .ConfigureApiBehaviorOptions(opt => opt.InvalidModelStateResponseFactory = (context => throw new InvalidModelStateException(context.ModelState.AllModelStateErrors(),
+                    "There are some validation errors. Please correct and try again")))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddApiVersioning(o =>
