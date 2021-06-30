@@ -1,4 +1,5 @@
 using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -12,10 +13,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
     public class TransactionsController : ControllerBase
     {
         private readonly ITransactionsService _transactionsService;
+        private readonly IPayRunUseCase _payRunUseCase;
 
-        public TransactionsController(ITransactionsService transactionsService)
+        public TransactionsController(ITransactionsService transactionsService, IPayRunUseCase payRunUseCase)
         {
             _transactionsService = transactionsService;
+            _payRunUseCase = payRunUseCase;
         }
 
         [HttpGet("departments/payment-departments")]
@@ -24,6 +27,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         {
             var departments = await _transactionsService.GetPaymentDepartments().ConfigureAwait(false);
             return Ok(departments);
+        }
+
+        [HttpPost("pay-runs/{payRunType}")]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> CreatePayRun(string payRunType)
+        {
+            var result = await _payRunUseCase.CreateNewPayRunUseCase(payRunType).ConfigureAwait(false);
+            return Ok(result);
         }
     }
 }

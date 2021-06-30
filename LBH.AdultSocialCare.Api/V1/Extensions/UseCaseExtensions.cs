@@ -61,6 +61,8 @@ using LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -326,6 +328,12 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<ICreateResidentialCarePackageReclaimUseCase, CreateResidentialCarePackageReclaimUseCase>();
 
             #endregion PackageReclaim
+
+            #region TransactionsApi
+
+            services.AddScoped<IPayRunUseCase, PayRunUseCase>();
+
+            #endregion TransactionsApi
         }
     }
 }
