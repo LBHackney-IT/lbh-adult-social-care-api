@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Exceptions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways
 {
@@ -33,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways
 
             if (nursingCarePackage == null)
             {
-                throw new ErrorException($"Could not find the Nursing Care Package {nursingCarePackageId}");
+                throw new ApiException($"Could not find the Nursing Care Package {nursingCarePackageId}");
             }
 
             var nursingCareApprovePackageDomain = new NursingCareApprovePackageDomain()

@@ -1,13 +1,13 @@
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Exceptions;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.SupplierCostGateways
 {
@@ -45,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SupplierCostGateways
                 .ConfigureAwait(false);
 
             if (supplierCost == null)
-                throw new ErrorException($"Could not find the Home Care Supplier Cost {supplierId}");
+                throw new ApiException($"Could not find the Home Care Supplier Cost {supplierId}");
 
             return supplierCost.ToDomain();
         }

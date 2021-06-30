@@ -1,9 +1,8 @@
-using LBH.AdultSocialCare.Api.V1.Exceptions;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -52,7 +51,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             }
             else
             {
-                throw new ErrorException($"This record already exist Role Name: {role.RoleName}");
+                throw new ApiException($"This record already exist Role Name: {role.RoleName}");
             }
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
             return roleToUpdate;

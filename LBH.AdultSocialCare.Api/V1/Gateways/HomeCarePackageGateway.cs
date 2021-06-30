@@ -1,20 +1,16 @@
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Exceptions;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
-
     public class HomeCarePackageGateway : IHomeCarePackageGateway
     {
-
         private readonly DatabaseContext _databaseContext;
 
         public HomeCarePackageGateway(DatabaseContext databaseContext)
@@ -50,7 +46,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
             if (homeCarePackageToUpdate == null)
             {
-                throw new ErrorException($"Couldn't find the record: {homeCarePackageId}");
+                throw new ApiException($"Couldn't find the record: {homeCarePackageId}");
             }
             homeCarePackageToUpdate.StatusId = statusId;
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
@@ -100,7 +96,5 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 ? homeCarePackageToUpdate
                 : null;
         }
-
     }
-
 }

@@ -1,7 +1,7 @@
 using Common.AppConstants.Enums;
+using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Api.V1.Exceptions;
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using System;
 using System.Threading.Tasks;

@@ -1,4 +1,4 @@
-using LBH.AdultSocialCare.Api.V1.Exceptions;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
-
     public class HomeCareServiceTypeGateway : IHomeCareServiceTypeGateway
     {
-
         private readonly DatabaseContext _databaseContext;
 
         public HomeCareServiceTypeGateway(DatabaseContext databaseContext)
@@ -67,14 +65,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             }
             else
             {
-                throw new ErrorException($"This record already exist Service Name: {service.ServiceName}");
+                throw new ApiException($"This record already exist Service Name: {service.ServiceName}");
             }
 
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
 
             return serviceToUpdate;
         }
-
     }
-
 }

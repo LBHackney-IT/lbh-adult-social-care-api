@@ -1,12 +1,11 @@
 using AutoMapper;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Exceptions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -37,7 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApproveBrokeredGateways
 
             if (homeCarePackageSlot == null)
             {
-                throw new ErrorException($"Could not find the Home Care Package Slot {homeCarePackageId}");
+                throw new ApiException($"Could not find the Home Care Package Slot {homeCarePackageId}");
             }
 
             var homeCareApprovePackageDomain = new HomeCareApproveBrokeredDomain()

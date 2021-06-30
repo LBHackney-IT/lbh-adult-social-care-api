@@ -1,18 +1,15 @@
-using LBH.AdultSocialCare.Api.V1.Exceptions;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
-
     public class PackageGateway : IPackageGateway
     {
-
         private readonly DatabaseContext _databaseContext;
 
         public PackageGateway(DatabaseContext databaseContext)
@@ -37,7 +34,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             }
             else
             {
-                throw new ErrorException($"This record already exist Package Name: {package.PackageType}");
+                throw new ApiException($"This record already exist Package Name: {package.PackageType}");
             }
 
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
@@ -67,7 +64,5 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
             return isSuccess;
         }
-
     }
-
 }

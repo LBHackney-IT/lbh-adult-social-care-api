@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Diagnostics;
 using System.Net;
+using Common.Exceptions.CustomExceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LBH.AdultSocialCare.Api.V1.Exceptions.Filters
