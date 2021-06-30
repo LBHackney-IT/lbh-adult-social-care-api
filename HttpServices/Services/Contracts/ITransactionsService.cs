@@ -1,3 +1,4 @@
+using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Responses;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,7 @@ namespace HttpServices.Services.Contracts
         Task<Guid?> CreateResidentialReleaseHoldsPayRun();
 
         Task<Guid?> CreateDirectPaymentsReleaseHoldsPayRun();
+
+        Task<PagedPayRunSummaryResponse> GetPayRunSummaryList(PayRunSummaryListParameters parameters);
     }
 }

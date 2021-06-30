@@ -2,6 +2,10 @@ using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using HttpServices.Models.Features.RequestFeatures;
+using HttpServices.Models.Responses;
+using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
 {
@@ -35,6 +39,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         {
             var result = await _payRunUseCase.CreateNewPayRunUseCase(payRunType).ConfigureAwait(false);
             return Ok(result);
+        }
+
+        [ProducesResponseType(typeof(PagedPayRunSummaryResponse), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/summary-list")]
+        public async Task<ActionResult<PagedPayRunSummaryResponse>> GetPayRunSummaryList([FromQuery] PayRunSummaryListParameters parameters)
+        {
+            var res = await _payRunUseCase.GetPayRunSummaryListUseCase(parameters).ConfigureAwait(false);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(res.PagingMetaData));
+            return Ok(res);
         }
     }
 }

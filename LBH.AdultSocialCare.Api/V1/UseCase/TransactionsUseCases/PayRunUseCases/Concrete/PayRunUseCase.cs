@@ -1,6 +1,8 @@
 using Common.AppConstants.Enums;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
+using HttpServices.Models.Features.RequestFeatures;
+using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using System;
@@ -39,6 +41,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
                         .ConfigureAwait(false),
                 _ => throw new EntityNotFoundException("The pay run type is not valid. Please check and try again")
             };
+        }
+
+        public async Task<PagedPayRunSummaryResponse> GetPayRunSummaryListUseCase(PayRunSummaryListParameters parameters)
+        {
+            return await _transactionsService.GetPayRunSummaryList(parameters).ConfigureAwait(false);
         }
     }
 }
