@@ -1,11 +1,12 @@
-using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Responses;
+using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
 {
@@ -46,6 +47,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         public async Task<ActionResult<PagedPayRunSummaryResponse>> GetPayRunSummaryList([FromQuery] PayRunSummaryListParameters parameters)
         {
             var res = await _payRunUseCase.GetPayRunSummaryListUseCase(parameters).ConfigureAwait(false);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(res.PagingMetaData));
+            return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(PagedSupplierMinimalListResponse), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/{payRunId}/unique-suppliers")]
+        public async Task<ActionResult<PagedSupplierMinimalListResponse>> GetUniqueSuppliersInPayRun(Guid payRunId, [FromQuery] SupplierListParameters parameters)
+        {
+            var res = await _transactionsService.GetUniqueSuppliersInPayRunUseCase(payRunId, parameters).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(res.PagingMetaData));
             return Ok(res);
         }

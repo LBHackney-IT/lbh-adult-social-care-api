@@ -135,5 +135,38 @@ namespace HttpServices.Services.Concrete
             var res = JsonConvert.DeserializeObject<PagedPayRunSummaryResponse>(content);
             return res;
         }
+
+        public async Task<PagedSupplierMinimalListResponse> GetUniqueSuppliersInPayRunUseCase(Guid payRunId, SupplierListParameters parameters)
+        {
+            var queryParams = new Dictionary<string, string>()
+            {
+                {"pageNumber", $"{parameters.PageNumber}"},
+                {"pageSize", $"{parameters.PageSize}"},
+                {"searchTerm", $"{parameters.SearchTerm}"}
+            };
+            var url = QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}api/v1/pay-runs/{payRunId}/unique-suppliers",
+                queryParams);
+
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(url),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                throw new Exception("Cannot retrieve Suppliers in pay run");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<PagedSupplierMinimalListResponse>(content);
+            return res;
+        }
     }
 }
