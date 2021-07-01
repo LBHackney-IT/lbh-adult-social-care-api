@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Exceptions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways
 {
@@ -45,7 +44,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways
 
             if (nursingCarePackage == null)
             {
-                throw new ErrorException($"Could not find the Nursing Care Package {nursingCarePackageId}");
+                throw new EntityNotFoundException($"Could not find the Nursing Care Package {nursingCarePackageId}");
             }
 
             var nursingCareBrokerageInfoDomain = await _databaseContext.NursingCareBrokerageInfos

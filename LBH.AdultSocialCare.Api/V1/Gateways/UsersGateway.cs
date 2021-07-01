@@ -1,4 +1,4 @@
-using LBH.AdultSocialCare.Api.V1.Exceptions;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
@@ -58,7 +58,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             }
             else
             {
-                throw new ErrorException($"This record already exist Hackney Id: {user.HackneyId}");
+                throw new ApiException($"This record already exist Hackney Id: {user.HackneyId}");
             }
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
             return userToUpdate;

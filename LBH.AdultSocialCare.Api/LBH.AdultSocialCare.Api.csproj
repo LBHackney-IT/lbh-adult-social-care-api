@@ -51,4 +51,8 @@
     <Folder Include="V1\UseCase\DayCareApprovePackageUseCase\Interfaces\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HttpServices\HttpServices.csproj" />
+  </ItemGroup>
+
 </Project>

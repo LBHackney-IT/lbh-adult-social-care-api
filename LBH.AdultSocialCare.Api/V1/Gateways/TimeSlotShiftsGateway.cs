@@ -1,18 +1,15 @@
-using LBH.AdultSocialCare.Api.V1.Exceptions;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
-
     public class TimeSlotShiftsGateway : ITimeSlotShiftsGateway
     {
-
         private readonly DatabaseContext _databaseContext;
 
         public TimeSlotShiftsGateway(DatabaseContext databaseContext)
@@ -59,7 +56,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             }
             else
             {
-                throw new ErrorException(
+                throw new ApiException(
                     $"This record already exist Time Slot Shift Name: {timeSlotShifts.TimeSlotShiftName}");
             }
 
@@ -67,7 +64,5 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
             return timeSlotShiftsToUpdate;
         }
-
     }
-
 }

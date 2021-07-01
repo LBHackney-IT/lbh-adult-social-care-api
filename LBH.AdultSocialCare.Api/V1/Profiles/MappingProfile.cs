@@ -277,6 +277,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<SupplierCreationRequest, SupplierCreationDomain>();
             CreateMap<SupplierCreationDomain, Supplier>();
             CreateMap<Supplier, SupplierCreationDomain>();
+            CreateMap<SupplierMinimalDomain, SupplierMinimalResponse>();
 
             #endregion Supplier
 

@@ -1,14 +1,14 @@
+using AutoMapper;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
+using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Exceptions;
-using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways
 {
@@ -22,6 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways
             _dbContext = dbContext;
             _mapper = mapper;
         }
+
         public async Task<Guid> CreateDayCarePackageOpportunity(DayCarePackageOpportunity dayCarePackageOpportunity)
         {
             var entry = await _dbContext.DayCarePackageOpportunities.AddAsync(dayCarePackageOpportunity).ConfigureAwait(false);

@@ -1,4 +1,4 @@
-using LBH.AdultSocialCare.Api.V1.Exceptions;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
-
     public class ClientsGateway : IClientsGateway
     {
-
         private readonly DatabaseContext _databaseContext;
 
         public ClientsGateway(DatabaseContext databaseContext)
@@ -61,7 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             }
             else
             {
-                throw new ErrorException($"This record already exist Hackney Id: {client.HackneyId}");
+                throw new ApiException($"This record already exist Hackney Id: {client.HackneyId}");
             }
 
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
@@ -70,7 +68,5 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 ? clientToUpdate
                 : null;
         }
-
     }
-
 }

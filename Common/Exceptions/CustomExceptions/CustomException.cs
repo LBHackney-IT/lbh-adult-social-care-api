@@ -1,6 +1,6 @@
 using System;
 
-namespace LBH.AdultSocialCare.Api.V1.Exceptions
+namespace Common.Exceptions.CustomExceptions
 {
     public abstract class CustomException : Exception
     {
