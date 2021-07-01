@@ -1,15 +1,13 @@
-using System;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovalHistoryGateways;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete
 {
@@ -18,6 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete
         private readonly IResidentialCarePackageGateway _gateway;
         private readonly IResidentialCareApprovalHistoryGateway _residentialCareApprovalHistoryGateway;
         private readonly IUsersGateway _usersGateway;
+
         public ChangeStatusResidentialCarePackageUseCase(IResidentialCarePackageGateway residentialCarePackageGateway,
             IResidentialCareApprovalHistoryGateway residentialCareApprovalHistoryGateway,
             IUsersGateway usersGateway)

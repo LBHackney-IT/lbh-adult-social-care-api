@@ -1,6 +1,7 @@
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareAdditionalNeedsDomains;
 using System;
 using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains
 {
@@ -20,5 +21,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains
         public Guid CreatorId { get; set; }
         public int StatusId { get; set; }
         public IEnumerable<NursingCareAdditionalNeedForCreationDomain> NursingCareAdditionalNeeds { get; set; }
+        public IEnumerable<NursingCarePackageClaimCreationDomain> PackageReclaims { get; set; }
     }
 }

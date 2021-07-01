@@ -1,7 +1,8 @@
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Request;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request
 {
@@ -20,5 +21,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request
         [Required] public int? TypeOfNursingCareHomeId { get; set; }
         [Required] public Guid? CreatorId { get; set; }
         public IEnumerable<NursingCareAdditionalNeedForCreationRequest> NursingCareAdditionalNeeds { get; set; }
+        public IEnumerable<NursingCarePackageClaimCreationRequest> PackageReclaims { get; set; }
     }
 }

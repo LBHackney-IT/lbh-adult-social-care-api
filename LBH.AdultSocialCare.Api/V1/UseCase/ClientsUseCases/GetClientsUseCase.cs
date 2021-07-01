@@ -18,7 +18,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases
         public async Task<ClientsDomain> GetAsync(Guid clientId)
         {
             var usersEntity = await _gateway.GetAsync(clientId).ConfigureAwait(false);
-            return ClientsFactory.ToDomain(usersEntity);
+            return usersEntity?.ToDomain();
         }
     }
 }

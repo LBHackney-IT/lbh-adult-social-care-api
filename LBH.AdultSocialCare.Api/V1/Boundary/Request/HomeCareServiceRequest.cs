@@ -1,10 +1,9 @@
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
+namespace LBH.AdultSocialCare.Api.V1.Boundary.Request
 {
 
-    public class ServiceResponse
+    public class HomeCareServiceRequest
     {
 
         /// <summary>
@@ -16,11 +15,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         /// Gets or sets the Package Id
         /// </summary>
         public Guid PackageId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Package object
-        /// </summary>
-        public Package Package { get; set; }
 
         /// <summary>
         /// Gets or sets the Service Name

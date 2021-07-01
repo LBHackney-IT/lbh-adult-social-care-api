@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApprovePackageBoundary.Response;
@@ -22,11 +20,11 @@ using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Resp
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarepackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
@@ -40,6 +38,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
@@ -60,6 +59,8 @@ using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -101,7 +102,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<DayCarePackageResponse>>(dayCarePackageDomains);
         }
 
-        #endregion
+        #endregion DayCarePackage
 
         public static DayCarePackageOpportunityResponse ToResponse(this DayCarePackageOpportunityDomain dayCarePackageOpportunityDomain)
         {
@@ -120,7 +121,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<TermTimeConsiderationOptionResponse>>(termTimeConsiderationDomains);
         }
 
-        #endregion
+        #endregion TermTimeConsiderations
 
         #region OpportunityLengthOptions
 
@@ -129,7 +130,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<OpportunityLengthOptionResponse>>(opportunityLengthOptionDomains);
         }
 
-        #endregion
+        #endregion OpportunityLengthOptions
 
         #region OpportunityTimesPerMonthOptions
 
@@ -138,7 +139,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<OpportunityTimesPerMonthOptionResponse>>(opportunityTimesPerMonthOptionDomains);
         }
 
-        #endregion
+        #endregion OpportunityTimesPerMonthOptions
 
         #region NursingCarePackage
 
@@ -183,7 +184,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<NursingCarePackageResponse>>(nursingCarePackageDomains);
         }
 
-        #endregion
+        #endregion NursingCarePackage
 
         #region NursingCareAdditionalNeed
 
@@ -192,7 +193,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsResponse>>(nursingCareAdditionalNeedsDomain);
         }
 
-        #endregion
+        #endregion NursingCareAdditionalNeed
 
         #region NursingCareTypeOfStayOptions
 
@@ -207,7 +208,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 }).ToList();
         }
 
-        #endregion
+        #endregion NursingCareTypeOfStayOptions
 
         public static IEnumerable<TypeOfNursingCareHomeResponse> ToResponse(this IEnumerable<TypeOfNursingCareHomeDomain> typeOfNursingCareHomeDomain)
         {
@@ -257,7 +258,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<ResidentialCarePackageResponse>>(residentialCarePackageDomains);
         }
 
-        #endregion
+        #endregion ResidentialCarePackage
 
         #region ResidentialCareAdditionalNeed
 
@@ -266,7 +267,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<ResidentialCareAdditionalNeedsResponse>>(residentialCareAdditionalNeedsDomain);
         }
 
-        #endregion
+        #endregion ResidentialCareAdditionalNeed
 
         #region ResidentialCareTypeOfStayOptions
 
@@ -281,7 +282,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 }).ToList();
         }
 
-        #endregion
+        #endregion ResidentialCareTypeOfStayOptions
 
         public static IEnumerable<TypeOfResidentialCareHomeResponse> ToResponse(this IEnumerable<TypeOfResidentialCareHomeDomain> typeOfResidentialCareHomeDomain)
         {
@@ -289,6 +290,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #region Supplier
+
         public static SupplierResponse ToResponse(this SupplierDomain supplierDomain)
         {
             return _mapper.Map<SupplierResponse>(supplierDomain);
@@ -304,7 +306,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<HomeCareSupplierCostResponse>>(homeCareSupplierCostDomains);
         }
 
-        #endregion
+        #endregion Supplier
 
         #region HomeCareBrokerage
 
@@ -328,7 +330,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<HomeCareApprovalHistoryResponse>>(homeCareApprovalHistoryDomain);
         }
 
-        #endregion
+        #endregion HomeCareBrokerage
 
         #region HomeCareApprovePackage
 
@@ -337,7 +339,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<HomeCareApprovePackageResponse>(homeCareApprovePackageDomain);
         }
 
-        #endregion
+        #endregion HomeCareApprovePackage
 
         #region HomeCareApproveBrokered
 
@@ -346,7 +348,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<HomeCareApproveBrokeredResponse>(homeCareApproveBrokeredDomain);
         }
 
-        #endregion
+        #endregion HomeCareApproveBrokered
 
         #region DayCareApproveBrokered
 
@@ -355,7 +357,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<DayCareApproveBrokeredResponse>(dayCareApproveBrokeredDomain);
         }
 
-        #endregion
+        #endregion DayCareApproveBrokered
 
         #region DayCareApprovePackage
 
@@ -364,7 +366,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<DayCareApprovePackageResponse>(dayCareApprovePackageDomain);
         }
 
-        #endregion
+        #endregion DayCareApprovePackage
 
         #region NursingCareApprovePackage
 
@@ -373,7 +375,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<NursingCareApprovePackageResponse>(nursingCareApprovePackageDomain);
         }
 
-        #endregion
+        #endregion NursingCareApprovePackage
 
         #region NursingCareApproveCommercial
 
@@ -382,7 +384,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<NursingCareApproveCommercialResponse>(nursingCareApproveCommercialDomain);
         }
 
-        #endregion
+        #endregion NursingCareApproveCommercial
 
         #region ResidentialCareApprovePackage
 
@@ -391,7 +393,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ResidentialCareApprovePackageResponse>(residentialCareApprovePackageDomain);
         }
 
-        #endregion
+        #endregion ResidentialCareApprovePackage
 
         #region ResidentialCareApproveBrokered
 
@@ -400,7 +402,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ResidentialCareApproveBrokeredResponse>(residentialCareApproveBrokeredDomain);
         }
 
-        #endregion
+        #endregion ResidentialCareApproveBrokered
 
         #region NursingCareBrokerage
 
@@ -414,7 +416,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<NursingCareBrokerageInfoResponse>(nursingCareBrokerageInfoDomain);
         }
 
-        #endregion
+        #endregion NursingCareBrokerage
 
         #region ResidentialCareBrokerage
 
@@ -428,7 +430,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ResidentialCareBrokerageInfoResponse>(residentialCareBrokerageInfoDomain);
         }
 
-        #endregion
+        #endregion ResidentialCareBrokerage
 
         #region DayCareCollege
 
@@ -442,7 +444,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<DayCareCollegeResponse>>(dayCareCollegeDomain);
         }
 
-        #endregion
+        #endregion DayCareCollege
 
         #region PackageReclaim
 
@@ -481,7 +483,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ResidentialCarePackageClaimResponse>(residentialCarePackageClaimDomain);
         }
 
-        #endregion
+        #endregion PackageReclaim
 
         #region DayCareBrokerage
 
@@ -495,6 +497,259 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<DayCareBrokerageStageResponse>>(dayCareBrokerageStageDomains);
         }
 
-        #endregion
+        #endregion DayCareBrokerage
+
+        #region HomeCare
+
+        public static HomeCarePackageResponse ToResponse(this HomeCarePackageDomain homeCarePackageDomain)
+        {
+            return new HomeCarePackageResponse
+            {
+                Id = homeCarePackageDomain.Id,
+                ClientId = homeCarePackageDomain.ClientId,
+                Client = homeCarePackageDomain.Client,
+                StartDate = homeCarePackageDomain.StartDate,
+                EndDate = homeCarePackageDomain.EndDate,
+                IsFixedPeriod = homeCarePackageDomain.IsFixedPeriod,
+                IsOngoingPeriod = homeCarePackageDomain.IsOngoingPeriod,
+                IsThisAnImmediateService = homeCarePackageDomain.IsThisAnImmediateService,
+                IsThisuserUnderS117 = homeCarePackageDomain.IsThisuserUnderS117,
+                CreatorId = homeCarePackageDomain.CreatorId,
+                UpdatorId = homeCarePackageDomain.UpdatorId,
+                StatusId = homeCarePackageDomain.StatusId,
+                Status = homeCarePackageDomain.Status,
+                StageId = homeCarePackageDomain.StageId,
+                SupplierId = homeCarePackageDomain.SupplierId
+            };
+        }
+
+        public static IList<HomeCarePackageResponse> ToResponse(this IList<HomeCarePackageDomain> homeCarePackagesDomain)
+        {
+            return _mapper.Map<IList<HomeCarePackageResponse>>(homeCarePackagesDomain);
+        }
+
+        public static HomeCarePackageSlotsResponseList ToResponse(
+            this HomeCarePackageSlotListDomain homeCarePackageSlotListDomain)
+        {
+            return new HomeCarePackageSlotsResponseList
+            {
+                Id = homeCarePackageSlotListDomain.Id,
+                HomeCarePackageId = homeCarePackageSlotListDomain.HomeCarePackageId,
+                HomeCarePackageSlots = homeCarePackageSlotListDomain.HomeCarePackageSlots.Select(item
+                        => new HomeCarePackageSlotResponse
+                        {
+                            ServiceId = item.ServiceId,
+                            NeedToAddress = item.NeedToAddress,
+                            WhatShouldBeDone = item.WhatShouldBeDone,
+                            PrimaryInMinutes = item.PrimaryInMinutes,
+                            SecondaryInMinutes = item.SecondaryInMinutes,
+                            TimeSlotShiftId = item.TimeSlotShiftId,
+                            TimeSlotShift = item.TimeSlotShift,
+                            DayId = item.DayId
+                        })
+                    .ToList()
+            };
+        }
+
+        #endregion HomeCare
+
+        #region Clients
+
+        public static ClientsResponse ToResponse(this ClientsDomain clientsDomain)
+        {
+            return new ClientsResponse
+            {
+                Id = clientsDomain.Id,
+                FirstName = clientsDomain.FirstName,
+                MiddleName = clientsDomain.MiddleName,
+                LastName = clientsDomain.LastName,
+                DateOfBirth = clientsDomain.DateOfBirth,
+                HackneyId = clientsDomain.HackneyId,
+                AddressLine1 = clientsDomain.AddressLine1,
+                AddressLine2 = clientsDomain.AddressLine2,
+                AddressLine3 = clientsDomain.AddressLine3,
+                Town = clientsDomain.Town,
+                County = clientsDomain.County,
+                PostCode = clientsDomain.PostCode,
+                CreatorId = clientsDomain.CreatorId,
+                DateCreated = clientsDomain.DateCreated,
+                UpdatorId = clientsDomain.UpdatorId,
+                DateUpdated = clientsDomain.DateUpdated
+            };
+        }
+
+        #endregion Clients
+
+        #region NursingCareAdditionalNeeds
+
+        public static NursingCareAdditionalNeedsResponse ToResponse(this NursingCareAdditionalNeedsDomain nursingCareAdditionalNeedsDomain)
+        {
+            return new NursingCareAdditionalNeedsResponse
+            {
+                Id = nursingCareAdditionalNeedsDomain.Id,
+                NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
+                IsWeeklyCost = nursingCareAdditionalNeedsDomain.IsWeeklyCost,
+                IsOneOffCost = nursingCareAdditionalNeedsDomain.IsOneOffCost,
+                NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
+                CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
+                UpdatorId = nursingCareAdditionalNeedsDomain.UpdaterId,
+            };
+        }
+
+        #endregion NursingCareAdditionalNeeds
+
+        #region Packages
+
+        public static PackageResponse ToResponse(this PackageDomain packageDomain)
+        {
+            return new PackageResponse
+            {
+                Id = packageDomain.Id,
+                PackageName = packageDomain.PackageType,
+                Sequence = packageDomain.Sequence,
+                CreatorId = packageDomain.CreatorId,
+                DateCreated = packageDomain.DateCreated,
+                UpdatorId = packageDomain.UpdatorId,
+                DateUpdated = packageDomain.DateUpdated
+            };
+        }
+
+        #endregion Packages
+
+        #region ResidentialCareAdditionalNeeds
+
+        public static ResidentialCareAdditionalNeedsResponse ToResponse(this ResidentialCareAdditionalNeedsDomain residentialCareAdditionalNeedsDomain)
+        {
+            return new ResidentialCareAdditionalNeedsResponse
+            {
+                Id = residentialCareAdditionalNeedsDomain.Id,
+                ResidentialCarePackageId = residentialCareAdditionalNeedsDomain.ResidentialCarePackageId,
+                IsWeeklyCost = residentialCareAdditionalNeedsDomain.IsWeeklyCost,
+                IsOneOffCost = residentialCareAdditionalNeedsDomain.IsOneOffCost,
+                NeedToAddress = residentialCareAdditionalNeedsDomain.NeedToAddress,
+                CreatorId = residentialCareAdditionalNeedsDomain.CreatorId,
+                UpdatorId = residentialCareAdditionalNeedsDomain.UpdatorId,
+            };
+        }
+
+        #endregion ResidentialCareAdditionalNeeds
+
+        #region ResidentialCarePackage
+
+        public static IList<ResidentialCarePackageResponse> ToResponse(this IList<ResidentialCarePackageForCreationDomain> residentialCarePackagesDomain)
+        {
+            return _mapper.Map<IList<ResidentialCarePackageResponse>>(residentialCarePackagesDomain);
+        }
+
+        public static IList<TypeOfResidentialCareHomeResponse> ToResponse(this IList<TypeOfResidentialCareHomeDomain> typeOfResidentialCareHomesDomain)
+        {
+            return typeOfResidentialCareHomesDomain.Select(item
+                => new TypeOfResidentialCareHomeResponse
+                {
+                    TypeOfCareHomeId = item.TypeOfCareHomeId,
+                    TypeOfCareHomeName = item.TypeOfCareHomeName
+                }).ToList();
+        }
+
+        #endregion ResidentialCarePackage
+
+        #region Roles
+
+        public static RolesResponse ToResponse(this RolesDomain rolesDomain)
+        {
+            return new RolesResponse
+            {
+                Id = rolesDomain.Id,
+                RoleName = rolesDomain.RoleName,
+                IsDefault = rolesDomain.IsDefault,
+                Sequence = rolesDomain.Sequence,
+                CreatorId = rolesDomain.CreatorId,
+                DateCreated = rolesDomain.DateCreated,
+                UpdatorId = rolesDomain.UpdatorId,
+                DateUpdated = rolesDomain.DateUpdated
+            };
+        }
+
+        #endregion Roles
+
+        #region HomeCareServiceTypes
+
+        public static HomeCareServiceResponse ToResponse(this HomeCareServiceDomain homeCareServiceDomain)
+        {
+            return new HomeCareServiceResponse
+            {
+                Id = homeCareServiceDomain.Id,
+                ServiceName = homeCareServiceDomain.ServiceName,
+                PackageId = homeCareServiceDomain.PackageId,
+                Package = homeCareServiceDomain.Package,
+                CreatorId = homeCareServiceDomain.CreatorId,
+                DateCreated = homeCareServiceDomain.DateCreated,
+                UpdatorId = homeCareServiceDomain.UpdatorId,
+                DateUpdated = homeCareServiceDomain.DateUpdated
+            };
+        }
+
+        #endregion HomeCareServiceTypes
+
+        #region Users
+
+        public static UsersResponse ToResponse(this UsersDomain usersDomain)
+        {
+            return new UsersResponse
+            {
+                Id = usersDomain.Id,
+                FirstName = usersDomain.FirstName,
+                MiddleName = usersDomain.MiddleName,
+                LastName = usersDomain.LastName,
+                HackneyId = usersDomain.HackneyId,
+                AddressLine1 = usersDomain.AddressLine1,
+                AddressLine2 = usersDomain.AddressLine2,
+                AddressLine3 = usersDomain.AddressLine3,
+                Town = usersDomain.Town,
+                County = usersDomain.County,
+                PostCode = usersDomain.PostCode,
+                RoleId = usersDomain.RoleId,
+                Role = usersDomain.Role,
+                CreatorId = usersDomain.CreatorId,
+                DateCreated = usersDomain.DateCreated,
+                UpdatorId = usersDomain.UpdatorId,
+                DateUpdated = usersDomain.DateUpdated
+            };
+        }
+
+        #endregion Users
+
+        #region PackageStatus
+
+        public static StatusResponse ToResponse(this StatusDomain statusDomain)
+        {
+            return new StatusResponse
+            {
+                Id = statusDomain.Id,
+                StatusName = statusDomain.StatusName,
+                CreatorId = statusDomain.CreatorId,
+                UpdaterId = statusDomain.UpdaterId
+            };
+        }
+
+        #endregion PackageStatus
+
+        #region TimeSlotShifts
+
+        public static TimeSlotShiftsResponse ToResponse(this TimeSlotShiftsDomain timeSlotShiftsDomain)
+        {
+            return new TimeSlotShiftsResponse
+            {
+                Id = timeSlotShiftsDomain.Id,
+                TimeSlotShiftName = timeSlotShiftsDomain.TimeSlotShiftName,
+                TimeSlotTimeLabel = timeSlotShiftsDomain.TimeSlotTimeLabel,
+                CreatorId = timeSlotShiftsDomain.CreatorId,
+                DateCreated = timeSlotShiftsDomain.DateCreated,
+                UpdatorId = timeSlotShiftsDomain.UpdatorId,
+                DateUpdated = timeSlotShiftsDomain.DateUpdated
+            };
+        }
+
+        #endregion TimeSlotShifts
     }
 }

@@ -1,39 +1,39 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using System.Collections.Generic;
 using System.Linq;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -445,6 +445,212 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<DayCareBrokerageInfoDomain>(dayCareBrokerageInfoEntity);
         }
 
-        #endregion
+        #endregion DayCareBrokerage
+
+        #region HomeCare
+
+        public static IList<HomeCarePackageDomain> ToDomain(this IList<HomeCarePackage> homeCarePackagesEntity)
+        {
+            return _mapper.Map<IList<HomeCarePackageDomain>>(homeCarePackagesEntity);
+        }
+
+        #endregion HomeCare
+
+        #region Clients
+
+        public static ClientsDomain ToDomain(this Client clientEntity)
+        {
+            return new ClientsDomain
+            {
+                Id = clientEntity.Id,
+                FirstName = clientEntity.FirstName,
+                MiddleName = clientEntity.MiddleName,
+                LastName = clientEntity.LastName,
+                DateOfBirth = clientEntity.DateOfBirth,
+                HackneyId = clientEntity.HackneyId,
+                AddressLine1 = clientEntity.AddressLine1,
+                AddressLine2 = clientEntity.AddressLine2,
+                AddressLine3 = clientEntity.AddressLine3,
+                Town = clientEntity.Town,
+                County = clientEntity.County,
+                PostCode = clientEntity.PostCode,
+                CreatorId = clientEntity.CreatorId,
+                DateCreated = clientEntity.DateCreated,
+                UpdatorId = clientEntity.UpdatorId,
+                DateUpdated = clientEntity.DateUpdated
+            };
+        }
+
+        #endregion Clients
+
+        #region NursingCareAdditionalNeeds
+
+        public static NursingCareAdditionalNeedsDomain ToDomain(this NursingCareAdditionalNeed nursingCareAdditionalNeedEntity)
+        {
+            return new NursingCareAdditionalNeedsDomain
+            {
+                Id = nursingCareAdditionalNeedEntity.Id,
+                NursingCarePackageId = nursingCareAdditionalNeedEntity.NursingCarePackageId,
+                IsWeeklyCost = nursingCareAdditionalNeedEntity.IsWeeklyCost,
+                IsOneOffCost = nursingCareAdditionalNeedEntity.IsOneOffCost,
+                NeedToAddress = nursingCareAdditionalNeedEntity.NeedToAddress,
+                CreatorId = nursingCareAdditionalNeedEntity.CreatorId,
+                UpdaterId = nursingCareAdditionalNeedEntity.UpdaterId,
+            };
+        }
+
+        #endregion NursingCareAdditionalNeeds
+
+        #region Packages
+
+        public static PackageDomain ToDomain(this Package packageEntity)
+        {
+            return new PackageDomain
+            {
+                Id = packageEntity.Id,
+                PackageType = packageEntity.PackageType,
+                Sequence = packageEntity.Sequence,
+                CreatorId = packageEntity.CreatorId,
+                DateCreated = packageEntity.DateCreated,
+                UpdatorId = packageEntity.UpdatorId,
+                DateUpdated = packageEntity.DateUpdated
+            };
+        }
+
+        #endregion Packages
+
+        #region ResidentialCareAdditionalNeeds
+
+        public static ResidentialCareAdditionalNeedsDomain ToDomain(this ResidentialCareAdditionalNeed residentialCareAdditionalNeedEntity)
+        {
+            return new ResidentialCareAdditionalNeedsDomain
+            {
+                Id = residentialCareAdditionalNeedEntity.Id,
+                ResidentialCarePackageId = residentialCareAdditionalNeedEntity.ResidentialCarePackageId,
+                IsWeeklyCost = residentialCareAdditionalNeedEntity.IsWeeklyCost,
+                IsOneOffCost = residentialCareAdditionalNeedEntity.IsOneOffCost,
+                NeedToAddress = residentialCareAdditionalNeedEntity.NeedToAddress,
+                CreatorId = residentialCareAdditionalNeedEntity.CreatorId,
+                UpdatorId = residentialCareAdditionalNeedEntity.UpdaterId,
+            };
+        }
+
+        #endregion ResidentialCareAdditionalNeeds
+
+        #region ResidentialCarePackage
+
+        public static IList<ResidentialCarePackageForCreationDomain> ToDomain(this IList<ResidentialCarePackage> residentialCarePackagesEntity)
+        {
+            return _mapper.Map<IList<ResidentialCarePackageForCreationDomain>>(residentialCarePackagesEntity);
+        }
+
+        public static IList<TypeOfResidentialCareHomeDomain> ToDomain(this IList<TypeOfResidentialCareHome> typeOfResidentialCareHomes)
+        {
+            return typeOfResidentialCareHomes.Select(item
+                => new TypeOfResidentialCareHomeDomain
+                {
+                    TypeOfCareHomeId = item.TypeOfCareHomeId,
+                    TypeOfCareHomeName = item.TypeOfCareHomeName
+                }).ToList();
+        }
+
+        #endregion ResidentialCarePackage
+
+        #region Roles
+
+        public static RolesDomain ToDomain(this Role roleEntity)
+        {
+            return new RolesDomain
+            {
+                Id = roleEntity.Id,
+                RoleName = roleEntity.RoleName,
+                IsDefault = roleEntity.IsDefault,
+                Sequence = roleEntity.Sequence,
+                CreatorId = roleEntity.CreatorId,
+                DateCreated = roleEntity.DateCreated,
+                UpdatorId = roleEntity.UpdatorId,
+                DateUpdated = roleEntity.DateUpdated
+            };
+        }
+
+        #endregion Roles
+
+        #region HomeCareServiceTypes
+
+        public static HomeCareServiceDomain ToDomain(this HomeCareServiceType serviceEntity)
+        {
+            return new HomeCareServiceDomain
+            {
+                Id = serviceEntity.Id,
+                ServiceName = serviceEntity.ServiceName,
+                CreatorId = serviceEntity.CreatorId,
+                DateCreated = serviceEntity.DateCreated,
+                UpdatorId = serviceEntity.UpdatorId,
+                DateUpdated = serviceEntity.DateUpdated
+            };
+        }
+
+        #endregion HomeCareServiceTypes
+
+        #region Users
+
+        public static UsersDomain ToDomain(this User userEntity)
+        {
+            return new UsersDomain
+            {
+                Id = userEntity.Id,
+                FirstName = userEntity.FirstName,
+                MiddleName = userEntity.MiddleName,
+                LastName = userEntity.LastName,
+                HackneyId = userEntity.HackneyId,
+                AddressLine1 = userEntity.AddressLine1,
+                AddressLine2 = userEntity.AddressLine2,
+                AddressLine3 = userEntity.AddressLine3,
+                Town = userEntity.Town,
+                County = userEntity.County,
+                PostCode = userEntity.PostCode,
+                RoleId = userEntity.RoleId,
+                Role = userEntity.Role,
+                CreatorId = userEntity.CreatorId,
+                DateCreated = userEntity.DateCreated,
+                UpdatorId = userEntity.UpdatorId,
+                DateUpdated = userEntity.DateUpdated
+            };
+        }
+
+        #endregion Users
+
+        #region PackageStatus
+
+        public static StatusDomain ToDomain(this PackageStatus statusEntity)
+        {
+            return new StatusDomain
+            {
+                Id = statusEntity.Id,
+                StatusName = statusEntity.StatusName,
+                CreatorId = statusEntity.CreatorId,
+                UpdaterId = statusEntity.UpdaterId
+            };
+        }
+
+        #endregion PackageStatus
+
+        #region TimeSlotShifts
+
+        public static TimeSlotShiftsDomain ToDomain(this TimeSlotShifts timeSlotShiftsEntity)
+        {
+            return new TimeSlotShiftsDomain
+            {
+                Id = timeSlotShiftsEntity.Id,
+                TimeSlotShiftName = timeSlotShiftsEntity.TimeSlotShiftName,
+                TimeSlotTimeLabel = timeSlotShiftsEntity.TimeSlotTimeLabel,
+                CreatorId = timeSlotShiftsEntity.CreatorId,
+                DateCreated = timeSlotShiftsEntity.DateCreated,
+                UpdatorId = timeSlotShiftsEntity.UpdatorId,
+                DateUpdated = timeSlotShiftsEntity.DateUpdated
+            };
+        }
+
+        #endregion TimeSlotShifts
     }
 }

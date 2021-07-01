@@ -1,6 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +8,11 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
-
     [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
     public class HomeCarePackageSlotsController : BaseController
     {
-
         private readonly IUpsertHomeCarePackageSlotsUseCase _upsertHomeCarePackageSlotsUseCase;
 
         public HomeCarePackageSlotsController(IUpsertHomeCarePackageSlotsUseCase upsertHomeCarePackageSlotsUseCase)
@@ -34,13 +31,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         {
             try
             {
-                HomeCarePackageSlotListDomain homeCarePackageSlotListDomain =
-                    HomeCarePackageSlotsFactory.ToDomain(homeCarePackageSlotsRequestList);
-
-                HomeCarePackageSlotsResponseList homeCarePackageSlotsResponse =
-                    HomeCarePackageSlotsFactory.ToResponse(await _upsertHomeCarePackageSlotsUseCase
-                        .ExecuteAsync(homeCarePackageSlotListDomain)
-                        .ConfigureAwait(false));
+                var homeCarePackageSlotListDomain = homeCarePackageSlotsRequestList.ToDomain();
+                var res = await _upsertHomeCarePackageSlotsUseCase.ExecuteAsync(homeCarePackageSlotListDomain)
+                    .ConfigureAwait(false);
+                var homeCarePackageSlotsResponse = res?.ToResponse();
 
                 if (homeCarePackageSlotsResponse == null)
                 {
@@ -54,7 +48,5 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
                 return BadRequest(ex.Message);
             }
         }
-
     }
-
 }

@@ -1,23 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovalHistoryUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
-
     [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
@@ -25,7 +22,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
     [ApiVersion("1.0")]
     public class HomeCarePackageController : BaseController
     {
-
         private readonly IUpsertHomeCarePackageUseCase _upsertHomeCarePackageUseCase;
         private readonly IChangeStatusHomeCarePackageUseCase _changeStatusHomeCarePackageUseCase;
         private readonly IGetAllHomeCarePackageUseCase _getAllHomeCarePackageUseCase;
@@ -57,10 +53,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         {
             try
             {
-                HomeCarePackageResponse homeCarePackageResponse =
-                    HomeCarePackageFactory.ToResponse(await _changeStatusHomeCarePackageUseCase
-                        .UpdateAsync(homeCarePackageId, statusId)
-                        .ConfigureAwait(false));
+                var res = await _changeStatusHomeCarePackageUseCase
+                    .UpdateAsync(homeCarePackageId, statusId)
+                    .ConfigureAwait(false);
+                var homeCarePackageResponse =
+                    res.ToResponse();
                 if (homeCarePackageResponse == null) return NotFound();
                 return Ok(homeCarePackageResponse);
             }
@@ -85,12 +82,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         {
             try
             {
-                HomeCarePackageDomain homeCarePackageDomain = HomeCarePackageFactory.ToDomain(homeCarePackageRequest);
+                var homeCarePackageDomain = homeCarePackageRequest.ToDomain();
 
-                HomeCarePackageResponse homeCarePackageResponse =
-                    HomeCarePackageFactory.ToResponse(await _upsertHomeCarePackageUseCase
-                        .ExecuteAsync(homeCarePackageDomain)
-                        .ConfigureAwait(false));
+                var res = await _upsertHomeCarePackageUseCase
+                    .ExecuteAsync(homeCarePackageDomain)
+                    .ConfigureAwait(false);
+
+                var homeCarePackageResponse = res.ToResponse();
 
                 if (homeCarePackageResponse == null)
                 {
@@ -126,7 +124,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         {
             try
             {
-                IList<HomeCarePackage> result = await _getAllHomeCarePackageUseCase.GetAllAsync().ConfigureAwait(false);
+                var result = await _getAllHomeCarePackageUseCase.GetAllAsync().ConfigureAwait(false);
                 return Ok(result);
             }
             catch (FormatException ex)
@@ -146,5 +144,4 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
             return Ok(result);
         }
     }
-
 }

@@ -3,7 +3,7 @@ using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain
 {
-    public class ServiceDomain
+    public class HomeCareServiceDomain
     {
         /// <summary>
         /// Gets or sets the Id

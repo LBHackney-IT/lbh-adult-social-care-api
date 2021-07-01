@@ -1,19 +1,16 @@
+using LBH.AdultSocialCare.Api.V1.Boundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Response;
+using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
+using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain;
-using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
-
     [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
@@ -21,7 +18,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
     [ApiVersion("1.0")]
     public class HomeCareServiceController : BaseController
     {
-
         private readonly IUpsertServiceUseCase _upsertServiceUseCase;
         private readonly IGetServiceUseCase _getServiceUseCase;
         private readonly IGetAllHomeCareServiceTypesUseCase _getAllHomeCareServiceTypesUseCase;
@@ -38,26 +34,25 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         }
 
         /// <summary>Creates the specified service request.</summary>
-        /// <param name="serviceRequest">The service request.</param>
+        /// <param name="homeCareServiceRequest">The service request.</param>
         /// <returns>The home care service creation response.</returns>
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse>> Create(ServiceRequest serviceRequest)
+        public async Task<ActionResult<HomeCareServiceResponse>> Create(HomeCareServiceRequest homeCareServiceRequest)
         {
             try
             {
-                ServiceDomain serviceDomain = ServiceFactory.ToDomain(serviceRequest);
+                var homeCareServiceDomain = homeCareServiceRequest.ToDomain();
+                var res = await _upsertServiceUseCase.ExecuteAsync(homeCareServiceDomain)
+                    .ConfigureAwait(false);
+                var homeCareServiceResponse = res?.ToResponse();
 
-                ServiceResponse serviceResponse =
-                    ServiceFactory.ToResponse(await _upsertServiceUseCase.ExecuteAsync(serviceDomain)
-                        .ConfigureAwait(false));
-
-                if (serviceResponse == null)
+                if (homeCareServiceResponse == null)
                 {
                     return NotFound();
                 }
 
-                //else if (!serviceResponse.Success) return BadRequest(serviceResponse.Message);
-                return Ok(serviceResponse);
+                //else if (!homeCareServiceResponse.Success) return BadRequest(homeCareServiceResponse.Message);
+                return Ok(homeCareServiceResponse);
             }
             catch (FormatException ex)
             {
@@ -69,11 +64,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         /// <param name="serviceId">The service identifier.</param>
         /// <returns>The home care service creation response.</returns>
         [HttpGet("{serviceId}")]
-        public async Task<ActionResult<ServiceResponse>> Get(int serviceId)
+        public async Task<ActionResult<HomeCareServiceResponse>> Get(int serviceId)
         {
             try
             {
-                return Ok(ServiceFactory.ToResponse(await _getServiceUseCase.GetAsync(serviceId).ConfigureAwait(false)));
+                var res = await _getServiceUseCase.GetAsync(serviceId).ConfigureAwait(false);
+                return Ok(res?.ToResponse());
             }
             catch (FormatException ex)
             {
@@ -112,7 +108,5 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
                 return BadRequest(ex.Message);
             }
         }
-
     }
-
 }

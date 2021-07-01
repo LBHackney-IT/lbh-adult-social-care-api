@@ -1,14 +1,12 @@
-using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using System;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
 {
@@ -17,6 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
         private readonly IHomeCarePackageGateway _gateway;
         private readonly IHomeCareApprovalHistoryGateway _homeCareApprovalHistoryGateway;
         private readonly IUsersGateway _usersGateway;
+
         public ChangeStatusHomeCarePackageUseCase(IHomeCarePackageGateway homeCarePackageGateway,
             IHomeCareApprovalHistoryGateway homeCareApprovalHistoryGateway,
             IUsersGateway usersGateway)
@@ -40,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
                 LogText = $"{logText} {user.FirstName} {user.MiddleName} {user.LastName} - {user.Role.RoleName}"
             };
             await _homeCareApprovalHistoryGateway.CreateAsync(newPackageHistory.ToDb()).ConfigureAwait(false);
-            return HomeCarePackageFactory.ToDomain(homeCarePackageEntity);
+            return homeCarePackageEntity.ToDomain();
         }
     }
 }

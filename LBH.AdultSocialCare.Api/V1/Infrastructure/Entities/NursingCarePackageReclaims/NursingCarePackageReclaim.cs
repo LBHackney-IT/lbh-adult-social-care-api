@@ -1,11 +1,7 @@
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims
 {
@@ -13,6 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageR
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid NursingCarePackageReclaimId { get; set; }
+
         public Guid NursingCarePackageId { get; set; }
         public int ReclaimFromId { get; set; }
         public int ReclaimCategoryId { get; set; }

@@ -1,6 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarepackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -11,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
 {
@@ -46,8 +46,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         {
             try
             {
-                ResidentialCareAdditionalNeedsDomain residentialCareAdditionalNeedsDomain = ResidentialCareAdditionalNeedsFactory.ToDomain(residentialCareAdditionalNeedsRequest);
-                var residentialCareAdditionalNeedsResponse = ResidentialCareAdditionalNeedsFactory.ToResponse(await _upsertResidentialCareAdditionalNeedsUseCase.ExecuteAsync(residentialCareAdditionalNeedsDomain).ConfigureAwait(false));
+                var residentialCareAdditionalNeedsDomain = residentialCareAdditionalNeedsRequest.ToDomain();
+                var res = await _upsertResidentialCareAdditionalNeedsUseCase
+                    .ExecuteAsync(residentialCareAdditionalNeedsDomain).ConfigureAwait(false);
+                var residentialCareAdditionalNeedsResponse = res?.ToResponse();
                 if (residentialCareAdditionalNeedsResponse == null) return NotFound();
                 return Ok(residentialCareAdditionalNeedsResponse);
             }
@@ -70,9 +72,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         {
             try
             {
-                var residentialCareAdditionalNeedsResponse = ResidentialCareAdditionalNeedsFactory.ToResponse(await _getResidentialCareAdditionalNeedsUseCase.GetAsync(residentialCareAdditionalNeedsId).ConfigureAwait(false));
-                if (residentialCareAdditionalNeedsResponse == null) return NotFound();
-                return Ok(residentialCareAdditionalNeedsResponse);
+                var residentialCareAdditionalNeed = await _getResidentialCareAdditionalNeedsUseCase.GetAsync(residentialCareAdditionalNeedsId).ConfigureAwait(false);
+                if (residentialCareAdditionalNeed == null) return NotFound();
+                return Ok(residentialCareAdditionalNeed.ToResponse());
             }
             catch (FormatException ex)
             {
