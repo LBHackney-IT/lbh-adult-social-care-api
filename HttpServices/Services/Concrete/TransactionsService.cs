@@ -173,8 +173,8 @@ namespace HttpServices.Services.Concrete
         {
             var queryParams = new Dictionary<string, string>()
             {
-                {"fromDate", $"{fromDate}"},
-                {"toDate", $"{toDate}"}
+                {"fromDate", $"{fromDate?.DateTimeOffsetToISOString()}"},
+                {"toDate", $"{toDate?.DateTimeOffsetToISOString()}"}
             };
             var url = QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}api/v1/pay-runs/released-holds-count",
                 queryParams);
@@ -253,8 +253,8 @@ namespace HttpServices.Services.Concrete
         {
             var queryParams = new Dictionary<string, string>()
             {
-                {"fromDate", $"{fromDate}"},
-                {"toDate", $"{toDate}"}
+                {"fromDate", $"{fromDate?.DateTimeOffsetToISOString()}"},
+                {"toDate", $"{toDate?.DateTimeOffsetToISOString()}"}
             };
 
             var url = QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}api/v1/pay-runs/released-holds",
@@ -278,6 +278,44 @@ namespace HttpServices.Services.Concrete
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<IEnumerable<InvoiceResponse>>(content);
+            return res;
+        }
+
+        public async Task<PayRunDetailsResponse> GetSinglePayRunDetailsUseCase(Guid payRunId, InvoiceListParameters parameters)
+        {
+            var queryParams = new Dictionary<string, string>()
+            {
+                {"pageNumber", $"{parameters.PageNumber}"},
+                {"pageSize", $"{parameters.PageSize}"},
+                {"supplierId", $"{parameters.SupplierId}"},
+                {"packageTypeId", $"{parameters.PackageTypeId}"},
+                {"invoiceItemPaymentStatusId", $"{parameters.InvoiceStatusId}"},
+                {"searchTerm", $"{parameters.SearchTerm}"},
+                {"dateFrom", $"{parameters.DateFrom?.DateTimeOffsetToISOString()}"},
+                {"dateTo", $"{parameters.DateTo?.DateTimeOffsetToISOString()}"}
+            };
+
+            var url = QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}api/v1/pay-runs/{payRunId}/details",
+                queryParams);
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(url),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                throw new Exception("Failed to retrieve pay run details");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<PayRunDetailsResponse>(content);
             return res;
         }
     }
