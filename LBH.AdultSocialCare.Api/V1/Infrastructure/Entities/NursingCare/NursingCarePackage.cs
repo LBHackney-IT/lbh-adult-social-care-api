@@ -102,6 +102,28 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
         public PackageStatus Status { get; set; }
 
         /// <summary>
+        /// Gets or sets the Stage Id
+        /// </summary>
+        public int? StageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Stage Object
+        /// </summary>
+        [ForeignKey(nameof(StageId))]
+        public Stage Stage { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Supplier Id
+        /// </summary>
+        public int? SupplierId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Supplier Object
+        /// </summary>
+        [ForeignKey(nameof(SupplierId))]
+        public Supplier Supplier { get; set; }
+
+        /// <summary>
         /// Gets or sets the Type Of Nursing Home
         /// </summary>
         [ForeignKey(nameof(TypeOfNursingCareHomeId))]

@@ -48,6 +48,15 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<T>(dto);
         }*/
 
+        #region HomeCarePackage
+
+        public static HomeCareApprovalHistory ToDb(this HomeCareApprovalHistoryDomain homeCareApprovalHistoryDomain)
+        {
+            return _mapper.Map<HomeCareApprovalHistory>(homeCareApprovalHistoryDomain);
+        }
+
+        #endregion HomeCarePackage
+
         #region DayCarePackage
 
         public static DayCarePackage ToDb(this DayCarePackageForCreationDomain dayCarePackageForCreationDomain)
@@ -74,6 +83,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<NursingCarePackage>(nursingCarePackageForCreationDomain);
         }
 
+        public static NursingCareApprovalHistory ToDb(this NursingCareApprovalHistoryDomain nursingCareApprovalHistoryDomain)
+        {
+            return _mapper.Map<NursingCareApprovalHistory>(nursingCareApprovalHistoryDomain);
+        }
+
         #endregion NursingCarePackage
 
         #region ResidentialCarePackage
@@ -81,6 +95,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static ResidentialCarePackage ToDb(this ResidentialCarePackageForCreationDomain residentialCarePackageForCreationDomain)
         {
             return _mapper.Map<ResidentialCarePackage>(residentialCarePackageForCreationDomain);
+        }
+
+        public static ResidentialCareApprovalHistory ToDb(this ResidentialCareApprovalHistoryDomain residentialCareApprovalHistory)
+        {
+            return _mapper.Map<ResidentialCareApprovalHistory>(residentialCareApprovalHistory);
         }
 
         #endregion ResidentialCarePackage
@@ -150,6 +169,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<NursingCareRequestMoreInformation>(nursingCareRequestMoreInformationDomain);
         }
 
+        public static NursingCareBrokerageInfo ToDb(this NursingCareBrokerageInfoCreationDomain nursingCareBrokerageInfoCreationDomain)
+        {
+            return _mapper.Map<NursingCareBrokerageInfo>(nursingCareBrokerageInfoCreationDomain);
+        }
+
         #endregion NursingCareBrokerage
 
         #region ResidentialCareBrokerage
@@ -157,6 +181,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static ResidentialCareRequestMoreInformation ToDb(this ResidentialCareRequestMoreInformationDomain residentialCareRequestMoreInformationDomain)
         {
             return _mapper.Map<ResidentialCareRequestMoreInformation>(residentialCareRequestMoreInformationDomain);
+        }
+
+        public static ResidentialCareBrokerageInfo ToDb(this ResidentialCareBrokerageInfoCreationDomain residentialCareBrokerageInfoCreationDomain)
+        {
+            return _mapper.Map<ResidentialCareBrokerageInfo>(residentialCareBrokerageInfoCreationDomain);
         }
 
         #endregion ResidentialCareBrokerage

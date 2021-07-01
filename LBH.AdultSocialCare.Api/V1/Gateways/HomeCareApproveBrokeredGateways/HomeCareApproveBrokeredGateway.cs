@@ -26,6 +26,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApproveBrokeredGateways
         {
             var homeCarePackage = await _databaseContext.HomeCarePackage
                 .Where(item => item.Id == homeCarePackageId)
+                .Include(item => item.Client)
+                .Include(item => item.Status)
+                .Include(item => item.Stage)
+                .Include(item => item.Supplier)
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
 
@@ -42,24 +46,17 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApproveBrokeredGateways
             var homeCareApprovePackageDomain = new HomeCareApproveBrokeredDomain()
             {
                 HomeCarePackage = homeCarePackage.ToDomain(),
-                HoursPerWeek = await _databaseContext.HomeCarePackageSlots
-                            .Where(item => item.HomeCarePackageId == homeCarePackageId).SumAsync(c => c.PrimaryInMinutes / 60).ConfigureAwait(false),
+                HoursPerWeek = await HoursPerWeek(homeCarePackageId).ConfigureAwait(false),
                 CostOfCare = await _databaseContext.HomeCarePackageCosts
                             .Where(item => item.HomeCarePackageId == homeCarePackageId).SumAsync(c => c.CostPerHour).ConfigureAwait(false),
                 HomeCarePackageBreakDown = new HomeCarePackageBreakDownDomain()
                 {
-                    PersonalCareTotalHours = await _databaseContext.HomeCarePackageSlots
-                            .Where(item => item.HomeCarePackageId == homeCarePackageId && item.ServiceId == 1).SumAsync(c => c.PrimaryInMinutes / 60).ConfigureAwait(false),
-                    DomesticTotalHours = await _databaseContext.HomeCarePackageSlots
-                            .Where(item => item.HomeCarePackageId == homeCarePackageId && item.ServiceId == 2).SumAsync(c => c.PrimaryInMinutes / 60).ConfigureAwait(false),
-                    EscortTotalHours = await _databaseContext.HomeCarePackageSlots
-                            .Where(item => item.HomeCarePackageId == homeCarePackageId && item.ServiceId == 3).SumAsync(c => c.PrimaryInMinutes / 60).ConfigureAwait(false),
-                    NightOwlTotalHours = await _databaseContext.HomeCarePackageSlots
-                            .Where(item => item.HomeCarePackageId == homeCarePackageId && item.ServiceId == 4).SumAsync(c => c.PrimaryInMinutes / 60).ConfigureAwait(false),
-                    SleepingNightsTotalHours = await _databaseContext.HomeCarePackageSlots
-                            .Where(item => item.HomeCarePackageId == homeCarePackageId && item.ServiceId == 5).SumAsync(c => c.PrimaryInMinutes / 60).ConfigureAwait(false),
-                    WakingNightsTotalHours = await _databaseContext.HomeCarePackageSlots
-                            .Where(item => item.HomeCarePackageId == homeCarePackageId && item.ServiceId == 6).SumAsync(c => c.PrimaryInMinutes / 60).ConfigureAwait(false)
+                    PersonalCareTotalHours = await PackageBreakDown(homeCarePackageId, 1).ConfigureAwait(false),
+                    DomesticTotalHours = await PackageBreakDown(homeCarePackageId, 2).ConfigureAwait(false),
+                    EscortTotalHours = await PackageBreakDown(homeCarePackageId, 3).ConfigureAwait(false),
+                    NightOwlTotalHours = await PackageBreakDown(homeCarePackageId, 4).ConfigureAwait(false),
+                    SleepingNightsTotalHours = await PackageBreakDown(homeCarePackageId, 5).ConfigureAwait(false),
+                    WakingNightsTotalHours = await PackageBreakDown(homeCarePackageId, 6).ConfigureAwait(false)
                 },
                 HomeCarePackageElementsCosting = new HomeCarePackageElementsCostingDomain()
                 {
@@ -82,5 +79,38 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApproveBrokeredGateways
 
             return homeCareApprovePackageDomain;
         }
+
+        private async Task<double> HoursPerWeek(Guid homeCarePackageId)
+        {
+            var hoursPerWeekPrimary = await _databaseContext.HomeCarePackageSlots
+                .Where(item => item.HomeCarePackageId == homeCarePackageId).SumAsync(c => c.PrimaryInMinutes)
+                .ConfigureAwait(false);
+            var hoursPerWeekSecondary = await _databaseContext.HomeCarePackageSlots
+                .Where(item => item.HomeCarePackageId == homeCarePackageId).SumAsync(c => c.SecondaryInMinutes)
+                .ConfigureAwait(false);
+
+            return MinutesToHour(hoursPerWeekPrimary + hoursPerWeekSecondary);
+        }
+
+        private async Task<double> PackageBreakDown(Guid homeCarePackageId, int serviceId)
+        {
+            var packageBreakdown = await _databaseContext.HomeCarePackageSlots
+                .Where(item => item.HomeCarePackageId == homeCarePackageId && item.ServiceId == serviceId)
+                .SumAsync(c => c.PrimaryInMinutes).ConfigureAwait(false);
+            if (serviceId == 1)
+            {
+                packageBreakdown += await _databaseContext.HomeCarePackageSlots
+                    .Where(item => item.HomeCarePackageId == homeCarePackageId && item.ServiceId == serviceId)
+                    .SumAsync(c => c.SecondaryInMinutes).ConfigureAwait(false);
+            }
+
+            return MinutesToHour(packageBreakdown);
+        }
+
+        private static double MinutesToHour(double minutes)
+        {
+            return (minutes / 60);
+        }
+
     }
 }

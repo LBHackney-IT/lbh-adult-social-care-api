@@ -1,24 +1,26 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage
+namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains
 {
-    public class NursingCarePackageCost
+    public class NursingCareBrokerageInfoCreationDomain
     {
-        /// <summary>
-        /// Gets or sets the Id
-        /// </summary>
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
-
         /// <summary>
         /// Gets or sets the Nursing Care Package Id
         /// </summary>
         public Guid NursingCarePackageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Supplier Id
+        /// </summary>
+        public int SupplierId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Stage Id
+        /// </summary>
+        public int StageId { get; set; }
 
         /// <summary>
         /// Gets or sets the Nursing Core Per Week
@@ -39,10 +41,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerag
         /// Gets or sets the Creator Id
         /// </summary>
         public int CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updator Id
-        /// </summary>
-        public int UpdatorId { get; set; }
     }
 }

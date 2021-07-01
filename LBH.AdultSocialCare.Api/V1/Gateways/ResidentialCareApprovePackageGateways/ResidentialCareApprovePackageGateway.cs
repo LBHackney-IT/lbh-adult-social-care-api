@@ -27,17 +27,30 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovePackageGatew
                 .ConfigureAwait(false);
 
             if (residentialCarePackage == null)
-            {
-                throw new ApiException($"Could not find the Residential Care Package {residentialCarePackageId}");
-            }
+                throw new EntityNotFoundException($"Could not find the Residential Care Package {residentialCarePackageId}");
 
-            var residentialCareApprovePackageDomain = new ResidentialCareApprovePackageDomain()
+            var costOfCare = await _databaseContext.ResidentialCareBrokerageInfos
+                .Where(a => a.ResidentialCarePackageId.Equals(residentialCarePackageId))
+                .Select(a => a.ResidentialCore)
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+
+            var costOfAdditionalNeeds = await _databaseContext.ResidentialCareBrokerageInfos
+                .Where(a => a.ResidentialCarePackageId.Equals(residentialCarePackageId))
+                .Select(a => a.AdditionalNeedsPayment)
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+
+            var costOfOneOff = await _databaseContext.ResidentialCareBrokerageInfos
+                .Where(a => a.ResidentialCarePackageId.Equals(residentialCarePackageId))
+                .Select(a => a.AdditionalNeedsPaymentOneOff)
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+
+            var residentialCareApprovePackageDomain = new ResidentialCareApprovePackageDomain
             {
                 ResidentialCarePackage = residentialCarePackage.ToDomain(),
-                CostOfCare = 0,
-                CostOfAdditionalNeeds = 0,
-                CostOfOneOff = 0,
-                TotalPerWeek = 0
+                CostOfCare = costOfCare,
+                CostOfAdditionalNeeds = costOfAdditionalNeeds,
+                CostOfOneOff = costOfOneOff,
+                TotalPerWeek = costOfCare + costOfAdditionalNeeds
             };
 
             return residentialCareApprovePackageDomain;

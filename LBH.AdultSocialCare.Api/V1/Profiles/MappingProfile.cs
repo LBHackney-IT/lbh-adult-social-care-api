@@ -22,6 +22,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovalHistoryBoundary.Res
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApproveCommercialBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Request;
@@ -29,7 +30,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Resp
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
@@ -38,6 +38,8 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovalHistoryBoundary
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovePackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Response;
@@ -79,8 +81,8 @@ using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
@@ -166,6 +168,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<HomeCarePackage, HomeCarePackageDomain>();
             CreateMap<HomeCarePackageDomain, HomeCarePackage>();
             CreateMap<HomeCarePackageDomain, HomeCarePackageResponse>();
+            CreateMap<HomeCareApprovalHistory, HomeCareApprovalHistoryDomain>();
+            CreateMap<HomeCareApprovalHistoryDomain, HomeCareApprovalHistory>();
 
             #endregion HomeCarePackage
 
@@ -186,6 +190,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<NursingCarePackageForCreationDomain, NursingCarePackage>();
             CreateMap<NursingCarePackageForUpdateDomain, NursingCarePackage>();
             CreateMap<TypeOfNursingCareHomeDomain, TypeOfNursingCareHomeResponse>();
+            CreateMap<NursingCareApprovalHistory, NursingCareApprovalHistoryDomain>();
+            CreateMap<NursingCareApprovalHistoryDomain, NursingCareApprovalHistory>();
 
             #endregion NursingCarePackage
 
@@ -207,6 +213,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ResidentialCarePackageForCreationDomain, ResidentialCarePackage>();
             CreateMap<ResidentialCarePackageForUpdateDomain, ResidentialCarePackage>();
             CreateMap<TypeOfResidentialCareHomeDomain, TypeOfResidentialCareHomeResponse>();
+            CreateMap<ResidentialCareApprovalHistory, ResidentialCareApprovalHistoryDomain>();
+            CreateMap<ResidentialCareApprovalHistoryDomain, ResidentialCareApprovalHistory>();
 
             #endregion ResidentialCarePackage
 
@@ -312,7 +320,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DayCareBrokerageInfo, DayCareBrokerageInfoDomain>();
             CreateMap<DayCareBrokerageStageDomain, DayCareBrokerageStageResponse>();
 
-            #endregion
+            #endregion DayCarePackageBrokerage
 
             #region NursingCareApprovePackage
 
@@ -350,6 +358,18 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<NursingCareApprovalHistoryDomain, NursingCareApprovalHistoryResponse>();
             CreateMap<NursingCareRequestMoreInformationForCreationRequest, NursingCareRequestMoreInformationDomain>();
             CreateMap<NursingCareRequestMoreInformationDomain, NursingCareRequestMoreInformationForCreationRequest>();
+            CreateMap<NursingCareRequestMoreInformationDomain, NursingCareRequestMoreInformation>();
+            CreateMap<NursingCareRequestMoreInformation, NursingCareRequestMoreInformationDomain>();
+            CreateMap<NursingCareBrokerageInfo, NursingCareBrokerageInfoDomain>();
+            CreateMap<NursingCareBrokerageInfoDomain, NursingCareBrokerageInfo>();
+            CreateMap<NursingCareBrokerageInfoDomain, NursingCareBrokerageInfoResponse>();
+            CreateMap<NursingCareBrokerageInfoResponse, NursingCareBrokerageInfoDomain>();
+            CreateMap<NursingCareBrokerageInfoCreationDomain, NursingCareBrokerageCreationRequest>();
+            CreateMap<NursingCareBrokerageCreationRequest, NursingCareBrokerageInfoCreationDomain>();
+            CreateMap<NursingCareBrokerageInfoCreationDomain, NursingCareBrokerageInfo>();
+            CreateMap<NursingCareBrokerageInfo, NursingCareBrokerageInfoCreationDomain>();
+            CreateMap<NursingCarePackageDomain, NursingCarePackageForUpdateDomain>();
+            CreateMap<NursingCarePackageForUpdateDomain, NursingCarePackageDomain>();
 
             #endregion NursingCareBrokerage
 
@@ -361,6 +381,14 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ResidentialCareApprovalHistoryDomain, ResidentialCareApprovalHistoryResponse>();
             CreateMap<ResidentialCareRequestMoreInformationForCreationRequest, ResidentialCareRequestMoreInformationDomain>();
             CreateMap<ResidentialCareRequestMoreInformationDomain, ResidentialCareRequestMoreInformationForCreationRequest>();
+            CreateMap<ResidentialCareBrokerageInfo, ResidentialCareBrokerageInfoDomain>();
+            CreateMap<ResidentialCareBrokerageInfoDomain, ResidentialCareBrokerageInfo>();
+            CreateMap<ResidentialCareBrokerageInfoDomain, ResidentialCareBrokerageInfoResponse>();
+            CreateMap<ResidentialCareBrokerageInfoResponse, ResidentialCareBrokerageInfoDomain>();
+            CreateMap<ResidentialCareBrokerageInfoCreationDomain, ResidentialCareBrokerageCreationRequest>();
+            CreateMap<ResidentialCareBrokerageCreationRequest, ResidentialCareBrokerageInfoCreationDomain>();
+            CreateMap<ResidentialCareBrokerageInfoCreationDomain, ResidentialCareBrokerageInfo>();
+            CreateMap<ResidentialCareBrokerageInfo, ResidentialCareBrokerageInfoCreationDomain>();
 
             #endregion ResidentialCareBrokerage
 
@@ -389,7 +417,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<User, UsersDomain>();
             CreateMap<UsersDomain, UsersResponse>();
 
-            #endregion
+            #endregion Users
 
             #region DayCareBrokerage
 
@@ -439,14 +467,13 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ResidentialCarePackageClaimCreationDomain, ResidentialCarePackageReclaim>();
             CreateMap<ResidentialCarePackageReclaim, ResidentialCarePackageClaimCreationDomain>();
 
-
-            #endregion Supplier
+            #endregion PackageReclaim
 
             #region HomeCarePackageSlots
 
             CreateMap<HomeCarePackageSlotRequest, HomeCarePackageSlotDomain>();
 
-            #endregion
+            #endregion HomeCarePackageSlots
         }
     }
 }
