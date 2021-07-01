@@ -34,7 +34,7 @@ namespace HttpServices.Services.Concrete
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                throw new Exception("Cannot retrieve departments");
+                await httpResponse.ThrowResponseExceptionAsync("Cannot retrieve departments");
             }
 
             if (httpResponse.Content == null ||
@@ -58,7 +58,7 @@ namespace HttpServices.Services.Concrete
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                throw new Exception("Failed to create pay run");
+                await httpResponse.ThrowResponseExceptionAsync("Failed to create pay run");
             }
 
             if (httpResponse.Content == null ||
@@ -126,7 +126,7 @@ namespace HttpServices.Services.Concrete
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                throw new Exception("Cannot retrieve pay run summary list");
+                await httpResponse.ThrowResponseExceptionAsync("Cannot retrieve pay run summary list");
             }
 
             if (httpResponse.Content == null ||
@@ -159,7 +159,7 @@ namespace HttpServices.Services.Concrete
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                throw new Exception("Cannot retrieve Suppliers in pay run");
+                await httpResponse.ThrowResponseExceptionAsync("Cannot retrieve Suppliers in pay run");
             }
 
             if (httpResponse.Content == null ||
@@ -191,7 +191,7 @@ namespace HttpServices.Services.Concrete
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                throw new Exception("Cannot retrieve released hold count");
+                await httpResponse.ThrowResponseExceptionAsync("Cannot retrieve released hold count");
             }
 
             if (httpResponse.Content == null ||
@@ -215,7 +215,7 @@ namespace HttpServices.Services.Concrete
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                throw new Exception("Failed to retrieve package types in pay run");
+                await httpResponse.ThrowResponseExceptionAsync("Failed to retrieve package types in pay run");
             }
 
             if (httpResponse.Content == null ||
@@ -239,7 +239,7 @@ namespace HttpServices.Services.Concrete
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                throw new Exception("Failed to retrieve payment statuses in pay run");
+                await httpResponse.ThrowResponseExceptionAsync("Failed to retrieve payment statuses in pay run");
             }
 
             if (httpResponse.Content == null ||
@@ -271,7 +271,7 @@ namespace HttpServices.Services.Concrete
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                throw new Exception("Failed to retrieve released holds");
+                await httpResponse.ThrowResponseExceptionAsync("Failed to retrieve released holds");
             }
 
             if (httpResponse.Content == null ||
@@ -309,7 +309,7 @@ namespace HttpServices.Services.Concrete
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                throw new Exception("Failed to retrieve pay run details");
+                await httpResponse.ThrowResponseExceptionAsync("Failed to retrieve pay run details");
             }
 
             if (httpResponse.Content == null ||
@@ -333,7 +333,7 @@ namespace HttpServices.Services.Concrete
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                throw new Exception("Failed to retrieve pay run insights");
+                await httpResponse.ThrowResponseExceptionAsync("Failed to retrieve pay run insights");
             }
 
             if (httpResponse.Content == null ||
