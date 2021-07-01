@@ -1,10 +1,10 @@
 using LBH.AdultSocialCare.Api.V1.Gateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ApprovalHistoryGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCareCollegeGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageReclaimGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCareRequestMoreInformationGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApproveBrokeredGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovePackageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways;

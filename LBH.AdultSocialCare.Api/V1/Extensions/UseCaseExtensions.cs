@@ -54,6 +54,7 @@ using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCarePackageReclaimUseCase.In
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareRequestMoreInformationUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareRequestMoreInformationUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.RolesUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.SupplierCostUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.SupplierCostUseCase.Interfaces;
@@ -65,6 +66,15 @@ using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Con
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases;
 using Microsoft.Extensions.DependencyInjection;
+using ICreateResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.ICreateResidentialCarePackageUseCase;
+using IDeleteResidentialCareAdditionalNeedsUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IDeleteResidentialCareAdditionalNeedsUseCase;
+using IGetAllResidentialCareHomeTypeUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetAllResidentialCareHomeTypeUseCase;
+using IGetAllResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetAllResidentialCarePackageUseCase;
+using IGetAllResidentialCareTypeOfStayOptionUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetAllResidentialCareTypeOfStayOptionUseCase;
+using IGetResidentialCareAdditionalNeedsUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetResidentialCareAdditionalNeedsUseCase;
+using IGetResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetResidentialCarePackageUseCase;
+using IUpdateResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IUpdateResidentialCarePackageUseCase;
+using IUpsertResidentialCareAdditionalNeedsUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IUpsertResidentialCareAdditionalNeedsUseCase;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
 {
