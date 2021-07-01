@@ -108,5 +108,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             var result = await _transactionsService.GetSinglePayRunInsightsUseCase(payRunId).ConfigureAwait(false);
             return Ok(result);
         }
+
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/{payRunId}/status/submit-for-approval")]
+        public async Task<ActionResult<bool>> SubmitPayRunForApproval(Guid payRunId)
+        {
+            var res = await _transactionsService.SubmitPayRunForApprovalUseCase(payRunId).ConfigureAwait(false);
+            return Ok(res);
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace LBH.AdultSocialCare.Api.V1.Exceptions.Filters
                 case ApiException apiException:
                     // handle explicit 'known' API errors
                     context.Exception = null;
-                    apiError = new ApiError(apiException.Message) { Errors = apiException.Errors };
+                    apiError = new ApiError(apiException.Message) { Errors = apiException.Errors, Detail = apiException.Detail };
                     statusCode = apiException.StatusCode;
                     break;
 

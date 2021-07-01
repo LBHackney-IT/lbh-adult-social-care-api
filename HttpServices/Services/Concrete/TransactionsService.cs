@@ -1,3 +1,4 @@
+using Common.Extensions;
 using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
@@ -340,6 +341,30 @@ namespace HttpServices.Services.Concrete
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<PayRunInsightsResponse>(content);
+            return res;
+        }
+
+        public async Task<bool> SubmitPayRunForApprovalUseCase(Guid payRunId)
+        {
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/{payRunId}/status/submit-for-approval"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to submit pay run for approval");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<bool>(content);
             return res;
         }
     }

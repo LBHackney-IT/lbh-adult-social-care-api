@@ -35,5 +35,7 @@ namespace HttpServices.Services.Contracts
         Task<PayRunDetailsResponse> GetSinglePayRunDetailsUseCase(Guid payRunId, InvoiceListParameters parameters);
 
         Task<PayRunInsightsResponse> GetSinglePayRunInsightsUseCase(Guid payRunId);
+
+        Task<bool> SubmitPayRunForApprovalUseCase(Guid payRunId);
     }
 }
