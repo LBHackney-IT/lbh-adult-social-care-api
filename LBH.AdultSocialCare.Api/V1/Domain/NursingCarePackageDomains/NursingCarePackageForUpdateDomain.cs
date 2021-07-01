@@ -19,5 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains
         public Guid CreatorId { get; set; }
         public Guid? UpdaterId { get; set; }
         public int StatusId { get; set; }
+        public int SupplierId { get; set; }
+        public int StageId { get; set; }
     }
 }

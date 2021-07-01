@@ -14,6 +14,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Res
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApproveCommercialBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovePackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
@@ -23,6 +24,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovePackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
@@ -162,6 +164,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 UpdaterId = nursingCarePackageDomain.UpdaterId,
                 StatusId = nursingCarePackageDomain.StatusId,
                 ClientName = nursingCarePackageDomain.ClientName,
+                ClientHackneyId = nursingCarePackageDomain.ClientHackneyId,
+                ClientPostCode = nursingCarePackageDomain.ClientPostCode,
+                ClientDateOfBirth = nursingCarePackageDomain.ClientDateOfBirth,
+                ClientCanSpeakEnglish = nursingCarePackageDomain.ClientCanSpeakEnglish,
+                ClientPreferredContact = nursingCarePackageDomain.ClientPreferredContact,
                 StatusName = nursingCarePackageDomain.StatusName,
                 CreatorName = nursingCarePackageDomain.CreatorName,
                 UpdaterName = nursingCarePackageDomain.UpdaterName,
@@ -231,6 +238,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 UpdaterId = residentialCarePackageDomain.UpdaterId,
                 StatusId = residentialCarePackageDomain.StatusId,
                 ClientName = residentialCarePackageDomain.ClientName,
+                ClientHackneyId = residentialCarePackageDomain.ClientHackneyId,
+                ClientPostCode = residentialCarePackageDomain.ClientPostCode,
+                ClientDateOfBirth = residentialCarePackageDomain.ClientDateOfBirth,
+                ClientCanSpeakEnglish = residentialCarePackageDomain.ClientCanSpeakEnglish,
+                ClientPreferredContact = residentialCarePackageDomain.ClientPreferredContact,
                 StatusName = residentialCarePackageDomain.StatusName,
                 CreatorName = residentialCarePackageDomain.CreatorName,
                 UpdaterName = residentialCarePackageDomain.UpdaterName,
@@ -399,6 +411,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<NursingCareApprovalHistoryResponse>>(nursingCareApprovalHistoryDomain);
         }
 
+        public static NursingCareBrokerageInfoResponse ToResponse(this NursingCareBrokerageInfoDomain nursingCareBrokerageInfoDomain)
+        {
+            return _mapper.Map<NursingCareBrokerageInfoResponse>(nursingCareBrokerageInfoDomain);
+        }
+
         #endregion NursingCareBrokerage
 
         #region ResidentialCareBrokerage
@@ -406,6 +423,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<ResidentialCareApprovalHistoryResponse> ToResponse(this IEnumerable<ResidentialCareApprovalHistoryDomain> residentialCareApprovalHistoryDomain)
         {
             return _mapper.Map<IEnumerable<ResidentialCareApprovalHistoryResponse>>(residentialCareApprovalHistoryDomain);
+        }
+
+        public static ResidentialCareBrokerageInfoResponse ToResponse(this ResidentialCareBrokerageInfoDomain residentialCareBrokerageInfoDomain)
+        {
+            return _mapper.Map<ResidentialCareBrokerageInfoResponse>(residentialCareBrokerageInfoDomain);
         }
 
         #endregion ResidentialCareBrokerage

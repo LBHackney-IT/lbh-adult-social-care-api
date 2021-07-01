@@ -13,6 +13,16 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Reque
         public Guid NursingCarePackageId { get; set; }
 
         /// <summary>
+        /// Gets or sets the Supplier Id
+        /// </summary>
+        public int SupplierId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Stage Id
+        /// </summary>
+        public int StageId { get; set; }
+
+        /// <summary>
         /// Gets or sets the Nursing Core Per Week
         /// </summary>
         public decimal NursingCore { get; set; }

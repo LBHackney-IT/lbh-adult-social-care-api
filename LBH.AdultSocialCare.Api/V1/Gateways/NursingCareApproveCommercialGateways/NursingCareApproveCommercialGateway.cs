@@ -36,12 +36,22 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGatewa
                 throw new ErrorException($"Could not find the Nursing Care Package {nursingCarePackageId}");
             }
 
+            var costOfCare = await _databaseContext.NursingCareBrokerageInfos
+                .Where(a => a.NursingCarePackageId.Equals(nursingCarePackageId))
+                .Select(a => a.NursingCore)
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+
+            var costOfAdditionalNeeds = await _databaseContext.NursingCareBrokerageInfos
+                .Where(a => a.NursingCarePackageId.Equals(nursingCarePackageId))
+                .Select(a => a.AdditionalNeedsPayment)
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+
             var nursingCareApproveCommercialDomain = new NursingCareApproveCommercialDomain()
             {
                 NursingCarePackage = nursingCarePackage.ToDomain(),
-                CostOfCare = 0,
-                CostOfAdditionalNeeds = 0,
-                TotalPerWeek = 0
+                CostOfCare = costOfCare,
+                CostOfAdditionalNeeds = costOfAdditionalNeeds,
+                TotalPerWeek = costOfCare + costOfAdditionalNeeds
             };
 
             return nursingCareApproveCommercialDomain;

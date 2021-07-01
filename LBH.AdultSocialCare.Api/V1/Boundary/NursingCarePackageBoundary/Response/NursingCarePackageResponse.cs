@@ -38,6 +38,11 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Respons
 
         // From FK values
         public string ClientName { get; set; }
+        public int ClientHackneyId { get; set; }
+        public string ClientPostCode { get; set; }
+        public DateTime? ClientDateOfBirth { get; set; }
+        public string ClientPreferredContact { get; set; }
+        public string ClientCanSpeakEnglish { get; set; }
 
         public string StatusName { get; set; }
         public string CreatorName { get; set; }

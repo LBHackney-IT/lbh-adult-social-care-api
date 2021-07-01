@@ -105,20 +105,36 @@ using System.Linq;
 using System.Reflection;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageReclaimGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCarePackageReclaimGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageReclaimGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageReclaimGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageReclaimUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageReclaimUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareBrokerageUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareBrokerageUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCarePackageReclaimUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCarePackageReclaimUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Concrete;
 using Microsoft.EntityFrameworkCore.Storage;
 using LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareBrokerageUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareBrokerageUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCarePackageReclaimUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCarePackageReclaimUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
+using ICreateResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.ICreateResidentialCarePackageUseCase;
+using IDeleteResidentialCareAdditionalNeedsUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IDeleteResidentialCareAdditionalNeedsUseCase;
+using IGetAllResidentialCareHomeTypeUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetAllResidentialCareHomeTypeUseCase;
+using IGetAllResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetAllResidentialCarePackageUseCase;
+using IGetAllResidentialCareTypeOfStayOptionUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetAllResidentialCareTypeOfStayOptionUseCase;
+using IGetResidentialCareAdditionalNeedsUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetResidentialCareAdditionalNeedsUseCase;
+using IGetResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetResidentialCarePackageUseCase;
+using IUpdateResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IUpdateResidentialCarePackageUseCase;
+using IUpsertResidentialCareAdditionalNeedsUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IUpsertResidentialCareAdditionalNeedsUseCase;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -292,7 +308,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<ISupplierGateway, SupplierGateway>();
             services.AddScoped<ISupplierCostGateway, SupplierCostGateway>();
             services.AddScoped<IHomeCareStageGateway, HomeCareStageGateway>();
-            services.AddScoped<IApprovalHistoryGateway, ApprovalHistoryGateway>();
+            services.AddScoped<IHomeCareApprovalHistoryGateway, HomeCareApprovalHistoryGateway>();
             services.AddScoped<IHomeCareApprovePackageGateway, HomeCareApprovePackageGateway>();
             services.AddScoped<IHomeCareApproveBrokeredGateway, HomeCareApproveBrokeredGateway>();
             services.AddScoped<INursingCareApprovalHistoryGateway, NursingCareApprovalHistoryGateway>();
@@ -310,6 +326,8 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IDayCarePackageReclaimGateway, DayCarePackageReclaimGateway>();
             services.AddScoped<INursingCarePackageReclaimGateway, NursingCarePackageReclaimGateway>();
             services.AddScoped<IResidentialCarePackageReclaimGateway, ResidentialCarePackageReclaimGateway>();
+            services.AddScoped<INursingCareBrokerageGateway, NursingCareBrokerageGateway>();
+            services.AddScoped<IResidentialCareBrokerageGateway, ResidentialCareBrokerageGateway>();
         }
 
         private static void RegisterUseCases(IServiceCollection services)
@@ -550,12 +568,16 @@ namespace LBH.AdultSocialCare.Api
             #region NursingCareBrokerage
 
             services.AddScoped<ICreateNursingCareRequestMoreInformationUseCase, CreateNursingCareRequestMoreInformationUseCase>();
+            services.AddScoped<ICreateNursingCareBrokerageUseCase, CreateNursingCareBrokerageUseCase>();
+            services.AddScoped<IGetNursingCareBrokerageUseCase, GetNursingCareBrokerageUseCase>();
 
             #endregion NursingCareBrokerage
 
             #region ResidentialCareBrokerage
 
             services.AddScoped<ICreateResidentialCareRequestMoreInformationUseCase, CreateResidentialCareRequestMoreInformationUseCase>();
+            services.AddScoped<ICreateResidentialCareBrokerageUseCase, CreateResidentialCareBrokerageUseCase>();
+            services.AddScoped<IGetResidentialCareBrokerageUseCase, GetResidentialCareBrokerageUseCase>();
 
             #endregion ResidentialCareBrokerage
 

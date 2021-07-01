@@ -3,9 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
@@ -18,10 +20,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
     public class HomeCareRequestMoreInformationController : BaseController
     {
         private readonly ICreateHomeCareRequestMoreInformationUseCase _createHomeCareRequestMoreInformationUseCase;
+        private readonly IChangeStatusHomeCarePackageUseCase _changeStatusHomeCarePackageUseCase;
 
-        public HomeCareRequestMoreInformationController(ICreateHomeCareRequestMoreInformationUseCase createHomeCareRequestMoreInformationUseCase)
+
+        public HomeCareRequestMoreInformationController(ICreateHomeCareRequestMoreInformationUseCase createHomeCareRequestMoreInformationUseCase,
+            IChangeStatusHomeCarePackageUseCase changeStatusHomeCarePackageUseCase)
         {
             _createHomeCareRequestMoreInformationUseCase = createHomeCareRequestMoreInformationUseCase;
+            _changeStatusHomeCarePackageUseCase = changeStatusHomeCarePackageUseCase;
         }
 
         /// <summary>
@@ -51,6 +57,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
 
             var homeCareBrokerageCreationDomain = homeCareRequestMoreInformationForCreationRequest.ToDomain();
             var result = await _createHomeCareRequestMoreInformationUseCase.Execute(homeCareBrokerageCreationDomain).ConfigureAwait(false);
+            await _changeStatusHomeCarePackageUseCase
+                .UpdateAsync(homeCareRequestMoreInformationForCreationRequest.HomeCarePackageId, ApprovalHistoryConstants.RequestMoreInformationId)
+                .ConfigureAwait(false);
             return Ok(result);
         }
     }

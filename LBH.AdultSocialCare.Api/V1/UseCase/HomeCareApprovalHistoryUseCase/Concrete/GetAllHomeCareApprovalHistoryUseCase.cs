@@ -11,9 +11,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovalHistoryUseCase.Conc
 {
     public class GetAllHomeCareApprovalHistoryUseCase : IGetAllHomeCareApprovalHistoryUseCase
     {
-        private readonly IApprovalHistoryGateway _approvalHistoryGateway;
+        private readonly IHomeCareApprovalHistoryGateway _approvalHistoryGateway;
 
-        public GetAllHomeCareApprovalHistoryUseCase(IApprovalHistoryGateway approvalHistoryGateway)
+        public GetAllHomeCareApprovalHistoryUseCase(IHomeCareApprovalHistoryGateway approvalHistoryGateway)
         {
             _approvalHistoryGateway = approvalHistoryGateway;
         }

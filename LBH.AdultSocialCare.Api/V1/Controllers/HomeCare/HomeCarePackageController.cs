@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
@@ -22,17 +23,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
     public class HomeCarePackageController : BaseController
     {
         private readonly IUpsertHomeCarePackageUseCase _upsertHomeCarePackageUseCase;
-        private readonly IChangeStatusHomeCarePackageUseCase _updateHomeCarePackageUseCase;
+        private readonly IChangeStatusHomeCarePackageUseCase _changeStatusHomeCarePackageUseCase;
         private readonly IGetAllHomeCarePackageUseCase _getAllHomeCarePackageUseCase;
         private readonly IGetAllHomeCareApprovalHistoryUseCase _getAllHomeCareApprovalHistoryUseCases;
 
         public HomeCarePackageController(IUpsertHomeCarePackageUseCase upsertHomeCarePackageUseCase,
-            IChangeStatusHomeCarePackageUseCase updateHomeCarePackageUseCase,
+            IChangeStatusHomeCarePackageUseCase changeStatusHomeCarePackageUseCase,
             IGetAllHomeCarePackageUseCase getAllHomeCarePackageUseCase,
             IGetAllHomeCareApprovalHistoryUseCase getAllHomeCareApprovalHistoryUseCases)
         {
             _upsertHomeCarePackageUseCase = upsertHomeCarePackageUseCase;
-            _updateHomeCarePackageUseCase = updateHomeCarePackageUseCase;
+            _changeStatusHomeCarePackageUseCase = changeStatusHomeCarePackageUseCase;
             _getAllHomeCarePackageUseCase = getAllHomeCarePackageUseCase;
             _getAllHomeCareApprovalHistoryUseCases = getAllHomeCareApprovalHistoryUseCases;
         }
@@ -52,7 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         {
             try
             {
-                var res = await _updateHomeCarePackageUseCase
+                var res = await _changeStatusHomeCarePackageUseCase
                     .UpdateAsync(homeCarePackageId, statusId)
                     .ConfigureAwait(false);
                 var homeCarePackageResponse =
@@ -93,6 +94,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
                 {
                     return NotFound();
                 }
+                //Change status of package
+                await _changeStatusHomeCarePackageUseCase
+                    .UpdateAsync(homeCarePackageResponse.Id, ApprovalHistoryConstants.NewPackageId)
+                    .ConfigureAwait(false);
 
                 return Ok(homeCarePackageResponse);
             }

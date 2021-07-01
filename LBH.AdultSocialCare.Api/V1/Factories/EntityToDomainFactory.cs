@@ -127,7 +127,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 CreatorId = nursingCarePackageEntity.CreatorId,
                 UpdaterId = nursingCarePackageEntity.UpdaterId,
                 StatusId = nursingCarePackageEntity.StatusId,
+                SupplierId = nursingCarePackageEntity.SupplierId,
+                StageId = nursingCarePackageEntity.StageId,
                 ClientName = nursingCarePackageEntity.Client != null ? $"{nursingCarePackageEntity.Client.FirstName} {nursingCarePackageEntity.Client.MiddleName} {nursingCarePackageEntity.Client.LastName}" : null,
+                ClientHackneyId = nursingCarePackageEntity.Client?.HackneyId ?? 0,
+                ClientPostCode = nursingCarePackageEntity.Client?.PostCode,
+                ClientCanSpeakEnglish = nursingCarePackageEntity.Client?.CanSpeakEnglish,
+                ClientPreferredContact = nursingCarePackageEntity.Client?.PreferredContact,
+                ClientDateOfBirth = nursingCarePackageEntity.Client?.DateOfBirth,
                 StatusName = nursingCarePackageEntity.Status?.StatusName,
                 CreatorName = nursingCarePackageEntity.Creator != null ? $"{nursingCarePackageEntity.Creator.FirstName} {nursingCarePackageEntity.Creator.MiddleName} {nursingCarePackageEntity.Creator.LastName}" : null,
                 UpdaterName = nursingCarePackageEntity.Updater != null ? $"{nursingCarePackageEntity.Updater.FirstName} {nursingCarePackageEntity.Updater.MiddleName} {nursingCarePackageEntity.Updater.LastName}" : null,
@@ -205,7 +212,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 CreatorId = residentialCarePackageEntity.CreatorId,
                 UpdaterId = residentialCarePackageEntity.UpdaterId,
                 StatusId = residentialCarePackageEntity.StatusId,
+                SupplierId = residentialCarePackageEntity.SupplierId,
+                StageId = residentialCarePackageEntity.StageId,
                 ClientName = residentialCarePackageEntity.Client != null ? $"{residentialCarePackageEntity.Client.FirstName} {residentialCarePackageEntity.Client.MiddleName} {residentialCarePackageEntity.Client.LastName}" : null,
+                ClientHackneyId = residentialCarePackageEntity.Client?.HackneyId ?? 0,
+                ClientPostCode = residentialCarePackageEntity.Client?.PostCode,
+                ClientCanSpeakEnglish = residentialCarePackageEntity.Client?.CanSpeakEnglish,
+                ClientPreferredContact = residentialCarePackageEntity.Client?.PreferredContact,
+                ClientDateOfBirth = residentialCarePackageEntity.Client?.DateOfBirth,
                 StatusName = residentialCarePackageEntity.Status?.StatusName,
                 CreatorName = residentialCarePackageEntity.Creator != null ? $"{residentialCarePackageEntity.Creator.FirstName} {residentialCarePackageEntity.Creator.MiddleName} {residentialCarePackageEntity.Creator.LastName}" : null,
                 UpdaterName = residentialCarePackageEntity.Updater != null ? $"{residentialCarePackageEntity.Updater.FirstName} {residentialCarePackageEntity.Updater.MiddleName} {residentialCarePackageEntity.Updater.LastName}" : null,
@@ -309,6 +323,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<HomeCareApprovalHistoryDomain>>(homeCareApprovalHistoryEntities);
         }
 
+        public static HomeCareApprovalHistoryDomain ToDomain(this HomeCareApprovalHistory homeCareApprovalHistory)
+        {
+            return _mapper.Map<HomeCareApprovalHistoryDomain>(homeCareApprovalHistory);
+        }
+
         #endregion HomeCareBrokerage
 
         #region NursingCareBrokerage
@@ -319,6 +338,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<NursingCareApprovalHistoryDomain>>(nursingCareApprovalHistoryEntities);
         }
 
+        public static NursingCareBrokerageInfoDomain ToDomain(this NursingCareBrokerageInfo nursingCareBrokerageInfoEntity)
+        {
+            return _mapper.Map<NursingCareBrokerageInfoDomain>(nursingCareBrokerageInfoEntity);
+        }
+
+        public static NursingCareApprovalHistoryDomain ToDomain(this NursingCareApprovalHistory nursingCareApprovalHistory)
+        {
+            return _mapper.Map<NursingCareApprovalHistoryDomain>(nursingCareApprovalHistory);
+        }
+
         #endregion NursingCareBrokerage
 
         #region ResidentialCareBrokerage
@@ -327,6 +356,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             this List<ResidentialCareApprovalHistory> residentialCareApprovalHistoryEntities)
         {
             return _mapper.Map<IEnumerable<ResidentialCareApprovalHistoryDomain>>(residentialCareApprovalHistoryEntities);
+        }
+
+        public static ResidentialCareBrokerageInfoDomain ToDomain(this ResidentialCareBrokerageInfo residentialCareBrokerageInfoEntity)
+        {
+            return _mapper.Map<ResidentialCareBrokerageInfoDomain>(residentialCareBrokerageInfoEntity);
+        }
+
+        public static ResidentialCareApprovalHistoryDomain ToDomain(this ResidentialCareApprovalHistory residentialCareApprovalHistory)
+        {
+            return _mapper.Map<ResidentialCareApprovalHistoryDomain>(residentialCareApprovalHistory);
         }
 
         #endregion ResidentialCareBrokerage
