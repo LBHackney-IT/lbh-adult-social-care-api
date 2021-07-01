@@ -76,5 +76,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             var res = await _transactionsService.GetUniquePackageTypesInPayRunUseCase(payRunId).ConfigureAwait(false);
             return Ok(res);
         }
+
+        [ProducesResponseType(typeof(IEnumerable<InvoiceStatusResponse>), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/{payRunId}/unique-payment-statuses")]
+        public async Task<ActionResult<IEnumerable<InvoiceStatusResponse>>> GetUniqueInvoiceItemPaymentStatusInPayRun(Guid payRunId)
+        {
+            var res = await _transactionsService.GetUniquePaymentStatusesInPayRunUseCase(payRunId).ConfigureAwait(false);
+            return Ok(res);
+        }
     }
 }

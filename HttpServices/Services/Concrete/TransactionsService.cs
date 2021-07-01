@@ -224,5 +224,29 @@ namespace HttpServices.Services.Concrete
             var res = JsonConvert.DeserializeObject<IEnumerable<PackageTypeResponse>>(content);
             return res;
         }
+
+        public async Task<IEnumerable<InvoiceStatusResponse>> GetUniquePaymentStatusesInPayRunUseCase(Guid payRunId)
+        {
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/{payRunId}/unique-payment-statuses"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                throw new Exception("Failed to retrieve payment statuses in pay run");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<IEnumerable<InvoiceStatusResponse>>(content);
+            return res;
+        }
     }
 }
