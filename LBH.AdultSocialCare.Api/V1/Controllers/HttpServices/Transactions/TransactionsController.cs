@@ -68,5 +68,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             var res = await _payRunUseCase.GetReleasedHoldsCountUseCase(fromDate, toDate).ConfigureAwait(false);
             return Ok(res);
         }
+
+        [ProducesResponseType(typeof(IEnumerable<PackageTypeResponse>), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/{payRunId}/unique-package-types")]
+        public async Task<ActionResult<IEnumerable<PackageTypeResponse>>> GetUniquePackageTypesInPayRun(Guid payRunId)
+        {
+            var res = await _transactionsService.GetUniquePackageTypesInPayRunUseCase(payRunId).ConfigureAwait(false);
+            return Ok(res);
+        }
     }
 }
