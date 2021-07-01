@@ -318,5 +318,29 @@ namespace HttpServices.Services.Concrete
             var res = JsonConvert.DeserializeObject<PayRunDetailsResponse>(content);
             return res;
         }
+
+        public async Task<PayRunInsightsResponse> GetSinglePayRunInsightsUseCase(Guid payRunId)
+        {
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/{payRunId}/summary-insights"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                throw new Exception("Failed to retrieve pay run insights");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<PayRunInsightsResponse>(content);
+            return res;
+        }
     }
 }

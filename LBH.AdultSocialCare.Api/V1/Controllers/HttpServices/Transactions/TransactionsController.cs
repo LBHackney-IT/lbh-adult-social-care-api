@@ -100,5 +100,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             var res = await _transactionsService.GetSinglePayRunDetailsUseCase(payRunId, parameters).ConfigureAwait(false);
             return Ok(res);
         }
+
+        [HttpGet("pay-runs/{payRunId}/summary-insights")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> GetSinglePayRunSummaryInsights(Guid payRunId)
+        {
+            var result = await _transactionsService.GetSinglePayRunInsightsUseCase(payRunId).ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }

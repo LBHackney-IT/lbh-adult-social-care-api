@@ -33,5 +33,7 @@ namespace HttpServices.Services.Contracts
         Task<IEnumerable<InvoiceResponse>> GetReleasedHoldsUseCase(DateTimeOffset? fromDate = null, DateTimeOffset? toDate = null);
 
         Task<PayRunDetailsResponse> GetSinglePayRunDetailsUseCase(Guid payRunId, InvoiceListParameters parameters);
+
+        Task<PayRunInsightsResponse> GetSinglePayRunInsightsUseCase(Guid payRunId);
     }
 }
