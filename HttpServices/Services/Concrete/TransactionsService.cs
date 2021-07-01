@@ -248,5 +248,37 @@ namespace HttpServices.Services.Concrete
             var res = JsonConvert.DeserializeObject<IEnumerable<InvoiceStatusResponse>>(content);
             return res;
         }
+
+        public async Task<IEnumerable<InvoiceResponse>> GetReleasedHoldsUseCase(DateTimeOffset? fromDate = null, DateTimeOffset? toDate = null)
+        {
+            var queryParams = new Dictionary<string, string>()
+            {
+                {"fromDate", $"{fromDate}"},
+                {"toDate", $"{toDate}"}
+            };
+
+            var url = QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}api/v1/pay-runs/released-holds",
+                queryParams);
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(url),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                throw new Exception("Failed to retrieve released holds");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<IEnumerable<InvoiceResponse>>(content);
+            return res;
+        }
     }
 }
