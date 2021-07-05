@@ -1,3 +1,4 @@
+using Common.Exceptions.Models;
 using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
@@ -9,7 +10,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Common.Exceptions.Models;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
 {
@@ -173,6 +173,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
                 .HoldInvoicePaymentUseCase(payRunId, payRunItemId, disputedInvoiceForCreationRequest)
                 .ConfigureAwait(false);
             return Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<HeldInvoiceResponse>), StatusCodes.Status200OK)]
+        [HttpGet("invoices/held-invoice-payments")]
+        public async Task<ActionResult<IEnumerable<HeldInvoiceResponse>>> GetHeldInvoicePaymentsList()
+        {
+            var res = await _transactionsService.GetHeldInvoicePaymentsUseCase().ConfigureAwait(false);
+            return Ok(res);
         }
     }
 }

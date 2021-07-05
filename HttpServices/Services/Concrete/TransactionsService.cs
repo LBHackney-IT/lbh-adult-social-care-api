@@ -523,5 +523,29 @@ namespace HttpServices.Services.Concrete
             var res = JsonConvert.DeserializeObject<DisputedInvoiceFlatResponse>(content);
             return res;
         }
+
+        public async Task<IEnumerable<HeldInvoiceResponse>> GetHeldInvoicePaymentsUseCase()
+        {
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/invoices/held-invoice-payments"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to fetch held invoice payments");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<IEnumerable<HeldInvoiceResponse>>(content);
+            return res;
+        }
     }
 }
