@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Common.Exceptions.Models;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
 {
@@ -158,6 +159,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         public async Task<ActionResult<bool>> DeleteDraftPayRun(Guid payRunId)
         {
             var result = await _transactionsService.DeleteDraftPayRunUseCase(payRunId).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpPost("pay-runs/{payRunId}/pay-run-items/{payRunItemId}/hold-payment")]
+        [ProducesResponseType(typeof(DisputedInvoiceFlatResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<DisputedInvoiceFlatResponse>> HoldInvoicePayment(Guid payRunId, Guid payRunItemId, [FromBody] DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest)
+        {
+            var result = await _transactionsService
+                .HoldInvoicePaymentUseCase(payRunId, payRunItemId, disputedInvoiceForCreationRequest)
+                .ConfigureAwait(false);
             return Ok(result);
         }
     }

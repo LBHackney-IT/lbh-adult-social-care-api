@@ -48,5 +48,8 @@ namespace HttpServices.Services.Contracts
         Task<bool> ReleaseHeldInvoiceItemPaymentListUseCase(IEnumerable<ReleaseHeldInvoiceItemRequest> releaseHeldInvoiceItemRequests);
 
         Task<bool> DeleteDraftPayRunUseCase(Guid payRunId);
+
+        Task<DisputedInvoiceFlatResponse> HoldInvoicePaymentUseCase(Guid payRunId, Guid payRunItemId,
+            DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest);
     }
 }

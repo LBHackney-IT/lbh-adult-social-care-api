@@ -495,5 +495,33 @@ namespace HttpServices.Services.Concrete
             var res = JsonConvert.DeserializeObject<bool>(content);
             return res;
         }
+
+        public async Task<DisputedInvoiceFlatResponse> HoldInvoicePaymentUseCase(Guid payRunId, Guid payRunItemId,
+            DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest)
+        {
+            var body = JsonConvert.SerializeObject(disputedInvoiceForCreationRequest);
+            var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/{payRunId}/pay-run-items/{payRunItemId}/hold-payment"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } },
+                Content = requestContent
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to hold invoice");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<DisputedInvoiceFlatResponse>(content);
+            return res;
+        }
     }
 }
