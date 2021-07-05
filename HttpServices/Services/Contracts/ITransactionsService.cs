@@ -1,4 +1,5 @@
 using HttpServices.Models.Features.RequestFeatures;
+using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using System;
 using System.Collections.Generic;
@@ -41,5 +42,7 @@ namespace HttpServices.Services.Contracts
         Task<bool> KickBackPayRunToDraftUseCase(Guid payRunId);
 
         Task<bool> ApprovePayRunForPaymentUseCase(Guid payRunId);
+
+        Task<bool> ReleaseHeldInvoiceItemPaymentUseCase(ReleaseHeldInvoiceItemRequest releaseHeldInvoiceItemRequest);
     }
 }

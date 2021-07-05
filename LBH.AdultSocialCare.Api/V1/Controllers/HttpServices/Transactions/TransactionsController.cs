@@ -1,4 +1,5 @@
 using HttpServices.Models.Features.RequestFeatures;
+using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
@@ -130,6 +131,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         public async Task<ActionResult<bool>> ApprovePayRun(Guid payRunId)
         {
             var res = await _transactionsService.ApprovePayRunForPaymentUseCase(payRunId).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [HttpPut("pay-runs/release-held-invoice")]
+        public async Task<ActionResult<bool>> ReleaseSingleHeldInvoice([FromBody] ReleaseHeldInvoiceItemRequest releaseHeldInvoiceItemRequest)
+        {
+            var res = await _transactionsService
+                .ReleaseHeldInvoiceItemPaymentUseCase(releaseHeldInvoiceItemRequest).ConfigureAwait(false);
             return Ok(res);
         }
     }

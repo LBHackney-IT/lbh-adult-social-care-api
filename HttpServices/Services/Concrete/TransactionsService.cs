@@ -8,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using HttpServices.Models.Requests;
 
 namespace HttpServices.Services.Concrete
 {
@@ -406,6 +408,33 @@ namespace HttpServices.Services.Concrete
             if (!httpResponse.IsSuccessStatusCode)
             {
                 await httpResponse.ThrowResponseExceptionAsync("Failed to approve pay run");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<bool>(content);
+            return res;
+        }
+
+        public async Task<bool> ReleaseHeldInvoiceItemPaymentUseCase(ReleaseHeldInvoiceItemRequest releaseHeldInvoiceItemRequest)
+        {
+            var body = JsonConvert.SerializeObject(releaseHeldInvoiceItemRequest);
+            var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/release-held-invoice"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } },
+                Content = requestContent
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to release held invoice");
             }
 
             if (httpResponse.Content == null ||
