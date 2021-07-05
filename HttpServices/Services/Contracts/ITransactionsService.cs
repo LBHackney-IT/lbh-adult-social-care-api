@@ -59,5 +59,7 @@ namespace HttpServices.Services.Contracts
         Task<IEnumerable<InvoiceStatusResponse>> GetAllInvoiceStatusesUseCase();
 
         Task<IEnumerable<InvoiceStatusResponse>> GetInvoicePaymentStatusesUseCase();
+
+        Task<bool> AcceptInvoiceUseCase(Guid payRunId, Guid invoiceId);
     }
 }

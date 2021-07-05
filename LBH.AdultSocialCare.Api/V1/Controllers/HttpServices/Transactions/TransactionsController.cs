@@ -207,5 +207,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             var res = await _transactionsService.GetInvoicePaymentStatusesUseCase().ConfigureAwait(false);
             return Ok(res);
         }
+
+        // Accept invoice in pay run
+        [HttpPut("pay-runs/{payRunId}/invoices/{invoiceId}/accept-invoice")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> ApproveInvoice(Guid payRunId, Guid invoiceId)
+        {
+            var result = await _transactionsService.AcceptInvoiceUseCase(payRunId, invoiceId).ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }
