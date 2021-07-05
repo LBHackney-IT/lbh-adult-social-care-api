@@ -151,5 +151,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
                 .ReleaseHeldInvoiceItemPaymentListUseCase(releaseHeldInvoiceItemRequests).ConfigureAwait(false);
             return Ok(res);
         }
+
+        // Delete Pay Run
+        [HttpDelete("pay-runs/{payRunId}")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> DeleteDraftPayRun(Guid payRunId)
+        {
+            var result = await _transactionsService.DeleteDraftPayRunUseCase(payRunId).ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }

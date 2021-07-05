@@ -471,5 +471,29 @@ namespace HttpServices.Services.Concrete
             var res = JsonConvert.DeserializeObject<bool>(content);
             return res;
         }
+
+        public async Task<bool> DeleteDraftPayRunUseCase(Guid payRunId)
+        {
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Delete,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/{payRunId}"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to delete pay run");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<bool>(content);
+            return res;
+        }
     }
 }
