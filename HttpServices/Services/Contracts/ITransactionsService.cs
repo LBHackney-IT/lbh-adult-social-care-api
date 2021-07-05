@@ -39,5 +39,7 @@ namespace HttpServices.Services.Contracts
         Task<bool> SubmitPayRunForApprovalUseCase(Guid payRunId);
 
         Task<bool> KickBackPayRunToDraftUseCase(Guid payRunId);
+
+        Task<bool> ApprovePayRunForPaymentUseCase(Guid payRunId);
     }
 }

@@ -124,5 +124,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             var res = await _transactionsService.KickBackPayRunToDraftUseCase(payRunId).ConfigureAwait(false);
             return Ok(res);
         }
+
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/{payRunId}/status/approve-pay-run")]
+        public async Task<ActionResult<bool>> ApprovePayRun(Guid payRunId)
+        {
+            var res = await _transactionsService.ApprovePayRunForPaymentUseCase(payRunId).ConfigureAwait(false);
+            return Ok(res);
+        }
     }
 }
