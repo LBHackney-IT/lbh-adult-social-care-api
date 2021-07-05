@@ -199,5 +199,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             var res = await _transactionsService.GetAllInvoiceStatusesUseCase().ConfigureAwait(false);
             return Ok(res);
         }
+
+        [ProducesResponseType(typeof(IEnumerable<InvoiceStatusResponse>), StatusCodes.Status200OK)]
+        [HttpGet("invoices/invoice-payment-statuses")]
+        public async Task<ActionResult<IEnumerable<InvoiceStatusResponse>>> GetInvoicePaymentStatusesList()
+        {
+            var res = await _transactionsService.GetInvoicePaymentStatusesUseCase().ConfigureAwait(false);
+            return Ok(res);
+        }
     }
 }
