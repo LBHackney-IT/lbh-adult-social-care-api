@@ -1,5 +1,6 @@
 using Common.Extensions;
 using HttpServices.Models.Features.RequestFeatures;
+using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
 using Microsoft.AspNetCore.WebUtilities;
@@ -10,7 +11,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using HttpServices.Models.Requests;
 
 namespace HttpServices.Services.Concrete
 {
@@ -435,6 +435,33 @@ namespace HttpServices.Services.Concrete
             if (!httpResponse.IsSuccessStatusCode)
             {
                 await httpResponse.ThrowResponseExceptionAsync("Failed to release held invoice");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<bool>(content);
+            return res;
+        }
+
+        public async Task<bool> ReleaseHeldInvoiceItemPaymentListUseCase(IEnumerable<ReleaseHeldInvoiceItemRequest> releaseHeldInvoiceItemRequests)
+        {
+            var body = JsonConvert.SerializeObject(releaseHeldInvoiceItemRequests);
+            var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/release-held-invoice-list"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } },
+                Content = requestContent
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to release held invoice list");
             }
 
             if (httpResponse.Content == null ||

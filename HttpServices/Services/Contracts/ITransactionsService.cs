@@ -44,5 +44,7 @@ namespace HttpServices.Services.Contracts
         Task<bool> ApprovePayRunForPaymentUseCase(Guid payRunId);
 
         Task<bool> ReleaseHeldInvoiceItemPaymentUseCase(ReleaseHeldInvoiceItemRequest releaseHeldInvoiceItemRequest);
+
+        Task<bool> ReleaseHeldInvoiceItemPaymentListUseCase(IEnumerable<ReleaseHeldInvoiceItemRequest> releaseHeldInvoiceItemRequests);
     }
 }

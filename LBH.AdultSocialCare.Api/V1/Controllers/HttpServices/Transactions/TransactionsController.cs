@@ -142,5 +142,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
                 .ReleaseHeldInvoiceItemPaymentUseCase(releaseHeldInvoiceItemRequest).ConfigureAwait(false);
             return Ok(res);
         }
+
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [HttpPut("pay-runs/release-held-invoice-list")]
+        public async Task<ActionResult<bool>> ReleaseHeldInvoiceItemPayment([FromBody] IEnumerable<ReleaseHeldInvoiceItemRequest> releaseHeldInvoiceItemRequests)
+        {
+            var res = await _transactionsService
+                .ReleaseHeldInvoiceItemPaymentListUseCase(releaseHeldInvoiceItemRequests).ConfigureAwait(false);
+            return Ok(res);
+        }
     }
 }
