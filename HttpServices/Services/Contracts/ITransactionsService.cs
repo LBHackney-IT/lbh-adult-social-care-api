@@ -53,5 +53,7 @@ namespace HttpServices.Services.Contracts
             DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest);
 
         Task<IEnumerable<HeldInvoiceResponse>> GetHeldInvoicePaymentsUseCase();
+
+        Task<InvoiceResponse> CreateInvoiceUseCase(InvoiceForCreationRequest invoiceForCreationRequest);
     }
 }

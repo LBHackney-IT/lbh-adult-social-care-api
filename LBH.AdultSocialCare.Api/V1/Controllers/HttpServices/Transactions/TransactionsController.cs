@@ -182,5 +182,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             var res = await _transactionsService.GetHeldInvoicePaymentsUseCase().ConfigureAwait(false);
             return Ok(res);
         }
+
+        [HttpPost("invoices")]
+        [ProducesResponseType(typeof(IEnumerable<InvoiceResponse>), StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<IEnumerable<InvoiceResponse>>> CreateInvoice([FromBody] InvoiceForCreationRequest invoiceForCreationRequest)
+        {
+            var result = await _transactionsService.CreateInvoiceUseCase(invoiceForCreationRequest).ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }
