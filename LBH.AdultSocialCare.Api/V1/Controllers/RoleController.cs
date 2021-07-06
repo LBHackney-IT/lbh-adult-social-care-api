@@ -65,17 +65,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("{roleId}")]
-        public async Task<ActionResult<RoleResponse>> Get(int roleId)
+        public async Task<ActionResult<RoleResponse>> Get(string roleId)
         {
-            try
-            {
-                var res = await _getRoleUseCase.GetAsync(roleId).ConfigureAwait(false);
-                return Ok(res?.ToResponse());
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var res = await _getRoleUseCase.GetAsync(roleId).ConfigureAwait(false);
+            return Ok(res);
         }
 
         /// <summary>Gets all.</summary>

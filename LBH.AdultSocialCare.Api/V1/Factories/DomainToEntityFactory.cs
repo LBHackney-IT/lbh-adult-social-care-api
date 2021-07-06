@@ -330,8 +330,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             return new IdentityRole
             {
-                Name = rolesDomain.RoleName,
-                NormalizedName = rolesDomain.RoleName.ToUpper()
+                Name = rolesDomain.Name,
+                NormalizedName = rolesDomain.Name.ToUpper()
             };
         }
 
