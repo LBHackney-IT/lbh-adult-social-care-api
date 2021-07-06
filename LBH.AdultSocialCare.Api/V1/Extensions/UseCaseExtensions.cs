@@ -163,7 +163,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
 
             #region User
 
-            services.AddScoped<IUpsertUsersUseCase, UpsertUsersUseCase>();
+            services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
             services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
             services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();
 

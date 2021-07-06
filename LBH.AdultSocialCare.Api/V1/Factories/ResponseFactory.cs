@@ -57,6 +57,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
@@ -700,22 +701,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return new UsersResponse
             {
                 Id = usersDomain.Id,
-                FirstName = usersDomain.FirstName,
-                MiddleName = usersDomain.MiddleName,
-                LastName = usersDomain.LastName,
-                HackneyId = usersDomain.HackneyId,
-                AddressLine1 = usersDomain.AddressLine1,
-                AddressLine2 = usersDomain.AddressLine2,
-                AddressLine3 = usersDomain.AddressLine3,
-                Town = usersDomain.Town,
-                County = usersDomain.County,
-                PostCode = usersDomain.PostCode,
-                RoleId = usersDomain.RoleId,
-                Role = usersDomain.Role,
-                CreatorId = usersDomain.CreatorId,
-                DateCreated = usersDomain.DateCreated,
-                UpdatorId = usersDomain.UpdatorId,
-                DateUpdated = usersDomain.DateUpdated
+                Name = usersDomain.Name,
+                Email = usersDomain.Email
             };
         }
 

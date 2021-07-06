@@ -16,6 +16,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
@@ -222,8 +223,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 ClientPreferredContact = residentialCarePackageEntity.Client?.PreferredContact,
                 ClientDateOfBirth = residentialCarePackageEntity.Client?.DateOfBirth,
                 StatusName = residentialCarePackageEntity.Status?.StatusName,
-                CreatorName = residentialCarePackageEntity.Creator != null ? $"{residentialCarePackageEntity.Creator.FirstName} {residentialCarePackageEntity.Creator.MiddleName} {residentialCarePackageEntity.Creator.LastName}" : null,
-                UpdaterName = residentialCarePackageEntity.Updater != null ? $"{residentialCarePackageEntity.Updater.FirstName} {residentialCarePackageEntity.Updater.MiddleName} {residentialCarePackageEntity.Updater.LastName}" : null,
+                CreatorName = residentialCarePackageEntity.Creator != null ? $"{residentialCarePackageEntity.Creator.Name}" : null,
+                UpdaterName = residentialCarePackageEntity.Updater != null ? $"{residentialCarePackageEntity.Updater.Name}" : null,
                 PackageName = "Residential Care Package",
                 TypeOfCareHomeName = residentialCarePackageEntity.TypeOfCareHome?.TypeOfCareHomeName,
                 TypeOfStayOptionName = residentialCarePackageEntity.TypeOfStayOption?.OptionName,
@@ -595,22 +596,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return new UsersDomain
             {
                 Id = userEntity.Id,
-                FirstName = userEntity.FirstName,
-                MiddleName = userEntity.MiddleName,
-                LastName = userEntity.LastName,
-                HackneyId = userEntity.HackneyId,
-                AddressLine1 = userEntity.AddressLine1,
-                AddressLine2 = userEntity.AddressLine2,
-                AddressLine3 = userEntity.AddressLine3,
-                Town = userEntity.Town,
-                County = userEntity.County,
-                PostCode = userEntity.PostCode,
-                RoleId = userEntity.RoleId,
-                Role = userEntity.Role,
-                CreatorId = userEntity.CreatorId,
-                DateCreated = userEntity.DateCreated,
-                UpdatorId = userEntity.UpdatorId,
-                DateUpdated = userEntity.DateUpdated
+                Name = userEntity.Name,
+                Email = userEntity.Email
             };
         }
 

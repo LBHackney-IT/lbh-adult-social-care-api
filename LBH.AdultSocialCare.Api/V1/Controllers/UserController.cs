@@ -1,5 +1,5 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -16,15 +16,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [ApiVersion("1.0")]
     public class UserController : BaseController
     {
-        private readonly IUpsertUsersUseCase _upsertUsersUseCase;
+        private readonly IRegisterUserUseCase _registerUserUseCase;
         private readonly IGetUsersUseCase _getUsersUseCase;
         private readonly IDeleteUsersUseCase _deleteUsersUseCase;
 
-        public UserController(IUpsertUsersUseCase upsertUsersUseCase,
+        public UserController(IRegisterUserUseCase registerUserUseCase,
             IGetUsersUseCase getUsersUseCase,
             IDeleteUsersUseCase deleteUsersUseCase)
         {
-            _upsertUsersUseCase = upsertUsersUseCase;
+            _registerUserUseCase = registerUserUseCase;
             _getUsersUseCase = getUsersUseCase;
             _deleteUsersUseCase = deleteUsersUseCase;
         }
@@ -36,20 +36,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        public async Task<ActionResult<UsersResponse>> Create(UsersRequest usersRequest)
+        public async Task<ActionResult<UsersResponse>> Create([FromBody] UserForRegistrationRequest usersRequest)
         {
-            try
-            {
-                var usersDomain = usersRequest.ToDomain();
-                var res = await _upsertUsersUseCase.ExecuteAsync(usersDomain).ConfigureAwait(false);
-                var usersResponse = res?.ToResponse();
-                if (usersResponse == null) return NotFound();
-                return Ok(usersResponse);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var userForRegistrationDomain = usersRequest.ToDomain();
+            var res = await _registerUserUseCase.RegisterUserAsync(userForRegistrationDomain).ConfigureAwait(false);
+            return Ok(res);
         }
 
         /// <summary>Gets the specified user identifier.</summary>

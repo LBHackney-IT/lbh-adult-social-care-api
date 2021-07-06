@@ -31,6 +31,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageR
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -355,25 +356,21 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region ServiceUsers
 
-        public static User ToEntity(this UsersDomain usersDomain)
+        public static User ToEntity(this UserForRegistrationDomain userForRegistrationDomain)
         {
             return new User
             {
-                Id = usersDomain.Id,
-                FirstName = usersDomain.FirstName,
-                MiddleName = usersDomain.MiddleName,
-                LastName = usersDomain.LastName,
-                HackneyId = usersDomain.HackneyId,
-                AddressLine1 = usersDomain.AddressLine1,
-                AddressLine2 = usersDomain.AddressLine2,
-                AddressLine3 = usersDomain.AddressLine3,
-                Town = usersDomain.Town,
-                County = usersDomain.County,
-                PostCode = usersDomain.PostCode,
-                RoleId = usersDomain.RoleId,
-                Role = usersDomain.Role,
-                CreatorId = usersDomain.CreatorId,
-                UpdatorId = usersDomain.UpdatorId,
+                Email = userForRegistrationDomain.Email,
+                EmailConfirmed = false,
+                LockoutEnabled = false,
+                NormalizedEmail = userForRegistrationDomain.Email.ToUpperInvariant(),
+                NormalizedUserName = userForRegistrationDomain.Email.ToUpperInvariant(),
+                PasswordHash = null,
+                PhoneNumber = null,
+                PhoneNumberConfirmed = false,
+                TwoFactorEnabled = false,
+                UserName = userForRegistrationDomain.Email,
+                Name = userForRegistrationDomain.Name
             };
         }
 

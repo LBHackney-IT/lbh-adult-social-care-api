@@ -37,6 +37,8 @@ using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -417,26 +419,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region ServiceUsers
 
-        public static UsersDomain ToDomain(this UsersRequest usersEntity)
+        public static UserForRegistrationDomain ToDomain(this UserForRegistrationRequest usersEntity)
         {
-            return new UsersDomain
+            return new UserForRegistrationDomain
             {
-                Id = usersEntity.Id,
-                FirstName = usersEntity.FirstName,
-                MiddleName = usersEntity.MiddleName,
-                LastName = usersEntity.LastName,
-                HackneyId = usersEntity.HackneyId,
-                AddressLine1 = usersEntity.AddressLine1,
-                AddressLine2 = usersEntity.AddressLine2,
-                AddressLine3 = usersEntity.AddressLine3,
-                Town = usersEntity.Town,
-                County = usersEntity.County,
-                PostCode = usersEntity.PostCode,
-                RoleId = usersEntity.RoleId,
-                CreatorId = usersEntity.CreatorId,
-                DateCreated = usersEntity.DateCreated,
-                UpdatorId = usersEntity.UpdatorId,
-                DateUpdated = usersEntity.DateUpdated
+                Name = $"{usersEntity.FirstName} {usersEntity.LastName}" ,
+                Email = usersEntity.Email,
+                Password = usersEntity.Password,
+                ConfirmPassword = usersEntity.ConfirmPassword
             };
         }
 

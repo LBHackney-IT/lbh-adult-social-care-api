@@ -1,4 +1,4 @@
-namespace LBH.AdultSocialCare.Api.V1.Domain
+namespace LBH.AdultSocialCare.Api.V1.Domain.RoleDomains
 {
     public class RolesDomain
     {
