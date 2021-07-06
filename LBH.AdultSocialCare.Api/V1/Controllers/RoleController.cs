@@ -95,16 +95,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpDelete]
         [Route("{roleId}")]
-        public async Task<ActionResult<bool>> Delete(int roleId)
+        public async Task<ActionResult<bool>> Delete(string roleId)
         {
-            try
-            {
-                return Ok(await _deleteRoleUseCase.DeleteAsync(roleId).ConfigureAwait(false));
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(await _deleteRoleUseCase.DeleteAsync(roleId).ConfigureAwait(false));
         }
     }
 }
