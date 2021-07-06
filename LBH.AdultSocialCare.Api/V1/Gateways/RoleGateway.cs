@@ -1,13 +1,13 @@
 using Common.Exceptions.CustomExceptions;
-using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using Microsoft.AspNetCore.Identity;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
@@ -20,15 +20,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             _databaseContext = databaseContext;
         }
 
-        public async Task<bool> DeleteAsync(string roleId)
+        public async Task<bool> DeleteAsync(Guid roleId)
         {
-            _databaseContext.Roles.Remove(new IdentityRole()
+            _databaseContext.Roles.Remove(new Role()
             { Id = roleId });
             var isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }
 
-        public async Task<RolesDomain> GetAsync(string roleId)
+        public async Task<RolesDomain> GetAsync(Guid roleId)
         {
             var res = await _databaseContext.Roles.FirstOrDefaultAsync(item => item.Id == roleId).ConfigureAwait(false);
             return res?.ToDomain();
@@ -40,7 +40,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             return res.ToDomain();
         }
 
-        public async Task<RolesDomain> UpsertAsync(IdentityRole role)
+        public async Task<RolesDomain> UpsertAsync(Role role)
         {
             var roleToUpdate = await _databaseContext.Roles.FirstOrDefaultAsync(item => item.NormalizedName.Trim() == role.NormalizedName.Trim()).ConfigureAwait(false);
             if (roleToUpdate == null)

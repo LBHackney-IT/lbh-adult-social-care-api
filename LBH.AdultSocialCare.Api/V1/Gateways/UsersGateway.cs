@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<bool> DeleteAsync(Guid userId)
         {
             _databaseContext.Users.Remove(new User
-            { Id = userId.ToString() });
+            { Id = userId });
             var isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }
@@ -29,7 +29,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
         public async Task<UsersDomain> GetAsync(Guid userId)
         {
             var user = await _databaseContext.Users
-                .FirstOrDefaultAsync(item => item.Id == userId.ToString()).ConfigureAwait(false);
+                .FirstOrDefaultAsync(item => item.Id == userId).ConfigureAwait(false);
             return user?.ToDomain();
         }
     }

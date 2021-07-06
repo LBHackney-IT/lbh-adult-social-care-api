@@ -1,3 +1,4 @@
+using System;
 using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
@@ -15,7 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.RolesUseCases
             _gateway = roleGateway;
         }
 
-        public async Task<RoleResponse> GetAsync(string roleId)
+        public async Task<RoleResponse> GetAsync(Guid roleId)
         {
             var roleEntity = await _gateway.GetAsync(roleId).ConfigureAwait(false);
             return roleEntity?.ToResponse();

@@ -1,6 +1,8 @@
 using HttpServices.Services.Concrete;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +22,11 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.DefaultRequestHeaders.Add("User-Agent", "HASC API");
             });
+
+        public static void ConfigureIdentityService(this IServiceCollection services) => services
+            .AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedAccount = false)
+            .AddEntityFrameworkStores<DatabaseContext>()
+            .AddDefaultTokenProviders();
 
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
         {

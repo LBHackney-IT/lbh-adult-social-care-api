@@ -13,6 +13,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -20,11 +21,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
-    public class DatabaseContext : IdentityDbContext<User>
+    public class DatabaseContext : IdentityDbContext<User, Role, Guid>
     {
         // TODO: rename DatabaseContext to reflect the data source it is representing. eg. MosaicContext.
         public DatabaseContext(DbContextOptions options)

@@ -1,10 +1,9 @@
-using System;
 using Microsoft.AspNetCore.Identity;
+using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-    public class User : IdentityUser<Guid>
+    public class Role : IdentityRole<Guid>
     {
-        public string Name { get; set; }
     }
 }

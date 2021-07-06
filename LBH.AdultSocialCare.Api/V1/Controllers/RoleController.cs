@@ -1,3 +1,4 @@
+using System;
 using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -54,7 +55,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("{roleId}")]
-        public async Task<ActionResult<RoleResponse>> Get(string roleId)
+        public async Task<ActionResult<RoleResponse>> Get(Guid roleId)
         {
             var res = await _getRoleUseCase.GetAsync(roleId).ConfigureAwait(false);
             return Ok(res);
@@ -77,7 +78,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [HttpDelete]
         [Route("{roleId}")]
-        public async Task<ActionResult<bool>> Delete(string roleId)
+        public async Task<ActionResult<bool>> Delete(Guid roleId)
         {
             return Ok(await _deleteRoleUseCase.DeleteAsync(roleId).ConfigureAwait(false));
         }

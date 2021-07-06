@@ -560,12 +560,12 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Roles
 
-        public static RolesDomain ToDomain(this IdentityRole roleEntity)
+        public static RolesDomain ToDomain(this Role roleEntity)
         {
             return _mapper.Map<RolesDomain>(roleEntity);
         }
 
-        public static IList<RolesDomain> ToDomain(this IEnumerable<IdentityRole> roleEntities)
+        public static IList<RolesDomain> ToDomain(this IEnumerable<Role> roleEntities)
         {
             return _mapper.Map<IList<RolesDomain>>(roleEntities);
         }

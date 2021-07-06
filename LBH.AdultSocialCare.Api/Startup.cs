@@ -75,6 +75,7 @@ namespace LBH.AdultSocialCare.Api
             services.ConfigureLogging(Configuration);
 
             services.ConfigureDbContext(Configuration);
+            services.ConfigureIdentityService();
 
             services.RegisterGateways();
             services.RegisterUseCases();

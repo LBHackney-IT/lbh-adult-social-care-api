@@ -5,6 +5,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Interfaces
 {
     public interface IDeleteRoleUseCase
     {
-        public Task<bool> DeleteAsync(string roleId);
+        public Task<bool> DeleteAsync(Guid roleId);
     }
 }

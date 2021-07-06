@@ -88,7 +88,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
                 .Include(dc => dc.Client)
                 .Include(dc => dc.TermTimeConsiderationOption)
                 .Include(dc => dc.Creator)
-                .ThenInclude(cr => cr.Role)
                 .Include(dc => dc.Updater)
                 .SingleOrDefaultAsync().ConfigureAwait(false);
 
@@ -211,7 +210,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
                         DayCarePackageId = ah.DayCarePackageId,
                         DateCreated = ah.DateCreated,
                         CreatorId = ah.CreatorId,
-                        CreatorName = ah.Creator.FirstName,
+                        CreatorName = ah.Creator.Name,
                         PackageStatusId = ah.PackageStatusId,
                         PackageStatusName = ah.PackageStatus.StatusName,
                         LogText = ah.LogText,
@@ -286,7 +285,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
                         DayCarePackageId = ah.DayCarePackageId,
                         DateCreated = ah.DateCreated,
                         CreatorId = ah.CreatorId,
-                        CreatorName = ah.Creator.FirstName,
+                        CreatorName = ah.Creator.Name,
                         PackageStatusId = ah.PackageStatusId,
                         PackageStatusName = ah.PackageStatus.StatusName,
                         LogText = ah.LogText,

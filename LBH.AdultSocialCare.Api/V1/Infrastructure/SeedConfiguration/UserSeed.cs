@@ -2,6 +2,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
@@ -13,7 +14,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 
             var userOne = new User
             {
-                Id = "aee45700-af9b-4ab5-bb43-535adbdcfb84",
+                Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 Name = "Furkan Kuyar",
                 Email = "furkan@gmail.com",
                 UserName = "furkan@gmail.com",
@@ -24,14 +25,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 
             var userTwo = new User
             {
-                Id = "1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8",
+                Id = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"),
                 Name = "Duncan Okeno",
                 Email = "duncan@gmail.com",
                 UserName = "duncan@gmail.com",
                 PhoneNumber = "12345678910",
                 LockoutEnabled = false
             };
-            passwordHasher.HashPassword(userOne, "Admin*123");
+            passwordHasher.HashPassword(userTwo, "Admin*123");
 
             builder.HasData(userOne, userTwo);
         }

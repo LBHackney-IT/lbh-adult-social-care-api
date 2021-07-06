@@ -3,28 +3,29 @@ using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
-    public class UserRolesSeed : IEntityTypeConfiguration<IdentityUserRole<string>>
+    public class UserRolesSeed : IEntityTypeConfiguration<IdentityUserRole<Guid>>
     {
-        public void Configure(EntityTypeBuilder<IdentityUserRole<string>> builder)
+        public void Configure(EntityTypeBuilder<IdentityUserRole<Guid>> builder)
         {
             builder.HasData(
-                new IdentityUserRole<string>
+                new IdentityUserRole<Guid>
                 {
-                    RoleId = RolesEnum.SuperAdministrator.ToDescription(),
-                    UserId = "aee45700-af9b-4ab5-bb43-535adbdcfb84"
+                    RoleId = new Guid(RolesEnum.SuperAdministrator.ToDescription()),
+                    UserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                 },
-                new IdentityUserRole<string>
+                new IdentityUserRole<Guid>
                 {
-                    RoleId = RolesEnum.SocialWorker.ToDescription(),
-                    UserId = "aee45700-af9b-4ab5-bb43-535adbdcfb84"
+                    RoleId = new Guid(RolesEnum.SocialWorker.ToDescription()),
+                    UserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                 },
-                new IdentityUserRole<string>
+                new IdentityUserRole<Guid>
                 {
-                    RoleId = RolesEnum.Broker.ToDescription(),
-                    UserId = "aee45700-af9b-4ab5-bb43-535adbdcfb84"
+                    RoleId = new Guid(RolesEnum.Broker.ToDescription()),
+                    UserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                 });
         }
     }

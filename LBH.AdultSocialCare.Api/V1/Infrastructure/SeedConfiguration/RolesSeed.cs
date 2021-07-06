@@ -1,42 +1,42 @@
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using Microsoft.AspNetCore.Identity;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
-    public class RolesSeed : IEntityTypeConfiguration<IdentityRole>
+    public class RolesSeed : IEntityTypeConfiguration<Role>
     {
-        public void Configure(EntityTypeBuilder<IdentityRole> builder)
+        public void Configure(EntityTypeBuilder<Role> builder)
         {
             builder.HasData(
-                new IdentityRole
+                new Role
                 {
                     ConcurrencyStamp = Convert.ToString(RolesEnum.SuperAdministrator),
-                    Id = RolesEnum.SuperAdministrator.ToDescription(),
+                    Id = new Guid(RolesEnum.SuperAdministrator.ToDescription()),
                     Name = RolesEnum.SuperAdministrator.GetDisplayName(),
                     NormalizedName = RolesEnum.SuperAdministrator.GetDisplayName().ToUpper()
                 },
-                new IdentityRole
+                new Role
                 {
                     ConcurrencyStamp = Convert.ToString(RolesEnum.Administrator),
-                    Id = RolesEnum.Administrator.ToDescription(),
+                    Id = new Guid(RolesEnum.Administrator.ToDescription()),
                     Name = RolesEnum.Administrator.GetDisplayName(),
                     NormalizedName = RolesEnum.Administrator.GetDisplayName().ToUpper()
                 },
-                new IdentityRole
+                new Role
                 {
                     ConcurrencyStamp = Convert.ToString(RolesEnum.SocialWorker),
-                    Id = RolesEnum.SocialWorker.ToDescription(),
+                    Id = new Guid(RolesEnum.SocialWorker.ToDescription()),
                     Name = RolesEnum.SocialWorker.GetDisplayName(),
                     NormalizedName = RolesEnum.SocialWorker.GetDisplayName().ToUpper()
                 },
-                new IdentityRole
+                new Role
                 {
                     ConcurrencyStamp = Convert.ToString(RolesEnum.Broker),
-                    Id = RolesEnum.Broker.ToDescription(),
+                    Id = new Guid(RolesEnum.Broker.ToDescription()),
                     Name = RolesEnum.Broker.GetDisplayName(),
                     NormalizedName = RolesEnum.Broker.GetDisplayName().ToUpper()
                 });
