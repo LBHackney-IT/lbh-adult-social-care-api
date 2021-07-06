@@ -423,7 +423,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             return new UserForRegistrationDomain
             {
-                Name = $"{usersEntity.FirstName} {usersEntity.LastName}" ,
+                Name = $"{usersEntity.FirstName} {usersEntity.LastName}",
                 Email = usersEntity.Email,
                 Password = usersEntity.Password,
                 ConfirmPassword = usersEntity.ConfirmPassword
