@@ -45,6 +45,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.StageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
@@ -76,6 +77,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
@@ -93,6 +95,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
+using Microsoft.AspNetCore.Identity;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {
@@ -110,12 +113,10 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
                     opt => opt.MapFrom(b => $"{b.Client.FirstName} {b.Client.MiddleName} {b.Client.LastName}"))
                 .ForMember(dc => dc.TermTimeConsiderationOptionName,
                     opt => opt.MapFrom(b => b.TermTimeConsiderationOption.OptionName))
-                .ForMember(dc => dc.CreatorRole,
-                    opt => opt.MapFrom(b => b.Creator.Role.RoleName))
                 .ForMember(dc => dc.CreatorName,
-                    opt => opt.MapFrom(b => $"{b.Creator.FirstName} {b.Creator.MiddleName} {b.Creator.LastName}"))
+                    opt => opt.MapFrom(b => $"{b.Creator.Name}"))
                 .ForMember(dc => dc.UpdaterName,
-                    opt => opt.MapFrom(b => $"{b.Updater.FirstName} {b.Updater.MiddleName} {b.Updater.LastName}"));
+                    opt => opt.MapFrom(b => $"{b.Updater.Name}"));
             CreateMap<DayCarePackageForCreationRequest, DayCarePackageForCreationDomain>();
             CreateMap<DayCarePackageForUpdateRequest, DayCarePackageForUpdateDomain>();
             CreateMap<DayCarePackageDomain, DayCarePackageResponse>();
@@ -414,7 +415,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #region ServiceUsers
 
-            CreateMap<ServiceUser, UsersDomain>();
+            CreateMap<User, UsersDomain>();
             CreateMap<UsersDomain, UsersResponse>();
 
             #endregion ServiceUsers
@@ -474,6 +475,16 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<HomeCarePackageSlotRequest, HomeCarePackageSlotDomain>();
 
             #endregion HomeCarePackageSlots
+
+            #region Roles
+
+            CreateMap<IdentityRole, RolesDomain>();
+            CreateMap<RoleForCreationRequest, RoleForCreationDomain>();
+            CreateMap<RoleForUpdateRequest, RoleForUpdateDomain>();
+            CreateMap<RoleForCreationDomain, IdentityRole>();
+            CreateMap<RoleForUpdateDomain, IdentityRole>();
+
+            #endregion Roles
         }
     }
 }

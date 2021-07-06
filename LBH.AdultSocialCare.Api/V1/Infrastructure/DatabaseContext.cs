@@ -20,10 +20,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<User>
     {
         // TODO: rename DatabaseContext to reflect the data source it is representing. eg. MosaicContext.
         public DatabaseContext(DbContextOptions options)
@@ -42,7 +43,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<HomeCareServiceType> HomeCareServiceTypes { get; set; }
         public DbSet<HomeCareServiceTypeMinutes> HomeCareServiceTypeMinutes { get; set; }
         public DbSet<HomeCarePackageSlots> HomeCarePackageSlots { get; set; }
-        public DbSet<ServiceUser> ServiceUsers { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<PackageStatus> PackageStatuses { get; set; }
         public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
@@ -114,6 +114,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed User
             modelBuilder.ApplyConfiguration(new UserSeed());
+
+            // Seed Roles
+            modelBuilder.ApplyConfiguration(new RolesSeed());
+
+            // Seed User Roles
+            modelBuilder.ApplyConfiguration(new UserRolesSeed());
 
             // Seed Client
             modelBuilder.ApplyConfiguration(new ClientSeed());

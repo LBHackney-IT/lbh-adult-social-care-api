@@ -48,10 +48,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public TermTimeConsiderationOption TermTimeConsiderationOption { get; set; }
 
         [ForeignKey(nameof(CreatorId))]
-        public ServiceUser Creator { get; set; }
+        public User Creator { get; set; }
 
         [ForeignKey(nameof(UpdaterId))]
-        public ServiceUser Updater { get; set; }
+        public User Updater { get; set; }
 
         [ForeignKey(nameof(StatusId))]
         public DayCarePackageStatus Status { get; set; }

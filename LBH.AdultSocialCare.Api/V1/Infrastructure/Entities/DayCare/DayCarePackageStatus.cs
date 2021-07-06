@@ -16,7 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare
         public bool IsStatusActive { get; set; } = true;
         public string Stage { get; set; }
         public string PackageAction { get; set; } // accepted, queried, rejected
-        [ForeignKey(nameof(CreatorId))] public ServiceUser Creator { get; set; }
-        [ForeignKey(nameof(UpdaterId))] public ServiceUser Updater { get; set; }
+        [ForeignKey(nameof(CreatorId))] public User Creator { get; set; }
+        [ForeignKey(nameof(UpdaterId))] public User Updater { get; set; }
     }
 }

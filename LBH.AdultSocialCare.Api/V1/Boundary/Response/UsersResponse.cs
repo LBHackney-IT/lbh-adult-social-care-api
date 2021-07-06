@@ -1,4 +1,3 @@
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
@@ -59,16 +58,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         /// Gets or sets the Post Code
         /// </summary>
         public string PostCode { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Role Id
-        /// </summary>
-        public int RoleId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Role Object
-        /// </summary>
-        public Role Role { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

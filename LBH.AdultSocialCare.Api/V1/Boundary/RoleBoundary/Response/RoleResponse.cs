@@ -1,6 +1,6 @@
-namespace LBH.AdultSocialCare.Api.V1.Domain
+namespace LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response
 {
-    public class RolesDomain
+    public class RoleResponse
     {
         public string Id { get; set; }
         public string ConcurrencyStamp { get; set; }

@@ -61,6 +61,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -655,9 +656,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Roles
 
-        public static RolesResponse ToResponse(this RolesDomain rolesDomain)
+        public static RoleResponse ToResponse(this RolesDomain rolesDomain)
         {
-            return new RolesResponse
+            return new RoleResponse
             {
                 Id = rolesDomain.Id,
                 RoleName = rolesDomain.RoleName,

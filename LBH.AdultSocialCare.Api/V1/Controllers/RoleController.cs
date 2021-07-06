@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
@@ -39,12 +40,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         /// <summary>Creates the specified role request.</summary>
         /// <param name="rolesRequest">The role request.</param>
         /// <returns>The created role response.</returns>
-        [ProducesResponseType(typeof(RolesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RoleResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        public async Task<ActionResult<RolesResponse>> Create(RolesRequest rolesRequest)
+        public async Task<ActionResult<RoleResponse>> Create(RolesRequest rolesRequest)
         {
             try
             {
@@ -65,12 +66,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         /// <summary>Gets the specified role identifier.</summary>
         /// <param name="roleId">The role identifier.</param>
         /// <returns>The role response.</returns>
-        [ProducesResponseType(typeof(RolesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(RoleResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("{roleId}")]
-        public async Task<ActionResult<RolesResponse>> Get(int roleId)
+        public async Task<ActionResult<RoleResponse>> Get(int roleId)
         {
             try
             {

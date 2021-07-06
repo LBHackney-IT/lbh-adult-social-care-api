@@ -29,6 +29,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerag
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -325,16 +326,12 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Roles
 
-        public static Role ToEntity(this RolesDomain rolesDomain)
+        public static IdentityRole ToEntity(this RolesDomain rolesDomain)
         {
-            return new Role
+            return new IdentityRole
             {
-                Id = rolesDomain.Id,
-                RoleName = rolesDomain.RoleName,
-                IsDefault = rolesDomain.IsDefault,
-                Sequence = rolesDomain.Sequence,
-                CreatorId = rolesDomain.CreatorId,
-                UpdatorId = rolesDomain.UpdatorId
+                Name = rolesDomain.RoleName,
+                NormalizedName = rolesDomain.RoleName.ToUpper()
             };
         }
 
@@ -357,9 +354,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region ServiceUsers
 
-        public static ServiceUser ToEntity(this UsersDomain usersDomain)
+        public static User ToEntity(this UsersDomain usersDomain)
         {
-            return new ServiceUser
+            return new User
             {
                 Id = usersDomain.Id,
                 FirstName = usersDomain.FirstName,

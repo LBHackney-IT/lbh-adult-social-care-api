@@ -32,6 +32,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -136,8 +137,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 ClientPreferredContact = nursingCarePackageEntity.Client?.PreferredContact,
                 ClientDateOfBirth = nursingCarePackageEntity.Client?.DateOfBirth,
                 StatusName = nursingCarePackageEntity.Status?.StatusName,
-                CreatorName = nursingCarePackageEntity.Creator != null ? $"{nursingCarePackageEntity.Creator.FirstName} {nursingCarePackageEntity.Creator.MiddleName} {nursingCarePackageEntity.Creator.LastName}" : null,
-                UpdaterName = nursingCarePackageEntity.Updater != null ? $"{nursingCarePackageEntity.Updater.FirstName} {nursingCarePackageEntity.Updater.MiddleName} {nursingCarePackageEntity.Updater.LastName}" : null,
+                CreatorName = nursingCarePackageEntity.Creator != null ? $"{nursingCarePackageEntity.Creator.Name}" : null,
+                UpdaterName = nursingCarePackageEntity.Updater != null ? $"{nursingCarePackageEntity.Updater.Name}" : null,
                 PackageName = "Nursing Care Package",
                 TypeOfCareHomeName = nursingCarePackageEntity.TypeOfCareHome?.TypeOfCareHomeName,
                 TypeOfStayOptionName = nursingCarePackageEntity.TypeOfStayOption?.OptionName,
@@ -558,19 +559,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Roles
 
-        public static RolesDomain ToDomain(this Role roleEntity)
+        public static RolesDomain ToDomain(this IdentityRole roleEntity)
         {
-            return new RolesDomain
-            {
-                Id = roleEntity.Id,
-                RoleName = roleEntity.RoleName,
-                IsDefault = roleEntity.IsDefault,
-                Sequence = roleEntity.Sequence,
-                CreatorId = roleEntity.CreatorId,
-                DateCreated = roleEntity.DateCreated,
-                UpdatorId = roleEntity.UpdatorId,
-                DateUpdated = roleEntity.DateUpdated
-            };
+            return _mapper.Map<RolesDomain>(roleEntity);
+        }
+
+        public static IList<RolesDomain> ToDomain(this IEnumerable<IdentityRole> roleEntities)
+        {
+            return _mapper.Map<IList<RolesDomain>>(roleEntities);
         }
 
         #endregion Roles
@@ -594,27 +590,27 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region ServiceUsers
 
-        public static UsersDomain ToDomain(this ServiceUser serviceUserEntity)
+        public static UsersDomain ToDomain(this User userEntity)
         {
             return new UsersDomain
             {
-                Id = serviceUserEntity.Id,
-                FirstName = serviceUserEntity.FirstName,
-                MiddleName = serviceUserEntity.MiddleName,
-                LastName = serviceUserEntity.LastName,
-                HackneyId = serviceUserEntity.HackneyId,
-                AddressLine1 = serviceUserEntity.AddressLine1,
-                AddressLine2 = serviceUserEntity.AddressLine2,
-                AddressLine3 = serviceUserEntity.AddressLine3,
-                Town = serviceUserEntity.Town,
-                County = serviceUserEntity.County,
-                PostCode = serviceUserEntity.PostCode,
-                RoleId = serviceUserEntity.RoleId,
-                Role = serviceUserEntity.Role,
-                CreatorId = serviceUserEntity.CreatorId,
-                DateCreated = serviceUserEntity.DateCreated,
-                UpdatorId = serviceUserEntity.UpdatorId,
-                DateUpdated = serviceUserEntity.DateUpdated
+                Id = userEntity.Id,
+                FirstName = userEntity.FirstName,
+                MiddleName = userEntity.MiddleName,
+                LastName = userEntity.LastName,
+                HackneyId = userEntity.HackneyId,
+                AddressLine1 = userEntity.AddressLine1,
+                AddressLine2 = userEntity.AddressLine2,
+                AddressLine3 = userEntity.AddressLine3,
+                Town = userEntity.Town,
+                County = userEntity.County,
+                PostCode = userEntity.PostCode,
+                RoleId = userEntity.RoleId,
+                Role = userEntity.Role,
+                CreatorId = userEntity.CreatorId,
+                DateCreated = userEntity.DateCreated,
+                UpdatorId = userEntity.UpdatorId,
+                DateUpdated = userEntity.DateUpdated
             };
         }
 

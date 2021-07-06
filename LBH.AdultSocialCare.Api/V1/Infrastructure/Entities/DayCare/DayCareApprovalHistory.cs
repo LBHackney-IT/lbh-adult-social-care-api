@@ -16,7 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare
         public string LogSubText { get; set; }
         [Required] public string CreatorRole { get; set; }
         [ForeignKey(nameof(PackageStatusId))] public DayCarePackageStatus PackageStatus { get; set; }
-        [ForeignKey(nameof(CreatorId))] public ServiceUser Creator { get; set; }
+        [ForeignKey(nameof(CreatorId))] public User Creator { get; set; }
         [ForeignKey((nameof(DayCarePackageId)))] public DayCarePackage DayCarePackage { get; set; }
     }
 }

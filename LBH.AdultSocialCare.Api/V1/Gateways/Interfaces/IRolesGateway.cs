@@ -1,5 +1,5 @@
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using System;
+using LBH.AdultSocialCare.Api.V1.Domain;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,12 +7,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
 {
     public interface IRolesGateway
     {
-        public Task<Role> UpsertAsync(Role role);
+        public Task<RolesDomain> UpsertAsync(IdentityRole role);
 
-        public Task<Role> GetAsync(int roleId);
+        public Task<RolesDomain> GetAsync(string roleId);
 
-        public Task<IList<Role>> ListAsync();
+        public Task<IList<RolesDomain>> ListAsync();
 
-        public Task<bool> DeleteAsync(int roleId);
+        public Task<bool> DeleteAsync(string roleId);
     }
 }
