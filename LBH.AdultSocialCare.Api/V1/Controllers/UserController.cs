@@ -36,7 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        public async Task<ActionResult<UsersResponse>> Create([FromBody] UserForRegistrationRequest usersRequest)
+        public async Task<ActionResult<UsersResponse>> RegisterUser([FromBody] UserForRegistrationRequest usersRequest)
         {
             var userForRegistrationDomain = usersRequest.ToDomain();
             var res = await _registerUserUseCase.RegisterUserAsync(userForRegistrationDomain).ConfigureAwait(false);
@@ -55,7 +55,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         public async Task<ActionResult<UsersResponse>> Get(Guid userId)
         {
             var res = await _getUsersUseCase.GetAsync(userId).ConfigureAwait(false);
-            return Ok(res?.ToResponse());
+            return Ok(res);
         }
 
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
