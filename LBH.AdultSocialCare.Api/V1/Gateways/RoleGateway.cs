@@ -51,7 +51,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 throw new EntityConflictException($"Role with name {role.Name} already exists");
             }
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
-            return role.ToDomain();
+            return role?.ToDomain();
         }
     }
 }

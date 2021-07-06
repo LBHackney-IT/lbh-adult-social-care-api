@@ -1,10 +1,9 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -39,22 +38,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        public async Task<ActionResult<RoleResponse>> Create(RolesRequest rolesRequest)
+        public async Task<ActionResult<RoleResponse>> Create([FromBody] RoleForCreationRequest rolesRequest)
         {
-            try
-            {
-                var roleDomain = rolesRequest.ToDomain();
-                var res = await _upsertRoleUseCase.ExecuteAsync(roleDomain).ConfigureAwait(false);
-                var roleResponse = res?.ToResponse();
+            var roleForCreationDomain = rolesRequest.ToDomain();
+            var res = await _upsertRoleUseCase.ExecuteAsync(roleForCreationDomain).ConfigureAwait(false);
 
-                if (roleResponse == null) return NotFound();
-
-                return Ok(roleResponse);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            return Ok(res);
         }
 
         /// <summary>Gets the specified role identifier.</summary>

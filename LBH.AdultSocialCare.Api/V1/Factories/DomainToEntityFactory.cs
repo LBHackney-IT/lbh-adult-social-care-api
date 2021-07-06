@@ -13,6 +13,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
@@ -27,9 +28,9 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageRecla
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Identity;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -326,7 +327,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Roles
 
-        public static IdentityRole ToEntity(this RolesDomain rolesDomain)
+        public static IdentityRole ToEntity(this RoleForCreationDomain rolesDomain)
         {
             return new IdentityRole
             {
