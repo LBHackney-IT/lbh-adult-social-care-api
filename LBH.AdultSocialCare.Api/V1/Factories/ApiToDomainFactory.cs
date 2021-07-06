@@ -419,7 +419,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion HomeCareServiceTypes
 
-        #region Users
+        #region ServiceUsers
 
         public static UsersDomain ToDomain(this UsersRequest usersEntity)
         {
@@ -444,7 +444,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion Users
+        #endregion ServiceUsers
 
         #region PackageStatus
 

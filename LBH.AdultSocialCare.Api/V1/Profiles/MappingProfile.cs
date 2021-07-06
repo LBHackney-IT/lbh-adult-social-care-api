@@ -412,12 +412,12 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #endregion DayCareCollege
 
-            #region Users
+            #region ServiceUsers
 
-            CreateMap<User, UsersDomain>();
+            CreateMap<ServiceUser, UsersDomain>();
             CreateMap<UsersDomain, UsersResponse>();
 
-            #endregion Users
+            #endregion ServiceUsers
 
             #region DayCareBrokerage
 

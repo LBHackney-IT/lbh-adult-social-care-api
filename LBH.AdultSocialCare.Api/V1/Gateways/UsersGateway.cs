@@ -19,49 +19,49 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<bool> DeleteAsync(Guid userId)
         {
-            _databaseContext.Users.Remove(new User
+            _databaseContext.ServiceUsers.Remove(new ServiceUser
             { Id = userId });
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }
 
-        public async Task<User> GetAsync(Guid userId)
+        public async Task<ServiceUser> GetAsync(Guid userId)
         {
-            return await _databaseContext.Users
+            return await _databaseContext.ServiceUsers
                 .Include(item => item.Role)
                 .FirstOrDefaultAsync(item => item.Id == userId).ConfigureAwait(false);
         }
 
-        public async Task<User> UpsertAsync(User user)
+        public async Task<ServiceUser> UpsertAsync(ServiceUser serviceUser)
         {
-            User userToUpdate = await _databaseContext.Users
+            ServiceUser serviceUserToUpdate = await _databaseContext.ServiceUsers
                 .Include(item => item.Role)
-                .FirstOrDefaultAsync(item => item.HackneyId == user.HackneyId).ConfigureAwait(false);
-            if (userToUpdate == null)
+                .FirstOrDefaultAsync(item => item.HackneyId == serviceUser.HackneyId).ConfigureAwait(false);
+            if (serviceUserToUpdate == null)
             {
-                userToUpdate = new User();
-                await _databaseContext.Users.AddAsync(userToUpdate).ConfigureAwait(false);
-                userToUpdate.FirstName = user.FirstName;
-                userToUpdate.MiddleName = user.MiddleName;
-                userToUpdate.LastName = user.LastName;
-                userToUpdate.HackneyId = user.HackneyId;
-                userToUpdate.AddressLine1 = user.AddressLine1;
-                userToUpdate.AddressLine2 = user.AddressLine2;
-                userToUpdate.AddressLine3 = user.AddressLine3;
-                userToUpdate.Town = user.Town;
-                userToUpdate.County = user.County;
-                userToUpdate.PostCode = user.PostCode;
-                userToUpdate.RoleId = user.RoleId;
-                userToUpdate.CreatorId = user.CreatorId;
-                userToUpdate.UpdatorId = user.UpdatorId;
-                userToUpdate.DateUpdated = user.DateUpdated;
+                serviceUserToUpdate = new ServiceUser();
+                await _databaseContext.ServiceUsers.AddAsync(serviceUserToUpdate).ConfigureAwait(false);
+                serviceUserToUpdate.FirstName = serviceUser.FirstName;
+                serviceUserToUpdate.MiddleName = serviceUser.MiddleName;
+                serviceUserToUpdate.LastName = serviceUser.LastName;
+                serviceUserToUpdate.HackneyId = serviceUser.HackneyId;
+                serviceUserToUpdate.AddressLine1 = serviceUser.AddressLine1;
+                serviceUserToUpdate.AddressLine2 = serviceUser.AddressLine2;
+                serviceUserToUpdate.AddressLine3 = serviceUser.AddressLine3;
+                serviceUserToUpdate.Town = serviceUser.Town;
+                serviceUserToUpdate.County = serviceUser.County;
+                serviceUserToUpdate.PostCode = serviceUser.PostCode;
+                serviceUserToUpdate.RoleId = serviceUser.RoleId;
+                serviceUserToUpdate.CreatorId = serviceUser.CreatorId;
+                serviceUserToUpdate.UpdatorId = serviceUser.UpdatorId;
+                serviceUserToUpdate.DateUpdated = serviceUser.DateUpdated;
             }
             else
             {
-                throw new ApiException($"This record already exist Hackney Id: {user.HackneyId}");
+                throw new ApiException($"This record already exist Hackney Id: {serviceUser.HackneyId}");
             }
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
-            return userToUpdate;
+            return serviceUserToUpdate;
         }
     }
 }

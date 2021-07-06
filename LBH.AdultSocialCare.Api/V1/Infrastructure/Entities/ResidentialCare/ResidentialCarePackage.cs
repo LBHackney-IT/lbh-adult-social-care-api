@@ -133,10 +133,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
         public ResidentialCareTypeOfStayOption TypeOfStayOption { get; set; }
 
         [ForeignKey(nameof(CreatorId))]
-        public User Creator { get; set; }
+        public ServiceUser Creator { get; set; }
 
         [ForeignKey(nameof(UpdaterId))]
-        public User Updater { get; set; }
+        public ServiceUser Updater { get; set; }
 
         /// <summary>
         /// Gets or sets the NursingCareAdditionalNeed

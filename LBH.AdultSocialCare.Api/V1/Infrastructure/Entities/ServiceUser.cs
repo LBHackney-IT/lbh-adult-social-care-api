@@ -1,16 +1,13 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-
     /// <summary>
     /// User object for domain
     /// </summary>
-    public class User : BaseEntity
+    public class ServiceUser : BaseEntity
     {
-
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
@@ -68,17 +65,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public string PostCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the Role Id
-        /// </summary>
-        public int RoleId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Role Object
-        /// </summary>
-        [ForeignKey(nameof(RoleId))]
-        public Role Role { get; set; }
-
-        /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
         public int CreatorId { get; set; }
@@ -87,7 +73,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Updator Id
         /// </summary>
         public int UpdatorId { get; set; }
-
     }
-
 }

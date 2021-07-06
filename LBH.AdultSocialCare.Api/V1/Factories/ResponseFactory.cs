@@ -691,7 +691,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion HomeCareServiceTypes
 
-        #region Users
+        #region ServiceUsers
 
         public static UsersResponse ToResponse(this UsersDomain usersDomain)
         {
@@ -717,7 +717,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion Users
+        #endregion ServiceUsers
 
         #region PackageStatus
 

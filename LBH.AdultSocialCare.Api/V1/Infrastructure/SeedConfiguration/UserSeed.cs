@@ -6,12 +6,12 @@ using LBH.AdultSocialCare.Api.V1.AppConstants;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
-    public class UserSeed : IEntityTypeConfiguration<User>
+    public class UserSeed : IEntityTypeConfiguration<ServiceUser>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<ServiceUser> builder)
         {
             var dateTimeOffset = new DateTimeOffset(AppTimeConstants.CreateUpdateDefaultDateTime).ToOffset(TimeSpan.Zero);
-            builder.HasData(new User
+            builder.HasData(new ServiceUser
             {
                 Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 FirstName = "Furkan",
@@ -20,10 +20,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 AddressLine1 = "Queens Gate",
                 Town = "London",
                 PostCode = "W11",
-                RoleId = 1,
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
-            }, new User
+            }, new ServiceUser
             {
                 Id = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"),
                 FirstName = "Duncan",
@@ -32,7 +31,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 AddressLine1 = "Nairobi",
                 Town = "Nairobi",
                 PostCode = "W11",
-                RoleId = 2,
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             });

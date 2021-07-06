@@ -6,7 +6,7 @@ using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
-    public class RoleTypesSeed : IEntityTypeConfiguration<Role>
+    /*public class RoleTypesSeed : IEntityTypeConfiguration<Role>
     {
         public void Configure(EntityTypeBuilder<Role> builder)
         {
@@ -33,5 +33,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 DateUpdated = dateTimeOffset
             });
         }
-    }
+    }*/
 }

@@ -355,11 +355,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion HomeCareServiceTypes
 
-        #region Users
+        #region ServiceUsers
 
-        public static User ToEntity(this UsersDomain usersDomain)
+        public static ServiceUser ToEntity(this UsersDomain usersDomain)
         {
-            return new User
+            return new ServiceUser
             {
                 Id = usersDomain.Id,
                 FirstName = usersDomain.FirstName,
@@ -379,7 +379,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        #endregion Users
+        #endregion ServiceUsers
 
         #region PackageStatus
 

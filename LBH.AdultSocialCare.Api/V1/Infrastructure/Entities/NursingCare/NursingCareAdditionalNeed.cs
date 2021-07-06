@@ -46,9 +46,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
         public NursingCarePackage NursingCarePackage { get; set; }
 
         [ForeignKey(nameof(CreatorId))]
-        public User Creator { get; set; }
+        public ServiceUser Creator { get; set; }
 
         [ForeignKey(nameof(UpdaterId))]
-        public User Updater { get; set; }
+        public ServiceUser Updater { get; set; }
     }
 }

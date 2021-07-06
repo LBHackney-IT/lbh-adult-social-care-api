@@ -592,33 +592,33 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion HomeCareServiceTypes
 
-        #region Users
+        #region ServiceUsers
 
-        public static UsersDomain ToDomain(this User userEntity)
+        public static UsersDomain ToDomain(this ServiceUser serviceUserEntity)
         {
             return new UsersDomain
             {
-                Id = userEntity.Id,
-                FirstName = userEntity.FirstName,
-                MiddleName = userEntity.MiddleName,
-                LastName = userEntity.LastName,
-                HackneyId = userEntity.HackneyId,
-                AddressLine1 = userEntity.AddressLine1,
-                AddressLine2 = userEntity.AddressLine2,
-                AddressLine3 = userEntity.AddressLine3,
-                Town = userEntity.Town,
-                County = userEntity.County,
-                PostCode = userEntity.PostCode,
-                RoleId = userEntity.RoleId,
-                Role = userEntity.Role,
-                CreatorId = userEntity.CreatorId,
-                DateCreated = userEntity.DateCreated,
-                UpdatorId = userEntity.UpdatorId,
-                DateUpdated = userEntity.DateUpdated
+                Id = serviceUserEntity.Id,
+                FirstName = serviceUserEntity.FirstName,
+                MiddleName = serviceUserEntity.MiddleName,
+                LastName = serviceUserEntity.LastName,
+                HackneyId = serviceUserEntity.HackneyId,
+                AddressLine1 = serviceUserEntity.AddressLine1,
+                AddressLine2 = serviceUserEntity.AddressLine2,
+                AddressLine3 = serviceUserEntity.AddressLine3,
+                Town = serviceUserEntity.Town,
+                County = serviceUserEntity.County,
+                PostCode = serviceUserEntity.PostCode,
+                RoleId = serviceUserEntity.RoleId,
+                Role = serviceUserEntity.Role,
+                CreatorId = serviceUserEntity.CreatorId,
+                DateCreated = serviceUserEntity.DateCreated,
+                UpdatorId = serviceUserEntity.UpdatorId,
+                DateUpdated = serviceUserEntity.DateUpdated
             };
         }
 
-        #endregion Users
+        #endregion ServiceUsers
 
         #region PackageStatus
 
