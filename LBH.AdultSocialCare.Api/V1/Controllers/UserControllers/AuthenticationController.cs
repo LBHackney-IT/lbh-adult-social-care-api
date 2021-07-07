@@ -1,17 +1,14 @@
-using System.Linq;
 using Common.Exceptions.CustomExceptions;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Common.Extensions;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Extensions;
-using Microsoft.AspNetCore.Authorization;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
 {
@@ -50,6 +47,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
                 .Select(c => new { c.Type, c.Value })
                 .ToList();
             return Ok(claims);
+        }
+
+        [HttpPost("google-login")]
+        public IActionResult GoogleAuthenticate([FromBody] HackneyUserForAuthenticationRequest userForAuthenticationRequest)
+        {
+            var isValidToken = _authManager.ValidateHackneyJwtToken(userForAuthenticationRequest.HackneyToken);
+
+            return Ok(isValidToken);
+
+            // return Ok(new { Token = await _authManager.CreateToken().ConfigureAwait(false) });
         }
     }
 }

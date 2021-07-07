@@ -7,5 +7,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
         Task<bool> ValidateUser(string userName, string password);
 
         Task<string> CreateToken();
+
+        public bool ValidateHackneyJwtToken(string hackneyToken);
     }
 }

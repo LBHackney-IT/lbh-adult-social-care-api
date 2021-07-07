@@ -4,11 +4,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
+using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 {
@@ -37,6 +40,43 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
             var claims = await GetClaims().ConfigureAwait(false);
             var tokenOptions = GenerateTokenOptions(signingCredentials, claims);
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+        }
+
+        public bool ValidateHackneyJwtToken(string hackneyToken)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            try
+            {
+                tokenHandler.ValidateToken(hackneyToken, new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateIssuerSigningKey = false,
+                    ValidateAudience = false,
+                    ValidIssuer = "Hackney",
+                    IssuerSigningKey = null,
+                    ValidateLifetime = false,
+                    SignatureValidator = delegate (string token, TokenValidationParameters parameters)
+                    {
+                        var jwt = new JwtSecurityToken(token);
+
+                        return jwt;
+                    },
+                    // set clock skew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
+                    ClockSkew = Debugger.IsAttached ? TimeSpan.Zero : TimeSpan.FromMinutes(10)
+                }, out SecurityToken validatedToken);
+
+                var jwtToken = (JwtSecurityToken) validatedToken;
+
+                /*// Select and return claim if you want
+                var accountId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
+                return accountId;*/
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new ApiException("Invalid token. Please check and try again", StatusCodes.Status401Unauthorized);
+            }
         }
 
         private SigningCredentials GetSigningCredentials()

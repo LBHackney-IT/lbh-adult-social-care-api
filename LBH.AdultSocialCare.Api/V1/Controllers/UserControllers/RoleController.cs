@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
 {
@@ -17,35 +15,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
     [ApiVersion("1.0")]
     public class RoleController : BaseController
     {
-        private readonly IUpsertRoleUseCase _upsertRoleUseCase;
         private readonly IGetRoleUseCase _getRoleUseCase;
         private readonly IGetAllRoleUseCase _getAllRoleUseCase;
         private readonly IDeleteRoleUseCase _deleteRoleUseCase;
 
-        public RoleController(IUpsertRoleUseCase upsertRoleUseCase, IGetRoleUseCase getRoleUseCase,
+        public RoleController(IGetRoleUseCase getRoleUseCase,
             IGetAllRoleUseCase getAllPackageUseCase, IDeleteRoleUseCase deleteRoleUseCase)
         {
-            _upsertRoleUseCase = upsertRoleUseCase;
             _getRoleUseCase = getRoleUseCase;
             _getAllRoleUseCase = getAllPackageUseCase;
             _deleteRoleUseCase = deleteRoleUseCase;
         }
-
-        /*/// <summary>Creates the specified role request.</summary>
-        /// <param name="rolesRequest">The role request.</param>
-        /// <returns>The created role response.</returns>
-        [ProducesResponseType(typeof(RoleResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
-        [HttpPost]
-        public async Task<ActionResult<RoleResponse>> Create([FromBody] RoleForCreationRequest rolesRequest)
-        {
-            var roleForCreationDomain = rolesRequest.ToDomain();
-            var res = await _upsertRoleUseCase.ExecuteAsync(roleForCreationDomain).ConfigureAwait(false);
-
-            return Ok(res);
-        }*/
 
         /// <summary>Gets the specified role identifier.</summary>
         /// <param name="roleId">The role identifier.</param>
