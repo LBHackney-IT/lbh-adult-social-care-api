@@ -1,14 +1,14 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Controllers
+namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
 {
     [Route("api/v1/role")]
     [Produces("application/json")]

@@ -46,6 +46,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.StageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
@@ -95,7 +96,6 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
-using Microsoft.AspNetCore.Identity;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {
@@ -478,11 +478,12 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #region Roles
 
-            CreateMap<IdentityRole, RolesDomain>();
+            CreateMap<Role, RolesDomain>();
             CreateMap<RoleForCreationRequest, RoleForCreationDomain>();
             CreateMap<RoleForUpdateRequest, RoleForUpdateDomain>();
-            CreateMap<RoleForCreationDomain, IdentityRole>();
-            CreateMap<RoleForUpdateDomain, IdentityRole>();
+            CreateMap<RoleForCreationDomain, Role>();
+            CreateMap<RoleForUpdateDomain, Role>();
+            CreateMap<RolesDomain, RoleResponse>();
 
             #endregion Roles
         }
