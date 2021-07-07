@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request
@@ -15,5 +16,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request
 
         [Compare(nameof(Password), ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        public ICollection<string> Roles { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 using Common.Exceptions.CustomExceptions;
 using Common.Exceptions.Models;
-using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
@@ -8,9 +8,8 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases
 {
@@ -18,11 +17,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases
     {
         private readonly IUsersGateway _gateway;
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<Role> _roleManager;
 
-        public RegisterUserUseCase(IUsersGateway usersGateway, UserManager<User> userManager)
+        public RegisterUserUseCase(IUsersGateway usersGateway, UserManager<User> userManager, RoleManager<Role> roleManager)
         {
             _gateway = usersGateway;
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
         public async Task<UsersResponse> RegisterUserAsync(UserForRegistrationDomain user)
@@ -32,24 +33,34 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases
 
             if (result.Succeeded)
             {
+                var newUserRoles = new List<string>();
+                foreach (var userRole in user.Roles)
+                {
+                    if (await _roleManager.RoleExistsAsync(userRole).ConfigureAwait(false))
+                    {
+                        newUserRoles.Add(userRole);
+                    }
+                }
+
+                if (newUserRoles.Count > 0)
+                {
+                    await _userManager.AddToRolesAsync(userEntity, newUserRoles).ConfigureAwait(false);
+                }
+
                 var domain = userEntity?.ToDomain();
                 return domain?.ToResponse();
             }
 
-            var errors = result.Errors.Select(e => e.Description).ToList();
-
-            var validationErrors = errors.Select((error, index) => new ValidationError
-            {
-                Message = error,
-                ControlID = index.ToString(),
-                ID = index.ToString()
-            });
-
             var validationErrorCollection = new ValidationErrorCollection();
 
-            foreach (var validationError in validationErrors)
+            foreach (var error in result.Errors)
             {
-                validationErrorCollection.Add(validationError);
+                validationErrorCollection.Add(new ValidationError
+                {
+                    Message = error.Description,
+                    ControlID = error.Code,
+                    ID = error.Code
+                });
             }
 
             throw new ApiException($"User creation failed", (int) StatusCodes.Status400BadRequest, validationErrorCollection);

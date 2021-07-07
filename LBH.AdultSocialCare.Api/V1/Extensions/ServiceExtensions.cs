@@ -10,12 +10,16 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Reflection;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
 {
     public static class ServiceExtensions
     {
-        public static void ConfigureTransactionsService(this IServiceCollection services, IConfiguration configuration) => services
+        public static void
+            ConfigureTransactionsService(this IServiceCollection services, IConfiguration configuration) => services
             .AddHttpClient<ITransactionsService, TransactionsService>(client =>
             {
                 client.BaseAddress = new Uri(configuration["HASCHttpClients:TransactionsBaseUrl"]);
@@ -24,7 +28,16 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             });
 
         public static void ConfigureIdentityService(this IServiceCollection services) => services
-            .AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedAccount = false)
+            .AddIdentity<User, Role>(o =>
+            {
+                o.SignIn.RequireConfirmedAccount = false;
+                o.Password.RequireDigit = true;
+                o.Password.RequireLowercase = false;
+                o.Password.RequireUppercase = false;
+                o.Password.RequireNonAlphanumeric = false;
+                o.Password.RequiredLength = 8;
+                o.User.RequireUniqueEmail = true;
+            })
             .AddEntityFrameworkStores<DatabaseContext>()
             .AddDefaultTokenProviders();
 
@@ -59,6 +72,30 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 {
                     config.AddConsole();
                 }
+            });
+        }
+
+        public static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
+        {
+            var jwtSettings = configuration.GetSection("JwtSettings");
+            // var secretKey = Environment.GetEnvironmentVariable("SECRET");
+            var secretKey = jwtSettings.GetSection("securityKey").Value;
+            services.AddAuthentication(opt =>
+            {
+                opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings.GetSection("validIssuer").Value,
+                    ValidAudience = jwtSettings.GetSection("validAudience").Value,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                };
             });
         }
     }
