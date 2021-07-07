@@ -6,6 +6,7 @@ using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Concrete
@@ -46,6 +47,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
         public async Task<PagedPayRunSummaryResponse> GetPayRunSummaryListUseCase(PayRunSummaryListParameters parameters)
         {
             return await _transactionsService.GetPayRunSummaryList(parameters).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<ReleasedHoldsByTypeResponse>> GetReleasedHoldsCountUseCase(DateTimeOffset? fromDate = null, DateTimeOffset? toDate = null)
+        {
+            return await _transactionsService.GetReleasedHoldsCount(fromDate, toDate).ConfigureAwait(false);
         }
     }
 }

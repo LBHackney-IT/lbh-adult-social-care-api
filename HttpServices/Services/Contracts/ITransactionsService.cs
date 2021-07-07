@@ -1,4 +1,5 @@
 using HttpServices.Models.Features.RequestFeatures;
+using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using System;
 using System.Collections.Generic;
@@ -23,5 +24,42 @@ namespace HttpServices.Services.Contracts
         Task<PagedPayRunSummaryResponse> GetPayRunSummaryList(PayRunSummaryListParameters parameters);
 
         Task<PagedSupplierMinimalListResponse> GetUniqueSuppliersInPayRunUseCase(Guid payRunId, SupplierListParameters parameters);
+
+        Task<IEnumerable<ReleasedHoldsByTypeResponse>> GetReleasedHoldsCount(DateTimeOffset? fromDate = null, DateTimeOffset? toDate = null);
+
+        Task<IEnumerable<PackageTypeResponse>> GetUniquePackageTypesInPayRunUseCase(Guid payRunId);
+
+        Task<IEnumerable<InvoiceStatusResponse>> GetUniquePaymentStatusesInPayRunUseCase(Guid payRunId);
+
+        Task<IEnumerable<InvoiceResponse>> GetReleasedHoldsUseCase(DateTimeOffset? fromDate = null, DateTimeOffset? toDate = null);
+
+        Task<PayRunDetailsResponse> GetSinglePayRunDetailsUseCase(Guid payRunId, InvoiceListParameters parameters);
+
+        Task<PayRunInsightsResponse> GetSinglePayRunInsightsUseCase(Guid payRunId);
+
+        Task<bool> SubmitPayRunForApprovalUseCase(Guid payRunId);
+
+        Task<bool> KickBackPayRunToDraftUseCase(Guid payRunId);
+
+        Task<bool> ApprovePayRunForPaymentUseCase(Guid payRunId);
+
+        Task<bool> ReleaseHeldInvoiceItemPaymentUseCase(ReleaseHeldInvoiceItemRequest releaseHeldInvoiceItemRequest);
+
+        Task<bool> ReleaseHeldInvoiceItemPaymentListUseCase(IEnumerable<ReleaseHeldInvoiceItemRequest> releaseHeldInvoiceItemRequests);
+
+        Task<bool> DeleteDraftPayRunUseCase(Guid payRunId);
+
+        Task<DisputedInvoiceFlatResponse> HoldInvoicePaymentUseCase(Guid payRunId, Guid payRunItemId,
+            DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest);
+
+        Task<IEnumerable<HeldInvoiceResponse>> GetHeldInvoicePaymentsUseCase();
+
+        Task<InvoiceResponse> CreateInvoiceUseCase(InvoiceForCreationRequest invoiceForCreationRequest);
+
+        Task<IEnumerable<InvoiceStatusResponse>> GetAllInvoiceStatusesUseCase();
+
+        Task<IEnumerable<InvoiceStatusResponse>> GetInvoicePaymentStatusesUseCase();
+
+        Task<bool> AcceptInvoiceUseCase(Guid payRunId, Guid invoiceId);
     }
 }

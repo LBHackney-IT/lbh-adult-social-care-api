@@ -10,6 +10,10 @@ namespace Common.Exceptions.Models
         public string Detail { get; set; }
         public ValidationErrorCollection Errors { get; set; }
 
+        public ApiError()
+        {
+        }
+
         public ApiError(string message)
         {
             Message = message;

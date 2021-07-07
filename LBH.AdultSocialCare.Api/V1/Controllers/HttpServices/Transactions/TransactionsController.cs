@@ -1,4 +1,6 @@
+using Common.Exceptions.Models;
 using HttpServices.Models.Features.RequestFeatures;
+using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
@@ -58,6 +61,160 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             var res = await _transactionsService.GetUniqueSuppliersInPayRunUseCase(payRunId, parameters).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(res.PagingMetaData));
             return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<ReleasedHoldsByTypeResponse>), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/released-holds-count")]
+        public async Task<ActionResult<IEnumerable<ReleasedHoldsByTypeResponse>>> GetReleasedHoldsCountByType([FromQuery] DateTimeOffset? fromDate, [FromQuery] DateTimeOffset? toDate)
+        {
+            var res = await _payRunUseCase.GetReleasedHoldsCountUseCase(fromDate, toDate).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<PackageTypeResponse>), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/{payRunId}/unique-package-types")]
+        public async Task<ActionResult<IEnumerable<PackageTypeResponse>>> GetUniquePackageTypesInPayRun(Guid payRunId)
+        {
+            var res = await _transactionsService.GetUniquePackageTypesInPayRunUseCase(payRunId).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<InvoiceStatusResponse>), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/{payRunId}/unique-payment-statuses")]
+        public async Task<ActionResult<IEnumerable<InvoiceStatusResponse>>> GetUniqueInvoiceItemPaymentStatusInPayRun(Guid payRunId)
+        {
+            var res = await _transactionsService.GetUniquePaymentStatusesInPayRunUseCase(payRunId).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<InvoiceResponse>), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/released-holds")]
+        public async Task<ActionResult<IEnumerable<InvoiceResponse>>> GetReleasedHolds([FromQuery] DateTimeOffset? fromDate, [FromQuery] DateTimeOffset? toDate)
+        {
+            var res = await _transactionsService.GetReleasedHoldsUseCase(fromDate, toDate).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(PayRunDetailsResponse), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/{payRunId}/details")]
+        public async Task<ActionResult<PayRunDetailsResponse>> GetSinglePayRunDetails(Guid payRunId, [FromQuery] InvoiceListParameters parameters)
+        {
+            var res = await _transactionsService.GetSinglePayRunDetailsUseCase(payRunId, parameters).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        [HttpGet("pay-runs/{payRunId}/summary-insights")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> GetSinglePayRunSummaryInsights(Guid payRunId)
+        {
+            var result = await _transactionsService.GetSinglePayRunInsightsUseCase(payRunId).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/{payRunId}/status/submit-for-approval")]
+        public async Task<ActionResult<bool>> SubmitPayRunForApproval(Guid payRunId)
+        {
+            var res = await _transactionsService.SubmitPayRunForApprovalUseCase(payRunId).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/{payRunId}/status/kick-back-to-draft")]
+        public async Task<ActionResult<bool>> KickPayRunBackToDraft(Guid payRunId)
+        {
+            var res = await _transactionsService.KickBackPayRunToDraftUseCase(payRunId).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [HttpGet("pay-runs/{payRunId}/status/approve-pay-run")]
+        public async Task<ActionResult<bool>> ApprovePayRun(Guid payRunId)
+        {
+            var res = await _transactionsService.ApprovePayRunForPaymentUseCase(payRunId).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [HttpPut("pay-runs/release-held-invoice")]
+        public async Task<ActionResult<bool>> ReleaseSingleHeldInvoice([FromBody] ReleaseHeldInvoiceItemRequest releaseHeldInvoiceItemRequest)
+        {
+            var res = await _transactionsService
+                .ReleaseHeldInvoiceItemPaymentUseCase(releaseHeldInvoiceItemRequest).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [HttpPut("pay-runs/release-held-invoice-list")]
+        public async Task<ActionResult<bool>> ReleaseHeldInvoiceItemPayment([FromBody] IEnumerable<ReleaseHeldInvoiceItemRequest> releaseHeldInvoiceItemRequests)
+        {
+            var res = await _transactionsService
+                .ReleaseHeldInvoiceItemPaymentListUseCase(releaseHeldInvoiceItemRequests).ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        // Delete Pay Run
+        [HttpDelete("pay-runs/{payRunId}")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> DeleteDraftPayRun(Guid payRunId)
+        {
+            var result = await _transactionsService.DeleteDraftPayRunUseCase(payRunId).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpPost("pay-runs/{payRunId}/pay-run-items/{payRunItemId}/hold-payment")]
+        [ProducesResponseType(typeof(DisputedInvoiceFlatResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<DisputedInvoiceFlatResponse>> HoldInvoicePayment(Guid payRunId, Guid payRunItemId, [FromBody] DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest)
+        {
+            var result = await _transactionsService
+                .HoldInvoicePaymentUseCase(payRunId, payRunItemId, disputedInvoiceForCreationRequest)
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<HeldInvoiceResponse>), StatusCodes.Status200OK)]
+        [HttpGet("invoices/held-invoice-payments")]
+        public async Task<ActionResult<IEnumerable<HeldInvoiceResponse>>> GetHeldInvoicePaymentsList()
+        {
+            var res = await _transactionsService.GetHeldInvoicePaymentsUseCase().ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        [HttpPost("invoices")]
+        [ProducesResponseType(typeof(IEnumerable<InvoiceResponse>), StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<IEnumerable<InvoiceResponse>>> CreateInvoice([FromBody] InvoiceForCreationRequest invoiceForCreationRequest)
+        {
+            var result = await _transactionsService.CreateInvoiceUseCase(invoiceForCreationRequest).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<InvoiceStatusResponse>), StatusCodes.Status200OK)]
+        [HttpGet("invoices/invoice-status-list")]
+        public async Task<ActionResult<IEnumerable<InvoiceStatusResponse>>> GetAllInvoiceStatusesList()
+        {
+            var res = await _transactionsService.GetAllInvoiceStatusesUseCase().ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<InvoiceStatusResponse>), StatusCodes.Status200OK)]
+        [HttpGet("invoices/invoice-payment-statuses")]
+        public async Task<ActionResult<IEnumerable<InvoiceStatusResponse>>> GetInvoicePaymentStatusesList()
+        {
+            var res = await _transactionsService.GetInvoicePaymentStatusesUseCase().ConfigureAwait(false);
+            return Ok(res);
+        }
+
+        // Accept invoice in pay run
+        [HttpPut("pay-runs/{payRunId}/invoices/{invoiceId}/accept-invoice")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> ApproveInvoice(Guid payRunId, Guid invoiceId)
+        {
+            var result = await _transactionsService.AcceptInvoiceUseCase(payRunId, invoiceId).ConfigureAwait(false);
+            return Ok(result);
         }
     }
 }
