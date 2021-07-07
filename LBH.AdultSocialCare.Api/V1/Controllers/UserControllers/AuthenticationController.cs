@@ -1,3 +1,4 @@
+using System.Linq;
 using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
@@ -6,6 +7,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
 {
@@ -34,6 +40,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
             }
 
             return Ok(new { Token = await _authManager.CreateToken().ConfigureAwait(false) });
+        }
+
+        [HttpGet("claims")]
+        [AuthorizeRoles(RolesEnum.Administrator)]
+        public IActionResult Privacy()
+        {
+            var claims = User.Claims
+                .Select(c => new { c.Type, c.Value })
+                .ToList();
+            return Ok(claims);
         }
     }
 }

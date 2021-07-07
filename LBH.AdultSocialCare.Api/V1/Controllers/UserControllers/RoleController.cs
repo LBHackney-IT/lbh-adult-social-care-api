@@ -31,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
             _deleteRoleUseCase = deleteRoleUseCase;
         }
 
-        /// <summary>Creates the specified role request.</summary>
+        /*/// <summary>Creates the specified role request.</summary>
         /// <param name="rolesRequest">The role request.</param>
         /// <returns>The created role response.</returns>
         [ProducesResponseType(typeof(RoleResponse), StatusCodes.Status200OK)]
@@ -45,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
             var res = await _upsertRoleUseCase.ExecuteAsync(roleForCreationDomain).ConfigureAwait(false);
 
             return Ok(res);
-        }
+        }*/
 
         /// <summary>Gets the specified role identifier.</summary>
         /// <param name="roleId">The role identifier.</param>
