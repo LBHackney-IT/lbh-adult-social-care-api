@@ -4,7 +4,12 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
+using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
@@ -15,9 +20,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
     {
         private readonly IUpsertHomeCarePackageSlotsUseCase _upsertHomeCarePackageSlotsUseCase;
 
-        public HomeCarePackageSlotsController(IUpsertHomeCarePackageSlotsUseCase upsertHomeCarePackageSlotsUseCase)
+        // TODO remove
+        private readonly DatabaseContext _context;
+
+        public HomeCarePackageSlotsController(IUpsertHomeCarePackageSlotsUseCase upsertHomeCarePackageSlotsUseCase,
+            DatabaseContext context)
         {
             _upsertHomeCarePackageSlotsUseCase = upsertHomeCarePackageSlotsUseCase;
+            _context = context;
         }
 
         /// <summary>
@@ -47,6 +57,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        // TODO remove
+        [HttpGet]
+        public async Task<IEnumerable<HomeCarePackageSlots>> GetAsync(Guid packageId)
+        {
+            return await _context.HomeCarePackageSlots.Include(item => item.TimeSlotShift)
+                .Where(item => item.HomeCarePackageId == packageId)
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
     }
 }

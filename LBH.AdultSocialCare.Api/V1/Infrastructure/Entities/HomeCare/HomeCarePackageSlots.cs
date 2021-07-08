@@ -32,6 +32,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         public HomeCareServiceType Services { get; set; }
 
         /// <summary>
+        /// TODO remove
+        /// </summary>
+        [NotMapped]
+        public string Service => Services?.ServiceName;
+
+        /// <summary>
         /// Gets or sets the Primary Carer
         /// </summary>
         public int PrimaryInMinutes { get; set; }
@@ -71,7 +77,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// Gets the day of week.
         /// </summary>
         [NotMapped]
-        public DayOfWeek DayOfWeek => (DayOfWeek) DayId;
+        public DayOfWeek Day => (DayOfWeek) DayId;
 
     }
 

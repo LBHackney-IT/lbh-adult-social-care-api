@@ -54,6 +54,11 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         public int DayId { get; set; }
 
         /// <summary>
+        /// Gets or sets the day.
+        /// </summary>
+        public string Day { get; set; }
+
+        /// <summary>
         /// Gets or sets the Need To Address
         /// </summary>
         public string NeedToAddress { get; set; }
@@ -67,6 +72,11 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
         /// Gets or sets the Service Id
         /// </summary>
         public int ServiceId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the service.
+        /// </summary>
+        public string Service { get; set; }
 
     }
 
