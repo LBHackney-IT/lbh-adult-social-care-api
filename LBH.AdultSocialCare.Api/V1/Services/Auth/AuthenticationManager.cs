@@ -1,4 +1,7 @@
+using Common.Exceptions.CustomExceptions;
+using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -10,8 +13,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Common.Exceptions.CustomExceptions;
-using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 {
@@ -66,6 +67,28 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken) validatedToken;
+
+                var hackneyAuthRequest = new HackneyTokenRequest
+                {
+                    Sub = jwtToken.Claims.First(x => x.Type == "sub").Value,
+                    Email = jwtToken.Claims.First(x => x.Type == "email").Value,
+                    Iss = jwtToken.Claims.First(x => x.Type == "iss").Value,
+                    Name = jwtToken.Claims.First(x => x.Type == "name").Value,
+                    Groups = jwtToken.Claims.Where(x => x.Type == "groups").Select(x => x.Value).ToList(),
+                    Iat = int.Parse(jwtToken.Claims.First(x => x.Type == "iat").Value)
+                };
+
+                // Check if id token is expired in production
+                if (!Debugger.IsAttached)
+                {
+                    var timeIssued = DateTimeOffset.FromUnixTimeSeconds(hackneyAuthRequest.Iat);
+
+                    // By default the token expires in one week. If more then reject token
+                    if (timeIssued.AddDays(7).AddMinutes(10) < DateTimeOffset.Now)
+                    {
+                        return false;
+                    }
+                }
 
                 /*// Select and return claim if you want
                 var accountId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
