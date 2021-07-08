@@ -26,8 +26,10 @@ using System.Reflection;
 
 namespace LBH.AdultSocialCare.Api
 {
+
     public class Startup
     {
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -50,8 +52,9 @@ namespace LBH.AdultSocialCare.Api
                 })
                 .AddNewtonsoftJson(x
                     => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
-                .ConfigureApiBehaviorOptions(opt => opt.InvalidModelStateResponseFactory = (context => throw new InvalidModelStateException(context.ModelState.AllModelStateErrors(),
-                    "There are some validation errors. Please correct and try again")))
+                .ConfigureApiBehaviorOptions(opt => opt.InvalidModelStateResponseFactory = (context
+                    => throw new InvalidModelStateException(context.ModelState.AllModelStateErrors(),
+                        "There are some validation errors. Please correct and try again")))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             services.AddApiVersioning(o =>
@@ -94,18 +97,18 @@ namespace LBH.AdultSocialCare.Api
             });
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
                 {
+                    new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
+                        Reference = new OpenApiReference
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme, Id = "Token"
-                            }
-                        },
-                        new List<string>()
-                    }
-                });
+                            Type = ReferenceType.SecurityScheme, Id = "Token"
+                        }
+                    },
+                    new List<string>()
+                }
+            });
 
             // Looks at the APIVersionAttribute [ApiVersion("x")] on controllers and decides whether or not
             // to include it in that version of the swagger document
@@ -129,8 +132,7 @@ namespace LBH.AdultSocialCare.Api
                 {
                     Title = $"{ApiName}-api {version}",
                     Version = version,
-                    Description =
-                        $"{ApiName} version {version}. Please check older versions for depreciated endpoints."
+                    Description = $"{ApiName} version {version}. Please check older versions for depreciated endpoints."
                 });
             }
 
@@ -160,7 +162,8 @@ namespace LBH.AdultSocialCare.Api
             }
 
             app.UseCors(options => options.WithOrigins("http://localhost:3000", "https://d1ewp85mz183f9.cloudfront.net")
-                .AllowAnyMethod().AllowAnyHeader());
+                .AllowAnyMethod()
+                .AllowAnyHeader());
             app.UseCorrelation();
 
             if (env.IsDevelopment())
@@ -206,5 +209,7 @@ namespace LBH.AdultSocialCare.Api
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
     }
+
 }

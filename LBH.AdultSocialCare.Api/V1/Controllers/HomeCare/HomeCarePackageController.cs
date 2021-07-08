@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
@@ -67,8 +68,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         {
             try
             {
-                var res = await _changeStatusHomeCarePackageUseCase
-                    .UpdateAsync(homeCarePackageId, statusId)
+                var res = await _changeStatusHomeCarePackageUseCase.UpdateAsync(homeCarePackageId, statusId)
                     .ConfigureAwait(false);
                 var homeCarePackageResponse = res.ToResponse();
 
@@ -97,7 +97,28 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         {
             try
             {
-                homeCarePackageRequest.ClientId = new Guid("7baea823-3087-46ce-a6f7-ed487834ecba");
+                // TODO remove
+                var anyClient = await _context.Clients.FirstOrDefaultAsync().ConfigureAwait(false);
+
+                if (anyClient == null)
+                {
+                    await _context.Clients.AddAsync(new Client
+                        {
+                            HackneyId = 4817,
+                            FirstName = "Furkan",
+                            LastName = "Kayar",
+                            DateOfBirth = DateTime.UtcNow,
+                            AddressLine1 = "Westminister Abbey",
+                            PostCode = "W11",
+                            CreatorId = 0,
+                            UpdatorId = 0,
+                            DateCreated = DateTimeOffset.UtcNow,
+                            DateUpdated = DateTimeOffset.UtcNow,})
+                        .ConfigureAwait(false);
+                    anyClient = await _context.Clients.FirstAsync().ConfigureAwait(false);
+                }
+
+                homeCarePackageRequest.ClientId = anyClient.Id;
                 var homeCarePackageDomain = homeCarePackageRequest.ToDomain();
 
                 var res = await _upsertHomeCarePackageUseCase.ExecuteAsync(homeCarePackageDomain).ConfigureAwait(false);
@@ -108,6 +129,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
                 {
                     return NotFound();
                 }
+
                 //Change status of package
                 await _changeStatusHomeCarePackageUseCase
                     .UpdateAsync(homeCarePackageResponse.Id, ApprovalHistoryConstants.NewPackageId)
