@@ -13,6 +13,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Exceptions.Models;
+using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Factories;
 
 namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 {
@@ -20,18 +23,21 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
     {
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly RoleManager<Role> _roleManager;
 
         private User _user;
 
-        public AuthenticationManager(UserManager<User> userManager, IConfiguration configuration)
+        public AuthenticationManager(UserManager<User> userManager, IConfiguration configuration, RoleManager<Role> roleManager)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _roleManager = roleManager;
         }
 
-        public async Task<bool> ValidateUser(string userName, string password)
+        public async Task<bool> ValidateUser(string userName, string password = null)
         {
             _user = await _userManager.FindByNameAsync(userName).ConfigureAwait(false);
+            if (_user != null && _user.PasswordHash == null) return true;
             return (_user != null && await _userManager.CheckPasswordAsync(_user, password).ConfigureAwait(false));
         }
 
@@ -85,8 +91,14 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
                         {
                             var timeIssued = DateTimeOffset.FromUnixTimeSeconds(hackneyAuthRequest.Iat);
 
-                            // By default the token expires in one week. If more then reject token
-                            if (timeIssued.AddDays(7).AddMinutes(10) < DateTimeOffset.Now)
+                            // If not hackney email, fail
+                            if (!hackneyAuthRequest.Email.Contains("@hackney.gov.uk"))
+                            {
+                                throw new Exception("Invalid token");
+                            }
+
+                            // By default the token expires in one week. If more or less then reject token
+                            if ((timeIssued.AddDays(7).AddMinutes(10) < DateTimeOffset.Now) || (timeIssued.AddDays(7) > DateTimeOffset.Now.AddDays(7).AddMinutes(10)))
                             {
                                 throw new Exception("Invalid token");
                             }
@@ -105,6 +117,75 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
                 }
                 throw new ApiException("Invalid token. Please check and try again", StatusCodes.Status401Unauthorized);
             }
+        }
+
+        public async Task<UsersDomain> GetOrCreateUser(HackneyTokenRequest hackneyTokenRequest)
+        {
+
+            var user = await _userManager.FindByEmailAsync(hackneyTokenRequest.Email).ConfigureAwait(false);
+            switch (user)
+            {
+                case null:
+                {
+                    var userEntity = new User
+                    {
+                        Email = hackneyTokenRequest.Email,
+                        EmailConfirmed = false,
+                        LockoutEnabled = false,
+                        NormalizedEmail = hackneyTokenRequest.Email.ToUpperInvariant(),
+                        NormalizedUserName = hackneyTokenRequest.Email.ToUpperInvariant(),
+                        PasswordHash = null,
+                        PhoneNumber = null,
+                        PhoneNumberConfirmed = false,
+                        TwoFactorEnabled = false,
+                        UserName = hackneyTokenRequest.Email,
+                        Name = hackneyTokenRequest.Name
+                    };
+
+                    var result = await _userManager.CreateAsync(userEntity).ConfigureAwait(false);
+
+                    if (result.Succeeded)
+                    {
+                        var defaultRoles = new List<string>
+                        {
+                            "Staff",
+                            "Social Worker"
+                        };
+                        var newUserRoles = new List<string>();
+                        foreach (var userRole in defaultRoles)
+                        {
+                            if (await _roleManager.RoleExistsAsync(userRole).ConfigureAwait(false))
+                            {
+                                newUserRoles.Add(userRole);
+                            }
+                        }
+
+                        if (newUserRoles.Count > 0)
+                        {
+                            await _userManager.AddToRolesAsync(userEntity, newUserRoles).ConfigureAwait(false);
+                        }
+
+                        return userEntity?.ToDomain();
+                    }
+
+                    var validationErrorCollection = new ValidationErrorCollection();
+
+                    foreach (var error in result.Errors)
+                    {
+                        validationErrorCollection.Add(new ValidationError
+                        {
+                            Message = error.Description,
+                            ControlID = error.Code,
+                            ID = error.Code
+                        });
+                    }
+
+                    throw new ApiException($"User creation failed", (int) StatusCodes.Status400BadRequest,
+                        validationErrorCollection);
+                }
+            }
+
+            return user.ToDomain();
         }
 
         private SigningCredentials GetSigningCredentials()
