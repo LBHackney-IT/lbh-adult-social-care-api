@@ -43,7 +43,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
 
-        public bool ValidateHackneyJwtToken(string hackneyToken)
+        public HackneyTokenRequest ValidateHackneyJwtToken(string hackneyToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             try
@@ -64,7 +64,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
                     },
                     // set clock skew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                     ClockSkew = Debugger.IsAttached ? TimeSpan.Zero : TimeSpan.FromMinutes(10)
-                }, out SecurityToken validatedToken);
+                }, out var validatedToken);
 
                 var jwtToken = (JwtSecurityToken) validatedToken;
 
@@ -78,26 +78,31 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
                     Iat = int.Parse(jwtToken.Claims.First(x => x.Type == "iat").Value)
                 };
 
-                // Check if id token is expired in production
-                if (!Debugger.IsAttached)
+                switch (Debugger.IsAttached)
                 {
-                    var timeIssued = DateTimeOffset.FromUnixTimeSeconds(hackneyAuthRequest.Iat);
+                    // Check if id token is expired in production
+                    case false:
+                        {
+                            var timeIssued = DateTimeOffset.FromUnixTimeSeconds(hackneyAuthRequest.Iat);
 
-                    // By default the token expires in one week. If more then reject token
-                    if (timeIssued.AddDays(7).AddMinutes(10) < DateTimeOffset.Now)
-                    {
-                        return false;
-                    }
+                            // By default the token expires in one week. If more then reject token
+                            if (timeIssued.AddDays(7).AddMinutes(10) < DateTimeOffset.Now)
+                            {
+                                throw new Exception("Invalid token");
+                            }
+
+                            break;
+                        }
                 }
 
-                /*// Select and return claim if you want
-                var accountId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
-                return accountId;*/
-                return true;
+                return hackneyAuthRequest;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                if (Debugger.IsAttached)
+                {
+                    Console.WriteLine(e);
+                }
                 throw new ApiException("Invalid token. Please check and try again", StatusCodes.Status401Unauthorized);
             }
         }

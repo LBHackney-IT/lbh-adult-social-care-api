@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 
 namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 {
@@ -8,6 +9,6 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 
         Task<string> CreateToken();
 
-        public bool ValidateHackneyJwtToken(string hackneyToken);
+        public HackneyTokenRequest ValidateHackneyJwtToken(string hackneyToken);
     }
 }

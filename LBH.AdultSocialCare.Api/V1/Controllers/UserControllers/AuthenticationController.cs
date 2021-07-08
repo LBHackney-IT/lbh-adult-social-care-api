@@ -52,9 +52,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
         [HttpPost("google-login")]
         public IActionResult GoogleAuthenticate([FromBody] HackneyUserForAuthenticationRequest userForAuthenticationRequest)
         {
-            var isValidToken = _authManager.ValidateHackneyJwtToken(userForAuthenticationRequest.HackneyToken);
+            var validToken = _authManager.ValidateHackneyJwtToken(userForAuthenticationRequest.HackneyToken);
 
-            return Ok(isValidToken);
+            return Ok(validToken);
 
             // return Ok(new { Token = await _authManager.CreateToken().ConfigureAwait(false) });
         }
