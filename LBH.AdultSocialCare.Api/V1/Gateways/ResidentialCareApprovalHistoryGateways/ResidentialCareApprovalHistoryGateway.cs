@@ -1,12 +1,13 @@
+using Common.Exceptions.CustomExceptions;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
+using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovalHistoryGateways
 {
@@ -25,6 +26,20 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovalHistoryGate
                 .Where(a => a.ResidentialCarePackageId.Equals(residentialCarePackageId))
                 .ToListAsync().ConfigureAwait(false);
             return residentialCareApprovalHistories?.ToDomain();
+        }
+
+        public async Task<ResidentialCareApprovalHistoryDomain> CreateAsync(ResidentialCareApprovalHistory residentialCareApprovalHistory)
+        {
+            var entry = await _databaseContext.ResidentialCareApprovalHistories.AddAsync(residentialCareApprovalHistory).ConfigureAwait(false);
+            try
+            {
+                await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
+                return entry.Entity.ToDomain();
+            }
+            catch (Exception)
+            {
+                throw new DbSaveFailedException("Could not save approval history to database");
+            }
         }
     }
 }

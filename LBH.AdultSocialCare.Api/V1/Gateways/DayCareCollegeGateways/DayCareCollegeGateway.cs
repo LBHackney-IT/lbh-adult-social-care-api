@@ -1,14 +1,12 @@
+using Common.Exceptions.CustomExceptions;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Exceptions;
-using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCareCollegeGateways
 {

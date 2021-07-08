@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareRequestMoreInformationUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
@@ -19,10 +21,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
     public class ResidentialCareRequestMoreInformationController : Controller
     {
         private readonly ICreateResidentialCareRequestMoreInformationUseCase _createResidentialCareRequestMoreInformationUseCase;
+        private readonly IChangeStatusResidentialCarePackageUseCase _changeStatusResidentialCarePackageUseCase;
 
-        public ResidentialCareRequestMoreInformationController(ICreateResidentialCareRequestMoreInformationUseCase createResidentialCareRequestMoreInformationUseCase)
+        public ResidentialCareRequestMoreInformationController(ICreateResidentialCareRequestMoreInformationUseCase createResidentialCareRequestMoreInformationUseCase,
+            IChangeStatusResidentialCarePackageUseCase changeStatusResidentialCarePackageUseCase)
         {
             _createResidentialCareRequestMoreInformationUseCase = createResidentialCareRequestMoreInformationUseCase;
+            _changeStatusResidentialCarePackageUseCase = changeStatusResidentialCarePackageUseCase;
         }
 
         /// <summary>
@@ -52,6 +57,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
 
             var residentialCareBrokerageCreationDomain = residentialCareRequestMoreInformationForCreationRequest.ToDomain();
             var result = await _createResidentialCareRequestMoreInformationUseCase.Execute(residentialCareBrokerageCreationDomain).ConfigureAwait(false);
+            await _changeStatusResidentialCarePackageUseCase
+                .UpdateAsync(residentialCareRequestMoreInformationForCreationRequest.ResidentialCarePackageId, ApprovalHistoryConstants.RequestMoreInformationId)
+                .ConfigureAwait(false);
             return Ok(result);
         }
     }

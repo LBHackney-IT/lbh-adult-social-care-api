@@ -14,6 +14,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Domain;
@@ -186,6 +187,12 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return domain;
         }
 
+        public static NursingCareBrokerageInfoCreationDomain ToDomain(this NursingCareBrokerageCreationRequest nursingCareBrokerageCreationRequest)
+        {
+            var domain = _mapper.Map<NursingCareBrokerageInfoCreationDomain>(nursingCareBrokerageCreationRequest);
+            return domain;
+        }
+
         #endregion NursingCareBrokerage
 
         #region ResidentialCareBrokerage
@@ -193,6 +200,12 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static ResidentialCareRequestMoreInformationDomain ToDomain(this ResidentialCareRequestMoreInformationForCreationRequest residentialCareRequestMoreInformationForCreationRequest)
         {
             var domain = _mapper.Map<ResidentialCareRequestMoreInformationDomain>(residentialCareRequestMoreInformationForCreationRequest);
+            return domain;
+        }
+
+        public static ResidentialCareBrokerageInfoCreationDomain ToDomain(this ResidentialCareBrokerageCreationRequest residentialCareBrokerageCreationRequest)
+        {
+            var domain = _mapper.Map<ResidentialCareBrokerageInfoCreationDomain>(residentialCareBrokerageCreationRequest);
             return domain;
         }
 

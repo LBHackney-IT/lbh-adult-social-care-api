@@ -8,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
 {
@@ -22,14 +24,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
         private readonly IGetHomeCareBrokerageUseCase _getHomeCareBrokerageUseCase;
         private readonly ICreateHomeCareBrokerageUseCase _createHomeCareBrokerageUseCase;
         private readonly ICreateHomeCareRequestMoreInformationUseCase _createHomeCareRequestMoreInformationUseCase;
+        private readonly IChangeStatusHomeCarePackageUseCase _changeStatusHomeCarePackageUseCase;
 
         public HomeCareBrokerageController(IGetHomeCareBrokerageUseCase getHomeCareBrokerageUseCase,
             ICreateHomeCareBrokerageUseCase createHomeCareBrokerageUseCase,
-            ICreateHomeCareRequestMoreInformationUseCase createHomeCareRequestMoreInformationUseCase)
+            ICreateHomeCareRequestMoreInformationUseCase createHomeCareRequestMoreInformationUseCase,
+            IChangeStatusHomeCarePackageUseCase changeStatusHomeCarePackageUseCase)
         {
             _getHomeCareBrokerageUseCase = getHomeCareBrokerageUseCase;
             _createHomeCareBrokerageUseCase = createHomeCareBrokerageUseCase;
             _createHomeCareRequestMoreInformationUseCase = createHomeCareRequestMoreInformationUseCase;
+            _changeStatusHomeCarePackageUseCase = changeStatusHomeCarePackageUseCase;
         }
 
         /// <summary>Gets the specified home care package identifier.</summary>
@@ -57,7 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<HomeCareBrokerageCreationResponse>> CreateHomeCarePackage(Guid homeCarePackageId, [FromBody] HomeCareBrokerageCreationRequest homeCareBrokerageCreationRequest)
+        public async Task<ActionResult<HomeCareBrokerageCreationResponse>> CreateHomeCareBrokerage(Guid homeCarePackageId, [FromBody] HomeCareBrokerageCreationRequest homeCareBrokerageCreationRequest)
         {
             if (homeCareBrokerageCreationRequest == null)
             {
@@ -70,7 +75,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
             }
 
             var homeCareBrokerageCreationDomain = homeCareBrokerageCreationRequest.ToDomain();
-            var result = await _createHomeCareBrokerageUseCase.ExecuteAsync(homeCarePackageId, homeCareBrokerageCreationDomain).ConfigureAwait(false);
+            var result = await _createHomeCareBrokerageUseCase.ExecuteAsync(homeCarePackageId, homeCareBrokerageCreationDomain)
+                .ConfigureAwait(false);
+            //Change status of package
+            await _changeStatusHomeCarePackageUseCase
+                .UpdateAsync(homeCarePackageId, ApprovalHistoryConstants.ApprovedForBrokerageId)
+                .ConfigureAwait(false);
             return Ok(result);
         }
     }

@@ -13,7 +13,6 @@
     <ItemGroup>
       <Compile Remove="V1\Infrastructure\Migrations\20210514130701_TestMigration.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20210514130701_TestMigration.Designer.cs" />
-      <Compile Remove="V1\Controllers\NursingCareBrokerage\NursingCareBrokerageController.cs" />
     </ItemGroup>
 
   <ItemGroup>
@@ -50,6 +49,10 @@
     <Folder Include="V1\UseCase\DayCareApproveBrokeredUseCase\Interfaces\" />
     <Folder Include="V1\UseCase\DayCareApprovePackageUseCase\Concrete\" />
     <Folder Include="V1\UseCase\DayCareApprovePackageUseCase\Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\HttpServices\HttpServices.csproj" />
   </ItemGroup>
 
 </Project>

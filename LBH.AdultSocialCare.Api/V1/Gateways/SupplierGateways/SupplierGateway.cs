@@ -1,6 +1,6 @@
 using AutoMapper;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
-using LBH.AdultSocialCare.Api.V1.Exceptions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
@@ -42,6 +42,13 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways
             var res = await _databaseContext.Suppliers
                 .ToListAsync().ConfigureAwait(false);
             return res?.ToDomain();
+        }
+
+        public async Task<IEnumerable<SupplierMinimalDomain>> GetSupplierMinimalList()
+        {
+            return await _databaseContext.Suppliers
+                .Select(s => new SupplierMinimalDomain { Id = s.Id, SupplierName = s.SupplierName }).ToListAsync()
+                .ConfigureAwait(false);
         }
     }
 }

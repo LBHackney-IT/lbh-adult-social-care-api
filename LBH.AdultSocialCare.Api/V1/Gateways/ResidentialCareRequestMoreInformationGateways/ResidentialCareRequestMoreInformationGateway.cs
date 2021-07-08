@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Exceptions;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
+using System;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareRequestMoreInformationGateways
 {
