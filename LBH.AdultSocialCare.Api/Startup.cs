@@ -588,7 +588,8 @@ namespace LBH.AdultSocialCare.Api
                 }
             }
 
-            app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(options => options.WithOrigins("http://localhost:3000", "https://d1ewp85mz183f9.cloudfront.net")
+                .AllowAnyMethod().AllowAnyHeader());
             app.UseCorrelation();
 
             if (env.IsDevelopment())

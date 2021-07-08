@@ -4,6 +4,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
@@ -61,8 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<HomeCarePackage> UpsertAsync(HomeCarePackage homeCarePackage)
         {
-            var homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
-                .Include(item => item.Status)
+            var homeCarePackageToUpdate = await _databaseContext.HomeCarePackage.Include(item => item.Status)
                 .Include(item => item.Client)
                 .Include(item => item.Stage)
                 .Include(item => item.Supplier)
@@ -72,15 +72,25 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             if (homeCarePackageToUpdate == null)
             {
                 homeCarePackageToUpdate = homeCarePackage;
+
+                // TODO revert
+                //homeCarePackageToUpdate.StatusId = homeCarePackage.StatusId;
+                homeCarePackageToUpdate.StatusId =
+                    (await _databaseContext.PackageStatuses.FirstAsync().ConfigureAwait(false)).Id;
+
                 await _databaseContext.HomeCarePackage.AddAsync(homeCarePackageToUpdate).ConfigureAwait(false);
+
                 try
                 {
                     await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
 
                     return homeCarePackageToUpdate;
                 }
-                catch (Exception)
+                catch (Exception exc)
                 {
+                    Console.WriteLine(exc);
+                    Debugger.Break();
+
                     throw new DbSaveFailedException("Could not save day care package to database");
                 }
             }
@@ -95,10 +105,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             homeCarePackageToUpdate.CreatorId = homeCarePackage.CreatorId;
             homeCarePackageToUpdate.UpdatorId = homeCarePackage.UpdatorId;
 
-            // TODO revert
-            //homeCarePackageToUpdate.StatusId = homeCarePackage.StatusId;
-            homeCarePackageToUpdate.StatusId =
-                (await _databaseContext.PackageStatuses.FirstAsync().ConfigureAwait(false)).Id;
+            // TODO status
 
             homeCarePackageToUpdate.SupplierId = homeCarePackage.SupplierId;
             homeCarePackageToUpdate.StageId = homeCarePackage.StageId;

@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
+
     [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
@@ -23,6 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
     [ApiVersion("1.0")]
     public class HomeCarePackageController : BaseController
     {
+
         private readonly IUpsertHomeCarePackageUseCase _upsertHomeCarePackageUseCase;
         private readonly IChangeStatusHomeCarePackageUseCase _updateHomeCarePackageUseCase;
         private readonly IGetAllHomeCarePackageUseCase _getAllHomeCarePackageUseCase;
@@ -64,11 +66,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         {
             try
             {
-                var res = await _updateHomeCarePackageUseCase
-                    .UpdateAsync(homeCarePackageId, statusId)
+                var res = await _updateHomeCarePackageUseCase.UpdateAsync(homeCarePackageId, statusId)
                     .ConfigureAwait(false);
-                var homeCarePackageResponse =
-                    res.ToResponse();
+                var homeCarePackageResponse = res.ToResponse();
+
                 if (homeCarePackageResponse == null) return NotFound();
 
                 return Ok(homeCarePackageResponse);
@@ -94,11 +95,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         {
             try
             {
+                homeCarePackageRequest.ClientId = new Guid("7baea823-3087-46ce-a6f7-ed487834ecba");
                 var homeCarePackageDomain = homeCarePackageRequest.ToDomain();
 
-                var res = await _upsertHomeCarePackageUseCase
-                    .ExecuteAsync(homeCarePackageDomain)
-                    .ConfigureAwait(false);
+                var res = await _upsertHomeCarePackageUseCase.ExecuteAsync(homeCarePackageDomain).ConfigureAwait(false);
 
                 var homeCarePackageResponse = res.ToResponse();
 
@@ -134,6 +134,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
             try
             {
                 var result = await _getAllHomeCarePackageUseCase.GetAllAsync().ConfigureAwait(false);
+
                 return Ok(result);
             }
             catch (FormatException ex)
@@ -157,4 +158,5 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         }
 
     }
+
 }
