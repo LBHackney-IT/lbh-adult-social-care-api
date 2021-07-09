@@ -1,5 +1,10 @@
 using Common.Exceptions.CustomExceptions;
+using Common.Exceptions.Models;
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -13,9 +18,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using Common.Exceptions.Models;
-using LBH.AdultSocialCare.Api.V1.Domain;
-using LBH.AdultSocialCare.Api.V1.Factories;
 
 namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 {
@@ -121,7 +123,6 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 
         public async Task<UsersDomain> GetOrCreateUser(HackneyTokenRequest hackneyTokenRequest)
         {
-
             var user = await _userManager.FindByEmailAsync(hackneyTokenRequest.Email).ConfigureAwait(false);
             switch (user)
             {
@@ -146,11 +147,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 
                         if (result.Succeeded)
                         {
-                            var defaultRoles = new List<string>
-                        {
-                            "Staff",
-                            "Social Worker"
-                        };
+                            var defaultRoles = new List<string> {RolesEnum.User.GetDisplayName()};
                             var newUserRoles = new List<string>();
                             foreach (var userRole in defaultRoles)
                             {

@@ -1,5 +1,7 @@
 using Common.Exceptions.CustomExceptions;
 using Common.Exceptions.Models;
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -33,8 +35,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases
 
             if (result.Succeeded)
             {
+                var defaultRoles = new List<string> { RolesEnum.User.GetDisplayName() };
                 var newUserRoles = new List<string>();
-                foreach (var userRole in user.Roles)
+                foreach (var userRole in defaultRoles)
                 {
                     if (await _roleManager.RoleExistsAsync(userRole).ConfigureAwait(false))
                     {
