@@ -3,6 +3,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Respon
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovalHistoryUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
@@ -12,9 +13,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
+
     [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
@@ -22,20 +26,32 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
     [ApiVersion("1.0")]
     public class HomeCarePackageController : BaseController
     {
+
         private readonly IUpsertHomeCarePackageUseCase _upsertHomeCarePackageUseCase;
         private readonly IChangeStatusHomeCarePackageUseCase _changeStatusHomeCarePackageUseCase;
         private readonly IGetAllHomeCarePackageUseCase _getAllHomeCarePackageUseCase;
         private readonly IGetAllHomeCareApprovalHistoryUseCase _getAllHomeCareApprovalHistoryUseCases;
 
+        // TODO remove
+        private readonly DatabaseContext _context;
+
         public HomeCarePackageController(IUpsertHomeCarePackageUseCase upsertHomeCarePackageUseCase,
             IChangeStatusHomeCarePackageUseCase changeStatusHomeCarePackageUseCase,
             IGetAllHomeCarePackageUseCase getAllHomeCarePackageUseCase,
-            IGetAllHomeCareApprovalHistoryUseCase getAllHomeCareApprovalHistoryUseCases)
+            IGetAllHomeCareApprovalHistoryUseCase getAllHomeCareApprovalHistoryUseCases, DatabaseContext context)
         {
             _upsertHomeCarePackageUseCase = upsertHomeCarePackageUseCase;
             _changeStatusHomeCarePackageUseCase = changeStatusHomeCarePackageUseCase;
             _getAllHomeCarePackageUseCase = getAllHomeCarePackageUseCase;
             _getAllHomeCareApprovalHistoryUseCases = getAllHomeCareApprovalHistoryUseCases;
+            _context = context;
+        }
+
+        // TODO remove
+        [HttpGet("{id}")]
+        public async Task<HomeCarePackage> GetAsync(Guid id)
+        {
+            return await _context.HomeCarePackage.FirstOrDefaultAsync(item => item.Id == id).ConfigureAwait(false);
         }
 
         /// <summary>Change the home care package status.</summary>
@@ -48,17 +64,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         [ProducesDefaultResponseType]
         [HttpPut]
         [Route("{homeCarePackageId}/changeStatus/{statusId}")]
-        public async Task<ActionResult<HomeCarePackageResponse>> ChangeStatus(
-            Guid homeCarePackageId, int statusId)
+        public async Task<ActionResult<HomeCarePackageResponse>> ChangeStatus(Guid homeCarePackageId, int statusId)
         {
             try
             {
-                var res = await _changeStatusHomeCarePackageUseCase
-                    .UpdateAsync(homeCarePackageId, statusId)
+                var res = await _changeStatusHomeCarePackageUseCase.UpdateAsync(homeCarePackageId, statusId)
                     .ConfigureAwait(false);
-                var homeCarePackageResponse =
-                    res.ToResponse();
+                var homeCarePackageResponse = res.ToResponse();
+
                 if (homeCarePackageResponse == null) return NotFound();
+
                 return Ok(homeCarePackageResponse);
             }
             catch (FormatException ex)
@@ -82,11 +97,31 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         {
             try
             {
+                // TODO remove
+                var anyClient = await _context.Clients.FirstOrDefaultAsync().ConfigureAwait(false);
+
+                if (anyClient == null)
+                {
+                    await _context.Clients.AddAsync(new Client
+                        {
+                            HackneyId = 4817,
+                            FirstName = "Furkan",
+                            LastName = "Kayar",
+                            DateOfBirth = DateTime.UtcNow,
+                            AddressLine1 = "Westminister Abbey",
+                            PostCode = "W11",
+                            CreatorId = 0,
+                            UpdatorId = 0,
+                            DateCreated = DateTimeOffset.UtcNow,
+                            DateUpdated = DateTimeOffset.UtcNow,})
+                        .ConfigureAwait(false);
+                    anyClient = await _context.Clients.FirstAsync().ConfigureAwait(false);
+                }
+
+                homeCarePackageRequest.ClientId = anyClient.Id;
                 var homeCarePackageDomain = homeCarePackageRequest.ToDomain();
 
-                var res = await _upsertHomeCarePackageUseCase
-                    .ExecuteAsync(homeCarePackageDomain)
-                    .ConfigureAwait(false);
+                var res = await _upsertHomeCarePackageUseCase.ExecuteAsync(homeCarePackageDomain).ConfigureAwait(false);
 
                 var homeCarePackageResponse = res.ToResponse();
 
@@ -94,6 +129,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
                 {
                     return NotFound();
                 }
+
                 //Change status of package
                 await _changeStatusHomeCarePackageUseCase
                     .UpdateAsync(homeCarePackageResponse.Id, ApprovalHistoryConstants.NewPackageId)
@@ -109,6 +145,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
             {
                 // TODO remove
                 Debugger.Break();
+
                 return BadRequest(exc.Message);
             }
         }
@@ -125,6 +162,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
             try
             {
                 var result = await _getAllHomeCarePackageUseCase.GetAllAsync().ConfigureAwait(false);
+
                 return Ok(result);
             }
             catch (FormatException ex)
@@ -138,10 +176,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("approval-history/{homeCarePackageId}")]
-        public async Task<ActionResult<IEnumerable<HomeCareApprovalHistoryResponse>>> GetApprovalHistoryList(Guid homeCarePackageId)
+        public async Task<ActionResult<IEnumerable<HomeCareApprovalHistoryResponse>>> GetApprovalHistoryList(
+            Guid homeCarePackageId)
         {
-            var result = await _getAllHomeCareApprovalHistoryUseCases.GetAllAsync(homeCarePackageId).ConfigureAwait(false);
+            var result = await _getAllHomeCareApprovalHistoryUseCases.GetAllAsync(homeCarePackageId)
+                .ConfigureAwait(false);
+
             return Ok(result);
         }
+
     }
+
 }

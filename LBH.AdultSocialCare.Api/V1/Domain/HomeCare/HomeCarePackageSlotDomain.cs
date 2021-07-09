@@ -47,6 +47,11 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCare
         /// </summary>
         public int ServiceId { get; set; }
 
+        /// <summary>
+        /// Gets or sets the service.
+        /// </summary>
+        public string Service { get; set; }
+
     }
 
 }

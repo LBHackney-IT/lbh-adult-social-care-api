@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases;
@@ -251,6 +252,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
 
             #region HomeCareApprovalHistory
 
+            services.AddScoped<IHomeCareApprovalHistoryGateway, HomeCareApprovalHistoryGateway>();
             services.AddScoped<IGetAllHomeCareApprovalHistoryUseCase, GetAllHomeCareApprovalHistoryUseCase>();
 
             #endregion HomeCareApprovalHistory

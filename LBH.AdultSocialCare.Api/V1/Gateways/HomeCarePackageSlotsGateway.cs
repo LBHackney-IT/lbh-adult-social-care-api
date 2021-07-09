@@ -59,7 +59,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
             HomeCarePackageSlotListDomain homeCarePackageSlotList = new HomeCarePackageSlotListDomain
             {
-                HomeCarePackageId = homeCarePackageSlotListList.HomeCarePackageId
+                HomeCarePackageId = homeCarePackageSlotListList.HomeCarePackageId,
+                HomeCarePackageSlots = new List<HomeCarePackageSlotDomain>()
             };
 
             foreach (HomeCarePackageSlotDomain homeCarePackageSlotInputItem in homeCarePackageSlotListList

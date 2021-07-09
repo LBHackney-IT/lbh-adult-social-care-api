@@ -5,6 +5,8 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
@@ -20,27 +22,25 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         public async Task<HomeCarePackage> GetAsync(Guid homeCarePackageId)
         {
-            var result = await _databaseContext.HomeCarePackage.FirstOrDefaultAsync(item => item.Id == homeCarePackageId).ConfigureAwait(false);
+            var result = await _databaseContext.HomeCarePackage.FirstOrDefaultAsync(item => item.Id == homeCarePackageId)
+                .ConfigureAwait(false);
+
             return result;
         }
 
         public async Task<IList<HomeCarePackage>> ListAsync()
         {
-            return await _databaseContext.HomeCarePackage
-                .Include(item => item.Client)
+            return await _databaseContext.HomeCarePackage.Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.Stage)
                 .Include(item => item.Supplier)
-                .ToListAsync().ConfigureAwait(false);
+                .ToListAsync()
+                .ConfigureAwait(false);
         }
 
         public async Task<HomeCarePackage> ChangeStatusAsync(Guid homeCarePackageId, int statusId)
         {
             HomeCarePackage homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
-                .Include(item => item.Client)
-                .Include(item => item.Status)
-                .Include(item => item.Stage)
-                .Include(item => item.Supplier)
                 .FirstOrDefaultAsync(item => item.Id == homeCarePackageId)
                 .ConfigureAwait(false);
 
@@ -48,34 +48,50 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             {
                 throw new ApiException($"Couldn't find the record: {homeCarePackageId}");
             }
+
             homeCarePackageToUpdate.StatusId = statusId;
-            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
-            return homeCarePackageToUpdate;
+            bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
+
+            return isSuccess
+                ? homeCarePackageToUpdate
+                : null;
         }
 
         public async Task<HomeCarePackage> UpsertAsync(HomeCarePackage homeCarePackage)
         {
-            var homeCarePackageToUpdate = await _databaseContext.HomeCarePackage
-                .Include(item => item.Status)
+            var homeCarePackageToUpdate = await _databaseContext.HomeCarePackage.Include(item => item.Status)
                 .Include(item => item.Client)
                 .Include(item => item.Stage)
                 .Include(item => item.Supplier)
-                .FirstOrDefaultAsync(item => item.Id == homeCarePackage.Id).ConfigureAwait(false);
+                .FirstOrDefaultAsync(item => item.Id == homeCarePackage.Id)
+                .ConfigureAwait(false);
+
             if (homeCarePackageToUpdate == null)
             {
                 homeCarePackageToUpdate = homeCarePackage;
+
+                // TODO revert
+                //homeCarePackageToUpdate.StatusId = homeCarePackage.StatusId;
+                homeCarePackageToUpdate.StatusId =
+                    (await _databaseContext.PackageStatuses.FirstAsync().ConfigureAwait(false)).Id;
+
                 await _databaseContext.HomeCarePackage.AddAsync(homeCarePackageToUpdate).ConfigureAwait(false);
+
                 try
                 {
                     await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
 
                     return homeCarePackageToUpdate;
                 }
-                catch (Exception)
+                catch (Exception exc)
                 {
+                    Console.WriteLine(exc);
+                    Debugger.Break();
+
                     throw new DbSaveFailedException("Could not save day care package to database");
                 }
             }
+
             homeCarePackageToUpdate.StartDate = homeCarePackage.StartDate;
             homeCarePackageToUpdate.EndDate = homeCarePackage.EndDate;
             homeCarePackageToUpdate.IsFixedPeriod = homeCarePackage.IsFixedPeriod;
@@ -85,7 +101,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             homeCarePackageToUpdate.ClientId = homeCarePackage.ClientId;
             homeCarePackageToUpdate.CreatorId = homeCarePackage.CreatorId;
             homeCarePackageToUpdate.UpdatorId = homeCarePackage.UpdatorId;
-            homeCarePackageToUpdate.StatusId = homeCarePackage.StatusId;
+
+            // TODO status
+
             homeCarePackageToUpdate.SupplierId = homeCarePackage.SupplierId;
             homeCarePackageToUpdate.StageId = homeCarePackage.StageId;
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
