@@ -126,63 +126,63 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
             switch (user)
             {
                 case null:
-                {
-                    var userEntity = new User
                     {
-                        Email = hackneyTokenRequest.Email,
-                        EmailConfirmed = false,
-                        LockoutEnabled = false,
-                        NormalizedEmail = hackneyTokenRequest.Email.ToUpperInvariant(),
-                        NormalizedUserName = hackneyTokenRequest.Email.ToUpperInvariant(),
-                        PasswordHash = null,
-                        PhoneNumber = null,
-                        PhoneNumberConfirmed = false,
-                        TwoFactorEnabled = false,
-                        UserName = hackneyTokenRequest.Email,
-                        Name = hackneyTokenRequest.Name
-                    };
+                        var userEntity = new User
+                        {
+                            Email = hackneyTokenRequest.Email,
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedEmail = hackneyTokenRequest.Email.ToUpperInvariant(),
+                            NormalizedUserName = hackneyTokenRequest.Email.ToUpperInvariant(),
+                            PasswordHash = null,
+                            PhoneNumber = null,
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = hackneyTokenRequest.Email,
+                            Name = hackneyTokenRequest.Name
+                        };
 
-                    var result = await _userManager.CreateAsync(userEntity).ConfigureAwait(false);
+                        var result = await _userManager.CreateAsync(userEntity).ConfigureAwait(false);
 
-                    if (result.Succeeded)
-                    {
-                        var defaultRoles = new List<string>
+                        if (result.Succeeded)
+                        {
+                            var defaultRoles = new List<string>
                         {
                             "Staff",
                             "Social Worker"
                         };
-                        var newUserRoles = new List<string>();
-                        foreach (var userRole in defaultRoles)
-                        {
-                            if (await _roleManager.RoleExistsAsync(userRole).ConfigureAwait(false))
+                            var newUserRoles = new List<string>();
+                            foreach (var userRole in defaultRoles)
                             {
-                                newUserRoles.Add(userRole);
+                                if (await _roleManager.RoleExistsAsync(userRole).ConfigureAwait(false))
+                                {
+                                    newUserRoles.Add(userRole);
+                                }
                             }
+
+                            if (newUserRoles.Count > 0)
+                            {
+                                await _userManager.AddToRolesAsync(userEntity, newUserRoles).ConfigureAwait(false);
+                            }
+
+                            return userEntity?.ToDomain();
                         }
 
-                        if (newUserRoles.Count > 0)
+                        var validationErrorCollection = new ValidationErrorCollection();
+
+                        foreach (var error in result.Errors)
                         {
-                            await _userManager.AddToRolesAsync(userEntity, newUserRoles).ConfigureAwait(false);
+                            validationErrorCollection.Add(new ValidationError
+                            {
+                                Message = error.Description,
+                                ControlID = error.Code,
+                                ID = error.Code
+                            });
                         }
 
-                        return userEntity?.ToDomain();
+                        throw new ApiException($"User creation failed", (int) StatusCodes.Status400BadRequest,
+                            validationErrorCollection);
                     }
-
-                    var validationErrorCollection = new ValidationErrorCollection();
-
-                    foreach (var error in result.Errors)
-                    {
-                        validationErrorCollection.Add(new ValidationError
-                        {
-                            Message = error.Description,
-                            ControlID = error.Code,
-                            ID = error.Code
-                        });
-                    }
-
-                    throw new ApiException($"User creation failed", (int) StatusCodes.Status400BadRequest,
-                        validationErrorCollection);
-                }
             }
 
             return user.ToDomain();
