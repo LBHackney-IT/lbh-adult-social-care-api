@@ -121,6 +121,36 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
             }
         }
 
+        public HackneyTokenRequest ValidateHackneyJwtToken(HackneyTokenRequest hackneyTokenRequest)
+        {
+            try
+            {
+                var timeIssued = DateTimeOffset.FromUnixTimeSeconds(hackneyTokenRequest.Iat);
+
+                // If not hackney email, fail
+                if (!hackneyTokenRequest.Email.Contains("@hackney.gov.uk"))
+                {
+                    throw new Exception("Invalid token");
+                }
+
+                // By default the token expires in one week. If more or less then reject token
+                if ((timeIssued.AddDays(7).AddMinutes(10) < DateTimeOffset.Now) || (timeIssued.AddDays(7) > DateTimeOffset.Now.AddDays(7).AddMinutes(10)))
+                {
+                    throw new Exception("Invalid token");
+                }
+
+                return hackneyTokenRequest;
+            }
+            catch (Exception e)
+            {
+                if (Debugger.IsAttached)
+                {
+                    Console.WriteLine(e);
+                }
+                throw new ApiException("Invalid token. Please check and try again", StatusCodes.Status401Unauthorized);
+            }
+        }
+
         public async Task<UsersDomain> GetOrCreateUser(HackneyTokenRequest hackneyTokenRequest)
         {
             var user = await _userManager.FindByEmailAsync(hackneyTokenRequest.Email).ConfigureAwait(false);
@@ -147,7 +177,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 
                         if (result.Succeeded)
                         {
-                            var defaultRoles = new List<string> {RolesEnum.User.GetDisplayName()};
+                            var defaultRoles = new List<string> { RolesEnum.User.GetDisplayName() };
                             var newUserRoles = new List<string>();
                             foreach (var userRole in defaultRoles)
                             {

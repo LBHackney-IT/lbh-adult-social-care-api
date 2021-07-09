@@ -65,5 +65,22 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
 
             return Ok(new { Token = await _authManager.CreateToken().ConfigureAwait(false) });
         }
+
+        [HttpPost("google-login-v2")]
+        public async Task<IActionResult> GoogleAuthenticateWithObject([FromBody] HackneyTokenRequest hackneyTokenRequest)
+        {
+            var validToken = _authManager.ValidateHackneyJwtToken(hackneyTokenRequest);
+
+            // Check if user exists. Not? Create
+            var userDomain = await _authManager.GetOrCreateUser(validToken).ConfigureAwait(false);
+
+            // Create token and return to  user
+            if (!await _authManager.ValidateUser(userDomain.Email).ConfigureAwait(false))
+            {
+                throw new ApiException("Authentication failed. Wrong user name or password.", (int) HttpStatusCode.Unauthorized);
+            }
+
+            return Ok(new { Token = await _authManager.CreateToken().ConfigureAwait(false) });
+        }
     }
 }

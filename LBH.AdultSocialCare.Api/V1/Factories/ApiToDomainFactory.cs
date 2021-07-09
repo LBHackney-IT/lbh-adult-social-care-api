@@ -426,8 +426,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Name = $"{usersEntity.FirstName} {usersEntity.LastName}",
                 Email = usersEntity.Email,
                 Password = usersEntity.Password,
-                ConfirmPassword = usersEntity.ConfirmPassword,
-                Roles = usersEntity.Roles
+                ConfirmPassword = usersEntity.ConfirmPassword
             };
         }
 
