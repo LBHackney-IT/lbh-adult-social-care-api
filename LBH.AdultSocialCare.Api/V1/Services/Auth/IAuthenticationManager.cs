@@ -1,5 +1,7 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Domain;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Services.Auth
@@ -15,5 +17,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
         public HackneyTokenRequest ValidateHackneyJwtToken(HackneyTokenRequest hackneyTokenRequest);
 
         public Task<UsersDomain> GetOrCreateUser(HackneyTokenRequest hackneyTokenRequest);
+
+        Task<bool> AssignRolesToUser(Guid userId, IEnumerable<string> roles);
     }
 }

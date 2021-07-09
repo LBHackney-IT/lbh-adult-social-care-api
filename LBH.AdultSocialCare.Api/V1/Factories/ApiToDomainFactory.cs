@@ -397,6 +397,15 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
+        public static AssignRolesToUserDomain ToDomain(this AssignRolesToUserRequest rolesEntity)
+        {
+            return new AssignRolesToUserDomain
+            {
+                UserId = rolesEntity.UserId,
+                Roles = rolesEntity.Roles
+            };
+        }
+
         #endregion Roles
 
         #region HomeCareServiceTypes

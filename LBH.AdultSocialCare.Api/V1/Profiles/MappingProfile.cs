@@ -484,6 +484,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<RoleForCreationDomain, Role>();
             CreateMap<RoleForUpdateDomain, Role>();
             CreateMap<RolesDomain, RoleResponse>();
+            CreateMap<AssignRolesToUserRequest, AssignRolesToUserDomain>();
 
             #endregion Roles
         }

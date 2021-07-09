@@ -11,6 +11,20 @@
         <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
     </PropertyGroup>
     <ItemGroup>
+      <Compile Remove="terraform\**" />
+      <Compile Remove="V1\UseCase\DayCareApproveBrokeredUseCase\**" />
+      <Compile Remove="V1\UseCase\DayCareApprovePackageUseCase\**" />
+      <Content Remove="terraform\**" />
+      <Content Remove="V1\UseCase\DayCareApproveBrokeredUseCase\**" />
+      <Content Remove="V1\UseCase\DayCareApprovePackageUseCase\**" />
+      <EmbeddedResource Remove="terraform\**" />
+      <EmbeddedResource Remove="V1\UseCase\DayCareApproveBrokeredUseCase\**" />
+      <EmbeddedResource Remove="V1\UseCase\DayCareApprovePackageUseCase\**" />
+      <None Remove="terraform\**" />
+      <None Remove="V1\UseCase\DayCareApproveBrokeredUseCase\**" />
+      <None Remove="V1\UseCase\DayCareApprovePackageUseCase\**" />
+    </ItemGroup>
+    <ItemGroup>
       <Compile Remove="V1\Infrastructure\Migrations\20210514130701_TestMigration.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20210514130701_TestMigration.Designer.cs" />
     </ItemGroup>
@@ -44,13 +58,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="terraform\" />
     <Folder Include="V1\Boundary\HomeCareApprovalHistoryBoundary\Request\" />
     <Folder Include="V1\Boundary\ResidentialCarePackageBoundary\Request\" />
-    <Folder Include="V1\UseCase\DayCareApproveBrokeredUseCase\Concrete\" />
-    <Folder Include="V1\UseCase\DayCareApproveBrokeredUseCase\Interfaces\" />
-    <Folder Include="V1\UseCase\DayCareApprovePackageUseCase\Concrete\" />
-    <Folder Include="V1\UseCase\DayCareApprovePackageUseCase\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -215,6 +215,31 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
             return user.ToDomain();
         }
 
+        public async Task<bool> AssignRolesToUser(Guid userId, IEnumerable<string> roles)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString()).ConfigureAwait(false);
+            if (user == null)
+            {
+                throw new EntityNotFoundException($"User with Id {userId} not found");
+            }
+
+            var newUserRoles = new List<string>();
+            foreach (var userRole in roles)
+            {
+                if (await _roleManager.RoleExistsAsync(userRole).ConfigureAwait(false))
+                {
+                    newUserRoles.Add(userRole);
+                }
+            }
+
+            if (newUserRoles.Count > 0)
+            {
+                await _userManager.AddToRolesAsync(user, newUserRoles).ConfigureAwait(false);
+            }
+
+            return true;
+        }
+
         private SigningCredentials GetSigningCredentials()
         {
             var key = Encoding.UTF8.GetBytes(_configuration.GetValue<string>("JwtSettings:securityKey"));

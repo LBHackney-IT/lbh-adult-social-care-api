@@ -1,3 +1,5 @@
+using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Interfaces;
@@ -166,6 +168,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
             services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
             services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();
+            services.AddScoped<IAuthUseCase, AuthUseCase>();
 
             #endregion User
 

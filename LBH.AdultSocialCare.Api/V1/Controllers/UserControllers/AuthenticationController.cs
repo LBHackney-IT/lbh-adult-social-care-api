@@ -1,10 +1,11 @@
 using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Extensions;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
-using Microsoft.AspNetCore.Identity;
+using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Net;
@@ -19,13 +20,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
     [ApiVersion("1.0")]
     public class AuthenticationController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
         private readonly IAuthenticationManager _authManager;
+        private readonly IAuthUseCase _authUseCase;
 
-        public AuthenticationController(UserManager<User> userManager, IAuthenticationManager authManager)
+        public AuthenticationController(IAuthenticationManager authManager, IAuthUseCase authUseCase)
         {
-            _userManager = userManager;
             _authManager = authManager;
+            _authUseCase = authUseCase;
         }
 
         [HttpPost("login")]
@@ -81,6 +82,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
             }
 
             return Ok(new { Token = await _authManager.CreateToken().ConfigureAwait(false) });
+        }
+
+        [HttpPost("assign-roles")]
+        [AuthorizeRoles(RolesEnum.SuperAdministrator)]
+        public async Task<IActionResult> AssignRolesToUser([FromBody] AssignRolesToUserRequest assignRolesToUserRequest)
+        {
+            var res = await _authUseCase.AssignRolesToUserUseCase(assignRolesToUserRequest.ToDomain()).ConfigureAwait(false);
+
+            return Ok(res);
         }
     }
 }
