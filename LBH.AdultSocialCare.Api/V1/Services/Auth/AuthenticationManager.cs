@@ -2,8 +2,8 @@ using Common.Exceptions.CustomExceptions;
 using Common.Exceptions.Models;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.AspNetCore.Http;
@@ -51,7 +51,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
             return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
         }
 
-        public HackneyTokenRequest ValidateHackneyJwtToken(string hackneyToken)
+        public HackneyTokenDomain ValidateHackneyJwtToken(string hackneyToken)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             try
@@ -76,7 +76,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 
                 var jwtToken = (JwtSecurityToken) validatedToken;
 
-                var hackneyAuthRequest = new HackneyTokenRequest
+                var hackneyAuthDomain = new HackneyTokenDomain
                 {
                     Sub = jwtToken.Claims.First(x => x.Type == "sub").Value,
                     Email = jwtToken.Claims.First(x => x.Type == "email").Value,
@@ -91,10 +91,10 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
                     // Check if id token is expired in production
                     case false:
                         {
-                            var timeIssued = DateTimeOffset.FromUnixTimeSeconds(hackneyAuthRequest.Iat);
+                            var timeIssued = DateTimeOffset.FromUnixTimeSeconds(hackneyAuthDomain.Iat);
 
                             // If not hackney email, fail
-                            if (!hackneyAuthRequest.Email.Contains("@hackney.gov.uk"))
+                            if (!hackneyAuthDomain.Email.Contains("@hackney.gov.uk"))
                             {
                                 throw new Exception("Invalid token");
                             }
@@ -109,7 +109,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
                         }
                 }
 
-                return hackneyAuthRequest;
+                return hackneyAuthDomain;
             }
             catch (Exception e)
             {
@@ -121,14 +121,14 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
             }
         }
 
-        public HackneyTokenRequest ValidateHackneyJwtToken(HackneyTokenRequest hackneyTokenRequest)
+        public HackneyTokenDomain ValidateHackneyJwtToken(HackneyTokenDomain hackneyTokenDomain)
         {
             try
             {
-                var timeIssued = DateTimeOffset.FromUnixTimeSeconds(hackneyTokenRequest.Iat);
+                var timeIssued = DateTimeOffset.FromUnixTimeSeconds(hackneyTokenDomain.Iat);
 
                 // If not hackney email, fail
-                if (!hackneyTokenRequest.Email.Contains("@hackney.gov.uk"))
+                if (!hackneyTokenDomain.Email.Contains("@hackney.gov.uk"))
                 {
                     throw new Exception("Invalid token");
                 }
@@ -139,7 +139,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
                     throw new Exception("Invalid token");
                 }
 
-                return hackneyTokenRequest;
+                return hackneyTokenDomain;
             }
             catch (Exception e)
             {
@@ -151,26 +151,26 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
             }
         }
 
-        public async Task<UsersDomain> GetOrCreateUser(HackneyTokenRequest hackneyTokenRequest)
+        public async Task<UsersDomain> GetOrCreateUser(HackneyTokenDomain hackneyTokenDomain)
         {
-            var user = await _userManager.FindByEmailAsync(hackneyTokenRequest.Email).ConfigureAwait(false);
+            var user = await _userManager.FindByEmailAsync(hackneyTokenDomain.Email).ConfigureAwait(false);
             switch (user)
             {
                 case null:
                     {
                         var userEntity = new User
                         {
-                            Email = hackneyTokenRequest.Email,
+                            Email = hackneyTokenDomain.Email,
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            NormalizedEmail = hackneyTokenRequest.Email.ToUpperInvariant(),
-                            NormalizedUserName = hackneyTokenRequest.Email.ToUpperInvariant(),
+                            NormalizedEmail = hackneyTokenDomain.Email.ToUpperInvariant(),
+                            NormalizedUserName = hackneyTokenDomain.Email.ToUpperInvariant(),
                             PasswordHash = null,
                             PhoneNumber = null,
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
-                            UserName = hackneyTokenRequest.Email,
-                            Name = hackneyTokenRequest.Name
+                            UserName = hackneyTokenDomain.Email,
+                            Name = hackneyTokenDomain.Name
                         };
 
                         var result = await _userManager.CreateAsync(userEntity).ConfigureAwait(false);

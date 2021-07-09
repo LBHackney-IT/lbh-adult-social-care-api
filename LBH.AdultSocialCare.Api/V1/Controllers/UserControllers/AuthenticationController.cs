@@ -1,4 +1,3 @@
-using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
@@ -6,9 +5,9 @@ using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
 using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
@@ -32,16 +31,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
         [HttpPost("login")]
         public async Task<IActionResult> Authenticate([FromBody] UserForAuthenticationRequest user)
         {
-            if (!await _authManager.ValidateUser(user.UserName, user.Password).ConfigureAwait(false))
-            {
-                throw new ApiException("Authentication failed. Wrong user name or password.", (int) HttpStatusCode.Unauthorized);
-            }
+            var res = await _authUseCase.LoginWithUsernameAndPasswordUseCase(user.UserName, user.Password)
+                .ConfigureAwait(false);
 
-            return Ok(new { Token = await _authManager.CreateToken().ConfigureAwait(false) });
+            return Ok(res);
         }
 
         [HttpGet("claims")]
-        [AuthorizeRoles(RolesEnum.Administrator)]
+        [Authorize]
         public IActionResult Privacy()
         {
             var claims = User.Claims
@@ -53,35 +50,18 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
         [HttpPost("google-login")]
         public async Task<IActionResult> GoogleAuthenticate([FromBody] HackneyUserForAuthenticationRequest userForAuthenticationRequest)
         {
-            var validToken = _authManager.ValidateHackneyJwtToken(userForAuthenticationRequest.HackneyToken);
+            var res = await _authUseCase.GoogleAuthenticateUseCase(userForAuthenticationRequest.HackneyToken)
+                .ConfigureAwait(false);
 
-            // Check if user exists. Not? Create
-            var userDomain = await _authManager.GetOrCreateUser(validToken).ConfigureAwait(false);
-
-            // Create token and return to  user
-            if (!await _authManager.ValidateUser(userDomain.Email).ConfigureAwait(false))
-            {
-                throw new ApiException("Authentication failed. Wrong user name or password.", (int) HttpStatusCode.Unauthorized);
-            }
-
-            return Ok(new { Token = await _authManager.CreateToken().ConfigureAwait(false) });
+            return Ok(res);
         }
 
         [HttpPost("google-login-v2")]
         public async Task<IActionResult> GoogleAuthenticateWithObject([FromBody] HackneyTokenRequest hackneyTokenRequest)
         {
-            var validToken = _authManager.ValidateHackneyJwtToken(hackneyTokenRequest);
-
-            // Check if user exists. Not? Create
-            var userDomain = await _authManager.GetOrCreateUser(validToken).ConfigureAwait(false);
-
-            // Create token and return to  user
-            if (!await _authManager.ValidateUser(userDomain.Email).ConfigureAwait(false))
-            {
-                throw new ApiException("Authentication failed. Wrong user name or password.", (int) HttpStatusCode.Unauthorized);
-            }
-
-            return Ok(new { Token = await _authManager.CreateToken().ConfigureAwait(false) });
+            var res = await _authUseCase.GoogleAuthenticateWithObjectUseCase(hackneyTokenRequest.ToDomain())
+                .ConfigureAwait(false);
+            return Ok(res);
         }
 
         [HttpPost("assign-roles")]

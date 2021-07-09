@@ -51,6 +51,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.StageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareApprovePackageDomains;
@@ -82,6 +83,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
@@ -485,6 +487,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<RoleForUpdateDomain, Role>();
             CreateMap<RolesDomain, RoleResponse>();
             CreateMap<AssignRolesToUserRequest, AssignRolesToUserDomain>();
+            CreateMap<HackneyTokenRequest, HackneyTokenDomain>();
 
             #endregion Roles
         }

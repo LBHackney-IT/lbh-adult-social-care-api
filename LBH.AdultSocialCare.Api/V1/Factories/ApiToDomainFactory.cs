@@ -18,6 +18,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Reque
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
@@ -34,11 +35,10 @@ using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -404,6 +404,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 UserId = rolesEntity.UserId,
                 Roles = rolesEntity.Roles
             };
+        }
+
+        public static HackneyTokenDomain ToDomain(this HackneyTokenRequest rolesEntity)
+        {
+            return _mapper.Map<HackneyTokenDomain>(rolesEntity);
         }
 
         #endregion Roles
