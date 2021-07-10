@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using LBH.AdultSocialCare.Api.V1.Services.Auth;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -78,6 +79,11 @@ namespace LBH.AdultSocialCare.Api
             services.ConfigureLogging(Configuration);
 
             services.ConfigureDbContext(Configuration);
+            services.AddAuthentication();
+            services.ConfigureIdentityService();
+            services.ConfigureJWT(Configuration);
+
+            services.AddScoped<IAuthenticationManager, AuthenticationManager>();
 
             services.RegisterGateways();
             services.RegisterUseCases();
@@ -202,6 +208,9 @@ namespace LBH.AdultSocialCare.Api
             });
             app.UseSwagger();
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

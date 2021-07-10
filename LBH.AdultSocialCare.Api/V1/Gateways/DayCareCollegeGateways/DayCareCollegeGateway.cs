@@ -46,8 +46,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCareCollegeGateways
                     EndDate = dcc.EndDate,
                     CreatorId = dcc.CreatorId,
                     UpdaterId = dcc.UpdaterId,
-                    CreatorName = $"{dcc.Creator.FirstName} {dcc.Creator.MiddleName} {dcc.Creator.LastName}",
-                    UpdaterName = dcc.Updater != null ? $"{dcc.Updater.FirstName} {dcc.Updater.MiddleName} {dcc.Updater.LastName}" : null
+                    CreatorName = $"{dcc.Creator.Name}",
+                    UpdaterName = dcc.Updater != null ? $"{dcc.Updater.Name}" : null
                 })
                 .AsNoTracking()
                 .SingleOrDefaultAsync().ConfigureAwait(false);
@@ -71,8 +71,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCareCollegeGateways
                     EndDate = dcc.EndDate,
                     CreatorId = dcc.CreatorId,
                     UpdaterId = dcc.UpdaterId,
-                    CreatorName = $"{dcc.Creator.FirstName} {dcc.Creator.MiddleName} {dcc.Creator.LastName}",
-                    UpdaterName = dcc.Updater != null ? $"{dcc.Updater.FirstName} {dcc.Updater.MiddleName} {dcc.Updater.LastName}" : null
+                    CreatorName = $"{dcc.Creator.Name}",
+                    UpdaterName = dcc.Updater != null ? $"{dcc.Updater.Name}" : null
                 })
                 .AsNoTracking()
                 .ToListAsync().ConfigureAwait(false);

@@ -1,4 +1,5 @@
-using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
@@ -15,11 +16,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.RolesUseCases
             _gateway = roleGateway;
         }
 
-        public async Task<RolesDomain> ExecuteAsync(RolesDomain role)
+        public async Task<RoleResponse> ExecuteAsync(RoleForCreationDomain roleForCreation)
         {
-            var roleEntity = role.ToEntity();
-            roleEntity = await _gateway.UpsertAsync(roleEntity).ConfigureAwait(false);
-            return roleEntity?.ToDomain();
+            var roleDomain = await _gateway.UpsertAsync(roleForCreation.ToEntity()).ConfigureAwait(false);
+            return roleDomain?.ToResponse();
         }
     }
 }

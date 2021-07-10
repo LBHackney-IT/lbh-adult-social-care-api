@@ -4,6 +4,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases
 {
@@ -16,10 +17,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases
             _gateway = usersGateway;
         }
 
-        public async Task<UsersDomain> GetAsync(Guid userId)
+        public async Task<UsersResponse> GetAsync(Guid userId)
         {
             var usersEntity = await _gateway.GetAsync(userId).ConfigureAwait(false);
-            return usersEntity?.ToDomain();
+            return usersEntity?.ToResponse();
         }
     }
 }
