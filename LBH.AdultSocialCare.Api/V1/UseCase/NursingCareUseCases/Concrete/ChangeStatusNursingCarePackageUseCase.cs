@@ -38,7 +38,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
             {
                 NursingCarePackageId = nursingCarePackageId,
                 ApprovedDate = DateTimeOffset.Now,
-                LogText = $"{logText} {user.Name}"
+                LogText = $"{logText} {user.FirstName} {user.MiddleName} {user.LastName} - {user.Role.RoleName}"
             };
             await _nursingCareApprovalHistoryGateway.CreateAsync(newPackageHistory.ToDb()).ConfigureAwait(false);
             return nursingCarePackageDomain.ToResponse();

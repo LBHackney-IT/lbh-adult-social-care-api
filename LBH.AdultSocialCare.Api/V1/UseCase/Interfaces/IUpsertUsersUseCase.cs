@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Interfaces
 {
-    public interface IUpsertRoleUseCase
+    public interface IUpsertUsersUseCase
     {
-        public Task<RolesDomain> ExecuteAsync(RolesDomain role);
+        public Task<UsersDomain> ExecuteAsync(UsersDomain users);
     }
 }

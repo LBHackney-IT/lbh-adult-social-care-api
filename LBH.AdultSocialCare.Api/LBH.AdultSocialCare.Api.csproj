@@ -11,20 +11,6 @@
         <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
     </PropertyGroup>
     <ItemGroup>
-      <Compile Remove="terraform\**" />
-      <Compile Remove="V1\UseCase\DayCareApproveBrokeredUseCase\**" />
-      <Compile Remove="V1\UseCase\DayCareApprovePackageUseCase\**" />
-      <Content Remove="terraform\**" />
-      <Content Remove="V1\UseCase\DayCareApproveBrokeredUseCase\**" />
-      <Content Remove="V1\UseCase\DayCareApprovePackageUseCase\**" />
-      <EmbeddedResource Remove="terraform\**" />
-      <EmbeddedResource Remove="V1\UseCase\DayCareApproveBrokeredUseCase\**" />
-      <EmbeddedResource Remove="V1\UseCase\DayCareApprovePackageUseCase\**" />
-      <None Remove="terraform\**" />
-      <None Remove="V1\UseCase\DayCareApproveBrokeredUseCase\**" />
-      <None Remove="V1\UseCase\DayCareApprovePackageUseCase\**" />
-    </ItemGroup>
-    <ItemGroup>
       <Compile Remove="V1\Infrastructure\Migrations\20210514130701_TestMigration.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20210514130701_TestMigration.Designer.cs" />
     </ItemGroup>
@@ -38,9 +24,7 @@
     <PackageReference Include="AWSXRayRecorder.Handlers.AspNetCore" Version="2.7.2" />
     <PackageReference Include="AWSXRayRecorder.Handlers.AwsSdk" Version="2.8.2" />
     <PackageReference Include="AWSXRayRecorder.Handlers.EntityFramework" Version="1.1.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.16" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.16" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.14" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="4.1.1" />
@@ -58,8 +42,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="terraform\" />
     <Folder Include="V1\Boundary\HomeCareApprovalHistoryBoundary\Request\" />
     <Folder Include="V1\Boundary\ResidentialCarePackageBoundary\Request\" />
+    <Folder Include="V1\UseCase\DayCareApproveBrokeredUseCase\Concrete\" />
+    <Folder Include="V1\UseCase\DayCareApproveBrokeredUseCase\Interfaces\" />
+    <Folder Include="V1\UseCase\DayCareApprovePackageUseCase\Concrete\" />
+    <Folder Include="V1\UseCase\DayCareApprovePackageUseCase\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

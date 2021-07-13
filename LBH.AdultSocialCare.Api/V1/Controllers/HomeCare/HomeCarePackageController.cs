@@ -103,18 +103,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
                 if (anyClient == null)
                 {
                     await _context.Clients.AddAsync(new Client
-                    {
-                        HackneyId = 4817,
-                        FirstName = "Furkan",
-                        LastName = "Kayar",
-                        DateOfBirth = DateTime.UtcNow,
-                        AddressLine1 = "Westminister Abbey",
-                        PostCode = "W11",
-                        CreatorId = 0,
-                        UpdatorId = 0,
-                        DateCreated = DateTimeOffset.UtcNow,
-                        DateUpdated = DateTimeOffset.UtcNow,
-                    })
+                        {
+                            HackneyId = 4817,
+                            FirstName = "Furkan",
+                            LastName = "Kayar",
+                            DateOfBirth = DateTime.UtcNow,
+                            AddressLine1 = "Westminister Abbey",
+                            PostCode = "W11",
+                            CreatorId = 0,
+                            UpdatorId = 0,
+                            DateCreated = DateTimeOffset.UtcNow,
+                            DateUpdated = DateTimeOffset.UtcNow,})
                         .ConfigureAwait(false);
                     anyClient = await _context.Clients.FirstAsync().ConfigureAwait(false);
                 }

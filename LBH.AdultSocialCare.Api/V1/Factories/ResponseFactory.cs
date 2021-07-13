@@ -28,7 +28,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Respo
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.StageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
@@ -57,7 +56,6 @@ using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
@@ -657,20 +655,19 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Roles
 
-        public static RoleResponse ToResponse(this RolesDomain rolesDomain)
+        public static RolesResponse ToResponse(this RolesDomain rolesDomain)
         {
-            return new RoleResponse
+            return new RolesResponse
             {
                 Id = rolesDomain.Id,
-                ConcurrencyStamp = rolesDomain.ConcurrencyStamp,
-                Name = rolesDomain.Name,
-                NormalizedName = rolesDomain.NormalizedName
+                RoleName = rolesDomain.RoleName,
+                IsDefault = rolesDomain.IsDefault,
+                Sequence = rolesDomain.Sequence,
+                CreatorId = rolesDomain.CreatorId,
+                DateCreated = rolesDomain.DateCreated,
+                UpdatorId = rolesDomain.UpdatorId,
+                DateUpdated = rolesDomain.DateUpdated
             };
-        }
-
-        public static IList<RoleResponse> ToResponse(this IList<RolesDomain> roleDomains)
-        {
-            return _mapper.Map<IList<RoleResponse>>(roleDomains);
         }
 
         #endregion Roles
@@ -694,19 +691,33 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion HomeCareServiceTypes
 
-        #region ServiceUsers
+        #region Users
 
         public static UsersResponse ToResponse(this UsersDomain usersDomain)
         {
             return new UsersResponse
             {
                 Id = usersDomain.Id,
-                Name = usersDomain.Name,
-                Email = usersDomain.Email
+                FirstName = usersDomain.FirstName,
+                MiddleName = usersDomain.MiddleName,
+                LastName = usersDomain.LastName,
+                HackneyId = usersDomain.HackneyId,
+                AddressLine1 = usersDomain.AddressLine1,
+                AddressLine2 = usersDomain.AddressLine2,
+                AddressLine3 = usersDomain.AddressLine3,
+                Town = usersDomain.Town,
+                County = usersDomain.County,
+                PostCode = usersDomain.PostCode,
+                RoleId = usersDomain.RoleId,
+                Role = usersDomain.Role,
+                CreatorId = usersDomain.CreatorId,
+                DateCreated = usersDomain.DateCreated,
+                UpdatorId = usersDomain.UpdatorId,
+                DateUpdated = usersDomain.DateUpdated
             };
         }
 
-        #endregion ServiceUsers
+        #endregion Users
 
         #region PackageStatus
 

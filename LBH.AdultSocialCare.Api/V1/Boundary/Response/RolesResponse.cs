@@ -1,17 +1,12 @@
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
+namespace LBH.AdultSocialCare.Api.V1.Boundary.Response
 {
-
-    public class Role : BaseEntity
+    public class RolesResponse
     {
-
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         /// <summary>
@@ -35,10 +30,19 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public int CreatorId { get; set; }
 
         /// <summary>
+        /// Gets or sets the Date Created
+        /// </summary>
+        public DateTimeOffset? DateCreated { get; set; }
+
+        /// <summary>
         /// Gets or sets the Updator Id
         /// </summary>
         public int UpdatorId { get; set; }
 
-    }
+        /// <summary>
+        /// Gets or sets the Date Updated
+        /// </summary>
+        public DateTimeOffset? DateUpdated { get; set; }
 
+    }
 }

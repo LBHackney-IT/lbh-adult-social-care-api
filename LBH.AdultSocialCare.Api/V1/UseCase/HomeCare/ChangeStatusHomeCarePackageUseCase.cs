@@ -36,7 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
             {
                 HomeCarePackageId = homeCarePackageId,
                 ApprovedDate = DateTimeOffset.Now,
-                LogText = $"{logText} {user.Name}"
+                LogText = $"{logText} {user.FirstName} {user.MiddleName} {user.LastName} - {user.Role.RoleName}"
             };
             await _homeCareApprovalHistoryGateway.CreateAsync(newPackageHistory.ToDb()).ConfigureAwait(false);
             return homeCarePackageEntity.ToDomain();

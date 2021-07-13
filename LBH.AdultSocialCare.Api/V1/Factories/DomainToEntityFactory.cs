@@ -13,9 +13,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
@@ -327,12 +325,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Roles
 
-        public static Role ToEntity(this RoleForCreationDomain rolesDomain)
+        public static Role ToEntity(this RolesDomain rolesDomain)
         {
             return new Role
             {
-                Name = rolesDomain.Name,
-                NormalizedName = rolesDomain.Name.ToUpper()
+                Id = rolesDomain.Id,
+                RoleName = rolesDomain.RoleName,
+                IsDefault = rolesDomain.IsDefault,
+                Sequence = rolesDomain.Sequence,
+                CreatorId = rolesDomain.CreatorId,
+                UpdatorId = rolesDomain.UpdatorId
             };
         }
 
@@ -353,27 +355,31 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion HomeCareServiceTypes
 
-        #region ServiceUsers
+        #region Users
 
-        public static User ToEntity(this UserForRegistrationDomain userForRegistrationDomain)
+        public static User ToEntity(this UsersDomain usersDomain)
         {
             return new User
             {
-                Email = userForRegistrationDomain.Email,
-                EmailConfirmed = false,
-                LockoutEnabled = false,
-                NormalizedEmail = userForRegistrationDomain.Email.ToUpperInvariant(),
-                NormalizedUserName = userForRegistrationDomain.Email.ToUpperInvariant(),
-                PasswordHash = null,
-                PhoneNumber = null,
-                PhoneNumberConfirmed = false,
-                TwoFactorEnabled = false,
-                UserName = userForRegistrationDomain.Email,
-                Name = userForRegistrationDomain.Name
+                Id = usersDomain.Id,
+                FirstName = usersDomain.FirstName,
+                MiddleName = usersDomain.MiddleName,
+                LastName = usersDomain.LastName,
+                HackneyId = usersDomain.HackneyId,
+                AddressLine1 = usersDomain.AddressLine1,
+                AddressLine2 = usersDomain.AddressLine2,
+                AddressLine3 = usersDomain.AddressLine3,
+                Town = usersDomain.Town,
+                County = usersDomain.County,
+                PostCode = usersDomain.PostCode,
+                RoleId = usersDomain.RoleId,
+                Role = usersDomain.Role,
+                CreatorId = usersDomain.CreatorId,
+                UpdatorId = usersDomain.UpdatorId,
             };
         }
 
-        #endregion ServiceUsers
+        #endregion Users
 
         #region PackageStatus
 

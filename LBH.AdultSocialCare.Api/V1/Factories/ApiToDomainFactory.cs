@@ -16,9 +16,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
@@ -33,9 +31,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -389,26 +385,18 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Roles
 
-        public static RoleForCreationDomain ToDomain(this RoleForCreationRequest rolesEntity)
+        public static RolesDomain ToDomain(this RolesRequest rolesEntity)
         {
-            return new RoleForCreationDomain
+            return new RolesDomain
             {
-                Name = rolesEntity.Name
+                Id = rolesEntity.Id,
+                RoleName = rolesEntity.RoleName,
+                IsDefault = rolesEntity.IsDefault,
+                CreatorId = rolesEntity.CreatorId,
+                DateCreated = rolesEntity.DateCreated,
+                UpdatorId = rolesEntity.UpdatorId,
+                DateUpdated = rolesEntity.DateUpdated
             };
-        }
-
-        public static AssignRolesToUserDomain ToDomain(this AssignRolesToUserRequest rolesEntity)
-        {
-            return new AssignRolesToUserDomain
-            {
-                UserId = rolesEntity.UserId,
-                Roles = rolesEntity.Roles
-            };
-        }
-
-        public static HackneyTokenDomain ToDomain(this HackneyTokenRequest rolesEntity)
-        {
-            return _mapper.Map<HackneyTokenDomain>(rolesEntity);
         }
 
         #endregion Roles
@@ -431,20 +419,32 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion HomeCareServiceTypes
 
-        #region ServiceUsers
+        #region Users
 
-        public static UserForRegistrationDomain ToDomain(this UserForRegistrationRequest usersEntity)
+        public static UsersDomain ToDomain(this UsersRequest usersEntity)
         {
-            return new UserForRegistrationDomain
+            return new UsersDomain
             {
-                Name = $"{usersEntity.FirstName} {usersEntity.LastName}",
-                Email = usersEntity.Email,
-                Password = usersEntity.Password,
-                ConfirmPassword = usersEntity.ConfirmPassword
+                Id = usersEntity.Id,
+                FirstName = usersEntity.FirstName,
+                MiddleName = usersEntity.MiddleName,
+                LastName = usersEntity.LastName,
+                HackneyId = usersEntity.HackneyId,
+                AddressLine1 = usersEntity.AddressLine1,
+                AddressLine2 = usersEntity.AddressLine2,
+                AddressLine3 = usersEntity.AddressLine3,
+                Town = usersEntity.Town,
+                County = usersEntity.County,
+                PostCode = usersEntity.PostCode,
+                RoleId = usersEntity.RoleId,
+                CreatorId = usersEntity.CreatorId,
+                DateCreated = usersEntity.DateCreated,
+                UpdatorId = usersEntity.UpdatorId,
+                DateUpdated = usersEntity.DateUpdated
             };
         }
 
-        #endregion ServiceUsers
+        #endregion Users
 
         #region PackageStatus
 

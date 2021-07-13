@@ -1,13 +1,13 @@
-using System;
-using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
+namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
     [Route("api/v1/users")]
     [Produces("application/json")]
@@ -16,15 +16,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
     [ApiVersion("1.0")]
     public class UserController : BaseController
     {
-        private readonly IRegisterUserUseCase _registerUserUseCase;
+        private readonly IUpsertUsersUseCase _upsertUsersUseCase;
         private readonly IGetUsersUseCase _getUsersUseCase;
         private readonly IDeleteUsersUseCase _deleteUsersUseCase;
 
-        public UserController(IRegisterUserUseCase registerUserUseCase,
+        public UserController(IUpsertUsersUseCase upsertUsersUseCase,
             IGetUsersUseCase getUsersUseCase,
             IDeleteUsersUseCase deleteUsersUseCase)
         {
-            _registerUserUseCase = registerUserUseCase;
+            _upsertUsersUseCase = upsertUsersUseCase;
             _getUsersUseCase = getUsersUseCase;
             _deleteUsersUseCase = deleteUsersUseCase;
         }
@@ -36,11 +36,20 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        public async Task<ActionResult<UsersResponse>> RegisterUser([FromBody] UserForRegistrationRequest usersRequest)
+        public async Task<ActionResult<UsersResponse>> Create(UsersRequest usersRequest)
         {
-            var userForRegistrationDomain = usersRequest.ToDomain();
-            var res = await _registerUserUseCase.RegisterUserAsync(userForRegistrationDomain).ConfigureAwait(false);
-            return Ok(res);
+            try
+            {
+                var usersDomain = usersRequest.ToDomain();
+                var res = await _upsertUsersUseCase.ExecuteAsync(usersDomain).ConfigureAwait(false);
+                var usersResponse = res?.ToResponse();
+                if (usersResponse == null) return NotFound();
+                return Ok(usersResponse);
+            }
+            catch (FormatException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>Gets the specified user identifier.</summary>
@@ -55,7 +64,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
         public async Task<ActionResult<UsersResponse>> Get(Guid userId)
         {
             var res = await _getUsersUseCase.GetAsync(userId).ConfigureAwait(false);
-            return Ok(res);
+            return Ok(res?.ToResponse());
         }
 
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]

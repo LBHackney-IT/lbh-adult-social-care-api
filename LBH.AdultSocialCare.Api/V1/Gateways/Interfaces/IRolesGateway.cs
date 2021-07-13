@@ -1,19 +1,18 @@
-using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
 {
     public interface IRolesGateway
     {
-        public Task<RolesDomain> UpsertAsync(Role role);
+        public Task<Role> UpsertAsync(Role role);
 
-        public Task<RolesDomain> GetAsync(Guid roleId);
+        public Task<Role> GetAsync(int roleId);
 
-        public Task<IList<RolesDomain>> ListAsync();
+        public Task<IList<Role>> ListAsync();
 
-        public Task<bool> DeleteAsync(Guid roleId);
+        public Task<bool> DeleteAsync(int roleId);
     }
 }
