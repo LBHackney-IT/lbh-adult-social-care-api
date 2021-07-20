@@ -618,6 +618,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
+        public static IEnumerable<UsersDomain> ToDomain(this List<User> users)
+        {
+            return _mapper.Map<IEnumerable<UsersDomain>>(users);
+        }
+
         #endregion Users
 
         #region PackageStatus
@@ -652,5 +657,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion TimeSlotShifts
+
+        #region PrimarySupportReason
+
+        public static IEnumerable<PrimarySupportReasonDomain> ToDomain(this List<PrimarySupportReason> primarySupportReasons)
+        {
+            return _mapper.Map<IEnumerable<PrimarySupportReasonDomain>>(primarySupportReasons);
+        }
+
+        #endregion
     }
 }

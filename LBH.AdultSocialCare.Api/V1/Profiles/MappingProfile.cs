@@ -1,4 +1,5 @@
 using AutoMapper;
+using LBH.AdultSocialCare.Api.V1.Boundary.ApprovedPackagesBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApprovePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Request;
@@ -30,6 +31,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Resp
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.PrimarySupportReasonBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
@@ -46,10 +48,13 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Boundary.StageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.SubmittedPackageRequestsBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBillBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.BillDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
@@ -119,6 +124,9 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DayCarePackageForCreationRequest, DayCarePackageForCreationDomain>();
             CreateMap<DayCarePackageForUpdateRequest, DayCarePackageForUpdateDomain>();
             CreateMap<DayCarePackageDomain, DayCarePackageResponse>();
+            CreateMap<DayCarePackageDomain, EscortPackage>();
+            CreateMap<DayCarePackageDomain, TransportPackage>();
+            CreateMap<DayCarePackageDomain, TransportEscortPackage>();
 
             CreateMap<DayCarePackageOpportunityForCreationDomain, DayCarePackageOpportunity>();
             CreateMap<DayCarePackageOpportunityForUpdateDomain, DayCarePackageOpportunity>();
@@ -317,6 +325,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DayCarePackageForBrokerageDomain, DayCarePackageForBrokerageResponse>();
             CreateMap<DayCareBrokerageInfoForCreationRequest, DayCareBrokerageInfoForCreationDomain>();
             CreateMap<DayCareBrokerageInfoForCreationDomain, DayCareBrokerageInfo>();
+            CreateMap<DayCareBrokerageInfoDomain, DayCareBrokerageInfo>();
             CreateMap<DayCareBrokerageInfo, DayCareBrokerageInfoDomain>();
             CreateMap<DayCareBrokerageStageDomain, DayCareBrokerageStageResponse>();
 
@@ -416,6 +425,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             CreateMap<User, UsersDomain>();
             CreateMap<UsersDomain, UsersResponse>();
+            CreateMap<UsersMinimalDomain, UsersMinimalResponse>();
 
             #endregion Users
 
@@ -474,6 +484,32 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<HomeCarePackageSlotRequest, HomeCarePackageSlotDomain>();
 
             #endregion HomeCarePackageSlots
+
+            #region SupplierBill
+
+            CreateMap<SupplierBillDomain, SupplierBillResponse>();
+            CreateMap<SupplierBillItemDomain, SupplierBillItemResponse>();
+
+            #endregion SupplierBill
+
+            #region PrimarySupportReason
+
+            CreateMap<PrimarySupportReason, PrimarySupportReasonDomain>();
+            CreateMap<PrimarySupportReasonDomain, PrimarySupportReasonResponse>();
+
+            #endregion PrimarySupportReason
+
+            #region SubmittedPackageRequests
+
+            CreateMap<SubmittedPackageRequestsDomain, SubmittedPackageRequestsResponse>();
+
+            #endregion
+
+            #region ApprovedPackages
+
+            CreateMap<ApprovedPackagesDomain, ApprovedPackagesResponse>();
+
+            #endregion
         }
     }
 }

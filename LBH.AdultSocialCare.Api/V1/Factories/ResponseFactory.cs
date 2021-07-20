@@ -61,6 +61,11 @@ using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Boundary.ApprovedPackagesBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.PrimarySupportReasonBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.SubmittedPackageRequestsBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBillBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.BillDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -717,6 +722,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
+        public static IEnumerable<UsersMinimalResponse> ToResponse(this IEnumerable<UsersMinimalDomain> usersDomains)
+        {
+            return _mapper.Map<IEnumerable<UsersMinimalResponse>>(usersDomains);
+        }
+
         #endregion Users
 
         #region PackageStatus
@@ -751,5 +761,41 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion TimeSlotShifts
+
+        #region SupplierBill
+
+        public static SupplierBillResponse ToResponse(this SupplierBillDomain supplierBillDomain)
+        {
+            return _mapper.Map<SupplierBillResponse>(supplierBillDomain);
+        }
+
+        #endregion SupplierBill
+
+        #region PrimaryReasonSupport
+
+        public static IEnumerable<PrimarySupportReasonResponse> ToResponse(this IEnumerable<PrimarySupportReasonDomain> primarySupportReasonDomains)
+        {
+            return _mapper.Map<IEnumerable<PrimarySupportReasonResponse>>(primarySupportReasonDomains);
+        }
+
+        #endregion
+
+        #region SubmittedPackageRequests
+
+        public static IEnumerable<SubmittedPackageRequestsResponse> ToResponse(this IEnumerable<SubmittedPackageRequestsDomain> submittedPackageRequestsDomains)
+        {
+            return _mapper.Map<IEnumerable<SubmittedPackageRequestsResponse>>(submittedPackageRequestsDomains);
+        }
+
+        #endregion
+
+        #region ApprovedPackages
+
+        public static IEnumerable<ApprovedPackagesResponse> ToResponse(this IEnumerable<ApprovedPackagesDomain> approvedPackagesDomains)
+        {
+            return _mapper.Map<IEnumerable<ApprovedPackagesResponse>>(approvedPackagesDomains);
+        }
+
+        #endregion
     }
 }

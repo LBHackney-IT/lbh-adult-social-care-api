@@ -1,5 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.ApprovalHistoryGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCareCollegeGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways;
@@ -15,17 +16,22 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovalHistoryGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageReclaimGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareRequestMoreInformationGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityLengthOptionGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityTimesPerMonthOptionGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.PrimarySupportReasonGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovalHistoryGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageReclaimGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareRequestMoreInformationGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.SupplierBillGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.SupplierCostGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.TermTimeConsiderationOptionGateways;
@@ -78,6 +84,12 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IDayCarePackageReclaimGateway, DayCarePackageReclaimGateway>();
             services.AddScoped<INursingCarePackageReclaimGateway, NursingCarePackageReclaimGateway>();
             services.AddScoped<IResidentialCarePackageReclaimGateway, ResidentialCarePackageReclaimGateway>();
+            services.AddScoped<ISupplierBillGateway, SupplierBillGateway>();
+            services.AddScoped<IPrimarySupportReasonGateway, PrimarySupportReasonGateway>();
+            services.AddScoped<INursingCareBrokerageGateway, NursingCareBrokerageGateway>();
+            services.AddScoped<IResidentialCareBrokerageGateway, ResidentialCareBrokerageGateway>();
+            services.AddScoped<ISubmittedPackageRequestsGateway, SubmittedPackageRequestsGateway>();
+            services.AddScoped<IApprovedPackagesGateway, ApprovedPackagesGateway>();
         }
     }
 }
