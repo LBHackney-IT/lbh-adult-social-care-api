@@ -21,7 +21,7 @@ terraform {
 /*    POSTGRES SET UP    */
 data "aws_vpc" "production_vpc" {
   tags = {
-    Name = "mosaic-prod"
+    Name = "Mosaic-prod"
   }
 }
 data "aws_subnet_ids" "production_private_subnets" {
