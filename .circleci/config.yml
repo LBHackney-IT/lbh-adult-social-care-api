@@ -28,6 +28,8 @@ commands:
     parameters:
       aws-account:
         type: string
+      account-role:
+        type: string
     steps:
       - checkout
       - aws_assume_role/assume_role:
@@ -191,9 +193,6 @@ workflows:
       jobs:      
       - check-code-formatting
       - build-and-test
-          # filters:
-            # branches:
-              # only: develop
       - assume-role-staging:
           context: mosaic-staging-context
           requires:
