@@ -47,13 +47,16 @@ namespace HttpServices.Services.Concrete
             return res;
         }
 
-        private async Task<Guid?> CreateNewPayRun(string payRunName)
+        private async Task<Guid?> CreateNewPayRun(string payRunName, PayRunForCreationRequest payRunForCreationRequest)
         {
+            var body = JsonConvert.SerializeObject(payRunForCreationRequest);
+            var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
             var httpRequestMessage = new HttpRequestMessage()
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/{payRunName}"),
-                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } },
+                Content = requestContent
             };
 
             var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
@@ -71,33 +74,33 @@ namespace HttpServices.Services.Concrete
             return res;
         }
 
-        public async Task<Guid?> CreateResidentialRecurringPayRun()
+        public async Task<Guid?> CreateResidentialRecurringPayRun(PayRunForCreationRequest payRunForCreationRequest)
         {
-            var res = await CreateNewPayRun("ResidentialRecurring").ConfigureAwait(false);
+            var res = await CreateNewPayRun("ResidentialRecurring", payRunForCreationRequest).ConfigureAwait(false);
             return res;
         }
 
-        async Task<Guid?> ITransactionsService.CreateDirectPaymentsPayRun()
+        async Task<Guid?> ITransactionsService.CreateDirectPaymentsPayRun(PayRunForCreationRequest payRunForCreationRequest)
         {
-            var res = await CreateNewPayRun("DirectPayments").ConfigureAwait(false);
+            var res = await CreateNewPayRun("DirectPayments", payRunForCreationRequest).ConfigureAwait(false);
             return res;
         }
 
-        async Task<Guid?> ITransactionsService.CreateHomeCarePayRun()
+        async Task<Guid?> ITransactionsService.CreateHomeCarePayRun(PayRunForCreationRequest payRunForCreationRequest)
         {
-            var res = await CreateNewPayRun("HomeCare").ConfigureAwait(false);
+            var res = await CreateNewPayRun("HomeCare", payRunForCreationRequest).ConfigureAwait(false);
             return res;
         }
 
-        public async Task<Guid?> CreateResidentialReleaseHoldsPayRun()
+        public async Task<Guid?> CreateResidentialReleaseHoldsPayRun(PayRunForCreationRequest payRunForCreationRequest)
         {
-            var res = await CreateNewPayRun("ResidentialReleaseHolds").ConfigureAwait(false);
+            var res = await CreateNewPayRun("ResidentialReleaseHolds", payRunForCreationRequest).ConfigureAwait(false);
             return res;
         }
 
-        async Task<Guid?> ITransactionsService.CreateDirectPaymentsReleaseHoldsPayRun()
+        async Task<Guid?> ITransactionsService.CreateDirectPaymentsReleaseHoldsPayRun(PayRunForCreationRequest payRunForCreationRequest)
         {
-            var res = await CreateNewPayRun("DirectPaymentsReleaseHolds").ConfigureAwait(false);
+            var res = await CreateNewPayRun("DirectPaymentsReleaseHolds", payRunForCreationRequest).ConfigureAwait(false);
             return res;
         }
 

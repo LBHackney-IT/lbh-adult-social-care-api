@@ -39,9 +39,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
 
         [HttpPost("pay-runs/{payRunType}")]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> CreatePayRun(string payRunType)
+        public async Task<IActionResult> CreatePayRun(string payRunType, [FromBody] PayRunForCreationRequest payRunForCreationRequest)
         {
-            var result = await _payRunUseCase.CreateNewPayRunUseCase(payRunType).ConfigureAwait(false);
+            var result = await _payRunUseCase.CreateNewPayRunUseCase(payRunType, payRunForCreationRequest).ConfigureAwait(false);
             return Ok(result);
         }
 

@@ -11,15 +11,15 @@ namespace HttpServices.Services.Contracts
     {
         Task<IEnumerable<DepartmentResponse>> GetPaymentDepartments();
 
-        Task<Guid?> CreateResidentialRecurringPayRun();
+        Task<Guid?> CreateResidentialRecurringPayRun(PayRunForCreationRequest payRunForCreationRequest);
 
-        Task<Guid?> CreateDirectPaymentsPayRun();
+        Task<Guid?> CreateDirectPaymentsPayRun(PayRunForCreationRequest payRunForCreationRequest);
 
-        Task<Guid?> CreateHomeCarePayRun();
+        Task<Guid?> CreateHomeCarePayRun(PayRunForCreationRequest payRunForCreationRequest);
 
-        Task<Guid?> CreateResidentialReleaseHoldsPayRun();
+        Task<Guid?> CreateResidentialReleaseHoldsPayRun(PayRunForCreationRequest payRunForCreationRequest);
 
-        Task<Guid?> CreateDirectPaymentsReleaseHoldsPayRun();
+        Task<Guid?> CreateDirectPaymentsReleaseHoldsPayRun(PayRunForCreationRequest payRunForCreationRequest);
 
         Task<PagedPayRunSummaryResponse> GetPayRunSummaryList(PayRunSummaryListParameters parameters);
 
