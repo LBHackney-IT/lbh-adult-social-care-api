@@ -15,10 +15,14 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants
         public const int RequestMoreInformationId = 3;
         public const string PackageApproved = "Care package Approved by ";
         public const int PackageApprovedId = 4;
-        public const string ApprovedForBrokerage = "Care Package Approved for Brokerage by ";
-        public const int ApprovedForBrokerageId = 6;
         public const string PackageBrokered = "Care Package Brokered by ";
-        public const int PackageBrokeredId = 8;
+        public const int PackageBrokeredId = 5;
+        public const string ApprovedForCommercial = "Care Package Approved for Commercial by ";
+        public const int ApprovedForCommercialId = 6;
+        public const string ClarifyingCommercials = "Clarifying Commercials requested by ";
+        public const int ClarifyingCommercialsId = 7;
+        public const string ApprovedForBrokerage = "Care Package Approved for Brokerage by ";
+        public const int ApprovedForBrokerageId = 8;
         public const string BrokeredDealRejected = "Care Package rejected by ";
         public const int BrokeredDealRejectedId = 10;
 
