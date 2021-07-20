@@ -14,21 +14,21 @@ terraform {
     bucket  = "lbh-mosaic-terraform-state-production"
     encrypt = true
     region  = "eu-west-2"
-    key     = "services/adult-social-care-api/state"
+    key     = "services/social-care-care-packages-api/state"
   }
 }
 
 /*    POSTGRES SET UP    */
 data "aws_vpc" "production_vpc" {
   tags = {
-    Name = "mosaic-stg"
+    Name = "mosaic-prod"
   }
 }
 data "aws_subnet_ids" "production_private_subnets" {
   vpc_id = data.aws_vpc.production_vpc.id
   filter {
     name   = "tag:Name"
-    values = ["mosaic-stg-private-eu-west-2a", "mosaic-stg-private-eu-west-2b"]
+    values = ["Mosaic-prod-private-eu-west-2a", "Mosaic-prod-private-eu-west-2b"]
   }
 }
 
@@ -44,7 +44,7 @@ module "postgres_db_production" {
     source = "github.com/LBHackney-IT/aws-hackney-common-terraform.git//modules/database/postgres"
     environment_name = "production"
     vpc_id = data.aws_vpc.production_vpc.id
-    db_identifier = "adult-social-care-db"
+    db_identifier = "social-care-care-packages-db"
     db_name = "hasc_db"
     db_port  = 5829
     subnet_ids = data.aws_subnet_ids.production_private_subnets.ids
@@ -56,7 +56,7 @@ module "postgres_db_production" {
     db_username = data.aws_ssm_parameter.hasc_postgres_username.value
     db_password = data.aws_ssm_parameter.hasc_postgres_db_password.value
     storage_encrypted = true
-    multi_az = false //only true if production deployment
+    multi_az = true //only true if production deployment
     publicly_accessible = false
-    project_name = "adult social care api"
+    project_name = "social care care packages api"
 }
