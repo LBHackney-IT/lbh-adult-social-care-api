@@ -12,6 +12,8 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains
         /// </summary>
         public int Id { get; set; }
 
+        public int StatusId { get; set; }
+
         /// <summary>
         /// Gets or sets the Residential Care Package Id
         /// </summary>
@@ -31,5 +33,8 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains
         /// Gets or sets the Log Text
         /// </summary>
         public string LogText { get; set; }
+
+        public string LogSubText { get; set; }
+        public string CreatorRole { get; set; }
     }
 }

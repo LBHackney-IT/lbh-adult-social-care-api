@@ -27,9 +27,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
                 await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
                 return entry.Entity.ToDomain();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new DbSaveFailedException("Could not save supplier to database");
+                throw new DbSaveFailedException("Could not save supplier to database" + ex.Message);
             }
         }
 
@@ -47,23 +47,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
                 throw new EntityNotFoundException($"Could not find the Residential Care Package {residentialCarePackageId}");
             }
 
-            var residentialCareBrokerageInfoDomain = await _databaseContext.ResidentialCareBrokerageInfos
-                .Where(item => item.ResidentialCarePackageId == residentialCarePackageId)
-                .Select(ncb => new ResidentialCareBrokerageInfoDomain
-                {
-                    ResidentialCarePackageId = ncb.ResidentialCarePackageId,
-                    ResidentialCarePackage = residentialCarePackage.ToDomain(),
-                    ResidentialCore = ncb.ResidentialCore,
-                    AdditionalNeedsPayment = ncb.AdditionalNeedsPayment,
-                    AdditionalNeedsPaymentOneOff = ncb.AdditionalNeedsPaymentOneOff,
-                    CreatorId = ncb.CreatorId,
-                    UpdatorId = ncb.UpdatorId
-                })
-                .AsNoTracking()
-                .FirstOrDefaultAsync()
-                .ConfigureAwait(false);
-
-            return residentialCareBrokerageInfoDomain;
+            return new ResidentialCareBrokerageInfoDomain
+            {
+                ResidentialCarePackageId = residentialCarePackageId,
+                ResidentialCarePackage = residentialCarePackage.ToDomain(),
+            };
         }
     }
 }

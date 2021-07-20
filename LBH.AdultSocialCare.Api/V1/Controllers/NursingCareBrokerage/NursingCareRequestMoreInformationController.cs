@@ -57,7 +57,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
             var nursingCareBrokerageCreationDomain = nursingCareRequestMoreInformationForCreationRequest.ToDomain();
             var result = await _createNursingCareRequestMoreInformationUseCase.Execute(nursingCareBrokerageCreationDomain).ConfigureAwait(false);
             await _changeStatusNursingCarePackageUseCase
-                .UpdateAsync(nursingCareRequestMoreInformationForCreationRequest.NursingCarePackageId, ApprovalHistoryConstants.RequestMoreInformationId)
+                .UpdateAsync(nursingCareRequestMoreInformationForCreationRequest.NursingCarePackageId, ApprovalHistoryConstants.RequestMoreInformationId, nursingCareRequestMoreInformationForCreationRequest.InformationText)
                 .ConfigureAwait(false);
             return Ok(result);
         }
