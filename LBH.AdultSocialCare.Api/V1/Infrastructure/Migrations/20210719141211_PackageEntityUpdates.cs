@@ -33,7 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "DateUpdated",
                 table: "HomeCarePackage");
 
-            
+
         }
     }
 }
