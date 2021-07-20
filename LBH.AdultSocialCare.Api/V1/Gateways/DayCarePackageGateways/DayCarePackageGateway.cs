@@ -50,9 +50,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
 
                 return entry.Entity.HistoryId;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new DbSaveFailedException("Could not save day care package history to database");
+                throw new DbSaveFailedException("Could not save day care package history to database " + ex.Message);
             }
         }
 
@@ -88,7 +88,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
                 .Include(dc => dc.Client)
                 .Include(dc => dc.TermTimeConsiderationOption)
                 .Include(dc => dc.Creator)
-                .ThenInclude(cr => cr.Role)
                 .Include(dc => dc.Updater)
                 .SingleOrDefaultAsync().ConfigureAwait(false);
 
@@ -347,6 +346,45 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
                 .AsNoTracking()
                 .ToListAsync().ConfigureAwait(false);
             return dayCarePackages?.ToDomain();
+        }
+
+        public async Task CreateEscortPackage(EscortPackage escortPackage)
+        {
+            var entry = await _dbContext.EscortPackages.AddAsync(escortPackage).ConfigureAwait(false);
+            try
+            {
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                throw new DbSaveFailedException("Could not create escort package");
+            }
+        }
+
+        public async Task CreateTransportPackage(TransportPackage transportPackage)
+        {
+            var entry = await _dbContext.TransportPackages.AddAsync(transportPackage).ConfigureAwait(false);
+            try
+            {
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                throw new DbSaveFailedException("Could not create transport package");
+            }
+        }
+
+        public async Task CreateTransportEscortPackage(TransportEscortPackage transportEscortPackage)
+        {
+            var entry = await _dbContext.TransportEscortPackages.AddAsync(transportEscortPackage).ConfigureAwait(false);
+            try
+            {
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                throw new DbSaveFailedException("Could not create transport escort package");
+            }
         }
     }
 }

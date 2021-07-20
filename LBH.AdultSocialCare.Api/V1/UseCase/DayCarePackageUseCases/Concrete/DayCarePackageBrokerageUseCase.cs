@@ -45,7 +45,25 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete
             }
             var brokerageInfoEntity = dayCareBrokerageInfoForCreationDomain.ToDb();
             var id = await _dayCareBrokerageInfoGateway.CreateDayCareBrokerageInfo(brokerageInfoEntity).ConfigureAwait(false);
+            var brokerageInfoDomain = await _dayCareBrokerageInfoGateway.GetDayCareBrokerageInfoForPackage(brokerageInfoEntity.DayCarePackageId).ConfigureAwait(false);
+            // Update escort, transport or transport escort packages
+            await UpdateSubPackages(brokerageInfoDomain).ConfigureAwait(false);
             return id;
+        }
+
+        private async Task UpdateSubPackages(DayCareBrokerageInfoDomain dayCareBrokerageInfo)
+        {
+            if (dayCareBrokerageInfo.EscortSupplierId != null)
+                await _dayCareBrokerageInfoGateway.UpdateEscortPackage(dayCareBrokerageInfo.ToDb())
+                    .ConfigureAwait(false);
+
+            if (dayCareBrokerageInfo.TransportSupplierId != null)
+                await _dayCareBrokerageInfoGateway.UpdateTransportPackage(dayCareBrokerageInfo.ToDb())
+                    .ConfigureAwait(false);
+
+            if (dayCareBrokerageInfo.TransportEscortSupplierId != null)
+                await _dayCareBrokerageInfoGateway.UpdateTransportEscortPackage(dayCareBrokerageInfo.ToDb())
+                    .ConfigureAwait(false);
         }
     }
 }
