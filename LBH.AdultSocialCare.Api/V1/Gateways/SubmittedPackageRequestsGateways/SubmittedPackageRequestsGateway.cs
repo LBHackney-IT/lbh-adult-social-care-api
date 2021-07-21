@@ -68,7 +68,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
                     StatusName = rc.Status.StatusName,
                     Approver = rc.ResidentialCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.PackageApprovedId)
-                        .Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        .Select(x => $"{x.Creator.Name}").SingleOrDefault(),
                     SubmittedDaysAgo =
                         rc.ResidentialCareApprovalHistories
                             .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
@@ -97,7 +97,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
                     StatusName = hp.Status.StatusName,
                     Approver = hp.HomeCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.PackageApprovedId)
-                        .Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        .Select(x => $"{x.Creator.Name}").SingleOrDefault(),
                     SubmittedDaysAgo =
                         hp.HomeCareApprovalHistories
                             .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
@@ -125,7 +125,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
                     Category = PackageTypesConstants.NursingCarePackage,
                     StatusName = nc.Status.StatusName,
                     Approver = nc.NursingCareApprovalHistories.Where(x => x.StatusId == ApprovalHistoryConstants.PackageApprovedId).
-                        Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        Select(x => $"{x.Creator.Name}").SingleOrDefault(),
                     SubmittedDaysAgo =
                         nc.NursingCareApprovalHistories
                             .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
@@ -152,7 +152,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
                     Category = PackageTypesConstants.DayCarePackage,
                     StatusName = dc.Status.StatusName,
                     Approver = dc.DayCareApprovalHistories.Where(x => x.PackageStatusId == ApprovalHistoryConstants.PackageApprovedId).
-                        Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        Select(x => $"{x.Creator.Name}").SingleOrDefault(),
                     SubmittedDaysAgo =
                         dc.DayCareApprovalHistories
                             .Where(x => x.PackageStatusId == ApprovalHistoryConstants.SubmittedForApprovalId)

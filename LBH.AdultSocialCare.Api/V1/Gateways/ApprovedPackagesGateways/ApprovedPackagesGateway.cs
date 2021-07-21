@@ -84,10 +84,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
                     PackageTypeId = PackageTypesConstants.ResidentialCarePackageId,
                     Approver = rc.ResidentialCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.PackageApprovedId)
-                        .Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        .Select(x => x.Creator.Name).SingleOrDefault(),
                     SubmittedBy = rc.ResidentialCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
-                        .Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        .Select(x => x.Creator.Name).SingleOrDefault(),
                     LastUpdated = rc.DateUpdated,
                     CareValue = _databaseContext.ResidentialCareBrokerageInfos
                             .Where(x => x.ResidentialCarePackageId == rc.Id)
@@ -114,10 +114,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
                     PackageTypeId = PackageTypesConstants.HomeCarePackageId,
                     Approver = hc.HomeCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.PackageApprovedId)
-                        .Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        .Select(x => x.Creator.Name).SingleOrDefault(),
                     SubmittedBy = hc.HomeCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
-                        .Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        .Select(x => x.Creator.Name).SingleOrDefault(),
                     LastUpdated = hc.DateUpdated,
                     CareValue = _databaseContext.HomeCarePackageCosts
                         .Where(x => x.HomeCarePackageId == hc.Id)
@@ -144,10 +144,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
                     PackageTypeId = PackageTypesConstants.NursingCarePackageId,
                     Approver = nc.NursingCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.PackageApprovedId)
-                        .Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        .Select(x => x.Creator.Name).SingleOrDefault(),
                     SubmittedBy = nc.NursingCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
-                        .Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        .Select(x => x.Creator.Name).SingleOrDefault(),
                     LastUpdated = nc.DateUpdated,
                     CareValue = _databaseContext.NursingCareBrokerageInfos
                         .Where(x => x.NursingCarePackageId == nc.Id)
@@ -174,10 +174,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
                     PackageTypeId = PackageTypesConstants.DayCarePackageId,
                     Approver = dc.DayCareApprovalHistories
                         .Where(x => x.PackageStatusId == ApprovalHistoryConstants.PackageApprovedId)
-                        .Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        .Select(x => x.Creator.Name).SingleOrDefault(),
                     SubmittedBy = dc.DayCareApprovalHistories
                         .Where(x => x.PackageStatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
-                        .Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        .Select(x => x.Creator.Name).SingleOrDefault(),
                     LastUpdated = dc.DateUpdated,
                     CareValue = _databaseContext.DayCareBrokerageInfo
                         .Where(x => x.DayCarePackageId == dc.DayCarePackageId)

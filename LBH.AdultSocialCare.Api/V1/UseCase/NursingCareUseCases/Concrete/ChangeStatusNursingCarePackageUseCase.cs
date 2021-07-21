@@ -39,8 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
                 NursingCarePackageId = nursingCarePackageId,
                 StatusId = statusId,
                 ApprovedDate = DateTimeOffset.Now,
-                LogText = $"{logText} {user.Name}"
-                CreatorRole = user.Role.RoleName,
+                LogText = $"{logText} {user.Name}",
                 LogSubText = requestMoreInformation,
                 UserId = user.Id
             };

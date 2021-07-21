@@ -73,7 +73,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
                         .Select(x => x.UserId).SingleOrDefault(),
                     Owner = rc.ResidentialCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.PackageBrokeredId)
-                        .Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        .Select(x => x.Creator.Name).SingleOrDefault(),
                     StartDate = rc.StartDate,
                     Stage = rc.Stage.StageName,
                     DaysSinceApproval = rc.ResidentialCareApprovalHistories
@@ -106,7 +106,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
                         .Select(x => x.UserId).SingleOrDefault(),
                     Owner = hc.HomeCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.PackageBrokeredId)
-                        .Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        .Select(x => x.Creator.Name).SingleOrDefault(),
                     StartDate = hc.StartDate,
                     Stage = hc.Stage.StageName,
                     DaysSinceApproval = hc.HomeCareApprovalHistories
@@ -139,7 +139,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
                         .Select(x => x.UserId).SingleOrDefault(),
                     Owner = nc.NursingCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.PackageBrokeredId)
-                        .Select(x => $"{x.Creator.FirstName} {x.Creator.MiddleName} {x.Creator.LastName}").SingleOrDefault(),
+                        .Select(x => x.Creator.Name).SingleOrDefault(),
                     StartDate = nc.StartDate,
                     Stage = nc.Stage.StageName,
                     DaysSinceApproval = nc.NursingCareApprovalHistories
