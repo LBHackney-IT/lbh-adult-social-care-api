@@ -37,11 +37,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
         public async Task<IEnumerable<UsersMinimalDomain>> GetUsers(int roleId)
         {
             var res = await _databaseContext.Users
-                .Where(x => x.RoleId == roleId)
                 .Select(x => new UsersMinimalDomain()
                 {
                     Id = x.Id,
-                    UserName = $"{x.FirstName} {x.MiddleName} {x.LastName}"
+                    UserName = x.Name
                 }
                 )
                 .ToListAsync().ConfigureAwait(false);
