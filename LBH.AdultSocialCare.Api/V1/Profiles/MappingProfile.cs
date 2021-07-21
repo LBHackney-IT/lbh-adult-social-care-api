@@ -373,6 +373,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<NursingCareRequestMoreInformationDomain, NursingCareRequestMoreInformationForCreationRequest>();
             CreateMap<NursingCareRequestMoreInformationDomain, NursingCareRequestMoreInformation>();
             CreateMap<NursingCareRequestMoreInformation, NursingCareRequestMoreInformationDomain>();
+            CreateMap<NursingCareRequestMoreInformationDomain, NursingCareRequestMoreInformation>();
             CreateMap<NursingCareBrokerageInfo, NursingCareBrokerageInfoDomain>();
             CreateMap<NursingCareBrokerageInfoDomain, NursingCareBrokerageInfo>();
             CreateMap<NursingCareBrokerageInfoDomain, NursingCareBrokerageInfoResponse>();
@@ -394,6 +395,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ResidentialCareApprovalHistoryDomain, ResidentialCareApprovalHistoryResponse>();
             CreateMap<ResidentialCareRequestMoreInformationForCreationRequest, ResidentialCareRequestMoreInformationDomain>();
             CreateMap<ResidentialCareRequestMoreInformationDomain, ResidentialCareRequestMoreInformationForCreationRequest>();
+            CreateMap<ResidentialCareRequestMoreInformationDomain, ResidentialCareRequestMoreInformation>();
+            CreateMap<ResidentialCareRequestMoreInformation, ResidentialCareRequestMoreInformationDomain>();
             CreateMap<ResidentialCareBrokerageInfo, ResidentialCareBrokerageInfoDomain>();
             CreateMap<ResidentialCareBrokerageInfoDomain, ResidentialCareBrokerageInfo>();
             CreateMap<ResidentialCareBrokerageInfoDomain, ResidentialCareBrokerageInfoResponse>();

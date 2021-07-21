@@ -34,20 +34,17 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways
                 throw new ApiException($"Could not find the Nursing Care Package {nursingCarePackageId}");
             }
 
-            var costOfCare = await _databaseContext.NursingCareBrokerageInfos
-                .Where(a => a.NursingCarePackageId.Equals(nursingCarePackageId))
-                .Select(a => a.NursingCore)
-                .SingleOrDefaultAsync().ConfigureAwait(false);
+            var costOfCare = Math.Round(await _databaseContext.NursingCareBrokerageInfos
+                .AverageAsync(nc => nc.NursingCore)
+                .ConfigureAwait(false),2);
 
-            var costOfAdditionalNeeds = await _databaseContext.NursingCareBrokerageInfos
-                .Where(a => a.NursingCarePackageId.Equals(nursingCarePackageId))
-                .Select(a => a.AdditionalNeedsPayment)
-                .SingleOrDefaultAsync().ConfigureAwait(false);
+            var costOfAdditionalNeeds = Math.Round(await _databaseContext.NursingCareBrokerageInfos
+                .AverageAsync(nc => nc.AdditionalNeedsPayment)
+                .ConfigureAwait(false),2);
 
-            var costOfOneOff = await _databaseContext.NursingCareBrokerageInfos
-                .Where(a => a.NursingCarePackageId.Equals(nursingCarePackageId))
-                .Select(a => a.AdditionalNeedsPaymentOneOff)
-                .SingleOrDefaultAsync().ConfigureAwait(false);
+            var costOfOneOff = Math.Round(await _databaseContext.NursingCareBrokerageInfos
+                .AverageAsync(nc => nc.AdditionalNeedsPaymentOneOff)
+                .ConfigureAwait(false),2);
 
             var nursingCareApprovePackageDomain = new NursingCareApprovePackageDomain()
             {
