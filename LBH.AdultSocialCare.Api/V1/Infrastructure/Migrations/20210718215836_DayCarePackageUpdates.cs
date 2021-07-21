@@ -214,24 +214,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ResidentialCarePackageReclaims_ResidentialCarePackageId",
-                table: "ResidentialCarePackageReclaims",
-                column: "ResidentialCarePackageId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ResidentialCareApprovalHistories_ResidentialCarePackageId",
                 table: "ResidentialCareApprovalHistories",
                 column: "ResidentialCarePackageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ResidentialCareApprovalHistories_UserId",
-                table: "ResidentialCareApprovalHistories",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_NursingCarePackageReclaims_NursingCarePackageId",
-                table: "NursingCarePackageReclaims",
-                column: "NursingCarePackageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_NursingCareApprovalHistories_NursingCarePackageId",
@@ -239,29 +224,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 column: "NursingCarePackageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NursingCareApprovalHistories_UserId",
-                table: "NursingCareApprovalHistories",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HomeCarePackageReclaims_HomeCarePackageId",
-                table: "HomeCarePackageReclaims",
-                column: "HomeCarePackageId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_HomeCareApprovalHistories_HomeCarePackageId",
                 table: "HomeCareApprovalHistories",
                 column: "HomeCarePackageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HomeCareApprovalHistories_UserId",
-                table: "HomeCareApprovalHistories",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DayCarePackageReclaims_DayCarePackageId",
-                table: "DayCarePackageReclaims",
-                column: "DayCarePackageId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Clients_PrimarySupportReasonId",
@@ -322,32 +287,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_DayCarePackageReclaims_DayCarePackages_DayCarePackageId",
-                table: "DayCarePackageReclaims",
-                column: "DayCarePackageId",
-                principalTable: "DayCarePackages",
-                principalColumn: "DayCarePackageId",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_HomeCareApprovalHistories_HomeCarePackage_HomeCarePackageId",
                 table: "HomeCareApprovalHistories",
-                column: "HomeCarePackageId",
-                principalTable: "HomeCarePackage",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_HomeCareApprovalHistories_Users_UserId",
-                table: "HomeCareApprovalHistories",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_HomeCarePackageReclaims_HomeCarePackage_HomeCarePackageId",
-                table: "HomeCarePackageReclaims",
                 column: "HomeCarePackageId",
                 principalTable: "HomeCarePackage",
                 principalColumn: "Id",
@@ -362,40 +303,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_NursingCareApprovalHistories_Users_UserId",
-                table: "NursingCareApprovalHistories",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_NursingCarePackageReclaims_NursingCarePackages_NursingCareP~",
-                table: "NursingCarePackageReclaims",
-                column: "NursingCarePackageId",
-                principalTable: "NursingCarePackages",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_ResidentialCareApprovalHistories_ResidentialCarePackages_Re~",
                 table: "ResidentialCareApprovalHistories",
-                column: "ResidentialCarePackageId",
-                principalTable: "ResidentialCarePackages",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_ResidentialCareApprovalHistories_Users_UserId",
-                table: "ResidentialCareApprovalHistories",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_ResidentialCarePackageReclaims_ResidentialCarePackages_Resi~",
-                table: "ResidentialCarePackageReclaims",
                 column: "ResidentialCarePackageId",
                 principalTable: "ResidentialCarePackages",
                 principalColumn: "Id",
@@ -409,44 +318,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 table: "Clients");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_DayCarePackageReclaims_DayCarePackages_DayCarePackageId",
-                table: "DayCarePackageReclaims");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_HomeCareApprovalHistories_HomeCarePackage_HomeCarePackageId",
                 table: "HomeCareApprovalHistories");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_HomeCareApprovalHistories_Users_UserId",
-                table: "HomeCareApprovalHistories");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_HomeCarePackageReclaims_HomeCarePackage_HomeCarePackageId",
-                table: "HomeCarePackageReclaims");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_NursingCareApprovalHistories_NursingCarePackages_NursingCar~",
                 table: "NursingCareApprovalHistories");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_NursingCareApprovalHistories_Users_UserId",
-                table: "NursingCareApprovalHistories");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_NursingCarePackageReclaims_NursingCarePackages_NursingCareP~",
-                table: "NursingCarePackageReclaims");
-
-            migrationBuilder.DropForeignKey(
                 name: "FK_ResidentialCareApprovalHistories_ResidentialCarePackages_Re~",
                 table: "ResidentialCareApprovalHistories");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_ResidentialCareApprovalHistories_Users_UserId",
-                table: "ResidentialCareApprovalHistories");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_ResidentialCarePackageReclaims_ResidentialCarePackages_Resi~",
-                table: "ResidentialCarePackageReclaims");
 
             migrationBuilder.DropTable(
                 name: "EscortPackages");
@@ -461,44 +342,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "TransportPackages");
 
             migrationBuilder.DropIndex(
-                name: "IX_ResidentialCarePackageReclaims_ResidentialCarePackageId",
-                table: "ResidentialCarePackageReclaims");
-
-            migrationBuilder.DropIndex(
                 name: "IX_ResidentialCareApprovalHistories_ResidentialCarePackageId",
                 table: "ResidentialCareApprovalHistories");
-
-            migrationBuilder.DropIndex(
-                name: "IX_ResidentialCareApprovalHistories_UserId",
-                table: "ResidentialCareApprovalHistories");
-
-            migrationBuilder.DropIndex(
-                name: "IX_NursingCarePackageReclaims_NursingCarePackageId",
-                table: "NursingCarePackageReclaims");
 
             migrationBuilder.DropIndex(
                 name: "IX_NursingCareApprovalHistories_NursingCarePackageId",
                 table: "NursingCareApprovalHistories");
 
             migrationBuilder.DropIndex(
-                name: "IX_NursingCareApprovalHistories_UserId",
-                table: "NursingCareApprovalHistories");
-
-            migrationBuilder.DropIndex(
-                name: "IX_HomeCarePackageReclaims_HomeCarePackageId",
-                table: "HomeCarePackageReclaims");
-
-            migrationBuilder.DropIndex(
                 name: "IX_HomeCareApprovalHistories_HomeCarePackageId",
                 table: "HomeCareApprovalHistories");
-
-            migrationBuilder.DropIndex(
-                name: "IX_HomeCareApprovalHistories_UserId",
-                table: "HomeCareApprovalHistories");
-
-            migrationBuilder.DropIndex(
-                name: "IX_DayCarePackageReclaims_DayCarePackageId",
-                table: "DayCarePackageReclaims");
 
             migrationBuilder.DropIndex(
                 name: "IX_Clients_PrimarySupportReasonId",

@@ -104,19 +104,29 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "IX_Users_RoleId",
                 table: "Users");
 
-            migrationBuilder.DropPrimaryKey(
+            migrationBuilder.Sql(@"
+ALTER TABLE ""Roles"" ADD COLUMN ""IdTwo"" uuid;
+UPDATE ""Roles"" set ""IdTwo"" = '4defe6f2-09cf-43f2-8c1f-f4cad04a582d' where ""Id"" = 1;
+UPDATE ""Roles"" set ""IdTwo"" = '97c46919-fd10-47f1-bcb9-fa6b513c4c83' where ""Id"" = 2;
+ALTER TABLE ""Roles"" ALTER COLUMN ""IdTwo"" SET NOT NULL;
+ALTER TABLE ""Roles"" DROP CONSTRAINT IF EXISTS ""PK_Roles"" CASCADE;
+ALTER TABLE ""Roles"" DROP COLUMN ""Id"";
+ALTER TABLE ""Roles"" RENAME COLUMN ""IdTwo"" to ""Id"";
+            ");
+
+            /*migrationBuilder.DropPrimaryKey(
                 name: "PK_Roles",
-                table: "Roles");
+                table: "Roles");*/
 
             migrationBuilder.DeleteData(
                 table: "Roles",
                 keyColumn: "Id",
-                keyValue: 1);
+                keyValue: "4defe6f2-09cf-43f2-8c1f-f4cad04a582d");
 
             migrationBuilder.DeleteData(
                 table: "Roles",
                 keyColumn: "Id",
-                keyValue: 2);
+                keyValue: "97c46919-fd10-47f1-bcb9-fa6b513c4c83");
 
             migrationBuilder.DropColumn(
                 name: "AddressLine1",
@@ -209,16 +219,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
             migrationBuilder.RenameTable(
                 name: "Users",
                 newName: "AspNetUsers");
-
-            migrationBuilder.Sql(@"
-ALTER TABLE ""Roles"" ADD COLUMN ""IdTwo"" uuid;
-UPDATE ""Roles"" set ""IdTwo"" = '4defe6f2-09cf-43f2-8c1f-f4cad04a582d' where ""Id"" = 1;
-UPDATE ""Roles"" set ""IdTwo"" = '97c46919-fd10-47f1-bcb9-fa6b513c4c83' where ""Id"" = 2;
-ALTER TABLE ""Roles"" ALTER COLUMN ""IdTwo"" SET NOT NULL;
-ALTER TABLE ""Roles"" DROP CONSTRAINT IF EXISTS ""PK_Roles"" CASCADE;
-ALTER TABLE ""Roles"" DROP COLUMN ""Id"";
-ALTER TABLE ""Roles"" RENAME COLUMN ""IdTwo"" to ""Id"";
-            ");
 
             migrationBuilder.RenameTable(
                 name: "Roles",
