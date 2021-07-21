@@ -16,6 +16,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
@@ -32,6 +33,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -136,8 +138,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 ClientPreferredContact = nursingCarePackageEntity.Client?.PreferredContact,
                 ClientDateOfBirth = nursingCarePackageEntity.Client?.DateOfBirth,
                 StatusName = nursingCarePackageEntity.Status?.StatusName,
-                CreatorName = nursingCarePackageEntity.Creator != null ? $"{nursingCarePackageEntity.Creator.FirstName} {nursingCarePackageEntity.Creator.MiddleName} {nursingCarePackageEntity.Creator.LastName}" : null,
-                UpdaterName = nursingCarePackageEntity.Updater != null ? $"{nursingCarePackageEntity.Updater.FirstName} {nursingCarePackageEntity.Updater.MiddleName} {nursingCarePackageEntity.Updater.LastName}" : null,
+                CreatorName = nursingCarePackageEntity.Creator != null ? $"{nursingCarePackageEntity.Creator.Name}" : null,
+                UpdaterName = nursingCarePackageEntity.Updater != null ? $"{nursingCarePackageEntity.Updater.Name}" : null,
                 PackageName = "Nursing Care Package",
                 TypeOfCareHomeName = nursingCarePackageEntity.TypeOfCareHome?.TypeOfCareHomeName,
                 TypeOfStayOptionName = nursingCarePackageEntity.TypeOfStayOption?.OptionName,
@@ -221,8 +223,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 ClientPreferredContact = residentialCarePackageEntity.Client?.PreferredContact,
                 ClientDateOfBirth = residentialCarePackageEntity.Client?.DateOfBirth,
                 StatusName = residentialCarePackageEntity.Status?.StatusName,
-                CreatorName = residentialCarePackageEntity.Creator != null ? $"{residentialCarePackageEntity.Creator.FirstName} {residentialCarePackageEntity.Creator.MiddleName} {residentialCarePackageEntity.Creator.LastName}" : null,
-                UpdaterName = residentialCarePackageEntity.Updater != null ? $"{residentialCarePackageEntity.Updater.FirstName} {residentialCarePackageEntity.Updater.MiddleName} {residentialCarePackageEntity.Updater.LastName}" : null,
+                CreatorName = residentialCarePackageEntity.Creator != null ? $"{residentialCarePackageEntity.Creator.Name}" : null,
+                UpdaterName = residentialCarePackageEntity.Updater != null ? $"{residentialCarePackageEntity.Updater.Name}" : null,
                 PackageName = "Residential Care Package",
                 TypeOfCareHomeName = residentialCarePackageEntity.TypeOfCareHome?.TypeOfCareHomeName,
                 TypeOfStayOptionName = residentialCarePackageEntity.TypeOfStayOption?.OptionName,
@@ -560,17 +562,12 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         public static RolesDomain ToDomain(this Role roleEntity)
         {
-            return new RolesDomain
-            {
-                Id = roleEntity.Id,
-                RoleName = roleEntity.RoleName,
-                IsDefault = roleEntity.IsDefault,
-                Sequence = roleEntity.Sequence,
-                CreatorId = roleEntity.CreatorId,
-                DateCreated = roleEntity.DateCreated,
-                UpdatorId = roleEntity.UpdatorId,
-                DateUpdated = roleEntity.DateUpdated
-            };
+            return _mapper.Map<RolesDomain>(roleEntity);
+        }
+
+        public static IList<RolesDomain> ToDomain(this IEnumerable<Role> roleEntities)
+        {
+            return _mapper.Map<IList<RolesDomain>>(roleEntities);
         }
 
         #endregion Roles
@@ -592,29 +589,15 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion HomeCareServiceTypes
 
-        #region Users
+        #region ServiceUsers
 
         public static UsersDomain ToDomain(this User userEntity)
         {
             return new UsersDomain
             {
                 Id = userEntity.Id,
-                FirstName = userEntity.FirstName,
-                MiddleName = userEntity.MiddleName,
-                LastName = userEntity.LastName,
-                HackneyId = userEntity.HackneyId,
-                AddressLine1 = userEntity.AddressLine1,
-                AddressLine2 = userEntity.AddressLine2,
-                AddressLine3 = userEntity.AddressLine3,
-                Town = userEntity.Town,
-                County = userEntity.County,
-                PostCode = userEntity.PostCode,
-                RoleId = userEntity.RoleId,
-                Role = userEntity.Role,
-                CreatorId = userEntity.CreatorId,
-                DateCreated = userEntity.DateCreated,
-                UpdatorId = userEntity.UpdatorId,
-                DateUpdated = userEntity.DateUpdated
+                Name = userEntity.Name,
+                Email = userEntity.Email
             };
         }
 
@@ -623,7 +606,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<UsersDomain>>(users);
         }
 
-        #endregion Users
+        #endregion ServiceUsers
 
         #region PackageStatus
 

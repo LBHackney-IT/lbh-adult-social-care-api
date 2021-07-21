@@ -1,4 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways;
+using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.BrokeredPackagesUseCases.Concrete;
@@ -178,9 +180,10 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
 
             #region User
 
-            services.AddScoped<IUpsertUsersUseCase, UpsertUsersUseCase>();
+            services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
             services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
             services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();
+            services.AddScoped<IAuthUseCase, AuthUseCase>();
             services.AddScoped<IGetAllUsersUseCase, GetAllUsersUseCase>();
 
             #endregion User

@@ -1,8 +1,11 @@
 using Common.Exceptions.CustomExceptions;
+using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
+using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,44 +20,39 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             _databaseContext = databaseContext;
         }
 
-        public async Task<bool> DeleteAsync(int roleId)
+        public async Task<bool> DeleteAsync(Guid roleId)
         {
-            var result = _databaseContext.Roles.Remove(new Role
+            _databaseContext.Roles.Remove(new Role()
             { Id = roleId });
-            bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
+            var isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
             return isSuccess;
         }
 
-        public async Task<Role> GetAsync(int roleId)
+        public async Task<RolesDomain> GetAsync(Guid roleId)
         {
-            return await _databaseContext.Roles.FirstOrDefaultAsync(item => item.Id == roleId).ConfigureAwait(false);
+            var res = await _databaseContext.Roles.FirstOrDefaultAsync(item => item.Id == roleId).ConfigureAwait(false);
+            return res?.ToDomain();
         }
 
-        public async Task<IList<Role>> ListAsync()
+        public async Task<IList<RolesDomain>> ListAsync()
         {
-            return await _databaseContext.Roles.ToListAsync().ConfigureAwait(false);
+            var res = await _databaseContext.Roles.ToListAsync().ConfigureAwait(false);
+            return res.ToDomain();
         }
 
-        public async Task<Role> UpsertAsync(Role role)
+        public async Task<RolesDomain> UpsertAsync(Role role)
         {
-            Role roleToUpdate = await _databaseContext.Roles.FirstOrDefaultAsync(item => item.RoleName == role.RoleName).ConfigureAwait(false);
+            var roleToUpdate = await _databaseContext.Roles.FirstOrDefaultAsync(item => item.NormalizedName.Trim() == role.NormalizedName.Trim()).ConfigureAwait(false);
             if (roleToUpdate == null)
             {
-                roleToUpdate = new Role();
-                await _databaseContext.Roles.AddAsync(roleToUpdate).ConfigureAwait(false);
-                roleToUpdate.RoleName = role.RoleName;
-                roleToUpdate.Sequence = role.Sequence;
-                roleToUpdate.IsDefault = role.IsDefault;
-                roleToUpdate.CreatorId = role.CreatorId;
-                roleToUpdate.UpdatorId = role.UpdatorId;
-                roleToUpdate.DateUpdated = role.DateUpdated;
+                await _databaseContext.Roles.AddAsync(role).ConfigureAwait(false);
             }
             else
             {
-                throw new ApiException($"This record already exist Role Name: {role.RoleName}");
+                throw new EntityConflictException($"Role with name {role.Name} already exists");
             }
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
-            return roleToUpdate;
+            return role?.ToDomain();
         }
     }
 }

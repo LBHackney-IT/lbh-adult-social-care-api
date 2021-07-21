@@ -37,7 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
                 HomeCarePackageId = homeCarePackageId,
                 StatusId = statusId,
                 ApprovedDate = DateTimeOffset.Now,
-                LogText = $"{logText} {user.FirstName} {user.MiddleName} {user.LastName} - {user.Role.RoleName}",
+                LogText = $"{logText} {user.Name}"     
                 CreatorRole = user.Role.RoleName,
                 LogSubText = requestMoreInformation,
                 UserId = user.Id

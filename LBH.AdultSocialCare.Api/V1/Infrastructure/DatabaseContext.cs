@@ -1,13 +1,19 @@
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -15,15 +21,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
-    public class DatabaseContext : DbContext
+    public class DatabaseContext : IdentityDbContext<User, Role, Guid>
     {
         // TODO: rename DatabaseContext to reflect the data source it is representing. eg. MosaicContext.
         public DatabaseContext(DbContextOptions options)
@@ -40,13 +41,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<DayCarePackageStatus> DayCarePackageStatuses { get; set; }
         public DbSet<DayCareApprovalHistory> DayCareApprovalHistory { get; set; }
         public DbSet<Package> Packages { get; set; }
-        public DbSet<Role> Roles { get; set; }
         public DbSet<TimeSlotShifts> TimeSlotShifts { get; set; }
         public DbSet<HomeCarePackage> HomeCarePackage { get; set; }
         public DbSet<HomeCareServiceType> HomeCareServiceTypes { get; set; }
         public DbSet<HomeCareServiceTypeMinutes> HomeCareServiceTypeMinutes { get; set; }
         public DbSet<HomeCarePackageSlots> HomeCarePackageSlots { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<PackageStatus> PackageStatuses { get; set; }
         public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
@@ -111,9 +110,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed package types
             modelBuilder.ApplyConfiguration(new PackageTypesSeed());
 
-            // Seed role types
-            modelBuilder.ApplyConfiguration(new RoleTypesSeed());
-
             // Seed Type Of Nursing Care Home
             modelBuilder.ApplyConfiguration(new TypeOfNursingCareHomeSeed());
 
@@ -122,6 +118,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed User
             modelBuilder.ApplyConfiguration(new UserSeed());
+
+            // Seed Roles
+            modelBuilder.ApplyConfiguration(new RolesSeed());
+
+            // Seed User Roles
+            modelBuilder.ApplyConfiguration(new UserRolesSeed());
 
             // Seed Client
             modelBuilder.ApplyConfiguration(new ClientSeed());
@@ -291,7 +293,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 .Where(e => e.Entity is BaseEntity && e.State == EntityState.Modified)
                 .ToList();
 
-            Type baseEntityType = typeof(BaseEntity);
+            var baseEntityType = typeof(BaseEntity);
 
             IList<Type> entityTypes = entries.Select(item => item.GetType())
                 .Distinct()
@@ -300,7 +302,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             IList<EntityEntry> entitiesToUpdate = entries.Where(item => entityTypes.Contains(item.GetType())).ToList();
 
-            foreach (EntityEntry entityEntry in entitiesToUpdate)
+            foreach (var entityEntry in entitiesToUpdate)
             {
                 ((BaseEntity) entityEntry.Entity).DateUpdated = DateTimeOffset.UtcNow;
             }
