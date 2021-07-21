@@ -396,6 +396,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             #region BrokeredPackages
 
             services.AddScoped<IGetBrokeredPackagesUseCase, GetBrokeredPackagesUseCase>();
+            services.AddScoped<IAssignToUserUseCase, AssignToUserUseCase>();
 
             #endregion
         }
