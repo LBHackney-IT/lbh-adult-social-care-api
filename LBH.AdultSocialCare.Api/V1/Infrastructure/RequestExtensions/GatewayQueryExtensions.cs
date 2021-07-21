@@ -64,5 +64,32 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
                 (hackneyId.Equals(null) || h.Client.HackneyId == hackneyId) &&
                 (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId) &&
                 (clientId.Equals(null) || h.ClientId == clientId));
+
+        public static IQueryable<ResidentialCarePackage> FilterBrokeredResidentialCareList(this IQueryable<ResidentialCarePackage> residentialCarePackages, int? statusId, int? hackneyId, Guid? clientId,
+            Guid? socialWorkerId, int? stageId) =>
+            residentialCarePackages.Where(h =>
+                (statusId.Equals(null) || h.StatusId == statusId) &&
+                (hackneyId.Equals(null) || h.Client.HackneyId == hackneyId) &&
+                (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId) &&
+                (stageId.Equals(null) || h.StageId == stageId) &&
+                (clientId.Equals(null) || h.ClientId == clientId));
+
+        public static IQueryable<HomeCarePackage> FilterBrokeredHomeCareList(this IQueryable<HomeCarePackage> homeCarePackages, int? statusId, int? hackneyId, Guid? clientId,
+            Guid? socialWorkerId, int? stageId) =>
+            homeCarePackages.Where(h =>
+                (statusId.Equals(null) || h.StatusId == statusId) &&
+                (hackneyId.Equals(null) || h.Client.HackneyId == hackneyId) &&
+                (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId) &&
+                (stageId.Equals(null) || h.StageId == stageId) &&
+                (clientId.Equals(null) || h.ClientId == clientId));
+
+        public static IQueryable<NursingCarePackage> FilterBrokeredNursingCareList(this IQueryable<NursingCarePackage> nursingCarePackages, int? statusId, int? hackneyId, Guid? clientId,
+            Guid? socialWorkerId, int? stageId) =>
+            nursingCarePackages.Where(h =>
+                (statusId.Equals(null) || h.StatusId == statusId) &&
+                (hackneyId.Equals(null) || h.Client.HackneyId == hackneyId) &&
+                (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId) &&
+                (stageId.Equals(null) || h.StageId == stageId) &&
+                (clientId.Equals(null) || h.ClientId == clientId));
     }
 }

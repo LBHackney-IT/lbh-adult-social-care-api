@@ -90,30 +90,30 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         }
 
         [HttpGet("package-types")]
-        [ProducesResponseType(typeof(PackageResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<PackageResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<PackageResponse>> GetPackageTypes()
+        public async Task<ActionResult<IEnumerable<PackageResponse>>> GetPackageTypes()
         {
             var result = await _getAllPackageUseCase.GetAllAsync().ConfigureAwait(false);
             return Ok(result);
         }
 
         [HttpGet("social-workers")]
-        [ProducesResponseType(typeof(UsersResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<UsersMinimalResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<UsersResponse>> GetSocialWorkers()
+        public async Task<ActionResult<IEnumerable<UsersMinimalResponse>>> GetSocialWorkers()
         {
             var result = await _getAllUsersUseCase.GetUsers(UserRoleConstants.BrokerId).ConfigureAwait(false);
             return Ok(result);
         }
 
         [HttpGet("approvers")]
-        [ProducesResponseType(typeof(UsersResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<UsersMinimalResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<UsersResponse>> GetApprovers()
+        public async Task<ActionResult<IEnumerable<UsersMinimalResponse>>> GetApprovers()
         {
             var result = await _getAllUsersUseCase.GetUsers(UserRoleConstants.ApproverId).ConfigureAwait(false);
             return Ok(result);

@@ -62,6 +62,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
 using System.Collections.Generic;
 using System.Linq;
 using LBH.AdultSocialCare.Api.V1.Boundary.ApprovedPackagesBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.BrokeredPackagesBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.PrimarySupportReasonBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SubmittedPackageRequestsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBillBoundary.Response;
@@ -794,6 +795,15 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<ApprovedPackagesResponse> ToResponse(this IEnumerable<ApprovedPackagesDomain> approvedPackagesDomains)
         {
             return _mapper.Map<IEnumerable<ApprovedPackagesResponse>>(approvedPackagesDomains);
+        }
+
+        #endregion
+
+        #region ApprovedPackages
+
+        public static IEnumerable<BrokeredPackagesResponse> ToResponse(this IEnumerable<BrokeredPackagesDomain> brokeredPackagesDomains)
+        {
+            return _mapper.Map<IEnumerable<BrokeredPackagesResponse>>(brokeredPackagesDomains);
         }
 
         #endregion

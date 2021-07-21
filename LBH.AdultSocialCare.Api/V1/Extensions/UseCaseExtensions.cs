@@ -1,6 +1,8 @@
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.BrokeredPackagesUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.BrokeredPackagesUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Interfaces;
@@ -385,6 +387,12 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             #region ApprovedPackages
 
             services.AddScoped<IGetApprovedPackagesUseCase, GetApprovedPackagesUseCase>();
+
+            #endregion
+
+            #region BrokeredPackages
+
+            services.AddScoped<IGetBrokeredPackagesUseCase, GetBrokeredPackagesUseCase>();
 
             #endregion
         }

@@ -1,6 +1,7 @@
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.ApprovalHistoryGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCareCollegeGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways;
@@ -90,6 +91,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IResidentialCareBrokerageGateway, ResidentialCareBrokerageGateway>();
             services.AddScoped<ISubmittedPackageRequestsGateway, SubmittedPackageRequestsGateway>();
             services.AddScoped<IApprovedPackagesGateway, ApprovedPackagesGateway>();
+            services.AddScoped<IBrokeredPackagesGateway, BrokeredPackagesGateway>();
         }
     }
 }

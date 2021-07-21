@@ -23,8 +23,12 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants
         public const int ClarifyingCommercialsId = 7;
         public const string ApprovedForBrokerage = "Care Package Approved for Brokerage by ";
         public const int ApprovedForBrokerageId = 8;
+        public const string PackagePoIssued = "PO Issued by ";
+        public const int PackagePoIssuedId = 9;
         public const string BrokeredDealRejected = "Care Package rejected by ";
         public const int BrokeredDealRejectedId = 10;
+        public const string BrokeredEnded = "Package Ended";
+        public const int BrokeredEndedId = 11;
 
         public static string GetLogText(int statusId)
         {

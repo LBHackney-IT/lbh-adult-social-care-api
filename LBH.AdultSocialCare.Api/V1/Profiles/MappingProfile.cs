@@ -1,5 +1,6 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.ApprovedPackagesBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.BrokeredPackagesBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApprovePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Request;
@@ -508,6 +509,12 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             #region ApprovedPackages
 
             CreateMap<ApprovedPackagesDomain, ApprovedPackagesResponse>();
+
+            #endregion
+
+            #region BrokeredPackages
+
+            CreateMap<BrokeredPackagesDomain, BrokeredPackagesResponse>();
 
             #endregion
         }
