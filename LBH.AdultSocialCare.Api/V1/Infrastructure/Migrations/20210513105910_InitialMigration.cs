@@ -704,7 +704,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     IsOngoingPeriod = table.Column<bool>(nullable: false),
                     IsThisAnImmediateService = table.Column<bool>(nullable: false),
                     IsThisuserUnderS117 = table.Column<bool>(nullable: false),
-                    CreatorId = table.Column<int>(nullable: false),
+                    CreatorId = table.Column<Guid>(nullable: false),
                     UpdatorId = table.Column<int>(nullable: false),
                     StatusId = table.Column<int>(nullable: false),
                     StageId = table.Column<int>(nullable: true),

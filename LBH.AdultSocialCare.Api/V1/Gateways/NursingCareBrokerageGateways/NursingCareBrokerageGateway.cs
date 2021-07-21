@@ -47,26 +47,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways
                 throw new EntityNotFoundException($"Could not find the Nursing Care Package {nursingCarePackageId}");
             }
 
-            var nursingCareBrokerageInfoDomain = await _databaseContext.NursingCareBrokerageInfos
-                .Where(item => item.NursingCarePackageId == nursingCarePackageId)
-                .Select(ncb => new NursingCareBrokerageInfoDomain
-                {
-                    NursingCarePackageId = ncb.NursingCarePackageId,
-                    NursingCarePackage = nursingCarePackage.ToDomain(),
-                    NursingCore = ncb.NursingCore,
-                    AdditionalNeedsPayment = ncb.AdditionalNeedsPayment,
-                    AdditionalNeedsPaymentOneOff = ncb.AdditionalNeedsPaymentOneOff,
-                    CreatorId = ncb.CreatorId,
-                    UpdatorId = ncb.UpdatorId
-                })
-                .AsNoTracking()
-                .FirstOrDefaultAsync()
-                .ConfigureAwait(false) ?? new NursingCareBrokerageInfoDomain()
-                {
-                    NursingCarePackageId = nursingCarePackageId,
-                    NursingCarePackage = nursingCarePackage.ToDomain()
-                };
-            return nursingCareBrokerageInfoDomain;
+            return new NursingCareBrokerageInfoDomain()
+            {
+                NursingCarePackageId = nursingCarePackageId,
+                NursingCarePackage = nursingCarePackage.ToDomain(),
+            };
         }
     }
 }

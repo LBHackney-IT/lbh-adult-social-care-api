@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using ICreateResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.ICreateResidentialCarePackageUseCase;
 using IGetAllResidentialCareHomeTypeUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetAllResidentialCareHomeTypeUseCase;
 using IGetAllResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetAllResidentialCarePackageUseCase;
@@ -80,8 +81,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
             var residentialCarePackageResponse = await _createResidentialCarePackageUseCase.ExecuteAsync(residentialCarePackageForCreationDomain).ConfigureAwait(false);
             //Change status of package
             await _changeStatusResidentialCarePackageUseCase
-                .UpdateAsync(residentialCarePackageResponse.Id, 1)
+                .UpdateAsync(residentialCarePackageResponse.Id, ApprovalHistoryConstants.NewPackageId)
                 .ConfigureAwait(false);
+
+            await _changeStatusResidentialCarePackageUseCase
+                .UpdateAsync(residentialCarePackageResponse.Id, ApprovalHistoryConstants.SubmittedForApprovalId)
+                .ConfigureAwait(false);
+
             return Ok(residentialCarePackageResponse);
         }
 

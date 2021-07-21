@@ -33,6 +33,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         }
 
         public DbSet<DayCarePackage> DayCarePackages { get; set; }
+        public DbSet<EscortPackage> EscortPackages { get; set; }
+        public DbSet<TransportPackage> TransportPackages { get; set; }
+        public DbSet<TransportEscortPackage> TransportEscortPackages { get; set; }
         public DbSet<DayCareBrokerageInfo> DayCareBrokerageInfo { get; set; }
         public DbSet<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
         public DbSet<DayCarePackageStatus> DayCarePackageStatuses { get; set; }
@@ -78,6 +81,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<ResidentialCarePackageReclaim> ResidentialCarePackageReclaims { get; set; }
         public DbSet<NursingCareBrokerageInfo> NursingCareBrokerageInfos { get; set; }
         public DbSet<ResidentialCareBrokerageInfo> ResidentialCareBrokerageInfos { get; set; }
+        public DbSet<PrimarySupportReason> PrimarySupportReasons { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -150,6 +154,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed package reclaim from
             modelBuilder.ApplyConfiguration(new PackageReclaimFromSeed());
+
+            // Seed primary support reason
+            modelBuilder.ApplyConfiguration(new PrimarySupportReasonSeed());
 
             #endregion Database Seeds
 

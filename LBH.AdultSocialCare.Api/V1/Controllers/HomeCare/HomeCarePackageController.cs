@@ -136,6 +136,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
                     .UpdateAsync(homeCarePackageResponse.Id, ApprovalHistoryConstants.NewPackageId)
                     .ConfigureAwait(false);
 
+                await _changeStatusHomeCarePackageUseCase
+                    .UpdateAsync(homeCarePackageResponse.Id, ApprovalHistoryConstants.SubmittedForApprovalId)
+                    .ConfigureAwait(false);
+
                 return Ok(homeCarePackageResponse);
             }
             catch (FormatException ex)

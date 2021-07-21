@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
 {
@@ -144,5 +145,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
         public virtual ICollection<ResidentialCareAdditionalNeed> ResidentialCareAdditionalNeeds { get; set; }
 
         public virtual ICollection<ResidentialCarePackageReclaim> PackageReclaims { get; set; }
+        public ICollection<ResidentialCareApprovalHistory> ResidentialCareApprovalHistories { get; set; }
     }
 }

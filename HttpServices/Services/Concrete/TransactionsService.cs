@@ -646,5 +646,153 @@ namespace HttpServices.Services.Concrete
             var res = JsonConvert.DeserializeObject<bool>(content);
             return res;
         }
+
+        public async Task<BillResponse> CreateSupplierBillUseCase(BillCreationRequest billCreationRequest)
+        {
+            var body = JsonConvert.SerializeObject(billCreationRequest);
+            var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/bills"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } },
+                Content = requestContent
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to create supplier bill");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<BillResponse>(content);
+            return res;
+        }
+
+        public async Task<bool> PaySupplierBillUseCase(IEnumerable<long> supplierBillIds)
+        {
+            var body = JsonConvert.SerializeObject(supplierBillIds);
+            var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Post,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/bills/pay"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } },
+                Content = requestContent
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to pay supplier bill");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<bool>(content);
+            return res;
+        }
+
+        public async Task<PagedBillSummaryResponse> GetBillSummaryList(BillSummaryListParameters parameters)
+        {
+            var queryParams = new Dictionary<string, string>()
+            {
+                {"pageNumber", $"{parameters.PageNumber}"},
+                {"pageSize", $"{parameters.PageSize}"},
+                {"packageId", $"{parameters.PackageId}"},
+                {"supplierId", $"{parameters.SupplierId}"},
+                {"billPaymentStatusId", $"{parameters.BillPaymentStatusId}"},
+                {"fromDate", parameters.FromDate?.DateTimeOffsetToISOString()},
+                {"toDate", parameters.ToDate?.DateTimeOffsetToISOString()},
+            };
+            var url = QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}api/v1/bills",
+                queryParams);
+
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(url),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Cannot retrieve bills summary list");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<PagedBillSummaryResponse>(content);
+            return res;
+        }
+
+        public async Task<PagedSupplierResponse> GetSuppliersListUseCase(SupplierListParameters parameters)
+        {
+            var queryParams = new Dictionary<string, string>()
+            {
+                {"pageNumber", $"{parameters.PageNumber}"},
+                {"pageSize", $"{parameters.PageSize}"},
+                {"searchTerm", $"{parameters.SearchTerm}"}
+            };
+            var url = QueryHelpers.AddQueryString($"{_httpClient.BaseAddress}api/v1/suppliers",
+                queryParams);
+
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri(url),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Cannot retrieve Suppliers list");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<PagedSupplierResponse>(content);
+            return res;
+        }
+
+        public async Task<IEnumerable<SupplierTaxRateResponse>> GetSupplierTaxRateUseCase(long supplierId)
+        {
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/suppliers/{supplierId}/tax-rates"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to retrieve supplier tax rates");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<IEnumerable<SupplierTaxRateResponse>>(content);
+            return res;
+        }
     }
 }

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovalHistoryUseCase.Interfaces;
@@ -73,9 +74,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
 
             var nursingCarePackageForCreationDomain = nursingCarePackageForCreationRequest.ToDomain();
             var nursingCarePackageResponse = await _createNursingCarePackageUseCase.ExecuteAsync(nursingCarePackageForCreationDomain).ConfigureAwait(false);
+
             //Change status of package
             await _changeStatusNursingCarePackageUseCase
-                .UpdateAsync(nursingCarePackageResponse.Id, 1)
+                .UpdateAsync(nursingCarePackageResponse.Id, ApprovalHistoryConstants.NewPackageId)
+                .ConfigureAwait(false);
+
+            await _changeStatusNursingCarePackageUseCase
+                .UpdateAsync(nursingCarePackageResponse.Id, ApprovalHistoryConstants.SubmittedForApprovalId)
                 .ConfigureAwait(false);
             return Ok(nursingCarePackageResponse);
         }

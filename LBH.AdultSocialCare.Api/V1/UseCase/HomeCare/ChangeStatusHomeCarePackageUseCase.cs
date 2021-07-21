@@ -25,7 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
             _usersGateway = usersGateway;
         }
 
-        public async Task<HomeCarePackageDomain> UpdateAsync(Guid homeCarePackageId, int statusId)
+        public async Task<HomeCarePackageDomain> UpdateAsync(Guid homeCarePackageId, int statusId, string requestMoreInformation = null)
         {
             var homeCarePackageEntity =
                 await _gateway.ChangeStatusAsync(homeCarePackageId, statusId).ConfigureAwait(false);
@@ -35,8 +35,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
             var newPackageHistory = new HomeCareApprovalHistoryDomain()
             {
                 HomeCarePackageId = homeCarePackageId,
+                StatusId = statusId,
                 ApprovedDate = DateTimeOffset.Now,
-                LogText = $"{logText} {user.Name}"
+                LogText = $"{logText} {user.Name}",
+                LogSubText = requestMoreInformation,
+                UserId = user.Id
             };
             await _homeCareApprovalHistoryGateway.CreateAsync(newPackageHistory.ToDb()).ConfigureAwait(false);
             return homeCarePackageEntity.ToDomain();
