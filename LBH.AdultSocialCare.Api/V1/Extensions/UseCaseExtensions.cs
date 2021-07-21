@@ -1,6 +1,10 @@
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.BrokeredPackagesUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.BrokeredPackagesUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Interfaces;
@@ -32,6 +36,8 @@ using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApproveCommercialUseCase.Con
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApproveCommercialUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovePackageUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovePackageUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareBrokerageUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareBrokerageUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCarePackageReclaimUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCarePackageReclaimUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareRequestMoreInformationUseCase.Concrete;
@@ -44,6 +50,8 @@ using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.PackageStatusUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.PrimarySupportReasonUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.PrimarySupportReasonUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApproveBrokeredUseCase.Concrete;
@@ -52,6 +60,8 @@ using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApprovePackageUseCase.Concre
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApprovePackageUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareApprovalHistoryUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareApprovalHistoryUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareBrokerageUseCase.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareBrokerageUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCarePackageReclaimUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCarePackageReclaimUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareRequestMoreInformationUseCase.Concrete;
@@ -59,6 +69,10 @@ using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareRequestMoreInformationUs
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.RolesUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.SubmittedPackageRequestsUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.SubmittedPackageRequestsUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.SupplierBillUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.SupplierBillUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.SupplierCostUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.SupplierCostUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Concrete;
@@ -170,6 +184,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
             services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();
             services.AddScoped<IAuthUseCase, AuthUseCase>();
+            services.AddScoped<IGetAllUsersUseCase, GetAllUsersUseCase>();
 
             #endregion User
 
@@ -323,12 +338,16 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             #region NursingCareBrokerage
 
             services.AddScoped<ICreateNursingCareRequestMoreInformationUseCase, CreateNursingCareRequestMoreInformationUseCase>();
+            services.AddScoped<IGetNursingCareBrokerageUseCase, GetNursingCareBrokerageUseCase>();
+            services.AddScoped<ICreateNursingCareBrokerageUseCase, CreateNursingCareBrokerageUseCase>();
 
             #endregion NursingCareBrokerage
 
             #region ResidentialCareBrokerage
 
             services.AddScoped<ICreateResidentialCareRequestMoreInformationUseCase, CreateResidentialCareRequestMoreInformationUseCase>();
+            services.AddScoped<IGetResidentialCareBrokerageUseCase, GetResidentialCareBrokerageUseCase>();
+            services.AddScoped<ICreateResidentialCareBrokerageUseCase, CreateResidentialCareBrokerageUseCase>();
 
             #endregion ResidentialCareBrokerage
 
@@ -349,6 +368,37 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IPayRunUseCase, PayRunUseCase>();
 
             #endregion TransactionsApi
+
+            #region SupplierBill
+
+            services.AddScoped<IGetSupplierBillUseCase, GetSupplierBillUseCase>();
+
+            #endregion SupplierBill
+
+            #region SupplierBill
+
+            services.AddScoped<IGetAllPrimarySupportReasonsUseCase, GetAllPrimarySupportReasonsUseCase>();
+
+            #endregion SupplierBill
+
+            #region SubmittedPackageRequests
+
+            services.AddScoped<IGetSubmittedPackageRequestsUseCase, GetSubmittedPackageRequestsUseCase>();
+
+            #endregion
+
+            #region ApprovedPackages
+
+            services.AddScoped<IGetApprovedPackagesUseCase, GetApprovedPackagesUseCase>();
+
+            #endregion
+
+            #region BrokeredPackages
+
+            services.AddScoped<IGetBrokeredPackagesUseCase, GetBrokeredPackagesUseCase>();
+            services.AddScoped<IAssignToUserUseCase, AssignToUserUseCase>();
+
+            #endregion
         }
     }
 }

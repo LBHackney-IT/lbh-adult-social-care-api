@@ -27,6 +27,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete
             // Get the day care package with details
             var dayCarePackage = await _dayCarePackageGateway.GetDayCarePackage(id).ConfigureAwait(false);
 
+            // Create transport escort or transport escort packages if condition true
+            await CreateSubPackages(dayCarePackage).ConfigureAwait(false);
+
             // Create history entries
             // Package created - New package
             var newPackageHistory = new DayCareApprovalHistoryForCreationDomain
@@ -36,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete
                 PackageStatusId = dayCarePackageEntity.StatusId,
                 LogText = $"Package requested by {dayCarePackage.CreatorName}",
                 LogSubText = null,
-                CreatorRole = dayCarePackage.CreatorRole
+                CreatorRole = "Broker"
             };
             await _createDayCarePackageHistoryUseCase.Execute(newPackageHistory).ConfigureAwait(false);
 
@@ -50,6 +53,21 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete
             await _dayCarePackageGateway.UpdateDayCarePackageStatus(dayCarePackage.DayCarePackageId, 2).ConfigureAwait(false);
 
             return dayCarePackage.ToResponse();
+        }
+
+        private async Task CreateSubPackages(DayCarePackageDomain dayCarePackage)
+        {
+            if (dayCarePackage.EscortNeeded)
+                await _dayCarePackageGateway.CreateEscortPackage(dayCarePackage.ToEscortPackage())
+                    .ConfigureAwait(false);
+
+            if (dayCarePackage.TransportNeeded)
+                await _dayCarePackageGateway.CreateTransportPackage(dayCarePackage.ToTransportPackage())
+                    .ConfigureAwait(false);
+
+            if (dayCarePackage.TransportEscortNeeded)
+                await _dayCarePackageGateway.CreateTransportEscortPackage(dayCarePackage.ToTransportEscortPackage())
+                    .ConfigureAwait(false);
         }
     }
 }

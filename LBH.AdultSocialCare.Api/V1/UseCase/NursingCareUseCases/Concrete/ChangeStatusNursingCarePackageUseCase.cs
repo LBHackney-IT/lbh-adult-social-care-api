@@ -28,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
             _usersGateway = usersGateway;
         }
 
-        public async Task<NursingCarePackageResponse> UpdateAsync(Guid nursingCarePackageId, int statusId)
+        public async Task<NursingCarePackageResponse> UpdateAsync(Guid nursingCarePackageId, int statusId, string requestMoreInformation = null)
         {
             var nursingCarePackageDomain = await _gateway.ChangeStatusAsync(nursingCarePackageId, statusId).ConfigureAwait(false);
             var userId = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8");
@@ -37,8 +37,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
             var newPackageHistory = new NursingCareApprovalHistoryDomain()
             {
                 NursingCarePackageId = nursingCarePackageId,
+                StatusId = statusId,
                 ApprovedDate = DateTimeOffset.Now,
-                LogText = $"{logText} {user.Name}"
+                LogText = $"{logText} {user.Name}",
+                LogSubText = requestMoreInformation,
+                UserId = user.Id
             };
             await _nursingCareApprovalHistoryGateway.CreateAsync(newPackageHistory.ToDb()).ConfigureAwait(false);
             return nursingCarePackageDomain.ToResponse();

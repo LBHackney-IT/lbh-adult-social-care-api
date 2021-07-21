@@ -18,5 +18,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
         Task<DayCarePackageForApprovalDetailsDomain> GetDayCarePackageForApprovalDetails(Guid dayCarePackageId);
         Task<DayCarePackageForBrokerageDomain> GetDayCarePackageForBrokerageDetails(Guid dayCarePackageId);
         Task<IEnumerable<DayCarePackageDomain>> GetDayCarePackageList();
+        Task CreateEscortPackage(EscortPackage escortPackage);
+        Task CreateTransportPackage(TransportPackage transportPackage);
+        Task CreateTransportEscortPackage(TransportEscortPackage transportEscortPackage);
     }
 }

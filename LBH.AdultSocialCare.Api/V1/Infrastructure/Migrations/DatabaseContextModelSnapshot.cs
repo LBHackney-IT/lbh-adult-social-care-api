@@ -70,6 +70,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<string>("PreferredContact")
                         .HasColumnType("text");
 
+                    b.Property<int?>("PrimarySupportReasonId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Town")
                         .HasColumnType("text");
 
@@ -77,6 +80,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PrimarySupportReasonId");
 
                     b.ToTable("Clients");
 
@@ -405,6 +410,192 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare.EscortPackage", b =>
+                {
+                    b.Property<Guid>("EscortPackageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DayCarePackageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Destination")
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("EscortCostPerHour")
+                        .HasColumnType("numeric");
+
+                    b.Property<int?>("EscortHoursPerWeek")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Friday")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Monday")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Saturday")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Sunday")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("SupplierId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Thursday")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Tuesday")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Wednesday")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("EscortPackageId");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("DayCarePackageId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("EscortPackages");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare.TransportEscortPackage", b =>
+                {
+                    b.Property<Guid>("TransportEscortPackageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DayCarePackageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Destination")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Friday")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Monday")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Saturday")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Sunday")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("SupplierId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Thursday")
+                        .HasColumnType("boolean");
+
+                    b.Property<decimal?>("TransportEscortCostPerWeek")
+                        .HasColumnType("numeric");
+
+                    b.Property<int?>("TransportEscortHoursPerWeek")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Tuesday")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Wednesday")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("TransportEscortPackageId");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("DayCarePackageId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("TransportEscortPackages");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare.TransportPackage", b =>
+                {
+                    b.Property<Guid>("TransportPackageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ClientId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("DayCarePackageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Destination")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("Friday")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Monday")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Saturday")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Sunday")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("SupplierId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Thursday")
+                        .HasColumnType("boolean");
+
+                    b.Property<decimal?>("TransportCostPerDay")
+                        .HasColumnType("numeric");
+
+                    b.Property<int?>("TransportDaysPerWeek")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("Tuesday")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Wednesday")
+                        .HasColumnType("boolean");
+
+                    b.HasKey("TransportPackageId");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("DayCarePackageId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("TransportPackages");
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage.DayCareBrokerageInfo", b =>
                 {
                     b.Property<Guid>("BrokerageInfoId")
@@ -715,8 +906,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("ClientId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("CreatorId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTimeOffset?>("EndDate")
                         .HasColumnType("timestamp with time zone");
@@ -1384,16 +1581,29 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("ApprovedDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("CreatorRole")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("HomeCarePackageId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("LogSubText")
+                        .HasColumnType("text");
+
                     b.Property<string>("LogText")
                         .HasColumnType("text");
+
+                    b.Property<int?>("StatusId")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HomeCarePackageId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("HomeCareApprovalHistories");
                 });
@@ -1741,16 +1951,29 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("ApprovedDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("CreatorRole")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LogSubText")
+                        .HasColumnType("text");
+
                     b.Property<string>("LogText")
                         .HasColumnType("text");
 
                     b.Property<Guid>("NursingCarePackageId")
                         .HasColumnType("uuid");
 
+                    b.Property<int?>("StatusId")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NursingCarePackageId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("NursingCareApprovalHistories");
                 });
@@ -2221,6 +2444,38 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PrimarySupportReason", b =>
+                {
+                    b.Property<int>("PrimarySupportReasonId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("CederBudgetCode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PrimarySupportReasonName")
+                        .HasColumnType("text");
+
+                    b.HasKey("PrimarySupportReasonId");
+
+                    b.ToTable("PrimarySupportReasons");
+
+                    b.HasData(
+                        new
+                        {
+                            PrimarySupportReasonId = 1,
+                            CederBudgetCode = "Ceder Budget Code 1",
+                            PrimarySupportReasonName = "Primary Support Reason 1"
+                        },
+                        new
+                        {
+                            PrimarySupportReasonId = 2,
+                            CederBudgetCode = "Ceder Budget Code 2",
+                            PrimarySupportReasonName = "Primary Support Reason 2"
+                        });
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare.ResidentialCareAdditionalNeed", b =>
                 {
                     b.Property<Guid>("Id")
@@ -2418,16 +2673,29 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("ApprovedDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("CreatorRole")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LogSubText")
+                        .HasColumnType("text");
+
                     b.Property<string>("LogText")
                         .HasColumnType("text");
 
                     b.Property<Guid>("ResidentialCarePackageId")
                         .HasColumnType("uuid");
 
+                    b.Property<int?>("StatusId")
+                        .HasColumnType("integer");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ResidentialCarePackageId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("ResidentialCareApprovalHistories");
                 });
@@ -2823,7 +3091,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3e929a05-112c-4087-94f3-088c47c46ab2",
+                            ConcurrencyStamp = "c9e473dc-4d17-4b51-85a3-020db0d71d4e",
                             Email = "furkan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -2837,7 +3105,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cb415cbe-5c1e-4bc2-8d6c-a610bb98bfbc",
+                            ConcurrencyStamp = "1ad077b2-c217-45e7-8c07-ac7f78603ce2",
                             Email = "duncan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -2967,6 +3235,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Client", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PrimarySupportReason", "PrimarySupportReason")
+                        .WithMany()
+                        .HasForeignKey("PrimarySupportReasonId");
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare.DayCareApprovalHistory", b =>
                 {
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
@@ -2999,6 +3274,63 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare.EscortPackage", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackage", "DayCarePackage")
+                        .WithMany()
+                        .HasForeignKey("DayCarePackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare.TransportEscortPackage", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackage", "DayCarePackage")
+                        .WithMany()
+                        .HasForeignKey("DayCarePackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare.TransportPackage", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Client", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackage", "DayCarePackage")
+                        .WithMany()
+                        .HasForeignKey("DayCarePackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage.DayCareBrokerageInfo", b =>
@@ -3194,6 +3526,21 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasForeignKey("LinkedToHomeCareServiceTypeId");
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage.HomeCareApprovalHistory", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare.HomeCarePackage", null)
+                        .WithMany("HomeCareApprovalHistories")
+                        .HasForeignKey("HomeCarePackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage.HomeCarePackageCost", b =>
                 {
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage.CarerType", "CarerType")
@@ -3305,6 +3652,21 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasForeignKey("UpdaterId");
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage.NursingCareApprovalHistory", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare.NursingCarePackage", null)
+                        .WithMany("NursingCareApprovalHistories")
+                        .HasForeignKey("NursingCarePackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage.NursingCareBrokerageInfo", b =>
                 {
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare.NursingCarePackage", "NursingCarePackage")
@@ -3410,6 +3772,21 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage.ResidentialCareApprovalHistory", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare.ResidentialCarePackage", null)
+                        .WithMany("ResidentialCareApprovalHistories")
+                        .HasForeignKey("ResidentialCarePackageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage.ResidentialCareBrokerageInfo", b =>

@@ -63,5 +63,15 @@ namespace HttpServices.Services.Contracts
         Task<IEnumerable<InvoiceStatusResponse>> GetInvoicePaymentStatusesUseCase();
 
         Task<bool> AcceptInvoiceUseCase(Guid payRunId, Guid invoiceId);
+
+        Task<BillResponse> CreateSupplierBillUseCase(BillCreationRequest billCreationRequest);
+
+        Task<bool> PaySupplierBillUseCase(IEnumerable<long> supplierBillIds);
+
+        Task<PagedBillSummaryResponse> GetBillSummaryList(BillSummaryListParameters parameters);
+
+        Task<PagedSupplierResponse> GetSuppliersListUseCase(SupplierListParameters parameters);
+
+        Task<IEnumerable<SupplierTaxRateResponse>> GetSupplierTaxRateUseCase(long supplierId);
     }
 }

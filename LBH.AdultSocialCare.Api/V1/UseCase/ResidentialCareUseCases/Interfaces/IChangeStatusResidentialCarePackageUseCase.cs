@@ -6,6 +6,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces
 {
     public interface IChangeStatusResidentialCarePackageUseCase
     {
-        public Task<ResidentialCarePackageResponse> UpdateAsync(Guid residentialCarePackageId, int statusId);
+        Task<ResidentialCarePackageResponse> UpdateAsync(Guid residentialCarePackageId, int statusId,
+            string requestMoreInformation = null);
     }
 }

@@ -39,9 +39,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
                 await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
                 return nursingCarePackageEntity.ToDomain();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new DbSaveFailedException($"Update for nursing care package {nursingCarePackageForUpdate.Id.ToString()} failed");
+                throw new DbSaveFailedException($"Update for nursing care package {nursingCarePackageForUpdate.Id.ToString()} failed {ex.Message}");
             }
         }
 
@@ -54,9 +54,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
 
                 return entry.Entity.ToDomain();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new DbSaveFailedException("Could not save nursing care package to database");
+                throw new DbSaveFailedException("Could not save nursing care package to database" + ex.Message);
             }
         }
 

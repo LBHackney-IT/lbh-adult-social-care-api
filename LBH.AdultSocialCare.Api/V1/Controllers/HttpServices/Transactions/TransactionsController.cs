@@ -217,6 +217,48 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             return Ok(result);
         }
 
+        [HttpPost("supplier-bills")]
+        [ProducesDefaultResponseType]
+        public async Task<IActionResult> CreateSupplierBill([FromBody] BillCreationRequest billCreationRequest)
+        {
+            var result = await _transactionsService.CreateSupplierBillUseCase(billCreationRequest).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpPost("supplier-bills/pay")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> PaySupplierBill([FromBody] IEnumerable<long> supplierBillIds)
+        {
+            var result = await _transactionsService.PaySupplierBillUseCase(supplierBillIds).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [ProducesResponseType(typeof(PagedBillSummaryResponse), StatusCodes.Status200OK)]
+        [HttpGet("supplier-bills")]
+        public async Task<ActionResult<PagedBillSummaryResponse>> GetBillSummaryList([FromQuery] BillSummaryListParameters parameters)
+        {
+            var res = await _transactionsService.GetBillSummaryList(parameters).ConfigureAwait(false);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(res.PagingMetaData));
+            return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(PagedSupplierResponse), StatusCodes.Status200OK)]
+        [HttpGet("suppliers")]
+        public async Task<ActionResult<PagedSupplierResponse>> GetSupplierList([FromQuery] SupplierListParameters parameters)
+        {
+            var res = await _transactionsService.GetSuppliersListUseCase(parameters).ConfigureAwait(false);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(res.PagingMetaData));
+            return Ok(res);
+        }
+
+        [ProducesResponseType(typeof(PagedSupplierResponse), StatusCodes.Status200OK)]
+        [HttpGet("suppliers/{supplierId}/tax-rates")]
+        public async Task<ActionResult<IEnumerable<SupplierTaxRateResponse>>> GetSupplierTaxRate(long supplierId)
+        {
+            var result = await _transactionsService.GetSupplierTaxRateUseCase(supplierId).ConfigureAwait(false);
+            return Ok(result);
+        }
+
         [HttpGet("pay-runs/date-of-last-pay-run/{payRunType}")]
         [ProducesResponseType(typeof(PayRunDateSummaryResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
