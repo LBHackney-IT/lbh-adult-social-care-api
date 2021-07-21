@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 
 namespace HttpServices.Services.Concrete
 {
@@ -101,6 +103,46 @@ namespace HttpServices.Services.Concrete
         async Task<Guid?> ITransactionsService.CreateDirectPaymentsReleaseHoldsPayRun(PayRunForCreationRequest payRunForCreationRequest)
         {
             var res = await CreateNewPayRun("DirectPaymentsReleaseHolds", payRunForCreationRequest).ConfigureAwait(false);
+            return res;
+        }
+
+        public async Task<PayRunDateSummaryResponse> GetDateOfLastPayRun(string payRunType)
+        {
+            var allowedPayRunTypes = new List<string>()
+            {
+                "ResidentialRecurring",
+                "DirectPayments",
+                "HomeCare",
+                "ResidentialReleaseHolds",
+                "DirectPaymentsReleaseHolds",
+            };
+
+            var correctPayRunType = allowedPayRunTypes
+                .Find(p => p.Equals(payRunType, StringComparison.OrdinalIgnoreCase));
+            if (correctPayRunType == null)
+            {
+                throw new EntityNotFoundException("The pay run type is not valid. Please check and try again");
+            }
+
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/date-of-last-pay-run/{correctPayRunType}"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to fetch date of last pay run");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<PayRunDateSummaryResponse>(content);
             return res;
         }
 

@@ -216,5 +216,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             var result = await _transactionsService.AcceptInvoiceUseCase(payRunId, invoiceId).ConfigureAwait(false);
             return Ok(result);
         }
+
+        [HttpGet("pay-runs/date-of-last-pay-run/{payRunType}")]
+        [ProducesResponseType(typeof(PayRunDateSummaryResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<PayRunDateSummaryResponse>> GetDateSummaryOfLastPayRun(string payRunType)
+        {
+            var result = await _transactionsService.GetDateOfLastPayRun(payRunType).ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }

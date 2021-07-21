@@ -21,6 +21,8 @@ namespace HttpServices.Services.Contracts
 
         Task<Guid?> CreateDirectPaymentsReleaseHoldsPayRun(PayRunForCreationRequest payRunForCreationRequest);
 
+        Task<PayRunDateSummaryResponse> GetDateOfLastPayRun(string payRunType);
+
         Task<PagedPayRunSummaryResponse> GetPayRunSummaryList(PayRunSummaryListParameters parameters);
 
         Task<PagedSupplierMinimalListResponse> GetUniqueSuppliersInPayRunUseCase(Guid payRunId, SupplierListParameters parameters);
