@@ -61,5 +61,30 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
                 .ConfigureAwait(false);
             return Ok(result);
         }
+
+        [HttpPost("clarifying-commercials")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> CreateNursingCareClarifyCommercial([FromBody] NursingCareRequestMoreInformationForCreationRequest nursingCareRequestMoreInformationForCreationRequest)
+        {
+            if (nursingCareRequestMoreInformationForCreationRequest == null)
+            {
+                return BadRequest("Object for creation cannot be null.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
+            var nursingCareBrokerageCreationDomain = nursingCareRequestMoreInformationForCreationRequest.ToDomain();
+            var result = await _createNursingCareRequestMoreInformationUseCase.Execute(nursingCareBrokerageCreationDomain).ConfigureAwait(false);
+            await _changeStatusNursingCarePackageUseCase
+                .UpdateAsync(nursingCareRequestMoreInformationForCreationRequest.NursingCarePackageId, ApprovalHistoryConstants.ClarifyingCommercialsId, nursingCareRequestMoreInformationForCreationRequest.InformationText)
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }

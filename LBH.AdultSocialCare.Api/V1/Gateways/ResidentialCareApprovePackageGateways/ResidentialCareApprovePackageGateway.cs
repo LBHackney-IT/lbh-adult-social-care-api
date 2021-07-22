@@ -29,20 +29,20 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovePackageGatew
             if (residentialCarePackage == null)
                 throw new EntityNotFoundException($"Could not find the Residential Care Package {residentialCarePackageId}");
 
-            var costOfCare = await _databaseContext.ResidentialCareBrokerageInfos
-                .Where(a => a.ResidentialCarePackageId.Equals(residentialCarePackageId))
-                .Select(a => a.ResidentialCore)
-                .SingleOrDefaultAsync().ConfigureAwait(false);
+            var costOfCare = Math.Round(await _databaseContext.ResidentialCareBrokerageInfos
+                .DefaultIfEmpty()
+                .AverageAsync(c => c == null ? 0 : c.ResidentialCore)
+                .ConfigureAwait(false), 2);
 
-            var costOfAdditionalNeeds = await _databaseContext.ResidentialCareBrokerageInfos
-                .Where(a => a.ResidentialCarePackageId.Equals(residentialCarePackageId))
-                .Select(a => a.AdditionalNeedsPayment)
-                .SingleOrDefaultAsync().ConfigureAwait(false);
+            var costOfAdditionalNeeds = Math.Round(await _databaseContext.ResidentialCareBrokerageInfos
+                .DefaultIfEmpty()
+                .AverageAsync(c => c == null ? 0 : c.AdditionalNeedsPayment)
+                .ConfigureAwait(false), 2);
 
-            var costOfOneOff = await _databaseContext.ResidentialCareBrokerageInfos
-                .Where(a => a.ResidentialCarePackageId.Equals(residentialCarePackageId))
-                .Select(a => a.AdditionalNeedsPaymentOneOff)
-                .SingleOrDefaultAsync().ConfigureAwait(false);
+            var costOfOneOff = Math.Round(await _databaseContext.ResidentialCareBrokerageInfos
+                .DefaultIfEmpty()
+                .AverageAsync(c => c == null ? 0 : c.AdditionalNeedsPaymentOneOff)
+                .ConfigureAwait(false), 2);
 
             var residentialCareApprovePackageDomain = new ResidentialCareApprovePackageDomain
             {

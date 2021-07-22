@@ -53,5 +53,27 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways
                 NursingCarePackage = nursingCarePackage.ToDomain(),
             };
         }
+
+        public async Task<bool> SetStage(Guid nursingCarePackageId, int stageId)
+        {
+            var nursingPackage = await _databaseContext.NursingCarePackages
+                .FirstOrDefaultAsync(item => item.Id == nursingCarePackageId)
+                .ConfigureAwait(false);
+
+            if (nursingPackage == null)
+            {
+                throw new EntityNotFoundException($"Couldn't find nursing care package {nursingCarePackageId.ToString()}");
+            }
+            nursingPackage.StageId = stageId;
+            try
+            {
+                await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
+                return true;
+            }
+            catch (Exception)
+            {
+                throw new DbSaveFailedException($"Update for nursing care package stage {nursingCarePackageId} failed");
+            }
+        }
     }
 }
