@@ -30,15 +30,18 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovePackageGatew
                 throw new EntityNotFoundException($"Could not find the Residential Care Package {residentialCarePackageId}");
 
             var costOfCare = Math.Round(await _databaseContext.ResidentialCareBrokerageInfos
-                .AverageAsync(c => c.ResidentialCore)
+                .DefaultIfEmpty()
+                .AverageAsync(c => c == null ? 0 : c.ResidentialCore)
                 .ConfigureAwait(false), 2);
 
             var costOfAdditionalNeeds = Math.Round(await _databaseContext.ResidentialCareBrokerageInfos
-                .AverageAsync(c => c.AdditionalNeedsPayment)
+                .DefaultIfEmpty()
+                .AverageAsync(c => c == null ? 0 : c.AdditionalNeedsPayment)
                 .ConfigureAwait(false), 2);
 
             var costOfOneOff = Math.Round(await _databaseContext.ResidentialCareBrokerageInfos
-                .AverageAsync(c => c.AdditionalNeedsPaymentOneOff)
+                .DefaultIfEmpty()
+                .AverageAsync(c => c == null ? 0 : c.AdditionalNeedsPaymentOneOff)
                 .ConfigureAwait(false),2);
 
             var residentialCareApprovePackageDomain = new ResidentialCareApprovePackageDomain

@@ -35,15 +35,18 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways
             }
 
             var costOfCare = Math.Round(await _databaseContext.NursingCareBrokerageInfos
-                .AverageAsync(nc => nc.NursingCore)
-                .ConfigureAwait(false),2);
+                .DefaultIfEmpty()
+                .AverageAsync(nc => nc == null ? 0 : nc.NursingCore)
+                .ConfigureAwait(false), 2);
 
             var costOfAdditionalNeeds = Math.Round(await _databaseContext.NursingCareBrokerageInfos
-                .AverageAsync(nc => nc.AdditionalNeedsPayment)
+                .DefaultIfEmpty()
+                .AverageAsync(nc => nc == null ? 0 : nc.AdditionalNeedsPayment)
                 .ConfigureAwait(false),2);
 
             var costOfOneOff = Math.Round(await _databaseContext.NursingCareBrokerageInfos
-                .AverageAsync(nc => nc.AdditionalNeedsPaymentOneOff)
+                .DefaultIfEmpty()
+                .AverageAsync(nc => nc == null ? 0 : nc.AdditionalNeedsPaymentOneOff)
                 .ConfigureAwait(false),2);
 
             var nursingCareApprovePackageDomain = new NursingCareApprovePackageDomain()

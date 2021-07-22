@@ -340,6 +340,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<ICreateNursingCareRequestMoreInformationUseCase, CreateNursingCareRequestMoreInformationUseCase>();
             services.AddScoped<IGetNursingCareBrokerageUseCase, GetNursingCareBrokerageUseCase>();
             services.AddScoped<ICreateNursingCareBrokerageUseCase, CreateNursingCareBrokerageUseCase>();
+            services.AddScoped<ISetStageToNursingCarePackageUseCase, SetStageToNursingCarePackageUseCase>();
 
             #endregion NursingCareBrokerage
 
@@ -348,6 +349,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<ICreateResidentialCareRequestMoreInformationUseCase, CreateResidentialCareRequestMoreInformationUseCase>();
             services.AddScoped<IGetResidentialCareBrokerageUseCase, GetResidentialCareBrokerageUseCase>();
             services.AddScoped<ICreateResidentialCareBrokerageUseCase, CreateResidentialCareBrokerageUseCase>();
+            services.AddScoped<ISetStageToResidentialCarePackageUseCase, SetStageToResidentialCarePackageUseCase>();
 
             #endregion ResidentialCareBrokerage
 
