@@ -12,5 +12,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
         public Task<ResidentialCareBrokerageInfoDomain> CreateAsync(ResidentialCareBrokerageInfo residentialCareBrokerageInfo);
 
         Task<ResidentialCareBrokerageInfoDomain> GetAsync(Guid residentialCarePackageId);
+        Task<bool> SetStage(Guid residentialCarePackageId, int stageId);
     }
 }

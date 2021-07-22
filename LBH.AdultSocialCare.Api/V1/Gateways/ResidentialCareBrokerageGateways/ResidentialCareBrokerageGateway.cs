@@ -29,7 +29,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
             }
             catch (Exception ex)
             {
-                throw new DbSaveFailedException("Could not save supplier to database" + ex.Message);
+                throw new DbSaveFailedException("Could not save residential brokerage to database" + ex.Message);
             }
         }
 
@@ -52,6 +52,28 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
                 ResidentialCarePackageId = residentialCarePackageId,
                 ResidentialCarePackage = residentialCarePackage.ToDomain(),
             };
+        }
+
+        public async Task<bool> SetStage(Guid residentialCarePackageId, int stageId)
+        {
+            var residentialPackage = await _databaseContext.ResidentialCarePackages
+                .FirstOrDefaultAsync(item => item.Id == residentialCarePackageId)
+                .ConfigureAwait(false);
+
+            if (residentialPackage == null)
+            {
+                throw new EntityNotFoundException($"Couldn't find residential care package {residentialCarePackageId.ToString()}");
+            }
+            residentialPackage.StageId = stageId;
+            try
+            {
+                await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
+                return true;
+            }
+            catch (Exception)
+            {
+                throw new DbSaveFailedException($"Update for residential care package stage {residentialCarePackageId} failed");
+            }
         }
     }
 }

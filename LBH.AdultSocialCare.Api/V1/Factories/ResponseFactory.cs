@@ -732,6 +732,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
+        public static IEnumerable<StatusResponse> ToResponse(this IEnumerable<StatusDomain> statusDomains)
+        {
+            return _mapper.Map<IEnumerable<StatusResponse>>(statusDomains);
+        }
+
         #endregion PackageStatus
 
         #region TimeSlotShifts
