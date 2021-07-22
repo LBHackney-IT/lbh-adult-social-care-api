@@ -42,12 +42,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways
             var costOfAdditionalNeeds = Math.Round(await _databaseContext.NursingCareBrokerageInfos
                 .DefaultIfEmpty()
                 .AverageAsync(nc => nc == null ? 0 : nc.AdditionalNeedsPayment)
-                .ConfigureAwait(false),2);
+                .ConfigureAwait(false), 2);
 
             var costOfOneOff = Math.Round(await _databaseContext.NursingCareBrokerageInfos
                 .DefaultIfEmpty()
                 .AverageAsync(nc => nc == null ? 0 : nc.AdditionalNeedsPaymentOneOff)
-                .ConfigureAwait(false),2);
+                .ConfigureAwait(false), 2);
 
             var nursingCareApprovePackageDomain = new NursingCareApprovePackageDomain()
             {

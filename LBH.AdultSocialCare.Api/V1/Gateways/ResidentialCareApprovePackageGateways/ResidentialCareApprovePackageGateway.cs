@@ -42,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovePackageGatew
             var costOfOneOff = Math.Round(await _databaseContext.ResidentialCareBrokerageInfos
                 .DefaultIfEmpty()
                 .AverageAsync(c => c == null ? 0 : c.AdditionalNeedsPaymentOneOff)
-                .ConfigureAwait(false),2);
+                .ConfigureAwait(false), 2);
 
             var residentialCareApprovePackageDomain = new ResidentialCareApprovePackageDomain
             {

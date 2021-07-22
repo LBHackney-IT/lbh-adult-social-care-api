@@ -85,7 +85,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<bool>> SetStageToPackage(Guid nursingCarePackageId ,int stageId)
+        public async Task<ActionResult<bool>> SetStageToPackage(Guid nursingCarePackageId, int stageId)
         {
             var result = await _setStageToNursingCarePackageUseCase.UpdatePackage(nursingCarePackageId, stageId).ConfigureAwait(false);
             return Ok(result);
