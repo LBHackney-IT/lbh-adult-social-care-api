@@ -12,6 +12,7 @@ using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using Newtonsoft.Json;
 
@@ -26,10 +27,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     public class SubmittedPackageRequestsController : ControllerBase
     {
         private readonly IGetSubmittedPackageRequestsUseCase _getSubmittedPackageRequestsUseCase;
+        private readonly IGetAllPackageStatusUseCase _getAllPackageStatusUseCase;
 
-        public SubmittedPackageRequestsController(IGetSubmittedPackageRequestsUseCase getSubmittedPackageRequestsUseCase)
+        public SubmittedPackageRequestsController(IGetSubmittedPackageRequestsUseCase getSubmittedPackageRequestsUseCase,
+            IGetAllPackageStatusUseCase getAllPackageStatusUseCase)
         {
             _getSubmittedPackageRequestsUseCase = getSubmittedPackageRequestsUseCase;
+            _getAllPackageStatusUseCase = getAllPackageStatusUseCase;
         }
 
         [HttpGet]
@@ -40,6 +44,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         {
             var result = await _getSubmittedPackageRequestsUseCase.GetSubmittedPackageRequests(parameters).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
+            return Ok(result);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<StatusResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        [HttpGet]
+        [Route("status")]
+        public async Task<ActionResult<IEnumerable<StatusResponse>>> GetSupplierList()
+        {
+            var result = await _getAllPackageStatusUseCase.GetAllAsync().ConfigureAwait(false);
             return Ok(result);
         }
     }

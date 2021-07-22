@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +30,14 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
                 .Take(parameters.PageSize);
 
             return PagedList<SubmittedPackageRequestsDomain>.ToPagedList(paginatedPackageList, submittedPackageCount, parameters.PageNumber, parameters.PageSize);
+        }
+
+        public async Task<IEnumerable<StatusDomain>> GetSubmittedPackageRequestsStatus()
+        {
+            var res = await _databaseContext.PackageStatuses
+                .Where(x => x.Id <= ApprovalHistoryConstants.PackageApprovedId)
+                .ToListAsync().ConfigureAwait(false);
+            return res?.ToDomain();
         }
 
         private async Task<List<SubmittedPackageRequestsDomain>> GetPackagesList(SubmittedPackageRequestParameters parameters)

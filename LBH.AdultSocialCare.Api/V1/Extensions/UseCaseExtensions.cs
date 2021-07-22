@@ -386,6 +386,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             #region SubmittedPackageRequests
 
             services.AddScoped<IGetSubmittedPackageRequestsUseCase, GetSubmittedPackageRequestsUseCase>();
+            services.AddScoped<IGetAllPackageStatusUseCase, GetAllPackageStatusUseCase>();
 
             #endregion
 

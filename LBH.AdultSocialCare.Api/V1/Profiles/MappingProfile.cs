@@ -536,6 +536,13 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<BrokeredPackagesDomain, BrokeredPackagesResponse>();
 
             #endregion
+
+            #region PackageStatus
+
+            CreateMap<PackageStatus, StatusDomain>();
+            CreateMap<StatusDomain, StatusResponse>();
+
+            #endregion
         }
     }
 }
