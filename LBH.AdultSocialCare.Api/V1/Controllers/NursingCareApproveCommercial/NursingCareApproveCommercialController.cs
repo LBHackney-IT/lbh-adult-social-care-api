@@ -3,9 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApproveCommercialBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApproveCommercialUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovePackageUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareApproveCommercial
 {
@@ -17,10 +20,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareApproveCommercial
     public class NursingCareApproveCommercialController : Controller
     {
         private readonly IGetNursingCareApproveCommercialUseCase _getNursingCareApproveCommercialUseCase;
+        private readonly IChangeStatusNursingCarePackageUseCase _changeStatusNursingCarePackageUseCase;
 
-        public NursingCareApproveCommercialController(IGetNursingCareApproveCommercialUseCase getNursingCareApproveCommercialUseCase)
+        public NursingCareApproveCommercialController(IGetNursingCareApproveCommercialUseCase getNursingCareApproveCommercialUseCase,
+            IChangeStatusNursingCarePackageUseCase changeStatusNursingCarePackageUseCase)
         {
             _getNursingCareApproveCommercialUseCase = getNursingCareApproveCommercialUseCase;
+            _changeStatusNursingCarePackageUseCase = changeStatusNursingCarePackageUseCase;
         }
 
         /// <summary>Gets the specified nursing care approve commercials contents identifier.</summary>
@@ -31,6 +37,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareApproveCommercial
         {
             var nursingCareApproveCommercialResponse = await _getNursingCareApproveCommercialUseCase.Execute(nursingCarePackageId).ConfigureAwait(false);
             return Ok(nursingCareApproveCommercialResponse);
+        }
+
+        [HttpPut]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> ApprovePackage(Guid nursingCarePackageId)
+        {
+            var result = await _changeStatusNursingCarePackageUseCase.UpdateAsync(nursingCarePackageId, ApprovalHistoryConstants.PackageBrokeredId).ConfigureAwait(false);
+            return Ok(result);
         }
     }
 }
