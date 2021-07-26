@@ -39,10 +39,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete
             }
 
             var user = _authManager.GetUser();
-            var res = new TokenResponse {
+            var res = new TokenResponse
+            {
                 UserId = user.Id,
                 Name = user.Name,
-                Token = await _authManager.CreateToken().ConfigureAwait(false) };
+                Token = await _authManager.CreateToken().ConfigureAwait(false)
+            };
 
             return res;
         }
@@ -81,10 +83,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete
             }
 
             var user = _authManager.GetUser();
-            var res = new TokenResponse {
+            var res = new TokenResponse
+            {
                 UserId = user.Id,
                 Name = user.Name,
-                Token = await _authManager.CreateToken().ConfigureAwait(false) };
+                Token = await _authManager.CreateToken().ConfigureAwait(false)
+            };
 
             return res;
         }
