@@ -258,5 +258,23 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             var result = await _transactionsService.GetSupplierTaxRateUseCase(supplierId).ConfigureAwait(false);
             return Ok(result);
         }
+
+        // Accept invoices in pay run //todo temp solution 
+        [HttpPut("pay-runs/{payRunId}/invoices/accept-invoices")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> ApproveInvoice(Guid payRunId, IEnumerable<Guid> invoiceIds)
+        {
+            var result = await _transactionsService.AcceptInvoicesUseCase(payRunId, invoiceIds).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        // Accept invoices in pay run //todo temp solution 
+        [HttpPost("pay-runs/{payRunId}/create-held-chat")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> CreatePayRunHeldChat([FromBody] PayRunHeldChatForCreationRequest payRunHeldChatForCreationRequest)
+        {
+            var result = await _transactionsService.CreatePayRunHeldChatUseCase(payRunHeldChatForCreationRequest).ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }
