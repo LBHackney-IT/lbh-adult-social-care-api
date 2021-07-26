@@ -43,6 +43,11 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
             return (_user != null && await _userManager.CheckPasswordAsync(_user, password).ConfigureAwait(false));
         }
 
+        public User GetUser()
+        {
+            return _user;
+        }
+
         public async Task<string> CreateToken()
         {
             var signingCredentials = GetSigningCredentials();

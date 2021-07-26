@@ -38,7 +38,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete
                 throw new ApiException("Authentication failed. Wrong user name or password.", (int) HttpStatusCode.Unauthorized);
             }
 
-            var res = new TokenResponse { Token = await _authManager.CreateToken().ConfigureAwait(false) };
+            var user = _authManager.GetUser();
+            var res = new TokenResponse {
+                UserId = user.Id,
+                Name = user.Name,
+                Token = await _authManager.CreateToken().ConfigureAwait(false) };
 
             return res;
         }
@@ -53,10 +57,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete
             // Create token and return to  user
             if (!await _authManager.ValidateUser(userDomain.Email).ConfigureAwait(false))
             {
-                throw new ApiException("Authentication failed. Wrong user name or password.", (int) HttpStatusCode.Unauthorized);
+                throw new ApiException("Authentication failed. Invalid token.", (int) HttpStatusCode.Unauthorized);
             }
 
-            var res = new TokenResponse { Token = await _authManager.CreateToken().ConfigureAwait(false) };
+            var user = _authManager.GetUser();
+
+            var res = new TokenResponse
+            {
+                UserId = user.Id,
+                Name = user.Name,
+                Token = await _authManager.CreateToken().ConfigureAwait(false),
+                Groups = validToken.Groups
+            };
 
             return res;
         }
@@ -68,7 +80,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete
                 throw new ApiException("Authentication failed. Wrong user name or password.", (int) HttpStatusCode.Unauthorized);
             }
 
-            var res = new TokenResponse { Token = await _authManager.CreateToken().ConfigureAwait(false) };
+            var user = _authManager.GetUser();
+            var res = new TokenResponse {
+                UserId = user.Id,
+                Name = user.Name,
+                Token = await _authManager.CreateToken().ConfigureAwait(false) };
 
             return res;
         }
