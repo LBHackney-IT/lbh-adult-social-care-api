@@ -1,21 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SubmittedPackageRequestsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 using LBH.AdultSocialCare.Api.V1.UseCase.SubmittedPackageRequestsUseCases.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Common.Exceptions.Models;
-using HttpServices.Models.Features.RequestFeatures;
-using HttpServices.Models.Requests;
-using HttpServices.Models.Responses;
-using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
@@ -24,6 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
+    [Authorize]
     public class SubmittedPackageRequestsController : ControllerBase
     {
         private readonly IGetSubmittedPackageRequestsUseCase _getSubmittedPackageRequestsUseCase;

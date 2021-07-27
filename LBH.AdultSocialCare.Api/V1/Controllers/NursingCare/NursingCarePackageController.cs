@@ -12,6 +12,7 @@ using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovalHistoryUseCase.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
 {
@@ -20,6 +21,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
+    [Authorize]
     public class NursingCarePackageController : BaseController
     {
         private readonly IUpdateNursingCarePackageUseCase _updateNursingCarePackageUseCase;

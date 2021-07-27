@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovalHistoryBoundary.Response;
@@ -5,12 +6,12 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareApprovalHistoryUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
 using ICreateResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.ICreateResidentialCarePackageUseCase;
 using IGetAllResidentialCareHomeTypeUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetAllResidentialCareHomeTypeUseCase;
 using IGetAllResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.Interfaces.IGetAllResidentialCarePackageUseCase;
@@ -25,6 +26,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
+    [Authorize]
     public class ResidentialCarePackageController : BaseController
     {
         private readonly IUpdateResidentialCarePackageUseCase _updateResidentialCarePackageUseCase;

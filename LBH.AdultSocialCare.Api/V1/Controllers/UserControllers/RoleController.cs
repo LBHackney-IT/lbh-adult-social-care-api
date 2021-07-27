@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
 {
@@ -13,6 +14,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
+    [Authorize]
     public class RoleController : BaseController
     {
         private readonly IGetRoleUseCase _getRoleUseCase;
