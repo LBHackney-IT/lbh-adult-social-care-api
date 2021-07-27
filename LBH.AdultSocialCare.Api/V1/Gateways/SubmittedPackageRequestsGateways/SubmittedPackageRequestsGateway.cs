@@ -44,8 +44,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
         {
             var packageList = new List<SubmittedPackageRequestsDomain>();
 
-            var homeCare = await GetHomeCarePackages(parameters).ConfigureAwait(false);
-            packageList.AddRange(homeCare);
+            //var homeCare = await GetHomeCarePackages(parameters).ConfigureAwait(false);
+            //packageList.AddRange(homeCare);
 
             var residentialCare = await GetResidentialCarePackages(parameters).ConfigureAwait(false);
             packageList.AddRange(residentialCare);
@@ -53,8 +53,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
             var nursingCare = await GetNursingPackages(parameters).ConfigureAwait(false);
             packageList.AddRange(nursingCare);
 
-            var dayCare = await GetDayCarePackages(parameters).ConfigureAwait(false);
-            packageList.AddRange(dayCare);
+            //var dayCare = await GetDayCarePackages(parameters).ConfigureAwait(false);
+            //packageList.AddRange(dayCare);
 
             return packageList;
         }
@@ -189,15 +189,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
                 .FilterNursingCareList(parameters.StatusId, parameters.ClientId)
                 .CountAsync().ConfigureAwait(false);
 
-            packageCount += await _databaseContext.DayCarePackages
-                .Where(x => x.StatusId <= ApprovalHistoryConstants.PackageApprovedId)
-                .FilterDayCareList(parameters.StatusId, parameters.ClientId)
-                .CountAsync().ConfigureAwait(false);
+            //packageCount += await _databaseContext.DayCarePackages
+            //    .Where(x => x.StatusId <= ApprovalHistoryConstants.PackageApprovedId)
+            //    .FilterDayCareList(parameters.StatusId, parameters.ClientId)
+            //    .CountAsync().ConfigureAwait(false);
 
-            packageCount += await _databaseContext.HomeCarePackage
-                .Where(x => x.StatusId <= ApprovalHistoryConstants.PackageApprovedId)
-                .FilterHomeCareList(parameters.StatusId, parameters.ClientId)
-                .CountAsync().ConfigureAwait(false);
+            //packageCount += await _databaseContext.HomeCarePackage
+            //    .Where(x => x.StatusId <= ApprovalHistoryConstants.PackageApprovedId)
+            //    .FilterHomeCareList(parameters.StatusId, parameters.ClientId)
+            //    .CountAsync().ConfigureAwait(false);
 
             return packageCount;
         }

@@ -40,8 +40,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
         {
             var packageList = new List<BrokeredPackagesDomain>();
 
-            var homeCare = await GetHomeCarePackages(parameters, statusId).ConfigureAwait(false);
-            packageList.AddRange(homeCare);
+            //var homeCare = await GetHomeCarePackages(parameters, statusId).ConfigureAwait(false);
+            //packageList.AddRange(homeCare);
 
             var residentialCare = await GetResidentialCarePackages(parameters, statusId).ConfigureAwait(false);
             packageList.AddRange(residentialCare);
@@ -55,7 +55,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
         private async Task<List<BrokeredPackagesDomain>> GetResidentialCarePackages(BrokeredPackagesParameters parameters, int statusId)
         {
             var residentialCarePackageList = await _databaseContext.ResidentialCarePackages
-                .FilterApprovedResidentialCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId)
+                .FilterBrokeredResidentialCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId, parameters.StageId)
                 .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.Stage)
@@ -71,9 +71,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
                     OwnerId = rc.ResidentialCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.PackageBrokeredId)
                         .Select(x => x.UserId).SingleOrDefault(),
-                    Owner = rc.ResidentialCareApprovalHistories
-                        .Where(x => x.StatusId == ApprovalHistoryConstants.PackageBrokeredId)
-                        .Select(x => x.Creator.Name).SingleOrDefault(),
+                    Owner = _databaseContext.Users
+                        .Where(x => x.Id == rc.AssignedUserId)
+                        .Select(x => x.Name).SingleOrDefault(),
                     StartDate = rc.StartDate,
                     Stage = rc.Stage.StageName,
                     DaysSinceApproval = rc.ResidentialCareApprovalHistories
@@ -88,7 +88,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
         private async Task<List<BrokeredPackagesDomain>> GetHomeCarePackages(BrokeredPackagesParameters parameters, int? statusId)
         {
             var homeCarePackageList = await _databaseContext.HomeCarePackage
-                .FilterBrokeredHomeCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId, parameters.StageId)
+                .FilterBrokeredHomeCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId, parameters.StageId)
                 .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.Stage)
@@ -121,7 +121,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
         private async Task<List<BrokeredPackagesDomain>> GetNursingPackages(BrokeredPackagesParameters parameters, int statusId)
         {
             var nursingCarePackageList = await _databaseContext.NursingCarePackages
-                .FilterApprovedNursingCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId)
+                .FilterBrokeredNursingCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId, parameters.StageId)
                 .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.Stage)
@@ -137,9 +137,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
                     OwnerId = nc.NursingCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.PackageBrokeredId)
                         .Select(x => x.UserId).SingleOrDefault(),
-                    Owner = nc.NursingCareApprovalHistories
-                        .Where(x => x.StatusId == ApprovalHistoryConstants.PackageBrokeredId)
-                        .Select(x => x.Creator.Name).SingleOrDefault(),
+                    Owner = _databaseContext.Users
+                            .Where(x => x.Id == nc.AssignedUserId)
+                            .Select(x => x.Name).SingleOrDefault(),
                     StartDate = nc.StartDate,
                     Stage = nc.Stage.StageName,
                     DaysSinceApproval = nc.NursingCareApprovalHistories
@@ -155,16 +155,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
         {
             var packageCount = 0;
             packageCount += await _databaseContext.ResidentialCarePackages
-                .FilterBrokeredResidentialCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId, parameters.StageId)
+                .FilterBrokeredResidentialCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId, parameters.StageId)
                 .CountAsync().ConfigureAwait(false);
 
             packageCount += await _databaseContext.NursingCarePackages
-                .FilterBrokeredNursingCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId, parameters.StageId)
+                .FilterBrokeredNursingCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId, parameters.StageId)
                 .CountAsync().ConfigureAwait(false);
 
-            packageCount += await _databaseContext.HomeCarePackage
-                .FilterBrokeredHomeCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId, parameters.StageId)
-                .CountAsync().ConfigureAwait(false);
+            //packageCount += await _databaseContext.HomeCarePackage
+            //    .FilterBrokeredHomeCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId, parameters.StageId)
+            //    .CountAsync().ConfigureAwait(false);
 
             return packageCount;
         }

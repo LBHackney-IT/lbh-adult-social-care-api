@@ -1801,6 +1801,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("AssignedUserId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid?>("ClientId")
                         .HasColumnType("uuid");
 
@@ -2523,6 +2526,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("AssignedUserId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid?>("ClientId")
                         .HasColumnType("uuid");
 
@@ -3091,7 +3097,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c9e473dc-4d17-4b51-85a3-020db0d71d4e",
+                            ConcurrencyStamp = "aa3a00e3-ac8d-4653-b096-ef7b423c9d14",
                             Email = "furkan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -3105,7 +3111,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1ad077b2-c217-45e7-8c07-ac7f78603ce2",
+                            ConcurrencyStamp = "f7b12132-8b15-456c-98fc-5c005e8740b6",
                             Email = "duncan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
