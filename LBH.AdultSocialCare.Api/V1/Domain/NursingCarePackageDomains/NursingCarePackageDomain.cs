@@ -36,6 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains
         public int StatusId { get; set; }
         public int? SupplierId { get; set; }
         public int? StageId { get; set; }
+        public Guid? AssignedUserId { get; set; }
 
         // From FK values
         public string ClientName { get; set; }

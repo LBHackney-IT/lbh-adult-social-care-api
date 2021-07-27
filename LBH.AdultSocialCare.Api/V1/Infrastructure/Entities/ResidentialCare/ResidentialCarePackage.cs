@@ -118,6 +118,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
         /// </summary>
         public int? SupplierId { get; set; }
 
+        public Guid? AssignedUserId { get; set; }
+
         /// <summary>
         /// Gets or sets the Supplier Object
         /// </summary>
