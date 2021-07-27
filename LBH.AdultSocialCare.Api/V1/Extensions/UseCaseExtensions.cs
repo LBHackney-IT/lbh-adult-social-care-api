@@ -1,3 +1,5 @@
+using HttpServices.Services.Concrete;
+using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Interfaces;
@@ -299,6 +301,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             #region NursingCareApproveCommercial
 
             services.AddScoped<IGetNursingCareApproveCommercialUseCase, GetNursingCareApproveCommercialUseCase>();
+            services.AddScoped<IGetNursingCareInvoiceDetailUseCase, GetNursingCareInvoiceDetailUseCase>();
 
             #endregion NursingCareApproveCommercial
 
@@ -317,6 +320,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             #region ResidentialCareApproveBrokered
 
             services.AddScoped<IGetResidentialCareApproveBrokeredUseCase, GetResidentialCareApproveBrokeredUseCase>();
+            services.AddScoped<IGetResidentialCareInvoiceDetailUseCase, GetResidentialCareInvoiceDetailUseCase>();
 
             #endregion ResidentialCareApproveBrokered
 
@@ -402,6 +406,13 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IAssignToUserUseCase, AssignToUserUseCase>();
 
             #endregion
+
+            #region Transaction
+
+            services.AddScoped<ITransactionsService, TransactionsService>();
+
+            #endregion
+            
         }
     }
 }

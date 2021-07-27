@@ -1,4 +1,5 @@
 using AutoMapper;
+using HttpServices.Models.Requests;
 using LBH.AdultSocialCare.Api.V1.Boundary.ApprovedPackagesBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.BrokeredPackagesBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response;
@@ -18,6 +19,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.InvoiceBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovalHistoryBoundary.Response;
@@ -70,6 +72,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareAdditionalNeedsDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApproveCommercialDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApprovePackageDomains;
@@ -541,6 +544,18 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             CreateMap<PackageStatus, StatusDomain>();
             CreateMap<StatusDomain, StatusResponse>();
+
+            #endregion
+
+            #region Invoice
+
+            CreateMap<InvoiceDomain, InvoiceResponse>();
+            CreateMap<InvoiceItemDomain, InvoiceItemResponse>();
+            CreateMap<InvoiceForCreationRequest, InvoiceResponse>();
+            CreateMap<InvoiceItemForCreationRequest, InvoiceItemResponse>();
+
+            CreateMap<InvoiceResponse, InvoiceForCreationRequest>();
+            CreateMap<InvoiceItemResponse, InvoiceItemForCreationRequest>();
 
             #endregion
         }

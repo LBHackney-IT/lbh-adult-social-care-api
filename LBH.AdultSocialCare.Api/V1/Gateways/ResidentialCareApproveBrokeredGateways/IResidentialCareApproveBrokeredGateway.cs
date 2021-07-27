@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApproveBrokeredDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGateways
@@ -9,5 +10,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGate
     public interface IResidentialCareApproveBrokeredGateway
     {
         public Task<ResidentialCareApproveBrokeredDomain> GetAsync(Guid residentialCarePackageId);
+
+        Task<InvoiceDomain> GetInvoiceDetail(Guid residentialCarePackageId);
     }
 }
