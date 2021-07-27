@@ -271,12 +271,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             return Ok(result);
         }
 
-        // Accept invoices in pay run //todo temp solution 
+        // Mark list of invoices in pay run as accepted
         [HttpPut("pay-runs/{payRunId}/invoices/accept-invoices")]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<bool>> ApproveInvoice(Guid payRunId, IEnumerable<Guid> invoiceIds)
+        public async Task<ActionResult<bool>> ApproveInvoice(Guid payRunId, [FromBody] InvoiceIdListRequest invoiceIdList)
         {
-            var result = await _transactionsService.AcceptInvoicesUseCase(payRunId, invoiceIds).ConfigureAwait(false);
+            var result = await _transactionsService.AcceptInvoicesUseCase(payRunId, invoiceIdList).ConfigureAwait(false);
             return Ok(result);
         }
 

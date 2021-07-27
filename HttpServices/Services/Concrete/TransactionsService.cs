@@ -867,9 +867,9 @@ namespace HttpServices.Services.Concrete
             return res;
         }
 
-        public async Task<bool> AcceptInvoicesUseCase(Guid payRunId, IEnumerable<Guid> invoiceIds)
+        public async Task<bool> AcceptInvoicesUseCase(Guid payRunId, InvoiceIdListRequest invoiceIdList)
         {
-            var body = JsonConvert.SerializeObject(invoiceIds);
+            var body = JsonConvert.SerializeObject(invoiceIdList);
             var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
             var httpRequestMessage = new HttpRequestMessage()
             {

@@ -76,6 +76,6 @@ namespace HttpServices.Services.Contracts
 
         Task<bool> CreatePayRunHeldChatUseCase(PayRunHeldChatForCreationRequest payRunHeldChatForCreationRequest);
 
-        Task<bool> AcceptInvoicesUseCase(Guid payRunId, IEnumerable<Guid> invoiceIds);
+        Task<bool> AcceptInvoicesUseCase(Guid payRunId, InvoiceIdListRequest invoiceIdList);
     }
 }
