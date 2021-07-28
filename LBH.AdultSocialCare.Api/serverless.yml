@@ -35,14 +35,11 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
-          private: true
-          authorizer:
-            arn: ${ssm:/api-authenticator/${self:provider.stage}/arn}
-            type: request
-            resultTtlInSeconds: 0
-            identitySource: method.request.header.Authorization
-            managedExternally: true
-          cors: true
+          private: false
+      - http:
+          path: /swagger/{proxy+}
+          method: GET
+          private: false
 resources:
   Resources:
     lambdaExecutionRole:

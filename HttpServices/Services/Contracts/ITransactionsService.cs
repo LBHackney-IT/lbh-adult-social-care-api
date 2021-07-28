@@ -11,15 +11,17 @@ namespace HttpServices.Services.Contracts
     {
         Task<IEnumerable<DepartmentResponse>> GetPaymentDepartments();
 
-        Task<Guid?> CreateResidentialRecurringPayRun();
+        Task<Guid?> CreateResidentialRecurringPayRun(PayRunForCreationRequest payRunForCreationRequest);
 
-        Task<Guid?> CreateDirectPaymentsPayRun();
+        Task<Guid?> CreateDirectPaymentsPayRun(PayRunForCreationRequest payRunForCreationRequest);
 
-        Task<Guid?> CreateHomeCarePayRun();
+        Task<Guid?> CreateHomeCarePayRun(PayRunForCreationRequest payRunForCreationRequest);
 
-        Task<Guid?> CreateResidentialReleaseHoldsPayRun();
+        Task<Guid?> CreateResidentialReleaseHoldsPayRun(PayRunForCreationRequest payRunForCreationRequest);
 
-        Task<Guid?> CreateDirectPaymentsReleaseHoldsPayRun();
+        Task<Guid?> CreateDirectPaymentsReleaseHoldsPayRun(PayRunForCreationRequest payRunForCreationRequest);
+
+        Task<PayRunDateSummaryResponse> GetDateOfLastPayRun(string payRunType);
 
         Task<PagedPayRunSummaryResponse> GetPayRunSummaryList(PayRunSummaryListParameters parameters);
 
@@ -72,8 +74,9 @@ namespace HttpServices.Services.Contracts
 
         Task<IEnumerable<SupplierTaxRateResponse>> GetSupplierTaxRateUseCase(long supplierId);
 
-        Task<bool> CreatePayRunHeldChatUseCase(PayRunHeldChatForCreationRequest payRunHeldChatForCreationRequest);
+        Task<DisputedInvoiceChatResponse> CreatePayRunHeldChatUseCase(Guid payRunId,
+            DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest);
 
-        Task<bool> AcceptInvoicesUseCase(Guid payRunId, IEnumerable<Guid> invoiceIds);
+        Task<bool> AcceptInvoicesUseCase(Guid payRunId, InvoiceIdListRequest invoiceIdList);
     }
 }

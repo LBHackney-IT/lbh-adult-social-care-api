@@ -39,9 +39,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
 
         [HttpPost("pay-runs/{payRunType}")]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> CreatePayRun(string payRunType)
+        public async Task<IActionResult> CreatePayRun(string payRunType, [FromBody] PayRunForCreationRequest payRunForCreationRequest)
         {
-            var result = await _payRunUseCase.CreateNewPayRunUseCase(payRunType).ConfigureAwait(false);
+            var result = await _payRunUseCase.CreateNewPayRunUseCase(payRunType, payRunForCreationRequest).ConfigureAwait(false);
             return Ok(result);
         }
 
@@ -259,21 +259,31 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             return Ok(result);
         }
 
-        // Accept invoices in pay run //todo temp solution 
-        [HttpPut("pay-runs/{payRunId}/invoices/accept-invoices")]
+        [HttpGet("pay-runs/date-of-last-pay-run/{payRunType}")]
+        [ProducesResponseType(typeof(PayRunDateSummaryResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<bool>> ApproveInvoice(Guid payRunId, IEnumerable<Guid> invoiceIds)
+        public async Task<ActionResult<PayRunDateSummaryResponse>> GetDateSummaryOfLastPayRun(string payRunType)
         {
-            var result = await _transactionsService.AcceptInvoicesUseCase(payRunId, invoiceIds).ConfigureAwait(false);
+            var result = await _transactionsService.GetDateOfLastPayRun(payRunType).ConfigureAwait(false);
             return Ok(result);
         }
 
-        // Accept invoices in pay run //todo temp solution 
+        // Mark list of invoices in pay run as accepted
+        [HttpPut("pay-runs/{payRunId}/invoices/accept-invoices")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> ApproveInvoice(Guid payRunId, [FromBody] InvoiceIdListRequest invoiceIdList)
+        {
+            var result = await _transactionsService.AcceptInvoicesUseCase(payRunId, invoiceIdList).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        // Create disputed invoice chat
         [HttpPost("pay-runs/{payRunId}/create-held-chat")]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<bool>> CreatePayRunHeldChat([FromBody] PayRunHeldChatForCreationRequest payRunHeldChatForCreationRequest)
+        public async Task<ActionResult<DisputedInvoiceChatResponse>> CreateDisputedInvoiceChat(Guid payRunId, [FromBody] DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest)
         {
-            var result = await _transactionsService.CreatePayRunHeldChatUseCase(payRunHeldChatForCreationRequest).ConfigureAwait(false);
+            var result = await _transactionsService.CreatePayRunHeldChatUseCase(payRunId, disputedInvoiceChatForCreationRequest).ConfigureAwait(false);
             return Ok(result);
         }
     }

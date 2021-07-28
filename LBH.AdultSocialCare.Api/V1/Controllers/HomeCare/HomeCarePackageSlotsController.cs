@@ -1,15 +1,15 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
-using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {

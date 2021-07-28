@@ -1,5 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
     public interface IAuthenticationManager
     {
         Task<bool> ValidateUser(string userName, string password = null);
+
+        User GetUser();
 
         Task<string> CreateToken();
 

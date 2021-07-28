@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
