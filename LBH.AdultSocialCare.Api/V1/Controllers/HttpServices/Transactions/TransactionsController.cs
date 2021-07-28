@@ -280,12 +280,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             return Ok(result);
         }
 
-        // Accept invoices in pay run //todo temp solution 
+        // Create disputed invoice chat
         [HttpPost("pay-runs/{payRunId}/create-held-chat")]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<bool>> CreatePayRunHeldChat([FromBody] PayRunHeldChatForCreationRequest payRunHeldChatForCreationRequest)
+        public async Task<ActionResult<DisputedInvoiceChatResponse>> CreateDisputedInvoiceChat(Guid payRunId, [FromBody] DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest)
         {
-            var result = await _transactionsService.CreatePayRunHeldChatUseCase(payRunHeldChatForCreationRequest).ConfigureAwait(false);
+            var result = await _transactionsService.CreatePayRunHeldChatUseCase(payRunId, disputedInvoiceChatForCreationRequest).ConfigureAwait(false);
             return Ok(result);
         }
     }

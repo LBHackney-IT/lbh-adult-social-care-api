@@ -74,7 +74,8 @@ namespace HttpServices.Services.Contracts
 
         Task<IEnumerable<SupplierTaxRateResponse>> GetSupplierTaxRateUseCase(long supplierId);
 
-        Task<bool> CreatePayRunHeldChatUseCase(PayRunHeldChatForCreationRequest payRunHeldChatForCreationRequest);
+        Task<DisputedInvoiceChatResponse> CreatePayRunHeldChatUseCase(Guid payRunId,
+            DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest);
 
         Task<bool> AcceptInvoicesUseCase(Guid payRunId, InvoiceIdListRequest invoiceIdList);
     }

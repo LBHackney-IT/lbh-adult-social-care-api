@@ -840,14 +840,15 @@ namespace HttpServices.Services.Concrete
             return res;
         }
 
-        public async Task<bool> CreatePayRunHeldChatUseCase(PayRunHeldChatForCreationRequest payRunHeldChatForCreationRequest)
+        public async Task<DisputedInvoiceChatResponse> CreatePayRunHeldChatUseCase(Guid payRunId,
+            DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest)
         {
-            var body = JsonConvert.SerializeObject(payRunHeldChatForCreationRequest);
+            var body = JsonConvert.SerializeObject(disputedInvoiceChatForCreationRequest);
             var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
             var httpRequestMessage = new HttpRequestMessage()
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs{payRunHeldChatForCreationRequest.PayRunId}/create-held-chat"),
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs{payRunId}/create-held-chat"),
                 Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } },
                 Content = requestContent
             };
@@ -856,14 +857,14 @@ namespace HttpServices.Services.Concrete
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                await httpResponse.ThrowResponseExceptionAsync("Failed to create held chat");
+                await httpResponse.ThrowResponseExceptionAsync("Failed to create disputed invoice chat");
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
-            var res = JsonConvert.DeserializeObject<bool>(content);
+            var res = JsonConvert.DeserializeObject<DisputedInvoiceChatResponse>(content);
             return res;
         }
 
