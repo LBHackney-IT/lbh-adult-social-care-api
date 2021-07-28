@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways
 {
@@ -65,6 +66,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways
                 throw new EntityNotFoundException($"Couldn't find nursing care package {nursingCarePackageId.ToString()}");
             }
             nursingPackage.StageId = stageId;
+            if (PackageStageConstants.BrokerageAssignedId == stageId)
+                nursingPackage.AssignedUserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84");
             try
             {
                 await _databaseContext.SaveChangesAsync().ConfigureAwait(false);

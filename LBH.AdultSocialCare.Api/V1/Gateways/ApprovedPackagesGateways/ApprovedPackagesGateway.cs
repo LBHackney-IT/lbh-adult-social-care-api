@@ -51,8 +51,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
         {
             var packageList = new List<ApprovedPackagesDomain>();
 
-            var homeCare = await GetHomeCarePackages(parameters, statusId).ConfigureAwait(false);
-            packageList.AddRange(homeCare);
+            //var homeCare = await GetHomeCarePackages(parameters, statusId).ConfigureAwait(false);
+            //packageList.AddRange(homeCare);
 
             var residentialCare = await GetResidentialCarePackages(parameters, statusId).ConfigureAwait(false);
             packageList.AddRange(residentialCare);
@@ -60,8 +60,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
             var nursingCare = await GetNursingPackages(parameters, statusId).ConfigureAwait(false);
             packageList.AddRange(nursingCare);
 
-            var dayCare = await GetDayCarePackages(parameters, statusId).ConfigureAwait(false);
-            packageList.AddRange(dayCare);
+            //var dayCare = await GetDayCarePackages(parameters, statusId).ConfigureAwait(false);
+            //packageList.AddRange(dayCare);
 
             return packageList;
         }
@@ -69,7 +69,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
         private async Task<List<ApprovedPackagesDomain>> GetResidentialCarePackages(ApprovedPackagesParameters parameters, int statusId)
         {
             var residentialCarePackageList = await _databaseContext.ResidentialCarePackages
-                .FilterApprovedResidentialCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId)
+                .FilterApprovedResidentialCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId)
                 .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.ResidentialCareApprovalHistories)
@@ -99,7 +99,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
         private async Task<List<ApprovedPackagesDomain>> GetHomeCarePackages(ApprovedPackagesParameters parameters, int statusId)
         {
             var homeCarePackageList = await _databaseContext.HomeCarePackage
-                .FilterApprovedHomeCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId)
+                .FilterApprovedHomeCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId)
                 .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.HomeCareApprovalHistories)
@@ -129,7 +129,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
         private async Task<List<ApprovedPackagesDomain>> GetNursingPackages(ApprovedPackagesParameters parameters, int statusId)
         {
             var nursingCarePackageList = await _databaseContext.NursingCarePackages
-                .FilterApprovedNursingCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId)
+                .FilterApprovedNursingCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId)
                 .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.NursingCareApprovalHistories)
@@ -150,7 +150,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
                     LastUpdated = nc.DateUpdated,
                     CareValue = _databaseContext.NursingCareBrokerageInfos
                         .Where(x => x.NursingCarePackageId == nc.Id)
-                        .Select(x => x.NursingCore).SingleOrDefault(),
+                        .Sum(x => x.NursingCore + x.AdditionalNeedsPayment + x.AdditionalNeedsPaymentOneOff),
                 })
                 .ToListAsync().ConfigureAwait(false);
             return nursingCarePackageList;
@@ -159,7 +159,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
         private async Task<List<ApprovedPackagesDomain>> GetDayCarePackages(ApprovedPackagesParameters parameters, int statusId)
         {
             var dayCarePackageList = await _databaseContext.DayCarePackages
-                .FilterApprovedDayCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId)
+                .FilterApprovedDayCareList(statusId, parameters.HackneyId, parameters.SocialWorkerId)
                 .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.DayCareApprovalHistories)
@@ -190,20 +190,20 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
         {
             var packageCount = 0;
             packageCount += await _databaseContext.ResidentialCarePackages
-                .FilterApprovedResidentialCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId)
+                .FilterApprovedResidentialCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId)
                 .CountAsync().ConfigureAwait(false);
 
             packageCount += await _databaseContext.NursingCarePackages
-                .FilterApprovedNursingCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId)
+                .FilterApprovedNursingCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId)
                 .CountAsync().ConfigureAwait(false);
 
-            packageCount += await _databaseContext.DayCarePackages
-                .FilterApprovedDayCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId)
-                .CountAsync().ConfigureAwait(false);
+            //packageCount += await _databaseContext.DayCarePackages
+            //    .FilterApprovedDayCareList(statusId, parameters.HackneyId, parameters.SocialWorkerId)
+            //    .CountAsync().ConfigureAwait(false);
 
-            packageCount += await _databaseContext.HomeCarePackage
-                .FilterApprovedHomeCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId)
-                .CountAsync().ConfigureAwait(false);
+            //packageCount += await _databaseContext.HomeCarePackage
+            //    .FilterApprovedHomeCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId)
+            //    .CountAsync().ConfigureAwait(false);
 
             return packageCount;
         }

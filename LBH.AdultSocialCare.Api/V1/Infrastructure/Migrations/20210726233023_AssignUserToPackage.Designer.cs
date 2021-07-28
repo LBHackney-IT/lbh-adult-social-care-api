@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210726233023_AssignUserToPackage")]
+    partial class AssignUserToPackage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3097,7 +3099,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "aa3a00e3-ac8d-4653-b096-ef7b423c9d14",
+                            ConcurrencyStamp = "d3689461-4b3b-42fe-84fa-65abe1ca593d",
                             Email = "furkan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -3111,7 +3113,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f7b12132-8b15-456c-98fc-5c005e8740b6",
+                            ConcurrencyStamp = "c9f450a5-615e-420e-8ccd-1028dfd205aa",
                             Email = "duncan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,

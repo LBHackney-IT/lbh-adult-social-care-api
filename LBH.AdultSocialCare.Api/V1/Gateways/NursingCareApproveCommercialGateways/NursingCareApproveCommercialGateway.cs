@@ -5,8 +5,11 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGateways
 {
@@ -53,6 +56,69 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGatewa
             };
 
             return nursingCareApproveCommercialDomain;
+        }
+
+        public async Task<InvoiceDomain> GetInvoiceDetail(Guid nursingCarePackageId)
+        {
+            var nursingCarePackage = await _databaseContext.NursingCarePackages
+                .Where(item => item.Id == nursingCarePackageId)
+                .Include(item => item.NursingCareAdditionalNeeds)
+                .FirstOrDefaultAsync()
+                .ConfigureAwait(false);
+
+            if (nursingCarePackage == null)
+                throw new ApiException($"Could not find the Nursing Care Package {nursingCarePackageId}");
+
+            var nursingCareBrokerage = await _databaseContext.NursingCareBrokerageInfos
+                .Where(item => item.NursingCarePackageId == nursingCarePackageId)
+                .FirstOrDefaultAsync()
+                .ConfigureAwait(false);
+
+            if (nursingCareBrokerage == null)
+                throw new ApiException($"Nursing Care Brokerage not completed");
+
+            var additionalNeedsCount = nursingCarePackage.NursingCareAdditionalNeeds.Count;
+
+            var invoiceItems = new List<InvoiceItemDomain>()
+            {
+                new InvoiceItemDomain()
+                {
+                    ItemName = "Nursing Care Core",
+                    PricePerUnit = nursingCareBrokerage.NursingCore,
+                    Quantity = 1,
+                    CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                },
+                new InvoiceItemDomain()
+                {
+                    ItemName = "Additional Needs",
+                    PricePerUnit = nursingCareBrokerage.AdditionalNeedsPayment,
+                    Quantity = additionalNeedsCount,
+                    CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                }
+            };
+
+            if (nursingCareBrokerage.AdditionalNeedsPaymentOneOff > 0)
+            {
+                var additionalNeedsPaymentOneOff = new InvoiceItemDomain()
+                {
+                    ItemName = "Additional Needs One Off",
+                    PricePerUnit = nursingCareBrokerage.AdditionalNeedsPaymentOneOff,
+                    Quantity = 1,
+                    CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                };
+                invoiceItems.Add(additionalNeedsPaymentOneOff);
+            }
+
+            var invoiceDomain = new InvoiceDomain
+            {
+                SupplierId = nursingCarePackage.SupplierId,
+                PackageTypeId = PackageTypesConstants.NursingCarePackageId,
+                ServiceUserId = nursingCarePackage.ClientId,
+                InvoiceItems = invoiceItems,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+            };
+
+            return invoiceDomain;
         }
     }
 }

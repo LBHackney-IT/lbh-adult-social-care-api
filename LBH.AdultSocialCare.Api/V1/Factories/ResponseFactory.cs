@@ -65,10 +65,12 @@ using System.Collections.Generic;
 using System.Linq;
 using LBH.AdultSocialCare.Api.V1.Boundary.ApprovedPackagesBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.BrokeredPackagesBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.InvoiceBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.PrimarySupportReasonBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SubmittedPackageRequestsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBillBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.BillDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -798,6 +800,15 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<BrokeredPackagesResponse> ToResponse(this IEnumerable<BrokeredPackagesDomain> brokeredPackagesDomains)
         {
             return _mapper.Map<IEnumerable<BrokeredPackagesResponse>>(brokeredPackagesDomains);
+        }
+
+        #endregion
+
+        #region Invoice
+
+        public static InvoiceResponse ToResponse(this InvoiceDomain invoiceDomain)
+        {
+            return _mapper.Map<InvoiceResponse>(invoiceDomain);
         }
 
         #endregion
