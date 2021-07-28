@@ -15,7 +15,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class UserController : BaseController
     {
         private readonly IRegisterUserUseCase _registerUserUseCase;

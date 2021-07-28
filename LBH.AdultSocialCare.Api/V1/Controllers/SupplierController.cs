@@ -2,7 +2,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -15,7 +14,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class SupplierController : BaseController
     {
         private readonly ICreateSupplierUseCase _createSupplierUseCase;

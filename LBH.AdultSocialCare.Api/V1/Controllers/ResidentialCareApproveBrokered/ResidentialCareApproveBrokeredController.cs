@@ -2,7 +2,6 @@ using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApproveBrokeredUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,7 +14,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareApproveBrokered
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class ResidentialCareApproveBrokeredController : Controller
     {
         private readonly IGetResidentialCareApproveBrokeredUseCase _getResidentialCareApproveBrokeredUseCase;

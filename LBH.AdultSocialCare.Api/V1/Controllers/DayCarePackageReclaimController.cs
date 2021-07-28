@@ -2,7 +2,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageReclaimBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageReclaimBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageReclaimUseCase.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -14,7 +13,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class DayCarePackageReclaimController : BaseController
     {
         private readonly ICreateDayCarePackageReclaimUseCase _createDayCarePackageReclaimUseCase;

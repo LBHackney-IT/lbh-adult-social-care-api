@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
@@ -12,9 +9,11 @@ using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
 {
@@ -23,7 +22,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class DayCarePackageController : ControllerBase
     {
         private readonly ICreateDayCarePackageUseCase _createDayCarePackageUseCase;
@@ -159,8 +157,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
             return Ok(result);
         }
 
-
-
         #region DayCarePackageOptions
 
         /// <summary>
@@ -199,7 +195,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
             return Ok(await _getOpportunityTimesPerMonthOptionsListUseCase.Execute().ConfigureAwait(false));
         }
 
-        #endregion
+        #endregion DayCarePackageOptions
 
         #region DayCarePackageStatus
 
@@ -311,6 +307,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
             return Ok(res);
         }
 
-        #endregion
+        #endregion DayCarePackageStatus
     }
 }

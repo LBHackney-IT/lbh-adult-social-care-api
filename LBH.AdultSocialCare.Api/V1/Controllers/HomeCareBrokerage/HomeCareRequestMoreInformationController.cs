@@ -1,15 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
 {
@@ -18,12 +14,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class HomeCareRequestMoreInformationController : BaseController
     {
         private readonly ICreateHomeCareRequestMoreInformationUseCase _createHomeCareRequestMoreInformationUseCase;
         private readonly IChangeStatusHomeCarePackageUseCase _changeStatusHomeCarePackageUseCase;
-
 
         public HomeCareRequestMoreInformationController(ICreateHomeCareRequestMoreInformationUseCase createHomeCareRequestMoreInformationUseCase,
             IChangeStatusHomeCarePackageUseCase changeStatusHomeCarePackageUseCase)

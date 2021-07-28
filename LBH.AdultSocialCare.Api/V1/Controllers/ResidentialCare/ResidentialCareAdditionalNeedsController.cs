@@ -2,7 +2,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,7 +14,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class ResidentialCareAdditionalNeedsController : BaseController
     {
         private readonly IUpsertResidentialCareAdditionalNeedsUseCase _upsertResidentialCareAdditionalNeedsUseCase;

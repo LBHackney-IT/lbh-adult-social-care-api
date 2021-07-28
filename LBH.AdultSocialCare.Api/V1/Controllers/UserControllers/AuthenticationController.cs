@@ -20,6 +20,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
+    [AllowAnonymous]
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthenticationManager _authManager;

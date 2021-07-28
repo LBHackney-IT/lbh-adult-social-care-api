@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
 {
@@ -19,7 +18,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class TransactionsController : ControllerBase
     {
         private readonly ITransactionsService _transactionsService;

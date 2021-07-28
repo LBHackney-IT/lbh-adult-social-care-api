@@ -4,7 +4,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareBrokerageUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -17,7 +16,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class NursingCareBrokerageController : Controller
     {
         private readonly IGetNursingCareBrokerageUseCase _getNursingCareBrokerageUseCase;

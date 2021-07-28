@@ -1,18 +1,16 @@
+using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovalHistoryUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovalHistoryBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovalHistoryUseCase.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
 {
@@ -21,7 +19,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class NursingCarePackageController : BaseController
     {
         private readonly IUpdateNursingCarePackageUseCase _updateNursingCarePackageUseCase;

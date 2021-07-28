@@ -3,7 +3,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareRequestMoreInformationUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -15,7 +14,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class ResidentialCareRequestMoreInformationController : Controller
     {
         private readonly ICreateResidentialCareRequestMoreInformationUseCase _createResidentialCareRequestMoreInformationUseCase;

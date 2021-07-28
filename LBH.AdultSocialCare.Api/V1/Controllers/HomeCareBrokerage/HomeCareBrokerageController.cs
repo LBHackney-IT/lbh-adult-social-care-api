@@ -1,17 +1,14 @@
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareBrokerageUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
 {
@@ -20,7 +17,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class HomeCareBrokerageController : BaseController
     {
         private readonly IGetHomeCareBrokerageUseCase _getHomeCareBrokerageUseCase;

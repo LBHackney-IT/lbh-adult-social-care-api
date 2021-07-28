@@ -4,31 +4,27 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovalHistoryUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
-
     [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class HomeCarePackageController : BaseController
     {
-
         private readonly IUpsertHomeCarePackageUseCase _upsertHomeCarePackageUseCase;
         private readonly IChangeStatusHomeCarePackageUseCase _changeStatusHomeCarePackageUseCase;
         private readonly IGetAllHomeCarePackageUseCase _getAllHomeCarePackageUseCase;
@@ -191,7 +187,5 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 
             return Ok(result);
         }
-
     }
-
 }

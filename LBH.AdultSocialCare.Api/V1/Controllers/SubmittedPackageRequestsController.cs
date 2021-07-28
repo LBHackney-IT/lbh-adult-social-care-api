@@ -2,7 +2,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SubmittedPackageRequestsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 using LBH.AdultSocialCare.Api.V1.UseCase.SubmittedPackageRequestsUseCases.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -16,7 +15,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class SubmittedPackageRequestsController : ControllerBase
     {
         private readonly IGetSubmittedPackageRequestsUseCase _getSubmittedPackageRequestsUseCase;

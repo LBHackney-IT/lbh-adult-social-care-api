@@ -1,6 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.PrimarySupportReasonBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.PrimarySupportReasonUseCase.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -13,7 +12,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class PrimarySupportReasonController : BaseController
     {
         private readonly IGetAllPrimarySupportReasonsUseCase _getAllPrimarySupportReasonsUseCase;

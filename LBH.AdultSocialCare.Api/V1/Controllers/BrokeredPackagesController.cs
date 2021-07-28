@@ -8,7 +8,6 @@ using LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.BrokeredPackagesUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareBrokerageUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -23,7 +22,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class BrokeredPackagesController : ControllerBase
     {
         private readonly IGetBrokeredPackagesUseCase _getBrokeredPackagesUseCase;

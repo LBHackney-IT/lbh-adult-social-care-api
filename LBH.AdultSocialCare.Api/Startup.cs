@@ -24,6 +24,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -50,6 +52,11 @@ namespace LBH.AdultSocialCare.Api
                 {
                     config.ReturnHttpNotAcceptable = true;
                     config.Filters.Add(typeof(LBHExceptionFilter));
+
+                    var policy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .Build();
+                    config.Filters.Add(new AuthorizeFilter(policy));
                 })
                 .AddNewtonsoftJson(x
                     => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)

@@ -1,6 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.StageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareBrokerageUseCase.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -13,7 +12,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class StageController : BaseController
     {
         private readonly IGetAllHomeCareStageUseCase _getAllHomeCareStageUseCase;

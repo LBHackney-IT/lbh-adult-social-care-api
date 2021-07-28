@@ -1,10 +1,9 @@
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCareRequestMoreInformationUseCase.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
 {
@@ -13,7 +12,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class DayCareRequestMoreInformationController : BaseController
     {
         private readonly ICreateDayCareRequestMoreInformationUseCase _createDayCareRequestMoreInformationUseCase;

@@ -1,6 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBillBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.SupplierBillUseCases.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,7 +12,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    [Authorize]
     public class SupplierBillController : BaseController
     {
         private readonly IGetSupplierBillUseCase _getSupplierBillUseCase;
