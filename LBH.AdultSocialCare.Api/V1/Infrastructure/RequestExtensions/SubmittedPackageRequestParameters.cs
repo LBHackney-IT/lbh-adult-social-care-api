@@ -8,6 +8,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
     public class SubmittedPackageRequestParameters : RequestParameters
     {
         public int? StatusId { get; set; }
-        public Guid? ClientId { get; set; }
+        public string ClientName { get; set; }
     }
 }
