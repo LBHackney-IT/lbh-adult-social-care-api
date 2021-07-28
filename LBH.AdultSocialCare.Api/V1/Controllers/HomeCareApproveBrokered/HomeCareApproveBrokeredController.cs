@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareApproveBrokered
 {
@@ -13,6 +14,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareApproveBrokered
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
+    [Authorize]
     public class HomeCareApproveBrokeredController : BaseController
     {
         private readonly IGetHomeCareApproveBrokeredUseCase _getHomeCareApproveBrokeredUseCase;

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
@@ -16,6 +17,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
     [Route("api/v1/[controller]")]
     [Produces("application/json")]
     [ApiController]
+    [Authorize]
     public class HomeCarePackageSlotsController : BaseController
     {
         private readonly IUpsertHomeCarePackageSlotsUseCase _upsertHomeCarePackageSlotsUseCase;

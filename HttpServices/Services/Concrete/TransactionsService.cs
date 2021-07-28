@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 
 namespace HttpServices.Services.Concrete
 {
@@ -47,13 +49,16 @@ namespace HttpServices.Services.Concrete
             return res;
         }
 
-        private async Task<Guid?> CreateNewPayRun(string payRunName)
+        private async Task<Guid?> CreateNewPayRun(string payRunName, PayRunForCreationRequest payRunForCreationRequest)
         {
+            var body = JsonConvert.SerializeObject(payRunForCreationRequest);
+            var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
             var httpRequestMessage = new HttpRequestMessage()
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/{payRunName}"),
-                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } },
+                Content = requestContent
             };
 
             var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
@@ -71,33 +76,73 @@ namespace HttpServices.Services.Concrete
             return res;
         }
 
-        public async Task<Guid?> CreateResidentialRecurringPayRun()
+        public async Task<Guid?> CreateResidentialRecurringPayRun(PayRunForCreationRequest payRunForCreationRequest)
         {
-            var res = await CreateNewPayRun("ResidentialRecurring").ConfigureAwait(false);
+            var res = await CreateNewPayRun("ResidentialRecurring", payRunForCreationRequest).ConfigureAwait(false);
             return res;
         }
 
-        async Task<Guid?> ITransactionsService.CreateDirectPaymentsPayRun()
+        async Task<Guid?> ITransactionsService.CreateDirectPaymentsPayRun(PayRunForCreationRequest payRunForCreationRequest)
         {
-            var res = await CreateNewPayRun("DirectPayments").ConfigureAwait(false);
+            var res = await CreateNewPayRun("DirectPayments", payRunForCreationRequest).ConfigureAwait(false);
             return res;
         }
 
-        async Task<Guid?> ITransactionsService.CreateHomeCarePayRun()
+        async Task<Guid?> ITransactionsService.CreateHomeCarePayRun(PayRunForCreationRequest payRunForCreationRequest)
         {
-            var res = await CreateNewPayRun("HomeCare").ConfigureAwait(false);
+            var res = await CreateNewPayRun("HomeCare", payRunForCreationRequest).ConfigureAwait(false);
             return res;
         }
 
-        public async Task<Guid?> CreateResidentialReleaseHoldsPayRun()
+        public async Task<Guid?> CreateResidentialReleaseHoldsPayRun(PayRunForCreationRequest payRunForCreationRequest)
         {
-            var res = await CreateNewPayRun("ResidentialReleaseHolds").ConfigureAwait(false);
+            var res = await CreateNewPayRun("ResidentialReleaseHolds", payRunForCreationRequest).ConfigureAwait(false);
             return res;
         }
 
-        async Task<Guid?> ITransactionsService.CreateDirectPaymentsReleaseHoldsPayRun()
+        async Task<Guid?> ITransactionsService.CreateDirectPaymentsReleaseHoldsPayRun(PayRunForCreationRequest payRunForCreationRequest)
         {
-            var res = await CreateNewPayRun("DirectPaymentsReleaseHolds").ConfigureAwait(false);
+            var res = await CreateNewPayRun("DirectPaymentsReleaseHolds", payRunForCreationRequest).ConfigureAwait(false);
+            return res;
+        }
+
+        public async Task<PayRunDateSummaryResponse> GetDateOfLastPayRun(string payRunType)
+        {
+            var allowedPayRunTypes = new List<string>()
+            {
+                "ResidentialRecurring",
+                "DirectPayments",
+                "HomeCare",
+                "ResidentialReleaseHolds",
+                "DirectPaymentsReleaseHolds",
+            };
+
+            var correctPayRunType = allowedPayRunTypes
+                .Find(p => p.Equals(payRunType, StringComparison.OrdinalIgnoreCase));
+            if (correctPayRunType == null)
+            {
+                throw new EntityNotFoundException("The pay run type is not valid. Please check and try again");
+            }
+
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/date-of-last-pay-run/{correctPayRunType}"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to fetch date of last pay run");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<PayRunDateSummaryResponse>(content);
             return res;
         }
 
@@ -795,14 +840,15 @@ namespace HttpServices.Services.Concrete
             return res;
         }
 
-        public async Task<bool> CreatePayRunHeldChatUseCase(PayRunHeldChatForCreationRequest payRunHeldChatForCreationRequest)
+        public async Task<DisputedInvoiceChatResponse> CreatePayRunHeldChatUseCase(Guid payRunId,
+            DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest)
         {
-            var body = JsonConvert.SerializeObject(payRunHeldChatForCreationRequest);
+            var body = JsonConvert.SerializeObject(disputedInvoiceChatForCreationRequest);
             var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
             var httpRequestMessage = new HttpRequestMessage()
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs{payRunHeldChatForCreationRequest.PayRunId}/create-held-chat"),
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs{payRunId}/create-held-chat"),
                 Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } },
                 Content = requestContent
             };
@@ -811,20 +857,20 @@ namespace HttpServices.Services.Concrete
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                await httpResponse.ThrowResponseExceptionAsync("Failed to create held chat");
+                await httpResponse.ThrowResponseExceptionAsync("Failed to create disputed invoice chat");
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
-            var res = JsonConvert.DeserializeObject<bool>(content);
+            var res = JsonConvert.DeserializeObject<DisputedInvoiceChatResponse>(content);
             return res;
         }
 
-        public async Task<bool> AcceptInvoicesUseCase(Guid payRunId, IEnumerable<Guid> invoiceIds)
+        public async Task<bool> AcceptInvoicesUseCase(Guid payRunId, InvoiceIdListRequest invoiceIdList)
         {
-            var body = JsonConvert.SerializeObject(invoiceIds);
+            var body = JsonConvert.SerializeObject(invoiceIdList);
             var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
             var httpRequestMessage = new HttpRequestMessage()
             {

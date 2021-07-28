@@ -5,6 +5,7 @@ using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Interface
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
@@ -13,6 +14,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
+    [Authorize]
     public class HomeCarePackageReclaimController : BaseController
     {
         private readonly ICreateHomeCarePackageReclaimUseCase _createHomeCarePackageReclaimUseCase;

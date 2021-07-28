@@ -99,30 +99,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
             return Ok(res);
         }
 
-        /// <summary>
-        /// Authenticate with hackney token object.
-        /// </summary>
-        /// <param name="hackneyTokenRequest">The hackney token object.</param>
-        /// <returns>A token if authentication is successful</returns>
-        /// <response code="200">Returns token</response>
-        /// <response code="400">User not found and cannot be created</response>
-        /// <response code="401">Unauthorized</response>
-        /// <response code="404">User not found</response>
-        /// <response code="422">If the request object is invalid</response>
-        /// <response code="500">Internal Server Error</response>
-        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
-        [HttpPost("google-login-v2")]
-        public async Task<IActionResult> GoogleAuthenticateWithObject([FromBody] HackneyTokenRequest hackneyTokenRequest)
-        {
-            var res = await _authUseCase.GoogleAuthenticateWithObjectUseCase(hackneyTokenRequest.ToDomain())
-                .ConfigureAwait(false);
-            return Ok(res);
-        }
 
         /// <summary>
         /// Assigns roles to a user.

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
@@ -16,6 +17,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
+    [Authorize]
     public class HomeCareServiceController : BaseController
     {
         private readonly IUpsertServiceUseCase _upsertServiceUseCase;
