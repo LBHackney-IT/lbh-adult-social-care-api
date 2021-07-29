@@ -57,12 +57,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareApproveCommercial
         public async Task<ActionResult<bool>> ApprovePackage(Guid nursingCarePackageId)
         {
             var result = await _changeStatusNursingCarePackageUseCase.UpdateAsync(nursingCarePackageId, ApprovalHistoryConstants.PackageBrokeredId).ConfigureAwait(false);
-            //get invoice detail
-            var invoiceResponse = await _getNursingCareInvoiceDetailUseCase.GetNursingCareInvoiceDetail(nursingCarePackageId).ConfigureAwait(false);
+            //TODO: get invoice detail and create pay run invoice
+            /*var invoiceResponse = await _getNursingCareInvoiceDetailUseCase.GetNursingCareInvoiceDetail(nursingCarePackageId).ConfigureAwait(false);
             //create an invoice
             var invoiceCreationRequest = new InvoiceForCreationRequest();
             _mapper.Map(invoiceResponse, invoiceCreationRequest);
-            await _transactionsService.CreateInvoiceUseCase(invoiceCreationRequest).ConfigureAwait(false);
+            await _transactionsService.CreateInvoiceUseCase(invoiceCreationRequest).ConfigureAwait(false);*/
             return Ok(result);
         }
     }
