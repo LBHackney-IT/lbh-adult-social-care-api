@@ -1,7 +1,6 @@
+using LBH.AdultSocialCare.Api.V1.Validations;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request
 {
@@ -10,36 +9,36 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Reque
         /// <summary>
         /// Gets or sets the Nursing Care Package Id
         /// </summary>
-        public Guid NursingCarePackageId { get; set; }
+        [Required, GuidNotEmpty] public Guid NursingCarePackageId { get; set; }
 
         /// <summary>
         /// Gets or sets the Supplier Id
         /// </summary>
-        public int SupplierId { get; set; }
+        [Required] public int? SupplierId { get; set; }
 
         /// <summary>
         /// Gets or sets the Stage Id
         /// </summary>
-        public int StageId { get; set; }
+        [Required] public int? StageId { get; set; }
 
         /// <summary>
         /// Gets or sets the Nursing Core Per Week
         /// </summary>
-        public decimal NursingCore { get; set; }
+        [Required] public decimal? NursingCore { get; set; }
 
         /// <summary>
         /// Gets or sets the Hour Per Week
         /// </summary>
-        public decimal AdditionalNeedsPayment { get; set; }
+        [Required] public decimal? AdditionalNeedsPayment { get; set; }
 
         /// <summary>
         /// Gets or sets the Additional Needs Payment One Off
         /// </summary>
-        public decimal AdditionalNeedsPaymentOneOff { get; set; }
+        [Required] public decimal? AdditionalNeedsPaymentOneOff { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
-        public int CreatorId { get; set; }
+        [Required, GuidNotEmpty] public Guid CreatorId { get; set; }
     }
 }

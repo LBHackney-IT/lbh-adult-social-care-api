@@ -30,7 +30,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareBrokerageUseCase.Concret
         {
             var nursingCareBrokerageInfoEntity = nursingCareBrokerageInfoCreationDomain.ToDb();
             var res = await _nursingCareBrokerageGateway.CreateAsync(nursingCareBrokerageInfoEntity).ConfigureAwait(false);
-            if (res == null) return res.ToResponse();
+            if (res == null) return null;
             var nursingCarePackageDomain = await _nursingCarePackageGateway.GetAsync(nursingCareBrokerageInfoCreationDomain.NursingCarePackageId).ConfigureAwait(false);
             nursingCarePackageDomain.StageId = nursingCareBrokerageInfoCreationDomain.StageId;
             nursingCarePackageDomain.SupplierId = nursingCareBrokerageInfoCreationDomain.SupplierId;

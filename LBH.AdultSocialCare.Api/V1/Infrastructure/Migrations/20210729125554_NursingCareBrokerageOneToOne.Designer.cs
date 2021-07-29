@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210729125554_NursingCareBrokerageOneToOne")]
+    partial class NursingCareBrokerageOneToOne
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1860,8 +1862,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AssignedUserId");
-
                     b.HasIndex("ClientId");
 
                     b.HasIndex("CreatorId");
@@ -1995,8 +1995,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<decimal>("AdditionalNeedsPaymentOneOff")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid>("CreatorId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTimeOffset>("DateCreated")
                         .HasColumnType("timestamp with time zone");
@@ -2010,17 +2010,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<decimal>("NursingCore")
                         .HasColumnType("numeric");
 
-                    b.Property<Guid?>("UpdatorId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("UpdatorId")
+                        .HasColumnType("integer");
 
                     b.HasKey("NursingCareBrokerageId");
 
-                    b.HasIndex("CreatorId");
-
                     b.HasIndex("NursingCarePackageId")
                         .IsUnique();
-
-                    b.HasIndex("UpdatorId");
 
                     b.ToTable("NursingCareBrokerageInfos");
                 });
@@ -3104,7 +3100,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "87db33aa-900d-448f-a726-840b3599f9be",
+                            ConcurrencyStamp = "6dfc51e5-4355-413e-9b0e-ed2d7bf337ac",
                             Email = "furkan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -3118,7 +3114,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f1e945af-8146-458f-adc5-f4d45bf59f90",
+                            ConcurrencyStamp = "4d02b3e8-5154-4a66-9d73-13a43f40446e",
                             Email = "duncan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -3628,10 +3624,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare.NursingCarePackage", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "AssignedUser")
-                        .WithMany()
-                        .HasForeignKey("AssignedUserId");
-
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Client", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId");
@@ -3686,21 +3678,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage.NursingCareBrokerageInfo", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare.NursingCarePackage", "NursingCarePackage")
                         .WithOne("NursingCareBrokerageInfo")
                         .HasForeignKey("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage.NursingCareBrokerageInfo", "NursingCarePackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Updater")
-                        .WithMany()
-                        .HasForeignKey("UpdatorId");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims.NursingCarePackageReclaim", b =>
