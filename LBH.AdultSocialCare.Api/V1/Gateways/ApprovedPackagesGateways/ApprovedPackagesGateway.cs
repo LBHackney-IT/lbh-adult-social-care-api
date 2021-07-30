@@ -90,7 +90,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
                     LastUpdated = rc.DateUpdated,
                     CareValue = _databaseContext.ResidentialCareBrokerageInfos
                             .Where(x => x.ResidentialCarePackageId == rc.Id)
-                            .Select(x => x.ResidentialCore).SingleOrDefault(),
+                            .Select(x => x.ResidentialCore + x.AdditionalNeedsPayment + x.AdditionalNeedsPaymentOneOff).SingleOrDefault(),
                 })
                 .ToListAsync().ConfigureAwait(false);
             return residentialCarePackageList;
