@@ -31,5 +31,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovalHistoryBoundary
         /// Gets or sets the Log Text
         /// </summary>
         public string LogText { get; set; }
+
+        public string LogSubText { get; set; }
+        public string CreatorRole { get; set; }
     }
 }
