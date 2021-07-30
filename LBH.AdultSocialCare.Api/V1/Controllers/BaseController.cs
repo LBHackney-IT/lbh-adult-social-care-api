@@ -1,18 +1,17 @@
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
     public class BaseController : Controller
     {
-        public BaseController()
-        {
-            ConfigureJsonSerializer();
-        }
+        //todo commented for now it cause error while getting data after created.
+        //public BaseController()
+        //{
+        //    ConfigureJsonSerializer();
+        //}
 
         public string GetCorrelationId()
         {
@@ -25,19 +24,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             return correlationId.First();
         }
 
-        public static void ConfigureJsonSerializer()
-        {
-            JsonConvert.DefaultSettings = () =>
-            {
-                JsonSerializerSettings settings = new JsonSerializerSettings();
-                settings.Formatting = Formatting.Indented;
-                settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        //public static void ConfigureJsonSerializer()
+        //{
+        //    JsonConvert.DefaultSettings = () =>
+        //    {
+        //        JsonSerializerSettings settings = new JsonSerializerSettings();
+        //        settings.Formatting = Formatting.Indented;
+        //        settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 
-                settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-                settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+        //        settings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+        //        settings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
 
-                return settings;
-            };
-        }
+        //        return settings;
+        //    };
+        //}
     }
 }

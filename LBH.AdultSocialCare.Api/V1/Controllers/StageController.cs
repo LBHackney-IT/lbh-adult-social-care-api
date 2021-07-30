@@ -1,12 +1,9 @@
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.StageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareBrokerageUseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {

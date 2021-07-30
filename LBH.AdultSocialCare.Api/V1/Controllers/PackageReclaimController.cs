@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
@@ -25,6 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             _getAllReclaimCategoryUseCase = getAllReclaimCategoryUseCase;
             _getAllReclaimFromUseCase = getAllReclaimFromUseCase;
         }
+
         [ProducesResponseType(typeof(IEnumerable<ReclaimAmountOptionResponse>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [HttpGet]

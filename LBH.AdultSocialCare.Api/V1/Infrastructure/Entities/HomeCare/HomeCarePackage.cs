@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
 {
-    public class HomeCarePackage
+    public class HomeCarePackage : BaseEntity
     {
         /// <summary>
         /// Gets or sets the Id
@@ -58,7 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
-        public int CreatorId { get; set; }
+        public Guid CreatorId { get; set; }
 
         /// <summary>
         /// Gets or sets the Updator Id
@@ -98,5 +99,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         public Supplier Supplier { get; set; }
 
         public ICollection<HomeCarePackageReclaim> PackageReclaims { get; set; }
+        public ICollection<HomeCareApprovalHistory> HomeCareApprovalHistories { get; set; }
     }
 }

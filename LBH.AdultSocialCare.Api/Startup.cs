@@ -24,6 +24,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -50,6 +52,11 @@ namespace LBH.AdultSocialCare.Api
                 {
                     config.ReturnHttpNotAcceptable = true;
                     config.Filters.Add(typeof(LBHExceptionFilter));
+
+                    var policy = new AuthorizationPolicyBuilder()
+                        .RequireAuthenticatedUser()
+                        .Build();
+                    config.Filters.Add(new AuthorizeFilter(policy));
                 })
                 .AddNewtonsoftJson(x
                     => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
@@ -167,7 +174,9 @@ namespace LBH.AdultSocialCare.Api
                 }
             }
 
-            app.UseCors(options => options.WithOrigins("http://localhost:3000", "https://d1ewp85mz183f9.cloudfront.net")
+            app.UseCors(options => options.WithOrigins("http://localhost:3000", "https://d1ewp85mz183f9.cloudfront.net",
+                    "https://social-care-care-packages-staging.hackney.gov.uk", "https://d2s6rc0vyqw6a1.cloudfront.net",
+                    "https://social-care-care-packages.hackney.gov.uk")
                 .AllowAnyMethod()
                 .AllowAnyHeader());
             app.UseCorrelation();

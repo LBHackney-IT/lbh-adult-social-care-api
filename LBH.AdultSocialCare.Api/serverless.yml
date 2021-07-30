@@ -35,7 +35,11 @@ functions:
       - http:
           path: /{proxy+}
           method: ANY
-          private: true
+          private: false
+      - http:
+          path: /swagger/{proxy+}
+          method: GET
+          private: false
 resources:
   Resources:
     lambdaExecutionRole:

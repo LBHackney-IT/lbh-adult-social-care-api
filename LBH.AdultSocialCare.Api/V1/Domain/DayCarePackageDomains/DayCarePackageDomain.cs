@@ -22,6 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains
         public bool Sunday { get; set; }
         public bool TransportNeeded { get; set; }
         public bool EscortNeeded { get; set; }
+        public bool TransportEscortNeeded { get; set; }
         public int TermTimeConsiderationOptionId { get; set; }
         public DateTimeOffset DateCreated { get; set; } = DateTimeOffset.UtcNow;
         public Guid CreatorId { get; set; }

@@ -601,6 +601,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
+        public static IEnumerable<UsersDomain> ToDomain(this List<User> users)
+        {
+            return _mapper.Map<IEnumerable<UsersDomain>>(users);
+        }
+
         #endregion ServiceUsers
 
         #region PackageStatus
@@ -614,6 +619,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 CreatorId = statusEntity.CreatorId,
                 UpdaterId = statusEntity.UpdaterId
             };
+        }
+
+        public static IEnumerable<StatusDomain> ToDomain(this List<PackageStatus> packageStatus)
+        {
+            return _mapper.Map<IEnumerable<StatusDomain>>(packageStatus);
         }
 
         #endregion PackageStatus
@@ -635,5 +645,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion TimeSlotShifts
+
+        #region PrimarySupportReason
+
+        public static IEnumerable<PrimarySupportReasonDomain> ToDomain(this List<PrimarySupportReason> primarySupportReasons)
+        {
+            return _mapper.Map<IEnumerable<PrimarySupportReasonDomain>>(primarySupportReasons);
+        }
+
+        #endregion
     }
 }

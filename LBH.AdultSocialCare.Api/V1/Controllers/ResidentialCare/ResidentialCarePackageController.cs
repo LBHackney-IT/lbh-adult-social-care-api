@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovalHistoryBoundary.Response;
@@ -80,8 +81,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
             var residentialCarePackageResponse = await _createResidentialCarePackageUseCase.ExecuteAsync(residentialCarePackageForCreationDomain).ConfigureAwait(false);
             //Change status of package
             await _changeStatusResidentialCarePackageUseCase
-                .UpdateAsync(residentialCarePackageResponse.Id, 1)
+                .UpdateAsync(residentialCarePackageResponse.Id, ApprovalHistoryConstants.NewPackageId)
                 .ConfigureAwait(false);
+
+            await _changeStatusResidentialCarePackageUseCase
+                .UpdateAsync(residentialCarePackageResponse.Id, ApprovalHistoryConstants.SubmittedForApprovalId)
+                .ConfigureAwait(false);
+
             return Ok(residentialCarePackageResponse);
         }
 

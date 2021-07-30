@@ -15,6 +15,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerag
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        public int? StatusId { get; set; }
+
         /// <summary>
         /// Gets or sets the Nursing Care Package Id
         /// </summary>
@@ -34,5 +36,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerag
         /// Gets or sets the Log Text
         /// </summary>
         public string LogText { get; set; }
+
+        public string LogSubText { get; set; }
+        public string CreatorRole { get; set; }
+
+        [ForeignKey(nameof(UserId))] public User Creator { get; set; }
     }
 }

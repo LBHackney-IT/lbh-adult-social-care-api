@@ -1,11 +1,12 @@
-using System;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
 {
@@ -36,6 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost]
+        [AllowAnonymous]
         public async Task<ActionResult<UsersResponse>> RegisterUser([FromBody] UserForRegistrationRequest usersRequest)
         {
             var userForRegistrationDomain = usersRequest.ToDomain();

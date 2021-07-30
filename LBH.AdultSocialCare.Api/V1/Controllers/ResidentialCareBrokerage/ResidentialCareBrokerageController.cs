@@ -1,16 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareBrokerageUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
 {
@@ -24,14 +21,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
         private readonly IGetResidentialCareBrokerageUseCase _getResidentialCareBrokerageUseCase;
         private readonly ICreateResidentialCareBrokerageUseCase _createResidentialCareBrokerageUseCase;
         private readonly IChangeStatusResidentialCarePackageUseCase _changeStatusResidentialCarePackageUseCase;
+        private readonly ISetStageToResidentialCarePackageUseCase _setStageToResidentialCarePackageUseCase;
 
         public ResidentialCareBrokerageController(IGetResidentialCareBrokerageUseCase getResidentialCareBrokerageUseCase,
             ICreateResidentialCareBrokerageUseCase createResidentialCareBrokerageUseCase,
-            IChangeStatusResidentialCarePackageUseCase changeStatusResidentialCarePackageUseCase)
+            IChangeStatusResidentialCarePackageUseCase changeStatusResidentialCarePackageUseCase,
+            ISetStageToResidentialCarePackageUseCase setStageToResidentialCarePackageUseCase)
         {
             _getResidentialCareBrokerageUseCase = getResidentialCareBrokerageUseCase;
             _createResidentialCareBrokerageUseCase = createResidentialCareBrokerageUseCase;
             _changeStatusResidentialCarePackageUseCase = changeStatusResidentialCarePackageUseCase;
+            _setStageToResidentialCarePackageUseCase = setStageToResidentialCarePackageUseCase;
         }
 
         /// <summary>Gets the specified residential care package identifier.</summary>
@@ -76,6 +76,26 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
             await _changeStatusResidentialCarePackageUseCase
                 .UpdateAsync(residentialCareBrokerageCreationRequest.ResidentialCarePackageId, ApprovalHistoryConstants.ApprovedForBrokerageId)
                 .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpPut("stage/{stageId}")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> SetStageToPackage(Guid residentialCarePackageId, int stageId)
+        {
+            var result = await _setStageToResidentialCarePackageUseCase.UpdatePackage(residentialCarePackageId, stageId).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpPut("clarifying-commercials")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> ApprovePackage(Guid residentialCarePackageId, [FromBody] string requestMoreInformationText)
+        {
+            var result = await _changeStatusResidentialCarePackageUseCase.UpdateAsync(residentialCarePackageId, ApprovalHistoryConstants.ClarifyingCommercialsId, requestMoreInformationText).ConfigureAwait(false);
             return Ok(result);
         }
     }

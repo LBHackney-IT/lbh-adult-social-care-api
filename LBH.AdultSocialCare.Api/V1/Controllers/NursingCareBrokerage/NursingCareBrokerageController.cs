@@ -1,8 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Response;
@@ -10,6 +5,9 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareBrokerageUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
 {
@@ -23,14 +21,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
         private readonly IGetNursingCareBrokerageUseCase _getNursingCareBrokerageUseCase;
         private readonly ICreateNursingCareBrokerageUseCase _createNursingCareBrokerageUseCase;
         private readonly IChangeStatusNursingCarePackageUseCase _changeStatusNursingCarePackageUseCase;
+        private readonly ISetStageToNursingCarePackageUseCase _setStageToNursingCarePackageUseCase;
 
         public NursingCareBrokerageController(IGetNursingCareBrokerageUseCase getNursingCareBrokerageUseCase,
             ICreateNursingCareBrokerageUseCase createNursingCareBrokerageUseCase,
-            IChangeStatusNursingCarePackageUseCase changeStatusNursingCarePackageUseCase)
+            IChangeStatusNursingCarePackageUseCase changeStatusNursingCarePackageUseCase,
+            ISetStageToNursingCarePackageUseCase setStageToNursingCarePackageUseCase)
         {
             _getNursingCareBrokerageUseCase = getNursingCareBrokerageUseCase;
             _createNursingCareBrokerageUseCase = createNursingCareBrokerageUseCase;
             _changeStatusNursingCarePackageUseCase = changeStatusNursingCarePackageUseCase;
+            _setStageToNursingCarePackageUseCase = setStageToNursingCarePackageUseCase;
         }
 
         /// <summary>Gets the specified nursing care package identifier.</summary>
@@ -75,6 +76,26 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
             await _changeStatusNursingCarePackageUseCase
                 .UpdateAsync(nursingCareBrokerageCreationRequest.NursingCarePackageId, ApprovalHistoryConstants.ApprovedForBrokerageId)
                 .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpPut("stage/{stageId}")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> SetStageToPackage(Guid nursingCarePackageId, int stageId)
+        {
+            var result = await _setStageToNursingCarePackageUseCase.UpdatePackage(nursingCarePackageId, stageId).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpPost("clarifying-commercials")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> ApprovePackage([FromBody] Guid nursingCarePackageId, string requestMoreInformationText)
+        {
+            var result = await _changeStatusNursingCarePackageUseCase.UpdateAsync(nursingCarePackageId, ApprovalHistoryConstants.ClarifyingCommercialsId, requestMoreInformationText).ConfigureAwait(false);
             return Ok(result);
         }
     }

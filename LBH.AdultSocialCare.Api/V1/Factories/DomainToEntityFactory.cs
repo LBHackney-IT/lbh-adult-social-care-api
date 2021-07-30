@@ -76,6 +76,21 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<DayCareApprovalHistory>(dayCareApprovalHistoryForCreationDomain);
         }
 
+        public static EscortPackage ToEscortPackage(this DayCarePackageDomain dayCarePackageDomain)
+        {
+            return _mapper.Map<EscortPackage>(dayCarePackageDomain);
+        }
+
+        public static TransportPackage ToTransportPackage(this DayCarePackageDomain dayCarePackageDomain)
+        {
+            return _mapper.Map<TransportPackage>(dayCarePackageDomain);
+        }
+
+        public static TransportEscortPackage ToTransportEscortPackage(this DayCarePackageDomain dayCarePackageDomain)
+        {
+            return _mapper.Map<TransportEscortPackage>(dayCarePackageDomain);
+        }
+
         #endregion DayCarePackage
 
         #region NursingCarePackage
@@ -160,6 +175,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static DayCareBrokerageInfo ToDb(this DayCareBrokerageInfoForCreationDomain dayCareBrokerageInfoForCreationDomain)
         {
             return _mapper.Map<DayCareBrokerageInfo>(dayCareBrokerageInfoForCreationDomain);
+        }
+
+        public static DayCareBrokerageInfo ToDb(this DayCareBrokerageInfoDomain dayCareBrokerageInfoDomain)
+        {
+            return _mapper.Map<DayCareBrokerageInfo>(dayCareBrokerageInfoDomain);
         }
 
         #endregion DayCareBrokerage

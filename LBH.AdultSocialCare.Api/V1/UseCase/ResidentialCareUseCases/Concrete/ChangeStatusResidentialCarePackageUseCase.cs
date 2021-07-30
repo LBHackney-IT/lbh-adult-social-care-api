@@ -26,7 +26,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete
             _usersGateway = usersGateway;
         }
 
-        public async Task<ResidentialCarePackageResponse> UpdateAsync(Guid residentialCarePackageId, int statusId)
+        public async Task<ResidentialCarePackageResponse> UpdateAsync(Guid residentialCarePackageId, int statusId, string requestMoreInformation = null)
         {
             var residentialCarePackageDomain = await _gateway.ChangeStatusAsync(residentialCarePackageId, statusId).ConfigureAwait(false);
             var userId = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8");
@@ -35,8 +35,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete
             var newPackageHistory = new ResidentialCareApprovalHistoryDomain()
             {
                 ResidentialCarePackageId = residentialCarePackageId,
+                StatusId = statusId,
                 ApprovedDate = DateTimeOffset.Now,
-                LogText = $"{logText} {user.Name}"
+                LogText = $"{logText} {user.Name}",
+                LogSubText = requestMoreInformation,
+                UserId = user.Id
             };
             await _residentialCareApprovalHistoryGateway.CreateAsync(newPackageHistory.ToDb()).ConfigureAwait(false);
             return residentialCarePackageDomain.ToResponse();

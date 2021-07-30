@@ -8,6 +8,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare
 {
     public class ResidentialCarePackageForCreationRequest
     {
+        [Required] public bool? IsFixedPeriod { get; set; }
         [Required] public Guid? ClientId { get; set; }
         [Required] public DateTimeOffset? StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }

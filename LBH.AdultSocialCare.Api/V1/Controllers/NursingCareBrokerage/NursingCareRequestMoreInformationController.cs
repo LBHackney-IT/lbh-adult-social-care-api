@@ -1,14 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareRequestMoreInformationUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
 {
@@ -57,7 +54,32 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
             var nursingCareBrokerageCreationDomain = nursingCareRequestMoreInformationForCreationRequest.ToDomain();
             var result = await _createNursingCareRequestMoreInformationUseCase.Execute(nursingCareBrokerageCreationDomain).ConfigureAwait(false);
             await _changeStatusNursingCarePackageUseCase
-                .UpdateAsync(nursingCareRequestMoreInformationForCreationRequest.NursingCarePackageId, ApprovalHistoryConstants.RequestMoreInformationId)
+                .UpdateAsync(nursingCareRequestMoreInformationForCreationRequest.NursingCarePackageId, ApprovalHistoryConstants.RequestMoreInformationId, nursingCareRequestMoreInformationForCreationRequest.InformationText)
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpPost("clarifying-commercials")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> CreateNursingCareClarifyCommercial([FromBody] NursingCareRequestMoreInformationForCreationRequest nursingCareRequestMoreInformationForCreationRequest)
+        {
+            if (nursingCareRequestMoreInformationForCreationRequest == null)
+            {
+                return BadRequest("Object for creation cannot be null.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
+            var nursingCareBrokerageCreationDomain = nursingCareRequestMoreInformationForCreationRequest.ToDomain();
+            var result = await _createNursingCareRequestMoreInformationUseCase.Execute(nursingCareBrokerageCreationDomain).ConfigureAwait(false);
+            await _changeStatusNursingCarePackageUseCase
+                .UpdateAsync(nursingCareRequestMoreInformationForCreationRequest.NursingCarePackageId, ApprovalHistoryConstants.ClarifyingCommercialsId, nursingCareRequestMoreInformationForCreationRequest.InformationText)
                 .ConfigureAwait(false);
             return Ok(result);
         }

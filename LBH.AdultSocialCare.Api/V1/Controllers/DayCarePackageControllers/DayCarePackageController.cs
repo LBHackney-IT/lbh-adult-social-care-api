@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
@@ -14,6 +11,9 @@ using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.
 using LBH.AdultSocialCare.Api.V1.UseCase.TermTimeConsiderationOptionUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
 {
@@ -157,8 +157,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
             return Ok(result);
         }
 
-
-
         #region DayCarePackageOptions
 
         /// <summary>
@@ -197,7 +195,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
             return Ok(await _getOpportunityTimesPerMonthOptionsListUseCase.Execute().ConfigureAwait(false));
         }
 
-        #endregion
+        #endregion DayCarePackageOptions
 
         #region DayCarePackageStatus
 
@@ -309,6 +307,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
             return Ok(res);
         }
 
-        #endregion
+        #endregion DayCarePackageStatus
     }
 }

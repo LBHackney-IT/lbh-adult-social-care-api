@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
+using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Response
 {
@@ -39,13 +36,23 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Respo
         public decimal AdditionalNeedsPaymentOneOff { get; set; }
 
         /// <summary>
+        /// Gets or sets the package brokerage stage id.
+        /// </summary>
+        public int? StageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the brokerage supplier.
+        /// </summary>
+        public int? SupplierId { get; set; }
+
+        /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
-        public int CreatorId { get; set; }
+        public Guid CreatorId { get; set; }
 
         /// <summary>
         /// Gets or sets the Updator Id
         /// </summary>
-        public int UpdatorId { get; set; }
+        public Guid? UpdatorId { get; set; }
     }
 }

@@ -1,15 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareRequestMoreInformationUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
 {
@@ -58,7 +54,32 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
             var residentialCareBrokerageCreationDomain = residentialCareRequestMoreInformationForCreationRequest.ToDomain();
             var result = await _createResidentialCareRequestMoreInformationUseCase.Execute(residentialCareBrokerageCreationDomain).ConfigureAwait(false);
             await _changeStatusResidentialCarePackageUseCase
-                .UpdateAsync(residentialCareRequestMoreInformationForCreationRequest.ResidentialCarePackageId, ApprovalHistoryConstants.RequestMoreInformationId)
+                .UpdateAsync(residentialCareRequestMoreInformationForCreationRequest.ResidentialCarePackageId, ApprovalHistoryConstants.RequestMoreInformationId, residentialCareRequestMoreInformationForCreationRequest.InformationText)
+                .ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpPost("clarifying-commercials")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> CreateNursingCareClarifyCommercial([FromBody] ResidentialCareRequestMoreInformationForCreationRequest residentialCareRequestMoreInformationForCreationRequest)
+        {
+            if (residentialCareRequestMoreInformationForCreationRequest == null)
+            {
+                return BadRequest("Object for creation cannot be null.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
+            var residentialCareBrokerageCreationDomain = residentialCareRequestMoreInformationForCreationRequest.ToDomain();
+            var result = await _createResidentialCareRequestMoreInformationUseCase.Execute(residentialCareBrokerageCreationDomain).ConfigureAwait(false);
+            await _changeStatusResidentialCarePackageUseCase
+                .UpdateAsync(residentialCareRequestMoreInformationForCreationRequest.ResidentialCarePackageId, ApprovalHistoryConstants.ClarifyingCommercialsId, residentialCareRequestMoreInformationForCreationRequest.InformationText)
                 .ConfigureAwait(false);
             return Ok(result);
         }
