@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.BrokeredPackagesBoundary.Request;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
@@ -110,9 +111,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<bool>> AssignPackageToUser([FromBody] Guid packageId, Guid userId)
+        public async Task<ActionResult<bool>> AssignPackageToUser([FromBody] AssignUserRequest assignUserRequest)
         {
-            var result = await _assignToUserUseCase.AssignToUser(packageId, userId).ConfigureAwait(false);
+            var result = await _assignToUserUseCase.AssignToUser(assignUserRequest.PackageId, assignUserRequest.UserId).ConfigureAwait(false);
             return Ok(result);
         }
     }
