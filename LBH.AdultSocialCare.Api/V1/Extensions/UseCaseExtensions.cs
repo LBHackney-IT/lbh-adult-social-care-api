@@ -345,6 +345,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetNursingCareBrokerageUseCase, GetNursingCareBrokerageUseCase>();
             services.AddScoped<ICreateNursingCareBrokerageUseCase, CreateNursingCareBrokerageUseCase>();
             services.AddScoped<ISetStageToNursingCarePackageUseCase, SetStageToNursingCarePackageUseCase>();
+            services.AddScoped<IChangeDatesOfNursingCarePackageUseCase, ChangeDatesOfNursingCarePackageUseCase>();
 
             #endregion NursingCareBrokerage
 
