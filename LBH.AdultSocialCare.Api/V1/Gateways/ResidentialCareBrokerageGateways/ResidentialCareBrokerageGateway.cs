@@ -55,9 +55,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
             {
                 ResidentialCarePackageId = residentialCarePackageId,
                 ResidentialCarePackage = residentialCarePackage.ToDomain(),
-                ResidentialCore = residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCore,
-                AdditionalNeedsPayment = residentialCarePackage.ResidentialCareBrokerageInfo.AdditionalNeedsPayment,
-                AdditionalNeedsPaymentOneOff = residentialCarePackage.ResidentialCareBrokerageInfo.AdditionalNeedsPaymentOneOff,
+                ResidentialCore = residentialCarePackage.ResidentialCareBrokerageInfo?.ResidentialCore ?? 0,
+                AdditionalNeedsPayment = residentialCarePackage.ResidentialCareBrokerageInfo?.AdditionalNeedsPayment ?? 0,
+                AdditionalNeedsPaymentOneOff = residentialCarePackage.ResidentialCareBrokerageInfo?.AdditionalNeedsPaymentOneOff ?? 0,
             };
         }
 
