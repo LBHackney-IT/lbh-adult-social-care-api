@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
@@ -31,9 +32,41 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
             return PagedList<BrokeredPackagesDomain>.ToPagedList(paginatedPackageList, brokeredPackagesCount, parameters.PageNumber, parameters.PageSize);
         }
 
-        public Task<bool> AssignToUser(Guid packageId, Guid userId)
+        public async Task<bool> AssignToUser(Guid packageId, Guid userId)
         {
-            return Task.FromResult(true);
+            var nursingCarePackageCount = await _databaseContext.NursingCarePackages
+                .Where(item => item.Id == packageId)
+                .CountAsync().ConfigureAwait(false);
+
+            if (nursingCarePackageCount > 0)
+            {
+                var nursingPackage = await _databaseContext.NursingCarePackages
+                    .FirstOrDefaultAsync(item => item.Id == packageId)
+                    .ConfigureAwait(false);
+                nursingPackage.AssignedUserId = userId;
+            }
+
+            var residentialCarePackageCount = await _databaseContext.ResidentialCarePackages
+                .Where(item => item.Id == packageId)
+                .CountAsync().ConfigureAwait(false);
+
+            if (residentialCarePackageCount > 0)
+            {
+                var residentialCarePackage = await _databaseContext.ResidentialCarePackages
+                    .FirstOrDefaultAsync(item => item.Id == packageId)
+                    .ConfigureAwait(false);
+                residentialCarePackage.AssignedUserId = userId;
+            }
+
+            try
+            {
+                await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
+                return true;
+            }
+            catch (Exception)
+            {
+                throw new DbSaveFailedException($"Assign user to package failed");
+            }
         }
 
         private async Task<List<BrokeredPackagesDomain>> GetPackagesList(BrokeredPackagesParameters parameters, int statusId)
