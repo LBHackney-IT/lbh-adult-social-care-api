@@ -50,7 +50,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<PagedBrokeredPackagesResponse>> GetNewPackages([FromQuery] BrokeredPackagesParameters parameters)
         {
-            var result = await _getBrokeredPackagesUseCase.GetBrokeredPackages(parameters, ApprovalHistoryConstants.PackageBrokeredId).ConfigureAwait(false);
+            var result = await _getBrokeredPackagesUseCase.GetBrokeredPackages(parameters, ApprovalHistoryConstants.PackageApprovedId).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
             return Ok(result);
         }
@@ -61,7 +61,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<PagedBrokeredPackagesResponse>> GetInProgressPackages([FromQuery] BrokeredPackagesParameters parameters)
         {
-            var result = await _getBrokeredPackagesUseCase.GetBrokeredPackages(parameters, ApprovalHistoryConstants.ClarifyingCommercialsId).ConfigureAwait(false);
+            var result = await _getBrokeredPackagesUseCase.GetBrokeredPackages(parameters, ApprovalHistoryConstants.ApprovedForBrokerageId).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
             return Ok(result);
         }
@@ -72,7 +72,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<PagedBrokeredPackagesResponse>> GetDonePackages([FromQuery] BrokeredPackagesParameters parameters)
         {
-            var result = await _getBrokeredPackagesUseCase.GetBrokeredPackages(parameters, ApprovalHistoryConstants.BrokeredEndedId).ConfigureAwait(false);
+            var result = await _getBrokeredPackagesUseCase.GetBrokeredPackages(parameters, ApprovalHistoryConstants.PackageBrokeredId).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
             return Ok(result);
         }
