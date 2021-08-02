@@ -40,6 +40,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
                 .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.ResidentialCareAdditionalNeeds)
+                .Include(item => item.ResidentialCareBrokerageInfo)
+                .Include(item => item.Stage)
+                .Include(item => item.Supplier)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(item => item.Id == residentialCarePackageId).ConfigureAwait(false);
 
@@ -52,6 +55,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
             {
                 ResidentialCarePackageId = residentialCarePackageId,
                 ResidentialCarePackage = residentialCarePackage.ToDomain(),
+                ResidentialCore = residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCore,
+                AdditionalNeedsPayment = residentialCarePackage.ResidentialCareBrokerageInfo.AdditionalNeedsPayment,
+                AdditionalNeedsPaymentOneOff = residentialCarePackage.ResidentialCareBrokerageInfo.AdditionalNeedsPaymentOneOff,
             };
         }
 

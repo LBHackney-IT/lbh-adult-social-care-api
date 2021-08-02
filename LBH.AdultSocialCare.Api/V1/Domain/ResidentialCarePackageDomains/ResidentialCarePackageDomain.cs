@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains
 {
@@ -55,5 +57,8 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains
         public string TypeOfStayOptionName { get; set; }
 
         public IEnumerable<ResidentialCareAdditionalNeedsDomain> ResidentialCareAdditionalNeeds { get; set; }
+
+        public SupplierDomain Supplier { get; set; }
+        public StageDomain Stage { get; set; }
     }
 }
