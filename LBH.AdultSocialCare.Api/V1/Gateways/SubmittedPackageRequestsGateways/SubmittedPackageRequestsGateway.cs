@@ -62,7 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
         private async Task<List<SubmittedPackageRequestsDomain>> GetResidentialCarePackages(SubmittedPackageRequestParameters parameters)
         {
             var residentialCarePackageList = await _databaseContext.ResidentialCarePackages
-                .Where(x => x.StatusId <= ApprovalHistoryConstants.PackageApprovedId)
+                .Where(x => x.StatusId <= ApprovalHistoryConstants.BrokeredEndedId)
                 .FilterResidentialCareList(parameters.StatusId, parameters.ClientName)
                 .Include(item => item.Client)
                 .Include(item => item.Status)
@@ -92,7 +92,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
         private async Task<List<SubmittedPackageRequestsDomain>> GetHomeCarePackages(SubmittedPackageRequestParameters parameters)
         {
             var homeCarePackageList = await _databaseContext.HomeCarePackage
-                .Where(x => x.StatusId <= ApprovalHistoryConstants.PackageApprovedId)
+                .Where(x => x.StatusId <= ApprovalHistoryConstants.BrokeredEndedId)
                 .FilterHomeCareList(parameters.StatusId, parameters.ClientName)
                 .Include(item => item.Client)
                 .Include(item => item.Status)
@@ -122,7 +122,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
         private async Task<List<SubmittedPackageRequestsDomain>> GetNursingPackages(SubmittedPackageRequestParameters parameters)
         {
             return await _databaseContext.NursingCarePackages
-                .Where(x => x.StatusId <= ApprovalHistoryConstants.PackageApprovedId)
+                .Where(x => x.StatusId <= ApprovalHistoryConstants.BrokeredEndedId)
                 .FilterNursingCareList(parameters.StatusId, parameters.ClientName)
                 .Include(item => item.Client)
                 .Include(item => item.Status)
@@ -150,7 +150,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
         private async Task<List<SubmittedPackageRequestsDomain>> GetDayCarePackages(SubmittedPackageRequestParameters parameters)
         {
             return await _databaseContext.DayCarePackages
-                .Where(x => x.StatusId <= ApprovalHistoryConstants.PackageApprovedId)
+                .Where(x => x.StatusId <= ApprovalHistoryConstants.BrokeredEndedId)
                 .FilterDayCareList(parameters.StatusId, parameters.ClientName)
                 .Include(item => item.Client)
                 .Include(item => item.Status)
@@ -179,13 +179,13 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
         {
             var packageCount = 0;
             packageCount += await _databaseContext.ResidentialCarePackages
-                .Where(x => x.StatusId <= ApprovalHistoryConstants.PackageApprovedId)
+                .Where(x => x.StatusId <= ApprovalHistoryConstants.BrokeredEndedId)
                 .FilterResidentialCareList(parameters.StatusId, parameters.ClientName)
                 .CountAsync()
                 .ConfigureAwait(false);
 
             packageCount += await _databaseContext.NursingCarePackages
-                .Where(x => x.StatusId <= ApprovalHistoryConstants.PackageApprovedId)
+                .Where(x => x.StatusId <= ApprovalHistoryConstants.BrokeredEndedId)
                 .FilterNursingCareList(parameters.StatusId, parameters.ClientName)
                 .CountAsync().ConfigureAwait(false);
 

@@ -1,0 +1,13 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace LBH.AdultSocialCare.Api.V1.Boundary.BrokeredPackagesBoundary.Request
+{
+    public class AssignUserRequest
+    {
+        public Guid PackageId { get; set; }
+        public Guid UserId { get; set; }
+    }
+}
