@@ -19,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete
             _gateway = gateway;
             _mapper = mapper;
         }
-        
+
         public async Task<ResidentialCarePackageResponse> UpdateAsync(Guid residentialCarePackageId, DateTimeOffset startDate, DateTimeOffset? endDate)
         {
             var package = await _gateway.GetAsync(residentialCarePackageId).ConfigureAwait(false);
