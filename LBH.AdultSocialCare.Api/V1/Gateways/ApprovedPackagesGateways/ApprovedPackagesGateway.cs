@@ -4,10 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
             return PagedList<ApprovedPackagesDomain>.ToPagedList(paginatedPackageList, approvedPackagesCount, parameters.PageNumber, parameters.PageSize);
         }
 
+        [Obsolete("use version with 'string role' instead")]
         public async Task<IEnumerable<UsersMinimalDomain>> GetUsers(int roleId)
         {
             var res = await _databaseContext.Users
@@ -45,6 +43,24 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
                 )
                 .ToListAsync().ConfigureAwait(false);
             return res;
+        }
+        
+        public async Task<IEnumerable<UsersMinimalDomain>> GetUsers(string roleName)
+        {
+            var result = await _databaseContext.Roles
+                .Join(_databaseContext.UserRoles,
+                    role => role.Id,
+                    userRole => userRole.RoleId,
+                    (role, userRole) => new { Role = role.Name, userRole.UserId })
+                .Join(_databaseContext.Users,
+                    userRole => userRole.UserId,
+                    user => user.Id,
+                    (userRole, user) => new { userRole.Role, user.Name, user.Id })
+                .Where(userInfo => userInfo.Role == roleName)
+                .Select(userInfo => new UsersMinimalDomain{ Id = userInfo.Id, UserName = userInfo.Name })
+                .ToListAsync().ConfigureAwait(false);
+            
+            return result;
         }
 
         private async Task<List<ApprovedPackagesDomain>> GetPackagesList(ApprovedPackagesParameters parameters, int statusId)

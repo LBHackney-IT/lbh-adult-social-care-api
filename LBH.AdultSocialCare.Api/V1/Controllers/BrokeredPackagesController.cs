@@ -11,7 +11,6 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.BrokeredPackagesBoundary.Request;
@@ -93,7 +92,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<IEnumerable<UsersMinimalResponse>>> GetSocialWorkers()
         {
-            var result = await _getAllUsersUseCase.GetUsers(UserRoleConstants.BrokerId).ConfigureAwait(false);
+            var result = await _getAllUsersUseCase.GetUsers(UserRoleConstants.SocialWorker).ConfigureAwait(false);
             return Ok(result);
         }
 

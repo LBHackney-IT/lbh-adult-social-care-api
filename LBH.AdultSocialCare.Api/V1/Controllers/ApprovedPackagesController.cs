@@ -103,7 +103,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<IEnumerable<UsersMinimalResponse>>> GetSocialWorkers()
         {
-            var result = await _getAllUsersUseCase.GetUsers(UserRoleConstants.BrokerId).ConfigureAwait(false);
+            var result = await _getAllUsersUseCase.GetUsers(UserRoleConstants.SocialWorker).ConfigureAwait(false);
             return Ok(result);
         }
 

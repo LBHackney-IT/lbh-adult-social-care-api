@@ -10,6 +10,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
     public interface IApprovedPackagesGateway
     {
         Task<PagedList<ApprovedPackagesDomain>> GetApprovedPackages(ApprovedPackagesParameters parameters, int statusId);
+
+        [Obsolete("use version with 'string role' instead")]
         Task<IEnumerable<UsersMinimalDomain>> GetUsers(int roleId);
+        
+        Task<IEnumerable<UsersMinimalDomain>> GetUsers(string roleName);
     }
 }
