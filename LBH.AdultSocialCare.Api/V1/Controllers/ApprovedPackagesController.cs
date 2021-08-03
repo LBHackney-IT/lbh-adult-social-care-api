@@ -38,7 +38,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<PagedApprovedPackagesResponse>> GetNewPackages([FromQuery] ApprovedPackagesParameters parameters)
         {
-            var result = await _getApprovedPackagesUseCase.GetApprovedPackages(parameters, ApprovalHistoryConstants.PackageApprovedId).ConfigureAwait(false);
+            var result = await _getApprovedPackagesUseCase.GetApprovedPackages(parameters, ApprovalHistoryConstants.SubmittedForApprovalId).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
             return Ok(result);
         }
@@ -49,7 +49,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<PagedApprovedPackagesResponse>> GetClarificationNeededPackages([FromQuery] ApprovedPackagesParameters parameters)
         {
-            var result = await _getApprovedPackagesUseCase.GetApprovedPackages(parameters, ApprovalHistoryConstants.ClarifyingCommercialsId).ConfigureAwait(false);
+            var result = await _getApprovedPackagesUseCase.GetApprovedPackages(parameters, ApprovalHistoryConstants.RequestMoreInformationId).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
             return Ok(result);
         }
@@ -60,7 +60,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<PagedApprovedPackagesResponse>> GetAwaitingPackages([FromQuery] ApprovedPackagesParameters parameters)
         {
-            var result = await _getApprovedPackagesUseCase.GetApprovedPackages(parameters, ApprovalHistoryConstants.ApprovedForBrokerageId).ConfigureAwait(false);
+            var result = await _getApprovedPackagesUseCase.GetApprovedPackages(parameters, ApprovalHistoryConstants.PackageApprovedId).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
             return Ok(result);
         }
@@ -71,7 +71,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<PagedApprovedPackagesResponse>> GetReviewCommercialPackages([FromQuery] ApprovedPackagesParameters parameters)
         {
-            var result = await _getApprovedPackagesUseCase.GetApprovedPackages(parameters, ApprovalHistoryConstants.ApprovedForCommercialId).ConfigureAwait(false);
+            var result = await _getApprovedPackagesUseCase.GetApprovedPackages(parameters, ApprovalHistoryConstants.ApprovedForBrokerageId).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
             return Ok(result);
         }

@@ -35,6 +35,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoun
         public Guid? UpdaterId { get; set; }
 
         public int StatusId { get; set; }
+        public int? StageId { get; set; }
+        public int? SupplierId { get; set; }
 
         // From FK values
         public string ClientName { get; set; }
