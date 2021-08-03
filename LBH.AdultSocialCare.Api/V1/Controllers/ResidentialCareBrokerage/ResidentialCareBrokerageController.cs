@@ -21,16 +21,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
         private readonly IGetResidentialCareBrokerageUseCase _getResidentialCareBrokerageUseCase;
         private readonly ICreateResidentialCareBrokerageUseCase _createResidentialCareBrokerageUseCase;
         private readonly IChangeStatusResidentialCarePackageUseCase _changeStatusResidentialCarePackageUseCase;
+        private readonly IChangeDatesOfResidentialCarePackageUseCase _changeDatesOfResidentialCarePackageUseCase;
         private readonly ISetStageToResidentialCarePackageUseCase _setStageToResidentialCarePackageUseCase;
 
         public ResidentialCareBrokerageController(IGetResidentialCareBrokerageUseCase getResidentialCareBrokerageUseCase,
             ICreateResidentialCareBrokerageUseCase createResidentialCareBrokerageUseCase,
             IChangeStatusResidentialCarePackageUseCase changeStatusResidentialCarePackageUseCase,
+            IChangeDatesOfResidentialCarePackageUseCase changeDatesOfResidentialCarePackageUseCase,
             ISetStageToResidentialCarePackageUseCase setStageToResidentialCarePackageUseCase)
         {
             _getResidentialCareBrokerageUseCase = getResidentialCareBrokerageUseCase;
             _createResidentialCareBrokerageUseCase = createResidentialCareBrokerageUseCase;
             _changeStatusResidentialCarePackageUseCase = changeStatusResidentialCarePackageUseCase;
+            _changeDatesOfResidentialCarePackageUseCase = changeDatesOfResidentialCarePackageUseCase;
             _setStageToResidentialCarePackageUseCase = setStageToResidentialCarePackageUseCase;
         }
 
@@ -72,6 +75,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
 
             var residentialCareBrokerageCreationDomain = residentialCareBrokerageCreationRequest.ToDomain();
             var result = await _createResidentialCareBrokerageUseCase.ExecuteAsync(residentialCareBrokerageCreationDomain).ConfigureAwait(false);
+
+            //Change start / end dates of the package
+            await _changeDatesOfResidentialCarePackageUseCase
+                .UpdateAsync(
+                    residentialCareBrokerageCreationRequest.ResidentialCarePackageId,
+                    residentialCareBrokerageCreationRequest.StartDate,
+                    residentialCareBrokerageCreationRequest.EndDate)
+                .ConfigureAwait(false);
+            
             //Change status of package
             await _changeStatusResidentialCarePackageUseCase
                 .UpdateAsync(residentialCareBrokerageCreationRequest.ResidentialCarePackageId, ApprovalHistoryConstants.ApprovedForBrokerageId)
