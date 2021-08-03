@@ -83,7 +83,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareBrokerage
                     residentialCareBrokerageCreationRequest.StartDate,
                     residentialCareBrokerageCreationRequest.EndDate)
                 .ConfigureAwait(false);
-            
+
             //Change status of package
             await _changeStatusResidentialCarePackageUseCase
                 .UpdateAsync(residentialCareBrokerageCreationRequest.ResidentialCarePackageId, ApprovalHistoryConstants.ApprovedForBrokerageId)
