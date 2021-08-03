@@ -22,6 +22,16 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Reque
         [Required] public int? StageId { get; set; }
 
         /// <summary>
+        /// Gets or sets the Start Date
+        /// </summary>
+        public DateTimeOffset StartDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the End Date
+        /// </summary>
+        public DateTimeOffset? EndDate { get; set; }
+
+        /// <summary>
         /// Gets or sets the Nursing Core Per Week
         /// </summary>
         [Required] public decimal? NursingCore { get; set; }

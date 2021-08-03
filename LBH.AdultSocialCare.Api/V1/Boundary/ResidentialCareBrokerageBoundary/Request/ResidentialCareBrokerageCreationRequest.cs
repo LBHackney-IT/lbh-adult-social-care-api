@@ -23,6 +23,16 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.R
         public int StageId { get; set; }
 
         /// <summary>
+        /// Gets or sets the Start Date
+        /// </summary>
+        public DateTimeOffset StartDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the End Date
+        /// </summary>
+        public DateTimeOffset? EndDate { get; set; }
+
+        /// <summary>
         /// Gets or sets the Residential Core Per Week
         /// </summary>
         public decimal ResidentialCore { get; set; }
