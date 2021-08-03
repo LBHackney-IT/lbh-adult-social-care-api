@@ -1,3 +1,4 @@
+using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
@@ -7,12 +8,10 @@ using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Common.Exceptions.CustomExceptions;
 
 namespace HttpServices.Services.Concrete
 {
@@ -139,7 +138,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<PayRunDateSummaryResponse>(content);

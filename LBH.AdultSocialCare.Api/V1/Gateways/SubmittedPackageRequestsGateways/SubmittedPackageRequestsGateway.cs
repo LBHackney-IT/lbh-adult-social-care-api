@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
 {
@@ -83,7 +83,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
                         rc.ResidentialCareApprovalHistories
                             .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
                             .Select(x => DateTimeOffset.Now.Date.Subtract(x.ApprovedDate.Date).Days).SingleOrDefault(),
-                    PrimarySupportReason = ""
+                    PrimarySupportReason = "",
+                    DateCreated = rc.DateCreated
                 })
                 .ToListAsync().ConfigureAwait(false);
             return residentialCarePackageList;
@@ -113,7 +114,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
                         hp.HomeCareApprovalHistories
                             .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
                             .Select(x => DateTimeOffset.Now.Date.Subtract(x.ApprovedDate.Date).Days).SingleOrDefault(),
-                    PrimarySupportReason = ""
+                    PrimarySupportReason = "",
+                    DateCreated = hp.DateCreated
                 })
                 .ToListAsync().ConfigureAwait(false);
             return homeCarePackageList;
@@ -142,7 +144,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
                         nc.NursingCareApprovalHistories
                             .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
                             .Select(x => DateTimeOffset.Now.Date.Subtract(x.ApprovedDate.Date).Days).SingleOrDefault(),
-                    PrimarySupportReason = ""
+                    PrimarySupportReason = "",
+                    DateCreated = nc.DateCreated
                 })
                 .ToListAsync().ConfigureAwait(false);
         }
@@ -170,7 +173,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
                         dc.DayCareApprovalHistories
                             .Where(x => x.PackageStatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
                             .Select(x => DateTimeOffset.Now.Date.Subtract(x.DateCreated.Date).Days).SingleOrDefault(),
-                    PrimarySupportReason = ""
+                    PrimarySupportReason = "",
+                    DateCreated = dc.DateCreated
                 })
                 .ToListAsync().ConfigureAwait(false);
         }

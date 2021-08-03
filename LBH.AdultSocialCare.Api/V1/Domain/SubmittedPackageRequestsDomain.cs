@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain
 {
@@ -16,6 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         public DateTimeOffset DateOfBirth { get; set; }
         public string Approver { get; set; }
         public int SubmittedDaysAgo { get; set; }
+        public DateTimeOffset DateCreated { get; set; }
         public string StatusName { get; set; }
     }
 }
