@@ -45,18 +45,18 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
             return res;
         }
         
-        public async Task<IEnumerable<UsersMinimalDomain>> GetUsers(string roleName)
+        public async Task<IEnumerable<UsersMinimalDomain>> GetUsers(Guid roleId)
         {
             var result = await _databaseContext.Roles
                 .Join(_databaseContext.UserRoles,
                     role => role.Id,
                     userRole => userRole.RoleId,
-                    (role, userRole) => new { Role = role.Name, userRole.UserId })
+                    (role, userRole) => new { RoleId = role.Id, userRole.UserId })
                 .Join(_databaseContext.Users,
                     userRole => userRole.UserId,
                     user => user.Id,
-                    (userRole, user) => new { userRole.Role, user.Name, user.Id })
-                .Where(userInfo => userInfo.Role == roleName)
+                    (userRole, user) => new { userRole.RoleId, user.Name, user.Id })
+                .Where(userInfo => userInfo.RoleId == roleId)
                 .Select(userInfo => new UsersMinimalDomain{ Id = userInfo.Id, UserName = userInfo.Name })
                 .ToListAsync().ConfigureAwait(false);
             

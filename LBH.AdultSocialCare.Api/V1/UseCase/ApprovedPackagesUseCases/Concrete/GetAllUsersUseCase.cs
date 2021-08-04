@@ -24,9 +24,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Concrete
             return result.ToResponse();
         }
         
-        public async Task<IEnumerable<UsersMinimalResponse>> GetUsers(string role)
+        public async Task<IEnumerable<UsersMinimalResponse>> GetUsers(Guid roleId)
         {
-            var result = await _approvedPackagesGateway.GetUsers(role).ConfigureAwait(false);
+            var result = await _approvedPackagesGateway.GetUsers(roleId).ConfigureAwait(false);
             return result.ToResponse();
         }
     }

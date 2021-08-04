@@ -14,6 +14,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
         [Obsolete("use version with 'string role' instead")]
         Task<IEnumerable<UsersMinimalDomain>> GetUsers(int roleId);
         
-        Task<IEnumerable<UsersMinimalDomain>> GetUsers(string roleName);
+        Task<IEnumerable<UsersMinimalDomain>> GetUsers(Guid roleId);
     }
 }

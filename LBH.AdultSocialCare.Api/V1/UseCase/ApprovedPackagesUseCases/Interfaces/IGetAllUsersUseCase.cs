@@ -9,6 +9,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Interfaces
     {
         Task<IEnumerable<UsersMinimalResponse>> GetUsers(int roleId);
         
-        Task<IEnumerable<UsersMinimalResponse>> GetUsers(string role);
+        Task<IEnumerable<UsersMinimalResponse>> GetUsers(Guid roleId);
     }
 }
