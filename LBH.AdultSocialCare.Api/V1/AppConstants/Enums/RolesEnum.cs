@@ -23,12 +23,12 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 
         [Description("d7cb6746-1211-4cc2-9244-f4faaef25089")]
         [Display(Name = "Approver")]
-        Approver = 5,        
+        Approver = 5,
 
         [Description("74b93ac7-1778-485d-a482-d76893f31aff")]
         [Display(Name = "Finance")]
-        Finance = 6,        
-        
+        Finance = 6,
+
         [Description("80f1ea68-9335-4efe-b247-7aa58cc45af0")]
         [Display(Name = "User")]
         User = 7

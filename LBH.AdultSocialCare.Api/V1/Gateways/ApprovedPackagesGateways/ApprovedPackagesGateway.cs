@@ -30,7 +30,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
 
             return PagedList<ApprovedPackagesDomain>.ToPagedList(paginatedPackageList, approvedPackagesCount, parameters.PageNumber, parameters.PageSize);
         }
-        
+
         public async Task<IEnumerable<UsersMinimalDomain>> GetUsers(Guid roleId)
         {
             var result = await _databaseContext.Roles
@@ -43,9 +43,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
                     user => user.Id,
                     (userRole, user) => new { userRole.RoleId, user.Name, user.Id })
                 .Where(userInfo => userInfo.RoleId == roleId)
-                .Select(userInfo => new UsersMinimalDomain{ Id = userInfo.Id, UserName = userInfo.Name })
+                .Select(userInfo => new UsersMinimalDomain { Id = userInfo.Id, UserName = userInfo.Name })
                 .ToListAsync().ConfigureAwait(false);
-            
+
             return result;
         }
 

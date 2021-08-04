@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Globalization;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
