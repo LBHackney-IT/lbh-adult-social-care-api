@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
@@ -103,7 +105,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<IEnumerable<UsersMinimalResponse>>> GetSocialWorkers()
         {
-            var result = await _getAllUsersUseCase.GetUsers(UserRoleConstants.BrokerId).ConfigureAwait(false);
+            var result = await _getAllUsersUseCase.GetUsers(RolesEnum.SocialWorker.GetId()).ConfigureAwait(false);
             return Ok(result);
         }
 
@@ -113,7 +115,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<IEnumerable<UsersMinimalResponse>>> GetApprovers()
         {
-            var result = await _getAllUsersUseCase.GetUsers(UserRoleConstants.ApproverId).ConfigureAwait(false);
+            var result = await _getAllUsersUseCase.GetUsers(RolesEnum.Approver.GetId()).ConfigureAwait(false);
             return Ok(result);
         }
     }

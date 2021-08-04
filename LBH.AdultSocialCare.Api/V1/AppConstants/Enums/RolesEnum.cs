@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 {
-    public enum RolesEnum : int
+    public enum RolesEnum
     {
         [Description("7335e791-1d08-437a-974e-809944d29bc6")]
         [Display(Name = "Super Administrator")]
@@ -21,8 +21,16 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
         [Display(Name = "Broker")]
         Broker = 4,
 
+        [Description("d7cb6746-1211-4cc2-9244-f4faaef25089")]
+        [Display(Name = "Approver")]
+        Approver = 5,
+
+        [Description("74b93ac7-1778-485d-a482-d76893f31aff")]
+        [Display(Name = "Finance")]
+        Finance = 6,
+
         [Description("80f1ea68-9335-4efe-b247-7aa58cc45af0")]
         [Display(Name = "User")]
-        User = 5
+        User = 7
     }
 }
