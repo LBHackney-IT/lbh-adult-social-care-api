@@ -30,20 +30,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
 
             return PagedList<ApprovedPackagesDomain>.ToPagedList(paginatedPackageList, approvedPackagesCount, parameters.PageNumber, parameters.PageSize);
         }
-
-        [Obsolete("use version with 'string role' instead")]
-        public async Task<IEnumerable<UsersMinimalDomain>> GetUsers(int roleId)
-        {
-            var res = await _databaseContext.Users
-                .Select(x => new UsersMinimalDomain()
-                {
-                    Id = x.Id,
-                    UserName = x.Name
-                }
-                )
-                .ToListAsync().ConfigureAwait(false);
-            return res;
-        }
         
         public async Task<IEnumerable<UsersMinimalDomain>> GetUsers(Guid roleId)
         {

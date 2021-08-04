@@ -4,6 +4,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
@@ -15,37 +16,51 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 new Role
                 {
                     ConcurrencyStamp = Convert.ToString((int) RolesEnum.SuperAdministrator),
-                    Id = new Guid(RolesEnum.SuperAdministrator.ToDescription()),
+                    Id = RolesEnum.SuperAdministrator.GetId(),
                     Name = RolesEnum.SuperAdministrator.GetDisplayName(),
-                    NormalizedName = RolesEnum.SuperAdministrator.GetDisplayName().ToUpper()
+                    NormalizedName = RolesEnum.SuperAdministrator.GetNormalizedName()
                 },
                 new Role
                 {
                     ConcurrencyStamp = Convert.ToString((int) RolesEnum.Administrator),
-                    Id = new Guid(RolesEnum.Administrator.ToDescription()),
+                    Id = RolesEnum.Administrator.GetId(),
                     Name = RolesEnum.Administrator.GetDisplayName(),
-                    NormalizedName = RolesEnum.Administrator.GetDisplayName().ToUpper()
+                    NormalizedName = RolesEnum.Administrator.GetNormalizedName()
                 },
                 new Role
                 {
                     ConcurrencyStamp = Convert.ToString((int) RolesEnum.SocialWorker),
-                    Id = new Guid(RolesEnum.SocialWorker.ToDescription()),
+                    Id = RolesEnum.SocialWorker.GetId(),
                     Name = RolesEnum.SocialWorker.GetDisplayName(),
-                    NormalizedName = RolesEnum.SocialWorker.GetDisplayName().ToUpper()
+                    NormalizedName = RolesEnum.SocialWorker.GetNormalizedName()
                 },
                 new Role
                 {
                     ConcurrencyStamp = Convert.ToString((int) RolesEnum.Broker),
-                    Id = new Guid(RolesEnum.Broker.ToDescription()),
+                    Id = RolesEnum.Broker.GetId(),
                     Name = RolesEnum.Broker.GetDisplayName(),
-                    NormalizedName = RolesEnum.Broker.GetDisplayName().ToUpper()
+                    NormalizedName = RolesEnum.Broker.GetNormalizedName()
+                },
+                new Role
+                {
+                    ConcurrencyStamp = Convert.ToString((int) RolesEnum.Approver),
+                    Id = RolesEnum.Approver.GetId(),
+                    Name = RolesEnum.Approver.GetDisplayName(),
+                    NormalizedName = RolesEnum.Approver.GetNormalizedName()
+                },
+                new Role
+                {
+                    ConcurrencyStamp = Convert.ToString((int) RolesEnum.Finance),
+                    Id = RolesEnum.Finance.GetId(),
+                    Name = RolesEnum.Finance.GetDisplayName(),
+                    NormalizedName = RolesEnum.Finance.GetNormalizedName()
                 },
                 new Role
                 {
                     ConcurrencyStamp = Convert.ToString((int) RolesEnum.User),
-                    Id = new Guid(RolesEnum.User.ToDescription()),
+                    Id = RolesEnum.User.GetId(),
                     Name = RolesEnum.User.GetDisplayName(),
-                    NormalizedName = RolesEnum.User.GetDisplayName().ToUpper()
+                    NormalizedName = RolesEnum.User.GetNormalizedName()
                 });
         }
     }

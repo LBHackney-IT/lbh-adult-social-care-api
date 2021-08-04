@@ -115,7 +115,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult<IEnumerable<UsersMinimalResponse>>> GetApprovers()
         {
-            var result = await _getAllUsersUseCase.GetUsers(UserRoleConstants.ApproverId).ConfigureAwait(false);
+            var result = await _getAllUsersUseCase.GetUsers(RolesEnum.Approver.GetId()).ConfigureAwait(false);
             return Ok(result);
         }
     }

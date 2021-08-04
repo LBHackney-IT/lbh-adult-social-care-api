@@ -17,13 +17,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Concrete
             _approvedPackagesGateway = approvedPackagesGateway;
         }
 
-        [Obsolete("use version with 'string role' instead")]
-        public async Task<IEnumerable<UsersMinimalResponse>> GetUsers(int roleId)
-        {
-            var result = await _approvedPackagesGateway.GetUsers(roleId).ConfigureAwait(false);
-            return result.ToResponse();
-        }
-        
         public async Task<IEnumerable<UsersMinimalResponse>> GetUsers(Guid roleId)
         {
             var result = await _approvedPackagesGateway.GetUsers(roleId).ConfigureAwait(false);
