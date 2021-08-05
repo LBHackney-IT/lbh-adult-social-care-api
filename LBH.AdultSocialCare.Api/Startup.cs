@@ -92,6 +92,8 @@ namespace LBH.AdultSocialCare.Api
 
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
 
+            services.AddHttpContextAccessor();
+
             services.RegisterGateways();
             services.RegisterUseCases();
 

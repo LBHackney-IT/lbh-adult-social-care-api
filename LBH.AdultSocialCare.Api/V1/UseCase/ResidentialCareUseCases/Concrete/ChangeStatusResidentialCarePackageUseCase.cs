@@ -8,6 +8,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete
 {
@@ -16,20 +17,24 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete
         private readonly IResidentialCarePackageGateway _gateway;
         private readonly IResidentialCareApprovalHistoryGateway _residentialCareApprovalHistoryGateway;
         private readonly IUsersGateway _usersGateway;
+        private readonly IIdentityHelperUseCase _identityHelperUseCase;
+
 
         public ChangeStatusResidentialCarePackageUseCase(IResidentialCarePackageGateway residentialCarePackageGateway,
             IResidentialCareApprovalHistoryGateway residentialCareApprovalHistoryGateway,
-            IUsersGateway usersGateway)
+            IUsersGateway usersGateway,
+            IIdentityHelperUseCase identityHelperUseCase)
         {
             _gateway = residentialCarePackageGateway;
             _residentialCareApprovalHistoryGateway = residentialCareApprovalHistoryGateway;
             _usersGateway = usersGateway;
+            _identityHelperUseCase = identityHelperUseCase;
         }
 
         public async Task<ResidentialCarePackageResponse> UpdateAsync(Guid residentialCarePackageId, int statusId, string requestMoreInformation = null)
         {
             var residentialCarePackageDomain = await _gateway.ChangeStatusAsync(residentialCarePackageId, statusId).ConfigureAwait(false);
-            var userId = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8");
+            var userId = _identityHelperUseCase.GetUserId();
             var user = await _usersGateway.GetAsync(userId).ConfigureAwait(false);
             var logText = ApprovalHistoryConstants.GetLogText(statusId);
             var newPackageHistory = new ResidentialCareApprovalHistoryDomain()

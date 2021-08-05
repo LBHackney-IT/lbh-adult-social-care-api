@@ -10,16 +10,19 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways
 {
     public class NursingCareBrokerageGateway : INursingCareBrokerageGateway
     {
         private readonly DatabaseContext _databaseContext;
+        private readonly IIdentityHelperUseCase _identityHelperUseCase;
 
-        public NursingCareBrokerageGateway(DatabaseContext databaseContext)
+        public NursingCareBrokerageGateway(DatabaseContext databaseContext, IIdentityHelperUseCase identityHelperUseCase)
         {
             _databaseContext = databaseContext;
+            _identityHelperUseCase = identityHelperUseCase;
         }
 
         public async Task<NursingCareBrokerageInfoDomain> CreateAsync(NursingCareBrokerageInfo nursingCareBrokerageInfo)
@@ -124,7 +127,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways
             }
             nursingPackage.StageId = stageId;
             if (PackageStageConstants.BrokerageAssignedId == stageId)
-                nursingPackage.AssignedUserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84");
+                nursingPackage.AssignedUserId = _identityHelperUseCase.GetUserId();
             try
             {
                 await _databaseContext.SaveChangesAsync().ConfigureAwait(false);

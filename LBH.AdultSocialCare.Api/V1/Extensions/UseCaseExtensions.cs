@@ -31,6 +31,8 @@ using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovalHistoryUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApprovalHistoryUseCase.Interfaces;
@@ -412,6 +414,12 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             #region Transaction
 
             services.AddScoped<ITransactionsService, TransactionsService>();
+
+            #endregion
+
+            #region IdentityHelper
+
+            services.AddScoped<IIdentityHelperUseCase, IdentityHelperUseCase>();
 
             #endregion
 
