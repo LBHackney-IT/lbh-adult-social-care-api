@@ -53,6 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
 
             return new ResidentialCareBrokerageInfoDomain
             {
+                Id = residentialCarePackage.ResidentialCareBrokerageInfo?.Id ?? Guid.Empty,
                 ResidentialCarePackageId = residentialCarePackageId,
                 ResidentialCarePackage = residentialCarePackage.ToDomain(),
                 ResidentialCore = residentialCarePackage.ResidentialCareBrokerageInfo?.ResidentialCore ?? 0,

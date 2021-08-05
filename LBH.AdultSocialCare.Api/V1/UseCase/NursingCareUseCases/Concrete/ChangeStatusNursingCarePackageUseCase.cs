@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.BusinessRules;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovalHistoryGateways;
@@ -32,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
         {
             var package = await _gateway.GetAsync(nursingCarePackageId).ConfigureAwait(false);
 
-            if (!CanChangeStatus(package, statusId))
+            if (!PackageStatusTransitions.CanChangeStatus(package.StatusId, statusId))
             {
                 throw new ApiException(
                     "Cannot change status of nursing care package",
@@ -54,20 +53,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
             };
             await _nursingCareApprovalHistoryGateway.CreateAsync(newPackageHistory.ToDb()).ConfigureAwait(false);
             return nursingCarePackageDomain.ToResponse();
-        }
-
-        private static bool CanChangeStatus(NursingCarePackageDomain package, int statusId)
-        {
-            switch (statusId)
-            {
-                case ApprovalHistoryConstants.PackageApprovedId:
-                    return package.StatusId.NotIn(
-                        ApprovalHistoryConstants.PackageApprovedId,
-                        ApprovalHistoryConstants.ApprovedForCommercialId);
-
-                default:
-                    return true;
-            }
         }
     }
 }
