@@ -78,5 +78,11 @@ namespace HttpServices.Services.Contracts
             DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest);
 
         Task<bool> AcceptInvoicesUseCase(Guid payRunId, InvoiceIdListRequest invoiceIdList);
+
+        Task<IEnumerable<PayRunTypeResponse>> GetAllPayRunTypesUseCase();
+
+        Task<IEnumerable<PayRunSubTypeResponse>> GetAllPayRunSubTypesUseCase();
+
+        Task<IEnumerable<PayRunStatusResponse>> GetAllUniquePayRunStatusesUseCase();
     }
 }

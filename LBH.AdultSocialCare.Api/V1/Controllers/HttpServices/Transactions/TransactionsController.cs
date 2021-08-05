@@ -286,5 +286,29 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             var result = await _transactionsService.CreatePayRunHeldChatUseCase(payRunId, disputedInvoiceChatForCreationRequest).ConfigureAwait(false);
             return Ok(result);
         }
+
+        [HttpGet("pay-runs/pay-run-types")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<IEnumerable<PayRunTypeResponse>>> GetAllPayRunTypes()
+        {
+            var types = await _transactionsService.GetAllPayRunTypesUseCase().ConfigureAwait(false);
+            return Ok(types);
+        }
+
+        [HttpGet("pay-runs/pay-run-sub-types")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<IEnumerable<PayRunSubTypeResponse>>> GetAllPayRunSubTypes()
+        {
+            var subTypes = await _transactionsService.GetAllPayRunSubTypesUseCase().ConfigureAwait(false);
+            return Ok(subTypes);
+        }
+
+        [HttpGet("pay-runs/unique-pay-run-statuses")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<IEnumerable<PayRunStatusResponse>>> GetAllUniquePayRunStatuses()
+        {
+            var result = await _transactionsService.GetAllUniquePayRunStatusesUseCase().ConfigureAwait(false);
+            return Ok(result);
+        }
     }
 }
