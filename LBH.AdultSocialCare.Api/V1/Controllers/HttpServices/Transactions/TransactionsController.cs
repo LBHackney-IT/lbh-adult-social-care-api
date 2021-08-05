@@ -31,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
 
         [HttpGet("departments/payment-departments")]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> GetPaymentDepartments()
+        public async Task<ActionResult<IEnumerable<DepartmentResponse>>> GetPaymentDepartments()
         {
             var departments = await _transactionsService.GetPaymentDepartments().ConfigureAwait(false);
             return Ok(departments);
@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
 
         [HttpPost("pay-runs/{payRunType}")]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> CreatePayRun(string payRunType, [FromBody] PayRunForCreationRequest payRunForCreationRequest)
+        public async Task<ActionResult<Guid?>> CreatePayRun(string payRunType, [FromBody] PayRunForCreationRequest payRunForCreationRequest)
         {
             var result = await _payRunUseCase.CreateNewPayRunUseCase(payRunType, payRunForCreationRequest).ConfigureAwait(false);
             return Ok(result);
@@ -219,7 +219,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
 
         [HttpPost("supplier-bills")]
         [ProducesDefaultResponseType]
-        public async Task<IActionResult> CreateSupplierBill([FromBody] BillCreationRequest billCreationRequest)
+        public async Task<ActionResult<BillResponse>> CreateSupplierBill([FromBody] BillCreationRequest billCreationRequest)
         {
             var result = await _transactionsService.CreateSupplierBillUseCase(billCreationRequest).ConfigureAwait(false);
             return Ok(result);
