@@ -2,6 +2,7 @@ using AutoMapper;
 using HttpServices.Models.Requests;
 using LBH.AdultSocialCare.Api.V1.Boundary.ApprovedPackagesBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.BrokeredPackagesBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.ClientBoundary;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApprovePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Request;
@@ -61,6 +62,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Re
 using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.BillDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ClientDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
@@ -557,6 +559,12 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             CreateMap<InvoiceResponse, InvoiceForCreationRequest>();
             CreateMap<InvoiceItemResponse, InvoiceItemForCreationRequest>();
+
+            #endregion
+
+            #region Clients
+
+            CreateMap<ClientMinimalDomain, ClientMinimalResponse>();
 
             #endregion
         }

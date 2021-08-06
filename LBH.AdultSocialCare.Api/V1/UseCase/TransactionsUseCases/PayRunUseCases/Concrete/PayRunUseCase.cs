@@ -2,15 +2,16 @@ using Common.AppConstants.Enums;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using HttpServices.Models.Features.RequestFeatures;
+using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HttpServices.Models.Requests;
-using LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Concrete
 {
@@ -18,11 +19,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
     {
         private readonly ITransactionsService _transactionsService;
         private readonly ISupplierGateway _supplierGateway;
+        private readonly IClientsGateway _clientsGateway;
 
-        public PayRunUseCase(ITransactionsService transactionsService, ISupplierGateway supplierGateway)
+        public PayRunUseCase(ITransactionsService transactionsService, ISupplierGateway supplierGateway, IClientsGateway clientsGateway)
         {
             _transactionsService = transactionsService;
             _supplierGateway = supplierGateway;
+            _clientsGateway = clientsGateway;
         }
 
         public async Task<Guid?> CreateNewPayRunUseCase(string payRunType, PayRunForCreationRequest payRunForCreationRequest)
@@ -66,13 +69,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
             var serviceUserIds = new List<Guid>();
 
             var heldInvoicePayments = (heldInvoicesRes ?? Array.Empty<HeldInvoiceResponse>()).ToList();
-            foreach (var payRun in heldInvoicePayments)
+            foreach (var invoice in heldInvoicePayments.SelectMany(payRun => payRun.Invoices))
             {
-                foreach (var invoice in payRun.Invoices)
-                {
-                    supplierIds.Add(invoice.SupplierId);
-                    serviceUserIds.Add(invoice.ServiceUserId);
-                }
+                supplierIds.Add(invoice.SupplierId);
+                serviceUserIds.Add(invoice.ServiceUserId);
             }
 
             supplierIds = supplierIds.Distinct().ToList();
@@ -81,15 +81,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
             // Get supplier names
             var suppliers = await _supplierGateway.GetSupplierMinimalInList(supplierIds).ConfigureAwait(false);
             var supplierList = suppliers.ToList();
-            foreach (var payRun in heldInvoicePayments)
-            {
-                foreach (var invoice in payRun.Invoices)
-                {
-                    invoice.SupplierName = supplierList.FirstOrDefault(s => s.Id == invoice.SupplierId)?.SupplierName ?? "";
-                }
-            }
 
             // Get service user names
+            var clients = await _clientsGateway.GetClientMinimalInList(serviceUserIds).ConfigureAwait(false);
+            var clientList = clients.ToList();
+
+            // Add supplier and service user names to invoices
+            foreach (var invoice in heldInvoicePayments.SelectMany(payRun => payRun.Invoices))
+            {
+                invoice.SupplierName = supplierList.FirstOrDefault(s => s.Id == invoice.SupplierId)?.SupplierName ?? "";
+                invoice.ServiceUserName = clientList.FirstOrDefault(s => s.Id == invoice.ServiceUserId)?.ClientName ?? "";
+            }
+
             return heldInvoicePayments;
         }
     }
