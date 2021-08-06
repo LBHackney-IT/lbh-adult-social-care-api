@@ -122,6 +122,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways
             {
                 throw new EntityNotFoundException($"Couldn't find nursing care package {nursingCarePackageId.ToString()}");
             }
+
+            if (nursingPackage.StageId == stageId) return false;
+
             nursingPackage.StageId = stageId;
             if (PackageStageConstants.BrokerageAssignedId == stageId)
                 nursingPackage.AssignedUserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84");
