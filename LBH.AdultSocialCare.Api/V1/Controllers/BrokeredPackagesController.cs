@@ -88,6 +88,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             return Ok(result);
         }
 
+        [HttpGet("brokers")]
+        [ProducesResponseType(typeof(IEnumerable<UsersMinimalResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<IEnumerable<UsersMinimalResponse>>> GetBrokers()
+        {
+            var result = await _getAllUsersUseCase.GetUsers(RolesEnum.Broker.GetId()).ConfigureAwait(false);
+            return Ok(result);
+        }
+
         [HttpGet("social-workers")]
         [ProducesResponseType(typeof(IEnumerable<UsersMinimalResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
