@@ -25,7 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 PostCode = "SW11",
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
-            },new Client
+            }, new Client
             {
                 Id = new Guid("2f043f6f-09ed-42f0-ab30-c0409c05cb7e"),
                 FirstName = "Henry",

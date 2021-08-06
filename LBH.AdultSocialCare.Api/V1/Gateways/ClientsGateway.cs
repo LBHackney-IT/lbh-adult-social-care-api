@@ -36,7 +36,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             return await _databaseContext.Clients.Where(c => clientIds.Contains(c.Id))
                 .Select(c => new ClientMinimalDomain
                 {
-                    ClientId = c.Id, ClientName = $"{c.FirstName ?? ""} {c.MiddleName ?? ""} {c.LastName ?? ""}"
+                    ClientId = c.Id,
+                    ClientName = $"{c.FirstName ?? ""} {c.MiddleName ?? ""} {c.LastName ?? ""}"
                 }).ToListAsync().ConfigureAwait(false);
         }
 
