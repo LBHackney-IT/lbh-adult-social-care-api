@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
@@ -29,19 +27,25 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareBrokerageUseCase.Con
 
         public async Task<bool> UpdatePackage(Guid residentialCarePackageId, int stageId)
         {
-            var result = await _residentialCareBrokerageGateway.SetStage(residentialCarePackageId, stageId).ConfigureAwait(false);
-            var userId = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8");
-            var user = await _usersGateway.GetAsync(userId).ConfigureAwait(false);
-            var stageText = PackageStageConstants.GetStageText(stageId);
-            var newPackageHistory = new ResidentialCareApprovalHistoryDomain()
+            var stageChanged = await _residentialCareBrokerageGateway.SetStage(residentialCarePackageId, stageId).ConfigureAwait(false);
+
+            if (stageChanged)
             {
-                ResidentialCarePackageId = residentialCarePackageId,
-                ApprovedDate = DateTimeOffset.Now,
-                LogText = $"{stageText} {user.Name}",
-                UserId = user.Id
-            };
-            await _residentialCareApprovalHistoryGateway.CreateAsync(newPackageHistory.ToDb()).ConfigureAwait(false);
-            return result;
+                var userId = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8");
+                var user = await _usersGateway.GetAsync(userId).ConfigureAwait(false);
+                var stageText = PackageStageConstants.GetStageText(stageId);
+                var newPackageHistory = new ResidentialCareApprovalHistoryDomain()
+                {
+                    ResidentialCarePackageId = residentialCarePackageId,
+                    ApprovedDate = DateTimeOffset.Now,
+                    LogText = $"{stageText} {user.Name}",
+                    UserId = user.Id
+                };
+                await _residentialCareApprovalHistoryGateway.CreateAsync(newPackageHistory.ToDb())
+                    .ConfigureAwait(false);
+            }
+
+            return stageChanged;
         }
     }
 }

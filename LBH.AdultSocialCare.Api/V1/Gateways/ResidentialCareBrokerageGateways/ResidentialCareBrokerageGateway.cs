@@ -5,7 +5,6 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 
@@ -53,6 +52,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
 
             return new ResidentialCareBrokerageInfoDomain
             {
+                Id = residentialCarePackage.ResidentialCareBrokerageInfo?.Id ?? Guid.Empty,
                 ResidentialCarePackageId = residentialCarePackageId,
                 ResidentialCarePackage = residentialCarePackage.ToDomain(),
                 ResidentialCore = residentialCarePackage.ResidentialCareBrokerageInfo?.ResidentialCore ?? 0,
@@ -71,6 +71,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
             {
                 throw new EntityNotFoundException($"Couldn't find residential care package {residentialCarePackageId.ToString()}");
             }
+
+            if (residentialPackage.StageId == stageId) return false;
+
             residentialPackage.StageId = stageId;
             if (PackageStageConstants.BrokerageAssignedId == stageId)
                 residentialPackage.AssignedUserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84");
