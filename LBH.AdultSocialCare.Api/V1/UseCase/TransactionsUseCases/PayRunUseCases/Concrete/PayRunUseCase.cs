@@ -7,18 +7,22 @@ using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HttpServices.Models.Requests;
+using LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Concrete
 {
     public class PayRunUseCase : IPayRunUseCase
     {
         private readonly ITransactionsService _transactionsService;
+        private readonly ISupplierGateway _supplierGateway;
 
-        public PayRunUseCase(ITransactionsService transactionsService)
+        public PayRunUseCase(ITransactionsService transactionsService, ISupplierGateway supplierGateway)
         {
             _transactionsService = transactionsService;
+            _supplierGateway = supplierGateway;
         }
 
         public async Task<Guid?> CreateNewPayRunUseCase(string payRunType, PayRunForCreationRequest payRunForCreationRequest)
@@ -53,6 +57,40 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
         public async Task<IEnumerable<ReleasedHoldsByTypeResponse>> GetReleasedHoldsCountUseCase(DateTimeOffset? fromDate = null, DateTimeOffset? toDate = null)
         {
             return await _transactionsService.GetReleasedHoldsCount(fromDate, toDate).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<HeldInvoiceResponse>> GetHeldInvoicePaymentsUseCase()
+        {
+            var heldInvoicesRes = await _transactionsService.GetHeldInvoicePaymentsUseCase().ConfigureAwait(false);
+            var supplierIds = new List<long>();
+            var serviceUserIds = new List<Guid>();
+
+            var heldInvoicePayments = (heldInvoicesRes ?? Array.Empty<HeldInvoiceResponse>()).ToList();
+            foreach (var payRun in heldInvoicePayments)
+            {
+                foreach (var invoice in payRun.Invoices)
+                {
+                    supplierIds.Add(invoice.SupplierId);
+                    serviceUserIds.Add(invoice.ServiceUserId);
+                }
+            }
+
+            supplierIds = supplierIds.Distinct().ToList();
+            serviceUserIds = serviceUserIds.Distinct().ToList();
+
+            // Get supplier names
+            var suppliers = await _supplierGateway.GetSupplierMinimalInList(supplierIds).ConfigureAwait(false);
+            var supplierList = suppliers.ToList();
+            foreach (var payRun in heldInvoicePayments)
+            {
+                foreach (var invoice in payRun.Invoices)
+                {
+                    invoice.SupplierName = supplierList.FirstOrDefault(s => s.Id == invoice.SupplierId)?.SupplierName ?? "";
+                }
+            }
+
+            // Get service user names
+            return heldInvoicePayments;
         }
     }
 }

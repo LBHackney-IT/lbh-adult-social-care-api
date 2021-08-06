@@ -8,8 +8,11 @@ namespace HttpServices.Models.Responses
         public Guid InvoiceId { get; set; }
         public string InvoiceNumber { get; set; }
         public long SupplierId { get; set; }
+        public string SupplierName { get; set; }
         public int PackageTypeId { get; set; }
+        public string PackageTypeName { get; set; }
         public Guid ServiceUserId { get; set; }
+        public string ServiceUserName { get; set; }
         public DateTimeOffset DateInvoiced { get; set; }
         public decimal TotalAmount { get; set; }
         public float SupplierVATPercent { get; set; }
