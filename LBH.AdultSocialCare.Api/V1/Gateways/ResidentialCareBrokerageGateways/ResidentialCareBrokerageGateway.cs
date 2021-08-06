@@ -7,16 +7,19 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
 {
     public class ResidentialCareBrokerageGateway : IResidentialCareBrokerageGateway
     {
         private readonly DatabaseContext _databaseContext;
+        private readonly IIdentityHelperUseCase _identityHelperUseCase;
 
-        public ResidentialCareBrokerageGateway(DatabaseContext databaseContext)
+        public ResidentialCareBrokerageGateway(DatabaseContext databaseContext, IIdentityHelperUseCase identityHelperUseCase)
         {
             _databaseContext = databaseContext;
+            _identityHelperUseCase = identityHelperUseCase;
         }
 
         public async Task<ResidentialCareBrokerageInfoDomain> CreateAsync(ResidentialCareBrokerageInfo residentialCareBrokerageInfo)
@@ -76,7 +79,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
 
             residentialPackage.StageId = stageId;
             if (PackageStageConstants.BrokerageAssignedId == stageId)
-                residentialPackage.AssignedUserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84");
+                residentialPackage.AssignedUserId = _identityHelperUseCase.GetUserId();
             try
             {
                 await _databaseContext.SaveChangesAsync().ConfigureAwait(false);

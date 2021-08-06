@@ -8,6 +8,7 @@ using HttpServices.Models.Requests;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApproveCommercialBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApproveCommercialUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -23,21 +24,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareApproveCommercial
     {
         private readonly IGetNursingCareApproveCommercialUseCase _getNursingCareApproveCommercialUseCase;
         private readonly IChangeStatusNursingCarePackageUseCase _changeStatusNursingCarePackageUseCase;
-        private readonly IGetNursingCareInvoiceDetailUseCase _getNursingCareInvoiceDetailUseCase;
-        private readonly ITransactionsService _transactionsService;
-        private readonly IMapper _mapper;
+        //private readonly IGetNursingCareInvoiceDetailUseCase _getNursingCareInvoiceDetailUseCase;
+        //private readonly ITransactionsService _transactionsService;
+        //private readonly IMapper _mapper;
 
         public NursingCareApproveCommercialController(IGetNursingCareApproveCommercialUseCase getNursingCareApproveCommercialUseCase,
-            IChangeStatusNursingCarePackageUseCase changeStatusNursingCarePackageUseCase,
-            IGetNursingCareInvoiceDetailUseCase getNursingCareInvoiceDetailUseCase,
-            ITransactionsService transactionsService,
-            IMapper mapper)
+            IChangeStatusNursingCarePackageUseCase changeStatusNursingCarePackageUseCase)
+        //IGetNursingCareInvoiceDetailUseCase getNursingCareInvoiceDetailUseCase,
+        //ITransactionsService transactionsService,
+        //IMapper mapper)
         {
             _getNursingCareApproveCommercialUseCase = getNursingCareApproveCommercialUseCase;
             _changeStatusNursingCarePackageUseCase = changeStatusNursingCarePackageUseCase;
-            _getNursingCareInvoiceDetailUseCase = getNursingCareInvoiceDetailUseCase;
-            _transactionsService = transactionsService;
-            _mapper = mapper;
+            //_getNursingCareInvoiceDetailUseCase = getNursingCareInvoiceDetailUseCase;
+            //_transactionsService = transactionsService;
+            //_mapper = mapper;
         }
 
         /// <summary>Gets the specified nursing care approve commercials contents identifier.</summary>

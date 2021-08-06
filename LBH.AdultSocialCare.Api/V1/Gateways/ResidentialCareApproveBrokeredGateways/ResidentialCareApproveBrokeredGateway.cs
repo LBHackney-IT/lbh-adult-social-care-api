@@ -9,16 +9,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
+using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGateways
 {
     public class ResidentialCareApproveBrokeredGateway : IResidentialCareApproveBrokeredGateway
     {
         private readonly DatabaseContext _databaseContext;
+        private readonly IIdentityHelperUseCase _identityHelperUseCase;
 
-        public ResidentialCareApproveBrokeredGateway(DatabaseContext databaseContext)
+        public ResidentialCareApproveBrokeredGateway(DatabaseContext databaseContext, IIdentityHelperUseCase identityHelperUseCase)
         {
             _databaseContext = databaseContext;
+            _identityHelperUseCase = identityHelperUseCase;
         }
 
         public async Task<ResidentialCareApproveBrokeredDomain> GetAsync(Guid residentialCarePackageId)
@@ -83,14 +86,14 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGate
                     ItemName = "Residential Care Core",
                     PricePerUnit = residentialCareBrokerage.ResidentialCore,
                     Quantity = 1,
-                    CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                    CreatorId = _identityHelperUseCase.GetUserId()
                 },
                 new InvoiceItemDomain()
                 {
                     ItemName = "Additional Needs",
                     PricePerUnit = residentialCareBrokerage.AdditionalNeedsPayment,
                     Quantity = additionalNeedsCount,
-                    CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                    CreatorId = _identityHelperUseCase.GetUserId()
                 }
             };
 
@@ -101,7 +104,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGate
                     ItemName = "Additional Needs One Off",
                     PricePerUnit = residentialCareBrokerage.AdditionalNeedsPaymentOneOff,
                     Quantity = 1,
-                    CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                    CreatorId = _identityHelperUseCase.GetUserId()
                 };
                 invoiceItems.Add(additionalNeedsPaymentOneOff);
             }
@@ -112,7 +115,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGate
                 PackageTypeId = PackageTypesConstants.ResidentialCarePackageId,
                 ServiceUserId = residentialCarePackage.ClientId,
                 InvoiceItems = invoiceItems,
-                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                CreatorId = _identityHelperUseCase.GetUserId()
             };
 
             return invoiceDomain;
