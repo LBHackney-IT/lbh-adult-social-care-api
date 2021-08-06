@@ -8,6 +8,10 @@ using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
 using System;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
+using LBH.AdultSocialCare.Api.V1.BusinessRules;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete
@@ -33,6 +37,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete
 
         public async Task<ResidentialCarePackageResponse> UpdateAsync(Guid residentialCarePackageId, int statusId, string requestMoreInformation = null)
         {
+            var package = await _gateway.GetAsync(residentialCarePackageId).ConfigureAwait(false);
+
+            if (!PackageStatusTransitions.CanChangeStatus(package.StatusId, statusId))
+            {
+                throw new ApiException(
+                    "Cannot change status of nursing care package",
+                    detail: $"Cannot set status of the package {residentialCarePackageId} to '{ApprovalHistoryConstants.GetLogText(statusId)}' as it is already in status '{ApprovalHistoryConstants.GetLogText(package.StatusId)}'");
+            }
+
             var residentialCarePackageDomain = await _gateway.ChangeStatusAsync(residentialCarePackageId, statusId).ConfigureAwait(false);
             var userId = _identityHelperUseCase.GetUserId();
             var user = await _usersGateway.GetAsync(userId).ConfigureAwait(false);

@@ -1,8 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
@@ -28,6 +27,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareBrokerageUseCase.Concret
 
         public async Task<NursingCareBrokerageInfoResponse> ExecuteAsync(NursingCareBrokerageInfoCreationDomain nursingCareBrokerageInfoCreationDomain)
         {
+            var brokerage = await _nursingCareBrokerageGateway.GetAsync(nursingCareBrokerageInfoCreationDomain.NursingCarePackageId).ConfigureAwait(false);
+
+            if (brokerage.NursingCareBrokerageId != Guid.Empty)
+            {
+                throw new ApiException($"A brokerage for nursing care package {nursingCareBrokerageInfoCreationDomain.NursingCarePackageId} already exists");
+            }
+
             var nursingCareBrokerageInfoEntity = nursingCareBrokerageInfoCreationDomain.ToDb();
             var res = await _nursingCareBrokerageGateway.CreateAsync(nursingCareBrokerageInfoEntity).ConfigureAwait(false);
             if (res == null) return null;

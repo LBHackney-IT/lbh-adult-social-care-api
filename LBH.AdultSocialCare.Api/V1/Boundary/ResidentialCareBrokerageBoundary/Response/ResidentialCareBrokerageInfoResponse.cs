@@ -8,7 +8,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.R
         /// <summary>
         /// Gets or sets the Residential Care Brokerage Id
         /// </summary>
-        public Guid ResidentialCareBrokerageId { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Gets or sets the Residential Care Package Id

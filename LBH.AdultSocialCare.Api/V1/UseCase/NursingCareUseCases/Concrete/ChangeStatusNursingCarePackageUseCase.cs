@@ -1,10 +1,10 @@
 using System;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApprovePackageDomains;
+using LBH.AdultSocialCare.Api.V1.BusinessRules;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovalHistoryGateways;
@@ -35,6 +35,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
 
         public async Task<NursingCarePackageResponse> UpdateAsync(Guid nursingCarePackageId, int statusId, string requestMoreInformation = null)
         {
+            var package = await _gateway.GetAsync(nursingCarePackageId).ConfigureAwait(false);
+
+            if (!PackageStatusTransitions.CanChangeStatus(package.StatusId, statusId))
+            {
+                throw new ApiException(
+                    "Cannot change status of nursing care package",
+                    detail: $"Cannot set status of the package {nursingCarePackageId} to '{ApprovalHistoryConstants.GetLogText(statusId)}' as it is already in status '{ApprovalHistoryConstants.GetLogText(package.StatusId)}'");
+            }
+
             var nursingCarePackageDomain = await _gateway.ChangeStatusAsync(nursingCarePackageId, statusId).ConfigureAwait(false);
             var userId = _identityHelperUseCase.GetUserId();
             var user = await _usersGateway.GetAsync(userId).ConfigureAwait(false);
@@ -51,7 +60,5 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
             await _nursingCareApprovalHistoryGateway.CreateAsync(newPackageHistory.ToDb()).ConfigureAwait(false);
             return nursingCarePackageDomain.ToResponse();
         }
-
-
     }
 }

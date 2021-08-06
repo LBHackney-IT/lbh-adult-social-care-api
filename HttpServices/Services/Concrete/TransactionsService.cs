@@ -41,7 +41,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return new HashSet<DepartmentResponse>();
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return new HashSet<DepartmentResponse>();
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<IEnumerable<DepartmentResponse>>(content);
@@ -68,7 +68,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<Guid>(content);
@@ -176,7 +176,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<PagedPayRunSummaryResponse>(content);
@@ -209,7 +209,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<PagedSupplierMinimalListResponse>(content);
@@ -241,7 +241,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<IEnumerable<ReleasedHoldsByTypeResponse>>(content);
@@ -265,7 +265,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<IEnumerable<PackageTypeResponse>>(content);
@@ -289,7 +289,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<IEnumerable<InvoiceStatusResponse>>(content);
@@ -321,7 +321,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<IEnumerable<InvoiceResponse>>(content);
@@ -359,7 +359,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<PayRunDetailsResponse>(content);
@@ -383,7 +383,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<PayRunInsightsResponse>(content);
@@ -407,7 +407,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return false;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<bool>(content);
@@ -431,7 +431,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return false;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<bool>(content);
@@ -455,7 +455,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return false;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<bool>(content);
@@ -482,7 +482,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return false;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<bool>(content);
@@ -509,7 +509,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return false;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<bool>(content);
@@ -533,7 +533,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return false;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<bool>(content);
@@ -561,7 +561,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<DisputedInvoiceFlatResponse>(content);
@@ -585,7 +585,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<IEnumerable<HeldInvoiceResponse>>(content);
@@ -612,7 +612,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<InvoiceResponse>(content);
@@ -636,7 +636,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<IEnumerable<InvoiceStatusResponse>>(content);
@@ -660,7 +660,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<IEnumerable<InvoiceStatusResponse>>(content);
@@ -684,7 +684,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return false;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<bool>(content);
@@ -711,7 +711,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<BillResponse>(content);
@@ -738,7 +738,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return false;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<bool>(content);
@@ -775,7 +775,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<PagedBillSummaryResponse>(content);
@@ -808,7 +808,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<PagedSupplierResponse>(content);
@@ -832,7 +832,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<IEnumerable<SupplierTaxRateResponse>>(content);
@@ -860,7 +860,7 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return null;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<DisputedInvoiceChatResponse>(content);
@@ -887,10 +887,82 @@ namespace HttpServices.Services.Concrete
             }
 
             if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType.MediaType != "application/json") return false;
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return false;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
             var res = JsonConvert.DeserializeObject<bool>(content);
+            return res;
+        }
+
+        public async Task<IEnumerable<PayRunTypeResponse>> GetAllPayRunTypesUseCase()
+        {
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/pay-run-types"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to retrieve pay run types");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return new List<PayRunTypeResponse>();
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<IEnumerable<PayRunTypeResponse>>(content);
+            return res;
+        }
+
+        public async Task<IEnumerable<PayRunSubTypeResponse>> GetAllPayRunSubTypesUseCase()
+        {
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/pay-run-sub-types"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to retrieve pay run sub types");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return new List<PayRunSubTypeResponse>();
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<IEnumerable<PayRunSubTypeResponse>>(content);
+            return res;
+        }
+
+        public async Task<IEnumerable<PayRunStatusResponse>> GetAllUniquePayRunStatusesUseCase()
+        {
+            var httpRequestMessage = new HttpRequestMessage()
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"{_httpClient.BaseAddress}api/v1/pay-runs/unique-pay-run-statuses"),
+                Headers = { { HttpRequestHeader.Accept.ToString(), "application/json" } }
+            };
+
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to retrieve pay run statuses");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return new List<PayRunStatusResponse>();
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<IEnumerable<PayRunStatusResponse>>(content);
             return res;
         }
     }

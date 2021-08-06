@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
@@ -33,19 +31,24 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareBrokerageUseCase.Concret
 
         public async Task<bool> UpdatePackage(Guid nursingCarePackageId, int stageId)
         {
-            var result = await _nursingCareBrokerageGateway.SetStage(nursingCarePackageId, stageId).ConfigureAwait(false);
-            var userId = _identityHelperUseCase.GetUserId();
-            var user = await _usersGateway.GetAsync(userId).ConfigureAwait(false);
-            var stageText = PackageStageConstants.GetStageText(stageId);
-            var newPackageHistory = new NursingCareApprovalHistoryDomain()
+            var stageChanged = await _nursingCareBrokerageGateway.SetStage(nursingCarePackageId, stageId).ConfigureAwait(false);
+
+            if (stageChanged)
             {
-                NursingCarePackageId = nursingCarePackageId,
-                ApprovedDate = DateTimeOffset.Now,
-                LogText = $"{stageText} {user.Name}",
-                UserId = user.Id
-            };
-            await _nursingCareApprovalHistoryGateway.CreateAsync(newPackageHistory.ToDb()).ConfigureAwait(false);
-            return result;
+                var userId = _identityHelperUseCase.GetUserId();
+                var user = await _usersGateway.GetAsync(userId).ConfigureAwait(false);
+                var stageText = PackageStageConstants.GetStageText(stageId);
+                var newPackageHistory = new NursingCareApprovalHistoryDomain()
+                {
+                    NursingCarePackageId = nursingCarePackageId,
+                    ApprovedDate = DateTimeOffset.Now,
+                    LogText = $"{stageText} {user.Name}",
+                    UserId = user.Id
+                };
+                await _nursingCareApprovalHistoryGateway.CreateAsync(newPackageHistory.ToDb()).ConfigureAwait(false);
+            }
+
+            return stageChanged;
         }
     }
 }
