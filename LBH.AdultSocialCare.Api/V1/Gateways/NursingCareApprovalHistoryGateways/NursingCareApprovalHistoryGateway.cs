@@ -27,6 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovalHistoryGateways
         {
             var nursingCareApprovalHistories = await _databaseContext.NursingCareApprovalHistories
                 .Where(a => a.NursingCarePackageId.Equals(nursingCarePackageId))
+                .OrderByDescending(a => a.ApprovedDate)
                 .ToListAsync().ConfigureAwait(false);
             return nursingCareApprovalHistories?.ToDomain();
         }

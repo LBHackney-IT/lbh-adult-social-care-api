@@ -255,7 +255,13 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 
         private async Task<List<Claim>> GetClaims()
         {
-            var claims = new List<Claim> { new Claim(ClaimTypes.Name, _user.UserName) };
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, _user.UserName),
+                new Claim(ClaimTypes.GivenName, _user.Name),
+                new Claim(ClaimTypes.NameIdentifier, _user.Id.ToString())
+
+            };
             var roles = await _userManager.GetRolesAsync(_user).ConfigureAwait(false);
             claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 

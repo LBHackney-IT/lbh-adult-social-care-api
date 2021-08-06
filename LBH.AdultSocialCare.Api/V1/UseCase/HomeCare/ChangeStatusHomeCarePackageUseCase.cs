@@ -7,6 +7,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
 {
@@ -15,21 +16,25 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
         private readonly IHomeCarePackageGateway _gateway;
         private readonly IHomeCareApprovalHistoryGateway _homeCareApprovalHistoryGateway;
         private readonly IUsersGateway _usersGateway;
+        private readonly IIdentityHelperUseCase _identityHelperUseCase;
+
 
         public ChangeStatusHomeCarePackageUseCase(IHomeCarePackageGateway homeCarePackageGateway,
             IHomeCareApprovalHistoryGateway homeCareApprovalHistoryGateway,
-            IUsersGateway usersGateway)
+            IUsersGateway usersGateway,
+            IIdentityHelperUseCase identityHelperUseCase)
         {
             _gateway = homeCarePackageGateway;
             _homeCareApprovalHistoryGateway = homeCareApprovalHistoryGateway;
             _usersGateway = usersGateway;
+            _identityHelperUseCase = identityHelperUseCase;
         }
 
         public async Task<HomeCarePackageDomain> UpdateAsync(Guid homeCarePackageId, int statusId, string requestMoreInformation = null)
         {
             var homeCarePackageEntity =
                 await _gateway.ChangeStatusAsync(homeCarePackageId, statusId).ConfigureAwait(false);
-            var userId = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8");
+            var userId = _identityHelperUseCase.GetUserId();
             var user = await _usersGateway.GetAsync(userId).ConfigureAwait(false);
             var logText = ApprovalHistoryConstants.GetLogText(statusId);
             var newPackageHistory = new HomeCareApprovalHistoryDomain()
