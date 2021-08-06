@@ -1,10 +1,7 @@
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage
+namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerageDomains
 {
     public class HomeCareBrokerageDomain
     {

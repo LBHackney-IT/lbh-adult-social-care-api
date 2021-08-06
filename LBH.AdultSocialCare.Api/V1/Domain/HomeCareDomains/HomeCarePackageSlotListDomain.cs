@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCare
+namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains
 {
 
     public class HomeCarePackageSlotListDomain

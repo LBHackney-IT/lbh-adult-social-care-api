@@ -1,9 +1,9 @@
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains
 {

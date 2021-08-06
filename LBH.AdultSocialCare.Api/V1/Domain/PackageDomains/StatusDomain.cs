@@ -1,8 +1,8 @@
 using System;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain
+namespace LBH.AdultSocialCare.Api.V1.Domain.PackageDomains
 {
-    public class PackageDomain
+    public class StatusDomain
     {
         /// <summary>
         /// Gets or sets the Id
@@ -10,19 +10,14 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the Package Type
+        /// Gets or sets the PackageStatuses Name
         /// </summary>
-        public string PackageType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Sequence
-        /// </summary>
-        public int Sequence { get; set; }
+        public string StatusName { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
-        public int CreatorId { get; set; }
+        public Guid CreatorId { get; set; }
 
         /// <summary>
         /// Gets or sets the Date Created
@@ -30,9 +25,9 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         public DateTimeOffset? DateCreated { get; set; }
 
         /// <summary>
-        /// Gets or sets the Updator Id
+        /// Gets or sets the Updater Id
         /// </summary>
-        public int UpdatorId { get; set; }
+        public Guid? UpdaterId { get; set; }
 
         /// <summary>
         /// Gets or sets the Date Updated

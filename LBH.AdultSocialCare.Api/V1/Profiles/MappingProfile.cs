@@ -69,10 +69,11 @@ using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Domain.GeneralDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareAdditionalNeedsDomains;
@@ -83,6 +84,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.PackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApproveBrokeredDomains;
@@ -529,26 +531,26 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             CreateMap<SubmittedPackageRequestsDomain, SubmittedPackageRequestsResponse>();
 
-            #endregion
+            #endregion SubmittedPackageRequests
 
             #region ApprovedPackages
 
             CreateMap<ApprovedPackagesDomain, ApprovedPackagesResponse>();
 
-            #endregion
+            #endregion ApprovedPackages
 
             #region BrokeredPackages
 
             CreateMap<BrokeredPackagesDomain, BrokeredPackagesResponse>();
 
-            #endregion
+            #endregion BrokeredPackages
 
             #region PackageStatus
 
             CreateMap<PackageStatus, StatusDomain>();
             CreateMap<StatusDomain, StatusResponse>();
 
-            #endregion
+            #endregion PackageStatus
 
             #region Invoice
 
@@ -560,13 +562,13 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<InvoiceResponse, InvoiceForCreationRequest>();
             CreateMap<InvoiceItemResponse, InvoiceItemForCreationRequest>();
 
-            #endregion
+            #endregion Invoice
 
             #region Clients
 
             CreateMap<ClientMinimalDomain, ClientMinimalResponse>();
 
-            #endregion
+            #endregion Clients
         }
     }
 }

@@ -1,5 +1,5 @@
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces
 {

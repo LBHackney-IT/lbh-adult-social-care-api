@@ -1,9 +1,8 @@
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain
+namespace LBH.AdultSocialCare.Api.V1.Domain.PackageDomains
 {
-    public class HomeCareServiceDomain
+    public class PackageDomain
     {
         /// <summary>
         /// Gets or sets the Id
@@ -11,19 +10,14 @@ namespace LBH.AdultSocialCare.Api.V1.Domain
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the Package Id
+        /// Gets or sets the Package Type
         /// </summary>
-        public Guid PackageId { get; set; }
+        public string PackageType { get; set; }
 
         /// <summary>
-        /// Gets or sets the Package object
+        /// Gets or sets the Sequence
         /// </summary>
-        public Package Package { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Service Name
-        /// </summary>
-        public string ServiceName { get; set; }
+        public int Sequence { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

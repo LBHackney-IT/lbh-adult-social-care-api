@@ -48,10 +48,9 @@ using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Domain.GeneralDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApproveCommercialDomains;
@@ -61,7 +60,9 @@ using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.PackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
@@ -71,8 +72,11 @@ using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {

@@ -1,7 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
-using System;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCare
+namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains
 {
 
     public class HomeCarePackageSlotDomain

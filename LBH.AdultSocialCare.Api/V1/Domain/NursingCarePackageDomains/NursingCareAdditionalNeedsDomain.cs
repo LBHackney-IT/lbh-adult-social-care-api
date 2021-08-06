@@ -1,6 +1,6 @@
 using System;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain
+namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains
 {
     public class NursingCareAdditionalNeedsDomain
     {

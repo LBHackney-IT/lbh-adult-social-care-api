@@ -1,11 +1,11 @@
+using System;
+using System.Collections.Generic;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using System;
-using System.Collections.Generic;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCare
+namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains
 {
     public class HomeCarePackageDomain
     {

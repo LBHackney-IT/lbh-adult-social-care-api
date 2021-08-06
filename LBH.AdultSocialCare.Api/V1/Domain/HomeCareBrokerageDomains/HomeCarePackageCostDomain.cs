@@ -1,12 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage
+namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerageDomains
 {
-    public class HomeCarePackageCostCreationDomain
+    public class HomeCarePackageCostDomain
     {
+        /// <summary>
+        /// Gets or sets the Id
+        /// </summary>
+        public Guid Id { get; set; }
+
         /// <summary>
         /// Gets or sets the Home Care Package Id
         /// </summary>
@@ -18,9 +21,19 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage
         public int HomeCareServiceTypeId { get; set; }
 
         /// <summary>
+        /// Gets or sets the HomeCare Service Type
+        /// </summary>
+        public HomeCareServiceType HomeCareServiceType { get; set; }
+
+        /// <summary>
         /// Gets or sets the Carer Type Id
         /// </summary>
         public int? CarerTypeId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Services
+        /// </summary>
+        public CarerTypeDomain CarerType { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this instance is secondary carer.
@@ -46,5 +59,10 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage
         /// Gets or sets the Creator Id
         /// </summary>
         public int CreatorId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Updator Id
+        /// </summary>
+        public int UpdatorId { get; set; }
     }
 }

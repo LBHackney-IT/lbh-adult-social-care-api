@@ -1,18 +1,29 @@
 using System;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCare
+namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains
 {
-    public class TimeSlotTypesDomain
+    public class HomeCareServiceDomain
     {
         /// <summary>
         /// Gets or sets the Id
         /// </summary>
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the Time Slot Type Name
+        /// Gets or sets the Package Id
         /// </summary>
-        public string TimeSlotTypeName { get; set; }
+        public Guid PackageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Package object
+        /// </summary>
+        public Package Package { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Service Name
+        /// </summary>
+        public string ServiceName { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id
