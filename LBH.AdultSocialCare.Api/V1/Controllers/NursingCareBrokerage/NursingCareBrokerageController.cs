@@ -77,12 +77,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
             var result = await _createNursingCareBrokerageUseCase.ExecuteAsync(nursingCareBrokerageCreationDomain).ConfigureAwait(false);
 
             //Change start / end dates of the package
-            await _changeDatesOfNursingCarePackageUseCase
-                .UpdateAsync(
-                    nursingCareBrokerageCreationRequest.NursingCarePackageId,
-                    nursingCareBrokerageCreationRequest.StartDate,
-                    nursingCareBrokerageCreationRequest.EndDate)
-                .ConfigureAwait(false);
+            //todo uncomment after null check
+            //await _changeDatesOfNursingCarePackageUseCase
+            //    .UpdateAsync(
+            //        nursingCareBrokerageCreationRequest.NursingCarePackageId,
+            //        nursingCareBrokerageCreationRequest.StartDate,
+            //        nursingCareBrokerageCreationRequest.EndDate)
+            //    .ConfigureAwait(false);
 
             //Change status of package
             await _changeStatusNursingCarePackageUseCase
