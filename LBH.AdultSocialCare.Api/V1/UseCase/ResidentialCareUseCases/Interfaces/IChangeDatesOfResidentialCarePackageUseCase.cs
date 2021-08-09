@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces
 {
     public interface IChangeDatesOfResidentialCarePackageUseCase
     {
-        Task<ResidentialCarePackageResponse> UpdateAsync(Guid residentialCarePackageId, DateTimeOffset startDate, DateTimeOffset? endDate);
+        Task<ResidentialCarePackageResponse> UpdateAsync(Guid residentialCarePackageId, DateTimeOffset? startDate, DateTimeOffset? endDate);
     }
 }

@@ -23,12 +23,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
             _mapper = mapper;
         }
 
-        public async Task<NursingCarePackageResponse> UpdateAsync(Guid nursingCarePackageId, DateTimeOffset startDate, DateTimeOffset? endDate)
+        public async Task<NursingCarePackageResponse> UpdateAsync(Guid nursingCarePackageId, DateTimeOffset? startDate, DateTimeOffset? endDate)
         {
             var package = await _gateway.GetAsync(nursingCarePackageId).ConfigureAwait(false);
 
-            package.StartDate = startDate;
             package.EndDate = endDate;
+            if (startDate.HasValue)  // brokers are prohibited to change start date
+            {
+                package.StartDate = startDate.Value;
+            }
 
             var packageForUpdate = _mapper.Map<NursingCarePackageForUpdateDomain>(package);
             var updatedPackage = await _gateway.UpdateAsync(packageForUpdate).ConfigureAwait(false);
