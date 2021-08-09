@@ -1,4 +1,7 @@
 using AutoMapper;
+using LBH.AdultSocialCare.Api.V1.Boundary.ApprovedPackagesBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.BrokeredPackagesBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.ClientBoundary;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApprovePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Response;
@@ -10,6 +13,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApproveBrokeredBoundary.Respon
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.InvoiceBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApproveCommercialBoundary.Response;
@@ -20,6 +24,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Resp
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.PrimarySupportReasonBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovalHistoryBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Response;
@@ -30,20 +35,24 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.
 using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.StageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.SubmittedPackageRequestsBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBillBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.BillDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ClientDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Domain.GeneralDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApproveCommercialDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
@@ -51,7 +60,9 @@ using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.PackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApproveBrokeredDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
@@ -61,16 +72,11 @@ using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using System.Collections.Generic;
 using System.Linq;
-using LBH.AdultSocialCare.Api.V1.Boundary.ApprovedPackagesBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.BrokeredPackagesBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.InvoiceBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.PrimarySupportReasonBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.SubmittedPackageRequestsBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBillBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain.BillDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -775,7 +781,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<PrimarySupportReasonResponse>>(primarySupportReasonDomains);
         }
 
-        #endregion
+        #endregion PrimaryReasonSupport
 
         #region SubmittedPackageRequests
 
@@ -784,7 +790,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<SubmittedPackageRequestsResponse>>(submittedPackageRequestsDomains);
         }
 
-        #endregion
+        #endregion SubmittedPackageRequests
 
         #region ApprovedPackages
 
@@ -793,7 +799,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<ApprovedPackagesResponse>>(approvedPackagesDomains);
         }
 
-        #endregion
+        #endregion ApprovedPackages
 
         #region ApprovedPackages
 
@@ -802,7 +808,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<BrokeredPackagesResponse>>(brokeredPackagesDomains);
         }
 
-        #endregion
+        #endregion ApprovedPackages
 
         #region Invoice
 
@@ -811,6 +817,20 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<InvoiceResponse>(invoiceDomain);
         }
 
-        #endregion
+        #endregion Invoice
+
+        #region Clients
+
+        public static ClientMinimalResponse ToResponse(this ClientMinimalDomain clientMinimalDomain)
+        {
+            return _mapper.Map<ClientMinimalResponse>(clientMinimalDomain);
+        }
+
+        public static IEnumerable<ClientMinimalResponse> ToResponse(this IEnumerable<ClientMinimalDomain> clientMinimalDomain)
+        {
+            return _mapper.Map<IEnumerable<ClientMinimalResponse>>(clientMinimalDomain);
+        }
+
+        #endregion Clients
     }
 }

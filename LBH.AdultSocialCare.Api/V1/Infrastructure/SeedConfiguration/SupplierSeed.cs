@@ -1,8 +1,8 @@
-using System;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
@@ -16,6 +16,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 1,
                 PackageTypeId = 1,
                 SupplierName = "ABC Limited",
+                IsSupplierInternal = true,
+                HasSupplierFrameworkContractedRates = true,
+                DateCreated = dateTimeOffset,
+                DateUpdated = dateTimeOffset
+            }, new Supplier
+            {
+                Id = 2,
+                SupplierName = "XYZ Ltd",
+                PackageTypeId = 1,
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
                 DateCreated = dateTimeOffset,

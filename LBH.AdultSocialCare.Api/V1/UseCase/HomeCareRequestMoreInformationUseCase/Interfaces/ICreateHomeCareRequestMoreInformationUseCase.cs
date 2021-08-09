@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerageDomains;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerage;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Interfaces
 {

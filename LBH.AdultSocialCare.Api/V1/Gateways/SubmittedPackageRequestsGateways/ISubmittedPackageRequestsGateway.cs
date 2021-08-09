@@ -1,4 +1,4 @@
-using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.PackageDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 using System.Collections.Generic;
 using System.Threading.Tasks;

@@ -102,6 +102,23 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             PreferredContact = "Phone",
                             Town = "London",
                             UpdatorId = 0
+                        },
+                        new
+                        {
+                            Id = new Guid("2f043f6f-09ed-42f0-ab30-c0409c05cb7e"),
+                            AddressLine1 = "Old Town Road",
+                            CanSpeakEnglish = "Fluent",
+                            CreatorId = 0,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateOfBirth = new DateTime(1980, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            FirstName = "Henry",
+                            HackneyId = 55555,
+                            LastName = "Ford",
+                            PostCode = "SW16",
+                            PreferredContact = "Phone",
+                            Town = "Bristol",
+                            UpdatorId = 0
                         });
                 });
 
@@ -2745,7 +2762,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ResidentialCarePackageId");
+                    b.HasIndex("ResidentialCarePackageId")
+                        .IsUnique();
 
                     b.ToTable("ResidentialCareBrokerageInfos");
                 });
@@ -2868,8 +2886,22 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = new Guid("80f1ea68-9335-4efe-b247-7aa58cc45af0"),
+                            Id = new Guid("d7cb6746-1211-4cc2-9244-f4faaef25089"),
                             ConcurrencyStamp = "5",
+                            Name = "Approver",
+                            NormalizedName = "APPROVER"
+                        },
+                        new
+                        {
+                            Id = new Guid("74b93ac7-1778-485d-a482-d76893f31aff"),
+                            ConcurrencyStamp = "6",
+                            Name = "Finance",
+                            NormalizedName = "FINANCE"
+                        },
+                        new
+                        {
+                            Id = new Guid("80f1ea68-9335-4efe-b247-7aa58cc45af0"),
+                            ConcurrencyStamp = "7",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -2993,6 +3025,18 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             PackageTypeId = 1,
                             SupplierName = "ABC Limited",
                             UpdatorId = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatorId = 0,
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            HasSupplierFrameworkContractedRates = true,
+                            IsSupplierInternal = true,
+                            PackageTypeId = 1,
+                            SupplierName = "XYZ Ltd",
+                            UpdatorId = 0
                         });
                 });
 
@@ -3104,7 +3148,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "87db33aa-900d-448f-a726-840b3599f9be",
+                            ConcurrencyStamp = "9bd94106-de39-4c42-b53c-61af6682e0e5",
                             Email = "furkan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -3118,7 +3162,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f1e945af-8146-458f-adc5-f4d45bf59f90",
+                            ConcurrencyStamp = "ec009cfc-84e8-45b7-82cb-0f0609039bf8",
                             Email = "duncan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -3819,8 +3863,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage.ResidentialCareBrokerageInfo", b =>
                 {
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare.ResidentialCarePackage", "ResidentialCarePackage")
-                        .WithMany()
-                        .HasForeignKey("ResidentialCarePackageId")
+                        .WithOne("ResidentialCareBrokerageInfo")
+                        .HasForeignKey("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage.ResidentialCareBrokerageInfo", "ResidentialCarePackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

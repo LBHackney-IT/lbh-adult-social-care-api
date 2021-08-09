@@ -1,4 +1,4 @@
-using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using System;
 using System.Threading.Tasks;
 

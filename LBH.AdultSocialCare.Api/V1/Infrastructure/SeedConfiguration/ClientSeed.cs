@@ -25,6 +25,20 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 PostCode = "SW11",
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
+            }, new Client
+            {
+                Id = new Guid("2f043f6f-09ed-42f0-ab30-c0409c05cb7e"),
+                FirstName = "Henry",
+                LastName = "Ford",
+                DateOfBirth = new DateTime(1980, 1, 1),
+                CanSpeakEnglish = "Fluent",
+                PreferredContact = "Phone",
+                HackneyId = 55555,
+                AddressLine1 = "Old Town Road",
+                Town = "Bristol",
+                PostCode = "SW16",
+                DateCreated = dateTimeOffset,
+                DateUpdated = dateTimeOffset
             });
         }
     }

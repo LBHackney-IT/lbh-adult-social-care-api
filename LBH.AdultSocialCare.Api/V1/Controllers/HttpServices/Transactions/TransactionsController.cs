@@ -179,7 +179,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         [HttpGet("invoices/held-invoice-payments")]
         public async Task<ActionResult<IEnumerable<HeldInvoiceResponse>>> GetHeldInvoicePaymentsList()
         {
-            var res = await _transactionsService.GetHeldInvoicePaymentsUseCase().ConfigureAwait(false);
+            var res = await _payRunUseCase.GetHeldInvoicePaymentsUseCase().ConfigureAwait(false);
             return Ok(res);
         }
 

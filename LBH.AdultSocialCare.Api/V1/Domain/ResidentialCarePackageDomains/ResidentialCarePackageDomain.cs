@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
+using System;
+using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains
 {
@@ -43,6 +42,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains
 
         // From FK values
         public string ClientName { get; set; }
+
         public int ClientHackneyId { get; set; }
         public string ClientPostCode { get; set; }
         public DateTime? ClientDateOfBirth { get; set; }

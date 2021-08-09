@@ -12,5 +12,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways
         public Task<IEnumerable<SupplierDomain>> ListAsync();
 
         public Task<IEnumerable<SupplierMinimalDomain>> GetSupplierMinimalList();
+
+        public Task<IEnumerable<SupplierMinimalDomain>> GetSupplierMinimalInList(List<long> supplierIds);
     }
 }
