@@ -718,7 +718,7 @@ namespace HttpServices.Services.Concrete
             return res;
         }
 
-        public async Task<DisputedInvoiceFlatResponse> HoldInvoicePaymentUseCase(Guid payRunId, Guid payRunItemId,
+        public async Task<DisputedInvoiceFlatResponse> HoldInvoicePaymentUseCase(Guid payRunId, Guid invoiceId,
             DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest)
         {
             var body = JsonConvert.SerializeObject(disputedInvoiceForCreationRequest);
@@ -728,7 +728,7 @@ namespace HttpServices.Services.Concrete
             {
                 Method = HttpMethod.Post,
                 RequestUri = new Uri(
-                    $"{_baseUrl}api/v1/pay-runs/{payRunId}/pay-run-items/{payRunItemId}/hold-payment"),
+                    $"{_baseUrl}api/v1/pay-runs/{payRunId}/invoices/{invoiceId}/hold-payment"),
                 Headers =
                 {
                     {

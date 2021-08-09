@@ -162,15 +162,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             return Ok(result);
         }
 
-        [HttpPost("pay-runs/{payRunId}/pay-run-items/{payRunItemId}/hold-payment")]
+        [HttpPost("pay-runs/{payRunId}/invoices/{invoiceId}/hold-payment")]
         [ProducesResponseType(typeof(DisputedInvoiceFlatResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<DisputedInvoiceFlatResponse>> HoldInvoicePayment(Guid payRunId, Guid payRunItemId, [FromBody] DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest)
+        public async Task<ActionResult<DisputedInvoiceFlatResponse>> HoldInvoicePayment(Guid payRunId, Guid invoiceId, [FromBody] DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest)
         {
             var result = await _transactionsService
-                .HoldInvoicePaymentUseCase(payRunId, payRunItemId, disputedInvoiceForCreationRequest)
+                .HoldInvoicePaymentUseCase(payRunId, invoiceId, disputedInvoiceForCreationRequest)
                 .ConfigureAwait(false);
             return Ok(result);
         }

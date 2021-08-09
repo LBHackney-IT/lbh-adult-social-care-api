@@ -51,7 +51,7 @@ namespace HttpServices.Services.Contracts
 
         Task<bool> DeleteDraftPayRunUseCase(Guid payRunId);
 
-        Task<DisputedInvoiceFlatResponse> HoldInvoicePaymentUseCase(Guid payRunId, Guid payRunItemId,
+        Task<DisputedInvoiceFlatResponse> HoldInvoicePaymentUseCase(Guid payRunId, Guid invoiceId,
             DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest);
 
         Task<IEnumerable<HeldInvoiceResponse>> GetHeldInvoicePaymentsUseCase();
