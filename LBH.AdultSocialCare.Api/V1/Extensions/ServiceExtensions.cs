@@ -25,7 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             => services.AddHttpClient<ITransactionsService, TransactionsService>(client =>
             {
                 client.BaseAddress = new Uri(configuration["HASCHttpClients:TransactionsBaseUrl"]);
-                client.DefaultRequestHeaders.Add("x-api-key", "HASCHttpClients:TransactionsApiKey");
+                client.DefaultRequestHeaders.Add("x-api-key", configuration["HASCHttpClients:TransactionsApiKey"]);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.DefaultRequestHeaders.Add("User-Agent", "HASC API");
             });
