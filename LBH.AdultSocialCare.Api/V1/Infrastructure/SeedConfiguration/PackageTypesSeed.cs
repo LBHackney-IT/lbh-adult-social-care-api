@@ -13,32 +13,32 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
             var dateTimeOffset = new DateTimeOffset(AppTimeConstants.CreateUpdateDefaultDateTime).ToOffset(TimeSpan.Zero);
             builder.HasData(new Package
             {
-                Id = 1,
-                PackageType = "Home Care Package",
+                Id = PackageTypesConstants.HomeCarePackageId,
+                PackageType = PackageTypesConstants.HomeCarePackage,
                 CreatorId = 1,
                 UpdatorId = 1,
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Package
             {
-                Id = 2,
-                PackageType = "Residential Care Package",
+                Id = PackageTypesConstants.ResidentialCarePackageId,
+                PackageType = PackageTypesConstants.ResidentialCarePackage,
                 CreatorId = 1,
                 UpdatorId = 1,
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Package
             {
-                Id = 3,
-                PackageType = "Day Care Package",
+                Id = PackageTypesConstants.DayCarePackageId,
+                PackageType = PackageTypesConstants.DayCarePackage,
                 CreatorId = 1,
                 UpdatorId = 1,
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Package
             {
-                Id = 4,
-                PackageType = "Nursing Care Package",
+                Id = PackageTypesConstants.NursingCarePackageId,
+                PackageType = PackageTypesConstants.NursingCarePackage,
                 CreatorId = 1,
                 UpdatorId = 1,
                 DateCreated = dateTimeOffset,

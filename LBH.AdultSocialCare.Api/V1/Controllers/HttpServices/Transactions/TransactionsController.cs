@@ -103,9 +103,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             return Ok(res);
         }
 
+        [ProducesResponseType(typeof(PayRunInsightsResponse), StatusCodes.Status200OK)]
         [HttpGet("pay-runs/{payRunId}/summary-insights")]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<bool>> GetSinglePayRunSummaryInsights(Guid payRunId)
+        public async Task<ActionResult<PayRunInsightsResponse>> GetSinglePayRunSummaryInsights(Guid payRunId)
         {
             var result = await _transactionsService.GetSinglePayRunInsightsUseCase(payRunId).ConfigureAwait(false);
             return Ok(result);

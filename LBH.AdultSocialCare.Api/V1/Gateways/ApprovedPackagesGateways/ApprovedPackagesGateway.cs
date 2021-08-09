@@ -54,14 +54,20 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
         {
             var packageList = new List<ApprovedPackagesDomain>();
 
+            if (!parameters.PackageTypeId.HasValue || parameters.PackageTypeId == PackageTypesConstants.ResidentialCarePackageId)
+            {
+                var residentialCare = await GetResidentialCarePackages(parameters, statusId).ConfigureAwait(false);
+                packageList.AddRange(residentialCare);
+            }
+
+            if (!parameters.PackageTypeId.HasValue || parameters.PackageTypeId == PackageTypesConstants.NursingCarePackageId)
+            {
+                var nursingCare = await GetNursingPackages(parameters, statusId).ConfigureAwait(false);
+                packageList.AddRange(nursingCare);
+            }
+
             //var homeCare = await GetHomeCarePackages(parameters, statusId).ConfigureAwait(false);
             //packageList.AddRange(homeCare);
-
-            var residentialCare = await GetResidentialCarePackages(parameters, statusId).ConfigureAwait(false);
-            packageList.AddRange(residentialCare);
-
-            var nursingCare = await GetNursingPackages(parameters, statusId).ConfigureAwait(false);
-            packageList.AddRange(nursingCare);
 
             //var dayCare = await GetDayCarePackages(parameters, statusId).ConfigureAwait(false);
             //packageList.AddRange(dayCare);
@@ -76,6 +82,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
                 .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.ResidentialCareApprovalHistories)
+                .Where(p => !parameters.ApproverId.HasValue ||
+                            p.ResidentialCareApprovalHistories.Any(h => h.Creator.Id == parameters.ApproverId))
                 .Select(rc => new ApprovedPackagesDomain()
                 {
                     PackageId = rc.Id,
@@ -106,6 +114,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
                 .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.HomeCareApprovalHistories)
+                .Where(p => !parameters.ApproverId.HasValue ||
+                            p.HomeCareApprovalHistories.Any(h => h.Creator.Id == parameters.ApproverId))
                 .Select(hc => new ApprovedPackagesDomain()
                 {
                     PackageId = hc.Id,
@@ -136,6 +146,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
                 .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.NursingCareApprovalHistories)
+                .Where(p => !parameters.ApproverId.HasValue ||
+                            p.NursingCareApprovalHistories.Any(h => h.Creator.Id == parameters.ApproverId))
                 .Select(nc => new ApprovedPackagesDomain()
                 {
                     PackageId = nc.Id,
@@ -166,6 +178,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
                 .Include(item => item.Client)
                 .Include(item => item.Status)
                 .Include(item => item.DayCareApprovalHistories)
+                .Where(p => !parameters.ApproverId.HasValue ||
+                            p.DayCareApprovalHistories.Any(h => h.Creator.Id == parameters.ApproverId))
                 .Select(dc => new ApprovedPackagesDomain()
                 {
                     PackageId = dc.DayCarePackageId,
@@ -192,13 +206,26 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways
         private async Task<int> GetPackagesCount(ApprovedPackagesParameters parameters, int statusId)
         {
             var packageCount = 0;
-            packageCount += await _databaseContext.ResidentialCarePackages
-                .FilterApprovedResidentialCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId)
-                .CountAsync().ConfigureAwait(false);
 
-            packageCount += await _databaseContext.NursingCarePackages
-                .FilterApprovedNursingCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId)
-                .CountAsync().ConfigureAwait(false);
+            if (!parameters.PackageTypeId.HasValue || parameters.PackageTypeId == PackageTypesConstants.ResidentialCarePackageId)
+            {
+                packageCount += await _databaseContext.ResidentialCarePackages
+                    .FilterApprovedResidentialCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId)
+                    .Include(p => p.ResidentialCareApprovalHistories)
+                    .Where(p => !parameters.ApproverId.HasValue ||
+                                p.ResidentialCareApprovalHistories.Any(h => h.Creator.Id == parameters.ApproverId))
+                    .CountAsync().ConfigureAwait(false);
+            }
+
+            if (!parameters.PackageTypeId.HasValue || parameters.PackageTypeId == PackageTypesConstants.NursingCarePackageId)
+            {
+                packageCount += await _databaseContext.NursingCarePackages
+                    .FilterApprovedNursingCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId)
+                    .Include(p => p.NursingCareApprovalHistories)
+                    .Where(p => !parameters.ApproverId.HasValue ||
+                                p.NursingCareApprovalHistories.Any(h => h.Creator.Id == parameters.ApproverId))
+                    .CountAsync().ConfigureAwait(false);
+            }
 
             //packageCount += await _databaseContext.DayCarePackages
             //    .FilterApprovedDayCareList(statusId, parameters.HackneyId, parameters.SocialWorkerId)

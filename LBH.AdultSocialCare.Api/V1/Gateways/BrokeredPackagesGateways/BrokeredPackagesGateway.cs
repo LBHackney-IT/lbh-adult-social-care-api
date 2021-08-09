@@ -76,11 +76,17 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
             //var homeCare = await GetHomeCarePackages(parameters, statusId).ConfigureAwait(false);
             //packageList.AddRange(homeCare);
 
-            var residentialCare = await GetResidentialCarePackages(parameters, statusId).ConfigureAwait(false);
-            packageList.AddRange(residentialCare);
+            if (!parameters.PackageTypeId.HasValue || parameters.PackageTypeId == PackageTypesConstants.ResidentialCarePackageId)
+            {
+                var residentialCare = await GetResidentialCarePackages(parameters, statusId).ConfigureAwait(false);
+                packageList.AddRange(residentialCare);
+            }
 
-            var nursingCare = await GetNursingPackages(parameters, statusId).ConfigureAwait(false);
-            packageList.AddRange(nursingCare);
+            if (!parameters.PackageTypeId.HasValue || parameters.PackageTypeId == PackageTypesConstants.NursingCarePackageId)
+            {
+                var nursingCare = await GetNursingPackages(parameters, statusId).ConfigureAwait(false);
+                packageList.AddRange(nursingCare);
+            }
 
             return packageList;
         }
@@ -187,13 +193,20 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
         private async Task<int> GetPackagesCount(BrokeredPackagesParameters parameters, int statusId)
         {
             var packageCount = 0;
-            packageCount += await _databaseContext.ResidentialCarePackages
-                .FilterBrokeredResidentialCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId, parameters.StageId)
-                .CountAsync().ConfigureAwait(false);
 
-            packageCount += await _databaseContext.NursingCarePackages
-                .FilterBrokeredNursingCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId, parameters.StageId)
-                .CountAsync().ConfigureAwait(false);
+            if (!parameters.PackageTypeId.HasValue || parameters.PackageTypeId == PackageTypesConstants.ResidentialCarePackageId)
+            {
+                packageCount += await _databaseContext.ResidentialCarePackages
+                    .FilterBrokeredResidentialCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId, parameters.StageId)
+                    .CountAsync().ConfigureAwait(false);
+            }
+
+            if (!parameters.PackageTypeId.HasValue || parameters.PackageTypeId == PackageTypesConstants.NursingCarePackageId)
+            {
+                packageCount += await _databaseContext.NursingCarePackages
+                    .FilterBrokeredNursingCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId, parameters.StageId)
+                    .CountAsync().ConfigureAwait(false);
+            }
 
             //packageCount += await _databaseContext.HomeCarePackage
             //    .FilterBrokeredHomeCareList(statusId, parameters.HackneyId, parameters.ClientId, parameters.SocialWorkerId, parameters.StageId)
