@@ -24,21 +24,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareApproveCommercial
     {
         private readonly IGetNursingCareApproveCommercialUseCase _getNursingCareApproveCommercialUseCase;
         private readonly IChangeStatusNursingCarePackageUseCase _changeStatusNursingCarePackageUseCase;
-        //private readonly IGetNursingCareInvoiceDetailUseCase _getNursingCareInvoiceDetailUseCase;
-        //private readonly ITransactionsService _transactionsService;
-        //private readonly IMapper _mapper;
+        private readonly IGetNursingCareInvoiceDetailUseCase _getNursingCareInvoiceDetailUseCase;
+        private readonly ITransactionsService _transactionsService;
+        private readonly IMapper _mapper;
 
         public NursingCareApproveCommercialController(IGetNursingCareApproveCommercialUseCase getNursingCareApproveCommercialUseCase,
-            IChangeStatusNursingCarePackageUseCase changeStatusNursingCarePackageUseCase)
-        //IGetNursingCareInvoiceDetailUseCase getNursingCareInvoiceDetailUseCase,
-        //ITransactionsService transactionsService,
-        //IMapper mapper)
+            IChangeStatusNursingCarePackageUseCase changeStatusNursingCarePackageUseCase,
+            IGetNursingCareInvoiceDetailUseCase getNursingCareInvoiceDetailUseCase,
+            ITransactionsService transactionsService,
+            IMapper mapper)
         {
             _getNursingCareApproveCommercialUseCase = getNursingCareApproveCommercialUseCase;
             _changeStatusNursingCarePackageUseCase = changeStatusNursingCarePackageUseCase;
-            //_getNursingCareInvoiceDetailUseCase = getNursingCareInvoiceDetailUseCase;
-            //_transactionsService = transactionsService;
-            //_mapper = mapper;
+            _getNursingCareInvoiceDetailUseCase = getNursingCareInvoiceDetailUseCase;
+            _transactionsService = transactionsService;
+            _mapper = mapper;
         }
 
         /// <summary>Gets the specified nursing care approve commercials contents identifier.</summary>
@@ -59,11 +59,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareApproveCommercial
         {
             var result = await _changeStatusNursingCarePackageUseCase.UpdateAsync(nursingCarePackageId, ApprovalHistoryConstants.PackageBrokeredId).ConfigureAwait(false);
             //TODO: get invoice detail and create pay run invoice
-            /*var invoiceResponse = await _getNursingCareInvoiceDetailUseCase.GetNursingCareInvoiceDetail(nursingCarePackageId).ConfigureAwait(false);
+            var invoiceResponse = await _getNursingCareInvoiceDetailUseCase.GetNursingCareInvoiceDetail(nursingCarePackageId).ConfigureAwait(false);
             //create an invoice
             var invoiceCreationRequest = new InvoiceForCreationRequest();
             _mapper.Map(invoiceResponse, invoiceCreationRequest);
-            await _transactionsService.CreateInvoiceUseCase(invoiceCreationRequest).ConfigureAwait(false);*/
+            await _transactionsService.CreateInvoiceUseCase(invoiceCreationRequest).ConfigureAwait(false);
             return Ok(result);
         }
     }
