@@ -12,6 +12,9 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains
         /// </summary>
         public Guid ResidentialCarePackageId { get; set; }
 
+        public int SupplierId { get; set; }
+        public int StageId { get; set; }
+
         /// <summary>
         /// Gets or sets the Residential Core Per Week
         /// </summary>
