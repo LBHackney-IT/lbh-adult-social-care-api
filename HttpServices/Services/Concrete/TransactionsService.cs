@@ -763,7 +763,25 @@ namespace HttpServices.Services.Concrete
                 },
                 {
                     "pageSize", $"{parameters.PageSize}"
-                }
+                },
+                {
+                    "waitingOnId", parameters.WaitingOnId != null ? $"{parameters.WaitingOnId}" : ""
+                },
+                {
+                    "supplierId", parameters.SupplierId != null ? $"{parameters.SupplierId}" : ""
+                },
+                {
+                    "packageTypeId", parameters.PackageTypeId != null ? $"{parameters.PackageTypeId}" : ""
+                },
+                {
+                    "serviceUserId", parameters.ServiceUserId != null ? $"{parameters.ServiceUserId}" : ""
+                },
+                {
+                    "dateFrom", parameters.DateFrom != null ? parameters.DateFrom?.DateTimeOffsetToISOString() : ""
+                },
+                {
+                    "dateTo", parameters.DateTo != null ? parameters.DateTo?.DateTimeOffsetToISOString() : ""
+                },
             };
             var url = QueryHelpers.AddQueryString($"{_baseUrl}api/v1/invoices/held-invoice-payments", queryParams);
 
