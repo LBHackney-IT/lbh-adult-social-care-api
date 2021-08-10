@@ -5,8 +5,9 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Interfaces;
+using Microsoft.Extensions.Primitives;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
@@ -20,14 +21,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         private readonly IUpsertClientsUseCase _upsertClientsUseCase;
         private readonly IGetClientsUseCase _getClientsUseCase;
         private readonly IDeleteClientsUseCase _deleteClientsUseCase;
+        private readonly IGetClientPackagesCountUseCase _getClientPackagesCountUseCase;
 
         public ClientController(IUpsertClientsUseCase upsertClientsUseCase,
             IGetClientsUseCase getClientsUseCase,
-            IDeleteClientsUseCase deleteClientsUseCase)
+            IDeleteClientsUseCase deleteClientsUseCase,
+            IGetClientPackagesCountUseCase getClientPackagesCountUseCase)
         {
             _upsertClientsUseCase = upsertClientsUseCase;
             _getClientsUseCase = getClientsUseCase;
             _deleteClientsUseCase = deleteClientsUseCase;
+            _getClientPackagesCountUseCase = getClientPackagesCountUseCase;
         }
 
         /// <summary>Creates the specified client request.</summary>
@@ -57,8 +61,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             }
             catch (Exception exc)
             {
-                // TODO remove
-                Debugger.Break();
                 return BadRequest(exc.Message);
             }
         }
@@ -102,6 +104,27 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Returns 204 if client has at least one package of the give <paramref name="packageTypeId"/>, otherwise, 404.
+        /// </summary>
+        /// <remarks>Returns total count of client's packages of a given type in X-Total-Count response header.</remarks>
+        /// <param name="clientId">The client identifier.</param>
+        /// <param name="packageTypeId">Identifier of the package type. Can be omitted to get information about packages of any type.</param>
+        /// <response code="204">Client has at least one package of the given <paramref name="packageTypeId"/></response>
+        /// <response code="404">Client doesn't have any packages of the given <paramref name="packageTypeId"/></response>
+        [ProducesResponseType(typeof(void), StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status404NotFound)]
+        [HttpHead]
+        [Route("{clientId}/packages")]
+        public async Task<StatusCodeResult> GetPackagesMetadata(Guid clientId, int? packageTypeId)
+        {
+            var packagesCount = await _getClientPackagesCountUseCase.GetCountAsync(clientId, packageTypeId).ConfigureAwait(false);
+
+            Response.Headers.Add("X-Total-Count", new StringValues(packagesCount.ToString()));
+
+            return packagesCount > 0 ? (StatusCodeResult) NoContent() : NotFound();
         }
     }
 }

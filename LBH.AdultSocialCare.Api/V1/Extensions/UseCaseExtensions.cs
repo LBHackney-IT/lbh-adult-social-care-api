@@ -8,6 +8,8 @@ using LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.BrokeredPackagesUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.BrokeredPackagesUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Concrete;
@@ -179,6 +181,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IUpsertClientsUseCase, UpsertClientsUseCase>();
             services.AddScoped<IGetClientsUseCase, GetClientsUseCase>();
             services.AddScoped<IDeleteClientsUseCase, DeleteClientsUseCase>();
+            services.AddScoped<IGetClientPackagesCountUseCase, GetClientPackagesCountUseCase>();
 
             #endregion Client
 

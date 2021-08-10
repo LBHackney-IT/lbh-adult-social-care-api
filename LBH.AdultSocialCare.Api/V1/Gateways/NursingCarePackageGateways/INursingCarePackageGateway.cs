@@ -22,5 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
         public Task<IEnumerable<TypeOfNursingCareHomeDomain>> GetListOfTypeOfNursingCareHomeAsync();
 
         public Task<IEnumerable<NursingCareTypeOfStayOptionDomain>> GetListOfNursingCareTypeOfStayOptionAsync();
+
+        public Task<int> GetClientPackagesCountAsync(Guid clientId);
     }
 }
