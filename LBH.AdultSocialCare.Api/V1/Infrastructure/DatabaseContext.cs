@@ -21,15 +21,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
     public class DatabaseContext : IdentityDbContext<User, Role, Guid>
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         // TODO: rename DatabaseContext to reflect the data source it is representing. eg. MosaicContext.
-        public DatabaseContext(DbContextOptions options)
+        public DatabaseContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor)
             : base(options)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public DbSet<DayCarePackage> DayCarePackages { get; set; }
@@ -264,6 +269,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
         public override int SaveChanges()
         {
+            SetEntitiesCreatedOnSave();
             SetEntitiesUpdatedOnSave();
 
             return base.SaveChanges();
@@ -271,6 +277,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
+            SetEntitiesCreatedOnSave();
             SetEntitiesUpdatedOnSave();
 
             return base.SaveChanges(acceptAllChangesOnSuccess);
@@ -279,6 +286,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
             CancellationToken cancellationToken = new CancellationToken())
         {
+            SetEntitiesCreatedOnSave();
             SetEntitiesUpdatedOnSave();
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
@@ -286,30 +294,47 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
+            SetEntitiesCreatedOnSave();
             SetEntitiesUpdatedOnSave();
 
             return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
+        private void SetEntitiesCreatedOnSave()
+        {
+            // TODO: VK: Temporary solution, replace BaseEntityTmp with BaseEntity
+            var entitiesToCreate = FilterTrackedEntriesByState(EntityState.Added);
+
+            foreach (var entityEntry in entitiesToCreate)
+            {
+                if (entityEntry.Entity is BaseEntityTmp baseEntity)
+                {
+                    baseEntity.CreatorId = new Guid(_httpContextAccessor.HttpContext.User.Identity.GetUserId());
+                }
+            }
+        }
+
         private void SetEntitiesUpdatedOnSave()
         {
-            IList<EntityEntry> entries = ChangeTracker.Entries()
-                .Where(e => e.Entity is BaseEntity && e.State == EntityState.Modified)
-                .ToList();
-
-            var baseEntityType = typeof(BaseEntity);
-
-            IList<Type> entityTypes = entries.Select(item => item.GetType())
-                .Distinct()
-                .Where(item => baseEntityType.IsAssignableFrom(item))
-                .ToList();
-
-            IList<EntityEntry> entitiesToUpdate = entries.Where(item => entityTypes.Contains(item.GetType())).ToList();
+            var entitiesToUpdate = FilterTrackedEntriesByState(EntityState.Modified);
 
             foreach (var entityEntry in entitiesToUpdate)
             {
                 ((BaseEntity) entityEntry.Entity).DateUpdated = DateTimeOffset.UtcNow;
+
+                // TODO: VK: Temporary solution, replace BaseEntityTmp with BaseEntity
+                if (entityEntry.Entity is BaseEntityTmp baseEntity)
+                {
+                    baseEntity.UpdaterId = new Guid(_httpContextAccessor.HttpContext.User.Identity.GetUserId());
+                }
             }
+        }
+
+        private IEnumerable<EntityEntry> FilterTrackedEntriesByState(EntityState entityState)
+        {
+            return ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is BaseEntity && e.State == entityState);
         }
     }
 }

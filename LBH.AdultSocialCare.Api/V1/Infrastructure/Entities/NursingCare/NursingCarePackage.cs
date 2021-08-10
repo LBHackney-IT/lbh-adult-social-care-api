@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
 {
-    public class NursingCarePackage : BaseEntity
+    public class NursingCarePackage : BaseEntityTmp
     {
         public NursingCarePackage()
         {
@@ -26,8 +26,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
         public int? TypeOfStayId { get; set; }
         public string NeedToAddress { get; set; }
         public int? TypeOfNursingCareHomeId { get; set; }
-        public Guid CreatorId { get; set; }
-        public Guid? UpdaterId { get; set; }
         public int StatusId { get; set; }
         public int? StageId { get; set; }
         public int? SupplierId { get; set; }
