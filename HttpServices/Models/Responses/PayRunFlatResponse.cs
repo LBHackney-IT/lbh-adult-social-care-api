@@ -13,5 +13,7 @@ namespace HttpServices.Models.Responses
         public DateTimeOffset DateTo { get; set; }
         public Guid CreatorId { get; set; }
         public Guid? UpdaterId { get; set; }
+        public string PayRunStatusName { get; set; }
+        public DateTimeOffset DateCreated { get; set; }
     }
 }
