@@ -218,6 +218,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             return Ok(result);
         }
 
+        // Reject invoice in pay run
+        [HttpPut("pay-runs/{payRunId}/invoices/{invoiceId}/status/reject-invoice")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> RejectInvoiceInPayRun(Guid payRunId, Guid invoiceId)
+        {
+            var result = await _transactionsService.RejectInvoiceUseCase(payRunId, invoiceId).ConfigureAwait(false);
+            return Ok(result);
+        }
+
         [HttpPost("supplier-bills")]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<BillResponse>> CreateSupplierBill([FromBody] BillCreationRequest billCreationRequest)

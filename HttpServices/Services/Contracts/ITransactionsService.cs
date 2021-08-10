@@ -64,6 +64,8 @@ namespace HttpServices.Services.Contracts
 
         Task<bool> AcceptInvoiceUseCase(Guid payRunId, Guid invoiceId);
 
+        Task<bool> RejectInvoiceUseCase(Guid payRunId, Guid invoiceId);
+
         Task<BillResponse> CreateSupplierBillUseCase(BillCreationRequest billCreationRequest);
 
         Task<bool> PaySupplierBillUseCase(IEnumerable<long> supplierBillIds);

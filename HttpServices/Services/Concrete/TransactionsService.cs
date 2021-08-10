@@ -909,6 +909,37 @@ namespace HttpServices.Services.Concrete
             return res;
         }
 
+        public async Task<bool> RejectInvoiceUseCase(Guid payRunId, Guid invoiceId)
+        {
+            var httpRequestMessage = new HttpRequestMessage
+            {
+                Method = HttpMethod.Put,
+                RequestUri = new Uri(
+                    $"{_baseUrl}api/v1/pay-runs/{payRunId}/invoices/{invoiceId}/status/reject-invoice"),
+                Headers =
+                {
+                    {
+                        HttpRequestHeader.Accept.ToString(), "application/json"
+                    }
+                }
+            };
+
+            var httpResponse = await _client.SendAsync(httpRequestMessage);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                await httpResponse.ThrowResponseExceptionAsync("Failed to change invoice status");
+            }
+
+            if (httpResponse.Content == null ||
+                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return false;
+
+            var content = await httpResponse.Content.ReadAsStringAsync();
+            var res = JsonConvert.DeserializeObject<bool>(content);
+
+            return res;
+        }
+
         public async Task<BillResponse> CreateSupplierBillUseCase(BillCreationRequest billCreationRequest)
         {
             var body = JsonConvert.SerializeObject(billCreationRequest);
