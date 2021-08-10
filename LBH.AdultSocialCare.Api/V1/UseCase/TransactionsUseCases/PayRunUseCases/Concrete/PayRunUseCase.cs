@@ -62,13 +62,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
             return await _transactionsService.GetReleasedHoldsCount(fromDate, toDate).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<HeldInvoiceResponse>> GetHeldInvoicePaymentsUseCase()
+        public async Task<PagedHeldInvoiceResponse> GetHeldInvoicePaymentsUseCase(HeldInvoicePaymentParameters parameters)
         {
-            var heldInvoicesRes = await _transactionsService.GetHeldInvoicePaymentsUseCase().ConfigureAwait(false);
+            var heldInvoicesRes = await _transactionsService.GetHeldInvoicePaymentsUseCase(parameters).ConfigureAwait(false);
             var supplierIds = new List<long>();
             var serviceUserIds = new List<Guid>();
 
-            var heldInvoicePayments = (heldInvoicesRes ?? Array.Empty<HeldInvoiceResponse>()).ToList();
+            var heldInvoicePayments = (heldInvoicesRes.Data ?? Array.Empty<HeldInvoiceResponse>()).ToList();
             foreach (var invoice in heldInvoicePayments.SelectMany(payRun => payRun.Invoices))
             {
                 supplierIds.Add(invoice.SupplierId);
@@ -93,7 +93,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
                 invoice.ServiceUserName = clientList.FirstOrDefault(s => s.ClientId == invoice.ServiceUserId)?.ClientName ?? "";
             }
 
-            return heldInvoicePayments;
+            return new PagedHeldInvoiceResponse
+            {
+                PagingMetaData = heldInvoicesRes.PagingMetaData,
+                Data = heldInvoicesRes.Data
+            };
         }
     }
 }

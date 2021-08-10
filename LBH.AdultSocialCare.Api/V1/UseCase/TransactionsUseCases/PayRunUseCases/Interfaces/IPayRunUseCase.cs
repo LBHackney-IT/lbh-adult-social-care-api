@@ -15,6 +15,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
 
         Task<IEnumerable<ReleasedHoldsByTypeResponse>> GetReleasedHoldsCountUseCase(DateTimeOffset? fromDate = null, DateTimeOffset? toDate = null);
 
-        Task<IEnumerable<HeldInvoiceResponse>> GetHeldInvoicePaymentsUseCase();
+        Task<PagedHeldInvoiceResponse> GetHeldInvoicePaymentsUseCase(HeldInvoicePaymentParameters parameters);
     }
 }

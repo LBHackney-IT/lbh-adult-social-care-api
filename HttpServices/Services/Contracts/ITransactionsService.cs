@@ -54,7 +54,7 @@ namespace HttpServices.Services.Contracts
         Task<DisputedInvoiceFlatResponse> HoldInvoicePaymentUseCase(Guid payRunId, Guid invoiceId,
             DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest);
 
-        Task<IEnumerable<HeldInvoiceResponse>> GetHeldInvoicePaymentsUseCase();
+        Task<PagedHeldInvoiceResponse> GetHeldInvoicePaymentsUseCase(HeldInvoicePaymentParameters parameters);
 
         Task<InvoiceResponse> CreateInvoiceUseCase(InvoiceForCreationRequest invoiceForCreationRequest);
 

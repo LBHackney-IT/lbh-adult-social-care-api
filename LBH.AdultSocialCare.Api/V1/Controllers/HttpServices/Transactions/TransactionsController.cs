@@ -176,11 +176,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             return Ok(result);
         }
 
-        [ProducesResponseType(typeof(IEnumerable<HeldInvoiceResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedHeldInvoiceResponse), StatusCodes.Status200OK)]
         [HttpGet("invoices/held-invoice-payments")]
-        public async Task<ActionResult<IEnumerable<HeldInvoiceResponse>>> GetHeldInvoicePaymentsList()
+        public async Task<ActionResult<PagedHeldInvoiceResponse>> GetHeldInvoicePaymentsList([FromQuery] HeldInvoicePaymentParameters parameters)
         {
-            var res = await _payRunUseCase.GetHeldInvoicePaymentsUseCase().ConfigureAwait(false);
+            var res = await _payRunUseCase.GetHeldInvoicePaymentsUseCase(parameters).ConfigureAwait(false);
             return Ok(res);
         }
 

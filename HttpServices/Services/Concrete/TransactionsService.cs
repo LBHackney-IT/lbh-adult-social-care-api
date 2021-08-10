@@ -754,12 +754,23 @@ namespace HttpServices.Services.Concrete
             return res;
         }
 
-        public async Task<IEnumerable<HeldInvoiceResponse>> GetHeldInvoicePaymentsUseCase()
+        public async Task<PagedHeldInvoiceResponse?> GetHeldInvoicePaymentsUseCase(HeldInvoicePaymentParameters parameters)
         {
+            var queryParams = new Dictionary<string, string>
+            {
+                {
+                    "pageNumber", $"{parameters.PageNumber}"
+                },
+                {
+                    "pageSize", $"{parameters.PageSize}"
+                }
+            };
+            var url = QueryHelpers.AddQueryString($"{_baseUrl}api/v1/invoices/held-invoice-payments", queryParams);
+
             var httpRequestMessage = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"{_baseUrl}api/v1/invoices/held-invoice-payments"),
+                RequestUri = new Uri(url),
                 Headers =
                 {
                     {
@@ -779,7 +790,7 @@ namespace HttpServices.Services.Concrete
                 httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
 
             var content = await httpResponse.Content.ReadAsStringAsync();
-            var res = JsonConvert.DeserializeObject<IEnumerable<HeldInvoiceResponse>>(content);
+            var res = JsonConvert.DeserializeObject<PagedHeldInvoiceResponse>(content);
 
             return res;
         }
