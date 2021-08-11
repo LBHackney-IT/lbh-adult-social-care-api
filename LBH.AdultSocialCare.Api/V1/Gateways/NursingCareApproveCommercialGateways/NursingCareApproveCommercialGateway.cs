@@ -123,5 +123,32 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGatewa
 
             return invoiceDomain;
         }
+
+        public async Task<IEnumerable<InvoiceDomain>> GenerateNursingCareInvoices(DateTimeOffset dateTo)
+        {
+            var todayDate = DateTimeOffset.Now.Date;
+
+            // Get all relevant nursing care package ids
+            var nursingCarePackagesIds = await _databaseContext.NursingCarePackages.Where(nc =>
+                    (nc.EndDate == null) || (nc.PaidUpTo == null) || (nc.EndDate < nc.PaidUpTo) &&
+                    nc.NursingCareBrokerageInfo != null
+                )
+                .Select(nc => nc.Id)
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            // Iterate every 1000 and create invoices
+            var nursingCarePackagesCount = nursingCarePackagesIds.Count;
+            var iterations = Math.Ceiling(nursingCarePackagesCount / 1000M);
+            for (var i = 0; i < iterations; i++)
+            {
+                // Get nursing care packages in range
+                var selectedIds = nursingCarePackagesIds.Skip(i * 1000).Take(1000);
+                var nursingCarePackages = await _databaseContext.NursingCarePackages
+                    .Where(nc => selectedIds.Contains(nc.Id)).Include(nc => nc.NursingCareBrokerageInfo).ToListAsync()
+                    .ConfigureAwait(false);
+            }
+            throw new NotImplementedException();
+        }
     }
 }
