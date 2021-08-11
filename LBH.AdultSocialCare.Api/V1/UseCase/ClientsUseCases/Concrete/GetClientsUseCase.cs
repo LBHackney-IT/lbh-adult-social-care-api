@@ -1,11 +1,11 @@
+using System;
+using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Domain.ClientDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
-using System;
-using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Interfaces;
 
-namespace LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases
+namespace LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Concrete
 {
     public class GetClientsUseCase : IGetClientsUseCase
     {
