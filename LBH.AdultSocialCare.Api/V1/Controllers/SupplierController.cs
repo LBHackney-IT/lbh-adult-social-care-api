@@ -60,9 +60,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("get-all")]
-        public async Task<ActionResult<PagedResponse<SupplierResponse>>> GetSupplierList([FromQuery] RequestParameters parameters)
+        public async Task<ActionResult<PagedResponse<SupplierResponse>>> GetSupplierList([FromQuery] RequestParameters parameters, string supplierName)
         {
-            var result = await _getAllSupplierUseCase.GetAllAsync(parameters).ConfigureAwait(false);
+            var result = await _getAllSupplierUseCase.GetAllAsync(parameters, supplierName).ConfigureAwait(false);
 
             Response.AddPaginationHeaders(result.PagingMetaData);
 

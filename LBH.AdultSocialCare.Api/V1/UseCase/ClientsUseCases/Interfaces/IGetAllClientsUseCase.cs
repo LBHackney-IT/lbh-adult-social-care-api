@@ -3,10 +3,10 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 
-namespace LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Interfaces
+namespace LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Interfaces
 {
-    public interface IGetAllSupplierUseCase
+    public interface IGetAllClientsUseCase
     {
-        public Task<PagedResponse<SupplierResponse>> GetAllAsync(RequestParameters parameters, string supplerName);
+        Task<PagedResponse<ClientsResponse>> GetAllAsync(RequestParameters parameters, string clientName);
     }
 }
