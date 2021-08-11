@@ -7,6 +7,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
@@ -126,6 +127,14 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
             var res = await _databaseContext.ResidentialCareTypeOfStayOptions
                 .ToListAsync().ConfigureAwait(false);
             return res?.ToDomain();
+        }
+
+        public async Task<int> GetClientPackagesCountAsync(Guid clientId)
+        {
+            return await _databaseContext.ResidentialCarePackages
+                .Where(p => p.ClientId == clientId)
+                .CountAsync()
+                .ConfigureAwait(false);
         }
     }
 }
