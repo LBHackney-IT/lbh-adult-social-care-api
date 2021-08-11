@@ -1,7 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.InvoiceBoundary.Response;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApproveCommercialUseCase.Interfaces
