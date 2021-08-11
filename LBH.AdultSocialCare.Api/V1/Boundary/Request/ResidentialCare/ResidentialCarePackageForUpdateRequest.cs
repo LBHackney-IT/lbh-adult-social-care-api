@@ -19,7 +19,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare
         [Required] public int? ResidentialCareTypeOfStayId { get; set; }
         [Required] public string NeedToAddress { get; set; }
         [Required] public int? TypeOfResidentialCareHomeId { get; set; }
-        [Required] public Guid? UpdaterId { get; set; }
         [Required] public int? StatusId { get; set; }
         public int? SupplierId { get; set; }
         public int? StageId { get; set; }

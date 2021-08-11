@@ -21,10 +21,5 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request
         /// Gets or sets the Start Date
         /// </summary>
         public DateTimeOffset EndDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public Guid CreatorId { get; set; }
     }
 }

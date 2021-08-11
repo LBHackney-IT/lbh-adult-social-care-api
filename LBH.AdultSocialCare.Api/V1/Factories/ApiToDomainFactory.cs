@@ -282,8 +282,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsOngoingPeriod = homeCarePackageEntity.IsOngoingPeriod,
                 IsThisAnImmediateService = homeCarePackageEntity.IsThisAnImmediateService,
                 IsThisuserUnderS117 = homeCarePackageEntity.IsThisClientUnderS117,
-                CreatorId = homeCarePackageEntity.CreatorId,
-                UpdatorId = homeCarePackageEntity.UpdatorId,
                 StatusId = homeCarePackageEntity.StatusId,
                 StageId = homeCarePackageEntity.StageId,
                 SupplierId = homeCarePackageEntity.SupplierId,
@@ -331,9 +329,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Town = clientsEntity.Town,
                 County = clientsEntity.County,
                 PostCode = clientsEntity.PostCode,
-                CreatorId = clientsEntity.CreatorId,
                 DateCreated = clientsEntity.DateCreated,
-                UpdatorId = clientsEntity.UpdatorId,
                 DateUpdated = clientsEntity.DateUpdated
             };
         }
@@ -364,9 +360,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = packageEntity.Id,
                 PackageType = packageEntity.PackageType,
-                CreatorId = packageEntity.CreatorId,
                 DateCreated = packageEntity.DateCreated,
-                UpdatorId = packageEntity.UpdatorId,
                 DateUpdated = packageEntity.DateUpdated
             };
         }
@@ -424,9 +418,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Id = homeCareServiceEntity.Id,
                 ServiceName = homeCareServiceEntity.ServiceName,
                 PackageId = homeCareServiceEntity.PackageId,
-                CreatorId = homeCareServiceEntity.CreatorId,
                 DateCreated = homeCareServiceEntity.DateCreated,
-                UpdatorId = homeCareServiceEntity.UpdatorId,
                 DateUpdated = homeCareServiceEntity.DateUpdated
             };
         }
@@ -455,9 +447,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return new StatusDomain
             {
                 Id = statusEntity.Id,
-                StatusName = statusEntity.StatusName,
-                CreatorId = statusEntity.CreatorId,
-                UpdaterId = statusEntity.UpdaterId
+                StatusName = statusEntity.StatusName
             };
         }
 
@@ -472,9 +462,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Id = timeSlotShiftsEntity.Id,
                 TimeSlotShiftName = timeSlotShiftsEntity.TimeSlotShiftName,
                 TimeSlotTimeLabel = timeSlotShiftsEntity.TimeSlotTimeLabel,
-                CreatorId = timeSlotShiftsEntity.CreatorId,
                 DateCreated = timeSlotShiftsEntity.DateCreated,
-                UpdatorId = timeSlotShiftsEntity.UpdatorId,
                 DateUpdated = timeSlotShiftsEntity.DateUpdated
             };
         }

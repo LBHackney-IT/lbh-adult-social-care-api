@@ -23,7 +23,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request
         [Required] public bool? TransportNeeded { get; set; }
         [Required] public bool? EscortNeeded { get; set; }
         [Required] public int? TermTimeConsiderationOptionId { get; set; }
-        [Required, GuidNotEmpty] public Guid UpdaterId { get; set; }
         [Required] public int StatusId { get; set; }
     }
 }

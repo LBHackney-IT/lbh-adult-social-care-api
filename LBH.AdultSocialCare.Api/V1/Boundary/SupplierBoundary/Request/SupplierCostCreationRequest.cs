@@ -16,7 +16,5 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request
         public bool IsSecondaryCarer { get; set; }
 
         public decimal CostPerHour { get; set; }
-
-        public int CreatorId { get; set; }
     }
 }
