@@ -3,6 +3,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
 {
@@ -13,6 +14,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
         public Task<Client> GetAsync(Guid clientId);
 
         public Task<bool> DeleteAsync(Guid clientId);
+
+        public Task<PagedList<ClientsDomain>> ListAsync(RequestParameters parameters);
 
         public Task<IEnumerable<ClientMinimalDomain>> GetClientMinimalInList(List<Guid> clientIds);
     }

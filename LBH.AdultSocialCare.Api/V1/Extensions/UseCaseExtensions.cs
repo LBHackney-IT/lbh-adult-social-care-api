@@ -180,6 +180,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
 
             services.AddScoped<IUpsertClientsUseCase, UpsertClientsUseCase>();
             services.AddScoped<IGetClientsUseCase, GetClientsUseCase>();
+            services.AddScoped<IGetAllClientsUseCase, GetAllClientsUseCase>();
             services.AddScoped<IDeleteClientsUseCase, DeleteClientsUseCase>();
             services.AddScoped<IGetClientPackagesCountUseCase, GetClientPackagesCountUseCase>();
 

@@ -8,6 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Extensions;
+using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
@@ -29,6 +32,17 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
 
             return isSuccess;
+        }
+
+        public async Task<PagedList<ClientsDomain>> ListAsync(RequestParameters parameters)
+        {
+            var clientsCount = await _databaseContext.Clients.CountAsync().ConfigureAwait(false);
+            var clients = await _databaseContext.Clients.ToListAsync().ConfigureAwait(false);
+
+            var clientsPage = clients.GetPage(parameters.PageNumber, parameters.PageSize);
+
+            return PagedList<ClientsDomain>
+                .ToPagedList(clientsPage.ToDomain(), clientsCount, parameters.PageNumber, parameters.PageSize);
         }
 
         public async Task<IEnumerable<ClientMinimalDomain>> GetClientMinimalInList(List<Guid> clientIds)
