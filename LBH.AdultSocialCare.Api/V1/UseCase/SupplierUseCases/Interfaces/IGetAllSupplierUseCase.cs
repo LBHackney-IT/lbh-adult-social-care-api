@@ -7,6 +7,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Interfaces
 {
     public interface IGetAllSupplierUseCase
     {
-        public Task<PagedResponse<SupplierResponse>> GetAllAsync(RequestParameters parameters);
+        public Task<PagedResponse<SupplierResponse>> GetAllAsync(RequestParameters parameters, string supplerName);
     }
 }

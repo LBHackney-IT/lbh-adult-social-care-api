@@ -10,7 +10,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways
     {
         public Task<SupplierDomain> CreateAsync(Supplier supplier);
 
-        public Task<PagedList<SupplierDomain>> ListAsync(RequestParameters parameters);
+        public Task<PagedList<SupplierDomain>> ListAsync(RequestParameters parameters, string supplierName);
 
         public Task<IEnumerable<SupplierMinimalDomain>> GetSupplierMinimalList();
 

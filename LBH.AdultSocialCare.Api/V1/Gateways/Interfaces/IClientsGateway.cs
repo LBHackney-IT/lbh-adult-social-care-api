@@ -15,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
 
         public Task<bool> DeleteAsync(Guid clientId);
 
-        public Task<PagedList<ClientsDomain>> ListAsync(RequestParameters parameters);
+        public Task<PagedList<ClientsDomain>> ListAsync(RequestParameters parameters, string clientName);
 
         public Task<IEnumerable<ClientMinimalDomain>> GetClientMinimalInList(List<Guid> clientIds);
     }

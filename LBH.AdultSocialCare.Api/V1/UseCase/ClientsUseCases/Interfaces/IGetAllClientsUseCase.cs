@@ -7,6 +7,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Interfaces
 {
     public interface IGetAllClientsUseCase
     {
-        Task<PagedResponse<ClientsResponse>> GetAllAsync(RequestParameters parameters);
+        Task<PagedResponse<ClientsResponse>> GetAllAsync(RequestParameters parameters, string clientName);
     }
 }

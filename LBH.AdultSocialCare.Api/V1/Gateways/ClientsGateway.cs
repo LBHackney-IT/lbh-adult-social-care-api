@@ -34,13 +34,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             return isSuccess;
         }
 
-        public async Task<PagedList<ClientsDomain>> ListAsync(RequestParameters parameters)
+        public async Task<PagedList<ClientsDomain>> ListAsync(RequestParameters parameters, string clientName)
         {
-            var clientsCount = await _databaseContext.Clients.CountAsync().ConfigureAwait(false);
+            var clientsCount = await _databaseContext.Clients
+                .FilterByName(clientName)
+                .CountAsync().ConfigureAwait(false);
+
             var clientsPage = await _databaseContext.Clients
+                .FilterByName(clientName)
                 .GetPage(parameters.PageNumber, parameters.PageSize)
-                .ToListAsync()
-                .ConfigureAwait(false);
+                .ToListAsync().ConfigureAwait(false);
 
             return PagedList<ClientsDomain>
                 .ToPagedList(clientsPage?.ToDomain(), clientsCount, parameters.PageNumber, parameters.PageSize);

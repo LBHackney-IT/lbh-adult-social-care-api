@@ -16,9 +16,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Concrete
             _clientsGateway = clientsGateway;
         }
 
-        public async Task<PagedResponse<ClientsResponse>> GetAllAsync(RequestParameters parameters)
+        public async Task<PagedResponse<ClientsResponse>> GetAllAsync(RequestParameters parameters, string clientName)
         {
-            var result = await _clientsGateway.ListAsync(parameters).ConfigureAwait(false);
+            var result = await _clientsGateway.ListAsync(parameters, clientName).ConfigureAwait(false);
 
             return new PagedResponse<ClientsResponse>
             {

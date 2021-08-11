@@ -95,14 +95,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         /// <summary>Returns a sub-page of all clients list as defined by <paramref name="parameters"/>.</summary>
         /// <remarks>Returns pagination info in X-Pagination header</remarks>
         /// <param name="parameters">Pagination parameters</param>
+        /// <param name="clientName">Part of the client's name to search by.</param>
         /// <returns>A sub-page of all clients list.</returns>
         [ProducesResponseType(typeof(ClientsResponse), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("get-all")]
-        public async Task<ActionResult<PaginatedResponse<ClientsResponse>>> GetAll([FromQuery] RequestParameters parameters)
+        public async Task<ActionResult<PaginatedResponse<ClientsResponse>>> GetAll([FromQuery] RequestParameters parameters, string clientName)
         {
-            var result = await _getAllClientsUseCase.GetAllAsync(parameters).ConfigureAwait(false);
+            var result = await _getAllClientsUseCase.GetAllAsync(parameters, clientName).ConfigureAwait(false);
 
             Response.AddPaginationHeaders(result.PagingMetaData);
 
