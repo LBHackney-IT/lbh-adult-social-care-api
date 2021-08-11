@@ -7,7 +7,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerag
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
 {
-    public class ResidentialCarePackage : BaseEntity
+    public class ResidentialCarePackage : BaseEntityTmp
     {
         public ResidentialCarePackage()
         {
@@ -80,16 +80,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
         /// Gets or sets the Type Of Nursing Home Id
         /// </summary>
         public int? TypeOfResidentialCareHomeId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public Guid CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updater Id
-        /// </summary>
-        public Guid? UpdaterId { get; set; }
 
         /// <summary>
         /// Gets or sets the PackageStatuses Id
