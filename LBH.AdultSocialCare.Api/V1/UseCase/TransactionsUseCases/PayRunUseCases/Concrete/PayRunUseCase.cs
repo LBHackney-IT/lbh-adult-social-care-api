@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Concrete
 {
@@ -20,12 +21,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
         private readonly ITransactionsService _transactionsService;
         private readonly ISupplierGateway _supplierGateway;
         private readonly IClientsGateway _clientsGateway;
+        private readonly INursingCarePackageGateway _nursingCarePackageGateway;
 
-        public PayRunUseCase(ITransactionsService transactionsService, ISupplierGateway supplierGateway, IClientsGateway clientsGateway)
+        public PayRunUseCase(ITransactionsService transactionsService, ISupplierGateway supplierGateway, IClientsGateway clientsGateway, INursingCarePackageGateway nursingCarePackageGateway)
         {
             _transactionsService = transactionsService;
             _supplierGateway = supplierGateway;
             _clientsGateway = clientsGateway;
+            _nursingCarePackageGateway = nursingCarePackageGateway;
         }
 
         public async Task<Guid?> CreateNewPayRunUseCase(string payRunType, PayRunForCreationRequest payRunForCreationRequest)
@@ -37,8 +40,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
 
             return payRunType switch
             {
-                nameof(PayRunTypeEnum.ResidentialRecurring) => await _transactionsService.CreateResidentialRecurringPayRun(payRunForCreationRequest)
-                    .ConfigureAwait(false),
+                nameof(PayRunTypeEnum.ResidentialRecurring) => await CreateResidentialRecurringPayRun(payRunForCreationRequest).ConfigureAwait(false),
                 nameof(PayRunTypeEnum.DirectPayments) => await _transactionsService.CreateDirectPaymentsPayRun(payRunForCreationRequest)
                     .ConfigureAwait(false),
                 nameof(PayRunTypeEnum.HomeCare) => await _transactionsService.CreateHomeCarePayRun(payRunForCreationRequest)
@@ -98,6 +100,19 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
                 PagingMetaData = heldInvoicesRes.PagingMetaData,
                 Data = heldInvoicesRes.Data
             };
+        }
+
+        private async Task<Guid?> CreateResidentialRecurringPayRun(PayRunForCreationRequest payRunForCreationRequest)
+        {
+            // Generate nursing care invoices
+            await _nursingCarePackageGateway.GenerateNursingCareInvoices(payRunForCreationRequest.DateTo)
+                .ConfigureAwait(false);
+
+
+            // TODO:  Generate residential care invoices
+
+            return await _transactionsService.CreateResidentialRecurringPayRun(payRunForCreationRequest)
+                .ConfigureAwait(false);
         }
     }
 }

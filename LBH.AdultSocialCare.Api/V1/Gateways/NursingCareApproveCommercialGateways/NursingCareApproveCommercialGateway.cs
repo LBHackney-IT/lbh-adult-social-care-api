@@ -1,29 +1,26 @@
-using AutoMapper;
 using Common.Exceptions.CustomExceptions;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApproveCommercialDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
-using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGateways
 {
     public class NursingCareApproveCommercialGateway : INursingCareApproveCommercialGateway
     {
         private readonly DatabaseContext _databaseContext;
-        private readonly IMapper _mapper;
         private readonly IIdentityHelperUseCase _identityHelperUseCase;
 
-        public NursingCareApproveCommercialGateway(DatabaseContext databaseContext, IMapper mapper, IIdentityHelperUseCase identityHelperUseCase)
+        public NursingCareApproveCommercialGateway(DatabaseContext databaseContext, IIdentityHelperUseCase identityHelperUseCase)
         {
             _databaseContext = databaseContext;
-            _mapper = mapper;
             _identityHelperUseCase = identityHelperUseCase;
         }
 
@@ -122,33 +119,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGatewa
             };
 
             return invoiceDomain;
-        }
-
-        public async Task<IEnumerable<InvoiceDomain>> GenerateNursingCareInvoices(DateTimeOffset dateTo)
-        {
-            var todayDate = DateTimeOffset.Now.Date;
-
-            // Get all relevant nursing care package ids
-            var nursingCarePackagesIds = await _databaseContext.NursingCarePackages.Where(nc =>
-                    (nc.EndDate == null) || (nc.PaidUpTo == null) || (nc.EndDate < nc.PaidUpTo) &&
-                    nc.NursingCareBrokerageInfo != null
-                )
-                .Select(nc => nc.Id)
-                .ToListAsync()
-                .ConfigureAwait(false);
-
-            // Iterate every 1000 and create invoices
-            var nursingCarePackagesCount = nursingCarePackagesIds.Count;
-            var iterations = Math.Ceiling(nursingCarePackagesCount / 1000M);
-            for (var i = 0; i < iterations; i++)
-            {
-                // Get nursing care packages in range
-                var selectedIds = nursingCarePackagesIds.Skip(i * 1000).Take(1000);
-                var nursingCarePackages = await _databaseContext.NursingCarePackages
-                    .Where(nc => selectedIds.Contains(nc.Id)).Include(nc => nc.NursingCareBrokerageInfo).ToListAsync()
-                    .ConfigureAwait(false);
-            }
-            throw new NotImplementedException();
         }
     }
 }
