@@ -60,7 +60,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Domain.BillDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.ClientDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareApproveBrokeredDomains;
@@ -567,6 +566,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             #region Clients
 
             CreateMap<ClientMinimalDomain, ClientMinimalResponse>();
+            CreateMap<ClientsDomain, ClientsResponse>();
+            CreateMap<Client, ClientsDomain>();
 
             #endregion Clients
         }

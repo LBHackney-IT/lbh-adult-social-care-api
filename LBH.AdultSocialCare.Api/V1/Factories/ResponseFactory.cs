@@ -831,6 +831,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<ClientMinimalResponse>>(clientMinimalDomain);
         }
 
+        public static IEnumerable<ClientsResponse> ToResponse(this IEnumerable<ClientsDomain> clientsDomain)
+        {
+            return _mapper.Map<IEnumerable<ClientsResponse>>(clientsDomain);
+        }
+
         #endregion Clients
     }
 }

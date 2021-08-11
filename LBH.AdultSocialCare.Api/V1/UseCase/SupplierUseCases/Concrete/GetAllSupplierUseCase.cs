@@ -17,9 +17,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Concrete
             _supplierGateway = supplierGateway;
         }
 
-        public async Task<PagedResponse<SupplierResponse>> GetAllAsync(RequestParameters parameters)
+        public async Task<PagedResponse<SupplierResponse>> GetAllAsync(RequestParameters parameters, string supplerName)
         {
-            var result = await _supplierGateway.ListAsync(parameters).ConfigureAwait(false);
+            var result = await _supplierGateway.ListAsync(parameters, supplerName).ConfigureAwait(false);
 
             return new PagedResponse<SupplierResponse>
             {

@@ -36,14 +36,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways
             }
         }
 
-        public async Task<PagedList<SupplierDomain>> ListAsync(RequestParameters parameters)
+        public async Task<PagedList<SupplierDomain>> ListAsync(RequestParameters parameters, string supplierName)
         {
             var suppliersCount = await _databaseContext.Suppliers
+                .FilterByName(supplierName)
                 .CountAsync().ConfigureAwait(false);
-            var suppliers = await _databaseContext.Suppliers
-                .ToListAsync().ConfigureAwait(false);
 
-            var suppliersPage = suppliers.GetPage(parameters.PageNumber, parameters.PageSize);
+            var suppliersPage = await _databaseContext.Suppliers
+                .FilterByName(supplierName)
+                .GetPage(parameters.PageNumber, parameters.PageSize)
+                .ToListAsync().ConfigureAwait(false);
 
             return PagedList<SupplierDomain>
                 .ToPagedList(suppliersPage?.ToDomain(), suppliersCount, parameters.PageNumber, parameters.PageSize);

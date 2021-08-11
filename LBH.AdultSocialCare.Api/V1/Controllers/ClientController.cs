@@ -8,6 +8,9 @@ using System;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Interfaces;
 using Microsoft.Extensions.Primitives;
+using Amazon.Runtime;
+using LBH.AdultSocialCare.Api.V1.Extensions;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
@@ -20,18 +23,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
     {
         private readonly IUpsertClientsUseCase _upsertClientsUseCase;
         private readonly IGetClientsUseCase _getClientsUseCase;
+        private readonly IGetAllClientsUseCase _getAllClientsUseCase;
         private readonly IDeleteClientsUseCase _deleteClientsUseCase;
         private readonly IGetClientPackagesCountUseCase _getClientPackagesCountUseCase;
 
         public ClientController(IUpsertClientsUseCase upsertClientsUseCase,
             IGetClientsUseCase getClientsUseCase,
-            IDeleteClientsUseCase deleteClientsUseCase,
-            IGetClientPackagesCountUseCase getClientPackagesCountUseCase)
+            IGetClientPackagesCountUseCase getClientPackagesCountUseCase,
+            IGetAllClientsUseCase getAllClientsUseCase,
+            IDeleteClientsUseCase deleteClientsUseCase)
         {
             _upsertClientsUseCase = upsertClientsUseCase;
             _getClientsUseCase = getClientsUseCase;
-            _deleteClientsUseCase = deleteClientsUseCase;
             _getClientPackagesCountUseCase = getClientPackagesCountUseCase;
+            _getAllClientsUseCase = getAllClientsUseCase;
+            _deleteClientsUseCase = deleteClientsUseCase;
         }
 
         /// <summary>Creates the specified client request.</summary>
@@ -84,6 +90,24 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        /// <summary>Returns a sub-page of all clients list as defined by <paramref name="parameters"/>.</summary>
+        /// <remarks>Returns pagination info in X-Pagination header</remarks>
+        /// <param name="parameters">Pagination parameters</param>
+        /// <param name="clientName">Part of the client's name to search by.</param>
+        /// <returns>A sub-page of all clients list.</returns>
+        [ProducesResponseType(typeof(ClientsResponse), StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        [HttpGet]
+        [Route("get-all")]
+        public async Task<ActionResult<PaginatedResponse<ClientsResponse>>> GetAll([FromQuery] RequestParameters parameters, string clientName)
+        {
+            var result = await _getAllClientsUseCase.GetAllAsync(parameters, clientName).ConfigureAwait(false);
+
+            Response.AddPaginationHeaders(result.PagingMetaData);
+
+            return Ok(result);
         }
 
         /// <summary>Deletes the specified client identifier.</summary>
