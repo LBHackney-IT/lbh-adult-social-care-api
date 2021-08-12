@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Concrete
 {
@@ -22,13 +23,17 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
         private readonly ISupplierGateway _supplierGateway;
         private readonly IClientsGateway _clientsGateway;
         private readonly INursingCarePackageGateway _nursingCarePackageGateway;
+        private readonly IResidentialCarePackageGateway _residentialCarePackageGateway;
 
-        public PayRunUseCase(ITransactionsService transactionsService, ISupplierGateway supplierGateway, IClientsGateway clientsGateway, INursingCarePackageGateway nursingCarePackageGateway)
+        public PayRunUseCase(ITransactionsService transactionsService, ISupplierGateway supplierGateway,
+            IClientsGateway clientsGateway, INursingCarePackageGateway nursingCarePackageGateway,
+            IResidentialCarePackageGateway residentialCarePackageGateway)
         {
             _transactionsService = transactionsService;
             _supplierGateway = supplierGateway;
             _clientsGateway = clientsGateway;
             _nursingCarePackageGateway = nursingCarePackageGateway;
+            _residentialCarePackageGateway = residentialCarePackageGateway;
         }
 
         public async Task<Guid?> CreateNewPayRunUseCase(string payRunType, PayRunForCreationRequest payRunForCreationRequest)
@@ -151,8 +156,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
             await _nursingCarePackageGateway.GenerateNursingCareInvoices(payRunForCreationRequest.DateTo)
                 .ConfigureAwait(false);
 
-
-            // TODO:  Generate residential care invoices
+            // Generate residential care invoices
+            await _residentialCarePackageGateway.GenerateResidentialCareInvoices(payRunForCreationRequest.DateTo)
+                .ConfigureAwait(false);
 
             return await _transactionsService.CreateResidentialRecurringPayRun(payRunForCreationRequest)
                 .ConfigureAwait(false);
