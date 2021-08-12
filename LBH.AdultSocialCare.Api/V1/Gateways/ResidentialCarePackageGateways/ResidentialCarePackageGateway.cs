@@ -24,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
         private readonly IIdentityHelperUseCase _identityHelperUseCase;
 
         public ResidentialCarePackageGateway(DatabaseContext databaseContext, IMapper mapper
-            ,ITransactionsService transactionsService, IIdentityHelperUseCase identityHelperUseCase)
+            , ITransactionsService transactionsService, IIdentityHelperUseCase identityHelperUseCase)
         {
             _databaseContext = databaseContext;
             _mapper = mapper;
