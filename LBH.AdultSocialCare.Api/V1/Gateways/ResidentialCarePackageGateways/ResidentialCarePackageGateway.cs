@@ -9,6 +9,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HttpServices.Models.Requests;
+using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
 {
@@ -16,11 +20,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IMapper _mapper;
+        private readonly ITransactionsService _transactionsService;
+        private readonly IIdentityHelperUseCase _identityHelperUseCase;
 
-        public ResidentialCarePackageGateway(DatabaseContext databaseContext, IMapper mapper)
+        public ResidentialCarePackageGateway(DatabaseContext databaseContext, IMapper mapper
+            ,ITransactionsService transactionsService, IIdentityHelperUseCase identityHelperUseCase)
         {
             _databaseContext = databaseContext;
             _mapper = mapper;
+            _transactionsService = transactionsService;
+            _identityHelperUseCase = identityHelperUseCase;
         }
 
         public async Task<ResidentialCarePackageDomain> UpdateAsync(ResidentialCarePackageForUpdateDomain residentialCarePackageForUpdate)
@@ -135,6 +144,91 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
                 .Where(p => p.ClientId == clientId)
                 .CountAsync()
                 .ConfigureAwait(false);
+        }
+
+        public async Task<bool> GenerateResidentialCareInvoices(DateTimeOffset dateTo)
+        {
+            var todayDate = DateTimeOffset.Now.Date;
+            if (dateTo > todayDate) dateTo = todayDate;
+
+            var residentialCarePackagesIds = await _databaseContext.ResidentialCarePackages
+                .Where(rc =>
+                    ((rc.EndDate == null &&
+                      rc.PaidUpTo == null) || (rc.EndDate != null &&
+                      rc.EndDate < rc.PaidUpTo &&
+                      dateTo.AddDays(-7) > rc.PaidUpTo)) &&
+                      rc.ResidentialCareBrokerageInfo.Id != null
+                )
+                .Select(rc => rc.Id)
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            var residentialCarePackages = await _databaseContext.ResidentialCarePackages
+                .Where(rc => residentialCarePackagesIds.Contains(rc.Id))
+                .Include(rc => rc.ResidentialCareBrokerageInfo).ToListAsync()
+                .ConfigureAwait(false);
+
+            var invoicesForCreation = new List<InvoiceForCreationRequest>();
+
+            foreach (var residentialCarePackage in residentialCarePackages)
+            {
+                var startDate = residentialCarePackage.PaidUpTo ?? residentialCarePackage.StartDate;
+                var dateDiff = (dateTo.Date - startDate.Date).Days;
+                var weeks = (decimal) dateDiff / 7;
+
+                var invoiceItems = new List<InvoiceItemForCreationRequest>()
+                {
+                    new InvoiceItemForCreationRequest
+                    {
+                        ItemName = $"Residential Care Core Cost {startDate:dd - MM - yyyy} - {dateTo:dd - MM - yyyy}",
+                        PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCore,
+                        Quantity = weeks,
+                        CreatorId = _identityHelperUseCase.GetUserId()
+                    },
+                    new InvoiceItemForCreationRequest()
+                    {
+                        ItemName = $"Additional Needs Cost {startDate:dd - MM - yyyy} - {dateTo:dd - MM - yyyy}",
+                        PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.AdditionalNeedsPayment,
+                        Quantity = weeks,
+                        CreatorId = _identityHelperUseCase.GetUserId()
+                    }
+                };
+
+                if (residentialCarePackage.PaidUpTo == null && residentialCarePackage.ResidentialCareBrokerageInfo.AdditionalNeedsPaymentOneOff > 0)
+                {
+                    invoiceItems.Add(new InvoiceItemForCreationRequest
+                    {
+                        ItemName = "Additional Needs One Off Cost",
+                        PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.AdditionalNeedsPaymentOneOff,
+                        Quantity = 1,
+                        CreatorId = _identityHelperUseCase.GetUserId()
+                    });
+                }
+
+                invoicesForCreation.Add(new InvoiceForCreationRequest
+                {
+                    PackageTypeId = PackageTypesConstants.ResidentialCarePackageId,
+                    ServiceUserId = residentialCarePackage.ClientId,
+                    DateFrom = startDate.Date,
+                    DateTo = dateTo,
+                    PackageId = residentialCarePackage.Id,
+                    SupplierId = residentialCarePackage.SupplierId,
+                    InvoiceItems = invoiceItems,
+                    CreatorId = _identityHelperUseCase.GetUserId(),
+                });
+
+                residentialCarePackage.PaidUpTo = dateTo;
+            }
+
+            foreach (var invoiceForCreationRequest in invoicesForCreation)
+            {
+                var res = await _transactionsService.CreateInvoiceUseCase(invoiceForCreationRequest)
+                    .ConfigureAwait(false);
+            }
+
+            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
+
+            return true;
         }
     }
 }
