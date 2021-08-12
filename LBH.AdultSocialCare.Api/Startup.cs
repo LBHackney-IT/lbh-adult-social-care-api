@@ -23,7 +23,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using HttpServices;
 using HttpServices.Models;
+using HttpServices.Services.Concrete;
+using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -99,6 +102,8 @@ namespace LBH.AdultSocialCare.Api
             // Configure transaction API options
             services.Configure<TransactionApiOptions>(Configuration.GetSection("HASCHttpClients"));
             services.ConfigureTransactionsService(Configuration);
+
+            services.AddScoped<IRestClient, JsonRestClient>();
         }
 
         private static void ConfigureSwagger(IServiceCollection services) => services.AddSwaggerGen(c =>
