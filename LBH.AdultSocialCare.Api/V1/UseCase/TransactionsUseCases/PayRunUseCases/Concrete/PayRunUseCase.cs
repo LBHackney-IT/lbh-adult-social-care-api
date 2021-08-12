@@ -102,6 +102,49 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
             };
         }
 
+        public async Task<PayRunDetailsResponse> GetSinglePayRunDetailsUseCase(Guid payRunId, InvoiceListParameters parameters)
+        {
+            var payRun = await _transactionsService.GetSinglePayRunDetailsUseCase(payRunId, parameters)
+                .ConfigureAwait(false);
+            var supplierIds = new List<long>();
+            var serviceUserIds = new List<Guid>();
+
+            var payRunInvoices = (payRun.Invoices.Invoices ?? Array.Empty<InvoiceResponse>()).ToList();
+            foreach (var invoice in payRunInvoices)
+            {
+                supplierIds.Add(invoice.SupplierId);
+                serviceUserIds.Add(invoice.ServiceUserId);
+            }
+
+            supplierIds = supplierIds.Distinct().ToList();
+            serviceUserIds = serviceUserIds.Distinct().ToList();
+
+            // Get supplier names
+            var suppliers = await _supplierGateway.GetSupplierMinimalInList(supplierIds).ConfigureAwait(false);
+            var supplierList = suppliers.ToList();
+
+            // Get service user names
+            var clients = await _clientsGateway.GetClientMinimalInList(serviceUserIds).ConfigureAwait(false);
+            var clientList = clients.ToList();
+
+            // Add supplier and service user names to invoices
+            foreach (var invoice in payRunInvoices)
+            {
+                invoice.SupplierName = supplierList.FirstOrDefault(s => s.Id == invoice.SupplierId)?.SupplierName ?? "";
+                invoice.ServiceUserName = clientList.FirstOrDefault(s => s.ClientId == invoice.ServiceUserId)?.ClientName ?? "";
+            }
+
+            return new PayRunDetailsResponse
+            {
+                PayRunDetails = payRun.PayRunDetails,
+                Invoices = new PagedInvoiceResponse
+                {
+                    PagingMetaData = payRun.Invoices.PagingMetaData,
+                    Invoices = payRunInvoices
+                }
+            };
+        }
+
         private async Task<Guid?> CreateResidentialRecurringPayRun(PayRunForCreationRequest payRunForCreationRequest)
         {
             // Generate nursing care invoices

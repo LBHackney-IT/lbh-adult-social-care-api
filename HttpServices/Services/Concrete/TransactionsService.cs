@@ -446,22 +446,22 @@ namespace HttpServices.Services.Concrete
                     "pageSize", $"{parameters.PageSize}"
                 },
                 {
-                    "supplierId", $"{parameters.SupplierId}"
+                    "supplierId", parameters.SupplierId != null? $"{parameters.SupplierId}": ""
                 },
                 {
-                    "packageTypeId", $"{parameters.PackageTypeId}"
+                    "packageTypeId", parameters.PackageTypeId != null? $"{parameters.PackageTypeId}": ""
                 },
                 {
-                    "invoiceItemPaymentStatusId", $"{parameters.InvoiceStatusId}"
+                    "invoiceItemPaymentStatusId", parameters.InvoiceStatusId != null? $"{parameters.InvoiceStatusId}": ""
                 },
                 {
-                    "searchTerm", $"{parameters.SearchTerm}"
+                    "searchTerm", parameters.SearchTerm != null? $"{parameters.SearchTerm}": ""
                 },
                 {
-                    "dateFrom", $"{parameters.DateFrom?.DateTimeOffsetToISOString()}"
+                    "dateFrom", parameters.DateFrom != null?$"{parameters.DateFrom?.DateTimeOffsetToISOString()}": ""
                 },
                 {
-                    "dateTo", $"{parameters.DateTo?.DateTimeOffsetToISOString()}"
+                    "dateTo", parameters.DateTo != null?$"{parameters.DateTo?.DateTimeOffsetToISOString()}": ""
                 }
             };
 
