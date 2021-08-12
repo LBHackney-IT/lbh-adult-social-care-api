@@ -22,12 +22,14 @@ namespace HttpServices.Services.Concrete
     {
 
         private readonly HttpClient _client;
+        private readonly IRestClient _restClient;
         private readonly string _baseUrl;
 
-        public TransactionsService(HttpClient client, IOptions<TransactionApiOptions> options)
+        public TransactionsService(HttpClient client, IRestClient restClient, IOptions<TransactionApiOptions> options)
         {
             _baseUrl = options.Value.TransactionsBaseUrl.ToString();
             _client = client;
+            _restClient = restClient;
         }
 
         public async Task<IEnumerable<DepartmentResponse>> GetPaymentDepartments()
@@ -815,36 +817,16 @@ namespace HttpServices.Services.Concrete
 
         public async Task<InvoiceResponse> CreateInvoiceUseCase(InvoiceForCreationRequest invoiceForCreationRequest)
         {
-            var body = JsonConvert.SerializeObject(invoiceForCreationRequest);
-            var requestContent = new StringContent(body, Encoding.UTF8, "application/json");
+            return await _restClient
+                .Post<InvoiceResponse>($"{_baseUrl}api/v1/invoices", invoiceForCreationRequest, "Failed to create invoice")
+                .ConfigureAwait(false);
+        }
 
-            var httpRequestMessage = new HttpRequestMessage
-            {
-                Method = HttpMethod.Post,
-                RequestUri = new Uri($"{_baseUrl}api/v1/invoices"),
-                Headers =
-                {
-                    {
-                        HttpRequestHeader.Accept.ToString(), "application/json"
-                    }
-                },
-                Content = requestContent
-            };
-
-            var httpResponse = await _client.SendAsync(httpRequestMessage);
-
-            if (!httpResponse.IsSuccessStatusCode)
-            {
-                await httpResponse.ThrowResponseExceptionAsync("Failed to create invoice");
-            }
-
-            if (httpResponse.Content == null ||
-                httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return null;
-
-            var content = await httpResponse.Content.ReadAsStringAsync();
-            var res = JsonConvert.DeserializeObject<InvoiceResponse>(content);
-
-            return res;
+        public async Task<IEnumerable<InvoiceResponse>> BatchCreateInvoicesUseCase(IEnumerable<InvoiceForCreationRequest> invoices)
+        {
+            return await _restClient
+                .Post<IEnumerable<InvoiceResponse>>($"{_baseUrl}api/v1/invoices/batch", invoices, "Failed to create invoices")
+                .ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<InvoiceStatusResponse>> GetAllInvoiceStatusesUseCase()
@@ -1326,7 +1308,5 @@ namespace HttpServices.Services.Concrete
 
             return res;
         }
-
     }
-
 }
