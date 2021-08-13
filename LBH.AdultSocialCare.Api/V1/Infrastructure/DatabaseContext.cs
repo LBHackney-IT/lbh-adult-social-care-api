@@ -167,6 +167,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             #region Entity Config
 
+            // TODO: VK: Remove
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                if (typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
+                {
+                    modelBuilder.Entity(entityType.ClrType).Property("CreatorId").HasDefaultValue(new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
+                }
+            }
+
             // Home care
             modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.Minutes);
 
