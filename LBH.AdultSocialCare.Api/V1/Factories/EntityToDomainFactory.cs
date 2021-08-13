@@ -486,6 +486,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
+        public static IEnumerable<ClientsDomain> ToDomain(this List<Client> clientEntities)
+        {
+            return _mapper.Map<IEnumerable<ClientsDomain>>(clientEntities);
+        }
+
         #endregion Clients
 
         #region NursingCareAdditionalNeeds

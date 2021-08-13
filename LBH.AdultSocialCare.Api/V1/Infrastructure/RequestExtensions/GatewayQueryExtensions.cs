@@ -90,5 +90,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
                 (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId) &&
                 (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)) &&
                 (stageId.Equals(null) || h.StageId == stageId));
+
+        public static IQueryable<Client> FilterByName(this IQueryable<Client> clientsQuery, string name) =>
+            clientsQuery.Where(c => String.IsNullOrEmpty(name)
+                                    || c.FirstName.ToLower().Contains(name.ToLower())
+                                    || c.LastName.ToLower().Contains(name.ToLower()));
+
+        public static IQueryable<Supplier> FilterByName(this IQueryable<Supplier> clientsQuery, string name) =>
+            clientsQuery.Where(s => String.IsNullOrEmpty(name)
+                                    || s.SupplierName.ToLower().Contains(name.ToLower()));
     }
 }

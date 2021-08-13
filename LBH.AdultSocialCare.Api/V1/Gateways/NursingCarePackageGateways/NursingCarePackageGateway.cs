@@ -1,13 +1,18 @@
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
+using HttpServices.Models.Requests;
+using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain.GeneralDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
+using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
@@ -16,11 +21,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IMapper _mapper;
+        private readonly IIdentityHelperUseCase _identityHelperUseCase;
+        private readonly ITransactionsService _transactionsService;
 
-        public NursingCarePackageGateway(DatabaseContext databaseContext, IMapper mapper)
+        public NursingCarePackageGateway(DatabaseContext databaseContext, IMapper mapper, IIdentityHelperUseCase identityHelperUseCase, ITransactionsService transactionsService)
         {
             _databaseContext = databaseContext;
             _mapper = mapper;
+            _identityHelperUseCase = identityHelperUseCase;
+            _transactionsService = transactionsService;
         }
 
         public async Task<NursingCarePackageDomain> UpdateAsync(NursingCarePackageForUpdateDomain nursingCarePackageForUpdate)
@@ -127,6 +136,115 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
             var res = await _databaseContext.NursingCareTypeOfStayOptions
                 .ToListAsync().ConfigureAwait(false);
             return res?.ToDomain();
+        }
+
+        public async Task<int> GetClientPackagesCountAsync(Guid clientId)
+        {
+            return await _databaseContext.NursingCarePackages
+                .Where(p => p.ClientId == clientId)
+                .CountAsync()
+                .ConfigureAwait(false);
+        }
+
+        public async Task<bool> GenerateNursingCareInvoices(DateTimeOffset dateTo)
+        {
+            var todayDate = DateTimeOffset.Now.Date;
+
+            if (dateTo > todayDate)
+            {
+                dateTo = todayDate;
+            }
+
+            // Get all relevant nursing care package ids
+            var nursingCarePackagesIds = await _databaseContext.NursingCarePackages.Where(nc =>
+                    ((nc.EndDate == null && nc.PaidUpTo == null) || (nc.EndDate != null && nc.EndDate < nc.PaidUpTo && dateTo.AddDays(-7) > nc.PaidUpTo)) &&
+                    nc.NursingCareBrokerageInfo.NursingCareBrokerageId != null
+                )
+                .Select(nc => nc.Id)
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            // Iterate every 1000 and create invoices
+            var nursingCarePackagesCount = nursingCarePackagesIds.Count;
+            var iterations = Math.Ceiling(nursingCarePackagesCount / 1000M);
+            for (var i = 0; i < iterations; i++)
+            {
+                var invoicesForCreation = new List<InvoiceForCreationRequest>();
+
+                // Get nursing care packages in range
+                var selectedIds = nursingCarePackagesIds.Skip(i * 1000).Take(1000);
+                var nursingCarePackages = await _databaseContext.NursingCarePackages
+                    .Where(nc => selectedIds.Contains(nc.Id))
+                    .Include(nc => nc.NursingCareBrokerageInfo).ToListAsync()
+                    .ConfigureAwait(false);
+
+                foreach (var nursingCarePackage in nursingCarePackages)
+                {
+                    // Get weeks
+                    var startDate = nursingCarePackage.PaidUpTo ?? nursingCarePackage.StartDate;
+
+                    var dateDiff = (dateTo.Date - startDate.Date).Days;
+                    var weeks = dateDiff / 7M;
+
+                    // Create invoice
+                    var invoiceItems = new List<InvoiceItemForCreationRequest>()
+                    {
+                        new InvoiceItemForCreationRequest
+                        {
+                            ItemName = $"Nursing Care Core Cost {startDate:dd - MM - yyyy} - {dateTo:dd - MM - yyyy}",
+                            PricePerUnit = nursingCarePackage.NursingCareBrokerageInfo.NursingCore,
+                            Quantity = weeks,
+                            CreatorId = _identityHelperUseCase.GetUserId()
+                        },
+                        new InvoiceItemForCreationRequest()
+                        {
+                            ItemName = $"Additional Needs Cost {startDate:dd - MM - yyyy} - {dateTo:dd - MM - yyyy}",
+                            PricePerUnit = nursingCarePackage.NursingCareBrokerageInfo.AdditionalNeedsPayment,
+                            Quantity = weeks,
+                            CreatorId = _identityHelperUseCase.GetUserId()
+                        }
+                    };
+
+                    // Create one off cost invoice item if first pay run
+                    if (nursingCarePackage.PaidUpTo == null)
+                    {
+                        invoiceItems.Add(new InvoiceItemForCreationRequest
+                        {
+                            ItemName = "Nursing care package one off cost",
+                            PricePerUnit = nursingCarePackage.NursingCareBrokerageInfo.AdditionalNeedsPaymentOneOff,
+                            Quantity = 1,
+                            CreatorId = _identityHelperUseCase.GetUserId()
+                        });
+                    }
+
+                    // Create the invoice
+                    invoicesForCreation.Add(new InvoiceForCreationRequest
+                    {
+                        SupplierId = nursingCarePackage.SupplierId,
+                        PackageTypeId = PackageTypesConstants.NursingCarePackageId,
+                        ServiceUserId = nursingCarePackage.ClientId,
+                        CreatorId = _identityHelperUseCase.GetUserId(),
+                        DateFrom = startDate.Date,
+                        DateTo = dateTo,
+                        PackageId = nursingCarePackage.Id,
+                        InvoiceItems = invoiceItems
+                    });
+
+                    // Update paidUpTo
+                    nursingCarePackage.PaidUpTo = dateTo;
+                }
+
+                // Send invoices to transactions api
+                foreach (var invoiceForCreationRequest in invoicesForCreation)
+                {
+                    var res = await _transactionsService.CreateInvoiceUseCase(invoiceForCreationRequest)
+                        .ConfigureAwait(false);
+                }
+
+                await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
+            }
+
+            return true;
         }
     }
 }

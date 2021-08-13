@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApproveCommercialDomains;
+using System;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGateways
 {

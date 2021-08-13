@@ -1,29 +1,26 @@
-using AutoMapper;
 using Common.Exceptions.CustomExceptions;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApproveCommercialDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
-using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGateways
 {
     public class NursingCareApproveCommercialGateway : INursingCareApproveCommercialGateway
     {
         private readonly DatabaseContext _databaseContext;
-        private readonly IMapper _mapper;
         private readonly IIdentityHelperUseCase _identityHelperUseCase;
 
-        public NursingCareApproveCommercialGateway(DatabaseContext databaseContext, IMapper mapper, IIdentityHelperUseCase identityHelperUseCase)
+        public NursingCareApproveCommercialGateway(DatabaseContext databaseContext, IIdentityHelperUseCase identityHelperUseCase)
         {
             _databaseContext = databaseContext;
-            _mapper = mapper;
             _identityHelperUseCase = identityHelperUseCase;
         }
 

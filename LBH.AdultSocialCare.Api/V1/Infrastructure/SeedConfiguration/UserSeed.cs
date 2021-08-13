@@ -19,7 +19,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Email = "furkan@gmail.com",
                 UserName = "furkan@gmail.com",
                 PhoneNumber = "1234567890",
-                LockoutEnabled = false
+                LockoutEnabled = false,
+                ConcurrencyStamp = "6b3d758b-924a-482c-af77-e31711a74a2f"
             };
             passwordHasher.HashPassword(userOne, "Admin*123");
 
@@ -30,7 +31,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Email = "duncan@gmail.com",
                 UserName = "duncan@gmail.com",
                 PhoneNumber = "12345678910",
-                LockoutEnabled = false
+                LockoutEnabled = false,
+                ConcurrencyStamp = "df0c47dc-a59f-4a66-a2c0-1e844b073466"
             };
             passwordHasher.HashPassword(userTwo, "Admin*123");
 

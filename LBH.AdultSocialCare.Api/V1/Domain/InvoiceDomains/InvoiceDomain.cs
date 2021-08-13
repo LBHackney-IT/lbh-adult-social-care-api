@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains
 {
@@ -11,6 +9,9 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains
         public int? PackageTypeId { get; set; }
         public Guid? ServiceUserId { get; set; }
         public Guid? CreatorId { get; set; }
+        public DateTimeOffset DateFrom { get; set; }
+        public DateTimeOffset DateTo { get; set; }
+        public Guid? PackageId { get; set; }
         public IEnumerable<InvoiceItemDomain> InvoiceItems { get; set; }
     }
 }

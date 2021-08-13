@@ -21,5 +21,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
         public Task<IEnumerable<TypeOfResidentialCareHomeDomain>> GetListOfTypeOfResidentialCareHomeAsync();
 
         public Task<IEnumerable<ResidentialCareTypeOfStayOptionDomain>> GetListOfResidentialCareTypeOfStayOptionAsync();
+
+        public Task<int> GetClientPackagesCountAsync(Guid clientId);
+
+        Task<bool> GenerateResidentialCareInvoices(DateTimeOffset dateTo);
     }
 }

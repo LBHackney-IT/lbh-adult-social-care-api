@@ -55,12 +55,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareApproveBrokered
         public async Task<ActionResult<bool>> ApprovePackage(Guid residentialCarePackageId)
         {
             var result = await _changeStatusResidentialCarePackageUseCase.UpdateAsync(residentialCarePackageId, ApprovalHistoryConstants.PackageBrokeredId).ConfigureAwait(false);
-            //get invoice detail
-            var invoiceResponse = await _getResidentialCareInvoiceDetailUseCase.GetResidentialCareInvoiceDetail(residentialCarePackageId).ConfigureAwait(false);
-            //create an invoice
-            var invoiceCreationRequest = new InvoiceForCreationRequest();
-            _mapper.Map(invoiceResponse, invoiceCreationRequest);
-            await _transactionsService.CreateInvoiceUseCase(invoiceCreationRequest).ConfigureAwait(false);
+            ////get invoice detail
+            //var invoiceResponse = await _getResidentialCareInvoiceDetailUseCase.GetResidentialCareInvoiceDetail(residentialCarePackageId).ConfigureAwait(false);
+            ////create an invoice
+            //var invoiceCreationRequest = new InvoiceForCreationRequest();
+            //_mapper.Map(invoiceResponse, invoiceCreationRequest);
+            //await _transactionsService.CreateInvoiceUseCase(invoiceCreationRequest).ConfigureAwait(false);
             return Ok(result);
         }
     }

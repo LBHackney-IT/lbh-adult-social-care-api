@@ -1,4 +1,3 @@
-using AutoMapper;
 using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -9,18 +8,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Extensions;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways
 {
     public class SupplierGateway : ISupplierGateway
     {
         private readonly DatabaseContext _databaseContext;
-        private readonly IMapper _mapper;
 
-        public SupplierGateway(DatabaseContext databaseContext, IMapper mapper)
+        public SupplierGateway(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
-            _mapper = mapper;
         }
 
         public async Task<SupplierDomain> CreateAsync(Supplier supplier)
@@ -37,11 +36,19 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways
             }
         }
 
-        public async Task<IEnumerable<SupplierDomain>> ListAsync()
+        public async Task<PagedList<SupplierDomain>> ListAsync(RequestParameters parameters, string supplierName)
         {
-            var res = await _databaseContext.Suppliers
+            var suppliersCount = await _databaseContext.Suppliers
+                .FilterByName(supplierName)
+                .CountAsync().ConfigureAwait(false);
+
+            var suppliersPage = await _databaseContext.Suppliers
+                .FilterByName(supplierName)
+                .GetPage(parameters.PageNumber, parameters.PageSize)
                 .ToListAsync().ConfigureAwait(false);
-            return res?.ToDomain();
+
+            return PagedList<SupplierDomain>
+                .ToPagedList(suppliersPage?.ToDomain(), suppliersCount, parameters.PageNumber, parameters.PageSize);
         }
 
         public async Task<IEnumerable<SupplierMinimalDomain>> GetSupplierMinimalList()

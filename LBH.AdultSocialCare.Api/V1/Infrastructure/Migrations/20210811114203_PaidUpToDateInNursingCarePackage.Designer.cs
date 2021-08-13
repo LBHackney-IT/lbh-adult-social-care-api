@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210811114203_PaidUpToDateInNursingCarePackage")]
+    partial class PaidUpToDateInNursingCarePackage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2589,9 +2591,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<string>("NeedToAddress")
                         .HasColumnType("text");
 
-                    b.Property<DateTimeOffset?>("PaidUpTo")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int?>("StageId")
                         .HasColumnType("integer");
 
@@ -3154,7 +3153,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6b3d758b-924a-482c-af77-e31711a74a2f",
+                            ConcurrencyStamp = "df0c47dc-a59f-4a66-a2c0-1e844b073466",
                             Email = "furkan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
@@ -3168,7 +3167,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = new Guid("1f825b5f-5c65-41fb-8d9e-9d36d78fd6d8"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "df0c47dc-a59f-4a66-a2c0-1e844b073466",
+                            ConcurrencyStamp = "6b3d758b-924a-482c-af77-e31711a74a2f",
                             Email = "duncan@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,

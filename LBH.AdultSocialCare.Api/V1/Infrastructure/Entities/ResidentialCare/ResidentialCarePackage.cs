@@ -110,6 +110,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
 
         public Guid? AssignedUserId { get; set; }
 
+        public DateTimeOffset? PaidUpTo { get; set; }
+
         /// <summary>
         /// Gets or sets the Supplier Object
         /// </summary>
