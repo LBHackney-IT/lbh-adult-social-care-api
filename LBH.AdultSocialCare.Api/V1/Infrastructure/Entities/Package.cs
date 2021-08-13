@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-    public class Package : BaseEntityTmp
+    public class Package : BaseEntity
     {
         /// <summary>
         /// Gets or sets the Id

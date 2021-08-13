@@ -9,7 +9,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-    public class HomeCareSupplierCost : BaseEntityTmp
+    public class HomeCareSupplierCost : BaseEntity
     {
         /// <summary>
         /// Gets or sets the Id

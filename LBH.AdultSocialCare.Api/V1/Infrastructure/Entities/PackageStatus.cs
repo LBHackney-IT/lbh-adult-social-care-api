@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-    public class PackageStatus : BaseEntityTmp
+    public class PackageStatus : BaseEntity
     {
         /// <summary>
         /// Gets or sets the Id

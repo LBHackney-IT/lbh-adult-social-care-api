@@ -269,16 +269,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
         public override int SaveChanges()
         {
-            SetEntitiesCreatedOnSave();
-            SetEntitiesUpdatedOnSave();
+            SetEntitiesAuditInfo();
 
             return base.SaveChanges();
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
-            SetEntitiesCreatedOnSave();
-            SetEntitiesUpdatedOnSave();
+            SetEntitiesAuditInfo();
 
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
@@ -286,31 +284,32 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
             CancellationToken cancellationToken = new CancellationToken())
         {
-            SetEntitiesCreatedOnSave();
-            SetEntitiesUpdatedOnSave();
+            SetEntitiesAuditInfo();
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            SetEntitiesCreatedOnSave();
-            SetEntitiesUpdatedOnSave();
+            SetEntitiesAuditInfo();
 
             return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
+        private void SetEntitiesAuditInfo()
+        {
+            SetEntitiesCreatedOnSave();
+            SetEntitiesUpdatedOnSave();
+        }
+
         private void SetEntitiesCreatedOnSave()
         {
-            // TODO: VK: Temporary solution, replace BaseEntityTmp with BaseEntity
             var entitiesToCreate = FilterTrackedEntriesByState(EntityState.Added);
 
-            foreach (var entityEntry in entitiesToCreate)
+            foreach (var entity in entitiesToCreate)
             {
-                if (entityEntry.Entity is BaseEntityTmp baseEntity)
-                {
-                    baseEntity.CreatorId = new Guid(_httpContextAccessor.HttpContext.User.Identity.GetUserId());
-                }
+                entity.DateCreated = DateTimeOffset.UtcNow;
+                entity.CreatorId = new Guid(_httpContextAccessor.HttpContext.User.Identity.GetUserId());
             }
         }
 
@@ -318,23 +317,19 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         {
             var entitiesToUpdate = FilterTrackedEntriesByState(EntityState.Modified);
 
-            foreach (var entityEntry in entitiesToUpdate)
+            foreach (var entity in entitiesToUpdate)
             {
-                ((BaseEntity) entityEntry.Entity).DateUpdated = DateTimeOffset.UtcNow;
-
-                // TODO: VK: Temporary solution, replace BaseEntityTmp with BaseEntity
-                if (entityEntry.Entity is BaseEntityTmp baseEntity)
-                {
-                    baseEntity.UpdaterId = new Guid(_httpContextAccessor.HttpContext.User.Identity.GetUserId());
-                }
+                entity.DateUpdated = DateTimeOffset.UtcNow;
+                entity.UpdaterId = new Guid(_httpContextAccessor.HttpContext.User.Identity.GetUserId());
             }
         }
 
-        private IEnumerable<EntityEntry> FilterTrackedEntriesByState(EntityState entityState)
+        private IEnumerable<BaseEntity> FilterTrackedEntriesByState(EntityState entityState)
         {
             return ChangeTracker
                 .Entries()
-                .Where(e => e.Entity is BaseEntity && e.State == entityState);
+                .Where(e => e.Entity is BaseEntity && e.State == entityState)
+                .Select(e => (BaseEntity) e.Entity);
         }
     }
 }

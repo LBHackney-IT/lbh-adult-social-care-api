@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare
 {
-    public class DayCareApprovalHistory : BaseEntityTmp
+    public class DayCareApprovalHistory : BaseEntity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid HistoryId { get; set; }

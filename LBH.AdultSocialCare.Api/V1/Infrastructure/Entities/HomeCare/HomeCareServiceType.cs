@@ -7,7 +7,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
     /// <summary>
     /// Services object
     /// </summary>
-    public class HomeCareServiceType : BaseEntityTmp
+    public class HomeCareServiceType : BaseEntity
     {
 
         /// <summary>

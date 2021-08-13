@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-    public class Stage : BaseEntityTmp
+    public class Stage : BaseEntity
     {
         /// <summary>
         /// Gets or sets the Id

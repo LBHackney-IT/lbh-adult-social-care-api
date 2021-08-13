@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare
 {
-    public class DayCarePackageStatus : BaseEntityTmp
+    public class DayCarePackageStatus : BaseEntity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PackageStatusId { get; set; }

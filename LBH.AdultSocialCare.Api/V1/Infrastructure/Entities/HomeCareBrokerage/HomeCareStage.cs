@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage
 {
-    public class HomeCareStage : BaseEntityTmp
+    public class HomeCareStage : BaseEntity
     {
         /// <summary>
         /// Gets or sets the Id

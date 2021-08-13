@@ -7,7 +7,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
 {
-    public class HomeCarePackage : BaseEntityTmp
+    public class HomeCarePackage : BaseEntity
     {
         /// <summary>
         /// Gets or sets the Id

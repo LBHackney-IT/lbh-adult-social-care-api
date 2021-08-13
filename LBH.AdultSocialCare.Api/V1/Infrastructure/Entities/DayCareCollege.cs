@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-    public class DayCareCollege : BaseEntityTmp
+    public class DayCareCollege : BaseEntity
     {
         /// <summary>
         /// Gets or sets the Id

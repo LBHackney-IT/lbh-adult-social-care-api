@@ -7,7 +7,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerag
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
 {
-    public class ResidentialCarePackage : BaseEntityTmp
+    public class ResidentialCarePackage : BaseEntity
     {
         public ResidentialCarePackage()
         {
