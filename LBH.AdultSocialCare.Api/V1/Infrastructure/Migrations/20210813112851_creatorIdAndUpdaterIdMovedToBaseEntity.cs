@@ -101,26 +101,30 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 table: "TransportEscortPackages",
                 nullable: true);
 
-            migrationBuilder.AlterColumn<Guid>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "TimeSlotShifts");
+
+            migrationBuilder.AddColumn<Guid>(
                 name: "CreatorId",
                 table: "TimeSlotShifts",
                 nullable: false,
-                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                oldClrType: typeof(int),
-                oldType: "integer");
+                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
             migrationBuilder.AddColumn<Guid>(
                 name: "UpdaterId",
                 table: "TimeSlotShifts",
                 nullable: true);
 
-            migrationBuilder.AlterColumn<Guid>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "Suppliers");
+
+            migrationBuilder.AddColumn<Guid>(
                 name: "CreatorId",
                 table: "Suppliers",
                 nullable: false,
-                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                oldClrType: typeof(int),
-                oldType: "integer");
+                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
             migrationBuilder.AddColumn<Guid>(
                 name: "UpdaterId",
@@ -146,13 +150,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 table: "ResidentialCarePackageReclaims",
                 nullable: true);
 
-            migrationBuilder.AlterColumn<Guid>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "ResidentialCareBrokerageInfos");
+
+            migrationBuilder.AddColumn<Guid>(
                 name: "CreatorId",
                 table: "ResidentialCareBrokerageInfos",
                 nullable: false,
-                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                oldClrType: typeof(int),
-                oldType: "integer");
+                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
             migrationBuilder.AddColumn<Guid>(
                 name: "UpdaterId",
@@ -175,13 +181,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 oldClrType: typeof(Guid),
                 oldType: "uuid");
 
-            migrationBuilder.AlterColumn<Guid>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "Packages");
+
+            migrationBuilder.AddColumn<Guid>(
                 name: "CreatorId",
                 table: "Packages",
                 nullable: false,
-                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                oldClrType: typeof(int),
-                oldType: "integer");
+                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
             migrationBuilder.AddColumn<Guid>(
                 name: "UpdaterId",
@@ -228,13 +236,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 oldClrType: typeof(Guid),
                 oldType: "uuid");
 
-            migrationBuilder.AlterColumn<Guid>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "HomeCareSupplierCosts");
+
+            migrationBuilder.AddColumn<Guid>(
                 name: "CreatorId",
                 table: "HomeCareSupplierCosts",
                 nullable: false,
-                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                oldClrType: typeof(int),
-                oldType: "integer");
+                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
             migrationBuilder.AddColumn<DateTimeOffset>(
                 name: "DateCreated",
@@ -273,13 +283,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)));
 
-            migrationBuilder.AlterColumn<Guid>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "HomeCareServiceTypes");
+
+            migrationBuilder.AddColumn<Guid>(
                 name: "CreatorId",
                 table: "HomeCareServiceTypes",
                 nullable: false,
-                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                oldClrType: typeof(int),
-                oldType: "integer");
+                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
             migrationBuilder.AddColumn<Guid>(
                 name: "UpdaterId",
@@ -297,13 +309,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 table: "HomeCarePackageReclaims",
                 nullable: true);
 
-            migrationBuilder.AlterColumn<Guid>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "HomeCarePackageCosts");
+
+            migrationBuilder.AddColumn<Guid>(
                 name: "CreatorId",
                 table: "HomeCarePackageCosts",
                 nullable: false,
-                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                oldClrType: typeof(int),
-                oldType: "integer");
+                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
             migrationBuilder.AddColumn<Guid>(
                 name: "UpdaterId",
@@ -394,13 +408,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 table: "DayCareApprovalHistory",
                 nullable: true);
 
-            migrationBuilder.AlterColumn<Guid>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "Clients");
+
+            migrationBuilder.AddColumn<Guid>(
                 name: "CreatorId",
                 table: "Clients",
                 nullable: false,
-                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                oldClrType: typeof(int),
-                oldType: "integer");
+                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
             migrationBuilder.AddColumn<Guid>(
                 name: "UpdaterId",
@@ -412,14 +428,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 keyColumn: "Id",
                 keyValue: new Guid("2f043f6f-09ed-42f0-ab30-c0409c05cb7e"),
                 column: "CreatorId",
-                value: new Guid("00000000-0000-0000-0000-000000000000"));
+                value: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
             migrationBuilder.UpdateData(
                 table: "Clients",
                 keyColumn: "Id",
                 keyValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb80"),
                 column: "CreatorId",
-                value: new Guid("00000000-0000-0000-0000-000000000000"));
+                value: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
             migrationBuilder.UpdateData(
                 table: "HomeCareServiceTypes",
@@ -545,14 +561,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "CreatorId",
-                value: new Guid("00000000-0000-0000-0000-000000000000"));
+                value: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
             migrationBuilder.UpdateData(
                 table: "Suppliers",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "CreatorId",
-                value: new Guid("00000000-0000-0000-0000-000000000000"));
+                value: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
             migrationBuilder.UpdateData(
                 table: "TimeSlotShifts",
@@ -1458,13 +1474,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "UpdaterId",
                 table: "Clients");
 
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "TimeSlotShifts");
+
+            migrationBuilder.AddColumn<int>(
                 name: "CreatorId",
                 table: "TimeSlotShifts",
                 type: "integer",
                 nullable: false,
-                oldClrType: typeof(Guid),
-                oldDefaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "UpdatorId",
@@ -1473,13 +1492,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: 0);
 
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "Suppliers");
+
+            migrationBuilder.AddColumn<int>(
                 name: "CreatorId",
                 table: "Suppliers",
                 type: "integer",
                 nullable: false,
-                oldClrType: typeof(Guid),
-                oldDefaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "UpdatorId",
@@ -1496,13 +1518,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 oldClrType: typeof(Guid),
                 oldDefaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "ResidentialCareBrokerageInfos");
+
+            migrationBuilder.AddColumn<int>(
                 name: "CreatorId",
                 table: "ResidentialCareBrokerageInfos",
                 type: "integer",
                 nullable: false,
-                oldClrType: typeof(Guid),
-                oldDefaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "UpdatorId",
@@ -1527,13 +1552,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 oldClrType: typeof(Guid),
                 oldDefaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "Packages");
+
+            migrationBuilder.AddColumn<int>(
                 name: "CreatorId",
                 table: "Packages",
                 type: "integer",
                 nullable: false,
-                oldClrType: typeof(Guid),
-                oldDefaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "UpdatorId",
@@ -1572,13 +1600,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 oldClrType: typeof(Guid),
                 oldDefaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "HomeCareSupplierCosts");
+
+            migrationBuilder.AddColumn<int>(
                 name: "CreatorId",
                 table: "HomeCareSupplierCosts",
                 type: "integer",
                 nullable: false,
-                oldClrType: typeof(Guid),
-                oldDefaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "UpdatorId",
@@ -1595,13 +1626,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 oldClrType: typeof(Guid),
                 oldDefaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "HomeCareServiceTypes");
+
+            migrationBuilder.AddColumn<int>(
                 name: "CreatorId",
                 table: "HomeCareServiceTypes",
                 type: "integer",
                 nullable: false,
-                oldClrType: typeof(Guid),
-                oldDefaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "UpdatorId",
@@ -1610,13 +1644,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: 0);
 
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "HomeCarePackageCosts");
+
+            migrationBuilder.AddColumn<int>(
                 name: "CreatorId",
                 table: "HomeCarePackageCosts",
                 type: "integer",
                 nullable: false,
-                oldClrType: typeof(Guid),
-                oldDefaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "UpdatorId",
@@ -1669,7 +1706,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 table: "DayCareBrokerageInfo",
                 type: "uuid",
                 nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
+                defaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
             migrationBuilder.AddColumn<Guid>(
                 name: "UpdaterId",
@@ -1685,13 +1722,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 oldClrType: typeof(Guid),
                 oldDefaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.DropColumn(
+                name: "CreatorId",
+                table: "Clients");
+
+            migrationBuilder.AddColumn<int>(
                 name: "CreatorId",
                 table: "Clients",
                 type: "integer",
                 nullable: false,
-                oldClrType: typeof(Guid),
-                oldDefaultValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"));
+                defaultValue: 0);
 
             migrationBuilder.AddColumn<int>(
                 name: "UpdatorId",
