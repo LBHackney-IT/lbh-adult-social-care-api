@@ -7,7 +7,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
     /// <summary>
     /// Services object
     /// </summary>
-    public class HomeCareServiceType : BaseEntity
+    public class HomeCareServiceType : BaseEntityTmp
     {
 
         /// <summary>
@@ -20,16 +20,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// Gets or sets the Service Name
         /// </summary>
         public string ServiceName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public int CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updator Id
-        /// </summary>
-        public int UpdatorId { get; set; }
 
         /// <summary>
         /// Gets or sets the minutes for this service type.

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare
 {
-    public class TransportPackage : BaseEntity
+    public class TransportPackage : BaseEntityTmp
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid TransportPackageId { get; set; }

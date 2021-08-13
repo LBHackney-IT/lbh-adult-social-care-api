@@ -259,7 +259,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsThisAnImmediateService = homeCarePackageDomain.IsThisAnImmediateService,
                 IsThisuserUnderS117 = homeCarePackageDomain.IsThisuserUnderS117,
                 CreatorId = homeCarePackageDomain.CreatorId,
-                UpdatorId = homeCarePackageDomain.UpdatorId,
+                UpdaterId = homeCarePackageDomain.UpdaterId,
                 StatusId = homeCarePackageDomain.StatusId,
                 Status = homeCarePackageDomain.Status,
                 StageId = homeCarePackageDomain.StageId,
@@ -289,7 +289,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 County = clientsDomain.County,
                 PostCode = clientsDomain.PostCode,
                 CreatorId = clientsDomain.CreatorId,
-                UpdatorId = clientsDomain.UpdatorId
+                UpdaterId = clientsDomain.UpdaterId
             };
         }
 
@@ -323,7 +323,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 PackageType = packageDomain.PackageType,
                 Sequence = packageDomain.Sequence,
                 CreatorId = packageDomain.CreatorId,
-                UpdatorId = packageDomain.UpdatorId
+                UpdaterId = packageDomain.UpdaterId
             };
         }
 
@@ -369,7 +369,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Id = homeCareServiceDomain.Id,
                 ServiceName = homeCareServiceDomain.ServiceName,
                 CreatorId = homeCareServiceDomain.CreatorId,
-                UpdatorId = homeCareServiceDomain.UpdatorId,
+                UpdaterId = homeCareServiceDomain.UpdaterId,
             };
         }
 
@@ -422,7 +422,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 TimeSlotShiftName = timeSlotShiftsDomain.TimeSlotShiftName,
                 TimeSlotTimeLabel = timeSlotShiftsDomain.TimeSlotTimeLabel,
                 CreatorId = timeSlotShiftsDomain.CreatorId,
-                UpdatorId = timeSlotShiftsDomain.UpdatorId
+                UpdaterId = timeSlotShiftsDomain.UpdaterId
             };
         }
 

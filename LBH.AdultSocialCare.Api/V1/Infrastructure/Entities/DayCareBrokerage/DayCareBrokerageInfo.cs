@@ -25,8 +25,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage
         public int? EscortSupplierId { get; set; }
         public int? EscortHoursPerWeek { get; set; }
         public decimal? EscortCostPerHour { get; set; }
-        public Guid CreatorId { get; set; }
-        public Guid? UpdaterId { get; set; }
 
         [ForeignKey(nameof(DayCarePackageId))] public DayCarePackage DayCarePackage { get; set; }
         [ForeignKey(nameof(CorePackageSupplierId))] public Supplier CorePackageSupplier { get; set; }
@@ -34,7 +32,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage
         [ForeignKey(nameof(TransportEscortSupplierId))] public Supplier TransportEscortSupplier { get; set; }
         [ForeignKey(nameof(DayCareOpportunitiesSupplierId))] public Supplier DayCareOpportunitiesSupplier { get; set; }
         [ForeignKey(nameof(EscortSupplierId))] public Supplier EscortSupplier { get; set; }
-        [ForeignKey(nameof(CreatorId))] public User Creator { get; set; }
-        [ForeignKey(nameof(UpdaterId))] public User Updater { get; set; }
     }
 }

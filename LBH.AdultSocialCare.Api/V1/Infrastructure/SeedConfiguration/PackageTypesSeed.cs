@@ -15,32 +15,32 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
             {
                 Id = PackageTypesConstants.HomeCarePackageId,
                 PackageType = PackageTypesConstants.HomeCarePackage,
-                CreatorId = 1,
-                UpdatorId = 1,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Package
             {
                 Id = PackageTypesConstants.ResidentialCarePackageId,
                 PackageType = PackageTypesConstants.ResidentialCarePackage,
-                CreatorId = 1,
-                UpdatorId = 1,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Package
             {
                 Id = PackageTypesConstants.DayCarePackageId,
                 PackageType = PackageTypesConstants.DayCarePackage,
-                CreatorId = 1,
-                UpdatorId = 1,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Package
             {
                 Id = PackageTypesConstants.NursingCarePackageId,
                 PackageType = PackageTypesConstants.NursingCarePackage,
-                CreatorId = 1,
-                UpdatorId = 1,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             });

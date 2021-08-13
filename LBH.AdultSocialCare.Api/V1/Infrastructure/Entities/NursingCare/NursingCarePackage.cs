@@ -38,8 +38,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
         [ForeignKey(nameof(SupplierId))] public Supplier Supplier { get; set; }
         [ForeignKey(nameof(TypeOfNursingCareHomeId))] public TypeOfNursingCareHome TypeOfCareHome { get; set; }
         [ForeignKey(nameof(TypeOfStayId))] public NursingCareTypeOfStayOption TypeOfStayOption { get; set; }
-        [ForeignKey(nameof(CreatorId))] public User Creator { get; set; }
-        [ForeignKey(nameof(UpdaterId))] public User Updater { get; set; }
         [ForeignKey(nameof(AssignedUserId))] public User AssignedUser { get; set; }
 
         public virtual ICollection<NursingCareAdditionalNeed> NursingCareAdditionalNeeds { get; set; }

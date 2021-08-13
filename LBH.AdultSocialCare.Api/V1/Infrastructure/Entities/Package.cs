@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-    public class Package : BaseEntity
+    public class Package : BaseEntityTmp
     {
         /// <summary>
         /// Gets or sets the Id
@@ -20,15 +20,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Sequence
         /// </summary>
         public int Sequence { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public int CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updator Id
-        /// </summary>
-        public int UpdatorId { get; set; }
     }
 }

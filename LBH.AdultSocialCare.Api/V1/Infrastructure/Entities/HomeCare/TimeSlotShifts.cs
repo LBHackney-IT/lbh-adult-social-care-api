@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
 {
-    public class TimeSlotShifts : BaseEntity
+    public class TimeSlotShifts : BaseEntityTmp
     {
         /// <summary>
         /// Gets or sets the Id
@@ -34,15 +34,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// </summary>
         [ForeignKey(nameof(LinkedToHomeCareServiceTypeId))]
         public HomeCareServiceType HomeCareServiceType { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public int CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updator Id
-        /// </summary>
-        public int UpdatorId { get; set; }
     }
 }

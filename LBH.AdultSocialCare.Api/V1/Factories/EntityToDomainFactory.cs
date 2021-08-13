@@ -481,7 +481,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 PostCode = clientEntity.PostCode,
                 CreatorId = clientEntity.CreatorId,
                 DateCreated = clientEntity.DateCreated,
-                UpdatorId = clientEntity.UpdatorId,
+                UpdaterId = clientEntity.UpdaterId,
                 DateUpdated = clientEntity.DateUpdated
             };
         }
@@ -522,7 +522,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Sequence = packageEntity.Sequence,
                 CreatorId = packageEntity.CreatorId,
                 DateCreated = packageEntity.DateCreated,
-                UpdatorId = packageEntity.UpdatorId,
+                UpdaterId = packageEntity.UpdaterId,
                 DateUpdated = packageEntity.DateUpdated
             };
         }
@@ -590,7 +590,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 ServiceName = serviceEntity.ServiceName,
                 CreatorId = serviceEntity.CreatorId,
                 DateCreated = serviceEntity.DateCreated,
-                UpdatorId = serviceEntity.UpdatorId,
+                UpdaterId = serviceEntity.UpdaterId,
                 DateUpdated = serviceEntity.DateUpdated
             };
         }
@@ -647,7 +647,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 TimeSlotTimeLabel = timeSlotShiftsEntity.TimeSlotTimeLabel,
                 CreatorId = timeSlotShiftsEntity.CreatorId,
                 DateCreated = timeSlotShiftsEntity.DateCreated,
-                UpdatorId = timeSlotShiftsEntity.UpdatorId,
+                UpdaterId = timeSlotShiftsEntity.UpdaterId,
                 DateUpdated = timeSlotShiftsEntity.DateUpdated
             };
         }

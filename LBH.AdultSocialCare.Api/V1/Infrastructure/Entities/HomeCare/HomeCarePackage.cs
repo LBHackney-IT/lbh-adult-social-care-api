@@ -7,7 +7,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
 {
-    public class HomeCarePackage : BaseEntity
+    public class HomeCarePackage : BaseEntityTmp
     {
         /// <summary>
         /// Gets or sets the Id
@@ -55,16 +55,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// Gets or sets the Is This An Immediate Service
         /// </summary>
         public bool IsThisuserUnderS117 { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public Guid CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updator Id
-        /// </summary>
-        public int UpdatorId { get; set; }
 
         /// <summary>
         /// Gets or sets the PackageStatuses Id

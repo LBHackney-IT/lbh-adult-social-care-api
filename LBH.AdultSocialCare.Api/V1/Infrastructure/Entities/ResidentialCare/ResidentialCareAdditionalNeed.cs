@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
 {
-    public class ResidentialCareAdditionalNeed : BaseEntity
+    public class ResidentialCareAdditionalNeed : BaseEntityTmp
     {
         /// <summary>
         /// Gets or sets the Id
@@ -32,24 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
         /// </summary>
         public string NeedToAddress { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public Guid CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updater Id
-        /// </summary>
-        public Guid? UpdaterId { get; set; }
-
         [ForeignKey(nameof(ResidentialCarePackageId))]
         public ResidentialCarePackage ResidentialCarePackage { get; set; }
-
-        [ForeignKey(nameof(CreatorId))]
-        public User Creator { get; set; }
-
-        [ForeignKey(nameof(UpdaterId))]
-        public User Updater { get; set; }
-
     }
 }

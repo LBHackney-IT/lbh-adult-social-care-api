@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage
 {
-    public class ResidentialCareBrokerageInfo : BaseEntity
+    public class ResidentialCareBrokerageInfo : BaseEntityTmp
     {
         /// <summary>
         /// Gets or sets the Id
@@ -38,15 +38,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrok
         /// Gets or sets the Additional Needs Payment One Off
         /// </summary>
         public decimal AdditionalNeedsPaymentOneOff { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public int CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updator Id
-        /// </summary>
-        public int UpdatorId { get; set; }
     }
 }

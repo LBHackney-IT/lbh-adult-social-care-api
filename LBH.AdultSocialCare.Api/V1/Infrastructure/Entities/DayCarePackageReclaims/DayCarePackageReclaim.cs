@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims
 {
-    public class DayCarePackageReclaim : BaseEntity
+    public class DayCarePackageReclaim : BaseEntityTmp
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid DayCarePackageReclaimId { get; set; }
