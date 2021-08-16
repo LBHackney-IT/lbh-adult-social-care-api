@@ -1,5 +1,6 @@
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
+using HttpServices.Models;
 using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
@@ -13,14 +14,11 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using HttpServices.Models;
 
 namespace HttpServices.Services.Concrete
 {
-
     public class TransactionsService : ITransactionsService
     {
-
         private readonly HttpClient _client;
         private readonly IRestClient _restClient;
         private readonly string _baseUrl;
@@ -451,13 +449,16 @@ namespace HttpServices.Services.Concrete
                     "supplierId", parameters.SupplierId != null? $"{parameters.SupplierId}": ""
                 },
                 {
+                    "serviceUserId", parameters.ServiceUserId != null? $"{parameters.ServiceUserId}": ""
+                },
+                {
                     "packageTypeId", parameters.PackageTypeId != null? $"{parameters.PackageTypeId}": ""
                 },
                 {
                     "invoiceItemPaymentStatusId", parameters.InvoiceStatusId != null? $"{parameters.InvoiceStatusId}": ""
                 },
                 {
-                    "searchTerm", parameters.SearchTerm != null? $"{parameters.SearchTerm}": ""
+                    "searchTerm", parameters.InvoiceNumber != null? $"{parameters.InvoiceNumber}": ""
                 },
                 {
                     "dateFrom", parameters.DateFrom != null?$"{parameters.DateFrom?.DateTimeOffsetToISOString()}": ""
