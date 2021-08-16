@@ -191,14 +191,14 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
                     {
                         new InvoiceItemForCreationRequest
                         {
-                            ItemName = $"Nursing Care Core Cost {startDate:dd - MM - yyyy} - {dateTo:dd - MM - yyyy}",
+                            ItemName = $"Nursing Care Core Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
                             PricePerUnit = nursingCarePackage.NursingCareBrokerageInfo.NursingCore,
                             Quantity = weeks,
                             CreatorId = _identityHelperUseCase.GetUserId()
                         },
                         new InvoiceItemForCreationRequest()
                         {
-                            ItemName = $"Additional Needs Cost {startDate:dd - MM - yyyy} - {dateTo:dd - MM - yyyy}",
+                            ItemName = $"Additional Needs Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
                             PricePerUnit = nursingCarePackage.NursingCareBrokerageInfo.AdditionalNeedsPayment,
                             Quantity = weeks,
                             CreatorId = _identityHelperUseCase.GetUserId()

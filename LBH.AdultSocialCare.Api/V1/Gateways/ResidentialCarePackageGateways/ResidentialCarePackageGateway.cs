@@ -180,14 +180,14 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
                 {
                     new InvoiceItemForCreationRequest
                     {
-                        ItemName = $"Residential Care Core Cost {startDate:dd - MM - yyyy} - {dateTo:dd - MM - yyyy}",
+                        ItemName = $"Residential Care Core Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
                         PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCore,
                         Quantity = weeks,
                         CreatorId = _identityHelperUseCase.GetUserId()
                     },
                     new InvoiceItemForCreationRequest()
                     {
-                        ItemName = $"Additional Needs Cost {startDate:dd - MM - yyyy} - {dateTo:dd - MM - yyyy}",
+                        ItemName = $"Additional Needs Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
                         PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.AdditionalNeedsPayment,
                         Quantity = weeks,
                         CreatorId = _identityHelperUseCase.GetUserId()
