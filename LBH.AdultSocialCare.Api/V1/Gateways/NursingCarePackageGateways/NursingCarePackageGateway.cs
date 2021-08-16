@@ -157,7 +157,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
 
             // Get all relevant nursing care package ids
             var nursingCarePackagesIds = await _databaseContext.NursingCarePackages.Where(nc =>
-                    ((nc.EndDate == null && nc.PaidUpTo == null) || (nc.EndDate != null && nc.EndDate < nc.PaidUpTo && dateTo.AddDays(-7) > nc.PaidUpTo)) &&
+                    ((nc.EndDate == null && nc.PaidUpTo == null) || (nc.EndDate != null && nc.EndDate < nc.PaidUpTo && dateTo.AddDays(-1) > nc.PaidUpTo)) &&
                     nc.NursingCareBrokerageInfo.NursingCareBrokerageId != null
                 )
                 .Select(nc => nc.Id)
@@ -235,10 +235,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
                 }
 
                 // Send invoices to transactions api
-                foreach (var invoiceForCreationRequest in invoicesForCreation)
+                /*foreach (var invoiceForCreationRequest in invoicesForCreation)
                 {
                     var res = await _transactionsService.CreateInvoiceUseCase(invoiceForCreationRequest)
                         .ConfigureAwait(false);
+                }*/
+
+                if (invoicesForCreation.Count > 0)
+                {
+                    await _transactionsService.BatchCreateInvoicesUseCase(invoicesForCreation).ConfigureAwait(false);
                 }
 
                 await _databaseContext.SaveChangesAsync().ConfigureAwait(false);

@@ -1,18 +1,18 @@
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
+using HttpServices.Models.Requests;
+using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using HttpServices.Models.Requests;
-using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
 {
@@ -156,7 +156,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
                     ((rc.EndDate == null &&
                       rc.PaidUpTo == null) || (rc.EndDate != null &&
                       rc.EndDate < rc.PaidUpTo &&
-                      dateTo.AddDays(-7) > rc.PaidUpTo)) &&
+                      dateTo.AddDays(-1) > rc.PaidUpTo)) &&
                       rc.ResidentialCareBrokerageInfo.Id != null
                 )
                 .Select(rc => rc.Id)
@@ -220,10 +220,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
                 residentialCarePackage.PaidUpTo = dateTo;
             }
 
-            foreach (var invoiceForCreationRequest in invoicesForCreation)
+            /*foreach (var invoiceForCreationRequest in invoicesForCreation)
             {
                 var res = await _transactionsService.CreateInvoiceUseCase(invoiceForCreationRequest)
                     .ConfigureAwait(false);
+            }*/
+
+            if (invoicesForCreation.Count > 0)
+            {
+                await _transactionsService.BatchCreateInvoicesUseCase(invoicesForCreation).ConfigureAwait(false);
             }
 
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
