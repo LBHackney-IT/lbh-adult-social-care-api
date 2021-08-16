@@ -3,6 +3,8 @@ using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
+using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +24,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
     {
         private readonly ITransactionsService _transactionsService;
         private readonly IPayRunUseCase _payRunUseCase;
+        private readonly IResetPackagePaidUpToDateUseCase _resetPackagePaidUpToDateUseCase;
 
-        public TransactionsController(ITransactionsService transactionsService, IPayRunUseCase payRunUseCase)
+        public TransactionsController(ITransactionsService transactionsService, IPayRunUseCase payRunUseCase, IResetPackagePaidUpToDateUseCase resetPackagePaidUpToDateUseCase)
         {
             _transactionsService = transactionsService;
             _payRunUseCase = payRunUseCase;
+            _resetPackagePaidUpToDateUseCase = resetPackagePaidUpToDateUseCase;
         }
 
         [HttpGet("departments/payment-departments")]
@@ -318,6 +322,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         public async Task<ActionResult<IEnumerable<PayRunStatusResponse>>> GetAllUniquePayRunStatuses()
         {
             var result = await _transactionsService.GetAllUniquePayRunStatusesUseCase().ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        [HttpPost("pay-runs/invoice-date-reset")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> ResetPackagePaidUpToDate([FromBody] List<InvoiceDomain> invoiceDomains)
+        {
+            var result = await _resetPackagePaidUpToDateUseCase.ExecuteAsync(invoiceDomains).ConfigureAwait(false);
             return Ok(result);
         }
     }
