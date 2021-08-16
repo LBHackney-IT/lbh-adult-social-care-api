@@ -58,6 +58,8 @@ namespace HttpServices.Services.Contracts
 
         Task<InvoiceResponse> CreateInvoiceUseCase(InvoiceForCreationRequest invoiceForCreationRequest);
 
+        Task<IEnumerable<InvoiceResponse>> BatchCreateInvoicesUseCase(IEnumerable<InvoiceForCreationRequest> invoices);
+
         Task<IEnumerable<InvoiceStatusResponse>> GetAllInvoiceStatusesUseCase();
 
         Task<IEnumerable<InvoiceStatusResponse>> GetInvoicePaymentStatusesUseCase();
