@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases.Interfaces
 {
     public interface IResetPackagePaidUpToDateUseCase
     {
-        Task<bool> ExecuteAsync(List<InvoiceDomain> invoices);
+        Task<bool> ExecuteAsync(List<InvoiceForResetDomain> invoiceForResetDomains);
     }
 }

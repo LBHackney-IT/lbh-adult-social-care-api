@@ -3,9 +3,11 @@ using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
 using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -327,10 +329,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
 
         [HttpPost("pay-runs/invoice-date-reset")]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<bool>> ResetPackagePaidUpToDate([FromBody] List<InvoiceDomain> invoiceDomains)
+        [AllowAnonymous]
+        public async Task<ActionResult<GenericSuccessResponse>> ResetPackagePaidUpToDate([FromBody] List<InvoiceForResetDomain> invoiceForResetDomains)
         {
-            var result = await _resetPackagePaidUpToDateUseCase.ExecuteAsync(invoiceDomains).ConfigureAwait(false);
-            return Ok(result);
+            var result = await _resetPackagePaidUpToDateUseCase.ExecuteAsync(invoiceForResetDomains).ConfigureAwait(false);
+            return Ok(new GenericSuccessResponse
+            {
+                IsSuccess = result,
+                Message = "Success"
+            });
         }
     }
 }

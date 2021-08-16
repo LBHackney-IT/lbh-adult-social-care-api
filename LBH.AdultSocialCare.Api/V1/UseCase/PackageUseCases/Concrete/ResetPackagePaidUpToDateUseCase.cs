@@ -18,12 +18,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases.Concrete
             _nursingCarePackageGateway = nursingCarePackageGateway;
         }
 
-        public async Task<bool> ExecuteAsync(List<InvoiceDomain> invoices)
+        public async Task<bool> ExecuteAsync(List<InvoiceForResetDomain> invoiceForResetDomains)
         {
             var nursingCarePackageIds = new List<Guid>();
             var residentialCarePackageIds = new List<Guid>();
 
-            foreach (var invoice in invoices)
+            foreach (var invoice in invoiceForResetDomains)
             {
                 switch (invoice.PackageTypeId)
                 {
