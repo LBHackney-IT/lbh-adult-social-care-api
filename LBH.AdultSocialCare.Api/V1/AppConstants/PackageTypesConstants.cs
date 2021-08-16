@@ -12,8 +12,8 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants
         public const string NursingCarePackage = "Nursing Care Package";
         public const int NursingCarePackageId = 4;
         public const string ResidentialCarePackage = "Residential Care Package";
-        public const int ResidentialCarePackageId = 3;
+        public const int ResidentialCarePackageId = 2;
         public const string DayCarePackage = "Day Care Package";
-        public const int DayCarePackageId = 2;
+        public const int DayCarePackageId = 3;
     }
 }
