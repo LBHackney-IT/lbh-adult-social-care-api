@@ -99,5 +99,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 ? clientToUpdate
                 : null;
         }
+
+        public async Task<ClientsDomain> GetRandomAsync()
+        {
+            int total = await _databaseContext.Clients.CountAsync().ConfigureAwait(false);
+            Random r = new Random();
+            int offset = r.Next(0, total);
+
+            var result = _databaseContext.Clients.Skip(offset).FirstOrDefault();
+            return result?.ToDomain();
+        }
     }
 }
