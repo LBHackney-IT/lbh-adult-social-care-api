@@ -122,6 +122,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
 
         public DateTimeOffset? PaidUpTo { get; set; }
 
+        public DateTimeOffset? PreviousPaidUpTo { get; set; }
+
         /// <summary>
         /// Gets or sets the Supplier Object
         /// </summary>
