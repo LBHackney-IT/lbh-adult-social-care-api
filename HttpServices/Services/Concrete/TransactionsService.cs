@@ -1152,7 +1152,7 @@ namespace HttpServices.Services.Concrete
             return res;
         }
 
-        public async Task<DisputedInvoiceChatResponse> CreatePayRunHeldChatUseCase(Guid payRunId,
+        public async Task<DisputedInvoiceChatResponse> CreatePayRunHeldChatUseCase(Guid payRunId, Guid invoiceId,
             DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest)
         {
             var body = JsonConvert.SerializeObject(disputedInvoiceChatForCreationRequest);
@@ -1161,7 +1161,7 @@ namespace HttpServices.Services.Concrete
             var httpRequestMessage = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{_baseUrl}api/v1/pay-runs{payRunId}/create-held-chat"),
+                RequestUri = new Uri($"{_baseUrl}api/v1/pay-runs/{payRunId}/invoices/{invoiceId}/create-held-chat"),
                 Headers =
                 {
                     {
