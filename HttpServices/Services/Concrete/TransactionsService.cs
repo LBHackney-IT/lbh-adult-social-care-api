@@ -457,6 +457,9 @@ namespace HttpServices.Services.Concrete
                     "packageTypeId", parameters.PackageTypeId != null? $"{parameters.PackageTypeId}": ""
                 },
                 {
+                    "invoiceStatusId", parameters.InvoiceStatusId != null? $"{parameters.InvoiceStatusId}": ""
+                },
+                {
                     "invoiceItemPaymentStatusId", parameters.InvoiceStatusId != null? $"{parameters.InvoiceStatusId}": ""
                 },
                 {
