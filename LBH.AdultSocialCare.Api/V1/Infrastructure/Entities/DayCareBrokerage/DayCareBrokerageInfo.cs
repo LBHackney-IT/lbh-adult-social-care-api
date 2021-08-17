@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage
 {
-    public class DayCareBrokerageInfo
+    public class DayCareBrokerageInfo : BaseEntity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid BrokerageInfoId { get; set; }
