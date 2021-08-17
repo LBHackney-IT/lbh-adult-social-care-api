@@ -3,7 +3,11 @@ using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.V1.Boundary.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
+using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -22,11 +26,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
     {
         private readonly ITransactionsService _transactionsService;
         private readonly IPayRunUseCase _payRunUseCase;
+        private readonly IResetPackagePaidUpToDateUseCase _resetPackagePaidUpToDateUseCase;
 
-        public TransactionsController(ITransactionsService transactionsService, IPayRunUseCase payRunUseCase)
+        public TransactionsController(ITransactionsService transactionsService, IPayRunUseCase payRunUseCase, IResetPackagePaidUpToDateUseCase resetPackagePaidUpToDateUseCase)
         {
             _transactionsService = transactionsService;
             _payRunUseCase = payRunUseCase;
+            _resetPackagePaidUpToDateUseCase = resetPackagePaidUpToDateUseCase;
         }
 
         [HttpGet("departments/payment-departments")]
@@ -289,11 +295,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         }
 
         // Create disputed invoice chat
-        [HttpPost("pay-runs/{payRunId}/create-held-chat")]
+        [HttpPost("pay-runs/{payRunId}/invoices/{invoiceId}/create-held-chat")]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<DisputedInvoiceChatResponse>> CreateDisputedInvoiceChat(Guid payRunId, [FromBody] DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest)
+        public async Task<ActionResult<DisputedInvoiceChatResponse>> CreateDisputedInvoiceChat(Guid payRunId, Guid invoiceId, [FromBody] DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest)
         {
-            var result = await _transactionsService.CreatePayRunHeldChatUseCase(payRunId, disputedInvoiceChatForCreationRequest).ConfigureAwait(false);
+            var result = await _transactionsService.CreatePayRunHeldChatUseCase(payRunId, invoiceId, disputedInvoiceChatForCreationRequest).ConfigureAwait(false);
             return Ok(result);
         }
 
@@ -319,6 +325,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         {
             var result = await _transactionsService.GetAllUniquePayRunStatusesUseCase().ConfigureAwait(false);
             return Ok(result);
+        }
+
+        [HttpPost("pay-runs/invoice-date-reset")]
+        [ProducesDefaultResponseType]
+        [AllowAnonymous]
+        public async Task<ActionResult<GenericSuccessResponse>> ResetPackagePaidUpToDate([FromBody] List<InvoiceForResetDomain> invoiceForResetDomains)
+        {
+            var result = await _resetPackagePaidUpToDateUseCase.ExecuteAsync(invoiceForResetDomains).ConfigureAwait(false);
+            return Ok(new GenericSuccessResponse
+            {
+                IsSuccess = result,
+                Message = "Success"
+            });
         }
     }
 }

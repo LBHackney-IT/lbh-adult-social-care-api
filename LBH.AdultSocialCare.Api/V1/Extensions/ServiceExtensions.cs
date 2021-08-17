@@ -36,8 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 SslProtocols = SslProtocols.Tls12,
                 AllowAutoRedirect = false,
                 UseDefaultCredentials = true
-            })
-            ;
+            });
 
         public static void ConfigureIdentityService(this IServiceCollection services) => services.AddIdentity<User, Role>(
                 o =>

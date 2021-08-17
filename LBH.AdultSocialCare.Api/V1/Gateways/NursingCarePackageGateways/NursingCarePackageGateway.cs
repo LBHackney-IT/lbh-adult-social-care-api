@@ -230,6 +230,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
                         InvoiceItems = invoiceItems
                     });
 
+                    // update previous paid up to
+                    nursingCarePackage.PreviousPaidUpTo = nursingCarePackage.PaidUpTo;
+
                     // Update paidUpTo
                     nursingCarePackage.PaidUpTo = dateTo;
                 }
@@ -248,6 +251,22 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
 
                 await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
             }
+
+            return true;
+        }
+
+        public async Task<bool> ResetInvoicePaidUpToDate(List<Guid> nursingCarePackageIds)
+        {
+            var nursingCarePackages = await _databaseContext.NursingCarePackages
+                .Where(nc => nursingCarePackageIds.Contains(nc.Id))
+                .ToListAsync().ConfigureAwait(false);
+
+            foreach (var nursingCarePackage in nursingCarePackages)
+            {
+                nursingCarePackage.PaidUpTo = nursingCarePackage.PreviousPaidUpTo;
+            }
+
+            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
 
             return true;
         }

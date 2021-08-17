@@ -31,6 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
         public int? SupplierId { get; set; }
         public Guid? AssignedUserId { get; set; }
         public DateTimeOffset? PaidUpTo { get; set; }
+        public DateTimeOffset? PreviousPaidUpTo { get; set; }
 
         [ForeignKey(nameof(ClientId))] public Client Client { get; set; }
         [ForeignKey(nameof(StatusId))] public PackageStatus Status { get; set; }

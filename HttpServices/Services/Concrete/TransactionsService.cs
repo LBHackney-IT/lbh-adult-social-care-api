@@ -22,10 +22,12 @@ namespace HttpServices.Services.Concrete
         private readonly HttpClient _client;
         private readonly IRestClient _restClient;
         private readonly string _baseUrl;
+        private readonly string _apiKey;
 
         public TransactionsService(HttpClient client, IRestClient restClient, IOptions<TransactionApiOptions> options)
         {
             _baseUrl = options.Value.TransactionsBaseUrl.ToString();
+            _apiKey = options.Value.TransactionsApiKey;
             _client = client;
             _restClient = restClient;
         }
@@ -819,14 +821,14 @@ namespace HttpServices.Services.Concrete
         public async Task<InvoiceResponse> CreateInvoiceUseCase(InvoiceForCreationRequest invoiceForCreationRequest)
         {
             return await _restClient
-                .Post<InvoiceResponse>($"{_baseUrl}api/v1/invoices", invoiceForCreationRequest, "Failed to create invoice")
+                .Post<InvoiceResponse>($"{_baseUrl}api/v1/invoices", invoiceForCreationRequest, "Failed to create invoice", _apiKey)
                 .ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<InvoiceResponse>> BatchCreateInvoicesUseCase(IEnumerable<InvoiceForCreationRequest> invoices)
         {
             return await _restClient
-                .Post<IEnumerable<InvoiceResponse>>($"{_baseUrl}api/v1/invoices/batch", invoices, "Failed to create invoices")
+                .Post<IEnumerable<InvoiceResponse>>($"{_baseUrl}api/v1/invoices/batch", invoices, "Failed to create invoices", _apiKey)
                 .ConfigureAwait(false);
         }
 
@@ -1150,7 +1152,7 @@ namespace HttpServices.Services.Concrete
             return res;
         }
 
-        public async Task<DisputedInvoiceChatResponse> CreatePayRunHeldChatUseCase(Guid payRunId,
+        public async Task<DisputedInvoiceChatResponse> CreatePayRunHeldChatUseCase(Guid payRunId, Guid invoiceId,
             DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest)
         {
             var body = JsonConvert.SerializeObject(disputedInvoiceChatForCreationRequest);
@@ -1159,7 +1161,7 @@ namespace HttpServices.Services.Concrete
             var httpRequestMessage = new HttpRequestMessage
             {
                 Method = HttpMethod.Post,
-                RequestUri = new Uri($"{_baseUrl}api/v1/pay-runs{payRunId}/create-held-chat"),
+                RequestUri = new Uri($"{_baseUrl}api/v1/pay-runs/{payRunId}/invoices/{invoiceId}/create-held-chat"),
                 Headers =
                 {
                     {

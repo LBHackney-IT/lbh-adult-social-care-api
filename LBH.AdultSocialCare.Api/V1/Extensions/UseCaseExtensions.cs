@@ -1,13 +1,12 @@
 using HttpServices.Services.Concrete;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways;
-using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.BrokeredPackagesUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.BrokeredPackagesUseCases.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCareCollegeUseCase.Concrete;
@@ -56,6 +55,8 @@ using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityTimesPerMonthOptionUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.PackageStatusUseCases;
 using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases;
+using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.PrimarySupportReasonUseCase.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.PrimarySupportReasonUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ReclaimUseCase.Concrete;
@@ -111,6 +112,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetPackageUseCase, GetPackageUseCase>();
             services.AddScoped<IGetAllPackageUseCase, GetAllPackageUseCase>();
             services.AddScoped<IDeletePackageUseCase, DeletePackageUseCase>();
+            services.AddScoped<IResetPackagePaidUpToDateUseCase, ResetPackagePaidUpToDateUseCase>();
 
             #endregion Package
 
@@ -400,33 +402,32 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetSubmittedPackageRequestsUseCase, GetSubmittedPackageRequestsUseCase>();
             services.AddScoped<IGetAllPackageStatusUseCase, GetAllPackageStatusUseCase>();
 
-            #endregion
+            #endregion SubmittedPackageRequests
 
             #region ApprovedPackages
 
             services.AddScoped<IGetApprovedPackagesUseCase, GetApprovedPackagesUseCase>();
 
-            #endregion
+            #endregion ApprovedPackages
 
             #region BrokeredPackages
 
             services.AddScoped<IGetBrokeredPackagesUseCase, GetBrokeredPackagesUseCase>();
             services.AddScoped<IAssignToUserUseCase, AssignToUserUseCase>();
 
-            #endregion
+            #endregion BrokeredPackages
 
             #region Transaction
 
             services.AddScoped<ITransactionsService, TransactionsService>();
 
-            #endregion
+            #endregion Transaction
 
             #region IdentityHelper
 
             services.AddScoped<IIdentityHelperUseCase, IdentityHelperUseCase>();
 
-            #endregion
-
+            #endregion IdentityHelper
         }
     }
 }
