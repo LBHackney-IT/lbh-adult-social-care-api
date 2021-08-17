@@ -153,11 +153,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases
         private async Task<Guid?> CreateResidentialRecurringPayRun(PayRunForCreationRequest payRunForCreationRequest)
         {
             // Generate nursing care invoices
-            await _nursingCarePackageGateway.GenerateNursingCareInvoices(payRunForCreationRequest.DateTo)
+            await _nursingCarePackageGateway.GenerateNursingCareInvoices(payRunForCreationRequest.DateTo.Date)
                 .ConfigureAwait(false);
 
             // Generate residential care invoices
-            await _residentialCarePackageGateway.GenerateResidentialCareInvoices(payRunForCreationRequest.DateTo)
+            await _residentialCarePackageGateway.GenerateResidentialCareInvoices(payRunForCreationRequest.DateTo.Date)
                 .ConfigureAwait(false);
 
             return await _transactionsService.CreateResidentialRecurringPayRun(payRunForCreationRequest)
