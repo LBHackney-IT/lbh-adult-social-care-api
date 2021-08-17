@@ -2226,7 +2226,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 2,
                             CreatorId = 1,
                             DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -2236,7 +2236,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            Id = 3,
                             CreatorId = 1,
                             DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -2590,6 +2590,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTimeOffset?>("PaidUpTo")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("PreviousPaidUpTo")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("StageId")
