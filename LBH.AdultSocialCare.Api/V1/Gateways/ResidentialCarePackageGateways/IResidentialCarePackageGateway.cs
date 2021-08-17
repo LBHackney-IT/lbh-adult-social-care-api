@@ -25,5 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
         public Task<int> GetClientPackagesCountAsync(Guid clientId);
 
         Task<bool> GenerateResidentialCareInvoices(DateTimeOffset dateTo);
+
+        Task<bool> ResetResidentialInvoicePaidUpToDate(List<Guid> residentialCarePackageIds);
     }
 }

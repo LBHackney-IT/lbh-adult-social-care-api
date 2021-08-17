@@ -6,16 +6,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases.Concrete
 {
     public class ResetPackagePaidUpToDateUseCase : IResetPackagePaidUpToDateUseCase
     {
         private readonly INursingCarePackageGateway _nursingCarePackageGateway;
+        private readonly IResidentialCarePackageGateway _residentialCarePackageGateway;
 
-        public ResetPackagePaidUpToDateUseCase(INursingCarePackageGateway nursingCarePackageGateway)
+        public ResetPackagePaidUpToDateUseCase(INursingCarePackageGateway nursingCarePackageGateway, IResidentialCarePackageGateway residentialCarePackageGateway)
         {
             _nursingCarePackageGateway = nursingCarePackageGateway;
+            _residentialCarePackageGateway = residentialCarePackageGateway;
         }
 
         public async Task<bool> ExecuteAsync(List<InvoiceForResetDomain> invoiceForResetDomains)
@@ -46,7 +49,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases.Concrete
             // Reset nursing care invoices
             await _nursingCarePackageGateway.ResetInvoicePaidUpToDate(nursingCarePackageIds).ConfigureAwait(false);
 
-            // TODO: Reset residential care invoices
+            // Reset residential care invoices
+            await _residentialCarePackageGateway.ResetResidentialInvoicePaidUpToDate(residentialCarePackageIds).ConfigureAwait(false);
 
             return true;
         }

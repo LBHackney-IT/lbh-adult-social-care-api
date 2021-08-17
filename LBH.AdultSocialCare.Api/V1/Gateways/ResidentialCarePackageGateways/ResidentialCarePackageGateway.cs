@@ -217,6 +217,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
                     CreatorId = _identityHelperUseCase.GetUserId(),
                 });
 
+                residentialCarePackage.PreviousPaidUpTo = residentialCarePackage.PaidUpTo;
+
                 residentialCarePackage.PaidUpTo = dateTo;
             }
 
@@ -230,6 +232,20 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
             {
                 await _transactionsService.BatchCreateInvoicesUseCase(invoicesForCreation).ConfigureAwait(false);
             }
+
+            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
+
+            return true;
+        }
+
+        public async Task<bool> ResetResidentialInvoicePaidUpToDate(List<Guid> residentialCarePackageIds)
+        {
+            var residentialCarePackages = await _databaseContext.ResidentialCarePackages
+                .Where(rc => residentialCarePackageIds.Contains(rc.Id))
+                .ToListAsync().ConfigureAwait(false);
+
+            foreach (var item in residentialCarePackages)
+                item.PaidUpTo = item.PreviousPaidUpTo;
 
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
 
