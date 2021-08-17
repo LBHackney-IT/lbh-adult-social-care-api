@@ -106,7 +106,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             Random r = new Random();
             int offset = r.Next(0, total);
 
-            var result = _databaseContext.Clients.Skip(offset).FirstOrDefault();
+            var result = await _databaseContext.Clients.Skip(offset).FirstOrDefaultAsync().ConfigureAwait(false);
             return result?.ToDomain();
         }
     }
