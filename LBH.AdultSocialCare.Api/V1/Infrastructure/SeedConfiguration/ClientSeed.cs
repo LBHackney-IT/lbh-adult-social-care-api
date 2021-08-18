@@ -53,6 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 AddressLine1 = "Old Town Road",
                 Town = "Bristol",
                 PostCode = "SW16",
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Client
@@ -67,6 +68,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 AddressLine1 = "Old Town Road",
                 Town = "Bristol",
                 PostCode = "SW16",
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Client
@@ -81,6 +83,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 AddressLine1 = "Old Town Road",
                 Town = "Bristol",
                 PostCode = "SW16",
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Client
@@ -95,6 +98,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 AddressLine1 = "Old Town Road",
                 Town = "Bristol",
                 PostCode = "SW16",
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Client
@@ -109,6 +113,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 AddressLine1 = "Old Town Road",
                 Town = "Bristol",
                 PostCode = "SW16",
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Client
@@ -123,6 +128,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 AddressLine1 = "Old Town Road",
                 Town = "Bristol",
                 PostCode = "SW16",
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             });
