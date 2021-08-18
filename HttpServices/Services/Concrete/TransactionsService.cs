@@ -191,22 +191,22 @@ namespace HttpServices.Services.Concrete
                     "pageSize", $"{parameters.PageSize}"
                 },
                 {
-                    "payRunId", $"{parameters.PayRunId}"
+                    "payRunId", parameters.PayRunId != null ? $"{parameters.PayRunId}" : ""
                 },
                 {
-                    "payRunTypeId", $"{parameters.PayRunTypeId}"
+                    "payRunTypeId", parameters.PayRunTypeId != null ? $"{parameters.PayRunTypeId}" : ""
                 },
                 {
-                    "payRunSubTypeId", $"{parameters.PayRunSubTypeId}"
+                    "payRunSubTypeId", parameters.PayRunSubTypeId != null ? $"{parameters.PayRunSubTypeId}" : ""
                 },
                 {
-                    "payRunStatusId", $"{parameters.PayRunStatusId}"
+                    "payRunStatusId", parameters.PayRunStatusId != null ? $"{parameters.PayRunStatusId}" : ""
                 },
                 {
-                    "dateFrom", parameters.DateFrom?.DateTimeOffsetToISOString()
+                    "dateFrom", parameters.DateFrom != null? parameters.DateFrom?.DateTimeOffsetToISOString(): ""
                 },
                 {
-                    "dateTo", parameters.DateTo?.DateTimeOffsetToISOString()
+                    "dateTo", parameters.DateTo != null? parameters.DateTo?.DateTimeOffsetToISOString(): ""
                 },
             };
 
@@ -253,7 +253,7 @@ namespace HttpServices.Services.Concrete
                     "pageSize", $"{parameters.PageSize}"
                 },
                 {
-                    "searchTerm", $"{parameters.SearchTerm}"
+                    "searchTerm", parameters.SearchTerm != null ? $"{parameters.SearchTerm}" : ""
                 }
             };
 
@@ -455,6 +455,9 @@ namespace HttpServices.Services.Concrete
                 },
                 {
                     "packageTypeId", parameters.PackageTypeId != null? $"{parameters.PackageTypeId}": ""
+                },
+                {
+                    "invoiceStatusId", parameters.InvoiceStatusId != null? $"{parameters.InvoiceStatusId}": ""
                 },
                 {
                     "invoiceItemPaymentStatusId", parameters.InvoiceStatusId != null? $"{parameters.InvoiceStatusId}": ""
@@ -1089,7 +1092,7 @@ namespace HttpServices.Services.Concrete
                     "pageSize", $"{parameters.PageSize}"
                 },
                 {
-                    "searchTerm", $"{parameters.SearchTerm}"
+                    "searchTerm", parameters.SearchTerm != null ? $"{parameters.SearchTerm}" : ""
                 }
             };
             var url = QueryHelpers.AddQueryString($"{_baseUrl}api/v1/suppliers", queryParams);
