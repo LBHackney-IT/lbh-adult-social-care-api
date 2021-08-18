@@ -88,6 +88,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<ResidentialCareBrokerageInfo> ResidentialCareBrokerageInfos { get; set; }
         public DbSet<PrimarySupportReason> PrimarySupportReasons { get; set; }
 
+
+        #region CustomFunctions
+
+#pragma warning disable CA1801, CA1822
+        public int CompareDates(DateTimeOffset? date1, DateTimeOffset? date2) => throw new InvalidOperationException("This method should be called by EF only");
+#pragma warning restore CA1801, CA1822
+
+        #endregion
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -166,6 +175,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             #endregion Database Seeds
 
             #region Entity Config
+
+            #region DB Functions
+
+            modelBuilder
+                .HasDbFunction(typeof(DatabaseContext).GetMethod(nameof(CompareDates), new[] { typeof(DateTimeOffset?), typeof(DateTimeOffset?) }))
+                .HasName("comparedates");
+
+            #endregion
 
             // Home care
             modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.Minutes);
