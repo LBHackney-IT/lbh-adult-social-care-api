@@ -181,7 +181,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
                 {
                     new InvoiceItemForCreationRequest
                     {
-                        ItemName = $"Residential Care Core Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
+                        ItemName = $"Residential Care Core Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy} - {residentialCarePackage.PaidUpTo}",
                         PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCore,
                         Quantity = weeks,
                         CreatorId = _identityHelperUseCase.GetUserId()
@@ -220,7 +220,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
 
                 residentialCarePackage.PreviousPaidUpTo = residentialCarePackage.PaidUpTo;
 
-                residentialCarePackage.PaidUpTo = dateTo;
+                residentialCarePackage.PaidUpTo = dateTo.Date;
             }
 
             /*foreach (var invoiceForCreationRequest in invoicesForCreation)
