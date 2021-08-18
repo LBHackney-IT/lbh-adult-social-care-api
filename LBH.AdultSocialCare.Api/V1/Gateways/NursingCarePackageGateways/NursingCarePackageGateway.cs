@@ -160,8 +160,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
             // Get all relevant nursing care package ids
             var nursingCarePackagesIds = await _databaseContext.NursingCarePackages.Where(nc =>
                     ((nc.EndDate == null && nc.PaidUpTo == null) ||
-                     (nc.EndDate == null && nc.PaidUpTo != null && nc.PaidUpTo < dateTo) || (nc.EndDate != null &&
-                         nc.EndDate < nc.PaidUpTo && dateTo.AddDays(-1) > nc.PaidUpTo)) &&
+                     (nc.EndDate == null && nc.PaidUpTo != null &&
+                      EF.Property<DateTime>(nc, nameof(nc.PaidUpTo)).Date < dateTo.Date &&
+                      dateTo.AddDays(-1).Date > EF.Property<DateTime>(nc, nameof(nc.PaidUpTo)).Date) ||
+                     (nc.EndDate != null &&
+                      EF.Property<DateTime>(nc, nameof(nc.EndDate)).Date < EF.Property<DateTime>(nc, nameof(nc.PaidUpTo)).Date &&
+                      dateTo.AddDays(-1).Date > EF.Property<DateTime>(nc, nameof(nc.PaidUpTo)).Date)) &&
                     nc.NursingCareBrokerageInfo.NursingCareBrokerageId != null
                 )
                 .Select(nc => nc.Id)
