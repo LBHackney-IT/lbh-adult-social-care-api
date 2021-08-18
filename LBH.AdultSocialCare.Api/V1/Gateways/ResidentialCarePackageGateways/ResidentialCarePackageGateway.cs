@@ -56,6 +56,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
 
         public async Task<ResidentialCarePackageDomain> CreateAsync(ResidentialCarePackage residentialCarePackageForCreation)
         {
+            residentialCarePackageForCreation.EndDate = residentialCarePackageForCreation.EndDate.GetValueOrDefault().Date;
             var entry = await _databaseContext.ResidentialCarePackages.AddAsync(residentialCarePackageForCreation).ConfigureAwait(false);
             try
             {
@@ -150,7 +151,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
         {
             var todayDate = DateTimeOffset.Now.Date;
             if (dateTo > todayDate) dateTo = todayDate;
-
+            dateTo = dateTo.Date;
             var residentialCarePackagesIds = await _databaseContext.ResidentialCarePackages
                 .Where(rc =>
                     ((rc.EndDate == null &&

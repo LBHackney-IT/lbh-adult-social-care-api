@@ -56,6 +56,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
 
         public async Task<NursingCarePackageDomain> CreateAsync(NursingCarePackage nursingCarePackageForCreation)
         {
+            nursingCarePackageForCreation.EndDate = nursingCarePackageForCreation.EndDate.GetValueOrDefault().Date;
+
             var entry = await _databaseContext.NursingCarePackages.AddAsync(nursingCarePackageForCreation).ConfigureAwait(false);
             try
             {
@@ -154,6 +156,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
             {
                 dateTo = todayDate;
             }
+
+            dateTo = dateTo.Date;
 
             // Get all relevant nursing care package ids
             var nursingCarePackagesIds = await _databaseContext.NursingCarePackages.Where(nc =>
