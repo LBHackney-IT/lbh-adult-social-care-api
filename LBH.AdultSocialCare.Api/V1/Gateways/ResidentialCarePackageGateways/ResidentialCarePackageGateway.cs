@@ -181,7 +181,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
                 {
                     new InvoiceItemForCreationRequest
                     {
-                        ItemName = $"Residential Care Core Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy} - {residentialCarePackage.PaidUpTo}",
+                        ItemName = $"Residential Care Core Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
                         PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCore,
                         Quantity = weeks,
                         CreatorId = _identityHelperUseCase.GetUserId()
