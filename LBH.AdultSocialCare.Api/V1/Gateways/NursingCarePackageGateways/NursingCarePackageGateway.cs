@@ -188,6 +188,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
                     var startDate = nursingCarePackage.PaidUpTo ?? nursingCarePackage.StartDate;
 
                     var dateDiff = (dateTo.Date - startDate.Date).Days;
+
+                    if (dateDiff <= 0) continue;
+
                     var weeks = dateDiff / 7M;
 
                     // Create invoice

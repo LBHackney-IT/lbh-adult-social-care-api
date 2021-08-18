@@ -175,6 +175,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
             {
                 var startDate = residentialCarePackage.PaidUpTo ?? residentialCarePackage.StartDate;
                 var dateDiff = (dateTo.Date - startDate.Date).Days;
+
+                if (dateDiff <= 0) continue;
+
                 var weeks = (decimal) dateDiff / 7;
 
                 var invoiceItems = new List<InvoiceItemForCreationRequest>()
