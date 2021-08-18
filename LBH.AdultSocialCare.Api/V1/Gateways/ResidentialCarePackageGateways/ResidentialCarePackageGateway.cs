@@ -56,7 +56,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
 
         public async Task<ResidentialCarePackageDomain> CreateAsync(ResidentialCarePackage residentialCarePackageForCreation)
         {
-            residentialCarePackageForCreation.EndDate = residentialCarePackageForCreation.EndDate.GetValueOrDefault().Date;
             var entry = await _databaseContext.ResidentialCarePackages.AddAsync(residentialCarePackageForCreation).ConfigureAwait(false);
             try
             {
