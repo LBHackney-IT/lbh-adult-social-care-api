@@ -155,9 +155,13 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
                 dateTo = todayDate;
             }
 
+            dateTo = dateTo.Date;
+
             // Get all relevant nursing care package ids
             var nursingCarePackagesIds = await _databaseContext.NursingCarePackages.Where(nc =>
-                    ((nc.EndDate == null && nc.PaidUpTo == null) || (nc.EndDate != null && nc.EndDate < nc.PaidUpTo && dateTo.AddDays(-1) > nc.PaidUpTo)) &&
+                    ((nc.EndDate == null && nc.PaidUpTo == null) ||
+                     (nc.EndDate == null && nc.PaidUpTo != null && nc.PaidUpTo < dateTo) || (nc.EndDate != null &&
+                         nc.EndDate < nc.PaidUpTo && dateTo.AddDays(-1) > nc.PaidUpTo)) &&
                     nc.NursingCareBrokerageInfo.NursingCareBrokerageId != null
                 )
                 .Select(nc => nc.Id)
@@ -184,6 +188,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
                     var startDate = nursingCarePackage.PaidUpTo ?? nursingCarePackage.StartDate;
 
                     var dateDiff = (dateTo.Date - startDate.Date).Days;
+
+                    if (dateDiff <= 0) continue;
+
                     var weeks = dateDiff / 7M;
 
                     // Create invoice

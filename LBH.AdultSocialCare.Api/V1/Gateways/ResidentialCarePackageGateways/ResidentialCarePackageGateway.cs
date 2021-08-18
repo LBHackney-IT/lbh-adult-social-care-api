@@ -150,14 +150,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
         {
             var todayDate = DateTimeOffset.Now.Date;
             if (dateTo > todayDate) dateTo = todayDate;
-
+            dateTo = dateTo.Date;
             var residentialCarePackagesIds = await _databaseContext.ResidentialCarePackages
                 .Where(rc =>
                     ((rc.EndDate == null &&
-                      rc.PaidUpTo == null) || (rc.EndDate != null &&
+                      rc.PaidUpTo == null) || (rc.EndDate == null && rc.PaidUpTo != null && rc.PaidUpTo < dateTo) ||
+                     (rc.EndDate != null &&
                       rc.EndDate < rc.PaidUpTo &&
                       dateTo.AddDays(-1) > rc.PaidUpTo)) &&
-                      rc.ResidentialCareBrokerageInfo.Id != null
+                    rc.ResidentialCareBrokerageInfo.Id != null
                 )
                 .Select(rc => rc.Id)
                 .ToListAsync()
@@ -174,6 +175,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
             {
                 var startDate = residentialCarePackage.PaidUpTo ?? residentialCarePackage.StartDate;
                 var dateDiff = (dateTo.Date - startDate.Date).Days;
+
+                if (dateDiff <= 0) continue;
+
                 var weeks = (decimal) dateDiff / 7;
 
                 var invoiceItems = new List<InvoiceItemForCreationRequest>()
@@ -219,7 +223,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
 
                 residentialCarePackage.PreviousPaidUpTo = residentialCarePackage.PaidUpTo;
 
-                residentialCarePackage.PaidUpTo = dateTo;
+                residentialCarePackage.PaidUpTo = dateTo.Date;
             }
 
             /*foreach (var invoiceForCreationRequest in invoicesForCreation)

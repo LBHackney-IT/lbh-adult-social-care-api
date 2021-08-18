@@ -91,23 +91,23 @@ namespace HttpServices.Services.Concrete
                     "pageSize", $"{parameters.PageSize}"
                 },
                 {
-                    "payRunId", $"{parameters.PayRunId}"
+                    "payRunId", parameters.PayRunId != null ? $"{parameters.PayRunId}" : ""
                 },
                 {
-                    "payRunTypeId", $"{parameters.PayRunTypeId}"
+                    "payRunTypeId", parameters.PayRunTypeId != null ? $"{parameters.PayRunTypeId}" : ""
                 },
                 {
-                    "payRunSubTypeId", $"{parameters.PayRunSubTypeId}"
+                    "payRunSubTypeId", parameters.PayRunSubTypeId != null ? $"{parameters.PayRunSubTypeId}" : ""
                 },
                 {
-                    "payRunStatusId", $"{parameters.PayRunStatusId}"
+                    "payRunStatusId", parameters.PayRunStatusId != null ? $"{parameters.PayRunStatusId}" : ""
                 },
                 {
-                    "dateFrom", parameters.DateFrom?.DateTimeOffsetToISOString()
+                    "dateFrom", parameters.DateFrom != null? parameters.DateFrom?.DateTimeOffsetToISOString(): ""
                 },
                 {
-                    "dateTo", parameters.DateTo?.DateTimeOffsetToISOString()
-                }
+                    "dateTo", parameters.DateTo != null? parameters.DateTo?.DateTimeOffsetToISOString(): ""
+                },
             };
 
             var url = QueryHelpers.AddQueryString("api/v1/pay-runs/summary-list", queryParams);
@@ -129,7 +129,7 @@ namespace HttpServices.Services.Concrete
                     "pageSize", $"{parameters.PageSize}"
                 },
                 {
-                    "searchTerm", $"{parameters.SearchTerm}"
+                    "searchTerm", parameters.SearchTerm != null ? $"{parameters.SearchTerm}" : ""
                 }
             };
 
@@ -478,7 +478,7 @@ namespace HttpServices.Services.Concrete
                     "pageSize", $"{parameters.PageSize}"
                 },
                 {
-                    "searchTerm", $"{parameters.SearchTerm}"
+                    "searchTerm", parameters.SearchTerm != null ? $"{parameters.SearchTerm}" : ""
                 }
             };
 
