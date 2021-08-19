@@ -21,15 +21,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
     public class DatabaseContext : IdentityDbContext<User, Role, Guid>
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
         // TODO: rename DatabaseContext to reflect the data source it is representing. eg. MosaicContext.
-        public DatabaseContext(DbContextOptions options)
+        public DatabaseContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor)
             : base(options)
         {
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public DbSet<DayCarePackage> DayCarePackages { get; set; }
@@ -281,14 +286,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
         public override int SaveChanges()
         {
-            SetEntitiesUpdatedOnSave();
+            SetEntitiesAuditInfo();
 
             return base.SaveChanges();
         }
 
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
-            SetEntitiesUpdatedOnSave();
+            SetEntitiesAuditInfo();
 
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
@@ -296,37 +301,52 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
             CancellationToken cancellationToken = new CancellationToken())
         {
-            SetEntitiesUpdatedOnSave();
+            SetEntitiesAuditInfo();
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            SetEntitiesUpdatedOnSave();
+            SetEntitiesAuditInfo();
 
             return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
+        private void SetEntitiesAuditInfo()
+        {
+            SetEntitiesCreatedOnSave();
+            SetEntitiesUpdatedOnSave();
+        }
+
+        private void SetEntitiesCreatedOnSave()
+        {
+            var entitiesToCreate = FilterTrackedEntriesByState(EntityState.Added);
+
+            foreach (var entity in entitiesToCreate)
+            {
+                entity.DateCreated = DateTimeOffset.UtcNow;
+                entity.CreatorId = new Guid(_httpContextAccessor.HttpContext.User.Identity.GetUserId());
+            }
+        }
+
         private void SetEntitiesUpdatedOnSave()
         {
-            IList<EntityEntry> entries = ChangeTracker.Entries()
-                .Where(e => e.Entity is BaseEntity && e.State == EntityState.Modified)
-                .ToList();
+            var entitiesToUpdate = FilterTrackedEntriesByState(EntityState.Modified);
 
-            var baseEntityType = typeof(BaseEntity);
-
-            IList<Type> entityTypes = entries.Select(item => item.GetType())
-                .Distinct()
-                .Where(item => baseEntityType.IsAssignableFrom(item))
-                .ToList();
-
-            IList<EntityEntry> entitiesToUpdate = entries.Where(item => entityTypes.Contains(item.GetType())).ToList();
-
-            foreach (var entityEntry in entitiesToUpdate)
+            foreach (var entity in entitiesToUpdate)
             {
-                ((BaseEntity) entityEntry.Entity).DateUpdated = DateTimeOffset.UtcNow;
+                entity.DateUpdated = DateTimeOffset.UtcNow;
+                entity.UpdaterId = new Guid(_httpContextAccessor.HttpContext.User.Identity.GetUserId());
             }
+        }
+
+        private IEnumerable<BaseEntity> FilterTrackedEntriesByState(EntityState entityState)
+        {
+            return ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is BaseEntity && e.State == entityState)
+                .Select(e => (BaseEntity) e.Entity);
         }
     }
 }

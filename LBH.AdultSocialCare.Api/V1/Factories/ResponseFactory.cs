@@ -531,7 +531,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsThisAnImmediateService = homeCarePackageDomain.IsThisAnImmediateService,
                 IsThisuserUnderS117 = homeCarePackageDomain.IsThisuserUnderS117,
                 CreatorId = homeCarePackageDomain.CreatorId,
-                UpdatorId = homeCarePackageDomain.UpdatorId,
+                UpdaterId = homeCarePackageDomain.UpdaterId,
                 StatusId = homeCarePackageDomain.StatusId,
                 Status = homeCarePackageDomain.Status,
                 StageId = homeCarePackageDomain.StageId,
@@ -589,7 +589,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 PostCode = clientsDomain.PostCode,
                 CreatorId = clientsDomain.CreatorId,
                 DateCreated = clientsDomain.DateCreated,
-                UpdatorId = clientsDomain.UpdatorId,
+                UpdaterId = clientsDomain.UpdaterId,
                 DateUpdated = clientsDomain.DateUpdated
             };
         }
@@ -625,7 +625,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Sequence = packageDomain.Sequence,
                 CreatorId = packageDomain.CreatorId,
                 DateCreated = packageDomain.DateCreated,
-                UpdatorId = packageDomain.UpdatorId,
+                UpdaterId = packageDomain.UpdaterId,
                 DateUpdated = packageDomain.DateUpdated
             };
         }
@@ -701,7 +701,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Package = homeCareServiceDomain.Package,
                 CreatorId = homeCareServiceDomain.CreatorId,
                 DateCreated = homeCareServiceDomain.DateCreated,
-                UpdatorId = homeCareServiceDomain.UpdatorId,
+                UpdaterId = homeCareServiceDomain.UpdaterId,
                 DateUpdated = homeCareServiceDomain.DateUpdated
             };
         }
@@ -758,7 +758,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 TimeSlotTimeLabel = timeSlotShiftsDomain.TimeSlotTimeLabel,
                 CreatorId = timeSlotShiftsDomain.CreatorId,
                 DateCreated = timeSlotShiftsDomain.DateCreated,
-                UpdatorId = timeSlotShiftsDomain.UpdatorId,
+                UpdaterId = timeSlotShiftsDomain.UpdaterId,
                 DateUpdated = timeSlotShiftsDomain.DateUpdated
             };
         }

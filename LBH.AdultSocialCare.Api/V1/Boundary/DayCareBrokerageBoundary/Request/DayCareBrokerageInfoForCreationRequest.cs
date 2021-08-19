@@ -20,6 +20,5 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Request
         public int? EscortSupplierId { get; set; }
         public int? EscortHoursPerWeek { get; set; }
         public decimal? EscortCostPerHour { get; set; }
-        [Required] public Guid CreatorId { get; set; }
     }
 }

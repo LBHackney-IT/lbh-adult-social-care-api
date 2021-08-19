@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage
 {
-    public class ResidentialCareApprovalHistory
+    public class ResidentialCareApprovalHistory : BaseEntity
     {
         /// <summary>
         /// Gets or sets the Id
@@ -23,23 +23,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrok
         public Guid ResidentialCarePackageId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Approved Date
-        /// </summary>
-        public DateTimeOffset ApprovedDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the User Id
-        /// </summary>
-        public Guid UserId { get; set; }
-
-        /// <summary>
         /// Gets or sets the Log Text
         /// </summary>
         public string LogText { get; set; }
 
         public string LogSubText { get; set; }
         public string CreatorRole { get; set; }
-
-        [ForeignKey(nameof(UserId))] public User Creator { get; set; }
     }
 }

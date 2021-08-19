@@ -107,11 +107,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
                         LastName = "Kayar",
                         DateOfBirth = DateTime.UtcNow,
                         AddressLine1 = "Westminister Abbey",
-                        PostCode = "W11",
-                        CreatorId = 0,
-                        UpdatorId = 0,
-                        DateCreated = DateTimeOffset.UtcNow,
-                        DateUpdated = DateTimeOffset.UtcNow,
+                        PostCode = "W11"
                     })
                         .ConfigureAwait(false);
                     anyClient = await _context.Clients.FirstAsync().ConfigureAwait(false);

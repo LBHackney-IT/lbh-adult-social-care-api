@@ -57,7 +57,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 {
                     ServiceName = service.ServiceName,
                     CreatorId = service.CreatorId,
-                    UpdatorId = service.UpdatorId,
+                    UpdaterId = service.UpdaterId,
                     DateUpdated = service.DateUpdated
                 };
 

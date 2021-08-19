@@ -24,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovalHistoryGate
         {
             var residentialCareApprovalHistories = await _databaseContext.ResidentialCareApprovalHistories
                 .Where(a => a.ResidentialCarePackageId.Equals(residentialCarePackageId))
-                .OrderByDescending(a => a.ApprovedDate)
+                .OrderByDescending(a => a.DateCreated)
                 .ToListAsync().ConfigureAwait(false);
             return residentialCareApprovalHistories?.ToDomain();
         }

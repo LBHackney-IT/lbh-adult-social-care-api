@@ -32,23 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
         /// </summary>
         public string NeedToAddress { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public Guid CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updater Id
-        /// </summary>
-        public Guid? UpdaterId { get; set; }
-
         [ForeignKey(nameof(NursingCarePackageId))]
         public NursingCarePackage NursingCarePackage { get; set; }
-
-        [ForeignKey(nameof(CreatorId))]
-        public User Creator { get; set; }
-
-        [ForeignKey(nameof(UpdaterId))]
-        public User Updater { get; set; }
     }
 }

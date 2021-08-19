@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-    public class DayCareCollege
+    public class DayCareCollege : BaseEntity
     {
         /// <summary>
         /// Gets or sets the Id
@@ -29,21 +29,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Start Date
         /// </summary>
         public DateTimeOffset EndDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public Guid CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updater Id
-        /// </summary>
-        public Guid? UpdaterId { get; set; }
-
-        [ForeignKey(nameof(CreatorId))]
-        public User Creator { get; set; }
-
-        [ForeignKey(nameof(UpdaterId))]
-        public User Updater { get; set; }
     }
 }
