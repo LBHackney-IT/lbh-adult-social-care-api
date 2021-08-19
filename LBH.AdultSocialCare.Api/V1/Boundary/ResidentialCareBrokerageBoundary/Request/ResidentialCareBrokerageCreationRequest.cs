@@ -46,10 +46,5 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.R
         /// Gets or sets the Additional Needs Payment One Off
         /// </summary>
         public decimal AdditionalNeedsPaymentOneOff { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public int CreatorId { get; set; }
     }
 }

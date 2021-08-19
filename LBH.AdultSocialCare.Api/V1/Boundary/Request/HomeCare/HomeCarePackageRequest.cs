@@ -49,16 +49,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare
         public bool IsThisClientUnderS117 { get; set; }
 
         /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public Guid CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updator Id
-        /// </summary>
-        public int UpdatorId { get; set; }
-
-        /// <summary>
         /// Gets or sets the PackageStatuses Id
         /// </summary>
         public int StatusId { get; set; }

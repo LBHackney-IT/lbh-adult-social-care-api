@@ -153,11 +153,13 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
             dateTo = dateTo.Date;
             var residentialCarePackagesIds = await _databaseContext.ResidentialCarePackages
                 .Where(rc =>
-                    ((rc.EndDate == null &&
-                      rc.PaidUpTo == null) || (rc.EndDate == null && rc.PaidUpTo != null && rc.PaidUpTo < dateTo) ||
+                    ((rc.EndDate == null && rc.PaidUpTo == null) ||
+                     (rc.EndDate == null && rc.PaidUpTo != null &&
+                      _databaseContext.CompareDates(dateTo, rc.PaidUpTo) == 1 &&
+                      _databaseContext.CompareDates(dateTo.AddDays(-1).Date, rc.PaidUpTo) == 1) ||
                      (rc.EndDate != null &&
-                      rc.EndDate < rc.PaidUpTo &&
-                      dateTo.AddDays(-1) > rc.PaidUpTo)) &&
+                      _databaseContext.CompareDates(rc.PaidUpTo, rc.EndDate) == 1 &&
+                      _databaseContext.CompareDates(dateTo.AddDays(-1).Date, rc.PaidUpTo) == 1)) &&
                     rc.ResidentialCareBrokerageInfo.Id != null
                 )
                 .Select(rc => rc.Id)

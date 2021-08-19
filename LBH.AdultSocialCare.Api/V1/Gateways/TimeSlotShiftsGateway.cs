@@ -51,7 +51,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 await _databaseContext.TimeSlotShifts.AddAsync(timeSlotShiftsToUpdate).ConfigureAwait(false);
                 timeSlotShiftsToUpdate.TimeSlotShiftName = timeSlotShifts.TimeSlotShiftName;
                 timeSlotShiftsToUpdate.CreatorId = timeSlotShifts.CreatorId;
-                timeSlotShiftsToUpdate.UpdatorId = timeSlotShifts.UpdatorId;
+                timeSlotShiftsToUpdate.UpdaterId = timeSlotShifts.UpdaterId;
                 timeSlotShiftsToUpdate.DateUpdated = timeSlotShifts.DateUpdated;
             }
             else

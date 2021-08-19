@@ -28,7 +28,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request
         [Required] public int? TermTimeConsiderationOptionId { get; set; }
         public List<DayCarePackageOpportunityForCreationRequest> DayCarePackageOpportunities { get; set; }
         public List<DayCarePackageClaimCreationRequest> PackageReclaims { get; set; }
-        [Required] public Guid? CreatorId { get; set; }
         public int? CollegeId { get; set; }
     }
 }

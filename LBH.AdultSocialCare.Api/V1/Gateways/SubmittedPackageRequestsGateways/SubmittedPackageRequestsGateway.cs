@@ -82,7 +82,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
                     SubmittedDaysAgo =
                         rc.ResidentialCareApprovalHistories
                             .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
-                            .Select(x => DateTimeOffset.Now.Date.Subtract(x.ApprovedDate.Date).Days).SingleOrDefault(),
+                            .Select(x => DateTimeOffset.Now.Date.Subtract(x.DateCreated.Date).Days).SingleOrDefault(),
                     PrimarySupportReason = "",
                     DateCreated = rc.DateCreated
                 })
@@ -143,7 +143,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
                     SubmittedDaysAgo =
                         nc.NursingCareApprovalHistories
                             .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
-                            .Select(x => DateTimeOffset.Now.Date.Subtract(x.ApprovedDate.Date).Days).SingleOrDefault(),
+                            .Select(x => DateTimeOffset.Now.Date.Subtract(x.DateCreated.Date).Days).SingleOrDefault(),
                     PrimarySupportReason = "",
                     DateCreated = nc.DateCreated
                 })

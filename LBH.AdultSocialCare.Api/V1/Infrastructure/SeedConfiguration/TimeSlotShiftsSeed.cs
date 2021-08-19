@@ -18,8 +18,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 1,
                 TimeSlotShiftName = "Morning",
                 TimeSlotTimeLabel = "08:00 - 10:00",
-                CreatorId = 1,
-                UpdatorId = 1,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new TimeSlotShifts
@@ -27,8 +27,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 2,
                 TimeSlotShiftName = "Mid Morning",
                 TimeSlotTimeLabel = "10:00 - 12:00",
-                CreatorId = 1,
-                UpdatorId = 1,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new TimeSlotShifts
@@ -36,8 +36,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 3,
                 TimeSlotShiftName = "Lunch",
                 TimeSlotTimeLabel = "12:00 - 14:00",
-                CreatorId = 1,
-                UpdatorId = 1,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new TimeSlotShifts
@@ -45,8 +45,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 4,
                 TimeSlotShiftName = "Afternoon",
                 TimeSlotTimeLabel = "14:00 - 17:00",
-                CreatorId = 1,
-                UpdatorId = 1,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new TimeSlotShifts
@@ -54,8 +54,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 5,
                 TimeSlotShiftName = "Evening",
                 TimeSlotTimeLabel = "17:00 - 20:00",
-                CreatorId = 1,
-                UpdatorId = 1,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new TimeSlotShifts
@@ -63,8 +63,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 6,
                 TimeSlotShiftName = "Night",
                 TimeSlotTimeLabel = "20:00 - 22:00",
-                CreatorId = 1,
-                UpdatorId = 1,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new TimeSlotShifts
@@ -72,8 +72,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 7,
                 TimeSlotShiftName = "Night Owl",
                 LinkedToHomeCareServiceTypeId = (int) HomeCareServiceTypeEnum.NightOwl,
-                CreatorId = 1,
-                UpdatorId = 1,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new TimeSlotShifts
@@ -81,8 +81,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 8,
                 TimeSlotShiftName = "Waking Nights",
                 LinkedToHomeCareServiceTypeId = (int) HomeCareServiceTypeEnum.WakingNights,
-                CreatorId = 1,
-                UpdatorId = 1,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new TimeSlotShifts
@@ -90,8 +90,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 9,
                 TimeSlotShiftName = "Sleeping Nights",
                 LinkedToHomeCareServiceTypeId = (int) HomeCareServiceTypeEnum.SleepingNights,
-                CreatorId = 1,
-                UpdatorId = 1,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             });

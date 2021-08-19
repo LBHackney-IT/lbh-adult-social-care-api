@@ -16,7 +16,7 @@ namespace LBH.AdultSocialCare.Api.Tests
         {
             DbContextOptionsBuilder builder = new DbContextOptionsBuilder();
             builder.UseSqlServer(ConnectionString.TestDatabase());
-            DatabaseContext = new DatabaseContext(builder.Options);
+            DatabaseContext = new DatabaseContext(builder.Options, null);
             DatabaseContext.Database.EnsureCreated();
             _transaction = DatabaseContext.Database.BeginTransaction();
         }

@@ -100,7 +100,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             homeCarePackageToUpdate.IsThisuserUnderS117 = homeCarePackage.IsThisuserUnderS117;
             homeCarePackageToUpdate.ClientId = homeCarePackage.ClientId;
             homeCarePackageToUpdate.CreatorId = homeCarePackage.CreatorId;
-            homeCarePackageToUpdate.UpdatorId = homeCarePackage.UpdatorId;
+            homeCarePackageToUpdate.UpdaterId = homeCarePackage.UpdaterId;
 
             // TODO status
 

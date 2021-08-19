@@ -109,7 +109,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
                     PackageTypeId = PackageTypesConstants.ResidentialCarePackageId,
                     OwnerId = rc.ResidentialCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.PackageBrokeredId)
-                        .Select(x => x.UserId).SingleOrDefault(),
+                        .Select(x => x.CreatorId).SingleOrDefault(),
                     Owner = _databaseContext.Users
                         .Where(x => x.Id == rc.AssignedUserId)
                         .Select(x => x.Name).SingleOrDefault(),
@@ -117,7 +117,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
                     Stage = rc.Stage.StageName,
                     DaysSinceApproval = rc.ResidentialCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
-                        .Select(x => DateTimeOffset.Now.Date.Subtract(x.ApprovedDate.Date).Days).SingleOrDefault(),
+                        .Select(x => DateTimeOffset.Now.Date.Subtract(x.DateCreated.Date).Days).SingleOrDefault(),
                     LastUpdated = rc.DateUpdated
                 })
                 .ToListAsync().ConfigureAwait(false);
@@ -175,7 +175,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
                     PackageTypeId = PackageTypesConstants.NursingCarePackageId,
                     OwnerId = nc.NursingCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.PackageBrokeredId)
-                        .Select(x => x.UserId).SingleOrDefault(),
+                        .Select(x => x.CreatorId).SingleOrDefault(),
                     Owner = _databaseContext.Users
                             .Where(x => x.Id == nc.AssignedUserId)
                             .Select(x => x.Name).SingleOrDefault(),
@@ -183,7 +183,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways
                     Stage = nc.Stage.StageName,
                     DaysSinceApproval = nc.NursingCareApprovalHistories
                         .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
-                        .Select(x => DateTimeOffset.Now.Date.Subtract(x.ApprovedDate.Date).Days).SingleOrDefault(),
+                        .Select(x => DateTimeOffset.Now.Date.Subtract(x.DateCreated.Date).Days).SingleOrDefault(),
                     LastUpdated = nc.DateUpdated
                 })
                 .ToListAsync().ConfigureAwait(false);

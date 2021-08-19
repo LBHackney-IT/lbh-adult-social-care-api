@@ -86,7 +86,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 clientToUpdate.County = client.County;
                 clientToUpdate.PostCode = client.PostCode;
                 clientToUpdate.CreatorId = client.CreatorId;
-                clientToUpdate.UpdatorId = client.UpdatorId;
+                clientToUpdate.UpdaterId = client.UpdaterId;
             }
             else
             {

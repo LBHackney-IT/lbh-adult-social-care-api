@@ -60,9 +60,9 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains
         public Guid CreatorId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Updator Id
+        /// Gets or sets the Updater Id
         /// </summary>
-        public int UpdatorId { get; set; }
+        public Guid? UpdaterId { get; set; }
 
         /// <summary>
         /// Gets or sets the PackageStatuses Id

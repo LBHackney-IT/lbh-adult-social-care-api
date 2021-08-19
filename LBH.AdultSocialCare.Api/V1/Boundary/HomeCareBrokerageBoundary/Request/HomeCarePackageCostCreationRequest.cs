@@ -41,11 +41,5 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Request
         /// Gets or sets the Total Cost
         /// </summary>
         public decimal TotalCost { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public int CreatorId { get; set; }
-
     }
 }

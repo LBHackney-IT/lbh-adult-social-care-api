@@ -29,7 +29,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 await _databaseContext.Packages.AddAsync(packageToUpdate).ConfigureAwait(false);
                 packageToUpdate.PackageType = package.PackageType;
                 packageToUpdate.CreatorId = package.CreatorId;
-                packageToUpdate.UpdatorId = package.UpdatorId;
+                packageToUpdate.UpdaterId = package.UpdaterId;
                 packageToUpdate.DateUpdated = package.DateUpdated;
             }
             else
