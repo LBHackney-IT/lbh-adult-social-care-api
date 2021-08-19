@@ -1,49 +1,18 @@
 using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Domain;
-using LBH.AdultSocialCare.Api.V1.Domain.BillDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ClientDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCareApproveBrokeredDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.GeneralDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApproveCommercialDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.PackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApproveBrokeredDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using System.Collections.Generic;
 using System.Linq;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Domain.Security;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -54,18 +23,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static void Configure(IMapper mapper)
         {
             _mapper = mapper;
-        }
-
-        //TODO: Map the fields in the domain object(s) to fields in the response object(s).
-        // More information on this can be found here https://github.com/LBHackney-IT/lbh-base-api/wiki/Factory-object-mappings
-        public static ResponseObject ToResponse(this Entity domain)
-        {
-            return new ResponseObject();
-        }
-
-        public static List<ResponseObject> ToResponse(this IEnumerable<Entity> domainList)
-        {
-            return domainList.Select(domain => domain.ToResponse()).ToList();
         }
 
         #region DayCarePackage

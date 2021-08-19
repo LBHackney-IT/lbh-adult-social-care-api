@@ -1,10 +1,10 @@
 using Common.Exceptions.CustomExceptions;
-using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
 using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Interfaces;
 using System.Net;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.Security;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete
 {

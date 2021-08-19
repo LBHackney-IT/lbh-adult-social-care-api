@@ -1,7 +1,7 @@
-using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces

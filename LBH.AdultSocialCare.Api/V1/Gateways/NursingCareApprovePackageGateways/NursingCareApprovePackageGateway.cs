@@ -1,12 +1,12 @@
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApprovePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways
 {

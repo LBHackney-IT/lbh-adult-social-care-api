@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain.ClientDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Interfaces;

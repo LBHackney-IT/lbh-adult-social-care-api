@@ -1,6 +1,4 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
@@ -8,6 +6,7 @@ using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
 {

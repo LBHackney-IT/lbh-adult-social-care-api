@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response
 {

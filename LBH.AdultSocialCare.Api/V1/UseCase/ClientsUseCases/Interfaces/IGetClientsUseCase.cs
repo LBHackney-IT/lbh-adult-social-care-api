@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain.ClientDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Interfaces
 {

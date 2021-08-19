@@ -1,7 +1,7 @@
 using LBH.AdultSocialCare.Api.V1.Domain;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
-using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.Security;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Interfaces
 {

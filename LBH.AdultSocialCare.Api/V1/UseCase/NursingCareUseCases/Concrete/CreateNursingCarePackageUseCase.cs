@@ -1,9 +1,9 @@
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
