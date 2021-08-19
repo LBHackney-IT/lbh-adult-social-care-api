@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Request;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare
 {

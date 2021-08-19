@@ -1,8 +1,8 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApproveBrokeredBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApproveBrokeredUseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareApproveBrokered
 {

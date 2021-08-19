@@ -1,10 +1,4 @@
 using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
@@ -38,6 +32,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
