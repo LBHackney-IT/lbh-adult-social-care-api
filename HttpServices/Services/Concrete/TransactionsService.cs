@@ -3,10 +3,10 @@ using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
-using Microsoft.AspNetCore.WebUtilities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HttpServices.Helpers;
 
 namespace HttpServices.Services.Concrete
 {
@@ -82,35 +82,16 @@ namespace HttpServices.Services.Concrete
 
         public async Task<PagedPayRunSummaryResponse> GetPayRunSummaryList(PayRunSummaryListParameters parameters)
         {
-            var queryParams = new Dictionary<string, string>
-            {
-                {
-                    "pageNumber", $"{parameters.PageNumber}"
-                },
-                {
-                    "pageSize", $"{parameters.PageSize}"
-                },
-                {
-                    "payRunId", parameters.PayRunId != null ? $"{parameters.PayRunId}" : ""
-                },
-                {
-                    "payRunTypeId", parameters.PayRunTypeId != null ? $"{parameters.PayRunTypeId}" : ""
-                },
-                {
-                    "payRunSubTypeId", parameters.PayRunSubTypeId != null ? $"{parameters.PayRunSubTypeId}" : ""
-                },
-                {
-                    "payRunStatusId", parameters.PayRunStatusId != null ? $"{parameters.PayRunStatusId}" : ""
-                },
-                {
-                    "dateFrom", parameters.DateFrom != null? parameters.DateFrom?.DateTimeOffsetToISOString(): ""
-                },
-                {
-                    "dateTo", parameters.DateTo != null? parameters.DateTo?.DateTimeOffsetToISOString(): ""
-                },
-            };
-
-            var url = QueryHelpers.AddQueryString("api/v1/pay-runs/summary-list", queryParams);
+            var url = new UrlFormatter()
+                .SetBaseUrl("api/v1/pay-runs/summary-list")
+                .AddParameter("pageNumber", parameters.PageNumber)
+                .AddParameter("pageSize", parameters.PageSize)
+                .AddParameter("payRunId", parameters.PayRunId)
+                .AddParameter("payRunTypeId", parameters.PayRunTypeId)
+                .AddParameter("payRunSubTypeId", parameters.PayRunSubTypeId)
+                .AddParameter("dateFrom", parameters.DateFrom?.DateTimeOffsetToISOString())
+                .AddParameter("dateTo", parameters.DateTo?.DateTimeOffsetToISOString())
+                .ToString();
 
             return await _restClient
                 .GetAsync<PagedPayRunSummaryResponse>(url, "Cannot retrieve pay run summary list")
@@ -120,20 +101,12 @@ namespace HttpServices.Services.Concrete
         public async Task<PagedSupplierMinimalListResponse> GetUniqueSuppliersInPayRunUseCase(Guid payRunId,
             SupplierListParameters parameters)
         {
-            var queryParams = new Dictionary<string, string>
-            {
-                {
-                    "pageNumber", $"{parameters.PageNumber}"
-                },
-                {
-                    "pageSize", $"{parameters.PageSize}"
-                },
-                {
-                    "searchTerm", parameters.SearchTerm != null ? $"{parameters.SearchTerm}" : ""
-                }
-            };
-
-            var url = QueryHelpers.AddQueryString($"api/v1/pay-runs/{payRunId}/unique-suppliers", queryParams);
+            var url = new UrlFormatter()
+                .SetBaseUrl($"api/v1/pay-runs/{payRunId}/unique-suppliers")
+                .AddParameter("pageNumber", parameters.PageNumber)
+                .AddParameter("pageSize", parameters.PageSize)
+                .AddParameter("searchTerm", parameters.SearchTerm)
+                .ToString();
 
             return await _restClient
                 .GetAsync<PagedSupplierMinimalListResponse>(url, "Cannot retrieve Suppliers in pay run")
@@ -143,17 +116,11 @@ namespace HttpServices.Services.Concrete
         public async Task<IEnumerable<ReleasedHoldsByTypeResponse>> GetReleasedHoldsCount(DateTimeOffset? fromDate = null,
             DateTimeOffset? toDate = null)
         {
-            var queryParams = new Dictionary<string, string>
-            {
-                {
-                    "fromDate", $"{fromDate?.DateTimeOffsetToISOString()}"
-                },
-                {
-                    "toDate", $"{toDate?.DateTimeOffsetToISOString()}"
-                }
-            };
-
-            var url = QueryHelpers.AddQueryString("api/v1/pay-runs/released-holds-count", queryParams);
+            var url = new UrlFormatter()
+                .SetBaseUrl("api/v1/pay-runs/released-holds-count")
+                .AddParameter("fromDate", fromDate?.DateTimeOffsetToISOString())
+                .AddParameter("toDate", toDate?.DateTimeOffsetToISOString())
+                .ToString();
 
             return await _restClient
                 .GetAsync<IEnumerable<ReleasedHoldsByTypeResponse>>(url, "Cannot retrieve released hold count")
@@ -181,17 +148,11 @@ namespace HttpServices.Services.Concrete
         public async Task<IEnumerable<InvoiceResponse>> GetReleasedHoldsUseCase(DateTimeOffset? fromDate = null,
             DateTimeOffset? toDate = null)
         {
-            var queryParams = new Dictionary<string, string>
-            {
-                {
-                    "fromDate", $"{fromDate?.DateTimeOffsetToISOString()}"
-                },
-                {
-                    "toDate", $"{toDate?.DateTimeOffsetToISOString()}"
-                }
-            };
-
-            var url = QueryHelpers.AddQueryString("api/v1/pay-runs/released-holds", queryParams);
+            var url = new UrlFormatter()
+                .SetBaseUrl("api/v1/pay-runs/released-holds")
+                .AddParameter("fromDate", fromDate?.DateTimeOffsetToISOString())
+                .AddParameter("toDate", toDate?.DateTimeOffsetToISOString())
+                .ToString();
 
             return await _restClient
                 .GetAsync<IEnumerable<InvoiceResponse>>(url, "Failed to retrieve released holds")
@@ -201,41 +162,19 @@ namespace HttpServices.Services.Concrete
         public async Task<PayRunDetailsResponse> GetSinglePayRunDetailsUseCase(Guid payRunId,
             InvoiceListParameters parameters)
         {
-            var queryParams = new Dictionary<string, string>
-            {
-                {
-                    "pageNumber", $"{parameters.PageNumber}"
-                },
-                {
-                    "pageSize", $"{parameters.PageSize}"
-                },
-                {
-                    "supplierId", parameters.SupplierId != null? $"{parameters.SupplierId}": ""
-                },
-                {
-                    "serviceUserId", parameters.ServiceUserId != null? $"{parameters.ServiceUserId}": ""
-                },
-                {
-                    "packageTypeId", parameters.PackageTypeId != null? $"{parameters.PackageTypeId}": ""
-                },
-                {
-                    "invoiceStatusId", parameters.InvoiceStatusId != null? $"{parameters.InvoiceStatusId}": ""
-                },
-                {
-                    "invoiceItemPaymentStatusId", parameters.InvoiceStatusId != null? $"{parameters.InvoiceStatusId}": ""
-                },
-                {
-                    "searchTerm", parameters.InvoiceNumber != null? $"{parameters.InvoiceNumber}": ""
-                },
-                {
-                    "dateFrom", parameters.DateFrom != null?$"{parameters.DateFrom?.DateTimeOffsetToISOString()}": ""
-                },
-                {
-                    "dateTo", parameters.DateTo != null?$"{parameters.DateTo?.DateTimeOffsetToISOString()}": ""
-                }
-            };
-
-            var url = QueryHelpers.AddQueryString($"api/v1/pay-runs/{payRunId}/details", queryParams);
+            var url = new UrlFormatter()
+                .SetBaseUrl($"api/v1/pay-runs/{payRunId}/details")
+                .AddParameter("pageNumber", parameters.PageNumber)
+                .AddParameter("pageSize", parameters.PageSize)
+                .AddParameter("supplierId", parameters.SupplierId)
+                .AddParameter("serviceUserId", parameters.ServiceUserId)
+                .AddParameter("packageTypeId", parameters.PackageTypeId)
+                .AddParameter("invoiceStatusId", parameters.InvoiceStatusId)
+                .AddParameter("invoiceItemPaymentStatusId", parameters.InvoiceStatusId)
+                .AddParameter("searchTerm", parameters.InvoiceNumber)
+                .AddParameter("dateFrom", parameters.DateFrom?.DateTimeOffsetToISOString())
+                .AddParameter("dateTo", parameters.DateTo?.DateTimeOffsetToISOString())
+                .ToString();
 
             return await _restClient
                 .GetAsync<PayRunDetailsResponse>(url, "Failed to retrieve pay run details")
@@ -322,35 +261,17 @@ namespace HttpServices.Services.Concrete
 
         public async Task<PagedHeldInvoiceResponse> GetHeldInvoicePaymentsUseCase(HeldInvoicePaymentParameters parameters)
         {
-            var queryParams = new Dictionary<string, string>
-            {
-                {
-                    "pageNumber", $"{parameters.PageNumber}"
-                },
-                {
-                    "pageSize", $"{parameters.PageSize}"
-                },
-                {
-                    "waitingOnId", parameters.WaitingOnId != null ? $"{parameters.WaitingOnId}" : ""
-                },
-                {
-                    "supplierId", parameters.SupplierId != null ? $"{parameters.SupplierId}" : ""
-                },
-                {
-                    "packageTypeId", parameters.PackageTypeId != null ? $"{parameters.PackageTypeId}" : ""
-                },
-                {
-                    "serviceUserId", parameters.ServiceUserId != null ? $"{parameters.ServiceUserId}" : ""
-                },
-                {
-                    "dateFrom", parameters.DateFrom != null ? parameters.DateFrom?.DateTimeOffsetToISOString() : ""
-                },
-                {
-                    "dateTo", parameters.DateTo != null ? parameters.DateTo?.DateTimeOffsetToISOString() : ""
-                }
-            };
-
-            var url = QueryHelpers.AddQueryString("api/v1/invoices/held-invoice-payments", queryParams);
+            var url = new UrlFormatter()
+                .SetBaseUrl("api/v1/invoices/held-invoice-payments")
+                .AddParameter("pageNumber", parameters.PageNumber)
+                .AddParameter("pageSize", parameters.PageSize)
+                .AddParameter("waitingOnId", parameters.WaitingOnId)
+                .AddParameter("supplierId", parameters.SupplierId)
+                .AddParameter("packageTypeId", parameters.PackageTypeId)
+                .AddParameter("serviceUserId", parameters.ServiceUserId)
+                .AddParameter("dateFrom", parameters.DateFrom?.DateTimeOffsetToISOString())
+                .AddParameter("dateTo", parameters.DateTo?.DateTimeOffsetToISOString())
+                .ToString();
 
             return await _restClient
                 .GetAsync<PagedHeldInvoiceResponse>(url, "Failed to fetch held invoice payments")
@@ -435,32 +356,16 @@ namespace HttpServices.Services.Concrete
 
         public async Task<PagedBillSummaryResponse> GetBillSummaryList(BillSummaryListParameters parameters)
         {
-            var queryParams = new Dictionary<string, string>
-            {
-                {
-                    "pageNumber", $"{parameters.PageNumber}"
-                },
-                {
-                    "pageSize", $"{parameters.PageSize}"
-                },
-                {
-                    "packageId", $"{parameters.PackageId}"
-                },
-                {
-                    "supplierId", $"{parameters.SupplierId}"
-                },
-                {
-                    "billPaymentStatusId", $"{parameters.BillPaymentStatusId}"
-                },
-                {
-                    "fromDate", parameters.FromDate?.DateTimeOffsetToISOString()
-                },
-                {
-                    "toDate", parameters.ToDate?.DateTimeOffsetToISOString()
-                }
-            };
-
-            var url = QueryHelpers.AddQueryString("api/v1/bills", queryParams);
+            var url = new UrlFormatter()
+                .SetBaseUrl("api/v1/bills")
+                .AddParameter("pageNumber", parameters.PageNumber)
+                .AddParameter("pageSize", parameters.PageSize)
+                .AddParameter("packageId", parameters.PackageId)
+                .AddParameter("supplierId", parameters.SupplierId)
+                .AddParameter("billPaymentStatusId", parameters.BillPaymentStatusId)
+                .AddParameter("fromDate", parameters.FromDate?.DateTimeOffsetToISOString())
+                .AddParameter("toDate", parameters.ToDate?.DateTimeOffsetToISOString())
+                .ToString();
 
             return await _restClient
                 .GetAsync<PagedBillSummaryResponse>(url, "Cannot retrieve bills summary list")
@@ -469,20 +374,12 @@ namespace HttpServices.Services.Concrete
 
         public async Task<PagedSupplierResponse> GetSuppliersListUseCase(SupplierListParameters parameters)
         {
-            var queryParams = new Dictionary<string, string>
-            {
-                {
-                    "pageNumber", $"{parameters.PageNumber}"
-                },
-                {
-                    "pageSize", $"{parameters.PageSize}"
-                },
-                {
-                    "searchTerm", parameters.SearchTerm != null ? $"{parameters.SearchTerm}" : ""
-                }
-            };
-
-            var url = QueryHelpers.AddQueryString("api/v1/suppliers", queryParams);
+            var url = new UrlFormatter()
+                .SetBaseUrl("api/v1/suppliers")
+                .AddParameter("pageNumber", parameters.PageNumber)
+                .AddParameter("pageSize", parameters.PageSize)
+                .AddParameter("searchTerm", parameters.SearchTerm)
+                .ToString();
 
             return await _restClient
                 .GetAsync<PagedSupplierResponse>(url, "Cannot retrieve Suppliers list")
