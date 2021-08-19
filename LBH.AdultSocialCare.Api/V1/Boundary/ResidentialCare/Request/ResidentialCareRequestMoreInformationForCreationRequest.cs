@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Request
+namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
 {
     public class ResidentialCareRequestMoreInformationForCreationRequest
     {

@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request
+namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response
 {
-    public class ResidentialCareAdditionalNeedsRequest
+    public class ResidentialCareAdditionalNeedsResponse
     {
         /// <summary>
         /// Gets or sets the Id
@@ -31,5 +28,15 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoun
         /// Gets or sets the Need To Address
         /// </summary>
         public string NeedToAddress { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Creator Id
+        /// </summary>
+        public Guid CreatorId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Updator Id
+        /// </summary>
+        public Guid? UpdatorId { get; set; }
     }
 }

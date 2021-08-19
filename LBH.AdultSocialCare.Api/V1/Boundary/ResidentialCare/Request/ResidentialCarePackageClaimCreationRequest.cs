@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Request
+namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
 {
     public class ResidentialCarePackageClaimCreationRequest
     {

@@ -1,7 +1,6 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Response;
 using System;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Response
+namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response
 {
     public class ResidentialCareBrokerageInfoResponse
     {

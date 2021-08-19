@@ -1,14 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare
+namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
 {
-    public class ResidentialCarePackageForUpdateRequest
+    public class ResidentialCarePackageForCreationRequest
     {
-        [Required] public Guid Id { get; set; }
+        [Required] public bool? IsFixedPeriod { get; set; }
         [Required] public Guid? ClientId { get; set; }
         [Required] public DateTimeOffset? StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
@@ -19,9 +17,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare
         [Required] public int? ResidentialCareTypeOfStayId { get; set; }
         [Required] public string NeedToAddress { get; set; }
         [Required] public int? TypeOfResidentialCareHomeId { get; set; }
-        [Required] public int? StatusId { get; set; }
-        public int? SupplierId { get; set; }
-        public int? StageId { get; set; }
-        public IEnumerable<ResidentialCareAdditionalNeedsCreationRequest> ResidentialCareAdditionalNeeds { get; set; }
+        public IEnumerable<ResidentialCareAdditionalNeedForCreationRequest> ResidentialCareAdditionalNeeds { get; set; }
+        public IEnumerable<ResidentialCarePackageClaimCreationRequest> PackageReclaims { get; set; }
     }
 }

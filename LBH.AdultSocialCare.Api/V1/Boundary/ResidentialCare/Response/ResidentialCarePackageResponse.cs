@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Response
+namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response
 {
     public class ResidentialCarePackageResponse
     {

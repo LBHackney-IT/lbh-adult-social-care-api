@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovalHistoryBoundary.Response
+namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response
 {
     public class ResidentialCareApprovalHistoryResponse
     {
