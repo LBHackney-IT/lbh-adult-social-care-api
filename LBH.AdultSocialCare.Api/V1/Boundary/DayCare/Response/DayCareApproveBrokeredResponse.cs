@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
-
-namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response
+namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response
 {
     public class DayCareApproveBrokeredResponse
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Response
+namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response
 {
     public class DayCareBrokerageStageResponse
     {

@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageReclaimBoundary.Response
+namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response
 {
     public class DayCarePackageClaimResponse
     {

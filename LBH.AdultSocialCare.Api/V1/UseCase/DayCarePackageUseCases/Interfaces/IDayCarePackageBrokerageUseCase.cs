@@ -1,8 +1,8 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces
 {

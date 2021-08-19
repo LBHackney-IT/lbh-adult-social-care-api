@@ -1,7 +1,7 @@
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Response
+namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response
 {
     public class DayCarePackageForBrokerageResponse
     {

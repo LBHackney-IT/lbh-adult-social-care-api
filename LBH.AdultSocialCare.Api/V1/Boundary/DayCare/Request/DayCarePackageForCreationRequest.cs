@@ -1,10 +1,8 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Request;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageReclaimBoundary.Request;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request
+namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Request
 {
     public class DayCarePackageForCreationRequest
     {
