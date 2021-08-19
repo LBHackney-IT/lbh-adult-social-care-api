@@ -1,5 +1,4 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareApprovalHistoryUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;

@@ -1,6 +1,4 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
@@ -14,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
@@ -139,13 +138,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
             catch (FormatException ex)
             {
                 return BadRequest(ex.Message);
-            }
-            catch (Exception exc)
-            {
-                // TODO remove
-                Debugger.Break();
-
-                return BadRequest(exc.Message);
             }
         }
 

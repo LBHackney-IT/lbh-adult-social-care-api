@@ -1,5 +1,3 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-
 namespace LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response
 {
     public class HomeCareApproveBrokeredResponse

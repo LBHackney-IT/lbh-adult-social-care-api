@@ -1,5 +1,5 @@
 using System;
-using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response
 {

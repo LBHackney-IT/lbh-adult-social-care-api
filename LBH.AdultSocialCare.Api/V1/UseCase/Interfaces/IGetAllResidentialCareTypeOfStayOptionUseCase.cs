@@ -1,4 +1,3 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain;
 using System;
 using System.Collections.Generic;

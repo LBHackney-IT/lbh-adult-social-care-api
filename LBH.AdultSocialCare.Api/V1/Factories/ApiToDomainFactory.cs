@@ -1,9 +1,4 @@
 using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Boundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Domain.ClientDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
@@ -26,10 +21,12 @@ using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {

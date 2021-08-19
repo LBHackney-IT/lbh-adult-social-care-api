@@ -1,6 +1,5 @@
 using System;
-using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response
 {

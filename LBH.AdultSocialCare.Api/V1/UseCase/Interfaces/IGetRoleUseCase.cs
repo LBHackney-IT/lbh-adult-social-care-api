@@ -1,6 +1,6 @@
 using System;
-using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Interfaces
 {
