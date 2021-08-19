@@ -1,6 +1,6 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareBrokerageUseCase.Interfaces
 {

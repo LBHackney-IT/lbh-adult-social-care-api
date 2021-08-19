@@ -1,4 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Boundary;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using Microsoft.Extensions.HealthChecks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase

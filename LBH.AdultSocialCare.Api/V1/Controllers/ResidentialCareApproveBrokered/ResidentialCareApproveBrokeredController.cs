@@ -5,7 +5,7 @@ using AutoMapper;
 using HttpServices.Models.Requests;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApproveBrokeredUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;

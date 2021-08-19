@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
 {

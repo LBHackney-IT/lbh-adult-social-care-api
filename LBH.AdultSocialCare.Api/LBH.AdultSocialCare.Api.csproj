@@ -59,11 +59,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="V1\Boundary\HomeCareApprovalHistoryBoundary\Request\" />
-    <Folder Include="V1\Boundary\ResidentialCarePackageBoundary\Request\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\HttpServices\HttpServices.csproj" />
   </ItemGroup>
 

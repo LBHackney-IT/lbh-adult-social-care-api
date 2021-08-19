@@ -1,7 +1,5 @@
 using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -12,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
 {

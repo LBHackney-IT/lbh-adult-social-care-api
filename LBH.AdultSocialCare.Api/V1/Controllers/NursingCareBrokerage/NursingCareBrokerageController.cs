@@ -1,6 +1,4 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareBrokerageUseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
@@ -8,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareBrokerage
 {

@@ -1,11 +1,11 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.SupplierCostUseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {

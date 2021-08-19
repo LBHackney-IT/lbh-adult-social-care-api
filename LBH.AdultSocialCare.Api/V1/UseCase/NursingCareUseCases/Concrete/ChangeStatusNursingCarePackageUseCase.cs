@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 using LBH.AdultSocialCare.Api.V1.BusinessRules;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;

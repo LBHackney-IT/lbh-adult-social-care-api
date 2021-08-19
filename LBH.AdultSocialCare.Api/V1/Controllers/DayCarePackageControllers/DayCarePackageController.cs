@@ -1,9 +1,3 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.OpportunityLengthOptionUseCases.Interfaces;
@@ -14,6 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
 {

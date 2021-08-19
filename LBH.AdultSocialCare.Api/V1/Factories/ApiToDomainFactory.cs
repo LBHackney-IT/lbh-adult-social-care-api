@@ -1,24 +1,4 @@
 using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageReclaimBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Boundary.Request.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.UserBoundary.Request;
 using LBH.AdultSocialCare.Api.V1.Domain.ClientDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
@@ -41,6 +21,12 @@ using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {

@@ -1,5 +1,3 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.SubmittedPackageRequestsBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 using LBH.AdultSocialCare.Api.V1.UseCase.SubmittedPackageRequestsUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -7,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {

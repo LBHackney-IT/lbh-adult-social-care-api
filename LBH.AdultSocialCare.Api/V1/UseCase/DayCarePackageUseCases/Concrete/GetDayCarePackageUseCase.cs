@@ -1,8 +1,8 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete

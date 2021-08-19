@@ -1,9 +1,9 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.InvoiceBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApproveCommercialUseCase.Interfaces;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApproveCommercialUseCase.Concrete
 {
