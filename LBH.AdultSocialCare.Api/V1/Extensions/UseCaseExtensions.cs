@@ -417,12 +417,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
 
             #endregion BrokeredPackages
 
-            #region Transaction
-
-            services.AddScoped<ITransactionsService, TransactionsService>();
-
-            #endregion Transaction
-
             #region IdentityHelper
 
             services.AddScoped<IIdentityHelperUseCase, IdentityHelperUseCase>();

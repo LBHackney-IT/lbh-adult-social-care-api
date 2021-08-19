@@ -99,11 +99,10 @@ namespace LBH.AdultSocialCare.Api
             services.RegisterGateways();
             services.RegisterUseCases();
 
-            // Configure transaction API options
-            services.Configure<TransactionApiOptions>(Configuration.GetSection("HASCHttpClients"));
-            services.ConfigureTransactionsService(Configuration);
-
+            // Configure transaction API client
             services.AddScoped<IRestClient, JsonRestClient>();
+            services.AddScoped<ITransactionsService, TransactionsService>();
+            services.ConfigureTransactionsApiClient(Configuration);
         }
 
         private static void ConfigureSwagger(IServiceCollection services) => services.AddSwaggerGen(c =>

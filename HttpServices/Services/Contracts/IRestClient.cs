@@ -10,16 +10,21 @@ namespace HttpServices.Services.Contracts
         /// <summary>
         /// Sends a GET request to specified url
         /// </summary>
-        Task<TResult> Get<TResult>(string url, string errorMessage, string apiKey = "") where TResult : class;
+        Task<TResult> GetAsync<TResult>(string url, string errorMessage);
 
         /// <summary>
-        /// Sends a POST method to specified url
+        /// Sends a POST method with payload in request body to specified url
         /// </summary>
-        Task<TResult> Post<TResult>(string url, object payload, string errorMessage, string apiKey = "") where TResult : class;
+        Task<TResult> PostAsync<TResult>(string url, object payload, string errorMessage);
 
         /// <summary>
-        /// Sends a PUT request to specified url.
+        /// Sends a PUT request with payload in request body  to specified url.
         /// </summary>
-        Task<TResult> Put<TResult>(string url, object payload, string errorMessage, string apiKey = "") where TResult : class;
+        Task<TResult> PutAsync<TResult>(string url, object payload, string errorMessage);
+
+        /// <summary>
+        /// Sends a DELETE request to specified url.
+        /// </summary>
+        Task<TResult> DeleteAsync<TResult>(string url, string errorMessage);
     }
 }
