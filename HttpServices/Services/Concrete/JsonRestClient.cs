@@ -17,14 +17,9 @@ namespace HttpServices.Services.Concrete
     public class JsonRestClient : IRestClient
     {
         private readonly HttpClient _httpClient;
-        private readonly string _baseUrl;
-        private readonly string _apiKey;
 
-        public JsonRestClient(HttpClient httpClient, IOptions<TransactionApiOptions> options)
+        public JsonRestClient(HttpClient httpClient)
         {
-            _baseUrl = options.Value.TransactionsBaseUrl.ToString();
-            _apiKey = options.Value.TransactionsApiKey;
-
             _httpClient = httpClient;
         }
 
@@ -65,16 +60,7 @@ namespace HttpServices.Services.Concrete
             var httpRequestMessage = new HttpRequestMessage
             {
                 Method = method,
-                RequestUri = new Uri($"{_baseUrl}{url}"),
-                Headers =
-                {
-                    {
-                        HttpRequestHeader.Accept.ToString(), "application/json"
-                    },
-                    {
-                        "x-api-key", _apiKey
-                    },
-                }
+                RequestUri = new Uri($"{_httpClient.BaseAddress}{url}")
             };
 
             if (payload != null)

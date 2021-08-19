@@ -176,7 +176,7 @@ namespace HttpServices.Services.Concrete
                     $"api/v1/pay-runs/{payRunId}/unique-payment-statuses",
                     "Failed to retrieve payment statuses in pay run")
                 .ConfigureAwait(false);
-       }
+        }
 
         public async Task<IEnumerable<InvoiceResponse>> GetReleasedHoldsUseCase(DateTimeOffset? fromDate = null,
             DateTimeOffset? toDate = null)

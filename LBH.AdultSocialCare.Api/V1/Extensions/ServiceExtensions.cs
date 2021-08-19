@@ -23,8 +23,8 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
     public static class ServiceExtensions
     {
 
-        public static void ConfigureTransactionsService(this IServiceCollection services, IConfiguration configuration)
-            => services.AddHttpClient<ITransactionsService, TransactionsService>(client =>
+        public static void ConfigureTransactionsApiClient(this IServiceCollection services, IConfiguration configuration)
+            => services.AddHttpClient<IRestClient, JsonRestClient>(client =>
             {
                 client.BaseAddress = new Uri(configuration["HASCHttpClients:TransactionsBaseUrl"]);
                 client.DefaultRequestHeaders.Add("x-api-key", configuration["HASCHttpClients:TransactionsApiKey"]);
