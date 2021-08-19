@@ -99,8 +99,9 @@ namespace LBH.AdultSocialCare.Api
             services.RegisterGateways();
             services.RegisterUseCases();
 
-            // Configure transaction API options
+            // Configure transaction API client
             services.AddScoped<IRestClient, JsonRestClient>();
+            services.AddScoped<ITransactionsService, TransactionsService>();
             services.ConfigureTransactionsApiClient(Configuration);
         }
 
