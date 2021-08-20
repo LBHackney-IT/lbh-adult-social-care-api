@@ -1,12 +1,12 @@
 using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
+using LBH.AdultSocialCare.Api.V1.Gateways.DayCare.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete
 {

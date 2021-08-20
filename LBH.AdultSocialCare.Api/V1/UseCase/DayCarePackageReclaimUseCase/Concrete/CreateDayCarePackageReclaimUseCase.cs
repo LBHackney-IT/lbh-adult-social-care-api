@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageReclaimGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.DayCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageReclaimUseCase.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageReclaimUseCase.Concrete

@@ -3,9 +3,8 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovalHistoryGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Security.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareBrokerageUseCase.Interfaces;
 

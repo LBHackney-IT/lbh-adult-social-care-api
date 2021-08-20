@@ -4,7 +4,7 @@ using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete

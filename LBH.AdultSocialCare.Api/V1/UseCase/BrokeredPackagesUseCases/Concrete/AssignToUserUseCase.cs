@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.BrokeredPackagesUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.BrokeredPackagesUseCases.Concrete

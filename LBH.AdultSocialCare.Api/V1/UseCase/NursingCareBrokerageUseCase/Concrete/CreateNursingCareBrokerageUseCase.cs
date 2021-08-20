@@ -5,8 +5,7 @@ using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareBrokerageUseCase.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareBrokerageUseCase.Concrete

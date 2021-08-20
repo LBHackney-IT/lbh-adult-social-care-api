@@ -1,8 +1,8 @@
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases
 {

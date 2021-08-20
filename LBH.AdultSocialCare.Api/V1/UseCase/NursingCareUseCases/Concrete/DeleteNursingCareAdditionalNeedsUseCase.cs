@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 

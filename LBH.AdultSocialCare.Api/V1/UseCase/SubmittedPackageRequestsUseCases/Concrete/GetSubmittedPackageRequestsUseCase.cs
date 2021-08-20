@@ -1,9 +1,9 @@
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 using LBH.AdultSocialCare.Api.V1.UseCase.SubmittedPackageRequestsUseCases.Interfaces;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.SubmittedPackageRequestsUseCases.Concrete
 {

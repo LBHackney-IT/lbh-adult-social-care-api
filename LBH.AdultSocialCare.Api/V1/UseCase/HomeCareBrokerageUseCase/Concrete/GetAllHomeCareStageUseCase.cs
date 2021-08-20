@@ -1,11 +1,11 @@
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareStageGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareBrokerageUseCase.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCare.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCareBrokerageUseCase.Concrete
 {

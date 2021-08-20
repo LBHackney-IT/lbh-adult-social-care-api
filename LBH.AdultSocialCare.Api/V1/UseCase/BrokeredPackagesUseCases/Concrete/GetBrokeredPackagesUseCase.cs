@@ -4,8 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 using LBH.AdultSocialCare.Api.V1.UseCase.BrokeredPackagesUseCases.Interfaces;
 

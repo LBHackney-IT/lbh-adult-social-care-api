@@ -4,8 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.DayCareRequestMoreInformationGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareRequestMoreInformationGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.DayCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCareRequestMoreInformationUseCase.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCareRequestMoreInformationUseCase.Concrete

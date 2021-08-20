@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 

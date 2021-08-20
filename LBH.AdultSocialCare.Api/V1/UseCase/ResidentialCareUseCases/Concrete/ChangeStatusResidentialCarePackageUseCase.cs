@@ -1,8 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovalHistoryGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
 using System;
 using System.Threading.Tasks;
@@ -11,6 +8,8 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.BusinessRules;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Extensions;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Security.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Concrete

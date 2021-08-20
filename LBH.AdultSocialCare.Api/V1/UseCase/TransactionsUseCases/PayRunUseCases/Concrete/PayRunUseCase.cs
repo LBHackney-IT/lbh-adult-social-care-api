@@ -5,15 +5,14 @@ using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Concrete
 {

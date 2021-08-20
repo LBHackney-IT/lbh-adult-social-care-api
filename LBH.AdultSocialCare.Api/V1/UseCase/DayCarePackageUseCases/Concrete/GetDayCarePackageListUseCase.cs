@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.DayCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Concrete
