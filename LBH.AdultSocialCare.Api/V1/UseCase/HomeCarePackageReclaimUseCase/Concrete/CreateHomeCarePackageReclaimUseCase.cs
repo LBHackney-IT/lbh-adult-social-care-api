@@ -5,8 +5,7 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCarePackageReclaimGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCarePackageReclaimUseCase.Concrete

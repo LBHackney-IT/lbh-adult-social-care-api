@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Concrete

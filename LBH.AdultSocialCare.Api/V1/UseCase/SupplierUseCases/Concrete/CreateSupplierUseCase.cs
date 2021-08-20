@@ -1,6 +1,4 @@
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Concrete
 {

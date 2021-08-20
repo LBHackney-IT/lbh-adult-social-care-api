@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.DayCare.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageOpportunityUseCases.Concrete
 {

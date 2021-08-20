@@ -1,6 +1,6 @@
-using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCare.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare
 {

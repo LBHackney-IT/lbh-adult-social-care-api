@@ -1,6 +1,7 @@
 using HttpServices.Services.Concrete;
 using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovalHistoryGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCare.Concrete;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.ApprovedPackagesUseCases.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Concrete;
