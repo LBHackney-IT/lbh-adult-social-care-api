@@ -12,7 +12,7 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete

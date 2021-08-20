@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using LBH.AdultSocialCare.Api.V1.UseCase;
+using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers

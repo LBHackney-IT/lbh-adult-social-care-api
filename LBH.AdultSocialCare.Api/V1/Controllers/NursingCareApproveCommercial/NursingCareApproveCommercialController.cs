@@ -2,13 +2,12 @@ using AutoMapper;
 using HttpServices.Models.Requests;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareApproveCommercialUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCareApproveCommercial
 {

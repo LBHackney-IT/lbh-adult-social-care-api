@@ -1,11 +1,10 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareRequestMoreInformationUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Request;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCareBrokerage
 {

@@ -1,7 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {

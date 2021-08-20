@@ -1,16 +1,15 @@
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.UseCase.ClientsUseCases.Interfaces;
 using Microsoft.Extensions.Primitives;
 using Amazon.Runtime;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
+using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
