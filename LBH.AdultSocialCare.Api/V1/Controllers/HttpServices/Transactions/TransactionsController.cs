@@ -3,8 +3,6 @@ using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +12,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using InvoiceResponse = HttpServices.Models.Responses.InvoiceResponse;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions

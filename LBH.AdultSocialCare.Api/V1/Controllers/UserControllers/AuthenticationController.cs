@@ -3,7 +3,6 @@ using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
-using LBH.AdultSocialCare.Api.V1.UseCase.AuthUseCases.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +11,7 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
+using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.UserControllers
 {
