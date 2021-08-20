@@ -1,10 +1,10 @@
 using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCareStageGateways
 {

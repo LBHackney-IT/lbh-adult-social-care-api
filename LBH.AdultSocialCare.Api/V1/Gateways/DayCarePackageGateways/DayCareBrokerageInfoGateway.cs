@@ -1,6 +1,5 @@
 using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
@@ -9,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
 {

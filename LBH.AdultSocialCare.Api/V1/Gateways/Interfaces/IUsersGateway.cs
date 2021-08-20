@@ -1,6 +1,6 @@
-using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.Security;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Interfaces
 {

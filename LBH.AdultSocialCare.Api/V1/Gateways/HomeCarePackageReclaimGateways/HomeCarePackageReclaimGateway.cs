@@ -1,6 +1,4 @@
 using Common.Exceptions.CustomExceptions;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
@@ -8,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCarePackageReclaimGateways
 {

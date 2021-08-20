@@ -1,9 +1,9 @@
 using LBH.AdultSocialCare.Api.V1.Domain;
-using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.Security;
 
 namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 {

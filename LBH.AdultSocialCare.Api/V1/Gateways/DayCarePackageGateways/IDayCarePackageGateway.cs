@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 

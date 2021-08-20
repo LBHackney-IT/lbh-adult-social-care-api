@@ -1,9 +1,5 @@
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
@@ -12,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways
 {

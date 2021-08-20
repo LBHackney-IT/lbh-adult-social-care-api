@@ -1,5 +1,4 @@
 using Common.Exceptions.CustomExceptions;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways

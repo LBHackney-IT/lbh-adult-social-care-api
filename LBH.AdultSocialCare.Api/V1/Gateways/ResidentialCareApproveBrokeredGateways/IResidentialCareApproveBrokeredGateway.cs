@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApproveBrokeredDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGateways
 {

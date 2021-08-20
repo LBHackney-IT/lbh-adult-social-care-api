@@ -2,7 +2,6 @@ using Common.Exceptions.CustomExceptions;
 using Common.Exceptions.Models;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
@@ -12,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.Security;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.UserUseCases
 {

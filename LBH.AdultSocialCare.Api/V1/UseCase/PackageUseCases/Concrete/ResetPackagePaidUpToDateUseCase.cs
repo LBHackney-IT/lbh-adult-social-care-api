@@ -1,11 +1,11 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.PackageUseCases.Concrete

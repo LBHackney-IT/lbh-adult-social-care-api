@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageReclaimGateways

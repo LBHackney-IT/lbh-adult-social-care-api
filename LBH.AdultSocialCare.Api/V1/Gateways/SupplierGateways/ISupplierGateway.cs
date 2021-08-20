@@ -1,7 +1,7 @@
-using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways

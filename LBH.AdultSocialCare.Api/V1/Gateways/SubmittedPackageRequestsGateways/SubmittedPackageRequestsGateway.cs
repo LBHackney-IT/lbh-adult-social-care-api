@@ -1,5 +1,4 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Domain.PackageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
@@ -8,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways
 {

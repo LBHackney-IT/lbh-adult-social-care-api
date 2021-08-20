@@ -3,7 +3,6 @@ using Common.Exceptions.CustomExceptions;
 using HttpServices.Models.Requests;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
@@ -13,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways
 {

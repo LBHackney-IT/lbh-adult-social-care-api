@@ -1,5 +1,4 @@
 using Common.Exceptions.CustomExceptions;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
@@ -7,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.IdentityHelperUseCases.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways
