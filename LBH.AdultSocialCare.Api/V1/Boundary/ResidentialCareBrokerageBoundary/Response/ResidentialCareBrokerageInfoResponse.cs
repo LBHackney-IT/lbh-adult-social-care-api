@@ -1,5 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Response;
 using System;
+using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Response
 {
@@ -8,7 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.R
         /// <summary>
         /// Gets or sets the Residential Care Brokerage Id
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid ResidentialCareBrokerageId { get; set; }
 
         /// <summary>
         /// Gets or sets the Residential Care Package Id
@@ -25,24 +26,26 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.R
         /// </summary>
         public decimal ResidentialCore { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Additional Needs Payment
-        /// </summary>
-        public decimal AdditionalNeedsPayment { get; set; }
+        public IEnumerable<ResidentialCareAdditionalNeedsCostResponse> ResidentialCareAdditionalNeedsCosts { get; set; }
 
         /// <summary>
-        /// Gets or sets the Additional Needs Payment One Off
+        /// Gets or sets the package brokerage stage id.
         /// </summary>
-        public decimal AdditionalNeedsPaymentOneOff { get; set; }
+        public int? StageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the brokerage supplier.
+        /// </summary>
+        public int? SupplierId { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
-        public int CreatorId { get; set; }
+        public Guid CreatorId { get; set; }
 
         /// <summary>
         /// Gets or sets the Updator Id
         /// </summary>
-        public int UpdatorId { get; set; }
+        public Guid? UpdatorId { get; set; }
     }
 }

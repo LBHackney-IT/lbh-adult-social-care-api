@@ -17,15 +17,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
         /// </summary>
         public Guid ResidentialCarePackageId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Weekly
-        /// </summary>
-        public bool IsWeeklyCost { get; set; }
-
-        /// <summary>
-        /// Gets or sets the One Off
-        /// </summary>
-        public bool IsOneOffCost { get; set; }
+        public int AdditionalNeedsPaymentTypeId { get; set; }
 
         /// <summary>
         /// Gets or sets the Need To Address
@@ -51,5 +43,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
         [ForeignKey(nameof(UpdaterId))]
         public User Updater { get; set; }
 
+        [ForeignKey(nameof(AdditionalNeedsPaymentTypeId))]
+        public AdditionalNeedsPaymentType AdditionalNeedsPaymentType { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
 using System;
+using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Response
 {
@@ -25,15 +26,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Respo
         /// </summary>
         public decimal NursingCore { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Additional Needs Payment
-        /// </summary>
-        public decimal AdditionalNeedsPayment { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Additional Needs Payment One Off
-        /// </summary>
-        public decimal AdditionalNeedsPaymentOneOff { get; set; }
+        public IEnumerable<NursingCareAdditionalNeedsCostResponse> NursingCareAdditionalNeedsCosts { get; set; }
 
         /// <summary>
         /// Gets or sets the package brokerage stage id.

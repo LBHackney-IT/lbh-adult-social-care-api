@@ -12,24 +12,16 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains
         /// </summary>
         public Guid ResidentialCarePackageId { get; set; }
 
+        public int SupplierId { get; set; }
+        public int StageId { get; set; }
+
         /// <summary>
         /// Gets or sets the Residential Core Per Week
         /// </summary>
         public decimal ResidentialCore { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Additional Needs Payment
-        /// </summary>
-        public decimal AdditionalNeedsPayment { get; set; }
+        public Guid CreatorId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Additional Needs Payment One Off
-        /// </summary>
-        public decimal AdditionalNeedsPaymentOneOff { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public int CreatorId { get; set; }
+        public IEnumerable<ResidentialCareAdditionalNeedsCostCreationDomain> ResidentialCareAdditionalNeedsCosts { get; set; }
     }
 }

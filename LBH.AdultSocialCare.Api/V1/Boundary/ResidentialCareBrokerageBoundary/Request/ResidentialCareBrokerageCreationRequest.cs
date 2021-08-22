@@ -37,15 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.R
         /// </summary>
         public decimal ResidentialCore { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Hour Per Week
-        /// </summary>
-        public decimal AdditionalNeedsPayment { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Additional Needs Payment One Off
-        /// </summary>
-        public decimal AdditionalNeedsPaymentOneOff { get; set; }
+        public IEnumerable<ResidentialCareAdditionalNeedsCostCreationRequest> ResidentialCareAdditionalNeedsCosts { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

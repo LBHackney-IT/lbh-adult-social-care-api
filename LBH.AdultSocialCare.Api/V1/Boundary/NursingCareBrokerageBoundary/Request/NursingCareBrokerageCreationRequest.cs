@@ -1,5 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Validations;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Request
@@ -36,15 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Reque
         /// </summary>
         [Required] public decimal? NursingCore { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Hour Per Week
-        /// </summary>
-        [Required] public decimal? AdditionalNeedsPayment { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Additional Needs Payment One Off
-        /// </summary>
-        [Required] public decimal? AdditionalNeedsPaymentOneOff { get; set; }
+        public IEnumerable<NursingCareAdditionalNeedsCostCreationRequest> NursingCareAdditionalNeedsCosts { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

@@ -5,6 +5,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
@@ -33,9 +34,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways
                 await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
                 return entry.Entity.ToDomain();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new DbSaveFailedException("Could not save supplier to database");
+                throw new DbSaveFailedException("Could not save supplier to database" + ex.Message);
             }
         }
 
@@ -89,16 +90,23 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways
                         {
                             Id = an.Id,
                             NursingCarePackageId = an.NursingCarePackageId,
-                            IsWeeklyCost = an.IsWeeklyCost,
-                            IsOneOffCost = an.IsOneOffCost,
+                            AdditionalNeedsPaymentTypeId = an.AdditionalNeedsPaymentTypeId,
+                            AdditionalNeedsPaymentTypeName = an.AdditionalNeedsPaymentType.OptionName,
                             NeedToAddress = an.NeedToAddress,
                             CreatorId = an.CreatorId,
                             UpdaterId = an.UpdaterId
                         })
                     },
+                    NursingCareAdditionalNeedsCosts = nc.NursingCareBrokerageInfo.NursingCareAdditionalNeedsCosts.Select(anc => new NursingCareAdditionalNeedsCostDomain
+                    {
+                        NursingCareBrokerageId = anc.NursingCareBrokerageId,
+                        AdditionalNeedsPaymentTypeId = anc.AdditionalNeedsPaymentTypeId,
+                        AdditionalNeedsPaymentTypeName = anc.AdditionalNeedsPaymentType.OptionName,
+                        AdditionalNeedsCost = anc.AdditionalNeedsCost,
+                        CreatorId = anc.CreatorId,
+                        UpdatorId = anc.UpdatorId
+                    }), 
                     NursingCore = nc.NursingCareBrokerageInfo.NursingCore,
-                    AdditionalNeedsPayment = nc.NursingCareBrokerageInfo.AdditionalNeedsPayment,
-                    AdditionalNeedsPaymentOneOff = nc.NursingCareBrokerageInfo.AdditionalNeedsPaymentOneOff,
                     StageId = nc.StageId,
                     SupplierId = nc.SupplierId,
                     CreatorId = nc.CreatorId,
@@ -106,6 +114,22 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways
                 })
                 .AsNoTracking()
                 .FirstOrDefaultAsync().ConfigureAwait(false);
+
+            if (!nursingCarePackage.NursingCareAdditionalNeedsCosts.Any())
+            {
+                var nursingCareAdditionalNeedsCosts = await _databaseContext.NursingCareAdditionalNeeds
+                    .Where(nc => nc.NursingCarePackageId.Equals(nursingCarePackageId))
+                    .Select(an => new NursingCareAdditionalNeedsCostDomain()
+                    {
+                        AdditionalNeedsPaymentTypeId = an.AdditionalNeedsPaymentTypeId,
+                        AdditionalNeedsPaymentTypeName = an.AdditionalNeedsPaymentType.OptionName,
+                        AdditionalNeedsCost = 0,
+                    })
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                nursingCarePackage.NursingCareAdditionalNeedsCosts = nursingCareAdditionalNeedsCosts;
+            }
 
             if (nursingCarePackage == null)
             {

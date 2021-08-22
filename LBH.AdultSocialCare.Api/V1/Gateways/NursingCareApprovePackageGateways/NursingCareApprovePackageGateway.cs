@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways
 {
@@ -39,14 +40,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways
                 .AverageAsync(nc => nc == null ? 0 : nc.NursingCore)
                 .ConfigureAwait(false), 2);
 
-            var costOfAdditionalNeeds = Math.Round(await _databaseContext.NursingCareBrokerageInfos
+            var costOfAdditionalNeeds = Math.Round(await _databaseContext.NursingCareAdditionalNeedsCosts
+                .Where(item => item.AdditionalNeedsPaymentTypeId == AdditionalNeedPaymentTypesConstants.WeeklyCost)
                 .DefaultIfEmpty()
-                .AverageAsync(nc => nc == null ? 0 : nc.AdditionalNeedsPayment)
+                .AverageAsync(nc => nc == null ? 0 : nc.AdditionalNeedsCost)
                 .ConfigureAwait(false), 2);
 
-            var costOfOneOff = Math.Round(await _databaseContext.NursingCareBrokerageInfos
+            var costOfOneOff = Math.Round(await _databaseContext.NursingCareAdditionalNeedsCosts
+                .Where(item => item.AdditionalNeedsPaymentTypeId == AdditionalNeedPaymentTypesConstants.OneOff)
                 .DefaultIfEmpty()
-                .AverageAsync(nc => nc == null ? 0 : nc.AdditionalNeedsPaymentOneOff)
+                .AverageAsync(nc => nc == null ? 0 : nc.AdditionalNeedsCost)
                 .ConfigureAwait(false), 2);
 
             var nursingCareApprovePackageDomain = new NursingCareApprovePackageDomain()

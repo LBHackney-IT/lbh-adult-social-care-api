@@ -14,15 +14,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Res
         /// </summary>
         public Guid ResidentialCarePackageId { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Weekly
-        /// </summary>
-        public bool IsWeeklyCost { get; set; }
-
-        /// <summary>
-        /// Gets or sets the One Off
-        /// </summary>
-        public bool IsOneOffCost { get; set; }
+        public int AdditionalNeedsPaymentTypeId { get; set; }
+        public string AdditionalNeedsPaymentTypeName { get; set; }
 
         /// <summary>
         /// Gets or sets the Need To Address

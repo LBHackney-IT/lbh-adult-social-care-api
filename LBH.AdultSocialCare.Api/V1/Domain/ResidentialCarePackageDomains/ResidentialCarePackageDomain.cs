@@ -55,6 +55,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains
         public string PackageName { get; set; }
         public string TypeOfCareHomeName { get; set; }
         public string TypeOfStayOptionName { get; set; }
+        public Guid? AssignedUserId { get; set; }
 
         public IEnumerable<ResidentialCareAdditionalNeedsDomain> ResidentialCareAdditionalNeeds { get; set; }
 

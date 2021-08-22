@@ -32,6 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGatewa
             var nursingCarePackage = await _databaseContext.NursingCarePackages
                 .Where(item => item.Id == nursingCarePackageId)
                 .Include(item => item.NursingCareAdditionalNeeds)
+                .Include(item => item.NursingCareBrokerageInfo)
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
 
@@ -40,15 +41,26 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGatewa
                 throw new ApiException($"Could not find the Nursing Care Package {nursingCarePackageId}");
             }
 
+            var nursingCareBrokerage = await _databaseContext.NursingCareBrokerageInfos
+                .Where(item => item.NursingCarePackageId == nursingCarePackageId)
+                .FirstOrDefaultAsync()
+                .ConfigureAwait(false);
+
+            if (nursingCareBrokerage == null)
+            {
+                throw new ApiException($"Could not find the Nursing Care Package Brokerage {nursingCarePackageId}");
+            }
+
             var costOfCare = await _databaseContext.NursingCareBrokerageInfos
                 .Where(a => a.NursingCarePackageId.Equals(nursingCarePackageId))
                 .Select(a => a.NursingCore)
                 .SingleOrDefaultAsync().ConfigureAwait(false);
 
-            var costOfAdditionalNeeds = await _databaseContext.NursingCareBrokerageInfos
-                .Where(a => a.NursingCarePackageId.Equals(nursingCarePackageId))
-                .Select(a => a.AdditionalNeedsPayment)
-                .SingleOrDefaultAsync().ConfigureAwait(false);
+            var costOfAdditionalNeeds = await _databaseContext.NursingCareAdditionalNeedsCosts
+                .Where(a => a.NursingCareBrokerageId.Equals(nursingCareBrokerage.NursingCareBrokerageId) &&
+                       a.AdditionalNeedsPaymentTypeId == AdditionalNeedPaymentTypesConstants.WeeklyCost)
+                .SumAsync(a => a.AdditionalNeedsCost)
+                .ConfigureAwait(false);
 
             var nursingCareApproveCommercialDomain = new NursingCareApproveCommercialDomain()
             {
@@ -82,42 +94,42 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGatewa
 
             var additionalNeedsCount = nursingCarePackage.NursingCareAdditionalNeeds.Count;
 
-            var invoiceItems = new List<InvoiceItemDomain>()
-            {
-                new InvoiceItemDomain()
-                {
-                    ItemName = "Nursing Care Core",
-                    PricePerUnit = nursingCareBrokerage.NursingCore,
-                    Quantity = 1,
-                    CreatorId = _identityHelperUseCase.GetUserId()
-                },
-                new InvoiceItemDomain()
-                {
-                    ItemName = "Additional Needs",
-                    PricePerUnit = nursingCareBrokerage.AdditionalNeedsPayment,
-                    Quantity = additionalNeedsCount,
-                    CreatorId = _identityHelperUseCase.GetUserId()
-                }
-            };
+            //var invoiceItems = new List<InvoiceItemDomain>()
+            //{
+            //    new InvoiceItemDomain()
+            //    {
+            //        ItemName = "Nursing Care Core",
+            //        PricePerUnit = nursingCareBrokerage.NursingCore,
+            //        Quantity = 1,
+            //        CreatorId = _identityHelperUseCase.GetUserId()
+            //    },
+            //    new InvoiceItemDomain()
+            //    {
+            //        ItemName = "Additional Needs",
+            //        PricePerUnit = nursingCareBrokerage.AdditionalNeedsPayment,
+            //        Quantity = additionalNeedsCount,
+            //        CreatorId = _identityHelperUseCase.GetUserId()
+            //    }
+            //};
 
-            if (nursingCareBrokerage.AdditionalNeedsPaymentOneOff > 0)
-            {
-                var additionalNeedsPaymentOneOff = new InvoiceItemDomain()
-                {
-                    ItemName = "Additional Needs One Off",
-                    PricePerUnit = nursingCareBrokerage.AdditionalNeedsPaymentOneOff,
-                    Quantity = 1,
-                    CreatorId = _identityHelperUseCase.GetUserId()
-                };
-                invoiceItems.Add(additionalNeedsPaymentOneOff);
-            }
+            //if (nursingCareBrokerage.AdditionalNeedsPaymentOneOff > 0)
+            //{
+            //    var additionalNeedsPaymentOneOff = new InvoiceItemDomain()
+            //    {
+            //        ItemName = "Additional Needs One Off",
+            //        PricePerUnit = nursingCareBrokerage.AdditionalNeedsPaymentOneOff,
+            //        Quantity = 1,
+            //        CreatorId = _identityHelperUseCase.GetUserId()
+            //    };
+            //    invoiceItems.Add(additionalNeedsPaymentOneOff);
+            //}
 
             var invoiceDomain = new InvoiceDomain
             {
                 SupplierId = nursingCarePackage.SupplierId,
                 PackageTypeId = PackageTypesConstants.NursingCarePackageId,
                 ServiceUserId = nursingCarePackage.ClientId,
-                InvoiceItems = invoiceItems,
+                //InvoiceItems = invoiceItems,
                 CreatorId = _identityHelperUseCase.GetUserId()
             };
 

@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCareAdditionalNeedsDomains;
+using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
@@ -29,8 +31,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
                 await _databaseContext.NursingCareAdditionalNeeds.AddAsync(nursingCareAdditionalNeedToUpdate).ConfigureAwait(false);
             }
             nursingCareAdditionalNeedToUpdate.NursingCarePackageId = nursingCareAdditionalNeed.NursingCarePackageId;
-            nursingCareAdditionalNeedToUpdate.IsWeeklyCost = nursingCareAdditionalNeed.IsWeeklyCost;
-            nursingCareAdditionalNeedToUpdate.IsOneOffCost = nursingCareAdditionalNeed.IsOneOffCost;
+            nursingCareAdditionalNeedToUpdate.AdditionalNeedsPaymentTypeId =
+                nursingCareAdditionalNeed.AdditionalNeedsPaymentTypeId;
             nursingCareAdditionalNeedToUpdate.NeedToAddress = nursingCareAdditionalNeed.NeedToAddress;
             nursingCareAdditionalNeedToUpdate.CreatorId = nursingCareAdditionalNeed.CreatorId;
             nursingCareAdditionalNeedToUpdate.UpdaterId = nursingCareAdditionalNeed.UpdaterId;
@@ -58,6 +60,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
             bool isSuccess = await _databaseContext.SaveChangesAsync().ConfigureAwait(false) == 1;
 
             return isSuccess;
+        }
+        public async Task<IEnumerable<AdditionalNeedsPaymentTypeDomain>> GetListOfTypeOfPaymentOptionList()
+        {
+            var res = await _databaseContext.AdditionalNeedsPaymentTypes
+                .ToListAsync().ConfigureAwait(false);
+            return res?.ToDomain();
         }
     }
 }

@@ -8,9 +8,8 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains
 
         public Guid NursingCarePackageId { get; set; }
 
-        public bool IsWeeklyCost { get; set; }
-
-        public bool IsOneOffCost { get; set; }
+        public int AdditionalNeedsPaymentTypeId { get; set; }
+        public string AdditionalNeedsPaymentTypeName { get; set; }
         public string NeedToAddress { get; set; }
 
         public Guid CreatorId { get; set; }

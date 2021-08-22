@@ -4,11 +4,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomain
 {
     public class ResidentialCareAdditionalNeedForCreationDomain
     {
-        public bool? IsWeeklyCost { get; set; }
-        public bool? IsOneOffCost { get; set; }
-        public bool? IsFixedPeriod { get; set; }
-        public DateTime? StartDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        public int AdditionalNeedsPaymentTypeId { get; set; }
         public string NeedToAddress { get; set; }
         public Guid CreatorId { get; set; }
     }

@@ -22,7 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareBrokerageUseCase.Con
         {
             var brokerageInfo = await _residentialCareBrokerageGateway.GetAsync(residentialCareBrokerageInfoCreationDomain.ResidentialCarePackageId).ConfigureAwait(false);
 
-            if (brokerageInfo.Id != Guid.Empty)
+            if (brokerageInfo.ResidentialCareBrokerageId != Guid.Empty)
             {
                 throw new ApiException($"A brokerage for residential care package {residentialCareBrokerageInfoCreationDomain.ResidentialCarePackageId} already exists");
             }

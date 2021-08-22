@@ -303,8 +303,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = nursingCareAdditionalNeedsDomain.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
-                IsWeeklyCost = nursingCareAdditionalNeedsDomain.IsWeeklyCost,
-                IsOneOffCost = nursingCareAdditionalNeedsDomain.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = nursingCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeId,
                 NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
                 UpdaterId = nursingCareAdditionalNeedsDomain.UpdaterId,
@@ -337,8 +336,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCareAdditionalNeedsDomain.Id,
                 ResidentialCarePackageId = residentialCareAdditionalNeedsDomain.ResidentialCarePackageId,
-                IsWeeklyCost = residentialCareAdditionalNeedsDomain.IsWeeklyCost,
-                IsOneOffCost = residentialCareAdditionalNeedsDomain.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = residentialCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeId,
                 NeedToAddress = residentialCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = residentialCareAdditionalNeedsDomain.CreatorId,
                 UpdaterId = residentialCareAdditionalNeedsDomain.UpdatorId,

@@ -348,8 +348,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = nursingCareAdditionalNeedsEntity.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedsEntity.NursingCarePackageId,
-                IsWeeklyCost = nursingCareAdditionalNeedsEntity.IsWeeklyCost,
-                IsOneOffCost = nursingCareAdditionalNeedsEntity.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = nursingCareAdditionalNeedsEntity.AdditionalNeedsPaymentTypeId,
                 NeedToAddress = nursingCareAdditionalNeedsEntity.NeedToAddress,
             };
         }
@@ -381,8 +380,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCareAdditionalNeedsEntity.Id,
                 ResidentialCarePackageId = residentialCareAdditionalNeedsEntity.ResidentialCarePackageId,
-                IsWeeklyCost = residentialCareAdditionalNeedsEntity.IsWeeklyCost,
-                IsOneOffCost = residentialCareAdditionalNeedsEntity.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = residentialCareAdditionalNeedsEntity.AdditionalNeedsPaymentTypeId,
                 NeedToAddress = residentialCareAdditionalNeedsEntity.NeedToAddress,
             };
         }

@@ -128,5 +128,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways
                 .ToListAsync().ConfigureAwait(false);
             return res?.ToDomain();
         }
+
+        
     }
 }

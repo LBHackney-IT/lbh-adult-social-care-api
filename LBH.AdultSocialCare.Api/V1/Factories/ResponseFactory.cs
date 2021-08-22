@@ -77,6 +77,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerageDomains;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCareAdditionalNeedsDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -207,6 +208,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<NursingCareAdditionalNeedsResponse> ToResponse(this IEnumerable<NursingCareAdditionalNeedsDomain> nursingCareAdditionalNeedsDomain)
         {
             return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsResponse>>(nursingCareAdditionalNeedsDomain);
+        }
+
+        public static IEnumerable<AdditionalNeedsPaymentTypeResponse> ToResponse(this IEnumerable<AdditionalNeedsPaymentTypeDomain> additionalNeedsPaymentTypeDomains)
+        {
+            return _mapper.Map<IEnumerable<AdditionalNeedsPaymentTypeResponse>>(additionalNeedsPaymentTypeDomains);
         }
 
         #endregion NursingCareAdditionalNeed
@@ -604,8 +610,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = nursingCareAdditionalNeedsDomain.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
-                IsWeeklyCost = nursingCareAdditionalNeedsDomain.IsWeeklyCost,
-                IsOneOffCost = nursingCareAdditionalNeedsDomain.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = nursingCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeId,
+                AdditionalNeedsPaymentTypeName = nursingCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeName,
                 NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
                 UpdatorId = nursingCareAdditionalNeedsDomain.UpdaterId,
@@ -640,8 +646,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCareAdditionalNeedsDomain.Id,
                 ResidentialCarePackageId = residentialCareAdditionalNeedsDomain.ResidentialCarePackageId,
-                IsWeeklyCost = residentialCareAdditionalNeedsDomain.IsWeeklyCost,
-                IsOneOffCost = residentialCareAdditionalNeedsDomain.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = residentialCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeId,
+                AdditionalNeedsPaymentTypeName = residentialCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeName,
                 NeedToAddress = residentialCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = residentialCareAdditionalNeedsDomain.CreatorId,
                 UpdatorId = residentialCareAdditionalNeedsDomain.UpdatorId,
