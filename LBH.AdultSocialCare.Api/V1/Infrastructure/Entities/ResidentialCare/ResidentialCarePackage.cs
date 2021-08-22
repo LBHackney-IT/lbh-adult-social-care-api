@@ -82,16 +82,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
         public int? TypeOfResidentialCareHomeId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public Guid CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updater Id
-        /// </summary>
-        public Guid? UpdaterId { get; set; }
-
-        /// <summary>
         /// Gets or sets the PackageStatuses Id
         /// </summary>
         public int StatusId { get; set; }
@@ -120,6 +110,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
 
         public Guid? AssignedUserId { get; set; }
 
+        public DateTimeOffset? PaidUpTo { get; set; }
+
+        public DateTimeOffset? PreviousPaidUpTo { get; set; }
+
         /// <summary>
         /// Gets or sets the Supplier Object
         /// </summary>
@@ -134,12 +128,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
 
         [ForeignKey(nameof(TypeOfStayId))]
         public ResidentialCareTypeOfStayOption TypeOfStayOption { get; set; }
-
-        [ForeignKey(nameof(CreatorId))]
-        public User Creator { get; set; }
-
-        [ForeignKey(nameof(UpdaterId))]
-        public User Updater { get; set; }
 
         /// <summary>
         /// Gets or sets the NursingCareAdditionalNeed

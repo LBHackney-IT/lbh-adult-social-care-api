@@ -9,7 +9,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-    public class HomeCareSupplierCost
+    public class HomeCareSupplierCost : BaseEntity
     {
         /// <summary>
         /// Gets or sets the Id
@@ -53,15 +53,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Cost Per Hour
         /// </summary>
         public decimal CostPerHour { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public int CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updator Id
-        /// </summary>
-        public int UpdatorId { get; set; }
     }
 }

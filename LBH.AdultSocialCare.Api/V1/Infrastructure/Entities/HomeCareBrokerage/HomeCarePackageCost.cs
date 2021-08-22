@@ -60,15 +60,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage
         /// Gets or sets the Total Cost
         /// </summary>
         public decimal TotalCost { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public int CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updator Id
-        /// </summary>
-        public int UpdatorId { get; set; }
     }
 }

@@ -1,83 +1,18 @@
 using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Boundary.ApprovedPackagesBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.BrokeredPackagesBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ClientBoundary;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApproveBrokeredBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCareApprovePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageOpportunityBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageReclaimBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApproveBrokeredBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareBrokerageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCarePackageReclaimBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.InvoiceBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareAdditionalNeedsBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovalHistoryBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApproveCommercialBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareApprovePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCareBrokerageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCarePackageReclaimBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityLengthOptionBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.OpportunityTimesPerMonthOptionBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.PackageReclaimsBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.PrimarySupportReasonBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareAdditionalNeedsBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovalHistoryBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApprovePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCarePackageReclaimBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.RoleBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.StageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.SubmittedPackageRequestsBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBillBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.TermTimeConsiderationOptionBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Domain;
-using LBH.AdultSocialCare.Api.V1.Domain.BillDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ClientDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCareApproveBrokeredDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.GeneralDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApproveBrokeredDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.InvoiceDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApproveCommercialDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.PackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApproveBrokeredDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareApprovePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using System.Collections.Generic;
 using System.Linq;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareAdditionalNeedsDomains;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Domain.Security;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -88,18 +23,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static void Configure(IMapper mapper)
         {
             _mapper = mapper;
-        }
-
-        //TODO: Map the fields in the domain object(s) to fields in the response object(s).
-        // More information on this can be found here https://github.com/LBHackney-IT/lbh-base-api/wiki/Factory-object-mappings
-        public static ResponseObject ToResponse(this Entity domain)
-        {
-            return new ResponseObject();
-        }
-
-        public static List<ResponseObject> ToResponse(this IEnumerable<Entity> domainList)
-        {
-            return domainList.Select(domain => domain.ToResponse()).ToList();
         }
 
         #region DayCarePackage
@@ -537,7 +460,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 IsThisAnImmediateService = homeCarePackageDomain.IsThisAnImmediateService,
                 IsThisuserUnderS117 = homeCarePackageDomain.IsThisuserUnderS117,
                 CreatorId = homeCarePackageDomain.CreatorId,
-                UpdatorId = homeCarePackageDomain.UpdatorId,
+                UpdaterId = homeCarePackageDomain.UpdaterId,
                 StatusId = homeCarePackageDomain.StatusId,
                 Status = homeCarePackageDomain.Status,
                 StageId = homeCarePackageDomain.StageId,
@@ -595,7 +518,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 PostCode = clientsDomain.PostCode,
                 CreatorId = clientsDomain.CreatorId,
                 DateCreated = clientsDomain.DateCreated,
-                UpdatorId = clientsDomain.UpdatorId,
+                UpdaterId = clientsDomain.UpdaterId,
                 DateUpdated = clientsDomain.DateUpdated
             };
         }
@@ -631,7 +554,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Sequence = packageDomain.Sequence,
                 CreatorId = packageDomain.CreatorId,
                 DateCreated = packageDomain.DateCreated,
-                UpdatorId = packageDomain.UpdatorId,
+                UpdaterId = packageDomain.UpdaterId,
                 DateUpdated = packageDomain.DateUpdated
             };
         }
@@ -707,7 +630,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Package = homeCareServiceDomain.Package,
                 CreatorId = homeCareServiceDomain.CreatorId,
                 DateCreated = homeCareServiceDomain.DateCreated,
-                UpdatorId = homeCareServiceDomain.UpdatorId,
+                UpdaterId = homeCareServiceDomain.UpdaterId,
                 DateUpdated = homeCareServiceDomain.DateUpdated
             };
         }
@@ -764,7 +687,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 TimeSlotTimeLabel = timeSlotShiftsDomain.TimeSlotTimeLabel,
                 CreatorId = timeSlotShiftsDomain.CreatorId,
                 DateCreated = timeSlotShiftsDomain.DateCreated,
-                UpdatorId = timeSlotShiftsDomain.UpdatorId,
+                UpdaterId = timeSlotShiftsDomain.UpdaterId,
                 DateUpdated = timeSlotShiftsDomain.DateUpdated
             };
         }
@@ -835,6 +758,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<ClientMinimalResponse> ToResponse(this IEnumerable<ClientMinimalDomain> clientMinimalDomain)
         {
             return _mapper.Map<IEnumerable<ClientMinimalResponse>>(clientMinimalDomain);
+        }
+
+        public static IEnumerable<ClientsResponse> ToResponse(this IEnumerable<ClientsDomain> clientsDomain)
+        {
+            return _mapper.Map<IEnumerable<ClientsResponse>>(clientsDomain);
         }
 
         #endregion Clients

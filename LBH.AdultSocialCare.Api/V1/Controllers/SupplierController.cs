@@ -1,11 +1,14 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.SupplierBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.UseCase.SupplierUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Extensions;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
+using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using Newtonsoft.Json;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers
 {
@@ -56,9 +59,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("get-all")]
-        public async Task<ActionResult<IEnumerable<SupplierResponse>>> GetSupplierList()
+        public async Task<ActionResult<PagedResponse<SupplierResponse>>> GetSupplierList([FromQuery] RequestParameters parameters, string supplierName)
         {
-            var result = await _getAllSupplierUseCase.GetAllAsync().ConfigureAwait(false);
+            var result = await _getAllSupplierUseCase.GetAllAsync(parameters, supplierName).ConfigureAwait(false);
+
+            Response.AddPaginationHeaders(result.PagingMetaData);
+
             return Ok(result);
         }
     }

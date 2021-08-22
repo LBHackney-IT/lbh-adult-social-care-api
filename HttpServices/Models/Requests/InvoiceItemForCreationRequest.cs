@@ -7,7 +7,7 @@ namespace HttpServices.Models.Requests
     {
         [Required] public string ItemName { get; set; }
         [Required] public decimal? PricePerUnit { get; set; }
-        [Required] public int? Quantity { get; set; }
+        [Required] public decimal? Quantity { get; set; }
         public Guid? SupplierReturnItemId { get; set; }
         [Required] public Guid? CreatorId { get; set; }
     }

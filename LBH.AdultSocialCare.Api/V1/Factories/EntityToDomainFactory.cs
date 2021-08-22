@@ -1,29 +1,4 @@
 using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Domain.ClientDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.GeneralDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.PackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
@@ -39,6 +14,12 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerag
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCareAdditionalNeedsDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -487,9 +468,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 PostCode = clientEntity.PostCode,
                 CreatorId = clientEntity.CreatorId,
                 DateCreated = clientEntity.DateCreated,
-                UpdatorId = clientEntity.UpdatorId,
+                UpdaterId = clientEntity.UpdaterId,
                 DateUpdated = clientEntity.DateUpdated
             };
+        }
+
+        public static IEnumerable<ClientsDomain> ToDomain(this List<Client> clientEntities)
+        {
+            return _mapper.Map<IEnumerable<ClientsDomain>>(clientEntities);
         }
 
         #endregion Clients
@@ -523,7 +509,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 Sequence = packageEntity.Sequence,
                 CreatorId = packageEntity.CreatorId,
                 DateCreated = packageEntity.DateCreated,
-                UpdatorId = packageEntity.UpdatorId,
+                UpdaterId = packageEntity.UpdaterId,
                 DateUpdated = packageEntity.DateUpdated
             };
         }
@@ -591,7 +577,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 ServiceName = serviceEntity.ServiceName,
                 CreatorId = serviceEntity.CreatorId,
                 DateCreated = serviceEntity.DateCreated,
-                UpdatorId = serviceEntity.UpdatorId,
+                UpdaterId = serviceEntity.UpdaterId,
                 DateUpdated = serviceEntity.DateUpdated
             };
         }
@@ -648,7 +634,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 TimeSlotTimeLabel = timeSlotShiftsEntity.TimeSlotTimeLabel,
                 CreatorId = timeSlotShiftsEntity.CreatorId,
                 DateCreated = timeSlotShiftsEntity.DateCreated,
-                UpdatorId = timeSlotShiftsEntity.UpdatorId,
+                UpdaterId = timeSlotShiftsEntity.UpdaterId,
                 DateUpdated = timeSlotShiftsEntity.DateUpdated
             };
         }

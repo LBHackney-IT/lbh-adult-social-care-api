@@ -1,8 +1,8 @@
 using System;
-using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using System.Linq;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {

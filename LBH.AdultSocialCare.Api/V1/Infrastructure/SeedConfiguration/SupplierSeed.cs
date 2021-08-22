@@ -18,6 +18,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 SupplierName = "ABC Limited",
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Supplier
@@ -27,6 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 PackageTypeId = 1,
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             });

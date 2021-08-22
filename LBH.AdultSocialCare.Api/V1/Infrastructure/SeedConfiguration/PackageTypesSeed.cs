@@ -13,34 +13,34 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
             var dateTimeOffset = new DateTimeOffset(AppTimeConstants.CreateUpdateDefaultDateTime).ToOffset(TimeSpan.Zero);
             builder.HasData(new Package
             {
-                Id = 1,
-                PackageType = "Home Care Package",
-                CreatorId = 1,
-                UpdatorId = 1,
+                Id = PackageTypesConstants.HomeCarePackageId,
+                PackageType = PackageTypesConstants.HomeCarePackage,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Package
             {
-                Id = 2,
-                PackageType = "Residential Care Package",
-                CreatorId = 1,
-                UpdatorId = 1,
+                Id = PackageTypesConstants.ResidentialCarePackageId,
+                PackageType = PackageTypesConstants.ResidentialCarePackage,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Package
             {
-                Id = 3,
-                PackageType = "Day Care Package",
-                CreatorId = 1,
-                UpdatorId = 1,
+                Id = PackageTypesConstants.DayCarePackageId,
+                PackageType = PackageTypesConstants.DayCarePackage,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             }, new Package
             {
-                Id = 4,
-                PackageType = "Nursing Care Package",
-                CreatorId = 1,
-                UpdatorId = 1,
+                Id = PackageTypesConstants.NursingCarePackageId,
+                PackageType = PackageTypesConstants.NursingCarePackage,
+                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
             });

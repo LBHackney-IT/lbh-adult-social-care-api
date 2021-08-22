@@ -33,8 +33,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         public bool TransportEscortNeeded { get; set; }
         public int TermTimeConsiderationOptionId { get; set; }
         public int? CollegeId { get; set; }
-        public Guid CreatorId { get; set; }
-        public Guid? UpdaterId { get; set; }
         public int StatusId { get; set; }
         public DayCareBrokerageInfo DayCareBrokerageInfo { get; set; }
 
@@ -46,12 +44,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 
         [ForeignKey(nameof(TermTimeConsiderationOptionId))]
         public TermTimeConsiderationOption TermTimeConsiderationOption { get; set; }
-
-        [ForeignKey(nameof(CreatorId))]
-        public User Creator { get; set; }
-
-        [ForeignKey(nameof(UpdaterId))]
-        public User Updater { get; set; }
 
         [ForeignKey(nameof(StatusId))]
         public DayCarePackageStatus Status { get; set; }

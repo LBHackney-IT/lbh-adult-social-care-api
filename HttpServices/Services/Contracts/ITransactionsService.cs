@@ -51,18 +51,22 @@ namespace HttpServices.Services.Contracts
 
         Task<bool> DeleteDraftPayRunUseCase(Guid payRunId);
 
-        Task<DisputedInvoiceFlatResponse> HoldInvoicePaymentUseCase(Guid payRunId, Guid payRunItemId,
+        Task<DisputedInvoiceFlatResponse> HoldInvoicePaymentUseCase(Guid payRunId, Guid invoiceId,
             DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest);
 
-        Task<IEnumerable<HeldInvoiceResponse>> GetHeldInvoicePaymentsUseCase();
+        Task<PagedHeldInvoiceResponse> GetHeldInvoicePaymentsUseCase(HeldInvoicePaymentParameters parameters);
 
         Task<InvoiceResponse> CreateInvoiceUseCase(InvoiceForCreationRequest invoiceForCreationRequest);
+
+        Task<IEnumerable<InvoiceResponse>> BatchCreateInvoicesUseCase(IEnumerable<InvoiceForCreationRequest> invoices);
 
         Task<IEnumerable<InvoiceStatusResponse>> GetAllInvoiceStatusesUseCase();
 
         Task<IEnumerable<InvoiceStatusResponse>> GetInvoicePaymentStatusesUseCase();
 
         Task<bool> AcceptInvoiceUseCase(Guid payRunId, Guid invoiceId);
+
+        Task<bool> RejectInvoiceUseCase(Guid payRunId, Guid invoiceId);
 
         Task<BillResponse> CreateSupplierBillUseCase(BillCreationRequest billCreationRequest);
 
@@ -74,7 +78,7 @@ namespace HttpServices.Services.Contracts
 
         Task<IEnumerable<SupplierTaxRateResponse>> GetSupplierTaxRateUseCase(long supplierId);
 
-        Task<DisputedInvoiceChatResponse> CreatePayRunHeldChatUseCase(Guid payRunId,
+        Task<DisputedInvoiceChatResponse> CreatePayRunHeldChatUseCase(Guid payRunId, Guid invoiceId,
             DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest);
 
         Task<bool> AcceptInvoicesUseCase(Guid payRunId, InvoiceIdListRequest invoiceIdList);

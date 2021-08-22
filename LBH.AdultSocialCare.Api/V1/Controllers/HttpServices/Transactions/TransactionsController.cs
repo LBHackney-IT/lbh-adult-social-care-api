@@ -3,13 +3,17 @@ using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Api.V1.UseCase.TransactionsUseCases.PayRunUseCases.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using InvoiceResponse = HttpServices.Models.Responses.InvoiceResponse;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
 {
@@ -22,11 +26,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
     {
         private readonly ITransactionsService _transactionsService;
         private readonly IPayRunUseCase _payRunUseCase;
+        private readonly IResetPackagePaidUpToDateUseCase _resetPackagePaidUpToDateUseCase;
 
-        public TransactionsController(ITransactionsService transactionsService, IPayRunUseCase payRunUseCase)
+        public TransactionsController(ITransactionsService transactionsService, IPayRunUseCase payRunUseCase, IResetPackagePaidUpToDateUseCase resetPackagePaidUpToDateUseCase)
         {
             _transactionsService = transactionsService;
             _payRunUseCase = payRunUseCase;
+            _resetPackagePaidUpToDateUseCase = resetPackagePaidUpToDateUseCase;
         }
 
         [HttpGet("departments/payment-departments")]
@@ -99,13 +105,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         [HttpGet("pay-runs/{payRunId}/details")]
         public async Task<ActionResult<PayRunDetailsResponse>> GetSinglePayRunDetails(Guid payRunId, [FromQuery] InvoiceListParameters parameters)
         {
-            var res = await _transactionsService.GetSinglePayRunDetailsUseCase(payRunId, parameters).ConfigureAwait(false);
+            var res = await _payRunUseCase.GetSinglePayRunDetailsUseCase(payRunId, parameters).ConfigureAwait(false);
             return Ok(res);
         }
 
+        [ProducesResponseType(typeof(PayRunInsightsResponse), StatusCodes.Status200OK)]
         [HttpGet("pay-runs/{payRunId}/summary-insights")]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<bool>> GetSinglePayRunSummaryInsights(Guid payRunId)
+        public async Task<ActionResult<PayRunInsightsResponse>> GetSinglePayRunSummaryInsights(Guid payRunId)
         {
             var result = await _transactionsService.GetSinglePayRunInsightsUseCase(payRunId).ConfigureAwait(false);
             return Ok(result);
@@ -162,24 +169,24 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
             return Ok(result);
         }
 
-        [HttpPost("pay-runs/{payRunId}/pay-run-items/{payRunItemId}/hold-payment")]
+        [HttpPost("pay-runs/{payRunId}/invoices/{invoiceId}/hold-payment")]
         [ProducesResponseType(typeof(DisputedInvoiceFlatResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<DisputedInvoiceFlatResponse>> HoldInvoicePayment(Guid payRunId, Guid payRunItemId, [FromBody] DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest)
+        public async Task<ActionResult<DisputedInvoiceFlatResponse>> HoldInvoicePayment(Guid payRunId, Guid invoiceId, [FromBody] DisputedInvoiceForCreationRequest disputedInvoiceForCreationRequest)
         {
             var result = await _transactionsService
-                .HoldInvoicePaymentUseCase(payRunId, payRunItemId, disputedInvoiceForCreationRequest)
+                .HoldInvoicePaymentUseCase(payRunId, invoiceId, disputedInvoiceForCreationRequest)
                 .ConfigureAwait(false);
             return Ok(result);
         }
 
-        [ProducesResponseType(typeof(IEnumerable<HeldInvoiceResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedHeldInvoiceResponse), StatusCodes.Status200OK)]
         [HttpGet("invoices/held-invoice-payments")]
-        public async Task<ActionResult<IEnumerable<HeldInvoiceResponse>>> GetHeldInvoicePaymentsList()
+        public async Task<ActionResult<PagedHeldInvoiceResponse>> GetHeldInvoicePaymentsList([FromQuery] HeldInvoicePaymentParameters parameters)
         {
-            var res = await _payRunUseCase.GetHeldInvoicePaymentsUseCase().ConfigureAwait(false);
+            var res = await _payRunUseCase.GetHeldInvoicePaymentsUseCase(parameters).ConfigureAwait(false);
             return Ok(res);
         }
 
@@ -214,6 +221,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         public async Task<ActionResult<bool>> ApproveInvoice(Guid payRunId, Guid invoiceId)
         {
             var result = await _transactionsService.AcceptInvoiceUseCase(payRunId, invoiceId).ConfigureAwait(false);
+            return Ok(result);
+        }
+
+        // Reject invoice in pay run
+        [HttpPut("pay-runs/{payRunId}/invoices/{invoiceId}/status/reject-invoice")]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> RejectInvoiceInPayRun(Guid payRunId, Guid invoiceId)
+        {
+            var result = await _transactionsService.RejectInvoiceUseCase(payRunId, invoiceId).ConfigureAwait(false);
             return Ok(result);
         }
 
@@ -279,11 +295,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         }
 
         // Create disputed invoice chat
-        [HttpPost("pay-runs/{payRunId}/create-held-chat")]
+        [HttpPost("pay-runs/{payRunId}/invoices/{invoiceId}/create-held-chat")]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<DisputedInvoiceChatResponse>> CreateDisputedInvoiceChat(Guid payRunId, [FromBody] DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest)
+        public async Task<ActionResult<DisputedInvoiceChatResponse>> CreateDisputedInvoiceChat(Guid payRunId, Guid invoiceId, [FromBody] DisputedInvoiceChatForCreationRequest disputedInvoiceChatForCreationRequest)
         {
-            var result = await _transactionsService.CreatePayRunHeldChatUseCase(payRunId, disputedInvoiceChatForCreationRequest).ConfigureAwait(false);
+            var result = await _transactionsService.CreatePayRunHeldChatUseCase(payRunId, invoiceId, disputedInvoiceChatForCreationRequest).ConfigureAwait(false);
             return Ok(result);
         }
 
@@ -309,6 +325,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         {
             var result = await _transactionsService.GetAllUniquePayRunStatusesUseCase().ConfigureAwait(false);
             return Ok(result);
+        }
+
+        [HttpPost("pay-runs/invoice-date-reset")]
+        [ProducesDefaultResponseType]
+        [AllowAnonymous]
+        public async Task<ActionResult<GenericSuccessResponse>> ResetPackagePaidUpToDate([FromBody] List<InvoiceForResetDomain> invoiceForResetDomains)
+        {
+            var result = await _resetPackagePaidUpToDateUseCase.ExecuteAsync(invoiceForResetDomains).ConfigureAwait(false);
+            return Ok(new GenericSuccessResponse
+            {
+                IsSuccess = result,
+                Message = "Success"
+            });
         }
     }
 }

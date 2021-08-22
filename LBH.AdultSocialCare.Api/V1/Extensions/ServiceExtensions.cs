@@ -10,7 +10,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Reflection;
+using System.Security.Authentication;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -21,13 +23,19 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
     public static class ServiceExtensions
     {
 
-        public static void ConfigureTransactionsService(this IServiceCollection services, IConfiguration configuration)
-            => services.AddHttpClient<ITransactionsService, TransactionsService>(client =>
+        public static void ConfigureTransactionsApiClient(this IServiceCollection services, IConfiguration configuration)
+            => services.AddHttpClient<IRestClient, JsonRestClient>(client =>
             {
                 client.BaseAddress = new Uri(configuration["HASCHttpClients:TransactionsBaseUrl"]);
-                client.DefaultRequestHeaders.Add("x-api-key", "HASCHttpClients:TransactionsApiKey");
+                client.DefaultRequestHeaders.Add("x-api-key", configuration["HASCHttpClients:TransactionsApiKey"]);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
                 client.DefaultRequestHeaders.Add("User-Agent", "HASC API");
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler()
+            {
+                ClientCertificateOptions = ClientCertificateOption.Automatic,
+                SslProtocols = SslProtocols.Tls12,
+                AllowAutoRedirect = false,
+                UseDefaultCredentials = true
             });
 
         public static void ConfigureIdentityService(this IServiceCollection services) => services.AddIdentity<User, Role>(

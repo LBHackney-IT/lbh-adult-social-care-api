@@ -15,7 +15,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerag
         public Guid? UpdatorId { get; set; }
         public virtual ICollection<NursingCareAdditionalNeedsCost> NursingCareAdditionalNeedsCosts { get; set; }
         [ForeignKey(nameof(NursingCarePackageId))] public NursingCarePackage NursingCarePackage { get; set; }
-        [ForeignKey(nameof(CreatorId))] public User Creator { get; set; }
-        [ForeignKey(nameof(UpdatorId))] public User Updater { get; set; }
     }
 }

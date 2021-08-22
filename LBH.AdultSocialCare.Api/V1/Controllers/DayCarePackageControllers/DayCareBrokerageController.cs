@@ -1,12 +1,12 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCareBrokerageBoundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCare.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers
 {

@@ -26,12 +26,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
         public int? TypeOfStayId { get; set; }
         public string NeedToAddress { get; set; }
         public int? TypeOfNursingCareHomeId { get; set; }
-        public Guid CreatorId { get; set; }
-        public Guid? UpdaterId { get; set; }
         public int StatusId { get; set; }
         public int? StageId { get; set; }
         public int? SupplierId { get; set; }
         public Guid? AssignedUserId { get; set; }
+        public DateTimeOffset? PaidUpTo { get; set; }
+        public DateTimeOffset? PreviousPaidUpTo { get; set; }
 
         [ForeignKey(nameof(ClientId))] public Client Client { get; set; }
         [ForeignKey(nameof(StatusId))] public PackageStatus Status { get; set; }
@@ -39,8 +39,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
         [ForeignKey(nameof(SupplierId))] public Supplier Supplier { get; set; }
         [ForeignKey(nameof(TypeOfNursingCareHomeId))] public TypeOfNursingCareHome TypeOfCareHome { get; set; }
         [ForeignKey(nameof(TypeOfStayId))] public NursingCareTypeOfStayOption TypeOfStayOption { get; set; }
-        [ForeignKey(nameof(CreatorId))] public User Creator { get; set; }
-        [ForeignKey(nameof(UpdaterId))] public User Updater { get; set; }
         [ForeignKey(nameof(AssignedUserId))] public User AssignedUser { get; set; }
 
         public virtual ICollection<NursingCareAdditionalNeed> NursingCareAdditionalNeeds { get; set; }

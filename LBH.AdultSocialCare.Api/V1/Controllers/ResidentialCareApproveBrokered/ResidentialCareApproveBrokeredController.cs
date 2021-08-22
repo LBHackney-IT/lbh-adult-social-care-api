@@ -5,9 +5,8 @@ using AutoMapper;
 using HttpServices.Models.Requests;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareApproveBrokeredBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialApproveBrokeredUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCareUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareApproveBrokered
@@ -21,21 +20,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCareApproveBrokered
     {
         private readonly IGetResidentialCareApproveBrokeredUseCase _getResidentialCareApproveBrokeredUseCase;
         private readonly IChangeStatusResidentialCarePackageUseCase _changeStatusResidentialCarePackageUseCase;
-        //private readonly IGetResidentialCareInvoiceDetailUseCase _getResidentialCareInvoiceDetailUseCase;
-        //private readonly ITransactionsService _transactionsService;
-        //private readonly IMapper _mapper;
+        private readonly IGetResidentialCareInvoiceDetailUseCase _getResidentialCareInvoiceDetailUseCase;
+        private readonly ITransactionsService _transactionsService;
+        private readonly IMapper _mapper;
 
         public ResidentialCareApproveBrokeredController(IGetResidentialCareApproveBrokeredUseCase getResidentialCareApproveBrokeredUseCase,
-            IChangeStatusResidentialCarePackageUseCase changeStatusResidentialCarePackageUseCase)
-        //IGetResidentialCareInvoiceDetailUseCase getResidentialCareInvoiceDetailUseCase,
-        //ITransactionsService transactionsService,
-        //IMapper mapper)
+            IChangeStatusResidentialCarePackageUseCase changeStatusResidentialCarePackageUseCase,
+            IGetResidentialCareInvoiceDetailUseCase getResidentialCareInvoiceDetailUseCase,
+            ITransactionsService transactionsService,
+            IMapper mapper)
         {
             _getResidentialCareApproveBrokeredUseCase = getResidentialCareApproveBrokeredUseCase;
             _changeStatusResidentialCarePackageUseCase = changeStatusResidentialCarePackageUseCase;
-            //_getResidentialCareInvoiceDetailUseCase = getResidentialCareInvoiceDetailUseCase;
-            //_transactionsService = transactionsService;
-            //_mapper = mapper;
+            _getResidentialCareInvoiceDetailUseCase = getResidentialCareInvoiceDetailUseCase;
+            _transactionsService = transactionsService;
+            _mapper = mapper;
         }
 
         /// <summary>Gets the specified residential care approve brokered deal identifier.</summary>
