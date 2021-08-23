@@ -1,3 +1,5 @@
+using System;
+
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
     public class SupplierDomain
@@ -35,11 +37,11 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
-        public int CreatorId { get; set; }
+        public Guid CreatorId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Updator Id
+        /// Gets or sets the Updater Id
         /// </summary>
-        public int UpdatorId { get; set; }
+        public Guid? UpdaterId { get; set; }
     }
 }

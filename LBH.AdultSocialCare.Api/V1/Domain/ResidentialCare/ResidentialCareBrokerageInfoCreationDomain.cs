@@ -30,6 +30,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare
         /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
-        public int CreatorId { get; set; }
+        public Guid CreatorId { get; set; }
     }
 }
