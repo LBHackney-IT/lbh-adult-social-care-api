@@ -350,7 +350,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IIdentityHelperUseCase, IdentityHelperUseCase>();
 
             #endregion IdentityHelper
-            #endregion
 
             #region AdditionalNeedPaymentType
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCareAdditionalNeedsDomains
+namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCare
 {
     public class AdditionalNeedsPaymentTypeDomain
     {

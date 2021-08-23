@@ -191,25 +191,36 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                         PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCore,
                         Quantity = weeks,
                         CreatorId = _identityHelperUseCase.GetUserId()
-                    },
-                    new InvoiceItemForCreationRequest()
-                    {
-                        ItemName = $"Additional Needs Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
-                        PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.AdditionalNeedsPayment,
-                        Quantity = weeks,
-                        CreatorId = _identityHelperUseCase.GetUserId()
                     }
                 };
 
-                if (residentialCarePackage.PaidUpTo == null && residentialCarePackage.ResidentialCareBrokerageInfo.AdditionalNeedsPaymentOneOff > 0)
+                foreach (var residentialCareAdditionalNeedsCost in residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCareAdditionalNeedsCosts)
                 {
-                    invoiceItems.Add(new InvoiceItemForCreationRequest
+                    if (residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentTypeId !=
+                        AdditionalNeedPaymentTypesConstants.OneOff)
                     {
-                        ItemName = "Additional Needs One Off Cost",
-                        PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.AdditionalNeedsPaymentOneOff,
-                        Quantity = 1,
-                        CreatorId = _identityHelperUseCase.GetUserId()
-                    });
+                        invoiceItems.Add(new InvoiceItemForCreationRequest
+                        {
+                            ItemName = $"Additional Needs {residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentType} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
+                            PricePerUnit = residentialCareAdditionalNeedsCost.AdditionalNeedsCost,
+                            Quantity = weeks,
+                            CreatorId = _identityHelperUseCase.GetUserId()
+                        });
+                    }
+                    else
+                    {
+                        // Create one off cost invoice item if first pay run
+                        if (residentialCarePackage.PaidUpTo == null && residentialCareAdditionalNeedsCost.AdditionalNeedsCost > 0)
+                        {
+                            invoiceItems.Add(new InvoiceItemForCreationRequest
+                            {
+                                ItemName = $"Additional Needs {residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentType} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
+                                PricePerUnit = residentialCareAdditionalNeedsCost.AdditionalNeedsCost,
+                                Quantity = 1,
+                                CreatorId = _identityHelperUseCase.GetUserId()
+                            });
+                        }
+                    }
                 }
 
                 invoicesForCreation.Add(new InvoiceForCreationRequest

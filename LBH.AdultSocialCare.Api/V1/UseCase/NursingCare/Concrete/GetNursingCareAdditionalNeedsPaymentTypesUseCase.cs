@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
 
-namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCareUseCases.Concrete
+namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
 {
     public class GetNursingCareAdditionalNeedsPaymentTypesUseCase : IGetNursingCareAdditionalNeedsPaymentTypesUseCase
     {

@@ -20,7 +20,6 @@ using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareAdditionalNeedsDomains;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {

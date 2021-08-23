@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
 {

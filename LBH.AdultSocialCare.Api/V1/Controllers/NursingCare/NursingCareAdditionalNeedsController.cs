@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
 {

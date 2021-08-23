@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Validations;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCareBrokerageBoundary.Request
+namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
 {
     public class ResidentialCareAdditionalNeedsCostCreationRequest
     {

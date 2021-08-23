@@ -12,12 +12,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrok
         public Guid Id { get; set; }
         public Guid ResidentialCarePackageId { get; set; }
         public decimal ResidentialCore { get; set; }
-        public Guid CreatorId { get; set; }
-        public Guid? UpdatorId { get; set; }
         public virtual ICollection<ResidentialCareAdditionalNeedsCost> ResidentialCareAdditionalNeedsCosts { get; set; }
         [ForeignKey(nameof(ResidentialCarePackageId))] public ResidentialCarePackage ResidentialCarePackage { get; set; }
-        [ForeignKey(nameof(CreatorId))] public User Creator { get; set; }
-        [ForeignKey(nameof(UpdatorId))] public User Updater { get; set; }
-
     }
 }

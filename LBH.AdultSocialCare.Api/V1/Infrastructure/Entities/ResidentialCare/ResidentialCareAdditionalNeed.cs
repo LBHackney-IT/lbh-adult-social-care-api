@@ -27,12 +27,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
         [ForeignKey(nameof(ResidentialCarePackageId))]
         public ResidentialCarePackage ResidentialCarePackage { get; set; }
 
-        [ForeignKey(nameof(CreatorId))]
-        public User Creator { get; set; }
-
-        [ForeignKey(nameof(UpdaterId))]
-        public User Updater { get; set; }
-
         [ForeignKey(nameof(AdditionalNeedsPaymentTypeId))]
         public AdditionalNeedsPaymentType AdditionalNeedsPaymentType { get; set; }
     }

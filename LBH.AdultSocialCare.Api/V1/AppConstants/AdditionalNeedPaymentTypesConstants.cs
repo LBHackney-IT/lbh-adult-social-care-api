@@ -9,5 +9,6 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants
     {
         public const int WeeklyCost = 1;
         public const int OneOff = 2;
+        public const int FixedPeriod = 3;
     }
 }
