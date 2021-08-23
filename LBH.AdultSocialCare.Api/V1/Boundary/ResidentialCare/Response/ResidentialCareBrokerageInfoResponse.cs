@@ -43,8 +43,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response
         public Guid CreatorId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Updator Id
+        /// Gets or sets the Updater Id
         /// </summary>
-        public Guid? UpdatorId { get; set; }
+        public Guid? UpdaterId { get; set; }
     }
 }

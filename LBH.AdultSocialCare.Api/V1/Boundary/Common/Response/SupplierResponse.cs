@@ -1,3 +1,5 @@
+using System;
+
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
 {
     public class SupplierResponse
@@ -14,8 +16,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
 
         public bool HasSupplierFrameworkContractedRates { get; set; }
 
-        public int CreatorId { get; set; }
+        public Guid CreatorId { get; set; }
 
-        public int UpdatorId { get; set; }
+        public Guid? UpdaterId { get; set; }
     }
 }
