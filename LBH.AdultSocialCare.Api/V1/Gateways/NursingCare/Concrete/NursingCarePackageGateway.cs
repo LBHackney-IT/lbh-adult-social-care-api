@@ -184,6 +184,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                 var nursingCarePackages = await _databaseContext.NursingCarePackages
                     .Where(nc => selectedIds.Contains(nc.Id))
                     .Include(nc => nc.NursingCareBrokerageInfo)
+                    .ThenInclude(rc => rc.NursingCareAdditionalNeedsCosts)
+                    .ThenInclude(rc => rc.AdditionalNeedsPaymentType)
                     .ToListAsync()
                     .ConfigureAwait(false);
 
@@ -209,6 +211,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                             CreatorId = _identityHelperUseCase.GetUserId()
                         }
                     };
+
+                    if (!nursingCarePackage.NursingCareBrokerageInfo.NursingCareAdditionalNeedsCosts.Any()) continue;
 
                     foreach (var nursingCareAdditionalNeedsCost in nursingCarePackage.NursingCareBrokerageInfo.NursingCareAdditionalNeedsCosts)
                     {

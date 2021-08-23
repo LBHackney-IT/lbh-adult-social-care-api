@@ -11,6 +11,5 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
     {
         public int AdditionalNeedsPaymentTypeId { get; set; }
         public decimal AdditionalNeedsCost { get; set; }
-        [Required, GuidNotEmpty] public Guid CreatorId { get; set; }
     }
 }

@@ -94,9 +94,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                         ResidentialCareBrokerageId = anc.ResidentialCareBrokerageId,
                         AdditionalNeedsPaymentTypeId = anc.AdditionalNeedsPaymentTypeId,
                         AdditionalNeedsPaymentTypeName = anc.AdditionalNeedsPaymentType.OptionName,
-                        AdditionalNeedsCost = anc.AdditionalNeedsCost,
-                        CreatorId = anc.CreatorId,
-                        UpdatorId = anc.UpdatorId
+                        AdditionalNeedsCost = anc.AdditionalNeedsCost
                     }),
                     ResidentialCore = nc.ResidentialCareBrokerageInfo.ResidentialCore,
                     StageId = nc.StageId,

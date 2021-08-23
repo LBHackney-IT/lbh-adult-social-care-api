@@ -18,8 +18,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare
         /// </summary>
         public decimal ResidentialCore { get; set; }
 
-        public Guid CreatorId { get; set; }
-
         public IEnumerable<ResidentialCareAdditionalNeedsCostCreationDomain> ResidentialCareAdditionalNeedsCosts { get; set; }
     }
 }

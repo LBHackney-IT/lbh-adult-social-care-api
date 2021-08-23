@@ -9,6 +9,5 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare
     {
         public int AdditionalNeedsPaymentTypeId { get; set; }
         public decimal AdditionalNeedsCost { get; set; }
-        public Guid CreatorId { get; set; }
     }
 }
