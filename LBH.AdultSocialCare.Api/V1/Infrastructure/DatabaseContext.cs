@@ -88,6 +88,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<ResidentialCareBrokerageInfo> ResidentialCareBrokerageInfos { get; set; }
         public DbSet<PrimarySupportReason> PrimarySupportReasons { get; set; }
 
+        public DbSet<FncCollector> FncCollectors { get; set; }
+
+        public DbSet<PackageCostClaimer> PackageCostClaimers { get; set; }
 
         #region CustomFunctions
 
@@ -171,6 +174,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed primary support reason
             modelBuilder.ApplyConfiguration(new PrimarySupportReasonSeed());
+
+            // Seed FNC and reclaims-related constants
+            modelBuilder.ApplyConfiguration(new FncCollectorsSeed());
+            modelBuilder.ApplyConfiguration(new PackageCostClaimersSeed());
 
             #endregion Database Seeds
 
