@@ -14,6 +14,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerag
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
@@ -643,5 +644,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion PrimarySupportReason
+
+        #region FncCollector
+
+        public static IEnumerable<FncCollectorDomain> ToDomain(this List<FncCollector> collectors)
+        {
+            return _mapper.Map<IEnumerable<FncCollectorDomain>>(collectors);
+        }
+
+        #endregion
     }
 }

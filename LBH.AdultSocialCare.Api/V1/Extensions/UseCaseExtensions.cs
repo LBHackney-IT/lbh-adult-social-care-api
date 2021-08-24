@@ -307,6 +307,12 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
 
             #endregion PackageReclaim
 
+            #region PackageCostClaimers
+
+            services.AddScoped<IGetFncCollectorsUseCase, GetFncCollectorsUseCase>();
+
+            #endregion
+
             #region TransactionsApi
 
             services.AddScoped<IPayRunUseCase, PayRunUseCase>();

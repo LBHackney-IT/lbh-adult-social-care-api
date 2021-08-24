@@ -1,6 +1,8 @@
 using AutoMapper;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
@@ -13,6 +15,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -761,5 +764,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Clients
+
+        #region FncCollectors
+
+        public static IEnumerable<FncCollectorResponse> ToResponse(this IEnumerable<FncCollectorDomain> collectors)
+        {
+            return _mapper.Map<IEnumerable<FncCollectorResponse>>(collectors);
+        }
+
+        #endregion
     }
 }
