@@ -307,9 +307,11 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
 
             #endregion PackageReclaim
 
-            #region PackageCostClaimers
+            #region Funded Nursing Care
 
-            services.AddScoped<IGetFncCollectorsUseCase, GetFncCollectorsUseCase>();
+            services.AddScoped<IGetFundedNursingCarePriceUseCase, GetFundedNursingCarePriceUseCase>();
+            services.AddScoped<IGetFundedNursingCareCollectorsUseCase, GetFundedNursingCareCollectorsUseCase>();
+            services.AddScoped<IUpsertFundedNursingCareUseCase, UpsertFundedNursingCareUseCase>();
 
             #endregion
 

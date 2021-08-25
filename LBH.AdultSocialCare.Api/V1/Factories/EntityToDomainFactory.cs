@@ -645,11 +645,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion PrimarySupportReason
 
-        #region FncCollector
+        #region Funded Nursing Care
 
-        public static IEnumerable<FncCollectorDomain> ToDomain(this List<FncCollector> collectors)
+        public static IEnumerable<FundedNursingCareCollectorDomain> ToDomain(this List<FundedNursingCareCollector> collectors)
         {
-            return _mapper.Map<IEnumerable<FncCollectorDomain>>(collectors);
+            return _mapper.Map<IEnumerable<FundedNursingCareCollectorDomain>>(collectors);
+        }
+
+        public static FundedNursingCareDomain ToDomain(this FundedNursingCare fundedNursingCare)
+        {
+            return _mapper.Map<FundedNursingCareDomain>(fundedNursingCare);
         }
 
         #endregion

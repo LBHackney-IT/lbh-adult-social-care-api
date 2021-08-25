@@ -494,10 +494,13 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #endregion Clients
 
-            #region FncCollectors
+            #region Funded Nursing Care
 
-            CreateMap<FncCollector, FncCollectorDomain>();
-            CreateMap<FncCollectorDomain, FncCollectorResponse>();
+            CreateMap<FundedNursingCare, FundedNursingCareDomain>();
+            CreateMap<FundedNursingCareDomain, FundedNursingCare>();
+
+            CreateMap<FundedNursingCareCollector, FundedNursingCareCollectorDomain>();
+            CreateMap<FundedNursingCareCollectorDomain, FundedNursingCareCollectorResponse>();
 
             #endregion
         }

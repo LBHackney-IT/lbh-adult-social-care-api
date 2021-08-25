@@ -1,6 +1,6 @@
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
-    public class FncCollectorDomain
+    public class FundedNursingCareCollectorDomain
     {
         public int Id { get; set; }
 

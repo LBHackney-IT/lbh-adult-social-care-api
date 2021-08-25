@@ -68,6 +68,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IApprovedPackagesGateway, ApprovedPackagesGateway>();
             services.AddScoped<IBrokeredPackagesGateway, BrokeredPackagesGateway>();
             services.AddScoped<IPackageCostClaimersGateway, PackageCostClaimersGateway>();
+            services.AddScoped<IFundedNursingCaseGateway, FundedNursingCareGateway>();
         }
     }
 }

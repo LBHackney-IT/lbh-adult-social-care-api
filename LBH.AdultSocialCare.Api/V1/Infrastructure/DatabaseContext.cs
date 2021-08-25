@@ -15,7 +15,6 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageR
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -88,9 +87,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<ResidentialCareBrokerageInfo> ResidentialCareBrokerageInfos { get; set; }
         public DbSet<PrimarySupportReason> PrimarySupportReasons { get; set; }
 
-        public DbSet<FncCollector> FncCollectors { get; set; }
-
         public DbSet<PackageCostClaimer> PackageCostClaimers { get; set; }
+        public DbSet<FundedNursingCareCollector> FundedNursingCareCollectors { get; set; }
+        public DbSet<FundedNursingCarePrice> FundedNursingCarePrices { get; set; }
+        public DbSet<FundedNursingCare> FundedNursingCares { get; set; }
 
         #region CustomFunctions
 
@@ -176,7 +176,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             modelBuilder.ApplyConfiguration(new PrimarySupportReasonSeed());
 
             // Seed FNC and reclaims-related constants
-            modelBuilder.ApplyConfiguration(new FncCollectorsSeed());
+            modelBuilder.ApplyConfiguration(new FundedNursingCareCollectorsSeed());
+            modelBuilder.ApplyConfiguration(new FundedNursingCarePriceSeed());
             modelBuilder.ApplyConfiguration(new PackageCostClaimersSeed());
 
             #endregion Database Seeds

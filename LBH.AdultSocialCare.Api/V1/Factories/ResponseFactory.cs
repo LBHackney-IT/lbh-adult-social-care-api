@@ -767,9 +767,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region FncCollectors
 
-        public static IEnumerable<FncCollectorResponse> ToResponse(this IEnumerable<FncCollectorDomain> collectors)
+        public static IEnumerable<FundedNursingCareCollectorResponse> ToResponse(this IEnumerable<FundedNursingCareCollectorDomain> collectors)
         {
-            return _mapper.Map<IEnumerable<FncCollectorResponse>>(collectors);
+            return _mapper.Map<IEnumerable<FundedNursingCareCollectorResponse>>(collectors);
         }
 
         #endregion

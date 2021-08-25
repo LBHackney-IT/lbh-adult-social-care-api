@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -17,13 +17,13 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             _context = context;
         }
 
-        public async Task<IEnumerable<FncCollectorDomain>> GetFncCollectorsAsync()
+        public async Task<IEnumerable<FundedNursingCareCollectorDomain>> GetFundedNursingCareCollectorsAsync()
         {
-            var fncCollectors = await _context.FncCollectors
+            var collectors = await _context.FundedNursingCareCollectors
                 .ToListAsync()
                 .ConfigureAwait(false);
 
-            return fncCollectors?.ToDomain();
+            return collectors?.ToDomain();
         }
     }
 }

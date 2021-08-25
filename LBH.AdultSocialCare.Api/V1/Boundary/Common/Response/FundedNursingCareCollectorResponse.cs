@@ -1,6 +1,6 @@
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
 {
-    public class FncCollectorResponse
+    public class FundedNursingCareCollectorResponse
     {
         public int Id { get; set; }
 

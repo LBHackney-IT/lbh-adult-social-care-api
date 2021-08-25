@@ -6,18 +6,20 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 {
-    public class GetFncCollectorsUseCase : IGetFncCollectorsUseCase
+    public class GetFundedNursingCareCollectorsUseCase : IGetFundedNursingCareCollectorsUseCase
     {
         private readonly IPackageCostClaimersGateway _gateway;
 
-        public GetFncCollectorsUseCase(IPackageCostClaimersGateway gateway)
+        public GetFundedNursingCareCollectorsUseCase(IPackageCostClaimersGateway gateway)
         {
             _gateway = gateway;
         }
 
-        public async Task<IEnumerable<FncCollectorDomain>> GetFncCollectorsAsync()
+        public async Task<IEnumerable<FundedNursingCareCollectorDomain>> GetFundedNursingCareCollectorsAsync()
         {
-            return await _gateway.GetFncCollectorsAsync().ConfigureAwait(false);
+            return await _gateway
+                .GetFundedNursingCareCollectorsAsync()
+                .ConfigureAwait(false);
         }
     }
 }

@@ -1,23 +1,23 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
-    public class FncCollectorsSeed : IEntityTypeConfiguration<FncCollector>
+    public class FundedNursingCareCollectorsSeed : IEntityTypeConfiguration<FundedNursingCareCollector>
     {
-        public void Configure(EntityTypeBuilder<FncCollector> builder)
+        public void Configure(EntityTypeBuilder<FundedNursingCareCollector> builder)
         {
             builder.HasData(
-                new FncCollector
+                new FundedNursingCareCollector
                 {
                     Id = 1,
                     OptionName = "Supplier",
                     OptionInvoiceName = "FNC Claimed By Supplier",
                     ClaimedBy = PackageCostClaimersConstants.Supplier
                 },
-                new FncCollector
+                new FundedNursingCareCollector
                 {
                     Id = 2,
                     OptionName = "Hackney",
