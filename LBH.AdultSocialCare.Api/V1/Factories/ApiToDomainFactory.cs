@@ -439,5 +439,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion TimeSlotShifts
+
+        // TODO: VK: Move somewhere
+        public static TDestination Map<TDestination>(this object item)
+        {
+            return (TDestination) _mapper.Map(item, item.GetType(), typeof(TDestination));
+        }
     }
 }

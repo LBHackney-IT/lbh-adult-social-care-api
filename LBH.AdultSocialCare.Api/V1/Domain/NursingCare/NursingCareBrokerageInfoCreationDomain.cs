@@ -11,5 +11,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCare
         public decimal NursingCore { get; set; }
         public Guid CreatorId { get; set; }
         public IEnumerable<NursingCareAdditionalNeedsCostCreationDomain> NursingCareAdditionalNeedsCosts { get; set; }
+        public int FundedNursingCareCollectorId { get; set; }
     }
 }

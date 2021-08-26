@@ -3,53 +3,23 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210826073936_fundedNursingCare")]
+    partial class fundedNursingCare
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.AdditionalNeedsPaymentType", b =>
-                {
-                    b.Property<int>("AdditionalNeedsPaymentTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("OptionName")
-                        .HasColumnType("text");
-
-                    b.HasKey("AdditionalNeedsPaymentTypeId");
-
-                    b.ToTable("AdditionalNeedsPaymentTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            AdditionalNeedsPaymentTypeId = 1,
-                            OptionName = "Weekly"
-                        },
-                        new
-                        {
-                            AdditionalNeedsPaymentTypeId = 2,
-                            OptionName = "One Off"
-                        },
-                        new
-                        {
-                            AdditionalNeedsPaymentTypeId = 3,
-                            OptionName = "Fixed Period"
-                        });
-                });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Client", b =>
                 {
@@ -157,23 +127,23 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         new
                         {
                             Id = new Guid("91990f8a-b325-43eb-8482-0d1c7dcf8cd5"),
-                            AddressLine1 = "Z Street",
-                            CanSpeakEnglish = "Mid-Level",
+                            AddressLine1 = "Old Town Road",
+                            CanSpeakEnglish = "Fluent",
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DateOfBirth = new DateTime(1980, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             FirstName = "Allie",
-                            HackneyId = 65653,
+                            HackneyId = 77777,
                             LastName = "Grater",
-                            PostCode = "W4",
+                            PostCode = "SW16",
                             PreferredContact = "Phone",
-                            Town = "Ealing"
+                            Town = "Bristol"
                         },
                         new
                         {
                             Id = new Guid("6691fbfc-e398-41e0-8733-9ae98ebe2ba8"),
-                            AddressLine1 = "XX Road",
+                            AddressLine1 = "Old Town Road",
                             CanSpeakEnglish = "Fluent",
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -182,14 +152,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             FirstName = "Constance",
                             HackneyId = 88888,
                             LastName = "Noring",
-                            PostCode = "C2",
+                            PostCode = "SW16",
                             PreferredContact = "Phone",
-                            Town = "Cardiff"
+                            Town = "Bristol"
                         },
                         new
                         {
                             Id = new Guid("a99f4b55-7c49-4bad-a338-86c6d79dfe36"),
-                            AddressLine1 = "YY Street",
+                            AddressLine1 = "Old Town Road",
                             CanSpeakEnglish = "Fluent",
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -198,14 +168,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             FirstName = "Isabelle",
                             HackneyId = 99999,
                             LastName = "Ringing",
-                            PostCode = "N7",
+                            PostCode = "SW16",
                             PreferredContact = "Phone",
-                            Town = "Norwich"
+                            Town = "Bristol"
                         },
                         new
                         {
                             Id = new Guid("61e8b256-3bb6-42a2-9d24-38a44a3bd5f2"),
-                            AddressLine1 = "Old Trafford",
+                            AddressLine1 = "Old Town Road",
                             CanSpeakEnglish = "Fluent",
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -214,14 +184,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             FirstName = "Harriet",
                             HackneyId = 11111,
                             LastName = "Upp",
-                            PostCode = "M8",
+                            PostCode = "SW16",
                             PreferredContact = "Phone",
-                            Town = "Manchester"
+                            Town = "Bristol"
                         },
                         new
                         {
                             Id = new Guid("de846662-e8fe-4c47-bd0a-20113b71e02d"),
-                            AddressLine1 = "Anfield",
+                            AddressLine1 = "Old Town Road",
                             CanSpeakEnglish = "Fluent",
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -230,14 +200,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             FirstName = "Willie",
                             HackneyId = 22222,
                             LastName = "Makit",
-                            PostCode = "L9",
-                            PreferredContact = "Mail",
-                            Town = "Liverpool"
+                            PostCode = "SW16",
+                            PreferredContact = "Phone",
+                            Town = "Bristol"
                         },
                         new
                         {
                             Id = new Guid("0c6edb1d-799b-4ce3-98a8-e6fe271c4a8f"),
-                            AddressLine1 = "New Road",
+                            AddressLine1 = "Old Town Road",
                             CanSpeakEnglish = "Fluent",
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -246,73 +216,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             FirstName = "Mark",
                             HackneyId = 33322,
                             LastName = "Ateer",
-                            PostCode = "I12",
+                            PostCode = "SW16",
                             PreferredContact = "Phone",
-                            Town = "Ipswich"
-                        },
-                        new
-                        {
-                            Id = new Guid("9a84d6c3-e570-4f30-8bb2-80425d6f8e60"),
-                            AddressLine1 = "Y Street",
-                            CanSpeakEnglish = "Fluent",
-                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateOfBirth = new DateTime(1958, 10, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            FirstName = "Colin",
-                            HackneyId = 10532,
-                            LastName = "Edmunds",
-                            PostCode = "B4",
-                            PreferredContact = "Phone",
-                            Town = "Brighton"
-                        },
-                        new
-                        {
-                            Id = new Guid("14ffd252-a98b-4489-ab58-6db72ed317c6"),
-                            AddressLine1 = "X Town",
-                            CanSpeakEnglish = "Fluent",
-                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateOfBirth = new DateTime(1944, 6, 6, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            FirstName = "Tim",
-                            HackneyId = 57806,
-                            LastName = "Gray",
-                            PostCode = "W2",
-                            PreferredContact = "Phone",
-                            Town = "Watford"
-                        },
-                        new
-                        {
-                            Id = new Guid("3c96cc5b-557e-42eb-957b-f9b0b7302ad7"),
-                            AddressLine1 = "X Road",
-                            CanSpeakEnglish = "Fluent",
-                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateOfBirth = new DateTime(1950, 6, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            FirstName = "Jake",
-                            HackneyId = 33322,
-                            LastName = "Hart",
-                            PostCode = "D1",
-                            PreferredContact = "Phone",
-                            Town = "Dorset"
-                        },
-                        new
-                        {
-                            Id = new Guid("dde0741c-f9a9-4d42-b889-a1d17864d77e"),
-                            AddressLine1 = "New Town",
-                            CanSpeakEnglish = "Fluent",
-                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateOfBirth = new DateTime(1940, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            FirstName = "Emma",
-                            HackneyId = 66779,
-                            LastName = "Coleman",
-                            PostCode = "E1",
-                            PreferredContact = "Phone",
-                            Town = "Newcastle"
+                            Town = "Bristol"
                         });
                 });
 
@@ -2156,9 +2062,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("AdditionalNeedsPaymentTypeId")
-                        .HasColumnType("integer");
-
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
 
@@ -2168,8 +2071,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<bool>("IsOneOffCost")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsWeeklyCost")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("NeedToAddress")
                         .HasColumnType("text");
@@ -2177,15 +2083,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("NursingCarePackageId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset?>("StartDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AdditionalNeedsPaymentTypeId");
 
                     b.HasIndex("CreatorId");
 
@@ -2353,40 +2254,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage.NursingCareAdditionalNeedsCost", b =>
-                {
-                    b.Property<Guid>("NursingCareAdditionalNeedsCostId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("AdditionalNeedsCost")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("AdditionalNeedsPaymentTypeId")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("CreatorId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("NursingCareBrokerageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("UpdatorId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("NursingCareAdditionalNeedsCostId");
-
-                    b.HasIndex("AdditionalNeedsPaymentTypeId");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("NursingCareBrokerageId");
-
-                    b.HasIndex("UpdatorId");
-
-                    b.ToTable("NursingCareAdditionalNeedsCosts");
-                });
-
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage.NursingCareApprovalHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -2437,6 +2304,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("NursingCareBrokerageId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<decimal>("AdditionalNeedsPayment")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("AdditionalNeedsPaymentOneOff")
+                        .HasColumnType("numeric");
 
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
@@ -2976,9 +2849,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("AdditionalNeedsPaymentTypeId")
-                        .HasColumnType("integer");
-
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
 
@@ -2988,8 +2858,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset?>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<bool>("IsOneOffCost")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsWeeklyCost")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("NeedToAddress")
                         .HasColumnType("text");
@@ -2997,15 +2870,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("ResidentialCarePackageId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset?>("StartDate")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AdditionalNeedsPaymentTypeId");
 
                     b.HasIndex("CreatorId");
 
@@ -3171,46 +3039,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage.ResidentialCareAdditionalNeedsCost", b =>
-                {
-                    b.Property<Guid>("ResidentialCareAdditionalNeedsCostId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("AdditionalNeedsCost")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("AdditionalNeedsPaymentTypeId")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("CreatorId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTimeOffset>("DateUpdated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("ResidentialCareBrokerageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("UpdaterId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("ResidentialCareAdditionalNeedsCostId");
-
-                    b.HasIndex("AdditionalNeedsPaymentTypeId");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("ResidentialCareBrokerageId");
-
-                    b.HasIndex("UpdaterId");
-
-                    b.ToTable("ResidentialCareAdditionalNeedsCosts");
-                });
-
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage.ResidentialCareApprovalHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -3261,6 +3089,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<decimal>("AdditionalNeedsPayment")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal>("AdditionalNeedsPaymentOneOff")
+                        .HasColumnType("numeric");
 
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
@@ -3476,8 +3310,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 1,
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 8, 24, 11, 51, 24, 931, DateTimeKind.Unspecified).AddTicks(2304), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 8, 24, 11, 51, 24, 931, DateTimeKind.Unspecified).AddTicks(2311), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 8, 26, 7, 39, 34, 806, DateTimeKind.Unspecified).AddTicks(6935), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 8, 26, 7, 39, 34, 806, DateTimeKind.Unspecified).AddTicks(6944), new TimeSpan(0, 0, 0, 0, 0)),
                             StageName = "New",
                             UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                         },
@@ -3485,8 +3319,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 2,
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 8, 24, 11, 51, 24, 931, DateTimeKind.Unspecified).AddTicks(3180), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 8, 24, 11, 51, 24, 931, DateTimeKind.Unspecified).AddTicks(3185), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 8, 26, 7, 39, 34, 806, DateTimeKind.Unspecified).AddTicks(7641), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 8, 26, 7, 39, 34, 806, DateTimeKind.Unspecified).AddTicks(7645), new TimeSpan(0, 0, 0, 0, 0)),
                             StageName = "Assigned",
                             UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                         },
@@ -3494,8 +3328,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 3,
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 8, 24, 11, 51, 24, 931, DateTimeKind.Unspecified).AddTicks(3224), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 8, 24, 11, 51, 24, 931, DateTimeKind.Unspecified).AddTicks(3225), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 8, 26, 7, 39, 34, 806, DateTimeKind.Unspecified).AddTicks(7703), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 8, 26, 7, 39, 34, 806, DateTimeKind.Unspecified).AddTicks(7705), new TimeSpan(0, 0, 0, 0, 0)),
                             StageName = "Querying",
                             UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                         },
@@ -3503,8 +3337,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 4,
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 8, 24, 11, 51, 24, 931, DateTimeKind.Unspecified).AddTicks(3228), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 8, 24, 11, 51, 24, 931, DateTimeKind.Unspecified).AddTicks(3229), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 8, 26, 7, 39, 34, 806, DateTimeKind.Unspecified).AddTicks(7709), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 8, 26, 7, 39, 34, 806, DateTimeKind.Unspecified).AddTicks(7710), new TimeSpan(0, 0, 0, 0, 0)),
                             StageName = "Supplier Sourced",
                             UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                         },
@@ -3512,8 +3346,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 5,
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 8, 24, 11, 51, 24, 931, DateTimeKind.Unspecified).AddTicks(3232), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 8, 24, 11, 51, 24, 931, DateTimeKind.Unspecified).AddTicks(3233), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 8, 26, 7, 39, 34, 806, DateTimeKind.Unspecified).AddTicks(7714), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 8, 26, 7, 39, 34, 806, DateTimeKind.Unspecified).AddTicks(7716), new TimeSpan(0, 0, 0, 0, 0)),
                             StageName = "Pricing agreed",
                             UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                         },
@@ -3521,8 +3355,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = 6,
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            DateCreated = new DateTimeOffset(new DateTime(2021, 8, 24, 11, 51, 24, 931, DateTimeKind.Unspecified).AddTicks(3236), new TimeSpan(0, 0, 0, 0, 0)),
-                            DateUpdated = new DateTimeOffset(new DateTime(2021, 8, 24, 11, 51, 24, 931, DateTimeKind.Unspecified).AddTicks(3237), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 8, 26, 7, 39, 34, 806, DateTimeKind.Unspecified).AddTicks(7720), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 8, 26, 7, 39, 34, 806, DateTimeKind.Unspecified).AddTicks(7721), new TimeSpan(0, 0, 0, 0, 0)),
                             StageName = "Submitted For Approval",
                             UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                         });
@@ -4342,12 +4176,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare.NursingCareAdditionalNeed", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.AdditionalNeedsPaymentType", "AdditionalNeedsPaymentType")
-                        .WithMany()
-                        .HasForeignKey("AdditionalNeedsPaymentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
@@ -4406,31 +4234,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
-                });
-
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage.NursingCareAdditionalNeedsCost", b =>
-                {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.AdditionalNeedsPaymentType", "AdditionalNeedsPaymentType")
-                        .WithMany()
-                        .HasForeignKey("AdditionalNeedsPaymentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage.NursingCareBrokerageInfo", "NursingCareBrokerageInfo")
-                        .WithMany("NursingCareAdditionalNeedsCosts")
-                        .HasForeignKey("NursingCareBrokerageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Updater")
-                        .WithMany()
-                        .HasForeignKey("UpdatorId");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage.NursingCareApprovalHistory", b =>
@@ -4536,12 +4339,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare.ResidentialCareAdditionalNeed", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.AdditionalNeedsPaymentType", "AdditionalNeedsPaymentType")
-                        .WithMany()
-                        .HasForeignKey("AdditionalNeedsPaymentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
@@ -4592,31 +4389,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare.ResidentialCareTypeOfStayOption", "TypeOfStayOption")
                         .WithMany()
                         .HasForeignKey("TypeOfStayId");
-
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Updater")
-                        .WithMany()
-                        .HasForeignKey("UpdaterId");
-                });
-
-            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage.ResidentialCareAdditionalNeedsCost", b =>
-                {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.AdditionalNeedsPaymentType", "AdditionalNeedsPaymentType")
-                        .WithMany()
-                        .HasForeignKey("AdditionalNeedsPaymentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage.ResidentialCareBrokerageInfo", "ResidentialCareBrokerageInfo")
-                        .WithMany("ResidentialCareAdditionalNeedsCosts")
-                        .HasForeignKey("ResidentialCareBrokerageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Updater")
                         .WithMany()

@@ -15,7 +15,6 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageR
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,6 +90,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<AdditionalNeedsPaymentType> AdditionalNeedsPaymentTypes { get; set; }
         public DbSet<ResidentialCareAdditionalNeedsCost> ResidentialCareAdditionalNeedsCosts { get; set; }
 
+        public DbSet<PackageCostClaimer> PackageCostClaimers { get; set; }
+        public DbSet<FundedNursingCareCollector> FundedNursingCareCollectors { get; set; }
+        public DbSet<FundedNursingCarePrice> FundedNursingCarePrices { get; set; }
+        public DbSet<FundedNursingCare> FundedNursingCares { get; set; }
 
         #region CustomFunctions
 
@@ -177,6 +180,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed additional needs payment type
             modelBuilder.ApplyConfiguration(new AdditionalNeedsPaymentTypeSeed());
+
+            // Seed FNC and reclaims-related constants
+            modelBuilder.ApplyConfiguration(new FundedNursingCareCollectorsSeed());
+            modelBuilder.ApplyConfiguration(new FundedNursingCarePriceSeed());
+            modelBuilder.ApplyConfiguration(new PackageCostClaimersSeed());
 
             #endregion Database Seeds
 

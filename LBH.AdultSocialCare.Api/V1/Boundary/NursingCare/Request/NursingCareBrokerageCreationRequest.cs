@@ -38,5 +38,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request
         [Required] public decimal? NursingCore { get; set; }
 
         public IEnumerable<NursingCareAdditionalNeedsCostCreationRequest> NursingCareAdditionalNeedsCosts { get; set; }
+
+        public int FundedNursingCareCollectorId { get; set; }
     }
 }
