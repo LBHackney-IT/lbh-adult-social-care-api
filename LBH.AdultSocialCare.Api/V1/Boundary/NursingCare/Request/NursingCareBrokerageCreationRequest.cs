@@ -45,5 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request
         /// Gets or sets the Additional Needs Payment One Off
         /// </summary>
         [Required] public decimal? AdditionalNeedsPaymentOneOff { get; set; }
+
+        public int FundedNursingCareCollectorId { get; set; }
     }
 }

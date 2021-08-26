@@ -414,5 +414,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion TimeSlotShifts
+
+        #region Funded Nursing Care
+
+        public static FundedNursingCare ToEntity(this FundedNursingCareDomain fundedNursingCareDomain)
+        {
+            return _mapper.Map<FundedNursingCare>(fundedNursingCareDomain);
+        }
+
+        #endregion
     }
 }

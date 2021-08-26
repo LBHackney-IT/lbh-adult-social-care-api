@@ -1,8 +1,8 @@
 using AutoMapper;
 using HttpServices.Models.Requests;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCare;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Request;
@@ -493,6 +493,16 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<Client, ClientsDomain>();
 
             #endregion Clients
+
+            #region Funded Nursing Care
+
+            CreateMap<FundedNursingCare, FundedNursingCareDomain>();
+            CreateMap<FundedNursingCareDomain, FundedNursingCare>();
+
+            CreateMap<FundedNursingCareCollector, FundedNursingCareCollectorDomain>();
+            CreateMap<FundedNursingCareCollectorDomain, FundedNursingCareCollectorResponse>();
+
+            #endregion
         }
     }
 }
