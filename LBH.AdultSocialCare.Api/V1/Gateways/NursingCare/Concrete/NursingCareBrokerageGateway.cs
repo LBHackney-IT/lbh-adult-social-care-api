@@ -103,7 +103,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                         AdditionalNeedsCost = anc.AdditionalNeedsCost,
                         CreatorId = anc.CreatorId,
                         UpdatorId = anc.UpdatorId
-                    }), 
+                    }),
                     NursingCore = nc.NursingCareBrokerageInfo.NursingCore,
                     StageId = nc.StageId,
                     SupplierId = nc.SupplierId,

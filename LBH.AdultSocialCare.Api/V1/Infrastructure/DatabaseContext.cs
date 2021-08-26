@@ -177,7 +177,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed additional needs payment type
             modelBuilder.ApplyConfiguration(new AdditionalNeedsPaymentTypeSeed());
-            
+
             #endregion Database Seeds
 
             #region Entity Config

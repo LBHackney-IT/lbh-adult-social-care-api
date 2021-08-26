@@ -354,7 +354,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             #region AdditionalNeedPaymentType
 
             services.AddScoped<IGetNursingCareAdditionalNeedsPaymentTypesUseCase, GetNursingCareAdditionalNeedsPaymentTypesUseCase>();
-            
+
             #endregion
 
         }

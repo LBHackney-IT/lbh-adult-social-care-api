@@ -196,7 +196,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                         CreatorId = _identityHelperUseCase.GetUserId()
                     }
                 };
-                if(!residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCareAdditionalNeedsCosts.Any()) continue;
+                if (!residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCareAdditionalNeedsCosts.Any()) continue;
 
                 foreach (var residentialCareAdditionalNeedsCost in residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCareAdditionalNeedsCosts)
                     if (residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentTypeId != AdditionalNeedPaymentTypesConstants.OneOff)
