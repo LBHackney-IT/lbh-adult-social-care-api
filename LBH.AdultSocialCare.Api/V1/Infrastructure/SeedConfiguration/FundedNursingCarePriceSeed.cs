@@ -1,8 +1,7 @@
-using System;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
@@ -15,7 +14,22 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 {
                     Id = 1,
                     PricePerWeek = 187.6m,
-                    ActiveFrom = new DateTimeOffset(new DateTime(2021, 4, 1, 0, 0, 0, DateTimeKind.Utc))
+                    ActiveFrom = new DateTimeOffset(new DateTime(2019, 4, 1, 0, 0, 0, DateTimeKind.Utc)),
+                    ActiveTo = new DateTimeOffset(new DateTime(2020, 4, 1, 0, 0, 0, DateTimeKind.Utc))
+                },
+                new FundedNursingCarePrice
+                {
+                    Id = 2,
+                    PricePerWeek = 187.6m,
+                    ActiveFrom = new DateTimeOffset(new DateTime(2020, 4, 1, 0, 0, 0, DateTimeKind.Utc)),
+                    ActiveTo = new DateTimeOffset(new DateTime(2021, 4, 1, 0, 0, 0, DateTimeKind.Utc))
+                },
+                new FundedNursingCarePrice
+                {
+                    Id = 3,
+                    PricePerWeek = 187.6m,
+                    ActiveFrom = new DateTimeOffset(new DateTime(2021, 4, 1, 0, 0, 0, DateTimeKind.Utc)),
+                    ActiveTo = new DateTimeOffset(new DateTime(2022, 4, 1, 0, 0, 0, DateTimeKind.Utc))
                 });
         }
     }

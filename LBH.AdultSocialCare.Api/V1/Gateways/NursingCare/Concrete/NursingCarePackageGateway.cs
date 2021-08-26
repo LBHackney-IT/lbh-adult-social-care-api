@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
 using HttpServices.Models.Requests;
@@ -14,6 +10,10 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
 {
@@ -23,13 +23,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
         private readonly IMapper _mapper;
         private readonly IIdentityHelperUseCase _identityHelperUseCase;
         private readonly ITransactionsService _transactionsService;
+        private readonly IFundedNursingCaseGateway _fundedNursingCaseGateway;
 
-        public NursingCarePackageGateway(DatabaseContext databaseContext, IMapper mapper, IIdentityHelperUseCase identityHelperUseCase, ITransactionsService transactionsService)
+        public NursingCarePackageGateway(DatabaseContext databaseContext, IMapper mapper, IIdentityHelperUseCase identityHelperUseCase, ITransactionsService transactionsService, IFundedNursingCaseGateway fundedNursingCaseGateway)
         {
             _databaseContext = databaseContext;
             _mapper = mapper;
             _identityHelperUseCase = identityHelperUseCase;
             _transactionsService = transactionsService;
+            _fundedNursingCaseGateway = fundedNursingCaseGateway;
         }
 
         public async Task<NursingCarePackageDomain> UpdateAsync(NursingCarePackageForUpdateDomain nursingCarePackageForUpdate)
@@ -157,6 +159,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
 
             dateTo = dateTo.Date;
 
+            // Get and store the creator id
+            var creatorId = _identityHelperUseCase.GetUserId();
+
             // Get all relevant nursing care package ids
             var nursingCarePackagesIds = await _databaseContext.NursingCarePackages.Where(nc =>
                     ((nc.EndDate == null && nc.PaidUpTo == null) ||
@@ -172,6 +177,19 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                 .ToListAsync()
                 .ConfigureAwait(false);
 
+            // Get the minimum invoice start date
+            var minInvoiceDate =
+                await _databaseContext.NursingCarePackages.Where(nc => nursingCarePackagesIds.Contains(nc.Id))
+                    .Select(nc => new { StartDate = nc.PaidUpTo ?? nc.StartDate })
+                    .OrderByDescending(nc => nc.StartDate)
+                    .Select(nc => nc.StartDate)
+                    .FirstOrDefaultAsync().ConfigureAwait(false);
+
+            // Get fnc costs in the start and end range
+            var fncPrices = await _fundedNursingCaseGateway.GetFundedNursingCarePricingInRange(minInvoiceDate, dateTo)
+                .ConfigureAwait(false);
+            var fncPriceList = fncPrices.ToList();
+
             // Iterate every 1000 and create invoices
             var nursingCarePackagesCount = nursingCarePackagesIds.Count;
             var iterations = Math.Ceiling(nursingCarePackagesCount / 1000M);
@@ -183,7 +201,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                 var selectedIds = nursingCarePackagesIds.Skip(i * 1000).Take(1000);
                 var nursingCarePackages = await _databaseContext.NursingCarePackages
                     .Where(nc => selectedIds.Contains(nc.Id))
-                    .Include(nc => nc.NursingCareBrokerageInfo).ToListAsync()
+                    .Include(nc => nc.NursingCareBrokerageInfo)
+                    .Include(nc => nc.FundedNursingCare)
+                    .ThenInclude(fc => fc.FundedNursingCareCollector)
+                    .Include(nc => nc.FundedNursingCare)
+                    .ThenInclude(fc => fc.ReclaimFrom)
+                    .ToListAsync()
                     .ConfigureAwait(false);
 
                 foreach (var nursingCarePackage in nursingCarePackages)
@@ -197,7 +220,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
 
                     var weeks = dateDiff / 7M;
 
-                    // Create invoice
+                    // Collect invoice items
                     var invoiceItems = new List<InvoiceItemForCreationRequest>()
                     {
                         new InvoiceItemForCreationRequest
@@ -205,14 +228,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                             ItemName = $"Nursing Care Core Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
                             PricePerUnit = nursingCarePackage.NursingCareBrokerageInfo.NursingCore,
                             Quantity = weeks,
-                            CreatorId = _identityHelperUseCase.GetUserId()
+                            PriceEffect = "Add",
+                            CreatorId = creatorId
                         },
                         new InvoiceItemForCreationRequest()
                         {
                             ItemName = $"Additional Needs Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
                             PricePerUnit = nursingCarePackage.NursingCareBrokerageInfo.AdditionalNeedsPayment,
                             Quantity = weeks,
-                            CreatorId = _identityHelperUseCase.GetUserId()
+                            PriceEffect = "Add",
+                            CreatorId = creatorId
                         }
                     };
 
@@ -224,8 +249,46 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                             ItemName = "Nursing care package one off cost",
                             PricePerUnit = nursingCarePackage.NursingCareBrokerageInfo.AdditionalNeedsPaymentOneOff,
                             Quantity = 1,
-                            CreatorId = _identityHelperUseCase.GetUserId()
+                            PriceEffect = "Add",
+                            CreatorId = creatorId
                         });
+                    }
+
+                    // Check if package has FNC
+                    var fundedNursingCare = nursingCarePackage.FundedNursingCare;
+                    if (fundedNursingCare != null)
+                    {
+                        // filter fnc prices for this package
+                        var packageFncPrices = fncPriceList.Where(fp =>
+                            fp.ActiveFrom.Date >= startDate.Date && fp.ActiveTo.Date > dateTo.Date).ToList();
+
+                        invoiceItems.AddRange(from fncCost in packageFncPrices
+                            let fncStartDate = new[] {fncCost.ActiveFrom, startDate}.Max()
+                            let fncEndDate = new[] {fncCost.ActiveTo, dateTo}.Min()
+                            let fncWeeks = ((fncEndDate.Date - fncStartDate.Date).Days) / 7M
+                            let fncItemName = nursingCarePackage.FundedNursingCare.FundedNursingCareCollector.OptionInvoiceName
+                            let fncClaimedBy = fundedNursingCare.ReclaimTargetInstitutionId switch
+                            {
+                                PackageCostClaimersConstants.Hackney => "Hackney",
+                                PackageCostClaimersConstants.Supplier => "Supplier",
+                                _ => "Hackney"
+                            }
+                            let fncPriceEffect = fncClaimedBy switch
+                            {
+                                "Hackney" => "None",
+                                "Supplier" => "Subtract",
+                                _ => "Add"
+                            }
+                            select new InvoiceItemForCreationRequest
+                            {
+                                ItemName = fncItemName,
+                                PricePerUnit = fncCost.PricePerWeek,
+                                Quantity = fncWeeks,
+                                PriceEffect = fncPriceEffect,
+                                ClaimedBy = fncClaimedBy,
+                                ReclaimedFrom = fundedNursingCare.ReclaimFrom.ReclaimFromName,
+                                CreatorId = creatorId
+                            });
                     }
 
                     // Create the invoice
@@ -234,7 +297,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                         SupplierId = nursingCarePackage.SupplierId,
                         PackageTypeId = PackageTypesConstants.NursingCarePackageId,
                         ServiceUserId = nursingCarePackage.ClientId,
-                        CreatorId = _identityHelperUseCase.GetUserId(),
+                        CreatorId = creatorId,
                         DateFrom = startDate.Date,
                         DateTo = dateTo,
                         PackageId = nursingCarePackage.Id,
@@ -247,13 +310,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                     // Update paidUpTo
                     nursingCarePackage.PaidUpTo = dateTo;
                 }
-
-                // Send invoices to transactions api
-                /*foreach (var invoiceForCreationRequest in invoicesForCreation)
-                {
-                    var res = await _transactionsService.CreateInvoiceUseCase(invoiceForCreationRequest)
-                        .ConfigureAwait(false);
-                }*/
 
                 if (invoicesForCreation.Count > 0)
                 {

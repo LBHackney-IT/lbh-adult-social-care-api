@@ -190,6 +190,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                         ItemName = $"Residential Care Core Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
                         PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCore,
                         Quantity = weeks,
+                        PriceEffect = "Add",
                         CreatorId = _identityHelperUseCase.GetUserId()
                     },
                     new InvoiceItemForCreationRequest()
@@ -197,6 +198,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                         ItemName = $"Additional Needs Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
                         PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.AdditionalNeedsPayment,
                         Quantity = weeks,
+                        PriceEffect = "Add",
                         CreatorId = _identityHelperUseCase.GetUserId()
                     }
                 };
@@ -208,6 +210,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                         ItemName = "Additional Needs One Off Cost",
                         PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.AdditionalNeedsPaymentOneOff,
                         Quantity = 1,
+                        PriceEffect = "Add",
                         CreatorId = _identityHelperUseCase.GetUserId()
                     });
                 }
