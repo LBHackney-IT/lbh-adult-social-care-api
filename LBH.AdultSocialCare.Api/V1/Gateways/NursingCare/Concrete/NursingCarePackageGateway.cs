@@ -211,36 +211,29 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                             CreatorId = _identityHelperUseCase.GetUserId()
                         }
                     };
-
-                    if (!nursingCarePackage.NursingCareBrokerageInfo.NursingCareAdditionalNeedsCosts.Any()) continue;
-
-                    foreach (var nursingCareAdditionalNeedsCost in nursingCarePackage.NursingCareBrokerageInfo.NursingCareAdditionalNeedsCosts)
+                    //TODO refactor creation invoice item logic
+                    if (nursingCarePackage.NursingCareBrokerageInfo.NursingCareAdditionalNeedsCosts.Count > 0)
                     {
-                        if (nursingCareAdditionalNeedsCost.AdditionalNeedsPaymentTypeId !=
-                            AdditionalNeedPaymentTypesConstants.OneOff)
-                        {
-                            invoiceItems.Add(new InvoiceItemForCreationRequest
-                            {
-                                ItemName = $"Additional Needs {nursingCareAdditionalNeedsCost.AdditionalNeedsPaymentType} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
-                                PricePerUnit = nursingCareAdditionalNeedsCost.AdditionalNeedsCost,
-                                Quantity = weeks,
-                                CreatorId = _identityHelperUseCase.GetUserId()
-                            });
-                        }
-                        else
-                        {
-                            // Create one off cost invoice item if first pay run
-                            if (nursingCarePackage.PaidUpTo == null)
-                            {
+                        foreach (var nursingCareAdditionalNeedsCost in nursingCarePackage.NursingCareBrokerageInfo.NursingCareAdditionalNeedsCosts)
+                            // create invoice item for additional needs item except one off cost
+                            if (nursingCareAdditionalNeedsCost.AdditionalNeedsPaymentTypeId != AdditionalNeedPaymentTypesConstants.OneOff)
                                 invoiceItems.Add(new InvoiceItemForCreationRequest
                                 {
-                                    ItemName = $"Additional Needs {nursingCareAdditionalNeedsCost.AdditionalNeedsPaymentType} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
+                                    ItemName =
+                                        $"Additional Needs {nursingCareAdditionalNeedsCost.AdditionalNeedsPaymentType.OptionName} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
+                                    PricePerUnit = nursingCareAdditionalNeedsCost.AdditionalNeedsCost,
+                                    Quantity = weeks,
+                                    CreatorId = _identityHelperUseCase.GetUserId()
+                                });
+                            else if (nursingCarePackage.PaidUpTo == null)
+                                invoiceItems.Add(new InvoiceItemForCreationRequest
+                                {
+                                    ItemName =
+                                        $"Additional Needs {nursingCareAdditionalNeedsCost.AdditionalNeedsPaymentType.OptionName} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
                                     PricePerUnit = nursingCareAdditionalNeedsCost.AdditionalNeedsCost,
                                     Quantity = 1,
                                     CreatorId = _identityHelperUseCase.GetUserId()
                                 });
-                            }
-                        }
                     }
 
                     // Create the invoice

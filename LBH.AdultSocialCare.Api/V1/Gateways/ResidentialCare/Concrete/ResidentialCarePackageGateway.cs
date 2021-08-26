@@ -196,27 +196,31 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                         CreatorId = _identityHelperUseCase.GetUserId()
                     }
                 };
-                if (!residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCareAdditionalNeedsCosts.Any()) continue;
 
-                foreach (var residentialCareAdditionalNeedsCost in residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCareAdditionalNeedsCosts)
-                    if (residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentTypeId != AdditionalNeedPaymentTypesConstants.OneOff)
-                        invoiceItems.Add(new InvoiceItemForCreationRequest
-                        {
-                            ItemName =
-                                $"Additional Needs {residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentType.OptionName} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
-                            PricePerUnit = residentialCareAdditionalNeedsCost.AdditionalNeedsCost,
-                            Quantity = weeks,
-                            CreatorId = _identityHelperUseCase.GetUserId()
-                        });
-                    else if (residentialCarePackage.PaidUpTo == null)
-                        invoiceItems.Add(new InvoiceItemForCreationRequest
-                        {
-                            ItemName =
-                                $"Additional Needs {residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentType.OptionName} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
-                            PricePerUnit = residentialCareAdditionalNeedsCost.AdditionalNeedsCost,
-                            Quantity = 1,
-                            CreatorId = _identityHelperUseCase.GetUserId()
-                        });
+                //TODO refactor creation invoice item logic
+                if (residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCareAdditionalNeedsCosts.Count > 0)
+                {
+                    foreach (var residentialCareAdditionalNeedsCost in residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCareAdditionalNeedsCosts)
+                        // create invoice item for additional needs item except one off cost
+                        if (residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentTypeId != AdditionalNeedPaymentTypesConstants.OneOff)
+                            invoiceItems.Add(new InvoiceItemForCreationRequest
+                            {
+                                ItemName =
+                                    $"Additional Needs {residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentType.OptionName} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
+                                PricePerUnit = residentialCareAdditionalNeedsCost.AdditionalNeedsCost,
+                                Quantity = weeks,
+                                CreatorId = _identityHelperUseCase.GetUserId()
+                            });
+                        else if (residentialCarePackage.PaidUpTo == null)
+                            invoiceItems.Add(new InvoiceItemForCreationRequest
+                            {
+                                ItemName =
+                                    $"Additional Needs {residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentType.OptionName} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
+                                PricePerUnit = residentialCareAdditionalNeedsCost.AdditionalNeedsCost,
+                                Quantity = 1,
+                                CreatorId = _identityHelperUseCase.GetUserId()
+                            });
+                }
 
                 invoicesForCreation.Add(new InvoiceForCreationRequest
                 {
