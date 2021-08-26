@@ -4,32 +4,14 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response
 {
     public class ResidentialCareAdditionalNeedsResponse
     {
-        /// <summary>
-        /// Gets or sets the Id
-        /// </summary>
         public Guid Id { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Nursing Care Package Id
-        /// </summary>
         public Guid ResidentialCarePackageId { get; set; }
-
         public int AdditionalNeedsPaymentTypeId { get; set; }
         public string AdditionalNeedsPaymentTypeName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Need To Address
-        /// </summary>
         public string NeedToAddress { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
+        public DateTimeOffset? StartDate { get; set; }
+        public DateTimeOffset? EndDate { get; set; }
         public Guid CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updator Id
-        /// </summary>
         public Guid? UpdatorId { get; set; }
     }
 }
