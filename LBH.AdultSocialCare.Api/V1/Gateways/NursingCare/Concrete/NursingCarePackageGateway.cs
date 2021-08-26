@@ -263,32 +263,32 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                             fp.ActiveFrom.Date >= startDate.Date && fp.ActiveTo.Date > dateTo.Date).ToList();
 
                         invoiceItems.AddRange(from fncCost in packageFncPrices
-                            let fncStartDate = new[] {fncCost.ActiveFrom, startDate}.Max()
-                            let fncEndDate = new[] {fncCost.ActiveTo, dateTo}.Min()
-                            let fncWeeks = ((fncEndDate.Date - fncStartDate.Date).Days) / 7M
-                            let fncItemName = nursingCarePackage.FundedNursingCare.FundedNursingCareCollector.OptionInvoiceName
-                            let fncClaimedBy = fundedNursingCare.ReclaimTargetInstitutionId switch
-                            {
-                                PackageCostClaimersConstants.Hackney => "Hackney",
-                                PackageCostClaimersConstants.Supplier => "Supplier",
-                                _ => "Hackney"
-                            }
-                            let fncPriceEffect = fncClaimedBy switch
-                            {
-                                "Hackney" => "None",
-                                "Supplier" => "Subtract",
-                                _ => "Add"
-                            }
-                            select new InvoiceItemForCreationRequest
-                            {
-                                ItemName = fncItemName,
-                                PricePerUnit = fncCost.PricePerWeek,
-                                Quantity = fncWeeks,
-                                PriceEffect = fncPriceEffect,
-                                ClaimedBy = fncClaimedBy,
-                                ReclaimedFrom = fundedNursingCare.ReclaimFrom.ReclaimFromName,
-                                CreatorId = creatorId
-                            });
+                                              let fncStartDate = new[] { fncCost.ActiveFrom, startDate }.Max()
+                                              let fncEndDate = new[] { fncCost.ActiveTo, dateTo }.Min()
+                                              let fncWeeks = ((fncEndDate.Date - fncStartDate.Date).Days) / 7M
+                                              let fncItemName = nursingCarePackage.FundedNursingCare.FundedNursingCareCollector.OptionInvoiceName
+                                              let fncClaimedBy = fundedNursingCare.ReclaimTargetInstitutionId switch
+                                              {
+                                                  PackageCostClaimersConstants.Hackney => "Hackney",
+                                                  PackageCostClaimersConstants.Supplier => "Supplier",
+                                                  _ => "Hackney"
+                                              }
+                                              let fncPriceEffect = fncClaimedBy switch
+                                              {
+                                                  "Hackney" => "None",
+                                                  "Supplier" => "Subtract",
+                                                  _ => "Add"
+                                              }
+                                              select new InvoiceItemForCreationRequest
+                                              {
+                                                  ItemName = fncItemName,
+                                                  PricePerUnit = fncCost.PricePerWeek,
+                                                  Quantity = fncWeeks,
+                                                  PriceEffect = fncPriceEffect,
+                                                  ClaimedBy = fncClaimedBy,
+                                                  ReclaimedFrom = fundedNursingCare.ReclaimFrom.ReclaimFromName,
+                                                  CreatorId = creatorId
+                                              });
                     }
 
                     // Create the invoice
