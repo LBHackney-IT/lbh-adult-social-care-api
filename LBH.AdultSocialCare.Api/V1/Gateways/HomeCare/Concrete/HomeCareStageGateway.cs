@@ -22,7 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.HomeCare.Concrete
 
         public async Task<IEnumerable<StageDomain>> ListAsync()
         {
-            var res = await _databaseContext.HomeCareStages
+            var res = await _databaseContext.PackageStages
                 .ToListAsync().ConfigureAwait(false);
             return res?.ToDomain();
         }

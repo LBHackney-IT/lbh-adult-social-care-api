@@ -33,6 +33,8 @@
       <Compile Remove="V1\Infrastructure\Migrations\20210827124654_HomeCareStages.Designer.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20210827132625_NextSeed.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20210827132625_NextSeed.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210827134141_AddHomeCareStages.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210827134141_AddHomeCareStages.Designer.cs" />
     </ItemGroup>
 
   <ItemGroup>
