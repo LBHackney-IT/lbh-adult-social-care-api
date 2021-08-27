@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
 using HttpServices.Models.Requests;
@@ -14,6 +10,10 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
 {
@@ -193,6 +193,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                         ItemName = $"Residential Care Core Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
                         PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCore,
                         Quantity = weeks,
+                        PriceEffect = "Add",
                         CreatorId = _identityHelperUseCase.GetUserId()
                     }
                 };
@@ -209,6 +210,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                                     $"Additional Needs {residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentType.OptionName} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
                                 PricePerUnit = residentialCareAdditionalNeedsCost.AdditionalNeedsCost,
                                 Quantity = weeks,
+                                PriceEffect = "Add",
                                 CreatorId = _identityHelperUseCase.GetUserId()
                             });
                         else if (residentialCarePackage.PaidUpTo == null)
@@ -218,6 +220,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                                     $"Additional Needs {residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentType.OptionName} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
                                 PricePerUnit = residentialCareAdditionalNeedsCost.AdditionalNeedsCost,
                                 Quantity = 1,
+                                PriceEffect = "Add",
                                 CreatorId = _identityHelperUseCase.GetUserId()
                             });
                 }

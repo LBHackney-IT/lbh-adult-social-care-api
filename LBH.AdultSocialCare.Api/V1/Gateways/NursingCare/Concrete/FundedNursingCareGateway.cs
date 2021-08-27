@@ -1,14 +1,13 @@
-using System;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
-using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
 {
@@ -59,18 +58,33 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
 
         public async Task<decimal> GetFundedNursingCarePrice(DateTimeOffset date)
         {
-            try
-            {
-                return await _context.FundedNursingCarePrices
-                    .Where(price => price.ActiveFrom <= date && (price.ActiveTo == null || price.ActiveTo >= date))
-                    .Select(price => price.PricePerWeek)
-                    .SingleAsync()
-                    .ConfigureAwait(false);
-            }
-            catch (InvalidOperationException)
-            {
-                throw new ApiException($"No FNC price defined for {date.Date}", (int) HttpStatusCode.NotFound);
-            }
+            var price = await GetFundedNursingCarePriceFromDb(date).ConfigureAwait(false);
+            return price?.PricePerWeek ?? 0;
+        }
+
+        public async Task<FundedNursingCarePriceDomain> GetFundedNursingCarePricing(DateTimeOffset dateTime)
+        {
+            var fncPrice = await GetFundedNursingCarePriceFromDb(dateTime).ConfigureAwait(false);
+            return fncPrice?.ToDomain();
+        }
+
+        public async Task<IEnumerable<FundedNursingCarePriceDomain>> GetFundedNursingCarePricingInRange(DateTimeOffset startDate, DateTimeOffset endDate)
+        {
+            var (minStartDate, minEndDate) = await GetMinPriceStartAndEndDate(startDate, endDate).ConfigureAwait(false);
+            var fncPrices = await _context.FundedNursingCarePrices
+                .Where(cp =>
+                    (_context.CompareDates(cp.ActiveFrom, minStartDate) == 1 ||
+                     _context.CompareDates(cp.ActiveFrom, minStartDate) == 0) &&
+                    (_context.CompareDates(minEndDate, cp.ActiveTo) == 1 ||
+                     _context.CompareDates(minEndDate, cp.ActiveTo) == 0)).ToListAsync()
+                .ConfigureAwait(false);
+            return fncPrices.ToDomain();
+        }
+
+        public async Task<FundedNursingCareDomain> GetPackageFundedNursingCare(Guid nursingCarePackageId)
+        {
+            var fundedNursingCare = await FindFundedNursingCare(nursingCarePackageId).ConfigureAwait(false);
+            return fundedNursingCare?.ToDomain();
         }
 
         private async Task<FundedNursingCare> FindFundedNursingCare(Guid packageId)
@@ -79,6 +93,49 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                 .Where(care => care.NursingCarePackageId == packageId)
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
+        }
+
+        private async Task<FundedNursingCarePrice> GetFundedNursingCarePriceFromDb(DateTimeOffset date)
+        {
+            try
+            {
+                return await _context.FundedNursingCarePrices
+                    .Where(price => price.ActiveFrom <= date && (price.ActiveTo == null || price.ActiveTo >= date))
+                    .SingleOrDefaultAsync()
+                    .ConfigureAwait(false);
+            }
+            catch (InvalidOperationException)
+            {
+                // throw new ApiException($"No FNC price defined for {date.Date}", (int) HttpStatusCode.NotFound);
+                return null;
+            }
+        }
+
+        private async Task<(DateTimeOffset, DateTimeOffset)> GetMinPriceStartAndEndDate(DateTimeOffset startDate, DateTimeOffset endDate)
+        {
+            var startDates = await _context.FundedNursingCarePrices.Where(cp =>
+                    (_context.CompareDates(cp.ActiveTo, startDate) == 1 ||
+                     _context.CompareDates(cp.ActiveTo, startDate) == 0) &&
+                    (_context.CompareDates(endDate, cp.ActiveFrom) == 1 ||
+                     _context.CompareDates(endDate, cp.ActiveFrom) == 0))
+                .OrderBy(cp => cp.ActiveFrom)
+                .Take(2)
+                .Select(cp => cp.ActiveFrom)
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            var endDates = await _context.FundedNursingCarePrices.Where(cp =>
+                    (_context.CompareDates(cp.ActiveTo, startDate) == 1 ||
+                     _context.CompareDates(cp.ActiveTo, startDate) == 0) &&
+                    (_context.CompareDates(endDate, cp.ActiveFrom) == 1 ||
+                     _context.CompareDates(endDate, cp.ActiveFrom) == 0))
+                .OrderByDescending(cp => cp.ActiveTo)
+                .Take(2)
+                .Select(cp => cp.ActiveTo)
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return (startDates.ToArray().Min(), endDates.ToArray().Max());
         }
     }
 }

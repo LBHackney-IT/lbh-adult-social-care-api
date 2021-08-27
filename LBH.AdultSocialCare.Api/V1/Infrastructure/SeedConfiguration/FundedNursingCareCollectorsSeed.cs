@@ -13,14 +13,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 new FundedNursingCareCollector
                 {
                     Id = 1,
-                    OptionName = "Supplier",
+                    OptionName = "FNC Collected by Supplier",
                     OptionInvoiceName = "FNC Claimed By Supplier",
                     ClaimedBy = PackageCostClaimersConstants.Supplier
                 },
                 new FundedNursingCareCollector
                 {
                     Id = 2,
-                    OptionName = "Hackney",
+                    OptionName = "FNC Collected by Hackney",
                     OptionInvoiceName = "Funded Nursing Care",
                     ClaimedBy = PackageCostClaimersConstants.Hackney
                 });

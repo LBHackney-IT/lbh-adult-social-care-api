@@ -242,6 +242,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 entity.HasOne(a => a.NursingCareBrokerageInfo)
                     .WithOne(b => b.NursingCarePackage)
                     .HasForeignKey<NursingCareBrokerageInfo>(b => b.NursingCarePackageId);
+
+                entity.HasOne(a => a.FundedNursingCare)
+                    .WithOne(b => b.NursingCarePackage)
+                    .HasForeignKey<FundedNursingCare>(b => b.NursingCarePackageId);
             });
 
             modelBuilder.Entity<HomeCarePackage>(entity =>
