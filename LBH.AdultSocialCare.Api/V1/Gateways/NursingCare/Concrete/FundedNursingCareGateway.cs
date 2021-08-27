@@ -20,16 +20,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
             _context = context;
         }
 
-        public async Task<FundedNursingCareDomain> UpsertFundedNursingCase(FundedNursingCareDomain fundedNursingCareDomain)
+        public async Task<FundedNursingCareDomain> UpsertFundedNursingCaseAsync(FundedNursingCareDomain fundedNursingCareDomain)
         {
-            var fundedCareToUpdate = await FindFundedNursingCare(fundedNursingCareDomain.NursingCarePackageId)
+            var fundedCareToUpdate = await FindFundedNursingCareAsync(fundedNursingCareDomain.NursingCarePackageId)
                 .ConfigureAwait(false);
 
             if (fundedCareToUpdate is null)
             {
-                var newFundedNursingCare = await _context.FundedNursingCares
-                    .AddAsync(fundedNursingCareDomain.ToEntity())
-                    .ConfigureAwait(false);
+                var newFundedNursingCare = _context.FundedNursingCares.Add(fundedNursingCareDomain.ToEntity());
+                await _context.SaveChangesAsync().ConfigureAwait(false);
 
                 return newFundedNursingCare.Entity.ToDomain();
             }
@@ -42,9 +41,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
             return fundedCareToUpdate.ToDomain();
         }
 
-        public async Task<bool> DeleteFundedNursingCare(Guid packageId)
+        public async Task<bool> DeleteFundedNursingCareAsync(Guid packageId)
         {
-            var fundedCare = await FindFundedNursingCare(packageId).ConfigureAwait(false);
+            var fundedCare = await FindFundedNursingCareAsync(packageId).ConfigureAwait(false);
             var rowsAffected = 0;
 
             if (fundedCare != null)
@@ -53,10 +52,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                 rowsAffected = await _context.SaveChangesAsync().ConfigureAwait(false);
             }
 
-            return rowsAffected > 1;
+            return rowsAffected > 0;
         }
 
-        public async Task<decimal> GetFundedNursingCarePrice(DateTimeOffset date)
+        public async Task<decimal> GetFundedNursingCarePriceAsync(DateTimeOffset date)
         {
             var price = await GetFundedNursingCarePriceFromDb(date).ConfigureAwait(false);
             return price?.PricePerWeek ?? 0;
@@ -83,11 +82,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
 
         public async Task<FundedNursingCareDomain> GetPackageFundedNursingCare(Guid nursingCarePackageId)
         {
-            var fundedNursingCare = await FindFundedNursingCare(nursingCarePackageId).ConfigureAwait(false);
+            var fundedNursingCare = await FindFundedNursingCareAsync(nursingCarePackageId).ConfigureAwait(false);
             return fundedNursingCare?.ToDomain();
         }
 
-        private async Task<FundedNursingCare> FindFundedNursingCare(Guid packageId)
+        private async Task<FundedNursingCare> FindFundedNursingCareAsync(Guid packageId)
         {
             return await _context.FundedNursingCares
                 .Where(care => care.NursingCarePackageId == packageId)

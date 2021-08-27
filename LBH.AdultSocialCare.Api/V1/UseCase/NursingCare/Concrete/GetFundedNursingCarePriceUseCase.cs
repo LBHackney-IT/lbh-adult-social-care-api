@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
 
@@ -14,15 +15,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
             _gateway = gateway;
         }
 
-        public async Task<decimal> GetActiveFundedNursingCarePrice()
+        public ICurrentDateTimeProvider CurrentDateTimeProvider { get; set; } = new CurrentDateTimeProvider();
+
+        public async Task<decimal> GetActiveFundedNursingCarePriceAsync()
         {
-            return await GetFundedNursingCarePrice(DateTimeOffset.Now).ConfigureAwait(false);
+            return await GetFundedNursingCarePriceAsync(CurrentDateTimeProvider.Now)
+                .ConfigureAwait(false);
         }
 
-        public async Task<decimal> GetFundedNursingCarePrice(DateTimeOffset dateTime)
+        public async Task<decimal> GetFundedNursingCarePriceAsync(DateTimeOffset dateTime)
         {
             return await _gateway
-                .GetFundedNursingCarePrice(dateTime)
+                .GetFundedNursingCarePriceAsync(dateTime)
                 .ConfigureAwait(false);
         }
     }
