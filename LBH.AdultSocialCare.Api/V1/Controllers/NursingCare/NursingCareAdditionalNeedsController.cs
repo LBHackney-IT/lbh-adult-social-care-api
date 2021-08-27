@@ -2,7 +2,9 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
@@ -19,14 +21,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         private readonly IUpsertNursingCareAdditionalNeedsUseCase _upsertNursingCareAdditionalNeedsUseCase;
         private readonly IGetNursingCareAdditionalNeedsUseCase _getNursingCareAdditionalNeedsUseCase;
         private readonly IDeleteNursingCareAdditionalNeedsUseCase _deleteNursingCareAdditionalNeedsUseCase;
+        private readonly IGetNursingCareAdditionalNeedsPaymentTypesUseCase _additionalNeedsPaymentTypesUseCase;
 
         public NursingCareAdditionalNeedsController(IUpsertNursingCareAdditionalNeedsUseCase upsertNursingCareAdditionalNeedsUseCase,
             IGetNursingCareAdditionalNeedsUseCase getNursingCareAdditionalNeedsUseCase,
-            IDeleteNursingCareAdditionalNeedsUseCase deleteNursingCareAdditionalNeedsUseCase)
+            IDeleteNursingCareAdditionalNeedsUseCase deleteNursingCareAdditionalNeedsUseCase,
+            IGetNursingCareAdditionalNeedsPaymentTypesUseCase additionalNeedsPaymentTypesUseCase)
         {
             _upsertNursingCareAdditionalNeedsUseCase = upsertNursingCareAdditionalNeedsUseCase;
             _getNursingCareAdditionalNeedsUseCase = getNursingCareAdditionalNeedsUseCase;
             _deleteNursingCareAdditionalNeedsUseCase = deleteNursingCareAdditionalNeedsUseCase;
+            _additionalNeedsPaymentTypesUseCase = additionalNeedsPaymentTypesUseCase;
         }
 
         /// <summary>Creates the specified nursing care additional needs request.</summary>
@@ -99,6 +104,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<AdditionalNeedsPaymentTypeResponse>), StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        [HttpGet]
+        [Route("type-of-payment-options")]
+        public async Task<ActionResult<IEnumerable<AdditionalNeedsPaymentTypeResponse>>> GetTypeOfPaymentOptionList()
+        {
+            var result = await _additionalNeedsPaymentTypesUseCase.GetAllAsync().ConfigureAwait(false);
+            return Ok(result);
         }
     }
 }

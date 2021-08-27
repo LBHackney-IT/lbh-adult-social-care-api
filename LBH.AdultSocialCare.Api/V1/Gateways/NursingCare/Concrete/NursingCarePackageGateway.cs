@@ -183,7 +183,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                 var selectedIds = nursingCarePackagesIds.Skip(i * 1000).Take(1000);
                 var nursingCarePackages = await _databaseContext.NursingCarePackages
                     .Where(nc => selectedIds.Contains(nc.Id))
-                    .Include(nc => nc.NursingCareBrokerageInfo).ToListAsync()
+                    .Include(nc => nc.NursingCareBrokerageInfo)
+                    .ThenInclude(rc => rc.NursingCareAdditionalNeedsCosts)
+                    .ThenInclude(rc => rc.AdditionalNeedsPaymentType)
+                    .ToListAsync()
                     .ConfigureAwait(false);
 
                 foreach (var nursingCarePackage in nursingCarePackages)
@@ -206,26 +209,31 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                             PricePerUnit = nursingCarePackage.NursingCareBrokerageInfo.NursingCore,
                             Quantity = weeks,
                             CreatorId = _identityHelperUseCase.GetUserId()
-                        },
-                        new InvoiceItemForCreationRequest()
-                        {
-                            ItemName = $"Additional Needs Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
-                            PricePerUnit = nursingCarePackage.NursingCareBrokerageInfo.AdditionalNeedsPayment,
-                            Quantity = weeks,
-                            CreatorId = _identityHelperUseCase.GetUserId()
                         }
                     };
-
-                    // Create one off cost invoice item if first pay run
-                    if (nursingCarePackage.PaidUpTo == null)
+                    //TODO refactor creation invoice item logic
+                    if (nursingCarePackage.NursingCareBrokerageInfo.NursingCareAdditionalNeedsCosts.Count > 0)
                     {
-                        invoiceItems.Add(new InvoiceItemForCreationRequest
-                        {
-                            ItemName = "Nursing care package one off cost",
-                            PricePerUnit = nursingCarePackage.NursingCareBrokerageInfo.AdditionalNeedsPaymentOneOff,
-                            Quantity = 1,
-                            CreatorId = _identityHelperUseCase.GetUserId()
-                        });
+                        foreach (var nursingCareAdditionalNeedsCost in nursingCarePackage.NursingCareBrokerageInfo.NursingCareAdditionalNeedsCosts)
+                            // create invoice item for additional needs item except one off cost
+                            if (nursingCareAdditionalNeedsCost.AdditionalNeedsPaymentTypeId != AdditionalNeedPaymentTypesConstants.OneOff)
+                                invoiceItems.Add(new InvoiceItemForCreationRequest
+                                {
+                                    ItemName =
+                                        $"Additional Needs {nursingCareAdditionalNeedsCost.AdditionalNeedsPaymentType.OptionName} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
+                                    PricePerUnit = nursingCareAdditionalNeedsCost.AdditionalNeedsCost,
+                                    Quantity = weeks,
+                                    CreatorId = _identityHelperUseCase.GetUserId()
+                                });
+                            else if (nursingCarePackage.PaidUpTo == null)
+                                invoiceItems.Add(new InvoiceItemForCreationRequest
+                                {
+                                    ItemName =
+                                        $"Additional Needs {nursingCareAdditionalNeedsCost.AdditionalNeedsPaymentType.OptionName} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
+                                    PricePerUnit = nursingCareAdditionalNeedsCost.AdditionalNeedsCost,
+                                    Quantity = 1,
+                                    CreatorId = _identityHelperUseCase.GetUserId()
+                                });
                     }
 
                     // Create the invoice

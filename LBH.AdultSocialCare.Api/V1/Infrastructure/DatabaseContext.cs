@@ -86,6 +86,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<NursingCareBrokerageInfo> NursingCareBrokerageInfos { get; set; }
         public DbSet<ResidentialCareBrokerageInfo> ResidentialCareBrokerageInfos { get; set; }
         public DbSet<PrimarySupportReason> PrimarySupportReasons { get; set; }
+        public DbSet<NursingCareAdditionalNeedsCost> NursingCareAdditionalNeedsCosts { get; set; }
+        public DbSet<AdditionalNeedsPaymentType> AdditionalNeedsPaymentTypes { get; set; }
+        public DbSet<ResidentialCareAdditionalNeedsCost> ResidentialCareAdditionalNeedsCosts { get; set; }
 
         public DbSet<PackageCostClaimer> PackageCostClaimers { get; set; }
         public DbSet<FundedNursingCareCollector> FundedNursingCareCollectors { get; set; }
@@ -174,6 +177,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed primary support reason
             modelBuilder.ApplyConfiguration(new PrimarySupportReasonSeed());
+
+            // Seed additional needs payment type
+            modelBuilder.ApplyConfiguration(new AdditionalNeedsPaymentTypeSeed());
 
             // Seed FNC and reclaims-related constants
             modelBuilder.ApplyConfiguration(new FundedNursingCareCollectorsSeed());

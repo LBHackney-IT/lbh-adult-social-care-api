@@ -358,6 +358,13 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IIdentityHelperUseCase, IdentityHelperUseCase>();
 
             #endregion IdentityHelper
+
+            #region AdditionalNeedPaymentType
+
+            services.AddScoped<IGetNursingCareAdditionalNeedsPaymentTypesUseCase, GetNursingCareAdditionalNeedsPaymentTypesUseCase>();
+
+            #endregion
+
         }
     }
 }

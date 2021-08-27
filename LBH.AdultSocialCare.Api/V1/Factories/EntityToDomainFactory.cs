@@ -147,10 +147,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsDomain>>(nursingCareAdditionalNeedsEntities);
         }
 
-        #endregion NursingCareAdditionalNeed
-
-        #region TypeOfNursingCareHome
-
         public static IEnumerable<TypeOfNursingCareHomeDomain> ToDomain(this ICollection<TypeOfNursingCareHome> typeOfNursingCareHome)
         {
             return typeOfNursingCareHome.Select(item
@@ -159,6 +155,15 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                     TypeOfCareHomeId = item.TypeOfCareHomeId,
                     TypeOfCareHomeName = item.TypeOfCareHomeName
                 }).ToList();
+        }
+
+        #endregion NursingCareAdditionalNeed
+
+        #region TypeOfNursingCareHome
+
+        public static IEnumerable<AdditionalNeedsPaymentTypeDomain> ToDomain(this ICollection<AdditionalNeedsPaymentType> additionalNeedsPaymentTypes)
+        {
+            return _mapper.Map<IEnumerable<AdditionalNeedsPaymentTypeDomain>>(additionalNeedsPaymentTypes);
         }
 
         #endregion TypeOfNursingCareHome
@@ -483,8 +488,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = nursingCareAdditionalNeedEntity.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedEntity.NursingCarePackageId,
-                IsWeeklyCost = nursingCareAdditionalNeedEntity.IsWeeklyCost,
-                IsOneOffCost = nursingCareAdditionalNeedEntity.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = nursingCareAdditionalNeedEntity.AdditionalNeedsPaymentTypeId,
+                AdditionalNeedsPaymentTypeName = nursingCareAdditionalNeedEntity.AdditionalNeedsPaymentType.OptionName,
                 NeedToAddress = nursingCareAdditionalNeedEntity.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedEntity.CreatorId,
                 UpdaterId = nursingCareAdditionalNeedEntity.UpdaterId,
@@ -519,8 +524,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCareAdditionalNeedEntity.Id,
                 ResidentialCarePackageId = residentialCareAdditionalNeedEntity.ResidentialCarePackageId,
-                IsWeeklyCost = residentialCareAdditionalNeedEntity.IsWeeklyCost,
-                IsOneOffCost = residentialCareAdditionalNeedEntity.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = residentialCareAdditionalNeedEntity.AdditionalNeedsPaymentTypeId,
+                AdditionalNeedsPaymentTypeName = residentialCareAdditionalNeedEntity.AdditionalNeedsPaymentType.OptionName,
                 NeedToAddress = residentialCareAdditionalNeedEntity.NeedToAddress,
                 CreatorId = residentialCareAdditionalNeedEntity.CreatorId,
                 UpdatorId = residentialCareAdditionalNeedEntity.UpdaterId,

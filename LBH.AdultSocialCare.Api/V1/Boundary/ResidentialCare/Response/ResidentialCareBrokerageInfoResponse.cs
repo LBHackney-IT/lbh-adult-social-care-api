@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response
 {
@@ -7,7 +8,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response
         /// <summary>
         /// Gets or sets the Residential Care Brokerage Id
         /// </summary>
-        public Guid Id { get; set; }
+        public Guid ResidentialCareBrokerageId { get; set; }
 
         /// <summary>
         /// Gets or sets the Residential Care Package Id
@@ -24,15 +25,17 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response
         /// </summary>
         public decimal ResidentialCore { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Additional Needs Payment
-        /// </summary>
-        public decimal AdditionalNeedsPayment { get; set; }
+        public IEnumerable<ResidentialCareAdditionalNeedsCostResponse> ResidentialCareAdditionalNeedsCosts { get; set; }
 
         /// <summary>
-        /// Gets or sets the Additional Needs Payment One Off
+        /// Gets or sets the package brokerage stage id.
         /// </summary>
-        public decimal AdditionalNeedsPaymentOneOff { get; set; }
+        public int? StageId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the brokerage supplier.
+        /// </summary>
+        public int? SupplierId { get; set; }
 
         /// <summary>
         /// Gets or sets the Creator Id

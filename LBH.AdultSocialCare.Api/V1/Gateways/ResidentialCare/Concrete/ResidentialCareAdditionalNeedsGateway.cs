@@ -33,8 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                 await _databaseContext.ResidentialCareAdditionalNeeds.AddAsync(residentialAdditionalNeedToUpdate).ConfigureAwait(false);
             }
             residentialAdditionalNeedToUpdate.ResidentialCarePackageId = residentialCareAdditionalNeed.ResidentialCarePackageId;
-            residentialAdditionalNeedToUpdate.IsWeeklyCost = residentialCareAdditionalNeed.IsWeeklyCost;
-            residentialAdditionalNeedToUpdate.IsOneOffCost = residentialCareAdditionalNeed.IsOneOffCost;
+            residentialAdditionalNeedToUpdate.AdditionalNeedsPaymentTypeId = residentialCareAdditionalNeed.AdditionalNeedsPaymentTypeId;
             residentialAdditionalNeedToUpdate.NeedToAddress = residentialCareAdditionalNeed.NeedToAddress;
             residentialAdditionalNeedToUpdate.CreatorId = residentialCareAdditionalNeed.CreatorId;
             residentialAdditionalNeedToUpdate.UpdaterId = residentialCareAdditionalNeed.UpdaterId;

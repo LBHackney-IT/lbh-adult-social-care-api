@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response
 {
@@ -24,15 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response
         /// </summary>
         public decimal NursingCore { get; set; }
 
-        /// <summary>
-        /// Gets or sets the Additional Needs Payment
-        /// </summary>
-        public decimal AdditionalNeedsPayment { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Additional Needs Payment One Off
-        /// </summary>
-        public decimal AdditionalNeedsPaymentOneOff { get; set; }
+        public IEnumerable<NursingCareAdditionalNeedsCostResponse> NursingCareAdditionalNeedsCosts { get; set; }
 
         /// <summary>
         /// Gets or sets the package brokerage stage id.

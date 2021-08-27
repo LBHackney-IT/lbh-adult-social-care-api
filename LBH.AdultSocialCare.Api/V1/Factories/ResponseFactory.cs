@@ -136,6 +136,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsResponse>>(nursingCareAdditionalNeedsDomain);
         }
 
+        public static IEnumerable<AdditionalNeedsPaymentTypeResponse> ToResponse(this IEnumerable<AdditionalNeedsPaymentTypeDomain> additionalNeedsPaymentTypeDomains)
+        {
+            return _mapper.Map<IEnumerable<AdditionalNeedsPaymentTypeResponse>>(additionalNeedsPaymentTypeDomains);
+        }
+
         #endregion NursingCareAdditionalNeed
 
         #region NursingCareTypeOfStayOptions
@@ -531,8 +536,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = nursingCareAdditionalNeedsDomain.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
-                IsWeeklyCost = nursingCareAdditionalNeedsDomain.IsWeeklyCost,
-                IsOneOffCost = nursingCareAdditionalNeedsDomain.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = nursingCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeId,
+                AdditionalNeedsPaymentTypeName = nursingCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeName,
                 NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
                 UpdatorId = nursingCareAdditionalNeedsDomain.UpdaterId,
@@ -567,8 +572,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCareAdditionalNeedsDomain.Id,
                 ResidentialCarePackageId = residentialCareAdditionalNeedsDomain.ResidentialCarePackageId,
-                IsWeeklyCost = residentialCareAdditionalNeedsDomain.IsWeeklyCost,
-                IsOneOffCost = residentialCareAdditionalNeedsDomain.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = residentialCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeId,
+                AdditionalNeedsPaymentTypeName = residentialCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeName,
                 NeedToAddress = residentialCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = residentialCareAdditionalNeedsDomain.CreatorId,
                 UpdatorId = residentialCareAdditionalNeedsDomain.UpdatorId,
