@@ -102,7 +102,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                     LastUpdated = rc.DateUpdated,
                     CareValue = _databaseContext.ResidentialCareBrokerageInfos
                             .Where(x => x.ResidentialCarePackageId == rc.Id)
-                            .Select(x => x.ResidentialCore + x.AdditionalNeedsPayment + x.AdditionalNeedsPaymentOneOff).SingleOrDefault(),
+                            .Sum(x => x.ResidentialCore + x.ResidentialCareAdditionalNeedsCosts.Sum(anc => anc.AdditionalNeedsCost)),
                 })
                 .ToListAsync().ConfigureAwait(false);
             return residentialCarePackageList;
@@ -166,7 +166,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                     LastUpdated = nc.DateUpdated,
                     CareValue = _databaseContext.NursingCareBrokerageInfos
                         .Where(x => x.NursingCarePackageId == nc.Id)
-                        .Sum(x => x.NursingCore + x.AdditionalNeedsPayment + x.AdditionalNeedsPaymentOneOff),
+                        .Sum(x => x.NursingCore + x.NursingCareAdditionalNeedsCosts.Sum(anc => anc.AdditionalNeedsCost)),
                 })
                 .ToListAsync().ConfigureAwait(false);
             return nursingCarePackageList;

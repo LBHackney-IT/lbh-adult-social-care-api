@@ -38,15 +38,26 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                 throw new ApiException($"Could not find the Residential Care Package {residentialCarePackageId}");
             }
 
+            var residentialCareBrokerage = await _databaseContext.ResidentialCareBrokerageInfos
+                .Where(item => item.ResidentialCarePackageId == residentialCarePackageId)
+                .FirstOrDefaultAsync()
+                .ConfigureAwait(false);
+
+            if (residentialCareBrokerage == null)
+            {
+                throw new ApiException($"Could not find the Residential Care Package Brokerage {residentialCarePackageId}");
+            }
+
             var costOfCare = await _databaseContext.ResidentialCareBrokerageInfos
                 .Where(a => a.ResidentialCarePackageId.Equals(residentialCarePackageId))
                 .Select(a => a.ResidentialCore)
                 .SingleOrDefaultAsync().ConfigureAwait(false);
 
-            var costOfAdditionalNeeds = await _databaseContext.ResidentialCareBrokerageInfos
-                .Where(a => a.ResidentialCarePackageId.Equals(residentialCarePackageId))
-                .Select(a => a.AdditionalNeedsPayment)
-                .SingleOrDefaultAsync().ConfigureAwait(false);
+            var costOfAdditionalNeeds = await _databaseContext.ResidentialCareAdditionalNeedsCosts
+                .Where(a => a.ResidentialCareBrokerageId.Equals(residentialCareBrokerage.Id) &&
+                            a.AdditionalNeedsPaymentTypeId == AdditionalNeedPaymentTypesConstants.WeeklyCost)
+                .SumAsync(a => a.AdditionalNeedsCost)
+                .ConfigureAwait(false);
 
             var residentialCareApproveBrokeredDomain = new ResidentialCareApproveBrokeredDomain()
             {
@@ -80,42 +91,42 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
 
             var additionalNeedsCount = residentialCarePackage.ResidentialCareAdditionalNeeds.Count;
 
-            var invoiceItems = new List<InvoiceItemDomain>()
-            {
-                new InvoiceItemDomain()
-                {
-                    ItemName = "Residential Care Core",
-                    PricePerUnit = residentialCareBrokerage.ResidentialCore,
-                    Quantity = 1,
-                    CreatorId = _identityHelperUseCase.GetUserId()
-                },
-                new InvoiceItemDomain()
-                {
-                    ItemName = "Additional Needs",
-                    PricePerUnit = residentialCareBrokerage.AdditionalNeedsPayment,
-                    Quantity = additionalNeedsCount,
-                    CreatorId = _identityHelperUseCase.GetUserId()
-                }
-            };
+            //var invoiceItems = new List<InvoiceItemDomain>()
+            //{
+            //    new InvoiceItemDomain()
+            //    {
+            //        ItemName = "Residential Care Core",
+            //        PricePerUnit = residentialCareBrokerage.ResidentialCore,
+            //        Quantity = 1,
+            //        CreatorId = _identityHelperUseCase.GetUserId()
+            //    },
+            //    new InvoiceItemDomain()
+            //    {
+            //        ItemName = "Additional Needs",
+            //        PricePerUnit = residentialCareBrokerage.AdditionalNeedsPayment,
+            //        Quantity = additionalNeedsCount,
+            //        CreatorId = _identityHelperUseCase.GetUserId()
+            //    }
+            //};
 
-            if (residentialCareBrokerage.AdditionalNeedsPaymentOneOff > 0)
-            {
-                var additionalNeedsPaymentOneOff = new InvoiceItemDomain()
-                {
-                    ItemName = "Additional Needs One Off",
-                    PricePerUnit = residentialCareBrokerage.AdditionalNeedsPaymentOneOff,
-                    Quantity = 1,
-                    CreatorId = _identityHelperUseCase.GetUserId()
-                };
-                invoiceItems.Add(additionalNeedsPaymentOneOff);
-            }
+            //if (residentialCareBrokerage.AdditionalNeedsPaymentOneOff > 0)
+            //{
+            //    var additionalNeedsPaymentOneOff = new InvoiceItemDomain()
+            //    {
+            //        ItemName = "Additional Needs One Off",
+            //        PricePerUnit = residentialCareBrokerage.AdditionalNeedsPaymentOneOff,
+            //        Quantity = 1,
+            //        CreatorId = _identityHelperUseCase.GetUserId()
+            //    };
+            //    invoiceItems.Add(additionalNeedsPaymentOneOff);
+            //}
 
             var invoiceDomain = new InvoiceDomain
             {
                 SupplierId = residentialCarePackage.SupplierId,
                 PackageTypeId = PackageTypesConstants.ResidentialCarePackageId,
                 ServiceUserId = residentialCarePackage.ClientId,
-                InvoiceItems = invoiceItems,
+                //InvoiceItems = invoiceItems,
                 CreatorId = _identityHelperUseCase.GetUserId()
             };
 

@@ -9,6 +9,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
 {
@@ -40,29 +41,92 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
         public async Task<ResidentialCareBrokerageInfoDomain> GetAsync(Guid residentialCarePackageId)
         {
             var residentialCarePackage = await _databaseContext.ResidentialCarePackages
-                .Include(item => item.Client)
-                .Include(item => item.Status)
-                .Include(item => item.ResidentialCareAdditionalNeeds)
-                .Include(item => item.ResidentialCareBrokerageInfo)
-                .Include(item => item.Stage)
-                .Include(item => item.Supplier)
+                .Where(nc => nc.Id.Equals(residentialCarePackageId))
+                .Select(nc => new ResidentialCareBrokerageInfoDomain
+                {
+                    ResidentialCareBrokerageId = nc.ResidentialCareBrokerageInfo.Id,
+                    ResidentialCarePackageId = nc.Id,
+                    ResidentialCarePackage = new ResidentialCarePackageDomain
+                    {
+                        Id = nc.Id,
+                        ClientId = nc.ClientId,
+                        IsFixedPeriod = nc.IsFixedPeriod,
+                        StartDate = nc.StartDate,
+                        EndDate = nc.EndDate,
+                        HasRespiteCare = nc.HasRespiteCare,
+                        HasDischargePackage = nc.HasDischargePackage,
+                        IsThisAnImmediateService = nc.IsThisAnImmediateService,
+                        IsThisUserUnderS117 = nc.IsThisUserUnderS117,
+                        TypeOfStayId = nc.TypeOfStayId,
+                        NeedToAddress = nc.NeedToAddress,
+                        TypeOfResidentialCareHomeId = nc.TypeOfResidentialCareHomeId,
+                        CreatorId = nc.CreatorId,
+                        UpdaterId = nc.UpdaterId,
+                        StatusId = nc.StatusId,
+                        SupplierId = nc.SupplierId,
+                        StageId = nc.StageId,
+                        AssignedUserId = nc.AssignedUserId,
+                        ClientName = nc.Client.FirstName,
+                        ClientHackneyId = nc.Client.HackneyId,
+                        ClientPostCode = nc.Client.PostCode,
+                        ClientDateOfBirth = nc.Client.DateOfBirth,
+                        ClientPreferredContact = nc.Client.PreferredContact,
+                        ClientCanSpeakEnglish = nc.Client.CanSpeakEnglish,
+                        StatusName = nc.Status.StatusName,
+                        CreatorName = nc.Creator.Name,
+                        UpdaterName = nc.Updater.Name,
+                        PackageName = PackageTypesConstants.ResidentialCarePackage,
+                        TypeOfCareHomeName = nc.TypeOfCareHome.TypeOfCareHomeName,
+                        TypeOfStayOptionName = nc.TypeOfStayOption.OptionName,
+                        ResidentialCareAdditionalNeeds = nc.ResidentialCareAdditionalNeeds.Select(an => new ResidentialCareAdditionalNeedsDomain
+                        {
+                            Id = an.Id,
+                            ResidentialCarePackageId = an.ResidentialCarePackageId,
+                            AdditionalNeedsPaymentTypeId = an.AdditionalNeedsPaymentTypeId,
+                            AdditionalNeedsPaymentTypeName = an.AdditionalNeedsPaymentType.OptionName,
+                            NeedToAddress = an.NeedToAddress,
+                            CreatorId = an.CreatorId,
+                            UpdatorId = an.UpdaterId
+                        })
+                    },
+                    ResidentialCareAdditionalNeedsCosts = nc.ResidentialCareBrokerageInfo.ResidentialCareAdditionalNeedsCosts.Select(anc => new ResidentialCareAdditionalNeedsCostDomain
+                    {
+                        ResidentialCareBrokerageId = anc.ResidentialCareBrokerageId,
+                        AdditionalNeedsPaymentTypeId = anc.AdditionalNeedsPaymentTypeId,
+                        AdditionalNeedsPaymentTypeName = anc.AdditionalNeedsPaymentType.OptionName,
+                        AdditionalNeedsCost = anc.AdditionalNeedsCost
+                    }),
+                    ResidentialCore = nc.ResidentialCareBrokerageInfo.ResidentialCore,
+                    StageId = nc.StageId,
+                    SupplierId = nc.SupplierId,
+                    CreatorId = nc.CreatorId,
+                    UpdatorId = nc.UpdaterId
+                })
                 .AsNoTracking()
-                .FirstOrDefaultAsync(item => item.Id == residentialCarePackageId).ConfigureAwait(false);
+                .FirstOrDefaultAsync().ConfigureAwait(false);
+
+            if (!residentialCarePackage.ResidentialCareAdditionalNeedsCosts.Any())
+            {
+                var residentialCareAdditionalNeedsCosts = await _databaseContext.ResidentialCareAdditionalNeeds
+                    .Where(nc => nc.ResidentialCarePackageId.Equals(residentialCarePackageId))
+                    .Select(an => new ResidentialCareAdditionalNeedsCostDomain()
+                    {
+                        AdditionalNeedsPaymentTypeId = an.AdditionalNeedsPaymentTypeId,
+                        AdditionalNeedsPaymentTypeName = an.AdditionalNeedsPaymentType.OptionName,
+                        AdditionalNeedsCost = 0,
+                    })
+                    .ToListAsync()
+                    .ConfigureAwait(false);
+
+                residentialCarePackage.ResidentialCareAdditionalNeedsCosts = residentialCareAdditionalNeedsCosts;
+            }
 
             if (residentialCarePackage == null)
             {
                 throw new EntityNotFoundException($"Could not find the Residential Care Package {residentialCarePackageId}");
             }
 
-            return new ResidentialCareBrokerageInfoDomain
-            {
-                Id = residentialCarePackage.ResidentialCareBrokerageInfo?.Id ?? Guid.Empty,
-                ResidentialCarePackageId = residentialCarePackageId,
-                ResidentialCarePackage = residentialCarePackage.ToDomain(),
-                ResidentialCore = residentialCarePackage.ResidentialCareBrokerageInfo?.ResidentialCore ?? 0,
-                AdditionalNeedsPayment = residentialCarePackage.ResidentialCareBrokerageInfo?.AdditionalNeedsPayment ?? 0,
-                AdditionalNeedsPaymentOneOff = residentialCarePackage.ResidentialCareBrokerageInfo?.AdditionalNeedsPaymentOneOff ?? 0,
-            };
+            return residentialCarePackage;
         }
 
         public async Task<bool> SetStage(Guid residentialCarePackageId, int stageId)

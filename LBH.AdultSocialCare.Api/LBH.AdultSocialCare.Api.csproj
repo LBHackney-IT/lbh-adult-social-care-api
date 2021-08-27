@@ -27,6 +27,8 @@
     <ItemGroup>
       <Compile Remove="V1\Infrastructure\Migrations\20210514130701_TestMigration.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20210514130701_TestMigration.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210823124447_UpdateServiceUserSeed.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210823124447_UpdateServiceUserSeed.Designer.cs" />
     </ItemGroup>
 
   <ItemGroup>

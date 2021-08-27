@@ -4,9 +4,10 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCare
 {
     public class NursingCareAdditionalNeedForCreationDomain
     {
-        public bool IsWeeklyCost { get; set; }
-        public bool IsOneOffCost { get; set; }
+        public int AdditionalNeedsPaymentTypeId { get; set; }
         public string NeedToAddress { get; set; }
+        public DateTimeOffset? StartDate { get; set; }
+        public DateTimeOffset? EndDate { get; set; }
         public Guid CreatorId { get; set; }
     }
 }
