@@ -57,19 +57,19 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
 
         public async Task<decimal> GetFundedNursingCarePriceAsync(DateTimeOffset date)
         {
-            var price = await GetFundedNursingCarePriceFromDb(date).ConfigureAwait(false);
+            var price = await GetFundedNursingCarePriceFromDbAsync(date).ConfigureAwait(false);
             return price?.PricePerWeek ?? 0;
         }
 
-        public async Task<FundedNursingCarePriceDomain> GetFundedNursingCarePricing(DateTimeOffset dateTime)
+        public async Task<FundedNursingCarePriceDomain> GetFundedNursingCarePricingAsync(DateTimeOffset dateTime)
         {
-            var fncPrice = await GetFundedNursingCarePriceFromDb(dateTime).ConfigureAwait(false);
+            var fncPrice = await GetFundedNursingCarePriceFromDbAsync(dateTime).ConfigureAwait(false);
             return fncPrice?.ToDomain();
         }
 
-        public async Task<IEnumerable<FundedNursingCarePriceDomain>> GetFundedNursingCarePricingInRange(DateTimeOffset startDate, DateTimeOffset endDate)
+        public async Task<IEnumerable<FundedNursingCarePriceDomain>> GetFundedNursingCarePricingInRangeAsync(DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            var (minStartDate, minEndDate) = await GetMinPriceStartAndEndDate(startDate, endDate).ConfigureAwait(false);
+            var (minStartDate, minEndDate) = await GetMinPriceStartAndEndDateAsync(startDate, endDate).ConfigureAwait(false);
             var fncPrices = await _context.FundedNursingCarePrices
                 .Where(cp =>
                     (_context.CompareDates(cp.ActiveFrom, minStartDate) == 1 ||
@@ -80,7 +80,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
             return fncPrices.ToDomain();
         }
 
-        public async Task<FundedNursingCareDomain> GetPackageFundedNursingCare(Guid nursingCarePackageId)
+        public async Task<FundedNursingCareDomain> GetPackageFundedNursingCareAsync(Guid nursingCarePackageId)
         {
             var fundedNursingCare = await FindFundedNursingCareAsync(nursingCarePackageId).ConfigureAwait(false);
             return fundedNursingCare?.ToDomain();
@@ -94,7 +94,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                 .ConfigureAwait(false);
         }
 
-        private async Task<FundedNursingCarePrice> GetFundedNursingCarePriceFromDb(DateTimeOffset date)
+        private async Task<FundedNursingCarePrice> GetFundedNursingCarePriceFromDbAsync(DateTimeOffset date)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
             }
         }
 
-        private async Task<(DateTimeOffset, DateTimeOffset)> GetMinPriceStartAndEndDate(DateTimeOffset startDate, DateTimeOffset endDate)
+        private async Task<(DateTimeOffset, DateTimeOffset)> GetMinPriceStartAndEndDateAsync(DateTimeOffset startDate, DateTimeOffset endDate)
         {
             var startDates = await _context.FundedNursingCarePrices.Where(cp =>
                     (_context.CompareDates(cp.ActiveTo, startDate) == 1 ||

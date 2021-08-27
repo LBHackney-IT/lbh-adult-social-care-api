@@ -186,7 +186,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                     .FirstOrDefaultAsync().ConfigureAwait(false);
 
             // Get fnc costs in the start and end range
-            var fncPrices = await _fundedNursingCaseGateway.GetFundedNursingCarePricingInRange(minInvoiceDate, dateTo)
+            var fncPrices = await _fundedNursingCaseGateway.GetFundedNursingCarePricingInRangeAsync(minInvoiceDate, dateTo)
                 .ConfigureAwait(false);
             var fncPriceList = fncPrices.ToList();
 
