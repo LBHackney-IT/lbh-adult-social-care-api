@@ -66,7 +66,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<ResidentialCareTypeOfStayOption> ResidentialCareTypeOfStayOptions { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<HomeCareSupplierCost> HomeCareSupplierCosts { get; set; }
-        public DbSet<Stage> HomeCareStages { get; set; }
+        public DbSet<Stage> PackageStages { get; set; }
+        public DbSet<HomeCareStage> HomeCareStages { get; set; }
         public DbSet<CarerType> CarerTypes { get; set; }
         public DbSet<HomeCareApprovalHistory> HomeCareApprovalHistories { get; set; }
         public DbSet<NursingCareApprovalHistory> NursingCareApprovalHistories { get; set; }
@@ -159,8 +160,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed Supplier
             modelBuilder.ApplyConfiguration(new SupplierSeed());
 
-            // Seed HomeCareStage
+            // Seed PackageStages
             modelBuilder.ApplyConfiguration(new StageSeed());
+
+            // Seed HomeCareStages
+            modelBuilder.ApplyConfiguration(new HomeCareStageSeed());
 
             // Seed CarerType
             modelBuilder.ApplyConfiguration(new CarerTypeSeed());
