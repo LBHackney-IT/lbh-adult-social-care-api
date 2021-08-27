@@ -258,37 +258,34 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                     var fundedNursingCare = nursingCarePackage.FundedNursingCare;
                     if (fundedNursingCare != null)
                     {
-                        // filter fnc prices for this package
-                        var packageFncPrices = fncPriceList.Where(fp =>
-                            fp.ActiveFrom.Date >= startDate.Date && fp.ActiveTo.Date > dateTo.Date).ToList();
-
-                        invoiceItems.AddRange(from fncCost in packageFncPrices
-                                              let fncStartDate = new[] { fncCost.ActiveFrom, startDate }.Max()
-                                              let fncEndDate = new[] { fncCost.ActiveTo, dateTo }.Min()
-                                              let fncWeeks = ((fncEndDate.Date - fncStartDate.Date).Days) / 7M
-                                              let fncItemName = nursingCarePackage.FundedNursingCare.FundedNursingCareCollector.OptionInvoiceName
-                                              let fncClaimedBy = fundedNursingCare.ReclaimTargetInstitutionId switch
-                                              {
-                                                  PackageCostClaimersConstants.Hackney => "Hackney",
-                                                  PackageCostClaimersConstants.Supplier => "Supplier",
-                                                  _ => "Hackney"
-                                              }
-                                              let fncPriceEffect = fncClaimedBy switch
-                                              {
-                                                  "Hackney" => "None",
-                                                  "Supplier" => "Subtract",
-                                                  _ => "Add"
-                                              }
-                                              select new InvoiceItemForCreationRequest
-                                              {
-                                                  ItemName = fncItemName,
-                                                  PricePerUnit = fncCost.PricePerWeek,
-                                                  Quantity = fncWeeks,
-                                                  PriceEffect = fncPriceEffect,
-                                                  ClaimedBy = fncClaimedBy,
-                                                  ReclaimedFrom = fundedNursingCare.ReclaimFrom.ReclaimFromName,
-                                                  CreatorId = creatorId
-                                              });
+                        invoiceItems.AddRange(from fncCost in fncPriceList
+                            let fncStartDate = new[] {fncCost.ActiveFrom, startDate}.Max()
+                            let fncEndDate = new[] {fncCost.ActiveTo, dateTo}.Min()
+                            let fncWeeks = ((fncEndDate.Date - fncStartDate.Date).Days) / 7M
+                            where weeks >= 0
+                            let fncItemName = nursingCarePackage.FundedNursingCare.FundedNursingCareCollector.OptionInvoiceName
+                            let fncClaimedBy = fundedNursingCare.FundedNursingCareCollector.ClaimedBy switch
+                            {
+                                PackageCostClaimersConstants.Hackney => "Hackney",
+                                PackageCostClaimersConstants.Supplier => "Supplier",
+                                _ => "Hackney"
+                            }
+                            let fncPriceEffect = fncClaimedBy switch
+                            {
+                                "Hackney" => "None",
+                                "Supplier" => "Subtract",
+                                _ => "Add"
+                            }
+                            select new InvoiceItemForCreationRequest
+                            {
+                                ItemName = fncItemName,
+                                PricePerUnit = fncCost.PricePerWeek,
+                                Quantity = fncWeeks,
+                                PriceEffect = fncPriceEffect,
+                                ClaimedBy = fncClaimedBy,
+                                ReclaimedFrom = fundedNursingCare.ReclaimFrom.ReclaimFromName,
+                                CreatorId = creatorId
+                            });
                     }
 
                     // Create the invoice
