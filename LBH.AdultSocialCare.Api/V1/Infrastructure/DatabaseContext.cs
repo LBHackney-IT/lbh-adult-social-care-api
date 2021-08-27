@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
@@ -13,6 +14,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,8 +22,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Extensions;
-using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
@@ -98,10 +98,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         #region CustomFunctions
 
 #pragma warning disable CA1801, CA1822
+
         public int CompareDates(DateTimeOffset? date1, DateTimeOffset? date2) => throw new InvalidOperationException("This method should be called by EF only");
+
 #pragma warning restore CA1801, CA1822
 
-        #endregion
+        #endregion CustomFunctions
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -196,7 +198,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 .HasDbFunction(typeof(DatabaseContext).GetMethod(nameof(CompareDates), new[] { typeof(DateTimeOffset?), typeof(DateTimeOffset?) }))
                 .HasName("comparedates");
 
-            #endregion
+            #endregion DB Functions
 
             // Home care
             modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.Minutes);
