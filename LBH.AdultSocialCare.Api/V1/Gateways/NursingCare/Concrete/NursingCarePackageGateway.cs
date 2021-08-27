@@ -262,7 +262,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                                               let fncStartDate = new[] { fncCost.ActiveFrom, startDate }.Max()
                                               let fncEndDate = new[] { fncCost.ActiveTo, dateTo }.Min()
                                               let fncWeeks = ((fncEndDate.Date - fncStartDate.Date).Days) / 7M
-                                              where weeks >= 0
+                                              where weeks > 0
                                               let fncItemName = nursingCarePackage.FundedNursingCare.FundedNursingCareCollector.OptionInvoiceName
                                               let fncClaimedBy = fundedNursingCare.FundedNursingCareCollector.ClaimedBy switch
                                               {
