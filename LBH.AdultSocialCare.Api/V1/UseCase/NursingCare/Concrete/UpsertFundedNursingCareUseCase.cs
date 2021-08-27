@@ -20,7 +20,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
         {
             if (collectorId is null)
             {
-                await _gateway.DeleteFundedNursingCare(packageId).ConfigureAwait(false);
+                await _gateway.DeleteFundedNursingCareAsync(packageId).ConfigureAwait(false);
                 return null;
             }
 
@@ -32,7 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
             };
 
             return await _gateway
-                .UpsertFundedNursingCase(fundedNursingCare)
+                .UpsertFundedNursingCaseAsync(fundedNursingCare)
                 .ConfigureAwait(false);
         }
     }

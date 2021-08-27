@@ -60,7 +60,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         public async Task<decimal> GetActiveFundedNursingCarePrice()
         {
             return await _getFundedNursingCarePriceUseCase
-                .GetActiveFundedNursingCarePrice()
+                .GetActiveFundedNursingCarePriceAsync()
                 .ConfigureAwait(false);
         }
     }

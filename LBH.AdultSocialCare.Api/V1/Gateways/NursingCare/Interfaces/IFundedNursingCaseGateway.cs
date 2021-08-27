@@ -7,16 +7,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces
 {
     public interface IFundedNursingCaseGateway
     {
-        Task<FundedNursingCareDomain> UpsertFundedNursingCase(FundedNursingCareDomain fundedNursingCareDomain);
+        Task<FundedNursingCareDomain> UpsertFundedNursingCaseAsync(FundedNursingCareDomain fundedNursingCareDomain);
 
-        Task<bool> DeleteFundedNursingCare(Guid packageId);
+        Task<bool> DeleteFundedNursingCareAsync(Guid packageId);
 
-        Task<decimal> GetFundedNursingCarePrice(DateTimeOffset dateTime);
+        Task<decimal> GetFundedNursingCarePriceAsync(DateTimeOffset dateTime);
 
-        Task<FundedNursingCarePriceDomain> GetFundedNursingCarePricing(DateTimeOffset dateTime);
+        Task<FundedNursingCarePriceDomain> GetFundedNursingCarePricingAsync(DateTimeOffset dateTime);
 
-        Task<IEnumerable<FundedNursingCarePriceDomain>> GetFundedNursingCarePricingInRange(DateTimeOffset startDate, DateTimeOffset endDate);
+        Task<IEnumerable<FundedNursingCarePriceDomain>> GetFundedNursingCarePricingInRangeAsync(DateTimeOffset startDate, DateTimeOffset endDate);
 
-        Task<FundedNursingCareDomain> GetPackageFundedNursingCare(Guid nursingCarePackageId);
+        Task<FundedNursingCareDomain> GetPackageFundedNursingCareAsync(Guid nursingCarePackageId);
     }
 }

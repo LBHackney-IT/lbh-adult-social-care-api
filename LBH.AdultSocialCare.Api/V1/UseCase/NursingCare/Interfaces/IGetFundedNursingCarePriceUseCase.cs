@@ -5,8 +5,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces
 {
     public interface IGetFundedNursingCarePriceUseCase
     {
-        public Task<decimal> GetActiveFundedNursingCarePrice();
+        public Task<decimal> GetActiveFundedNursingCarePriceAsync();
 
-        public Task<decimal> GetFundedNursingCarePrice(DateTimeOffset dateTime);
+        public Task<decimal> GetFundedNursingCarePriceAsync(DateTimeOffset dateTime);
     }
 }
