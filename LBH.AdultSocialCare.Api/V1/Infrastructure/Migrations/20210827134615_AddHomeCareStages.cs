@@ -37,6 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+#pragma warning disable CA1814
             migrationBuilder.InsertData(
                 table: "HomeCareStages",
                 columns: new[] { "Id", "CreatorId", "DateCreated", "DateUpdated", "StageName", "UpdaterId" },
@@ -49,6 +50,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     { 5, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Pricing agreed", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") },
                     { 6, new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"), new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)), "Submitted For Approval", new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84") }
                 });
+#pragma warning restore CA1814
 
             migrationBuilder.CreateIndex(
                 name: "IX_HomeCareStages_CreatorId",

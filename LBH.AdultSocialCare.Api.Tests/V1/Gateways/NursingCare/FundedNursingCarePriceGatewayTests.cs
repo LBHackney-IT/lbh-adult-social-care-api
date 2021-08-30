@@ -1,52 +1,42 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Profiles;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
 {
-    public class FundedNursingCarePriceGatewayTests
+    public class FundedNursingCarePriceGatewayTests : BaseInMemoryDatabaseTest
     {
+        private FundedNursingCareGateway _gateway;
+
         public FundedNursingCarePriceGatewayTests()
         {
-            var config = new MapperConfiguration(options =>
-            {
-                options.AddProfile<MappingProfile>();
-            });
-
-            var mapper = config.CreateMapper();
-            DomainToEntityFactory.Configure(mapper);
-            EntityToDomainFactory.Configure(mapper);
+            _gateway = new FundedNursingCareGateway(Context);
         }
 
         [Fact]
         public async Task ShouldReturnCorrectFncPriceForBoundedRange()
         {
-            await using var context = DatabaseFactory.GetInMemoryDatabase();
-            var gateway = new FundedNursingCareGateway(context);
-
             var activeFrom = DateTimeOffset.Now;
             var activeTo = activeFrom.AddDays(365);
             var currentDate = activeFrom.AddDays(15);
             var price = 123.45m;
 
-            context.FundedNursingCarePrices.Add(new FundedNursingCarePrice
+            Context.FundedNursingCarePrices.Add(new FundedNursingCarePrice
             {
                 Id = 1,
                 ActiveFrom = activeFrom,
                 ActiveTo = activeTo,
                 PricePerWeek = price
             });
-            context.SaveChanges();
+            Context.SaveChanges();
 
-            var result = await gateway.GetFundedNursingCarePriceAsync(currentDate).ConfigureAwait(false);
+            var result = await _gateway.GetFundedNursingCarePriceAsync(currentDate).ConfigureAwait(false);
 
             Assert.Equal(result, price);
         }
@@ -54,10 +44,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
         [Fact]
         public async Task ShouldReturnZeroWhenNoPriceIsDefined()
         {
-            await using var context = DatabaseFactory.GetInMemoryDatabase();
-            var gateway = new FundedNursingCareGateway(context);
-
-            var result = await gateway.GetFundedNursingCarePriceAsync(DateTimeOffset.Now).ConfigureAwait(false);
+            var result = await _gateway
+                .GetFundedNursingCarePriceAsync(DateTimeOffset.Now)
+                .ConfigureAwait(false);
 
             Assert.Equal(0, result);
             // Task GetPrice() => gateway.GetFundedNursingCarePriceAsync(DateTimeOffset.Now);
@@ -69,9 +58,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
         [Fact]
         public async Task ShouldCreateNewFundedNursingCareIfNoRecordsExists()
         {
-            await using var context = DatabaseFactory.GetInMemoryDatabase();
-            var gateway = new FundedNursingCareGateway(context);
-
             var fnc = new FundedNursingCareDomain
             {
                 CollectorId = 1,
@@ -79,8 +65,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
                 NursingCarePackageId = Guid.NewGuid()
             };
 
-            await gateway.UpsertFundedNursingCaseAsync(fnc).ConfigureAwait(false);
-            var records = await context.FundedNursingCares.ToListAsync().ConfigureAwait(false);
+            await _gateway.UpsertFundedNursingCaseAsync(fnc).ConfigureAwait(false);
+            var records = await Context.FundedNursingCares.ToListAsync().ConfigureAwait(false);
 
             Assert.Single(records);
             Assert.Equal(fnc.NursingCarePackageId, records[0].NursingCarePackageId);
@@ -91,18 +77,15 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
         [Fact]
         public async Task ShouldUpdateExistingFundedNursingCare()
         {
-            await using var context = DatabaseFactory.GetInMemoryDatabase();
-            var gateway = new FundedNursingCareGateway(context);
-
             var packageId = Guid.NewGuid();
             var originalFnc = CreateFundedNursingCareDomain(packageId, 2, 1);
             var fncToUpdate = CreateFundedNursingCareDomain(packageId, 1, 2);
 
-            context.FundedNursingCares.Add(originalFnc.ToEntity());
-            context.SaveChanges();
+            Context.FundedNursingCares.Add(originalFnc.ToEntity());
+            Context.SaveChanges();
 
-            await gateway.UpsertFundedNursingCaseAsync(fncToUpdate).ConfigureAwait(false);
-            var records = await context.FundedNursingCares.ToListAsync().ConfigureAwait(false);
+            await _gateway.UpsertFundedNursingCaseAsync(fncToUpdate).ConfigureAwait(false);
+            var records = await Context.FundedNursingCares.ToListAsync().ConfigureAwait(false);
 
             Assert.Single(records);
             Assert.Equal(fncToUpdate.NursingCarePackageId, records[0].NursingCarePackageId);
@@ -113,10 +96,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
         [Fact]
         public async Task ShouldNotFailOnRemovingMissingFundedNursingCare()
         {
-            await using var context = DatabaseFactory.GetInMemoryDatabase();
-            var gateway = new FundedNursingCareGateway(context);
-
-            var result = await gateway.DeleteFundedNursingCareAsync(Guid.Empty).ConfigureAwait(false);
+            var result = await _gateway.DeleteFundedNursingCareAsync(Guid.Empty).ConfigureAwait(false);
 
             Assert.False(result);
         }
@@ -124,21 +104,18 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
         [Fact]
         public async Task ShouldRemoveGivenFundedNursingCare()
         {
-            await using var context = DatabaseFactory.GetInMemoryDatabase();
-            var gateway = new FundedNursingCareGateway(context);
-
             var packageToRemoveId = Guid.NewGuid();
 
-            context.FundedNursingCares.Add(CreateFundedNursingCareDomain(Guid.NewGuid(), 1, 1).ToEntity());
-            context.FundedNursingCares.Add(CreateFundedNursingCareDomain(packageToRemoveId, 2, 1).ToEntity());
-            context.FundedNursingCares.Add(CreateFundedNursingCareDomain(Guid.NewGuid(), 2, 2).ToEntity());
-            context.SaveChanges();
+            Context.FundedNursingCares.Add(CreateFundedNursingCareDomain(Guid.NewGuid(), 1, 1).ToEntity());
+            Context.FundedNursingCares.Add(CreateFundedNursingCareDomain(packageToRemoveId, 2, 1).ToEntity());
+            Context.FundedNursingCares.Add(CreateFundedNursingCareDomain(Guid.NewGuid(), 2, 2).ToEntity());
+            Context.SaveChanges();
 
-            var result = await gateway.DeleteFundedNursingCareAsync(packageToRemoveId).ConfigureAwait(false);
+            var result = await _gateway.DeleteFundedNursingCareAsync(packageToRemoveId).ConfigureAwait(false);
 
             Assert.True(result);
-            Assert.Equal(2, context.FundedNursingCares.Count());
-            Assert.Null(context.FundedNursingCares.FirstOrDefault(c => c.NursingCarePackageId == packageToRemoveId));
+            Assert.Equal(2, Context.FundedNursingCares.Count());
+            Assert.Null(Context.FundedNursingCares.FirstOrDefault(c => c.NursingCarePackageId == packageToRemoveId));
         }
 
         private static FundedNursingCareDomain CreateFundedNursingCareDomain(Guid packageId, int collectorId, int reclaimTargetInstitutionId)

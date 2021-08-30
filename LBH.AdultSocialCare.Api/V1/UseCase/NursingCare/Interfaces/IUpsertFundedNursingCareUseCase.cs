@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces
 {
     public interface IUpsertFundedNursingCareUseCase
     {
-        Task<FundedNursingCareDomain> UpsertAsync(Guid packageId, int? collectorId);
+        Task<FundedNursingCareDomain> UpsertAsync(Guid packageId, int? supplierId, int? collectorId);
     }
 }
