@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -28,8 +28,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests
         [Fact]
         public async Task Test()
         {
-            var collector1 = new FundedNursingCareCollector{ OptionName = "Hackney" };
-            var collector2 = new FundedNursingCareCollector{ OptionName = "Supplier" };
+            var collector1 = new FundedNursingCareCollector { OptionName = "Hackney" };
+            var collector2 = new FundedNursingCareCollector { OptionName = "Supplier" };
 
             _fixture.Database.FundedNursingCareCollectors.AddRange(collector1, collector2);
             _fixture.Database.SaveChanges();

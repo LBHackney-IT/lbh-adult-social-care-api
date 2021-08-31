@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Security.Claims;
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Factories;

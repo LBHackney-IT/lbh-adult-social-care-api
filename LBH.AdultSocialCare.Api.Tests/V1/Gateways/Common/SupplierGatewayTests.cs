@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Bogus;
@@ -12,7 +12,7 @@ using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
 {
-    public class SupplierGatewayTests  : BaseInMemoryDatabaseTest
+    public class SupplierGatewayTests : BaseInMemoryDatabaseTest
     {
         private readonly ISupplierGateway _gateway;
         private readonly Faker<Supplier> _supplierFaker;
