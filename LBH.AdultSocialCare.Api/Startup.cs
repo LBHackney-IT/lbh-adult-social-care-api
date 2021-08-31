@@ -89,7 +89,6 @@ namespace LBH.AdultSocialCare.Api
 
             services.ConfigureDbContext(Configuration);
             services.AddAuthentication();
-            services.ConfigureIdentityService();
             services.ConfigureJWT(Configuration);
 
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
@@ -175,11 +174,14 @@ namespace LBH.AdultSocialCare.Api
                 // Uncomment next line to delete and recreate DB
                 //databaseContext.Database.EnsureDeleted();
 
-                // Run pending database migrations
-                if (databaseContext.Database.GetPendingMigrations().Any())
+                if (!databaseContext.Database.ProviderName.Equals("Microsoft.EntityFrameworkCore.InMemory")) // disable migrations for test InMemory database
                 {
-                    // Perform migrations
-                    databaseContext.Database.Migrate();
+                    // Run pending database migrations
+                    if (databaseContext.Database.GetPendingMigrations().Any())
+                    {
+                        // Perform migrations
+                        databaseContext.Database.Migrate();
+                    }
                 }
             }
 

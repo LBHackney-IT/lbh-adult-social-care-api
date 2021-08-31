@@ -34,9 +34,14 @@ namespace LBH.AdultSocialCare.Api.Tests
         private static DatabaseContext CreateDatabaseContext()
         {
             var dbContextOptions = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase($"HASC.API.TESTS.{DateTime.Now.Ticks}")
+                .UseInMemoryDatabase($"HASC.API.UNIT.TESTS.{DateTime.Now.Ticks}")
                 .Options;
 
+            return new DatabaseContext(dbContextOptions, CreateHttpContextAccessor());
+        }
+
+        private static IHttpContextAccessor CreateHttpContextAccessor()
+        {
             var identity = new ClaimsIdentity();
             identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, "aee45700-af9b-4ab5-bb43-535adbdcfb84"));
 
@@ -45,9 +50,7 @@ namespace LBH.AdultSocialCare.Api.Tests
                 User = new ClaimsPrincipal(identity)
             };
 
-            var httpContextAccessor = Mock.Of<IHttpContextAccessor>(a => a.HttpContext == httpContext);
-
-            return new DatabaseContext(dbContextOptions, httpContextAccessor);
+            return Mock.Of<IHttpContextAccessor>(a => a.HttpContext == httpContext);
         }
 
         #region IDisposable implementation
