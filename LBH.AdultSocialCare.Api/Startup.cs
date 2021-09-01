@@ -23,10 +23,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using HttpServices;
-using HttpServices.Models;
 using HttpServices.Services.Concrete;
 using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -96,6 +95,7 @@ namespace LBH.AdultSocialCare.Api
 
             services.AddHttpContextAccessor();
 
+            services.AddScoped<ITransactionManager, TransactionManager>();
             services.RegisterGateways();
             services.RegisterUseCases();
 

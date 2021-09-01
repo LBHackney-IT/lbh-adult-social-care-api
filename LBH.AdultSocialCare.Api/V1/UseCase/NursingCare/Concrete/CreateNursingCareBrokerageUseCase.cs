@@ -6,6 +6,7 @@ using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
 
@@ -17,6 +18,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
         private readonly IChangeStatusNursingCarePackageUseCase _changeStatusNursingCarePackageUseCase;
         private readonly INursingCareBrokerageGateway _nursingCareBrokerageGateway;
         private readonly INursingCarePackageGateway _nursingCarePackageGateway;
+        private readonly ITransactionManager _transactionManager;
         private readonly IMapper _mapper;
 
         public CreateNursingCareBrokerageUseCase(
@@ -24,12 +26,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
             IChangeStatusNursingCarePackageUseCase changeStatusNursingCarePackageUseCase,
             INursingCareBrokerageGateway nursingCareBrokerageGateway,
             INursingCarePackageGateway nursingCarePackageGateway,
+            ITransactionManager transactionManager,
             IMapper mapper)
         {
             _upsertFundedNursingCareUseCase = upsertFundedNursingCareUseCase;
             _changeStatusNursingCarePackageUseCase = changeStatusNursingCarePackageUseCase;
             _nursingCareBrokerageGateway = nursingCareBrokerageGateway;
             _nursingCarePackageGateway = nursingCarePackageGateway;
+            _transactionManager = transactionManager;
             _mapper = mapper;
         }
 
@@ -42,14 +46,24 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
                 throw new ApiException($"A brokerage for nursing care package {brokerageInfoCreationDomain.NursingCarePackageId} already exists");
             }
 
-            // TODO: VK: Wrap in transactions
-            var brokerageInfoDomain = await CreateBrokerageInfoAsync(brokerageInfoCreationDomain).ConfigureAwait(false);
+            await using var transaction = await _transactionManager.BeginTransactionAsync().ConfigureAwait(false);
+            try
+            {
+                var brokerageInfoDomain = await CreateBrokerageInfoAsync(brokerageInfoCreationDomain).ConfigureAwait(false);
 
-            await UpdatePackageAsync(brokerageInfoCreationDomain).ConfigureAwait(false);
-            await ApprovePackageForBrokerageAsync(brokerageInfoCreationDomain.NursingCarePackageId).ConfigureAwait(false);
-            await UpsertFundingNursingCareAsync(brokerageInfoCreationDomain).ConfigureAwait(false);
+                await UpdatePackageAsync(brokerageInfoCreationDomain).ConfigureAwait(false);
+                await ApprovePackageForBrokerageAsync(brokerageInfoCreationDomain.NursingCarePackageId).ConfigureAwait(false);
+                await UpsertFundingNursingCareAsync(brokerageInfoCreationDomain).ConfigureAwait(false);
 
-            return brokerageInfoDomain.ToResponse();
+                await transaction.CommitAsync().ConfigureAwait(false);
+
+                return brokerageInfoDomain.ToResponse();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync().ConfigureAwait(false);
+                throw;
+            }
         }
 
         private async Task UpdatePackageAsync(NursingCareBrokerageInfoCreationDomain brokerageInfoCreationDomain)
