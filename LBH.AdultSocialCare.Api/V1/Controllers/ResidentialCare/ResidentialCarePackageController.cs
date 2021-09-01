@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
+using LBH.AdultSocialCare.Api.V1.Controllers.Common;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces;
 using ICreateResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces.ICreateResidentialCarePackageUseCase;
 using IGetAllResidentialCareHomeTypeUseCase = LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces.IGetAllResidentialCareHomeTypeUseCase;
