@@ -89,6 +89,7 @@ namespace LBH.AdultSocialCare.Api
 
             services.ConfigureDbContext(Configuration);
             services.AddAuthentication();
+            services.ConfigureIdentityService();
             services.ConfigureJWT(Configuration);
 
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
