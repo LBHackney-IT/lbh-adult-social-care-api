@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
+using LBH.AdultSocialCare.Api.V1.Controllers.Common;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
-using LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers;
+using LBH.AdultSocialCare.Api.V1.Controllers.DayCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCare.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;

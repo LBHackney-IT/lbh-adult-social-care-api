@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
+using LBH.AdultSocialCare.Api.V1.Controllers.Common;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces;
 
