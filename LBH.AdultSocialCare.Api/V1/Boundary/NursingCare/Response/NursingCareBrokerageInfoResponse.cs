@@ -41,10 +41,5 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response
         /// Gets or sets the Creator Id
         /// </summary>
         public Guid CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updator Id
-        /// </summary>
-        public Guid? UpdatorId { get; set; }
     }
 }

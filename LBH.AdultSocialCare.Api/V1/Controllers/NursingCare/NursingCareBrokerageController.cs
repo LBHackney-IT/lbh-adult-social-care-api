@@ -20,23 +20,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         private readonly IGetNursingCareBrokerageUseCase _getNursingCareBrokerageUseCase;
         private readonly ICreateNursingCareBrokerageUseCase _createNursingCareBrokerageUseCase;
         private readonly IChangeStatusNursingCarePackageUseCase _changeStatusNursingCarePackageUseCase;
-        private readonly IChangeDatesOfNursingCarePackageUseCase _changeDatesOfNursingCarePackageUseCase;
         private readonly ISetStageToNursingCarePackageUseCase _setStageToNursingCarePackageUseCase;
-        private readonly IUpsertFundedNursingCareUseCase _upsertFundedNursingCareUseCase;
 
         public NursingCareBrokerageController(IGetNursingCareBrokerageUseCase getNursingCareBrokerageUseCase,
             ICreateNursingCareBrokerageUseCase createNursingCareBrokerageUseCase,
             IChangeStatusNursingCarePackageUseCase changeStatusNursingCarePackageUseCase,
-            IChangeDatesOfNursingCarePackageUseCase changeDatesNursingCarePackageUseCase,
-            ISetStageToNursingCarePackageUseCase setStageToNursingCarePackageUseCase,
-            IUpsertFundedNursingCareUseCase upsertFundedNursingCareUseCase)
+            ISetStageToNursingCarePackageUseCase setStageToNursingCarePackageUseCase)
         {
             _getNursingCareBrokerageUseCase = getNursingCareBrokerageUseCase;
             _createNursingCareBrokerageUseCase = createNursingCareBrokerageUseCase;
             _changeStatusNursingCarePackageUseCase = changeStatusNursingCarePackageUseCase;
-            _changeDatesOfNursingCarePackageUseCase = changeDatesNursingCarePackageUseCase;
             _setStageToNursingCarePackageUseCase = setStageToNursingCarePackageUseCase;
-            _upsertFundedNursingCareUseCase = upsertFundedNursingCareUseCase;
         }
 
         /// <summary>Gets the specified nursing care package identifier.</summary>
@@ -75,29 +69,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
                 return UnprocessableEntity(ModelState);
             }
 
-            // TODO: VK: Wrap this all with transaction, otherwise incomplete brokerage is created.
             var nursingCareBrokerageCreationDomain = nursingCareBrokerageCreationRequest.ToDomain();
-            var result = await _createNursingCareBrokerageUseCase.ExecuteAsync(nursingCareBrokerageCreationDomain).ConfigureAwait(false);
-
-            // TODO: VK: Save default collector for supplier
-            await _upsertFundedNursingCareUseCase
-                .UpsertAsync(
-                    nursingCareBrokerageCreationRequest.NursingCarePackageId,
-                    nursingCareBrokerageCreationRequest.SupplierId,
-                    nursingCareBrokerageCreationRequest.FundedNursingCareCollectorId)
-                .ConfigureAwait(false);
-
-            //Change start / end dates of the package
-            await _changeDatesOfNursingCarePackageUseCase
-                .UpdateAsync(
-                    nursingCareBrokerageCreationRequest.NursingCarePackageId,
-                    nursingCareBrokerageCreationRequest.StartDate,
-                    nursingCareBrokerageCreationRequest.EndDate)
-                .ConfigureAwait(false);
-
-            //Change status of package
-            await _changeStatusNursingCarePackageUseCase
-                .UpdateAsync(nursingCareBrokerageCreationRequest.NursingCarePackageId, ApprovalHistoryConstants.ApprovedForBrokerageId)
+            var result = await _createNursingCareBrokerageUseCase
+                .ExecuteAsync(nursingCareBrokerageCreationDomain)
                 .ConfigureAwait(false);
 
             return Ok(result);

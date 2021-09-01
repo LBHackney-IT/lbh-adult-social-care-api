@@ -1,17 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
-using HttpServices.Services.Concrete;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests
@@ -26,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests
         }
 
         [Fact]
-        public async Task Test()
+        public async Task ShouldReturnCollectorsList()
         {
             var collector1 = new FundedNursingCareCollector { OptionName = "Hackney" };
             var collector2 = new FundedNursingCareCollector { OptionName = "Supplier" };
