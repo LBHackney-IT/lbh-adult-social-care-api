@@ -42,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
                 .GetFundedNursingCareCollectorsAsync()
                 .ConfigureAwait(false);
 
-            if (collectors is null)
+            if (collectors is null || !collectors.Any())
             {
                 return NotFound();
             }

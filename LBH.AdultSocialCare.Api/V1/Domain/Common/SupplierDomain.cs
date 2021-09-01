@@ -35,6 +35,11 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public bool HasSupplierFrameworkContractedRates { get; set; }
 
         /// <summary>
+        /// Gets or sets identifier of default Funded Nursing Care Collector
+        /// </summary>
+        public int? FundedNursingCareCollectorId { get; set; }
+
+        /// <summary>
         /// Gets or sets the Creator Id
         /// </summary>
         public Guid CreatorId { get; set; }

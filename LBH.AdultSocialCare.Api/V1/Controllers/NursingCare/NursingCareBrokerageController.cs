@@ -83,6 +83,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
             await _upsertFundedNursingCareUseCase
                 .UpsertAsync(
                     nursingCareBrokerageCreationRequest.NursingCarePackageId,
+                    nursingCareBrokerageCreationRequest.SupplierId,
                     nursingCareBrokerageCreationRequest.FundedNursingCareCollectorId)
                 .ConfigureAwait(false);
 
