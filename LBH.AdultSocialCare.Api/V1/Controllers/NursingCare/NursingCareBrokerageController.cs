@@ -46,7 +46,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         /// <summary>
         /// Creates the nursing care package brokerage.
         /// </summary>
-        /// <param name="nursingCareBrokerageCreationRequest">The nursing care package brokerage for creation.</param>
+        /// <param name="brokerageCreationRequest">The nursing care package brokerage for creation.</param>
         /// <returns>A newly created nursing care package brokerage</returns>
         /// <response code="200">Returns ID of the newly created item</response>
         /// <response code="400">If the item is null</response>
@@ -57,21 +57,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<NursingCareBrokerageInfoResponse>> CreateNursingCareBrokerage([FromBody] NursingCareBrokerageCreationRequest nursingCareBrokerageCreationRequest)
+        public async Task<ActionResult<NursingCareBrokerageInfoResponse>> CreateNursingCareBrokerage([FromBody] NursingCareBrokerageCreationRequest brokerageCreationRequest)
         {
-            if (nursingCareBrokerageCreationRequest == null)
-            {
-                return BadRequest("Object for creation cannot be null.");
-            }
-
             if (!ModelState.IsValid)
             {
                 return UnprocessableEntity(ModelState);
             }
 
-            var nursingCareBrokerageCreationDomain = nursingCareBrokerageCreationRequest.ToDomain();
             var result = await _createNursingCareBrokerageUseCase
-                .ExecuteAsync(nursingCareBrokerageCreationDomain)
+                .ExecuteAsync(brokerageCreationRequest.ToDomain())
                 .ConfigureAwait(false);
 
             return Ok(result);

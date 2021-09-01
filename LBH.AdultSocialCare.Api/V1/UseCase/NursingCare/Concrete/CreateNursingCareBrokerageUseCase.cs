@@ -14,7 +14,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
     public class CreateNursingCareBrokerageUseCase : ICreateNursingCareBrokerageUseCase
     {
         private readonly IUpsertFundedNursingCareUseCase _upsertFundedNursingCareUseCase;
-        private readonly IChangeDatesOfNursingCarePackageUseCase _changeDatesOfNursingCarePackageUseCase;
         private readonly IChangeStatusNursingCarePackageUseCase _changeStatusNursingCarePackageUseCase;
         private readonly INursingCareBrokerageGateway _nursingCareBrokerageGateway;
         private readonly INursingCarePackageGateway _nursingCarePackageGateway;
@@ -22,14 +21,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
 
         public CreateNursingCareBrokerageUseCase(
             IUpsertFundedNursingCareUseCase upsertFundedNursingCareUseCase,
-            IChangeDatesOfNursingCarePackageUseCase changeDatesOfNursingCarePackageUseCase,
             IChangeStatusNursingCarePackageUseCase changeStatusNursingCarePackageUseCase,
             INursingCareBrokerageGateway nursingCareBrokerageGateway,
             INursingCarePackageGateway nursingCarePackageGateway,
             IMapper mapper)
         {
             _upsertFundedNursingCareUseCase = upsertFundedNursingCareUseCase;
-            _changeDatesOfNursingCarePackageUseCase = changeDatesOfNursingCarePackageUseCase;
             _changeStatusNursingCarePackageUseCase = changeStatusNursingCarePackageUseCase;
             _nursingCareBrokerageGateway = nursingCareBrokerageGateway;
             _nursingCarePackageGateway = nursingCarePackageGateway;
@@ -49,7 +46,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
             var brokerageInfoDomain = await CreateBrokerageInfoAsync(brokerageInfoCreationDomain).ConfigureAwait(false);
 
             await UpdatePackageAsync(brokerageInfoCreationDomain).ConfigureAwait(false);
-            await UpdatePackageStartEndDatesAsync(brokerageInfoCreationDomain).ConfigureAwait(false);
             await ApprovePackageForBrokerageAsync(brokerageInfoCreationDomain.NursingCarePackageId).ConfigureAwait(false);
             await UpsertFundingNursingCareAsync(brokerageInfoCreationDomain).ConfigureAwait(false);
 
@@ -65,10 +61,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
             packageDomain.StageId = brokerageInfoCreationDomain.StageId;
             packageDomain.SupplierId = brokerageInfoCreationDomain.SupplierId;
 
-            var packageForUpdateDomain = new NursingCarePackageForUpdateDomain();
-            _mapper.Map(packageDomain, packageForUpdateDomain);
+            // brokers are prohibited to change start date, so it can come empty, but shouldn't be reset
+            packageDomain.StartDate = brokerageInfoCreationDomain.StartDate ?? packageDomain.StartDate;
+            packageDomain.EndDate = brokerageInfoCreationDomain.EndDate;
 
-            // Update package
+            var packageForUpdateDomain = _mapper.Map<NursingCarePackageForUpdateDomain>(packageDomain);
+
             await _nursingCarePackageGateway.UpdateAsync(packageForUpdateDomain).ConfigureAwait(false);
         }
 
@@ -90,16 +88,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
                     brokerageInfoCreationDomain.NursingCarePackageId,
                     brokerageInfoCreationDomain.SupplierId,
                     brokerageInfoCreationDomain.FundedNursingCareCollectorId)
-                .ConfigureAwait(false);
-        }
-
-        private async Task UpdatePackageStartEndDatesAsync(NursingCareBrokerageInfoCreationDomain brokerageInfoCreationDomain)
-        {
-            await _changeDatesOfNursingCarePackageUseCase
-                .UpdateAsync(
-                    brokerageInfoCreationDomain.NursingCarePackageId,
-                    brokerageInfoCreationDomain.StartDate,
-                    brokerageInfoCreationDomain.EndDate)
                 .ConfigureAwait(false);
         }
 
