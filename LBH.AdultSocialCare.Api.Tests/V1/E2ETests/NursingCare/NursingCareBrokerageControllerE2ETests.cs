@@ -70,12 +70,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
                 .PostAsync<NursingCarePackageResponse>($"api/v1/nursing-care-packages/{package.Id}/brokerage/clarifying-commercials?requestMoreInformationText={moreInformationTest}", package.Id)
                 .ConfigureAwait(false);
 
-            var updatedPackage = await _fixture.Database.NursingCarePackages
+            var updatedPackage = await _fixture.DatabaseContext.NursingCarePackages
                 .Where(p => p.Id == package.Id)
                 .FirstAsync()
                 .ConfigureAwait(false);
 
-            var approvalHistory = await _fixture.Database.NursingCareApprovalHistories
+            var approvalHistory = await _fixture.DatabaseContext.NursingCareApprovalHistories
                 .Where(h => h.NursingCarePackageId == package.Id)
                 .FirstAsync()
                 .ConfigureAwait(false);
@@ -95,7 +95,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
                 .PutAsync<bool>($"api/v1/nursing-care-packages/{package.Id}/brokerage/stage/{newStageId}", package.Id)
                 .ConfigureAwait(false);
 
-            var updatedPackage = await _fixture.Database.NursingCarePackages
+            var updatedPackage = await _fixture.DatabaseContext.NursingCarePackages
                 .Where(p => p.Id == package.Id)
                 .FirstAsync()
                 .ConfigureAwait(false);

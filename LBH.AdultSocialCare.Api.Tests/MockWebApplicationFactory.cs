@@ -30,7 +30,7 @@ namespace LBH.AdultSocialCare.Api.Tests
 
             CreateDatabaseContext();
 
-            DataGenerator = new DataGenerator(Database);
+            DataGenerator = new DataGenerator(DatabaseContext);
             RestClient = new TestRestClient(CreateClient())
             {
                 // HACK: for some reason updates to existing entities done by API
@@ -42,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.Tests
         }
 
         public TestRestClient RestClient { get; }
-        public DatabaseContext Database { get; private set; }
+        public DatabaseContext DatabaseContext { get; private set; }
         public DataGenerator DataGenerator { get; }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -123,8 +123,8 @@ namespace LBH.AdultSocialCare.Api.Tests
             var builder = new DbContextOptionsBuilder<DatabaseContext>();
             builder.UseSqlite(_connection);
 
-            Database = new DatabaseContext(builder.Options, CreateHttpContextAccessor());
-            Database.Database.EnsureCreated();
+            DatabaseContext = new DatabaseContext(builder.Options, CreateHttpContextAccessor());
+            DatabaseContext.Database.EnsureCreated();
         }
 
         protected override void Dispose(bool disposing)
@@ -133,7 +133,7 @@ namespace LBH.AdultSocialCare.Api.Tests
             {
                 _connection?.Close();
                 _connection?.Dispose();
-                Database?.Dispose();
+                DatabaseContext?.Dispose();
             }
 
             base.Dispose(disposing);
