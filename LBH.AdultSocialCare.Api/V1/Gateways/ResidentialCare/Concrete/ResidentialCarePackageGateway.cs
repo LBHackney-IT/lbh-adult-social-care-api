@@ -80,7 +80,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                 .FirstOrDefaultAsync(item => item.Id == residentialCarePackageId).ConfigureAwait(false);
             if (result == null)
             {
-                throw new EntityNotFoundException($"Unable to locate residential care package {residentialCarePackageId.ToString()}");
+                throw new EntityNotFoundException($"Unable to locate residential care package {residentialCarePackageId}");
             }
             return result.ToDomain();
         }
