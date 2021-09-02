@@ -52,7 +52,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
             }
             catch (Exception ex)
             {
-                throw new DbSaveFailedException($"Update for nursing care package {nursingCarePackageForUpdate.Id.ToString()} failed {ex.Message}");
+                throw new DbSaveFailedException($"Update for nursing care package {nursingCarePackageForUpdate.Id.ToString()} failed {ex.Message}", ex);
             }
         }
 
@@ -79,10 +79,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                 .Include(item => item.Status)
                 .Include(item => item.NursingCareAdditionalNeeds)
                 .FirstOrDefaultAsync(item => item.Id == nursingCarePackageId).ConfigureAwait(false);
+
             if (result == null)
             {
                 throw new EntityNotFoundException($"Unable to locate nursing care package {nursingCarePackageId.ToString()}");
             }
+
             return result.ToDomain();
         }
 

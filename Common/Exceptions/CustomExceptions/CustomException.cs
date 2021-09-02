@@ -7,5 +7,9 @@ namespace Common.Exceptions.CustomExceptions
         protected CustomException(string message) : base(message)
         {
         }
+
+        protected CustomException(string message, Exception ex) : base(message, ex)
+        {
+        }
     }
 }
