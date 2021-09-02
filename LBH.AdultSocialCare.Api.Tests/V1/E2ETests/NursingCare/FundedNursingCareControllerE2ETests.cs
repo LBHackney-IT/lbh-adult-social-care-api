@@ -3,11 +3,12 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
+using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using Xunit;
 
-namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests
+namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
 {
     public class FundedNursingCareControllerE2ETests : IClassFixture<MockWebApplicationFactory>
     {
@@ -21,9 +22,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests
         [Fact]
         public async Task ShouldReturnCollectorsList()
         {
-            var collector1 = new FundedNursingCareCollector { OptionName = "Hackney" };
-            var collector2 = new FundedNursingCareCollector { OptionName = "Supplier" };
+            var collector1 = new FundedNursingCareCollector { OptionName = "Hackney", ClaimedBy = 1};
+            var collector2 = new FundedNursingCareCollector { OptionName = "Supplier", ClaimedBy = 2};
 
+            _fixture.Database.FundedNursingCareCollectors.ClearData();
             _fixture.Database.FundedNursingCareCollectors.AddRange(collector1, collector2);
             _fixture.Database.SaveChanges();
 

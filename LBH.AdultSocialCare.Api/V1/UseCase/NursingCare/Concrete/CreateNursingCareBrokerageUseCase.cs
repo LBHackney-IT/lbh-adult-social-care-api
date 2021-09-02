@@ -72,12 +72,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
                 .GetAsync(brokerageInfoCreationDomain.NursingCarePackageId)
                 .ConfigureAwait(false);
 
-            packageDomain.StageId = brokerageInfoCreationDomain.StageId;
-            packageDomain.SupplierId = brokerageInfoCreationDomain.SupplierId;
-
             // brokers are prohibited to change start date, so it can come empty, but shouldn't be reset
             packageDomain.StartDate = brokerageInfoCreationDomain.StartDate ?? packageDomain.StartDate;
             packageDomain.EndDate = brokerageInfoCreationDomain.EndDate;
+
+            packageDomain.StageId = brokerageInfoCreationDomain.StageId;
+            packageDomain.SupplierId = brokerageInfoCreationDomain.SupplierId;
 
             var packageForUpdateDomain = _mapper.Map<NursingCarePackageForUpdateDomain>(packageDomain);
 

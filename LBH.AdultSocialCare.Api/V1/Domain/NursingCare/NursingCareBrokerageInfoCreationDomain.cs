@@ -13,6 +13,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCare
         public DateTimeOffset? EndDate { get; set; }
 
         public IEnumerable<NursingCareAdditionalNeedsCostCreationDomain> NursingCareAdditionalNeedsCosts { get; set; }
-        public int FundedNursingCareCollectorId { get; set; }
+        public int? FundedNursingCareCollectorId { get; set; }
     }
 }

@@ -52,7 +52,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
             }
             catch (Exception ex)
             {
-                throw new DbSaveFailedException($"Update for nursing care package {nursingCarePackageForUpdate.Id.ToString()} failed {ex.Message}");
+                throw new DbSaveFailedException($"Update for nursing care package {nursingCarePackageForUpdate.Id.ToString()} failed {ex.Message}", ex);
             }
         }
 

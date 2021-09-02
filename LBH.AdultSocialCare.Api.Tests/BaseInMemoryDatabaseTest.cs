@@ -1,40 +1,38 @@
 using System;
 using System.Security.Claims;
-using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Profiles;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
 namespace LBH.AdultSocialCare.Api.Tests
 {
-    public class BaseInMemoryDatabaseTest : IDisposable
+    public class BaseInMemoryDatabaseTest : BaseTest, IDisposable
     {
+        private SqliteConnection _connection;
         // is called before _each_ test
         protected BaseInMemoryDatabaseTest()
         {
-            var config = new MapperConfiguration(options =>
-            {
-                options.AddProfile<MappingProfile>();
-            });
-
-            Mapper = config.CreateMapper();
-
-            DomainToEntityFactory.Configure(Mapper);
-            EntityToDomainFactory.Configure(Mapper);
-
             Context = CreateDatabaseContext();
+            DataGenerator = new DataGenerator(Context);
+
+            Context.Database.EnsureCreated();
         }
 
         protected DatabaseContext Context { get; }
-        protected IMapper Mapper { get; }
 
-        private static DatabaseContext CreateDatabaseContext()
+        protected DataGenerator DataGenerator { get; }
+
+        private DatabaseContext CreateDatabaseContext()
         {
+            var connectionString = new SqliteConnectionStringBuilder{ DataSource = ":memory:" }.ToString();
+            _connection = new SqliteConnection(connectionString);
+            _connection.Open();
+
             var dbContextOptions = new DbContextOptionsBuilder<DatabaseContext>()
-                .UseInMemoryDatabase($"HASC.API.UNIT.TESTS.{DateTime.Now.Ticks}")
+                .UseSqlite(_connection)
+                // .UseInMemoryDatabase($"HASC.API.UNIT.TESTS.{DateTime.Now.Ticks}")
                 .Options;
 
             return new DatabaseContext(dbContextOptions, CreateHttpContextAccessor());
@@ -65,6 +63,9 @@ namespace LBH.AdultSocialCare.Api.Tests
         {
             if (disposing)
             {
+                _connection?.Close();
+                _connection?.Dispose();
+
                 Context?.Dispose();
             }
         }

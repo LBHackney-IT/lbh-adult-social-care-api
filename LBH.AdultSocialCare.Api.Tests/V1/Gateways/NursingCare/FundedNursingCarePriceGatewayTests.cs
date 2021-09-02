@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete;
@@ -27,6 +28,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
             var currentDate = activeFrom.AddDays(15);
             var price = 123.45m;
 
+            Context.FundedNursingCarePrices.ClearData();
             Context.FundedNursingCarePrices.Add(new FundedNursingCarePrice
             {
                 Id = 1,
@@ -44,6 +46,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
         [Fact]
         public async Task ShouldReturnZeroWhenNoPriceIsDefined()
         {
+            Context.FundedNursingCarePrices.ClearData();
+            Context.SaveChanges();
+
             var result = await _gateway
                 .GetFundedNursingCarePriceAsync(DateTimeOffset.Now)
                 .ConfigureAwait(false);
@@ -58,11 +63,13 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
         [Fact]
         public async Task ShouldCreateNewFundedNursingCareIfNoRecordsExists()
         {
+            var package = await new DataGenerator(Context).GenerateNursingCarePackage().ConfigureAwait(false);
+
             var fnc = new FundedNursingCareDomain
             {
                 CollectorId = 1,
                 ReclaimTargetInstitutionId = 2,
-                NursingCarePackageId = Guid.NewGuid()
+                NursingCarePackageId = package.Id
             };
 
             await _gateway.UpsertFundedNursingCaseAsync(fnc).ConfigureAwait(false);
@@ -77,9 +84,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
         [Fact]
         public async Task ShouldUpdateExistingFundedNursingCare()
         {
-            var packageId = Guid.NewGuid();
-            var originalFnc = CreateFundedNursingCareDomain(packageId, 2, 1);
-            var fncToUpdate = CreateFundedNursingCareDomain(packageId, 1, 2);
+            var package = await DataGenerator.GenerateNursingCarePackage().ConfigureAwait(false);
+
+            var originalFnc = CreateFundedNursingCareDomain(package.Id, 2, 1);
+            var fncToUpdate = CreateFundedNursingCareDomain(package.Id, 1, 2);
 
             Context.FundedNursingCares.Add(originalFnc.ToEntity());
             Context.SaveChanges();
@@ -104,18 +112,18 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
         [Fact]
         public async Task ShouldRemoveGivenFundedNursingCare()
         {
-            var packageToRemoveId = Guid.NewGuid();
+            var packages = await DataGenerator.GenerateNursingCarePackages(3).ConfigureAwait(false);
 
-            Context.FundedNursingCares.Add(CreateFundedNursingCareDomain(Guid.NewGuid(), 1, 1).ToEntity());
-            Context.FundedNursingCares.Add(CreateFundedNursingCareDomain(packageToRemoveId, 2, 1).ToEntity());
-            Context.FundedNursingCares.Add(CreateFundedNursingCareDomain(Guid.NewGuid(), 2, 2).ToEntity());
+            Context.FundedNursingCares.Add(CreateFundedNursingCareDomain(packages[0].Id, 1, 1).ToEntity());
+            Context.FundedNursingCares.Add(CreateFundedNursingCareDomain(packages[1].Id, 2, 1).ToEntity());
+            Context.FundedNursingCares.Add(CreateFundedNursingCareDomain(packages[2].Id, 2, 2).ToEntity());
             Context.SaveChanges();
 
-            var result = await _gateway.DeleteFundedNursingCareAsync(packageToRemoveId).ConfigureAwait(false);
+            var result = await _gateway.DeleteFundedNursingCareAsync(packages[1].Id).ConfigureAwait(false);
 
             Assert.True(result);
             Assert.Equal(2, Context.FundedNursingCares.Count());
-            Assert.Null(Context.FundedNursingCares.FirstOrDefault(c => c.NursingCarePackageId == packageToRemoveId));
+            Assert.Null(Context.FundedNursingCares.FirstOrDefault(c => c.NursingCarePackageId == packages[1].Id));
         }
 
         private static FundedNursingCareDomain CreateFundedNursingCareDomain(Guid packageId, int collectorId, int reclaimTargetInstitutionId)

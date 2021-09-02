@@ -175,7 +175,8 @@ namespace LBH.AdultSocialCare.Api
                 // Uncomment next line to delete and recreate DB
                 //databaseContext.Database.EnsureDeleted();
 
-                if (!databaseContext.Database.ProviderName.Equals("Microsoft.EntityFrameworkCore.InMemory")) // disable migrations for test InMemory database
+                if (!databaseContext.Database.ProviderName.Equals("Microsoft.EntityFrameworkCore.InMemory") &&
+                    !databaseContext.Database.ProviderName.Equals("Microsoft.EntityFrameworkCore.Sqlite")) // disable migrations for test in-memory databases
                 {
                     // Run pending database migrations
                     if (databaseContext.Database.GetPendingMigrations().Any())
