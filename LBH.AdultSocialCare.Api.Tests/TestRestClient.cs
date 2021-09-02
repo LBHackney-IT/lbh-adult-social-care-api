@@ -15,6 +15,8 @@ namespace LBH.AdultSocialCare.Api.Tests
             _httpClient = httpClient;
         }
 
+        public Action AfterRequest { get; set; }
+
         public async Task<TestResponse<TContent>> GetAsync<TContent>(string url)
         {
             return await SubmitRequest<TContent>(url, null, HttpMethod.Get).ConfigureAwait(false);
@@ -46,6 +48,8 @@ namespace LBH.AdultSocialCare.Api.Tests
 
             var response = await _httpClient.SendAsync(httpRequestMessage).ConfigureAwait(false);
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+
+            AfterRequest?.Invoke();
 
             return new TestResponse<TContent>()
             {

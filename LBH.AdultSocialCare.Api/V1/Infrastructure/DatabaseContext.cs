@@ -353,7 +353,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             foreach (var entity in entitiesToCreate)
             {
                 entity.DateCreated = DateTimeOffset.UtcNow;
-                entity.CreatorId = new Guid(_httpContextAccessor.HttpContext.User.Identity.GetUserId());
+                entity.CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84");
             }
         }
 
@@ -364,7 +364,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             foreach (var entity in entitiesToUpdate)
             {
                 entity.DateUpdated = DateTimeOffset.UtcNow;
-                entity.UpdaterId = new Guid(_httpContextAccessor.HttpContext.User.Identity.GetUserId());
+                entity.UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84");
             }
         }
 

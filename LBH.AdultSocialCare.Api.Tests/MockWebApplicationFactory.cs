@@ -19,43 +19,31 @@ namespace LBH.AdultSocialCare.Api.Tests
 {
     public class MockWebApplicationFactory : WebApplicationFactory<Startup>
     {
-        private TestRestClient _restClient;
-        private DatabaseContext _databaseContext;
-        private DataGenerator _dataGenerator;
-        private SqliteConnection _connection;
+        private readonly SqliteConnection _connection;
 
-        public TestRestClient RestClient
+        public MockWebApplicationFactory()
         {
-            get
-            {
-                if (_restClient is null)
-                {
-                    var httpClient = CreateClient();
-                    _restClient = new TestRestClient(httpClient);
-                }
+            var connectionString = $"DataSource=file:DB{Guid.NewGuid()}?mode=memory&cache=shared";
 
-                return _restClient;
-            }
+            _connection = new SqliteConnection(connectionString);
+            _connection.Open(); // connection should stay open to keep SQLite in-memory database alive
+
+            CreateDatabaseContext();
+
+            DataGenerator = new DataGenerator(Database);
+            RestClient = new TestRestClient(CreateClient())
+            {
+                // HACK: for some reason updates to existing entities done by API
+                // aren't visible to database context in test (but new entities
+                // created by API still visible to test context, as well as entities created by test
+                // are visible to API). So, context is recreated to read updated entities in test db context
+                AfterRequest = CreateDatabaseContext
+            };
         }
 
-        public DatabaseContext Database
-        {
-            get
-            {
-                if (_databaseContext is null)
-                {
-                    var scopeFactory = Server.Host.Services.GetService<IServiceScopeFactory>();
-                    var scope = scopeFactory.CreateScope();
-
-                    _databaseContext = scope.ServiceProvider.GetService<DatabaseContext>();
-                    _databaseContext.Database.EnsureCreated();
-                }
-
-                return _databaseContext;
-            }
-        }
-
-        public DataGenerator DataGenerator => _dataGenerator ??= new DataGenerator(Database);
+        public TestRestClient RestClient { get; }
+        public DatabaseContext Database { get; private set; }
+        public DataGenerator DataGenerator { get; }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
@@ -74,8 +62,14 @@ namespace LBH.AdultSocialCare.Api.Tests
 
         private static void ConfigureHttpContextAccessor(IServiceCollection services)
         {
-            services.RemoveAll<IHttpContextAccessor>();
+            var accessorMock = CreateHttpContextAccessor();
 
+            services.RemoveAll<IHttpContextAccessor>();
+            services.AddSingleton(provider => accessorMock);
+        }
+
+        private static IHttpContextAccessor CreateHttpContextAccessor()
+        {
             var accessorMock = new Mock<IHttpContextAccessor>();
             var context = new DefaultHttpContext();
             var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "aee45700-af9b-4ab5-bb43-535adbdcfb84") });
@@ -86,7 +80,7 @@ namespace LBH.AdultSocialCare.Api.Tests
                 .SetupGet(a => a.HttpContext)
                 .Returns(context);
 
-            services.AddSingleton(provider => accessorMock.Object);
+            return accessorMock.Object;
         }
 
         protected override void ConfigureClient(HttpClient client)
@@ -118,18 +112,19 @@ namespace LBH.AdultSocialCare.Api.Tests
                 services.Remove(dbContextDescriptor);
             }
 
-            var connectionString = new SqliteConnectionStringBuilder { DataSource = ":memory:" }.ToString();
-            _connection = new SqliteConnection(connectionString);
-            _connection.Open();
-
-            // scoped instance will be cleaned with each API call, so it's impossible to operate with DB directly
             services.AddDbContext<DatabaseContext>(options =>
             {
                 options.UseSqlite(_connection);
-                // options
-                //     .UseInMemoryDatabase($"HASC.API.E2E.TESTS.{DateTime.Now.Ticks}")
-                //     .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));
-            }, ServiceLifetime.Singleton);
+            });
+        }
+
+        private void CreateDatabaseContext()
+        {
+            var builder = new DbContextOptionsBuilder<DatabaseContext>();
+            builder.UseSqlite(_connection);
+
+            Database = new DatabaseContext(builder.Options, CreateHttpContextAccessor());
+            Database.Database.EnsureCreated();
         }
 
         protected override void Dispose(bool disposing)
@@ -138,7 +133,7 @@ namespace LBH.AdultSocialCare.Api.Tests
             {
                 _connection?.Close();
                 _connection?.Dispose();
-                _databaseContext?.Dispose();
+                Database?.Dispose();
             }
 
             base.Dispose(disposing);
