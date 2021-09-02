@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces
 {
     public interface ICreateNursingCareBrokerageUseCase
     {
-        Task<NursingCareBrokerageInfoResponse> ExecuteAsync(NursingCareBrokerageInfoCreationDomain nursingCareBrokerageInfoCreationDomain);
+        Task<NursingCareBrokerageInfoResponse> ExecuteAsync(NursingCareBrokerageInfoCreationDomain brokerageInfoCreationDomain);
     }
 }

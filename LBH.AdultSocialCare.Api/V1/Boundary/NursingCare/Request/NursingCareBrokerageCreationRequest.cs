@@ -39,6 +39,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request
 
         public IEnumerable<NursingCareAdditionalNeedsCostCreationRequest> NursingCareAdditionalNeedsCosts { get; set; }
 
-        public int FundedNursingCareCollectorId { get; set; }
+        public int? FundedNursingCareCollectorId { get; set; }
     }
 }

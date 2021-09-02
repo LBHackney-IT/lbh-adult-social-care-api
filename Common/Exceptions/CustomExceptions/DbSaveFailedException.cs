@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 
 namespace Common.Exceptions.CustomExceptions
@@ -11,6 +12,10 @@ namespace Common.Exceptions.CustomExceptions
         }
 
         public DbSaveFailedException(string message) : base(message)
+        {
+        }
+
+        public DbSaveFailedException(string message, Exception ex) : base(message, ex)
         {
         }
     }

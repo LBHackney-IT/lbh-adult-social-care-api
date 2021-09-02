@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Bogus;
 using Common.Exceptions.CustomExceptions;
 using FluentAssertions;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
@@ -21,9 +22,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
         {
             _gateway = new SupplierGateway(Context, Mapper);
             _supplierFaker = new Faker<Supplier>()
-                .RuleFor(s => s.Id, f => f.IndexFaker)
                 .RuleFor(s => s.SupplierName, f => f.Company.CompanyName())
-                .RuleFor(s => s.PackageTypeId, f => f.Random.Int(1, 10));
+                .RuleFor(s => s.PackageTypeId, f => PackageTypesConstants.DayCarePackageId);
         }
 
         [Fact]
@@ -37,8 +37,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
             var supplierDomain = supplier.ToDomain();
 
             supplierDomain.SupplierName = String.Concat(supplier.SupplierName.Reverse());
-            supplierDomain.PackageTypeId = supplier.PackageTypeId + 1;
-            supplierDomain.FundedNursingCareCollectorId = 123;
+            supplierDomain.PackageTypeId = PackageTypesConstants.NursingCarePackageId;
+            supplierDomain.FundedNursingCareCollectorId = 1;
 
             var updatedSupplier = await _gateway.UpdateAsync(supplierDomain).ConfigureAwait(false);
 

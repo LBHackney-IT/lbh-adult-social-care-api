@@ -1,5 +1,3 @@
-using HttpServices.Services.Concrete;
-using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCare.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.HomeCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Concrete;
@@ -8,7 +6,6 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCare.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.DayCare.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete;
@@ -282,7 +279,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetNursingCareBrokerageUseCase, GetNursingCareBrokerageUseCase>();
             services.AddScoped<ICreateNursingCareBrokerageUseCase, CreateNursingCareBrokerageUseCase>();
             services.AddScoped<ISetStageToNursingCarePackageUseCase, SetStageToNursingCarePackageUseCase>();
-            services.AddScoped<IChangeDatesOfNursingCarePackageUseCase, ChangeDatesOfNursingCarePackageUseCase>();
 
             #endregion NursingCareBrokerage
 
