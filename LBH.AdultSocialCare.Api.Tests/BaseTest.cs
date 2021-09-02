@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Profiles;
 

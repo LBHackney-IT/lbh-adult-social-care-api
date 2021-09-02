@@ -22,8 +22,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
         [Fact]
         public async Task ShouldReturnCollectorsList()
         {
-            var collector1 = new FundedNursingCareCollector { OptionName = "Hackney", ClaimedBy = 1};
-            var collector2 = new FundedNursingCareCollector { OptionName = "Supplier", ClaimedBy = 2};
+            var collector1 = new FundedNursingCareCollector { OptionName = "Hackney", ClaimedBy = 1 };
+            var collector2 = new FundedNursingCareCollector { OptionName = "Supplier", ClaimedBy = 2 };
 
             _fixture.Database.FundedNursingCareCollectors.ClearData();
             _fixture.Database.FundedNursingCareCollectors.AddRange(collector1, collector2);

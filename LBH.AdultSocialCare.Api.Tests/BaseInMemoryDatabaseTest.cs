@@ -26,7 +26,7 @@ namespace LBH.AdultSocialCare.Api.Tests
 
         private DatabaseContext CreateDatabaseContext()
         {
-            var connectionString = new SqliteConnectionStringBuilder{ DataSource = ":memory:" }.ToString();
+            var connectionString = new SqliteConnectionStringBuilder { DataSource = ":memory:" }.ToString();
             _connection = new SqliteConnection(connectionString);
             _connection.Open();
 

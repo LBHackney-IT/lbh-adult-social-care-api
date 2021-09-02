@@ -78,7 +78,7 @@ namespace LBH.AdultSocialCare.Api.Tests
 
             var accessorMock = new Mock<IHttpContextAccessor>();
             var context = new DefaultHttpContext();
-            var identity = new ClaimsIdentity(new [] { new Claim(ClaimTypes.NameIdentifier, "aee45700-af9b-4ab5-bb43-535adbdcfb84") });
+            var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "aee45700-af9b-4ab5-bb43-535adbdcfb84") });
 
             context.User = new ClaimsPrincipal(identity);
 
@@ -118,7 +118,7 @@ namespace LBH.AdultSocialCare.Api.Tests
                 services.Remove(dbContextDescriptor);
             }
 
-            var connectionString = new SqliteConnectionStringBuilder{ DataSource = ":memory:" }.ToString();
+            var connectionString = new SqliteConnectionStringBuilder { DataSource = ":memory:" }.ToString();
             _connection = new SqliteConnection(connectionString);
             _connection.Open();
 

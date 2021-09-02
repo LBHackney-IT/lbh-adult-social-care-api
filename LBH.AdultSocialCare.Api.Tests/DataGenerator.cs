@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
 using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.Tests
@@ -42,6 +44,20 @@ namespace LBH.AdultSocialCare.Api.Tests
             }
 
             return result;
+        }
+
+        public async Task<NursingCareBrokerageInfo> GenerateNursingCareBrokerageInfo(Guid packageId)
+        {
+            var brokerage = new NursingCareBrokerageInfo
+            {
+                NursingCarePackageId = packageId,
+                NursingCore = 0.0m
+            };
+
+            _context.NursingCareBrokerageInfos.Add(brokerage);
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+
+            return brokerage;
         }
     }
 }
