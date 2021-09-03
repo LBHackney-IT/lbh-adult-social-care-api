@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
@@ -72,7 +73,7 @@ namespace LBH.AdultSocialCare.Api.Tests
         {
             var accessorMock = new Mock<IHttpContextAccessor>();
             var context = new DefaultHttpContext();
-            var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, "aee45700-af9b-4ab5-bb43-535adbdcfb84") });
+            var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.NameIdentifier, UserConstants.DefaultApiUserId) });
 
             context.User = new ClaimsPrincipal(identity);
 

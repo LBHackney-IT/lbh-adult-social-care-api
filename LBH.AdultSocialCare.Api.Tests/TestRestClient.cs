@@ -27,7 +27,7 @@ namespace LBH.AdultSocialCare.Api.Tests
             return await SubmitRequest<TContent>(url, payload, HttpMethod.Post).ConfigureAwait(false);
         }
 
-        public async Task<TestResponse<TContent>> PutAsync<TContent>(string url, object payload)
+        public async Task<TestResponse<TContent>> PutAsync<TContent>(string url, object payload = null)
         {
             return await SubmitRequest<TContent>(url, payload, HttpMethod.Put).ConfigureAwait(false);
         }

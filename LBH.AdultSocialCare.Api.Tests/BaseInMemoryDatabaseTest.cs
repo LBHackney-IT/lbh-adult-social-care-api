@@ -1,5 +1,6 @@
 using System;
 using System.Security.Claims;
+using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.Sqlite;
@@ -40,7 +41,7 @@ namespace LBH.AdultSocialCare.Api.Tests
         private static IHttpContextAccessor CreateHttpContextAccessor()
         {
             var identity = new ClaimsIdentity();
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, "aee45700-af9b-4ab5-bb43-535adbdcfb84"));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, UserConstants.DefaultApiUserId));
 
             var httpContext = new DefaultHttpContext
             {

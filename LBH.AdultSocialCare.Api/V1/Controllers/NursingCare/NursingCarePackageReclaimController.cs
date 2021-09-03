@@ -32,11 +32,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         public async Task<ActionResult<NursingCarePackageClaimResponse>> CreateNursingCarePackageReclaim(
             NursingCarePackageClaimCreationRequest nursingCarePackageClaimCreationRequest)
         {
-            if (nursingCarePackageClaimCreationRequest == null)
-            {
-                return BadRequest("Object for creation cannot be null.");
-            }
-
             if (!ModelState.IsValid)
             {
                 return UnprocessableEntity(ModelState);

@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -24,7 +25,7 @@ namespace LBH.AdultSocialCare.Api.Tests
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, "Test");
 
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, "aee45700-af9b-4ab5-bb43-535adbdcfb84"));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, UserConstants.DefaultApiUserId));
 
             var result = AuthenticateResult.Success(ticket);
 
