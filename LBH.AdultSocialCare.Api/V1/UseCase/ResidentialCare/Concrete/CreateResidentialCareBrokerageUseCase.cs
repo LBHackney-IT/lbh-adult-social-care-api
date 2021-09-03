@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
@@ -7,6 +5,9 @@ using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
 {
@@ -38,6 +39,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
             var res = await _residentialCareBrokerageGateway.CreateAsync(residentialCareBrokerageInfoEntity).ConfigureAwait(false);
             if (res == null) return null;
             var residentialCarePackageDomain = await _residentialCarePackageGateway.GetAsync(residentialCareBrokerageInfoCreationDomain.ResidentialCarePackageId).ConfigureAwait(false);
+            if (residentialCarePackageDomain == null)
+            {
+                throw new ApiException($"Residential care package with id {residentialCareBrokerageInfoCreationDomain.ResidentialCarePackageId} not found", StatusCodes.Status404NotFound);
+            }
             residentialCarePackageDomain.StageId = residentialCareBrokerageInfoCreationDomain.StageId;
             residentialCarePackageDomain.SupplierId = residentialCareBrokerageInfoCreationDomain.SupplierId;
             var residentialCarePackageForUpdateDomain = new ResidentialCarePackageForUpdateDomain();

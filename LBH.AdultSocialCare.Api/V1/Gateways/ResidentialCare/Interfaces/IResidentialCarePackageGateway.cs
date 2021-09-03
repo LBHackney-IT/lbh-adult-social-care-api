@@ -1,8 +1,8 @@
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces
 {
@@ -13,6 +13,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces
         public Task<ResidentialCarePackageDomain> CreateAsync(ResidentialCarePackage residentialCarePackageForCreation);
 
         public Task<ResidentialCarePackageDomain> GetAsync(Guid residentialCarePackageId);
+
+        public Task<ResidentialCarePackagePlainDomain> GetPlainAsync(Guid residentialCarePackageId);
 
         public Task<ResidentialCarePackageDomain> ChangeStatusAsync(Guid residentialCarePackageId, int statusId);
 

@@ -221,9 +221,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        public static IEnumerable<ResidentialCarePackageDomain> ToDomain(this List<ResidentialCarePackage> nursingCarePackageEntities)
+        public static IEnumerable<ResidentialCarePackageDomain> ToDomain(this List<ResidentialCarePackage> residentialCarePackageEntities)
         {
-            return nursingCarePackageEntities.Select(entity => entity.ToDomain()).ToList();
+            return residentialCarePackageEntities.Select(entity => entity.ToDomain()).ToList();
+        }
+
+        public static ResidentialCarePackagePlainDomain ToPlainDomain(this ResidentialCarePackage residentialCarePackage)
+        {
+            return _mapper.Map<ResidentialCarePackagePlainDomain>(residentialCarePackage);
         }
 
         #endregion ResidentialCarePackage
