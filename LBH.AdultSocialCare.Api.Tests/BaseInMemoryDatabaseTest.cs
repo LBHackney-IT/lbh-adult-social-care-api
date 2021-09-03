@@ -11,7 +11,7 @@ namespace LBH.AdultSocialCare.Api.Tests
     public class BaseInMemoryDatabaseTest : BaseTest, IDisposable
     {
         private SqliteConnection _connection;
-        // is called before _each_ test
+
         protected BaseInMemoryDatabaseTest()
         {
             Context = CreateDatabaseContext();
@@ -26,13 +26,12 @@ namespace LBH.AdultSocialCare.Api.Tests
 
         private DatabaseContext CreateDatabaseContext()
         {
-            var connectionString = new SqliteConnectionStringBuilder { DataSource = ":memory:" }.ToString();
+            var connectionString = $"DataSource=file:DB{Guid.NewGuid()}?mode=memory&cache=shared";
             _connection = new SqliteConnection(connectionString);
             _connection.Open();
 
             var dbContextOptions = new DbContextOptionsBuilder<DatabaseContext>()
                 .UseSqlite(_connection)
-                // .UseInMemoryDatabase($"HASC.API.UNIT.TESTS.{DateTime.Now.Ticks}")
                 .Options;
 
             return new DatabaseContext(dbContextOptions, CreateHttpContextAccessor());

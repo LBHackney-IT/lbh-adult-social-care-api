@@ -12,6 +12,7 @@ using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
 {
+
     [Route("api/v1/nursing-care-packages")]
     [Produces("application/json")]
     [ApiController]
@@ -19,6 +20,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
     [ApiVersion("1.0")]
     public class NursingCarePackageController : BaseController
     {
+
         private readonly IUpdateNursingCarePackageUseCase _updateNursingCarePackageUseCase;
         private readonly IGetNursingCarePackageUseCase _getNursingCarePackageUseCase;
         private readonly IChangeStatusNursingCarePackageUseCase _changeStatusNursingCarePackageUseCase;
@@ -35,8 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
             IGetAllNursingCareHomeTypeUseCase getAllNursingCareHomeTypeUseCase,
             IGetAllNursingCareTypeOfStayOptionUseCase getAllNursingCareTypeOfStayOptionUseCase,
             ICreateNursingCarePackageUseCase createNursingCarePackageUseCase,
-            IGetAllNursingCareApprovalHistoryUseCase getAllNursingCareApprovalHistoryUseCase
-            )
+            IGetAllNursingCareApprovalHistoryUseCase getAllNursingCareApprovalHistoryUseCase)
         {
             _updateNursingCarePackageUseCase = updateNursingCarePackageUseCase;
             _getNursingCarePackageUseCase = getNursingCarePackageUseCase;
@@ -57,7 +58,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        public async Task<ActionResult<NursingCarePackageResponse>> CreateNursingCarePackage(NursingCarePackageForCreationRequest nursingCarePackageForCreationRequest)
+        public async Task<ActionResult<NursingCarePackageResponse>> CreateNursingCarePackage(
+            NursingCarePackageForCreationRequest nursingCarePackageForCreationRequest)
         {
             if (nursingCarePackageForCreationRequest == null)
             {
@@ -70,7 +72,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
             }
 
             var nursingCarePackageForCreationDomain = nursingCarePackageForCreationRequest.ToDomain();
-            var nursingCarePackageResponse = await _createNursingCarePackageUseCase.ExecuteAsync(nursingCarePackageForCreationDomain).ConfigureAwait(false);
+
+            var nursingCarePackageResponse = await _createNursingCarePackageUseCase
+                .ExecuteAsync(nursingCarePackageForCreationDomain)
+                .ConfigureAwait(false);
 
             //Change status of package
             await _changeStatusNursingCarePackageUseCase
@@ -80,6 +85,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
             await _changeStatusNursingCarePackageUseCase
                 .UpdateAsync(nursingCarePackageResponse.Id, ApprovalHistoryConstants.SubmittedForApprovalId)
                 .ConfigureAwait(false);
+
             return Ok(nursingCarePackageResponse);
         }
 
@@ -89,8 +95,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<NursingCarePackageResponse>> UpdateNursingCarePackage(
-            Guid nursingCarePackageId,
+        public async Task<ActionResult<NursingCarePackageResponse>> UpdateNursingCarePackage(Guid nursingCarePackageId,
             NursingCarePackageForUpdateRequest nursingCarePackageForUpdate)
         {
             if (nursingCarePackageForUpdate == null)
@@ -104,7 +109,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
             }
 
             var nursingCarePackageForUpdateDomain = nursingCarePackageForUpdate.ToDomain(nursingCarePackageId);
-            var result = await _updateNursingCarePackageUseCase.ExecuteAsync(nursingCarePackageForUpdateDomain).ConfigureAwait(false);
+
+            var result = await _updateNursingCarePackageUseCase.ExecuteAsync(nursingCarePackageForUpdateDomain)
+                .ConfigureAwait(false);
+
             return Ok(result);
         }
 
@@ -115,7 +123,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         [Route("{nursingCarePackageId}")]
         public async Task<ActionResult<NursingCarePackageResponse>> GetSingleNursingCarePackage(Guid nursingCarePackageId)
         {
-            var nursingCarePackageResponse = await _getNursingCarePackageUseCase.GetAsync(nursingCarePackageId).ConfigureAwait(false);
+            var nursingCarePackageResponse =
+                await _getNursingCarePackageUseCase.GetAsync(nursingCarePackageId).ConfigureAwait(false);
+
             return Ok(nursingCarePackageResponse);
         }
 
@@ -135,6 +145,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
             var nursingCarePackageResponse = await _changeStatusNursingCarePackageUseCase
                 .UpdateAsync(nursingCarePackageId, statusId)
                 .ConfigureAwait(false);
+
             return Ok(nursingCarePackageResponse);
         }
 
@@ -148,6 +159,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         public async Task<ActionResult<IEnumerable<NursingCarePackageResponse>>> GetNursingCareList()
         {
             var result = await _getAllNursingCarePackageUseCase.GetAllAsync().ConfigureAwait(false);
+
             return Ok(result);
         }
 
@@ -158,6 +170,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         public async Task<ActionResult<IEnumerable<TypeOfNursingCareHomeResponse>>> GetTypeOfNursingCareHomeOptionsList()
         {
             var result = await _getAllNursingCareHomeTypeUseCase.GetAllAsync().ConfigureAwait(false);
+
             return Ok(result);
         }
 
@@ -168,6 +181,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         public async Task<ActionResult<IEnumerable<NursingCareTypeOfStayOptionResponse>>> GetTypeOfStayOptionList()
         {
             var result = await _getAllNursingCareTypeOfStayOptionUseCase.GetAllAsync().ConfigureAwait(false);
+
             return Ok(result);
         }
 
@@ -176,10 +190,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("approval-history/{nursingCarePackageId}")]
-        public async Task<ActionResult<IEnumerable<NursingCareApprovalHistoryResponse>>> GetApprovalHistoryList(Guid nursingCarePackageId)
+        public async Task<ActionResult<IEnumerable<NursingCareApprovalHistoryResponse>>> GetApprovalHistoryList(
+            Guid nursingCarePackageId)
         {
-            var result = await _getAllNursingCareApprovalHistoryUseCase.GetAllAsync(nursingCarePackageId).ConfigureAwait(false);
+            var result = await _getAllNursingCareApprovalHistoryUseCase.GetAllAsync(nursingCarePackageId)
+                .ConfigureAwait(false);
+
             return Ok(result);
         }
+
     }
+
 }
