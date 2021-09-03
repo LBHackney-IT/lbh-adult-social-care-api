@@ -13,7 +13,7 @@ using Xunit;
 namespace LBH.AdultSocialCare.Api.Tests.V1.Controllers.NursingCare
 {
 
-    public class NursingCarePackageTests
+    public class NursingCarePackageTests : BaseTest
     {
 
         [Fact]
@@ -46,7 +46,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Controllers.NursingCare
             var result = await controller.CreateNursingCarePackage(fakeModel).ConfigureAwait(false);
 
             // Assert
-            OkObjectResult okResult = Assert.IsType<OkObjectResult>(result);
+            OkObjectResult okResult = Assert.IsType<OkObjectResult>(result.Result);
             NursingCarePackageResponse packageResponseModel = Assert.IsType<NursingCarePackageResponse>(okResult.Value);
             Assert.Equal(createResponseId, packageResponseModel.Id);
         }

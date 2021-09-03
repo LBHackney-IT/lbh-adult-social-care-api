@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.Tests.Extensions;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using Xunit;
@@ -22,8 +23,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
         [Fact]
         public async Task ShouldReturnCollectorsList()
         {
-            var collector1 = new FundedNursingCareCollector { OptionName = "Hackney", ClaimedBy = 1 };
-            var collector2 = new FundedNursingCareCollector { OptionName = "Supplier", ClaimedBy = 2 };
+            var collector1 = new FundedNursingCareCollector { OptionName = "Hackney", ClaimedBy = PackageCostClaimersConstants.Hackney };
+            var collector2 = new FundedNursingCareCollector { OptionName = "Supplier", ClaimedBy = PackageCostClaimersConstants.Supplier };
 
             _fixture.DatabaseContext.FundedNursingCareCollectors.ClearData();
             _fixture.DatabaseContext.FundedNursingCareCollectors.AddRange(collector1, collector2);
