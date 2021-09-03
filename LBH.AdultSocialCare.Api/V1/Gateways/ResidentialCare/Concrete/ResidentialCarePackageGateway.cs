@@ -81,6 +81,13 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
             return result?.ToDomain();
         }
 
+        public async Task<ResidentialCarePackagePlainDomain> GetPlainAsync(Guid residentialCarePackageId)
+        {
+            var result = await _databaseContext.ResidentialCarePackages
+                .SingleOrDefaultAsync(item => item.Id == residentialCarePackageId).ConfigureAwait(false);
+            return result?.ToPlainDomain();
+        }
+
         public async Task<ResidentialCarePackageDomain> ChangeStatusAsync(Guid residentialCarePackageId, int statusId)
         {
             ResidentialCarePackage residentialCarePackageToUpdate = await _databaseContext.ResidentialCarePackages

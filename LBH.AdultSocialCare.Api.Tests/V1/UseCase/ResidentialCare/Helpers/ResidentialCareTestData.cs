@@ -106,7 +106,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.ResidentialCare.Helpers
                     Stage = null,
                     SupplierId = null,
                     AssignedUserId = null,
-                    PaidUpTo = null,
+                    PaidUpTo = DateTimeOffset.Now.AddDays(-50),
                     PreviousPaidUpTo = null,
                     Supplier = null,
                     TypeOfCareHome = null,

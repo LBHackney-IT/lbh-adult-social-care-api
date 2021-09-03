@@ -48,7 +48,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.ResidentialCare
             var useCase = InitUseCase(existingPackageId);
             var newStartDate = DateTimeOffset.Now.AddDays(-10);
 
-            var originalPackage = await _gateway.Object.GetAsync(existingPackageId).ConfigureAwait(false);
+            var originalPackage = await _gateway.Object.GetPlainAsync(existingPackageId).ConfigureAwait(false);
             var updatedPackageResponse = await useCase.UpdateAsync(existingPackageId, newStartDate, null).ConfigureAwait(false);
 
             Assert.Equal(originalPackage.StartDate, updatedPackageResponse.StartDate);
@@ -64,7 +64,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.ResidentialCare
             var useCase = InitUseCase(existingPackageId);
             var newEndDate = DateTimeOffset.Now.AddDays(1000);
 
-            var originalPackage = await _gateway.Object.GetAsync(existingPackageId).ConfigureAwait(false);
             var updatedPackageResponse = await useCase.UpdateAsync(existingPackageId, null, newEndDate).ConfigureAwait(false);
 
             Assert.Equal(newEndDate, updatedPackageResponse.EndDate);
@@ -88,10 +87,25 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.ResidentialCare
                 Times.Never);
         }
 
+        [Fact]
+        public async Task ShouldNotAllowEndDateToBeLessThanInvoicedUpToDate()
+        {
+            var existingPackageId = new Guid("e5109a28-31fb-4e59-b433-0f2745f96a16");
+            var useCase = InitUseCase(existingPackageId);
+            var newEndDate = DateTimeOffset.Now.AddDays(-55);
+
+            Func<Task> action = () => useCase.UpdateAsync(existingPackageId, null, newEndDate);
+
+            await action.Should().ThrowAsync<ApiException>().ConfigureAwait(false);
+            _gateway.Verify(
+                g => g.UpdateAsync(It.IsAny<ResidentialCarePackageForUpdateDomain>()),
+                Times.Never);
+        }
+
         private ChangeDatesOfResidentialCarePackageUseCase InitUseCase(Guid residentialCarePackageId)
         {
-            _gateway.Setup(repo => repo.GetAsync(It.Is<Guid>(g => g == residentialCarePackageId)))
-                 .ReturnsAsync(_testData.GetSingleResidentialCarePackage(residentialCarePackageId)?.ToDomain());
+            _gateway.Setup(repo => repo.GetPlainAsync(It.Is<Guid>(g => g == residentialCarePackageId)))
+                 .ReturnsAsync(_testData.GetSingleResidentialCarePackage(residentialCarePackageId)?.ToPlainDomain());
             _gateway.Setup(repo => repo.UpdateAsync(It.IsAny<ResidentialCarePackageForUpdateDomain>()))
                  .ReturnsAsync((ResidentialCarePackageForUpdateDomain val) => new ResidentialCarePackageDomain
                  {

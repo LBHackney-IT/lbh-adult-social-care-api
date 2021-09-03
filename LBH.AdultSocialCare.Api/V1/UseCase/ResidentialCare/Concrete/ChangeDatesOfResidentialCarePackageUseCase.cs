@@ -24,16 +24,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
 
         public async Task<ResidentialCarePackageResponse> UpdateAsync(Guid residentialCarePackageId, DateTimeOffset? startDate, DateTimeOffset? endDate)
         {
-            var package = await _gateway.GetAsync(residentialCarePackageId).ConfigureAwait(false);
+            var package = await _gateway.GetPlainAsync(residentialCarePackageId).ConfigureAwait(false);
 
             if (package == null)
             {
                 throw new ApiException($"Residential care package with id {residentialCarePackageId} not found", StatusCodes.Status404NotFound);
             }
 
-            if (package.StartDate > endDate)
+            if (package.StartDate > endDate || package.PaidUpTo > endDate)
             {
-                throw new ApiException($"Residential care package date change for package with id {residentialCarePackageId} failed. Package start date cannot be greater than end date ", StatusCodes.Status422UnprocessableEntity);
+                throw new ApiException($"Residential care package date change for package with id {residentialCarePackageId} failed. Package start date or invoiced up to cannot be greater than the new end date ", StatusCodes.Status422UnprocessableEntity);
             }
 
             package.EndDate = endDate;

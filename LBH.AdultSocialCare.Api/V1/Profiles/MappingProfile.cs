@@ -156,6 +156,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<TypeOfResidentialCareHomeDomain, TypeOfResidentialCareHomeResponse>();
             CreateMap<ResidentialCareApprovalHistory, ResidentialCareApprovalHistoryDomain>();
             CreateMap<ResidentialCareApprovalHistoryDomain, ResidentialCareApprovalHistory>();
+            CreateMap<ResidentialCarePackage, ResidentialCarePackagePlainDomain>();
+            CreateMap<ResidentialCarePackagePlainDomain, ResidentialCarePackageForUpdateDomain>();
 
             #endregion ResidentialCarePackage
 
