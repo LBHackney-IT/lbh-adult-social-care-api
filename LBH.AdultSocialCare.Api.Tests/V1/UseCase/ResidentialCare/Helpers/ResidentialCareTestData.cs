@@ -1,10 +1,10 @@
-using System;
+using Bogus;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Bogus;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.ResidentialCare.Helpers
 {
@@ -17,8 +17,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.ResidentialCare.Helpers
         private readonly Faker<Client> _clientFaker;
         private readonly Faker<ResidentialCarePackage> _residentialCarePackageFaker;
 
-        /*private static DateTime _startDate = DateTime.ParseExact("20100101", "yyyyMMdd", CultureInfo.InvariantCulture);
-        private static DateTime _endDate = DateTime.UtcNow;*/
+        private static DateTime _startDate = DateTime.ParseExact("20100101", "yyyyMMdd", CultureInfo.InvariantCulture);
+        private static DateTime _endDate = DateTime.UtcNow;
 
         private enum Visibility
         {
@@ -27,55 +27,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.ResidentialCare.Helpers
             Trial
         }
 
-
         public ResidentialCareTestData()
         {
-            _clientFaker = new Faker<Client>()
-                .RuleFor(p => p.FirstName, f => f.Name.FirstName(f.Person.Gender))
-                .RuleFor(p => p.MiddleName, f => f.Name.FirstName(f.Person.Gender))
-                .RuleFor(p => p.LastName, f => f.Name.LastName(f.Person.Gender))
-                .RuleFor(p => p.DateCreated, f => DateTimeOffset.UtcNow)
-                ;
-            _residentialCarePackageFaker = new Faker<ResidentialCarePackage>();
-
-            _residentialCarePackages = new List<ResidentialCarePackage>()
-            {
-                new ResidentialCarePackage
-                {
-                    DateCreated = DateTimeOffset.Now,
-                    CreatorId = new Guid("115e5c77-5943-4a39-bafb-32f45f33a9bf"),
-                    UpdaterId = null,
-                    Id = new Guid("e5109a28-31fb-4e59-b433-0f2745f96a16"),
-                    ClientId = new Guid("e5109a28-31fb-4e59-b433-0f2745f96a16"),
-                    Client = null,
-                    IsFixedPeriod = true,
-                    StartDate = DateTimeOffset.Now.AddDays(-100),
-                    EndDate = DateTimeOffset.Now.AddDays(100),
-                    HasRespiteCare = true,
-                    HasDischargePackage = true,
-                    IsThisAnImmediateService = true,
-                    IsThisUserUnderS117 = false,
-                    TypeOfStayId = 1,
-                    NeedToAddress = string.Join(" ", Faker.Lorem.Sentences(3)),
-                    TypeOfResidentialCareHomeId = 1,
-                    StatusId = 1,
-                    Status = null,
-                    StageId = null,
-                    Stage = null,
-                    SupplierId = null,
-                    AssignedUserId = null,
-                    PaidUpTo = null,
-                    PreviousPaidUpTo = null,
-                    Supplier = null,
-                    TypeOfCareHome = null,
-                    TypeOfStayOption = null,
-                    ResidentialCareAdditionalNeeds = null,
-                    PackageReclaims = null,
-                    ResidentialCareApprovalHistories = null,
-                    ResidentialCareBrokerageInfo = null
-                }
-            };
-
             _users = new List<User>()
             {
                 new User
@@ -124,6 +77,99 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.ResidentialCare.Helpers
                     PrimarySupportReasonId = null
                 }
             };
+
+            // _clients.AddRange(_clientFaker.Generate(5));
+
+            _residentialCarePackages = new List<ResidentialCarePackage>()
+            {
+                new ResidentialCarePackage
+                {
+                    DateCreated = DateTimeOffset.Now,
+                    CreatorId = new Guid("115e5c77-5943-4a39-bafb-32f45f33a9bf"),
+                    UpdaterId = null,
+                    Id = new Guid("e5109a28-31fb-4e59-b433-0f2745f96a16"),
+                    ClientId = new Guid("e5109a28-31fb-4e59-b433-0f2745f96a16"),
+                    Client = null,
+                    IsFixedPeriod = true,
+                    StartDate = DateTimeOffset.Now.AddDays(-100),
+                    EndDate = DateTimeOffset.Now.AddDays(100),
+                    HasRespiteCare = true,
+                    HasDischargePackage = true,
+                    IsThisAnImmediateService = true,
+                    IsThisUserUnderS117 = false,
+                    TypeOfStayId = 1,
+                    NeedToAddress = string.Join(" ", Faker.Lorem.Sentences(3)),
+                    TypeOfResidentialCareHomeId = 1,
+                    StatusId = 1,
+                    Status = null,
+                    StageId = null,
+                    Stage = null,
+                    SupplierId = null,
+                    AssignedUserId = null,
+                    PaidUpTo = null,
+                    PreviousPaidUpTo = null,
+                    Supplier = null,
+                    TypeOfCareHome = null,
+                    TypeOfStayOption = null,
+                    ResidentialCareAdditionalNeeds = null,
+                    PackageReclaims = null,
+                    ResidentialCareApprovalHistories = null,
+                    ResidentialCareBrokerageInfo = null
+                }
+            };
+
+            _clientFaker = new Faker<Client>()
+                    .StrictMode(false)
+                    .RuleFor(p => p.FirstName, f => f.Name.FirstName(f.Person.Gender))
+                    .RuleFor(p => p.MiddleName, f => f.Name.FirstName(f.Person.Gender))
+                    .RuleFor(p => p.LastName, f => f.Name.LastName(f.Person.Gender))
+                    .RuleFor(p => p.DateCreated, f => DateTimeOffset.UtcNow)
+                ;
+            _residentialCarePackageFaker = new Faker<ResidentialCarePackage>()
+                    .StrictMode(false)
+                    .RuleFor(s => s.StartDate, f => f.Date.Between(_startDate, _endDate.AddYears(-2)))
+                    .RuleFor(s => s.StartDate, f => f.Date.Between(_endDate.AddYears(-2), _endDate))
+                    .RuleFor(s => s.ClientId, f => f.PickRandom(_clients).Id)
+                    .RuleFor(s => s.CreatorId, f => f.PickRandom(_users).Id)
+                ;
+        }
+
+        public List<ResidentialCarePackage> GetAllResidentialCarePackages()
+        {
+            _residentialCarePackages.AddRange(_residentialCarePackageFaker.Generate(_clients.Count - 1));
+
+            for (var i = 0; i < _residentialCarePackages.Count; i++)
+            {
+                _residentialCarePackages[i].ClientId = _clients[i].Id;
+            }
+
+            return _residentialCarePackages;
+        }
+
+        public ResidentialCarePackage GetSingleResidentialCarePackage(Guid residentialCarePackageId)
+        {
+            var res = _residentialCarePackages.SingleOrDefault(p => p.Id.Equals(residentialCarePackageId));
+            return res;
+        }
+
+        public List<Client> GetAllClients()
+        {
+            return _clients;
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return _users;
+        }
+
+        public Faker<ResidentialCarePackage> GetResidentialCarePackageFaker()
+        {
+            return _residentialCarePackageFaker;
+        }
+
+        public Faker<Client> GetClientFaker()
+        {
+            return _clientFaker;
         }
     }
 }

@@ -78,11 +78,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                 .Include(item => item.Status)
                 .Include(item => item.ResidentialCareAdditionalNeeds)
                 .FirstOrDefaultAsync(item => item.Id == residentialCarePackageId).ConfigureAwait(false);
-            if (result == null)
-            {
-                throw new EntityNotFoundException($"Unable to locate residential care package {residentialCarePackageId}");
-            }
-            return result.ToDomain();
+            return result?.ToDomain();
         }
 
         public async Task<ResidentialCarePackageDomain> ChangeStatusAsync(Guid residentialCarePackageId, int statusId)

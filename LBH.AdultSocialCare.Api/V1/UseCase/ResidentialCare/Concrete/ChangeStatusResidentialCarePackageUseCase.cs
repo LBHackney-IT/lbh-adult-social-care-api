@@ -10,6 +10,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Security.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
 {
@@ -35,6 +36,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
         public async Task<ResidentialCarePackageResponse> UpdateAsync(Guid residentialCarePackageId, int statusId, string requestMoreInformation = null)
         {
             var package = await _gateway.GetAsync(residentialCarePackageId).ConfigureAwait(false);
+
+            if (package == null)
+            {
+                throw new ApiException($"Residential care package with id {residentialCarePackageId} not found", StatusCodes.Status404NotFound);
+            }
 
             if (!PackageStatusTransitions.CanChangeStatus(package.StatusId, statusId))
             {
