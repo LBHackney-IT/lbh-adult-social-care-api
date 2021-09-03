@@ -1,13 +1,8 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCareApprovalHistoryBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.Request.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Boundary.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
-using LBH.AdultSocialCare.Api.V1.UseCase.HomeCareApprovalHistoryUseCase.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +10,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
+using LBH.AdultSocialCare.Api.V1.Controllers.Common;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
 {
@@ -139,13 +138,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HomeCare
             catch (FormatException ex)
             {
                 return BadRequest(ex.Message);
-            }
-            catch (Exception exc)
-            {
-                // TODO remove
-                Debugger.Break();
-
-                return BadRequest(exc.Message);
             }
         }
 

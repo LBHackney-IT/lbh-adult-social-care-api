@@ -23,10 +23,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using HttpServices;
-using HttpServices.Models;
 using HttpServices.Services.Concrete;
 using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -96,6 +95,7 @@ namespace LBH.AdultSocialCare.Api
 
             services.AddHttpContextAccessor();
 
+            services.AddScoped<ITransactionManager, TransactionManager>();
             services.RegisterGateways();
             services.RegisterUseCases();
 
@@ -173,13 +173,17 @@ namespace LBH.AdultSocialCare.Api
                 var databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
                 // Uncomment next line to delete and recreate DB
-                // databaseContext.Database.EnsureDeleted();
+                //databaseContext.Database.EnsureDeleted();
 
-                // Run pending database migrations
-                if (databaseContext.Database.GetPendingMigrations().Any())
+                if (!databaseContext.Database.ProviderName.Equals("Microsoft.EntityFrameworkCore.InMemory") &&
+                    !databaseContext.Database.ProviderName.Equals("Microsoft.EntityFrameworkCore.Sqlite")) // disable migrations for test in-memory databases
                 {
-                    // Perform migrations
-                    databaseContext.Database.Migrate();
+                    // Run pending database migrations
+                    if (databaseContext.Database.GetPendingMigrations().Any())
+                    {
+                        // Perform migrations
+                        databaseContext.Database.Migrate();
+                    }
                 }
             }
 

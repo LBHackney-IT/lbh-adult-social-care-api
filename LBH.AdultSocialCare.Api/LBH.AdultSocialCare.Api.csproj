@@ -27,6 +27,14 @@
     <ItemGroup>
       <Compile Remove="V1\Infrastructure\Migrations\20210514130701_TestMigration.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20210514130701_TestMigration.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210823124447_UpdateServiceUserSeed.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210823124447_UpdateServiceUserSeed.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210827124654_HomeCareStages.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210827124654_HomeCareStages.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210827132625_NextSeed.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210827132625_NextSeed.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210827134141_AddHomeCareStages.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20210827134141_AddHomeCareStages.Designer.cs" />
     </ItemGroup>
 
   <ItemGroup>
@@ -59,12 +67,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="V1\Boundary\HomeCareApprovalHistoryBoundary\Request\" />
-    <Folder Include="V1\Boundary\ResidentialCarePackageBoundary\Request\" />
+    <ProjectReference Include="..\HttpServices\HttpServices.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\HttpServices\HttpServices.csproj" />
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(AssemblyName).Tests</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 
 </Project>

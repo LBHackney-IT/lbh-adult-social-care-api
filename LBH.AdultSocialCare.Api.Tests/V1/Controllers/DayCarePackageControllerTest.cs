@@ -1,10 +1,14 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCarePackageBoundary.Response;
-using LBH.AdultSocialCare.Api.V1.Controllers.DayCarePackageControllers;
-using LBH.AdultSocialCare.Api.V1.UseCase.DayCarePackageUseCases.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Text;
+using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
+using LBH.AdultSocialCare.Api.V1.Controllers.DayCare;
+using LBH.AdultSocialCare.Api.V1.UseCase.DayCare.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Controllers

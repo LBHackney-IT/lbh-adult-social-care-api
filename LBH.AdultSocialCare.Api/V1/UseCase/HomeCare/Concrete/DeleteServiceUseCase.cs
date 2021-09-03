@@ -1,0 +1,25 @@
+using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCare.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare.Interfaces;
+
+namespace LBH.AdultSocialCare.Api.V1.UseCase.HomeCare.Concrete
+{
+
+    public class DeleteServiceUseCase : IDeleteServiceUseCase
+    {
+
+        private readonly IHomeCareServiceTypeGateway _typeGateway;
+
+        public DeleteServiceUseCase(IHomeCareServiceTypeGateway homeCareServiceTypeGateway)
+        {
+            _typeGateway = homeCareServiceTypeGateway;
+        }
+
+        public async Task<bool> DeleteAsync(int serviceId)
+        {
+            return await _typeGateway.DeleteAsync(serviceId).ConfigureAwait(false);
+        }
+
+    }
+
+}

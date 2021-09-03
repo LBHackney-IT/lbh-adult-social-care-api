@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
@@ -13,16 +14,15 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Extensions;
-using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
@@ -67,7 +67,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<ResidentialCareTypeOfStayOption> ResidentialCareTypeOfStayOptions { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<HomeCareSupplierCost> HomeCareSupplierCosts { get; set; }
-        public DbSet<Stage> HomeCareStages { get; set; }
+        public DbSet<Stage> PackageStages { get; set; }
+        public DbSet<HomeCareStage> HomeCareStages { get; set; }
         public DbSet<CarerType> CarerTypes { get; set; }
         public DbSet<HomeCareApprovalHistory> HomeCareApprovalHistories { get; set; }
         public DbSet<NursingCareApprovalHistory> NursingCareApprovalHistories { get; set; }
@@ -87,15 +88,24 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<NursingCareBrokerageInfo> NursingCareBrokerageInfos { get; set; }
         public DbSet<ResidentialCareBrokerageInfo> ResidentialCareBrokerageInfos { get; set; }
         public DbSet<PrimarySupportReason> PrimarySupportReasons { get; set; }
+        public DbSet<NursingCareAdditionalNeedsCost> NursingCareAdditionalNeedsCosts { get; set; }
+        public DbSet<AdditionalNeedsPaymentType> AdditionalNeedsPaymentTypes { get; set; }
+        public DbSet<ResidentialCareAdditionalNeedsCost> ResidentialCareAdditionalNeedsCosts { get; set; }
 
+        public DbSet<PackageCostClaimer> PackageCostClaimers { get; set; }
+        public DbSet<FundedNursingCareCollector> FundedNursingCareCollectors { get; set; }
+        public DbSet<FundedNursingCarePrice> FundedNursingCarePrices { get; set; }
+        public DbSet<FundedNursingCare> FundedNursingCares { get; set; }
 
         #region CustomFunctions
 
 #pragma warning disable CA1801, CA1822
+
         public int CompareDates(DateTimeOffset? date1, DateTimeOffset? date2) => throw new InvalidOperationException("This method should be called by EF only");
+
 #pragma warning restore CA1801, CA1822
 
-        #endregion
+        #endregion CustomFunctions
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -151,8 +161,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed Supplier
             modelBuilder.ApplyConfiguration(new SupplierSeed());
 
-            // Seed HomeCareStage
+            // Seed PackageStages
             modelBuilder.ApplyConfiguration(new StageSeed());
+
+            // Seed HomeCareStages
+            modelBuilder.ApplyConfiguration(new HomeCareStageSeed());
 
             // Seed CarerType
             modelBuilder.ApplyConfiguration(new CarerTypeSeed());
@@ -172,6 +185,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed primary support reason
             modelBuilder.ApplyConfiguration(new PrimarySupportReasonSeed());
 
+            // Seed additional needs payment type
+            modelBuilder.ApplyConfiguration(new AdditionalNeedsPaymentTypeSeed());
+
+            // Seed FNC and reclaims-related constants
+            modelBuilder.ApplyConfiguration(new FundedNursingCareCollectorsSeed());
+            modelBuilder.ApplyConfiguration(new FundedNursingCarePriceSeed());
+            modelBuilder.ApplyConfiguration(new PackageCostClaimersSeed());
+
             #endregion Database Seeds
 
             #region Entity Config
@@ -182,7 +203,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 .HasDbFunction(typeof(DatabaseContext).GetMethod(nameof(CompareDates), new[] { typeof(DateTimeOffset?), typeof(DateTimeOffset?) }))
                 .HasName("comparedates");
 
-            #endregion
+            #endregion DB Functions
 
             // Home care
             modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.Minutes);
@@ -228,6 +249,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 entity.HasOne(a => a.NursingCareBrokerageInfo)
                     .WithOne(b => b.NursingCarePackage)
                     .HasForeignKey<NursingCareBrokerageInfo>(b => b.NursingCarePackageId);
+
+                entity.HasOne(a => a.FundedNursingCare)
+                    .WithOne(b => b.NursingCarePackage)
+                    .HasForeignKey<FundedNursingCare>(b => b.NursingCarePackageId);
             });
 
             modelBuilder.Entity<HomeCarePackage>(entity =>
@@ -282,6 +307,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             });
 
             #endregion Entity Config
+
+            AdjustModelForTesting(modelBuilder);
         }
 
         public override int SaveChanges()
@@ -347,6 +374,33 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 .Entries()
                 .Where(e => e.Entity is BaseEntity && e.State == entityState)
                 .Select(e => (BaseEntity) e.Entity);
+        }
+
+        private void AdjustModelForTesting(ModelBuilder modelBuilder)
+        {
+            if (Database.ProviderName == "Microsoft.EntityFrameworkCore.Sqlite")
+            {
+                // SQLite does not have proper support for DateTimeOffset via Entity Framework Core, see the limitations
+                // here: https://docs.microsoft.com/en-us/ef/core/providers/sqlite/limitations#query-limitations
+                // To work around this, when the Sqlite database provider is used, all model properties of type DateTimeOffset
+                // use the DateTimeOffsetToBinaryConverter
+                // Based on: https://github.com/aspnet/EntityFrameworkCore/issues/10784#issuecomment-415769754
+                // This only supports millisecond precision, but should be sufficient for most use cases.
+                foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+                {
+                    var properties = entityType.ClrType.GetProperties()
+                        .Where(p => p.PropertyType == typeof(DateTimeOffset) ||
+                                    p.PropertyType == typeof(DateTimeOffset?));
+
+                    foreach (var property in properties)
+                    {
+                        modelBuilder
+                            .Entity(entityType.Name)
+                            .Property(property.Name)
+                            .HasConversion(new DateTimeOffsetToBinaryConverter());
+                    }
+                }
+            }
         }
     }
 }

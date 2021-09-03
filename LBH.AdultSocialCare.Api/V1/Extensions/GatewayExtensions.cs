@@ -1,41 +1,16 @@
 using LBH.AdultSocialCare.Api.V1.Gateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ApprovalHistoryGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ApprovedPackagesGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.BrokeredPackagesGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.DayCareCollegeGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageOpportunityGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.DayCarePackageReclaimGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.DayCareRequestMoreInformationGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApproveBrokeredGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareApprovePackageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareBrokerageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCarePackageReclaimGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareRequestMoreInformationGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCareStageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovalHistoryGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApproveCommercialGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareApprovePackageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareBrokerageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCarePackageReclaimGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCareRequestMoreInformationGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityLengthOptionGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.OpportunityTimesPerMonthOptionGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.PrimarySupportReasonGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovalHistoryGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApproveBrokeredGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareApprovePackageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareBrokerageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCarePackageReclaimGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCareRequestMoreInformationGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.SubmittedPackageRequestsGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.SupplierBillGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.SupplierCostGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.SupplierGateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.TermTimeConsiderationOptionGateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.DayCare.Concrete;
+using LBH.AdultSocialCare.Api.V1.Gateways.DayCare.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCare.Concrete;
+using LBH.AdultSocialCare.Api.V1.Gateways.HomeCare.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete;
+using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Security.Concrete;
+using LBH.AdultSocialCare.Api.V1.Gateways.Security.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
@@ -92,6 +67,8 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<ISubmittedPackageRequestsGateway, SubmittedPackageRequestsGateway>();
             services.AddScoped<IApprovedPackagesGateway, ApprovedPackagesGateway>();
             services.AddScoped<IBrokeredPackagesGateway, BrokeredPackagesGateway>();
+            services.AddScoped<IPackageCostClaimersGateway, PackageCostClaimersGateway>();
+            services.AddScoped<IFundedNursingCaseGateway, FundedNursingCareGateway>();
         }
     }
 }

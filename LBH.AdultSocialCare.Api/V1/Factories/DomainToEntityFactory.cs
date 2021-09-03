@@ -1,23 +1,4 @@
 using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Domain.ClientDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.PackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
@@ -33,6 +14,12 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerag
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Domain.Security;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -303,8 +290,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = nursingCareAdditionalNeedsDomain.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
-                IsWeeklyCost = nursingCareAdditionalNeedsDomain.IsWeeklyCost,
-                IsOneOffCost = nursingCareAdditionalNeedsDomain.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = nursingCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeId,
                 NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
                 UpdaterId = nursingCareAdditionalNeedsDomain.UpdaterId,
@@ -337,8 +323,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCareAdditionalNeedsDomain.Id,
                 ResidentialCarePackageId = residentialCareAdditionalNeedsDomain.ResidentialCarePackageId,
-                IsWeeklyCost = residentialCareAdditionalNeedsDomain.IsWeeklyCost,
-                IsOneOffCost = residentialCareAdditionalNeedsDomain.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = residentialCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeId,
                 NeedToAddress = residentialCareAdditionalNeedsDomain.NeedToAddress,
                 CreatorId = residentialCareAdditionalNeedsDomain.CreatorId,
                 UpdaterId = residentialCareAdditionalNeedsDomain.UpdatorId,
@@ -427,5 +412,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion TimeSlotShifts
+
+        #region Funded Nursing Care
+
+        public static FundedNursingCare ToEntity(this FundedNursingCareDomain fundedNursingCareDomain)
+        {
+            return _mapper.Map<FundedNursingCare>(fundedNursingCareDomain);
+        }
+
+        #endregion
     }
 }

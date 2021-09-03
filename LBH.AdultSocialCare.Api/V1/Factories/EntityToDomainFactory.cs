@@ -1,29 +1,10 @@
 using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Domain.ClientDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageOpportunityDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.GeneralDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCareDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.OpportunityLengthOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.OpportunityTimesPerMonthOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.PackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ReclaimsDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareAdditionalNeedsDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCareBrokerageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCarePackageReclaimDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.RoleDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.StageDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.SupplierDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.TermTimeConsiderationOptionDomains;
-using LBH.AdultSocialCare.Api.V1.Domain.UserDomains;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
+using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
+using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
@@ -165,10 +146,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsDomain>>(nursingCareAdditionalNeedsEntities);
         }
 
-        #endregion NursingCareAdditionalNeed
-
-        #region TypeOfNursingCareHome
-
         public static IEnumerable<TypeOfNursingCareHomeDomain> ToDomain(this ICollection<TypeOfNursingCareHome> typeOfNursingCareHome)
         {
             return typeOfNursingCareHome.Select(item
@@ -177,6 +154,15 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                     TypeOfCareHomeId = item.TypeOfCareHomeId,
                     TypeOfCareHomeName = item.TypeOfCareHomeName
                 }).ToList();
+        }
+
+        #endregion NursingCareAdditionalNeed
+
+        #region TypeOfNursingCareHome
+
+        public static IEnumerable<AdditionalNeedsPaymentTypeDomain> ToDomain(this ICollection<AdditionalNeedsPaymentType> additionalNeedsPaymentTypes)
+        {
+            return _mapper.Map<IEnumerable<AdditionalNeedsPaymentTypeDomain>>(additionalNeedsPaymentTypes);
         }
 
         #endregion TypeOfNursingCareHome
@@ -501,8 +487,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = nursingCareAdditionalNeedEntity.Id,
                 NursingCarePackageId = nursingCareAdditionalNeedEntity.NursingCarePackageId,
-                IsWeeklyCost = nursingCareAdditionalNeedEntity.IsWeeklyCost,
-                IsOneOffCost = nursingCareAdditionalNeedEntity.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = nursingCareAdditionalNeedEntity.AdditionalNeedsPaymentTypeId,
+                AdditionalNeedsPaymentTypeName = nursingCareAdditionalNeedEntity.AdditionalNeedsPaymentType.OptionName,
                 NeedToAddress = nursingCareAdditionalNeedEntity.NeedToAddress,
                 CreatorId = nursingCareAdditionalNeedEntity.CreatorId,
                 UpdaterId = nursingCareAdditionalNeedEntity.UpdaterId,
@@ -537,8 +523,8 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             {
                 Id = residentialCareAdditionalNeedEntity.Id,
                 ResidentialCarePackageId = residentialCareAdditionalNeedEntity.ResidentialCarePackageId,
-                IsWeeklyCost = residentialCareAdditionalNeedEntity.IsWeeklyCost,
-                IsOneOffCost = residentialCareAdditionalNeedEntity.IsOneOffCost,
+                AdditionalNeedsPaymentTypeId = residentialCareAdditionalNeedEntity.AdditionalNeedsPaymentTypeId,
+                AdditionalNeedsPaymentTypeName = residentialCareAdditionalNeedEntity.AdditionalNeedsPaymentType.OptionName,
                 NeedToAddress = residentialCareAdditionalNeedEntity.NeedToAddress,
                 CreatorId = residentialCareAdditionalNeedEntity.CreatorId,
                 UpdatorId = residentialCareAdditionalNeedEntity.UpdaterId,
@@ -662,5 +648,29 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion PrimarySupportReason
+
+        #region FundedNursingCare
+
+        public static IEnumerable<FundedNursingCareCollectorDomain> ToDomain(this List<FundedNursingCareCollector> collectors)
+        {
+            return _mapper.Map<IEnumerable<FundedNursingCareCollectorDomain>>(collectors);
+        }
+
+        public static FundedNursingCareDomain ToDomain(this FundedNursingCare fundedNursingCare)
+        {
+            return _mapper.Map<FundedNursingCareDomain>(fundedNursingCare);
+        }
+
+        public static FundedNursingCarePriceDomain ToDomain(this FundedNursingCarePrice fundedNursingCarePrice)
+        {
+            return _mapper.Map<FundedNursingCarePriceDomain>(fundedNursingCarePrice);
+        }
+
+        public static IEnumerable<FundedNursingCarePriceDomain> ToDomain(this IEnumerable<FundedNursingCarePrice> fundedNursingCarePrices)
+        {
+            return _mapper.Map<IEnumerable<FundedNursingCarePriceDomain>>(fundedNursingCarePrices);
+        }
+
+        #endregion FundedNursingCare
     }
 }
