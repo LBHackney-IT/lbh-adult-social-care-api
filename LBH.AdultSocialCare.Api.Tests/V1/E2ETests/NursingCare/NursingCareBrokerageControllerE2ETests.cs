@@ -3,6 +3,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 using Microsoft.EntityFrameworkCore;
@@ -62,27 +63,25 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
         [Fact]
         public async Task ShouldApprovePackage()
         {
-            var moreInformationTest = "somelongtext";
+            var moreInformationTest = "someLongText";
             var package = await _fixture.DataGenerator.GenerateNursingCarePackage().ConfigureAwait(false);
 
             var response = await _fixture.RestClient
                 .PostAsync<NursingCarePackageResponse>($"api/v1/nursing-care-packages/{package.Id}/brokerage/clarifying-commercials?requestMoreInformationText={moreInformationTest}", package.Id)
                 .ConfigureAwait(false);
 
-            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            var updatedPackage = await _fixture.Database.NursingCarePackages
+            var updatedPackage = await _fixture.DatabaseContext.NursingCarePackages
                 .Where(p => p.Id == package.Id)
                 .FirstAsync()
                 .ConfigureAwait(false);
 
-            var approvalHistory = await _fixture.Database.NursingCareApprovalHistories
+            var approvalHistory = await _fixture.DatabaseContext.NursingCareApprovalHistories
                 .Where(h => h.NursingCarePackageId == package.Id)
                 .FirstAsync()
                 .ConfigureAwait(false);
 
-            // TODO: VK: Review why this check doesn't work
-            // updatedPackage.StatusId.Should().Be(ApprovalHistoryConstants.ClarifyingCommercialsId);
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+            updatedPackage.StatusId.Should().Be(ApprovalHistoryConstants.ClarifyingCommercialsId);
             approvalHistory.LogSubText.Should().Be(moreInformationTest);
         }
 
@@ -90,13 +89,19 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
         public async Task ShouldSetStageToPackage()
         {
             var package = await _fixture.DataGenerator.GenerateNursingCarePackage().ConfigureAwait(false);
+            var newStageId = package.StageId + 1;
 
             var response = await _fixture.RestClient
-                .PutAsync<bool>($"api/v1/nursing-care-packages/{package.Id}/brokerage/stage/{package.StageId + 1}", package.Id)
+                .PutAsync<bool>($"api/v1/nursing-care-packages/{package.Id}/brokerage/stage/{newStageId}", package.Id)
                 .ConfigureAwait(false);
 
-            // TODO: VK: Test stage changes
+            var updatedPackage = await _fixture.DatabaseContext.NursingCarePackages
+                .Where(p => p.Id == package.Id)
+                .FirstAsync()
+                .ConfigureAwait(false);
+
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+            updatedPackage.StageId.Should().Be(newStageId);
         }
     }
 }

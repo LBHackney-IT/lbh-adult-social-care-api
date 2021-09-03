@@ -15,9 +15,10 @@ namespace LBH.AdultSocialCare.Api.Tests
 
             Mapper = config.CreateMapper();
 
+            ResponseFactory.Configure(Mapper);
+            ApiToDomainFactory.Configure(Mapper);
             DomainToEntityFactory.Configure(Mapper);
             EntityToDomainFactory.Configure(Mapper);
-            ResponseFactory.Configure(Mapper);
         }
 
         protected IMapper Mapper { get; }
