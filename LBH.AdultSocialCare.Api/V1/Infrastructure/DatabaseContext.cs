@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
@@ -96,6 +97,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<FundedNursingCareCollector> FundedNursingCareCollectors { get; set; }
         public DbSet<FundedNursingCarePrice> FundedNursingCarePrices { get; set; }
         public DbSet<FundedNursingCare> FundedNursingCares { get; set; }
+        public DbSet<CareChargeStatus> CareChargeStatuses { get; set; }
+        public DbSet<CareChargeType> CareChargeTypes { get; set; }
+        public DbSet<ProvisionalCareChargeAmount> ProvisionalCareChargeAmounts { get; set; }
+        public DbSet<PackageCareCharge> PackageCareCharges { get; set; }
+        public DbSet<CareChargeElement> CareChargeElements { get; set; }
 
         #region CustomFunctions
 
@@ -192,6 +198,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             modelBuilder.ApplyConfiguration(new FundedNursingCareCollectorsSeed());
             modelBuilder.ApplyConfiguration(new FundedNursingCarePriceSeed());
             modelBuilder.ApplyConfiguration(new PackageCostClaimersSeed());
+
+            // Seed Care Charges
+            modelBuilder.ApplyConfiguration(new CareChargeStatusSeed());
+            modelBuilder.ApplyConfiguration(new CareChargeTypeSeed());
+            modelBuilder.ApplyConfiguration(new ProvisionalCareChargeAmountSeed());
 
             #endregion Database Seeds
 
