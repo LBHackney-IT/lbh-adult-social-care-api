@@ -23,7 +23,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
         [Fact]
         public async Task ShouldCreateBrokerageInfo()
         {
-            var package = await _fixture.DataGenerator.GenerateNursingCarePackage().ConfigureAwait(false);
+            var package = await _fixture.DataGenerator.NursingCare.GetPackage().ConfigureAwait(false);
 
             var request = new NursingCareBrokerageCreationRequest
             {
@@ -48,8 +48,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
         [Fact]
         public async Task ShouldGetNursingCareBrokerage()
         {
-            var package = await _fixture.DataGenerator.GenerateNursingCarePackage().ConfigureAwait(false);
-            var brokerage = await _fixture.DataGenerator.GenerateNursingCareBrokerageInfo(package.Id).ConfigureAwait(false);
+            var package = await _fixture.DataGenerator.NursingCare.GetPackage().ConfigureAwait(false);
+            var brokerage = await _fixture.DataGenerator.NursingCare.GetBrokerageInfo(package.Id).ConfigureAwait(false);
 
             var response = await _fixture.RestClient
                 .GetAsync<NursingCareBrokerageInfoResponse>($"api/v1/nursing-care-packages/{package.Id}/brokerage")
@@ -64,7 +64,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
         public async Task ShouldApprovePackage()
         {
             var moreInformationTest = "someLongText";
-            var package = await _fixture.DataGenerator.GenerateNursingCarePackage().ConfigureAwait(false);
+            var package = await _fixture.DataGenerator.NursingCare.GetPackage().ConfigureAwait(false);
 
             var response = await _fixture.RestClient
                 .PostAsync<NursingCarePackageResponse>($"api/v1/nursing-care-packages/{package.Id}/brokerage/clarifying-commercials?requestMoreInformationText={moreInformationTest}", package.Id)
@@ -88,7 +88,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
         [Fact]
         public async Task ShouldSetStageToPackage()
         {
-            var package = await _fixture.DataGenerator.GenerateNursingCarePackage().ConfigureAwait(false);
+            var package = await _fixture.DataGenerator.NursingCare.GetPackage().ConfigureAwait(false);
             var newStageId = package.StageId + 1;
 
             var response = await _fixture.RestClient

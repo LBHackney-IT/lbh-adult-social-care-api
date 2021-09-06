@@ -388,16 +388,29 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 // This only supports millisecond precision, but should be sufficient for most use cases.
                 foreach (var entityType in modelBuilder.Model.GetEntityTypes())
                 {
-                    var properties = entityType.ClrType.GetProperties()
+                    var dateTimes = entityType.ClrType.GetProperties()
                         .Where(p => p.PropertyType == typeof(DateTimeOffset) ||
                                     p.PropertyType == typeof(DateTimeOffset?));
 
-                    foreach (var property in properties)
+                    foreach (var property in dateTimes)
                     {
                         modelBuilder
                             .Entity(entityType.Name)
                             .Property(property.Name)
                             .HasConversion(new DateTimeOffsetToBinaryConverter());
+                    }
+
+                    // the same for decimals
+                    var decimals = entityType.ClrType.GetProperties()
+                        .Where(p => p.PropertyType == typeof(Decimal) ||
+                                    p.PropertyType == typeof(Decimal?));
+
+                    foreach (var property in decimals)
+                    {
+                        modelBuilder
+                            .Entity(entityType.Name)
+                            .Property(property.Name)
+                            .HasConversion(new NumberToStringConverter<Decimal>());
                     }
                 }
             }

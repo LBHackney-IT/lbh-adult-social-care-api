@@ -63,7 +63,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
         [Fact]
         public async Task ShouldCreateNewFundedNursingCareIfNoRecordsExists()
         {
-            var package = await new DataGenerator(Context).GenerateNursingCarePackage().ConfigureAwait(false);
+            var package = await new DataGenerator(Context).NursingCare.GetPackage().ConfigureAwait(false);
 
             var fnc = new FundedNursingCareDomain
             {
@@ -84,7 +84,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
         [Fact]
         public async Task ShouldUpdateExistingFundedNursingCare()
         {
-            var package = await DataGenerator.GenerateNursingCarePackage().ConfigureAwait(false);
+            var package = await DataGenerator.NursingCare.GetPackage().ConfigureAwait(false);
 
             var originalFnc = CreateFundedNursingCareDomain(package.Id, 2, 1);
             var fncToUpdate = CreateFundedNursingCareDomain(package.Id, 1, 2);
@@ -112,7 +112,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
         [Fact]
         public async Task ShouldRemoveGivenFundedNursingCare()
         {
-            var packages = await DataGenerator.GenerateNursingCarePackages(3).ConfigureAwait(false);
+            var packages = await DataGenerator.NursingCare.GetPackages(3).ConfigureAwait(false);
 
             Context.FundedNursingCares.Add(CreateFundedNursingCareDomain(packages[0].Id, 1, 1).ToEntity());
             Context.FundedNursingCares.Add(CreateFundedNursingCareDomain(packages[1].Id, 2, 1).ToEntity());
