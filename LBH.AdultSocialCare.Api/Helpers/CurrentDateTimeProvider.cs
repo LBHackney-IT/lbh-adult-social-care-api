@@ -4,12 +4,6 @@ namespace LBH.AdultSocialCare.Api.Helpers
 {
     public class CurrentDateTimeProvider : ICurrentDateTimeProvider
     {
-        public DateTimeOffset Now
-        {
-            get
-            {
-                return DateTimeOffset.Now;
-            }
-        }
+        public DateTimeOffset Now => DateTimeOffset.Now;
     }
 }

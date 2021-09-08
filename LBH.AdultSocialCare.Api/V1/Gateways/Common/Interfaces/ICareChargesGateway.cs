@@ -7,5 +7,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
     public interface ICareChargesGateway
     {
         Task<ProvisionalCareChargeAmountPlainDomain> GetUsingServiceUserIdAsync(Guid serviceUserId);
+
+        Task<CareChargeElementPlainDomain> CreateCareChargeElementAsync(CareChargeElementPlainDomain elementDomain);
     }
 }
