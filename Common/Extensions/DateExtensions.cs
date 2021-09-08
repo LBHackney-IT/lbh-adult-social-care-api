@@ -29,5 +29,16 @@ namespace Common.Extensions
             return dateOne.IsInRange(rangeFrom, rangeTo) &&
                    dateTwo.IsInRange(rangeFrom, rangeTo);
         }
+
+        public static int GetAge(this DateTime birthDate)
+        {
+            var today = DateTime.Now; // To avoid a race condition around midnight
+            var age = today.Year - birthDate.Year;
+
+            if (today.Month < birthDate.Month || (today.Month == birthDate.Month && today.Day < birthDate.Day))
+                age--;
+
+            return age;
+        }
     }
 }

@@ -6,6 +6,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
@@ -677,5 +678,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion FundedNursingCare
+
+        #region CareCharges
+
+        public static ProvisionalCareChargeAmountPlainDomain ToDomain(this ProvisionalCareChargeAmount provisionalCareCharge)
+        {
+            return _mapper.Map<ProvisionalCareChargeAmountPlainDomain>(provisionalCareCharge);
+        }
+
+        #endregion CareCharges
     }
 }
