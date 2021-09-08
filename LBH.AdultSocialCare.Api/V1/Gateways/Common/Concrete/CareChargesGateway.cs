@@ -30,7 +30,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 throw new ApiException($"Service user with Id {serviceUserId} not found");
             }
 
-            var clientAge = clientBirthDate.GetAge();
+            var clientAge = clientBirthDate.GetAge(DateTime.Now);
             var todayDate = DateTimeOffset.Now.Date;
 
             // Use age to get provisional amount range
