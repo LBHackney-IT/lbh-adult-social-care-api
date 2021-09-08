@@ -1,8 +1,4 @@
 using AutoMapper;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
@@ -15,7 +11,8 @@ using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -777,6 +774,15 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<FundedNursingCareCollectorResponse>>(collectors);
         }
 
-        #endregion
+        #endregion FncCollectors
+
+        #region CareCharges
+
+        public static ProvisionalCareChargeAmountPlainResponse ToResponse(this ProvisionalCareChargeAmountPlainDomain provisionalCareChargeDomain)
+        {
+            return _mapper.Map<ProvisionalCareChargeAmountPlainResponse>(provisionalCareChargeDomain);
+        }
+
+        #endregion CareCharges
     }
 }
