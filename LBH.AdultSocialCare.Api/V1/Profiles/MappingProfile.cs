@@ -531,6 +531,9 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             CreateMap<ProvisionalCareChargeAmount, ProvisionalCareChargeAmountPlainDomain>();
             CreateMap<ProvisionalCareChargeAmountPlainDomain, ProvisionalCareChargeAmountPlainResponse>();
+            CreateMap<CareChargeElementCreationRequest, CareChargeElementPlainDomain>();
+            CreateMap<CareChargeElementCreationResponse, CareChargeElementPlainDomain>();
+            CreateMap<CareChargeElementPlainDomain, CareChargeElement>();
 
             #endregion Care Charges
         }

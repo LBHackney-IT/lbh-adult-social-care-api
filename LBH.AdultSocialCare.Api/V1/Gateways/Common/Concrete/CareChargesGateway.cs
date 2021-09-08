@@ -44,5 +44,22 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
             return provisionalAmount?.ToDomain();
         }
+
+        public async Task<CareChargeElementPlainDomain> CreateCareChargeElementAsync(CareChargeElementPlainDomain elementDomain)
+        {
+            var element = elementDomain.ToEntity();
+
+            try
+            {
+                _dbContext.CareChargeElements.Add(elementDomain.ToEntity());
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+
+                return element.ToPlainDomain();
+            }
+            catch (Exception ex)
+            {
+                throw new DbSaveFailedException("Saving care charge element failed", ex);
+            }
+        }
     }
 }

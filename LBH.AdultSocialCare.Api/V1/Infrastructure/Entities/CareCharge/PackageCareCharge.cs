@@ -14,7 +14,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge
         public Guid NursingCarePackageId { get; set; }
         public int PackageTypeId { get; set; }
         public string ClaimReasons { get; set; }
-        public int ClaimCollectorId { get; set; }
         public bool IsProvisional { get; set; }
         [ForeignKey(nameof(PackageTypeId))] public Package Package { get; set; }
         public virtual ICollection<CareChargeElement> CareChargeElements { get; set; }

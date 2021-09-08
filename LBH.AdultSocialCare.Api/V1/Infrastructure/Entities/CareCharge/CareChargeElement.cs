@@ -12,9 +12,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public int CareChargeId { get; set; }
-        public Guid ClientId { get; set; }
         public int StatusId { get; set; }
         public int TypeId { get; set; }
+        public int ClaimCollectorId { get; set; }
         public string Name { get; set; }
         [Column(TypeName = "decimal(13, 2)")] public decimal Amount { get; set; }
         public DateTimeOffset StartDate { get; set; }
@@ -22,8 +22,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge
         public DateTimeOffset? PaidUpTo { get; set; }
         public DateTimeOffset? PreviousPaidUpTo { get; set; }
         [ForeignKey(nameof(CareChargeId))] public PackageCareCharge PackageCareCharge { get; set; }
-        [ForeignKey(nameof(ClientId))] public Client Client { get; set; }
         [ForeignKey(nameof(StatusId))] public CareChargeStatus CareChargeStatus { get; set; }
         [ForeignKey(nameof(TypeId))] public CareChargeType CareChargeType { get; set; }
+        [ForeignKey(nameof(ClaimCollectorId))] public PackageCostClaimer ClaimCollector { get; set; }
     }
 }
