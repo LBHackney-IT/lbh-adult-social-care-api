@@ -14,11 +14,20 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Common
             var age = birthDate.GetAge(endDate);
             Assert.Equal(expected, age);
         }
+
         [Fact]
-        public void DateConversionToISOIsCorrect()
+        public void DateTimeConversionToISOIsCorrect()
         {
             var testDate = new DateTime(2021, 09, 08, 0, 0, 0, DateTimeKind.Utc);
             var res = testDate.DateTimeToISOString();
+            Assert.Equal("2021-09-08T00:00:00Z", res);
+        }
+
+        [Fact]
+        public void DateTimeOffsetConversionToISOIsCorrect()
+        {
+            var testDate = new DateTimeOffset(2021, 09, 08, 0, 0, 0, TimeSpan.Zero);
+            var res = testDate.DateTimeOffsetToISOString();
             Assert.Equal("2021-09-08T00:00:00Z", res);
         }
 
