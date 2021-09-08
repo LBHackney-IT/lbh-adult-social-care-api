@@ -31,13 +31,14 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             }
 
             var clientAge = clientBirthDate.GetAge();
-            var todayDate = DateTime.UtcNow.Date;
+            var todayDate = DateTimeOffset.Now.Date;
 
             // Use age to get provisional amount range
             var provisionalAmount = await _dbContext.ProvisionalCareChargeAmounts
                 .Where(pca => (clientAge >= pca.AgeFrom && clientAge <= pca.AgeTo) &&
-                              todayDate >= pca.StartDate.Date && (pca.EndDate == null || todayDate <= pca.EndDate.Date))
-                .OrderByDescending(pca => pca.StartDate)
+                              (todayDate >= EF.Property<DateTime>(pca, nameof(pca.StartDate)).Date &&
+                               (pca.EndDate == null || todayDate <= EF.Property<DateTime>(pca, nameof(pca.EndDate)).Date)))
+                .OrderBy(pca => pca.StartDate)
                 .FirstOrDefaultAsync()
                 .ConfigureAwait(false);
 
