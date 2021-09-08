@@ -309,7 +309,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetFundedNursingCareCollectorsUseCase, GetFundedNursingCareCollectorsUseCase>();
             services.AddScoped<IUpsertFundedNursingCareUseCase, UpsertFundedNursingCareUseCase>();
 
-            #endregion
+            #endregion Funded Nursing Care
 
             #region TransactionsApi
 
@@ -359,8 +359,13 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
 
             services.AddScoped<IGetNursingCareAdditionalNeedsPaymentTypesUseCase, GetNursingCareAdditionalNeedsPaymentTypesUseCase>();
 
-            #endregion
+            #endregion AdditionalNeedPaymentType
 
+            #region CareCharges
+
+            services.AddScoped<ICareChargeUseCase, CareChargeUseCase>();
+
+            #endregion CareCharges
         }
     }
 }
