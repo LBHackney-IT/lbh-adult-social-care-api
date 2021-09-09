@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,11 +12,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
         {
             builder.HasData(new CareChargeType
             {
-                Id = 1,
+                Id = (int) CareChargeElementTypeEnum.Provisional,
+                OptionName = CareChargeElementTypeEnum.Provisional.GetDisplayName()
+            }, new CareChargeType
+            {
+                Id = (int) CareChargeElementTypeEnum.WithoutPropertyOneToTwelveWeeks,
                 OptionName = "Without Property 1-12 Weeks"
             }, new CareChargeType
             {
-                Id = 2,
+                Id = (int) CareChargeElementTypeEnum.WithoutPropertyThirteenPlusWeeks,
                 OptionName = "Without Property 13+ Weeks"
             });
         }

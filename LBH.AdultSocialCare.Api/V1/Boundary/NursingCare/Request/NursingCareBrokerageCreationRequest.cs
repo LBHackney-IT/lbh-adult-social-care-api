@@ -1,7 +1,8 @@
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
+using LBH.AdultSocialCare.Api.V1.Validations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using LBH.AdultSocialCare.Api.V1.Validations;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request
 {
@@ -40,5 +41,15 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request
         public IEnumerable<NursingCareAdditionalNeedsCostCreationRequest> NursingCareAdditionalNeedsCosts { get; set; }
 
         public int? FundedNursingCareCollectorId { get; set; }
+
+        /// <summary>
+        /// True if package has care charges and false otherwise. If true, provide care charge settings in request
+        /// </summary>
+        [Required] public bool? HasCareCharges { get; set; }
+
+        /// <summary>
+        /// If package has care charges, set claimed by and reason if relevant on this object
+        /// </summary>
+        public BrokerageCareChargeForChangeRequest CareChargeSettings { get; set; }
     }
 }

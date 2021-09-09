@@ -9,6 +9,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,20 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
             }
 
             return result.ToDomain();
+        }
+
+        public async Task<NursingCarePackagePlainDomain> CheckNursingCarePackageExists(Guid nursingCarePackageId)
+        {
+            var nursingCarePackage = await _databaseContext.NursingCarePackages.AsNoTracking()
+                .SingleOrDefaultAsync(nc => nc.Id.Equals(nursingCarePackageId)).ConfigureAwait(false);
+
+            if (nursingCarePackage == null)
+            {
+                throw new ApiException($"Nursing care package with Id {nursingCarePackageId} not found",
+                    StatusCodes.Status404NotFound);
+            }
+
+            return nursingCarePackage.ToPlainDomain();
         }
 
         public async Task<NursingCarePackageDomain> ChangeStatusAsync(Guid nursingCarePackageId, int statusId)
