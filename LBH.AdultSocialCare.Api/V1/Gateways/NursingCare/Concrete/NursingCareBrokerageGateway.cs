@@ -34,7 +34,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
             }
             catch (Exception ex)
             {
-                throw new DbSaveFailedException("Could not save supplier to database" + ex.Message);
+                throw new DbSaveFailedException($"Could not save supplier to database: {ex.InnerException?.Message}", ex);
             }
         }
 
@@ -102,7 +102,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                         AdditionalNeedsPaymentTypeName = anc.AdditionalNeedsPaymentType.OptionName,
                         AdditionalNeedsCost = anc.AdditionalNeedsCost,
                         CreatorId = anc.CreatorId,
-                        UpdatorId = anc.UpdatorId
+                        UpdatorId = anc.UpdaterId
                     }),
                     NursingCore = nc.NursingCareBrokerageInfo.NursingCore,
                     StageId = nc.StageId,

@@ -15,11 +15,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
             _gateway = gateway;
         }
 
-        public ICurrentDateTimeProvider CurrentDateTimeProvider { get; set; } = new CurrentDateTimeProvider();
+        public ICurrentDateTimeOffsetProvider CurrentDateTimeOffsetProvider { get; set; } = new CurrentDateTimeOffsetProvider();
 
         public async Task<decimal> GetActiveFundedNursingCarePriceAsync()
         {
-            return await GetFundedNursingCarePriceAsync(CurrentDateTimeProvider.Now)
+            return await GetFundedNursingCarePriceAsync(CurrentDateTimeOffsetProvider.Now)
                 .ConfigureAwait(false);
         }
 

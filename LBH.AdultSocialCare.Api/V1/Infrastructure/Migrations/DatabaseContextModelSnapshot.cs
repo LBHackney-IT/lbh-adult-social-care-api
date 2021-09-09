@@ -53,19 +53,21 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.CareChargeElement", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(13, 2)");
 
-                    b.Property<int>("CareChargeId")
+                    b.Property<Guid>("CareChargeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ClaimCollectorId")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("ClientId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("ClaimReasons")
+                        .HasColumnType("text");
 
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
@@ -104,7 +106,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasIndex("CareChargeId");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClaimCollectorId");
 
                     b.HasIndex("CreatorId");
 
@@ -140,7 +142,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            StatusName = "End"
+                            StatusName = "Ended"
                         },
                         new
                         {
@@ -172,27 +174,25 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            OptionName = "Without Property 1-12 Weeks"
+                            OptionName = "Provisional"
                         },
                         new
                         {
                             Id = 2,
+                            OptionName = "Without Property 1-12 Weeks"
+                        },
+                        new
+                        {
+                            Id = 3,
                             OptionName = "Without Property 13+ Weeks"
                         });
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.PackageCareCharge", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("ClaimCollectorId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ClaimReasons")
-                        .HasColumnType("text");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
@@ -206,7 +206,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<bool>("IsProvisional")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("NursingCarePackageId")
+                    b.Property<Guid>("PackageId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("PackageTypeId")
@@ -259,8 +259,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             AgeFrom = 18,
                             AgeTo = 24,
                             Amount = 68.95m,
-                            EndDate = new DateTimeOffset(new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            StartDate = new DateTimeOffset(new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                            EndDate = new DateTimeOffset(new DateTime(2020, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            StartDate = new DateTimeOffset(new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
@@ -268,16 +268,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             AgeFrom = 25,
                             AgeTo = 59,
                             Amount = 84.40m,
-                            EndDate = new DateTimeOffset(new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            StartDate = new DateTimeOffset(new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                            EndDate = new DateTimeOffset(new DateTime(2020, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            StartDate = new DateTimeOffset(new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
                             Id = 3,
                             AgeFrom = 60,
                             Amount = 148.45m,
-                            EndDate = new DateTimeOffset(new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            StartDate = new DateTimeOffset(new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                            EndDate = new DateTimeOffset(new DateTime(2020, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            StartDate = new DateTimeOffset(new DateTime(2020, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
@@ -285,8 +285,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             AgeFrom = 18,
                             AgeTo = 24,
                             Amount = 69.40m,
-                            EndDate = new DateTimeOffset(new DateTime(2022, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            StartDate = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                            EndDate = new DateTimeOffset(new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            StartDate = new DateTimeOffset(new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
@@ -294,16 +294,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             AgeFrom = 25,
                             AgeTo = 59,
                             Amount = 84.90m,
-                            EndDate = new DateTimeOffset(new DateTime(2022, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            StartDate = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                            EndDate = new DateTimeOffset(new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            StartDate = new DateTimeOffset(new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
                         },
                         new
                         {
                             Id = 6,
                             AgeFrom = 60,
                             Amount = 152.20m,
-                            EndDate = new DateTimeOffset(new DateTime(2022, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
-                            StartDate = new DateTimeOffset(new DateTime(2022, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
+                            EndDate = new DateTimeOffset(new DateTime(2021, 12, 31, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            StartDate = new DateTimeOffset(new DateTime(2021, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0))
                         });
                 });
 
@@ -2566,7 +2566,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid?>("AssignedUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ClientId")
+                    b.Property<Guid>("ClientId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CreatorId")
@@ -2729,10 +2729,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid>("NursingCareBrokerageId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("UpdatorId")
+                    b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
 
                     b.HasKey("NursingCareAdditionalNeedsCostId");
@@ -2743,7 +2749,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasIndex("NursingCareBrokerageId");
 
-                    b.HasIndex("UpdatorId");
+                    b.HasIndex("UpdaterId");
 
                     b.ToTable("NursingCareAdditionalNeedsCosts");
                 });
@@ -2807,6 +2813,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.Property<DateTimeOffset>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("HasCareCharges")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid>("NursingCarePackageId")
                         .HasColumnType("uuid");
@@ -4220,9 +4229,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Client", "Client")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageCostClaimer", "ClaimCollector")
                         .WithMany()
-                        .HasForeignKey("ClientId")
+                        .HasForeignKey("ClaimCollectorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -4820,7 +4829,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientId");
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
                         .WithMany()
@@ -4877,7 +4888,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Updater")
                         .WithMany()
-                        .HasForeignKey("UpdatorId");
+                        .HasForeignKey("UpdaterId");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage.NursingCareApprovalHistory", b =>

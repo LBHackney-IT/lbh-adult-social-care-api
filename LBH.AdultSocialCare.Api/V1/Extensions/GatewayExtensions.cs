@@ -1,4 +1,3 @@
-using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCare.Concrete;
@@ -69,6 +68,8 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IBrokeredPackagesGateway, BrokeredPackagesGateway>();
             services.AddScoped<IPackageCostClaimersGateway, PackageCostClaimersGateway>();
             services.AddScoped<IFundedNursingCaseGateway, FundedNursingCareGateway>();
+            services.AddScoped<ICareChargesGateway, CareChargesGateway>();
+            services.AddScoped<IPackageCareChargeGateway, PackageCareChargeGateway>();
         }
     }
 }

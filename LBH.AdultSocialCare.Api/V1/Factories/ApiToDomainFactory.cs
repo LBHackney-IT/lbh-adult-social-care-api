@@ -440,10 +440,18 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion TimeSlotShifts
 
-        // TODO: VK: Move somewhere
-        public static TDestination Map<TDestination>(this object item)
+        #region Care Charge
+
+        public static CareChargeElementPlainDomain ToPlainDomain(this CareChargeElementCreationRequest request)
         {
-            return (TDestination) _mapper.Map(item, item.GetType(), typeof(TDestination));
+            return _mapper.Map<CareChargeElementPlainDomain>(request);
         }
+
+        public static IEnumerable<CareChargeElementPlainDomain> ToPlainDomain(this IEnumerable<CareChargeElementCreationRequest> request)
+        {
+            return _mapper.Map<IEnumerable<CareChargeElementPlainDomain>>(request);
+        }
+
+        #endregion Care Charge
     }
 }

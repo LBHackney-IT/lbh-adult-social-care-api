@@ -19,6 +19,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
@@ -132,6 +133,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<TypeOfNursingCareHomeDomain, TypeOfNursingCareHomeResponse>();
             CreateMap<NursingCareApprovalHistory, NursingCareApprovalHistoryDomain>();
             CreateMap<NursingCareApprovalHistoryDomain, NursingCareApprovalHistory>();
+            CreateMap<NursingCarePackage, NursingCarePackagePlainDomain>();
+            CreateMap<NursingCarePackagePlainDomain, NursingCarePackageForUpdateDomain>();
 
             #endregion NursingCarePackage
 
@@ -512,7 +515,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<AdditionalNeedsPaymentType, AdditionalNeedsPaymentTypeDomain>();
             CreateMap<AdditionalNeedsPaymentTypeDomain, AdditionalNeedsPaymentTypeResponse>();
 
-            #endregion
+            #endregion AdditionalNeedsPaymentType
 
             #region Funded Nursing Care
 
@@ -525,6 +528,18 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<FundedNursingCarePrice, FundedNursingCarePriceDomain>();
 
             #endregion Funded Nursing Care
+
+            #region Care Charges
+
+            CreateMap<ProvisionalCareChargeAmount, ProvisionalCareChargeAmountPlainDomain>();
+            CreateMap<ProvisionalCareChargeAmountPlainDomain, ProvisionalCareChargeAmountPlainResponse>().ReverseMap();
+            CreateMap<CareChargeElementCreationRequest, CareChargeElementPlainDomain>().ReverseMap();
+            CreateMap<CareChargeElementCreationResponse, CareChargeElementPlainDomain>().ReverseMap();
+            CreateMap<CareChargeElementPlainDomain, CareChargeElement>().ReverseMap();
+            CreateMap<BrokerageCareChargeForChangeRequest, BrokerageCareChargeForChangeDomain>();
+            CreateMap<PackageCareCharge, PackageCareChargePlainDomain>();
+
+            #endregion Care Charges
         }
     }
 }

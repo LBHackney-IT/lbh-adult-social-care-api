@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
@@ -12,8 +9,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
     {
         public void Configure(EntityTypeBuilder<ProvisionalCareChargeAmount> builder)
         {
-            var startDate = new DateTime(DateTime.Now.Year, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            var endDate = new DateTime(DateTime.Now.Year, 12, 31, 0, 0, 0, DateTimeKind.Utc);
+            var startDate = new DateTime(2020, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            var endDate = new DateTime(2020, 12, 31, 0, 0, 0, DateTimeKind.Utc);
 
             builder.HasData(new ProvisionalCareChargeAmount
             {

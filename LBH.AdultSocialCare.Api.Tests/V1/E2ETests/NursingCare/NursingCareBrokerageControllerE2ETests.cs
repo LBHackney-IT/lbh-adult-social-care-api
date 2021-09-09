@@ -33,7 +33,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
                 StageId = 1,
                 NursingCarePackageId = package.Id,
                 FundedNursingCareCollectorId = 1,
-                NursingCore = 123.45m
+                NursingCore = 123.45m,
+                HasCareCharges = false
             };
 
             var response = await _fixture.RestClient

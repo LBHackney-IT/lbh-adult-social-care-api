@@ -6,6 +6,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
@@ -135,6 +136,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<NursingCarePackageDomain> ToDomain(this List<NursingCarePackage> nursingCarePackageEntities)
         {
             return nursingCarePackageEntities.Select(entity => entity.ToDomain()).ToList();
+        }
+
+        public static NursingCarePackagePlainDomain ToPlainDomain(this NursingCarePackage nursingCarePackage)
+        {
+            return _mapper.Map<NursingCarePackagePlainDomain>(nursingCarePackage);
         }
 
         #endregion NursingCarePackage
@@ -677,5 +683,29 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion FundedNursingCare
+
+        #region CareCharges
+
+        public static ProvisionalCareChargeAmountPlainDomain ToDomain(this ProvisionalCareChargeAmount provisionalCareCharge)
+        {
+            return _mapper.Map<ProvisionalCareChargeAmountPlainDomain>(provisionalCareCharge);
+        }
+
+        public static CareChargeElementPlainDomain ToPlainDomain(this CareChargeElement careChargeElement)
+        {
+            return _mapper.Map<CareChargeElementPlainDomain>(careChargeElement);
+        }
+
+        public static IEnumerable<CareChargeElementPlainDomain> ToPlainDomain(this IEnumerable<CareChargeElement> careChargeElements)
+        {
+            return _mapper.Map<IEnumerable<CareChargeElementPlainDomain>>(careChargeElements);
+        }
+
+        public static PackageCareChargePlainDomain ToPlainDomain(this PackageCareCharge packageCareCharge)
+        {
+            return _mapper.Map<PackageCareChargePlainDomain>(packageCareCharge);
+        }
+
+        #endregion CareCharges
     }
 }

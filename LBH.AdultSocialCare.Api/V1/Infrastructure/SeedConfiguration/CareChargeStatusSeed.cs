@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -14,20 +11,20 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
         {
             builder.HasData(new CareChargeStatus
             {
-                Id = 1,
-                StatusName = "Active"
+                Id = (int) CareChargeElementStatusEnum.Active,
+                StatusName = nameof(CareChargeElementStatusEnum.Active)
             }, new CareChargeStatus
             {
-                Id = 2,
-                StatusName = "End"
+                Id = (int) CareChargeElementStatusEnum.Ended,
+                StatusName = nameof(CareChargeElementStatusEnum.Ended)
             }, new CareChargeStatus
             {
-                Id = 3,
-                StatusName = "Cancelled"
+                Id = (int) CareChargeElementStatusEnum.Cancelled,
+                StatusName = nameof(CareChargeElementStatusEnum.Cancelled)
             }, new CareChargeStatus
             {
-                Id = 4,
-                StatusName = "Future"
+                Id = (int) CareChargeElementStatusEnum.Future,
+                StatusName = nameof(CareChargeElementStatusEnum.Future)
             });
         }
     }
