@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.Helpers;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
@@ -18,11 +18,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         {
             _gateway = gateway;
         }
-        public async Task<CareChargeElementPlainDomain> ExecuteAsync(CareChargeElementPlainDomain element)
+        public async Task<IEnumerable<CareChargeElementPlainDomain>> ExecuteAsync(IEnumerable<CareChargeElementPlainDomain> elements)
         {
-            element.StatusId ??= CalculateElementStatus(element);
+            foreach (var element in elements)
+            {
+                element.StatusId ??= CalculateElementStatus(element);
+            }
 
-            return await _gateway.CreateCareChargeElementAsync(element).ConfigureAwait(false);
+            return await _gateway.CreateCareChargeElementsAsync(elements).ConfigureAwait(false);
         }
 
         private int CalculateElementStatus(CareChargeElementPlainDomain element)
