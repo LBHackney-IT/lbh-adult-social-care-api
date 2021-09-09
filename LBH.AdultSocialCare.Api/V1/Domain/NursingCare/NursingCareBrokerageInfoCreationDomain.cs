@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using System;
 using System.Collections.Generic;
 
@@ -14,5 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCare
 
         public IEnumerable<NursingCareAdditionalNeedsCostCreationDomain> NursingCareAdditionalNeedsCosts { get; set; }
         public int? FundedNursingCareCollectorId { get; set; }
+        public bool HasCareCharges { get; set; }
+        public BrokerageCareChargeForChangeDomain CareChargeSettings { get; set; }
     }
 }
