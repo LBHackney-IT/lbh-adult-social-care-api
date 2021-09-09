@@ -3,13 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using LBH.AdultSocialCare.Api.Attributes;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage
 {
-    [MapTo(typeof(NursingCareBrokerageInfoDomain), typeof(NursingCareBrokerageInfoResponse))]
     public class NursingCareBrokerageInfo : BaseEntity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)] public Guid NursingCareBrokerageId { get; set; }

@@ -77,7 +77,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="$(SolutionDir)\$(AssemblyName).CodeGenerator\bin\Debug\netcoreapp3.1\$(AssemblyName).CodeGenerator.exe $(ProjectDir) $(ProjectDir)\V1\Factories\Generated.cs" />
+    <Exec Command="$(SolutionDir)\$(AssemblyName).CodeGenerator\bin\Debug\netcoreapp3.1\$(AssemblyName).CodeGenerator.exe $(ProjectDir)\V1\ $(ProjectDir)\V1\Factories\Generated.cs" />
   </Target>
 
 </Project>

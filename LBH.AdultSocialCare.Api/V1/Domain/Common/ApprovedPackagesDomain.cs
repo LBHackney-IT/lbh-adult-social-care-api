@@ -4,8 +4,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
-    [MapTo(typeof(ApprovedPackagesResponse), typeof(PagedApprovedPackagesResponse))]
-    [MapTo(typeof(Guid), typeof(String))]
     public class ApprovedPackagesDomain
     {
         public Guid PackageId { get; set; }
