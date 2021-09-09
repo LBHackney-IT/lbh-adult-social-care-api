@@ -5,6 +5,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
 {
     public interface ICreateCareChargeElementUseCase
     {
-        Task<CareChargeElementPlainDomain> ExecuteAsync(CareChargeElementPlainDomain careChargeElement);
+        Task<CareChargeElementPlainDomain> ExecuteAsync(CareChargeElementPlainDomain element);
     }
 }

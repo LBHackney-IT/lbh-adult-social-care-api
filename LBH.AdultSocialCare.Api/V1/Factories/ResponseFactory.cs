@@ -783,9 +783,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ProvisionalCareChargeAmountPlainResponse>(provisionalCareChargeDomain);
         }
 
-        public static CareChargeElementPlainResponse ToPlainResponse(this CareChargeElementPlainDomain careChargeElement)
+        public static CareChargeElementCreationResponse ToCreationResponse(this CareChargeElementPlainDomain careChargeElement)
         {
-            return _mapper.Map<CareChargeElementPlainResponse>(careChargeElement);
+            return _mapper.Map<CareChargeElementCreationResponse>(careChargeElement);
         }
 
         #endregion CareCharges

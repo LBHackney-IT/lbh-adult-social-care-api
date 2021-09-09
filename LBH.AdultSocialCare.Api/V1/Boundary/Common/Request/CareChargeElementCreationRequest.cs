@@ -8,13 +8,13 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
         [Required]
         public int CareChargeId { get; set; }
 
-        [Required]
-        public Guid ClientId { get; set; }
-
-        public int StatusId { get; set; }
+        public int? StatusId { get; set; }
 
         [Required]
         public int TypeId { get; set; }
+
+        [Required]
+        public int ClaimCollectorId { get; set; }
 
         public string Name { get; set; }
 

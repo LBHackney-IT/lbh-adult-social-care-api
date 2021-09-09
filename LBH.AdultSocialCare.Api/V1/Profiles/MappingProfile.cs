@@ -530,10 +530,10 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             #region Care Charges
 
             CreateMap<ProvisionalCareChargeAmount, ProvisionalCareChargeAmountPlainDomain>();
-            CreateMap<ProvisionalCareChargeAmountPlainDomain, ProvisionalCareChargeAmountPlainResponse>();
-            CreateMap<CareChargeElementCreationRequest, CareChargeElementPlainDomain>();
-            CreateMap<CareChargeElementCreationResponse, CareChargeElementPlainDomain>();
-            CreateMap<CareChargeElementPlainDomain, CareChargeElement>();
+            CreateMap<ProvisionalCareChargeAmountPlainDomain, ProvisionalCareChargeAmountPlainResponse>().ReverseMap();
+            CreateMap<CareChargeElementCreationRequest, CareChargeElementPlainDomain>().ReverseMap();
+            CreateMap<CareChargeElementCreationResponse, CareChargeElementPlainDomain>().ReverseMap();
+            CreateMap<CareChargeElementPlainDomain, CareChargeElement>().ReverseMap();
 
             #endregion Care Charges
         }
