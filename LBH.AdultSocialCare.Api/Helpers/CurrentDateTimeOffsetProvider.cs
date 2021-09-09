@@ -6,6 +6,5 @@ namespace LBH.AdultSocialCare.Api.Helpers
     {
         public DateTimeOffset Now => DateTimeOffset.Now;
         public DateTimeOffset UtcNow => DateTimeOffset.UtcNow;
-        public static CurrentDateTimeOffsetProvider DateTimeOffset => new CurrentDateTimeOffsetProvider();
     }
 }
