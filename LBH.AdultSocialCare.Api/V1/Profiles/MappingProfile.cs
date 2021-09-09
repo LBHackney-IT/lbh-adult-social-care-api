@@ -133,6 +133,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<TypeOfNursingCareHomeDomain, TypeOfNursingCareHomeResponse>();
             CreateMap<NursingCareApprovalHistory, NursingCareApprovalHistoryDomain>();
             CreateMap<NursingCareApprovalHistoryDomain, NursingCareApprovalHistory>();
+            CreateMap<NursingCarePackage, NursingCarePackagePlainDomain>();
+            CreateMap<NursingCarePackagePlainDomain, NursingCarePackageForUpdateDomain>();
 
             #endregion NursingCarePackage
 
@@ -535,6 +537,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CareChargeElementCreationResponse, CareChargeElementPlainDomain>();
             CreateMap<CareChargeElementPlainDomain, CareChargeElement>();
             CreateMap<BrokerageCareChargeForChangeRequest, BrokerageCareChargeForChangeDomain>();
+            CreateMap<PackageCareCharge, PackageCareChargePlainDomain>();
 
             #endregion Care Charges
         }
