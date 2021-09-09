@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210909043519_HasCareChargesBoolOnNursingCareBrokerage")]
+    partial class HasCareChargesBoolOnNursingCareBrokerage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,21 +55,19 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.CareChargeElement", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(13, 2)");
 
-                    b.Property<Guid>("CareChargeId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("CareChargeId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("ClaimCollectorId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("ClaimReasons")
-                        .HasColumnType("text");
 
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
@@ -142,7 +142,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            StatusName = "Ended"
+                            StatusName = "End"
                         },
                         new
                         {
@@ -174,25 +174,24 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            OptionName = "Provisional"
-                        },
-                        new
-                        {
-                            Id = 2,
                             OptionName = "Without Property 1-12 Weeks"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = 2,
                             OptionName = "Without Property 13+ Weeks"
                         });
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.PackageCareCharge", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("ClaimReasons")
+                        .HasColumnType("text");
 
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
@@ -206,7 +205,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<bool>("IsProvisional")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("PackageId")
+                    b.Property<Guid>("NursingCarePackageId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("PackageTypeId")
@@ -2566,7 +2565,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid?>("AssignedUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("ClientId")
+                    b.Property<Guid?>("ClientId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CreatorId")
@@ -2729,16 +2728,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTimeOffset>("DateUpdated")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<Guid>("NursingCareBrokerageId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("UpdaterId")
+                    b.Property<Guid?>("UpdatorId")
                         .HasColumnType("uuid");
 
                     b.HasKey("NursingCareAdditionalNeedsCostId");
@@ -2749,7 +2742,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasIndex("NursingCareBrokerageId");
 
-                    b.HasIndex("UpdaterId");
+                    b.HasIndex("UpdatorId");
 
                     b.ToTable("NursingCareAdditionalNeedsCosts");
                 });
@@ -4829,9 +4822,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Client", "Client")
                         .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClientId");
 
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
                         .WithMany()
@@ -4888,7 +4879,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Updater")
                         .WithMany()
-                        .HasForeignKey("UpdaterId");
+                        .HasForeignKey("UpdatorId");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage.NursingCareApprovalHistory", b =>

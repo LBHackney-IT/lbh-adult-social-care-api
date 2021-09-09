@@ -138,6 +138,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return nursingCarePackageEntities.Select(entity => entity.ToDomain()).ToList();
         }
 
+        public static NursingCarePackagePlainDomain ToPlainDomain(this NursingCarePackage nursingCarePackage)
+        {
+            return _mapper.Map<NursingCarePackagePlainDomain>(nursingCarePackage);
+        }
+
         #endregion NursingCarePackage
 
         #region NursingCareAdditionalNeed
@@ -689,6 +694,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static CareChargeElementPlainDomain ToPlainDomain(this CareChargeElement careChargeElement)
         {
             return _mapper.Map<CareChargeElementPlainDomain>(careChargeElement);
+        }
+
+        public static PackageCareChargePlainDomain ToPlainDomain(this PackageCareCharge packageCareCharge)
+        {
+            return _mapper.Map<PackageCareChargePlainDomain>(packageCareCharge);
         }
 
         #endregion CareCharges

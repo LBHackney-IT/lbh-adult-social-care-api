@@ -29,7 +29,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
                 ClientId = client.Id
             };
 
-            _context.NursingCarePackages.Add(package);
+            await _context.NursingCarePackages.AddAsync(package).ConfigureAwait(false);
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return package;

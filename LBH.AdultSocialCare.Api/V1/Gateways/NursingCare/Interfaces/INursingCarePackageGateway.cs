@@ -1,8 +1,8 @@
+using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces
 {
@@ -13,6 +13,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces
         public Task<NursingCarePackageDomain> CreateAsync(NursingCarePackage nursingCarePackageForCreation);
 
         public Task<NursingCarePackageDomain> GetAsync(Guid nursingCarePackageId);
+
+        public Task<NursingCarePackagePlainDomain> CheckNursingCarePackageExists(Guid nursingCarePackageId);
 
         public Task<NursingCarePackageDomain> ChangeStatusAsync(Guid nursingCarePackageId, int statusId);
 
