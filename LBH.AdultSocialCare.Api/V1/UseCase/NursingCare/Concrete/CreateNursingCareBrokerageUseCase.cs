@@ -96,8 +96,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
 
                 return brokerageInfoDomain.ToResponse();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 await transaction.RollbackAsync().ConfigureAwait(false);
                 throw;
             }

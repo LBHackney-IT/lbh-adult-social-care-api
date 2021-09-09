@@ -50,6 +50,13 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.NursingCare
                 .Setup(g => g.GetAsync(It.Is<Guid>(g => g == _packageId)))
                 .ReturnsAsync(new NursingCarePackageDomain { Id = _packageId });
 
+            _packageGateway.Setup(g => g.CheckNursingCarePackageExists(_packageId))
+                .ReturnsAsync(() => new NursingCarePackagePlainDomain
+                {
+                    Id = _packageId,
+                    IsThisUserUnderS117 = false
+                });
+
             _transactionManager
                 .Setup(t => t.BeginTransactionAsync())
                 .ReturnsAsync(_transaction.Object);
@@ -71,7 +78,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.NursingCare
 
             Func<Task> action = () => _useCase.ExecuteAsync(new NursingCareBrokerageInfoCreationDomain
             {
-                NursingCarePackageId = _packageId
+                NursingCarePackageId = _packageId,
+                HasCareCharges = false
             });
 
             await action.Should().ThrowAsync<ApiException>().ConfigureAwait(false);
@@ -104,7 +112,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.NursingCare
                     p.Id == _packageId &&
                     p.SupplierId == request.SupplierId &&
                     p.StageId == request.StageId &&
-                    p.StartDate == request.StartDate &&
                     p.EndDate == request.EndDate)),
                 Times.Once);
 
@@ -139,7 +146,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.NursingCare
                 SupplierId = 20,
                 FundedNursingCareCollectorId = 30,
                 StartDate = DateTimeOffset.Now,
-                EndDate = DateTimeOffset.Now.AddDays(30)
+                EndDate = DateTimeOffset.Now.AddDays(30),
+                HasCareCharges = false
             };
         }
     }

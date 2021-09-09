@@ -22,5 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCare
         public Guid? AssignedUserId { get; set; }
         public DateTimeOffset? PaidUpTo { get; set; }
         public DateTimeOffset? PreviousPaidUpTo { get; set; }
+        public Guid CreatorId { get; set; }
+        public Guid? UpdaterId { get; set; }
     }
 }
