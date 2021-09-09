@@ -59,7 +59,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.NursingCare
                 _changeStatusUseCase.Object,
                 _brokerageGateway.Object,
                 _packageGateway.Object,
-                _transactionManager.Object, Mapper);
+                _transactionManager.Object, Mapper, null, null);
         }
 
         [Fact]
