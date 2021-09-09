@@ -1,7 +1,12 @@
 using System;
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
+    [MapTo(typeof(PackageRequest), typeof(PackageResponse), typeof(Package))]
     public class PackageDomain
     {
         /// <summary>
