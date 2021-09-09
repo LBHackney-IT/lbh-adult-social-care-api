@@ -4,8 +4,11 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
@@ -44,6 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [HttpPost("elements")]
         [ProducesResponseType(typeof(CareChargeElementCreationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
         public async Task<ActionResult<CareChargeElementCreationResponse>> CreateCareChargeElement(CareChargeElementCreationRequest request)
         {
             if (!ModelState.IsValid)
@@ -51,8 +55,35 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
                 return UnprocessableEntity(ModelState);
             }
 
-            var careChargeElement = await _createCareChargeElementUseCase.ExecuteAsync(request.ToPlainDomain()).ConfigureAwait(false);
-            return Ok(careChargeElement.ToCreationResponse());
+            var newElements = await _createCareChargeElementUseCase
+                .ExecuteAsync(new List<CareChargeElementPlainDomain> { request.ToPlainDomain() })
+                .ConfigureAwait(false);
+
+            return Ok(newElements.First().ToCreationResponse());
+        }
+
+        /// <summary>
+        /// Adds a new Financial Assessment with provisional amounts for 1-12 and 13+ weeks
+        /// </summary>
+        /// <returns>True if operation is successful</returns>
+        /// <response code="200">When a new Financial Assessment has been created successfully</response>
+        /// <response code="422">When request is invalid</response>
+        [HttpPost("financial-assessment")]
+        [ProducesResponseType(typeof(CareChargeElementCreationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<bool>> AddFinancialAssessment(IEnumerable<CareChargeElementCreationRequest> request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+
+            var careChargeElements = await _createCareChargeElementUseCase
+                .ExecuteAsync(request.ToPlainDomain())
+                .ConfigureAwait(false);
+
+            return Ok(careChargeElements.ToCreationResponse());
         }
     }
 }

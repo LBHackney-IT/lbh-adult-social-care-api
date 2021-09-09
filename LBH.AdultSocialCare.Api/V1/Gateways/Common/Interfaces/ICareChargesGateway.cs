@@ -1,5 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
@@ -8,6 +9,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
     {
         Task<ProvisionalCareChargeAmountPlainDomain> GetUsingServiceUserIdAsync(Guid serviceUserId);
 
-        Task<CareChargeElementPlainDomain> CreateCareChargeElementAsync(CareChargeElementPlainDomain elementDomain);
+        Task<IEnumerable<CareChargeElementPlainDomain>> CreateCareChargeElementsAsync(IEnumerable<CareChargeElementPlainDomain> elementDomains);
     }
 }

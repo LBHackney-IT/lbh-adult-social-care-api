@@ -6,8 +6,10 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 {
@@ -45,19 +47,29 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             return provisionalAmount?.ToDomain();
         }
 
-        public async Task<CareChargeElementPlainDomain> CreateCareChargeElementAsync(CareChargeElementPlainDomain elementDomain)
+        public async Task<IEnumerable<CareChargeElementPlainDomain>> CreateCareChargeElementsAsync(IEnumerable<CareChargeElementPlainDomain> elementDomains)
         {
-            var element = elementDomain.ToEntity();
+            var newElements = new List<CareChargeElement>();
 
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync().ConfigureAwait(false);
             try
             {
-                _dbContext.CareChargeElements.Add(elementDomain.ToEntity());
-                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+                foreach (var domain in elementDomains)
+                {
+                    var element = domain.ToEntity();
+                    newElements.Add(element);
 
-                return element.ToPlainDomain();
+                    _dbContext.CareChargeElements.Add(element);
+                }
+
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+                await transaction.CommitAsync().ConfigureAwait(false);
+
+                return newElements.ToPlainDomain();
             }
             catch (Exception ex)
             {
+                await transaction.RollbackAsync().ConfigureAwait(false);
                 throw new DbSaveFailedException("Saving care charge element failed", ex);
             }
         }

@@ -447,6 +447,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<CareChargeElementPlainDomain>(request);
         }
 
+        public static IEnumerable<CareChargeElementPlainDomain> ToPlainDomain(this IEnumerable<CareChargeElementCreationRequest> request)
+        {
+            return _mapper.Map<IEnumerable<CareChargeElementPlainDomain>>(request);
+        }
+
         #endregion Care Charge
     }
 }
