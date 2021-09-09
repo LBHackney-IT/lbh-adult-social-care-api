@@ -30,12 +30,12 @@ namespace Common.Extensions
                    dateTwo.IsInRange(rangeFrom, rangeTo);
         }
 
-        public static int GetAge(this DateTime birthDate)
+        public static int GetAge(this DateTime birthDate, DateTime endDate)
         {
-            var today = DateTime.Now; // To avoid a race condition around midnight
-            var age = today.Year - birthDate.Year;
+            // var today = DateTime.Now; // To avoid a race condition around midnight
+            var age = endDate.Year - birthDate.Year;
 
-            if (today.Month < birthDate.Month || (today.Month == birthDate.Month && today.Day < birthDate.Day))
+            if (endDate.Month < birthDate.Month || (endDate.Month == birthDate.Month && endDate.Day < birthDate.Day))
                 age--;
 
             return age;

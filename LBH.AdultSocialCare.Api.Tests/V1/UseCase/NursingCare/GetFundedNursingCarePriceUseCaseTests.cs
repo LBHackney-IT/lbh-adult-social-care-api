@@ -18,7 +18,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.NursingCare
 
             var currentTime = DateTime.Now;
 
-            useCase.CurrentDateTimeProvider = new MockCurrentDateTimeProvider { Now = currentTime };
+            useCase.CurrentDateTimeOffsetProvider = new MockCurrentDateTimeOffsetProvider { Now = currentTime };
             await useCase.GetActiveFundedNursingCarePriceAsync().ConfigureAwait(false);
 
             gateway.Verify(g => g.GetFundedNursingCarePriceAsync(currentTime), Times.Once);
