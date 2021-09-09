@@ -42,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         /// <response code="200">When Care Charge element has been created successfully</response>
         /// <response code="422">When request is invalid</response>
         [HttpPost("elements")]
-        [ProducesResponseType(typeof(CareChargeElementPlainResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CareChargeElementCreationResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         public async Task<ActionResult<CareChargeElementCreationResponse>> CreateCareChargeElement(CareChargeElementCreationRequest request)
         {
@@ -50,8 +50,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             {
                 return UnprocessableEntity(ModelState);
             }
+
             var careChargeElement = await _createCareChargeElementUseCase.ExecuteAsync(request.ToPlainDomain()).ConfigureAwait(false);
-            return Ok(careChargeElement.ToPlainResponse());
+            return Ok(careChargeElement.ToCreationResponse());
         }
     }
 }
