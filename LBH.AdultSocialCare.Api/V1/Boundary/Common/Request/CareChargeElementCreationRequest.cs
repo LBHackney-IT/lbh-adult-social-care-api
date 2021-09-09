@@ -6,7 +6,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
     public class CareChargeElementCreationRequest
     {
         [Required]
-        public int CareChargeId { get; set; }
+        public Guid CareChargeId { get; set; }
 
         public int? StatusId { get; set; }
 

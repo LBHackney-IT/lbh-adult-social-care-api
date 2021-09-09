@@ -4,8 +4,8 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
     public class CareChargeElementPlainDomain
     {
-        public int Id { get; set; }
-        public int CareChargeId { get; set; }
+        public Guid Id { get; set; }
+        public Guid CareChargeId { get; set; }
         public int? StatusId { get; set; }
         public int TypeId { get; set; }
         public int ClaimCollectorId { get; set; }

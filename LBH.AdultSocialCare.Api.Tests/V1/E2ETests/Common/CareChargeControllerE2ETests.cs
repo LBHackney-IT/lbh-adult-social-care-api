@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using Xunit;
@@ -30,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             {
                 StartDate = startDate,
                 EndDate = endDate,
-                TypeId = CareChargeTypeConstants.WithoutProperty13WeeksPlus,
+                TypeId = (int) CareChargeElementTypeEnum.WithoutPropertyThirteenPlusWeeks,
                 CareChargeId = careCharge.Id,
                 ClaimCollectorId = PackageCostClaimersConstants.Hackney
             };
@@ -41,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
             response.Content.Should().BeEquivalentTo(request, opt => opt.Excluding(e => e.StatusId));
-            response.Content.StatusId.Should().Be(CareChargeStatusConstants.Active);
+            response.Content.StatusId.Should().Be((int) CareChargeElementStatusEnum.Active);
         }
     }
 }

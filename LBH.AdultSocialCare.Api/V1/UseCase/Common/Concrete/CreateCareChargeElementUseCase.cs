@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
@@ -33,16 +34,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             {
                 if (element.EndDate is null || element.EndDate > DateTimeProvider.Now)
                 {
-                    statusId = CareChargeStatusConstants.Active;
+                    statusId = (int) CareChargeElementStatusEnum.Active;
                 }
                 else
                 {
-                    statusId = CareChargeStatusConstants.End;
+                    statusId = (int) CareChargeElementStatusEnum.Ended;
                 }
             }
             else
             {
-                statusId = CareChargeStatusConstants.Future;
+                statusId = (int) CareChargeElementStatusEnum.Future;
             }
 
             return statusId;
