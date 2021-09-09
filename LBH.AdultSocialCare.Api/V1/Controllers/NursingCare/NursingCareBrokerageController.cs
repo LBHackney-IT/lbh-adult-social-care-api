@@ -59,11 +59,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
         [ProducesDefaultResponseType]
         public async Task<ActionResult<NursingCareBrokerageInfoResponse>> CreateNursingCareBrokerage([FromBody] NursingCareBrokerageCreationRequest brokerageCreationRequest)
         {
-            if (!ModelState.IsValid)
-            {
-                return UnprocessableEntity(ModelState);
-            }
-
             var result = await _createNursingCareBrokerageUseCase
                 .ExecuteAsync(brokerageCreationRequest.ToDomain())
                 .ConfigureAwait(false);

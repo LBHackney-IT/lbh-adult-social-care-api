@@ -9,6 +9,7 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
 {
@@ -43,7 +44,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
 
             if (brokerage.NursingCareBrokerageId != Guid.Empty)
             {
-                throw new ApiException($"A brokerage for nursing care package {brokerageInfoCreationDomain.NursingCarePackageId} already exists");
+                throw new ApiException($"Brokerage information for nursing care package with id {brokerageInfoCreationDomain.NursingCarePackageId} already exists", StatusCodes.Status409Conflict);
             }
 
             await using var transaction = await _transactionManager.BeginTransactionAsync().ConfigureAwait(false);
