@@ -78,6 +78,22 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             }
         }
 
+        public async Task<CareChargeElementPlainDomain> CheckCareChargeElementExistsAsync(Guid packageCareChargeId,
+            Guid careElementId)
+        {
+            var element = await _dbContext.CareChargeElements
+                .Where(ce => ce.Id.Equals(careElementId) && ce.CareChargeId.Equals(packageCareChargeId))
+                .AsNoTracking()
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+
+            if (element == null)
+            {
+                throw new ApiException($"Care charge element with Id {careElementId} not found");
+            }
+
+            return element.ToPlainDomain();
+        }
+
         private async Task<CareChargeElement> GetCareChargeElementAsync(Guid packageCareChargeId, Guid careElementId)
         {
             var element = await _dbContext.CareChargeElements

@@ -10,11 +10,12 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public bool SentOrInvoiced { get; set; }
         public bool HasBeenAddedToUserInvoice { get; set; }
         public int PackageTypeId { get; set; }
-        public int PackageId { get; set; }
+        public Guid PackageId { get; set; }
         public int ChargeTypeId { get; set; }
         public string Description { get; set; }
         public decimal Amount { get; set; }
         public int PriceEffectId { get; set; }
         public Guid? CareChargeElementId { get; set; }
+        public int ClaimCollectorId { get; set; }
     }
 }
