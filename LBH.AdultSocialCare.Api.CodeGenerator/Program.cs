@@ -11,7 +11,7 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator
     {
         static void Main(string[] args)
         {
-            var path = args[0];
+            var path = @"D:\Documents\projects\innowise\HASC\lbh-adult-social-care-api\LBH.AdultSocialCare.Api\V1\"; //args[0];
 
             var syntaxForrest = Directory
                 .EnumerateFiles(path, "*.cs", SearchOption.AllDirectories)

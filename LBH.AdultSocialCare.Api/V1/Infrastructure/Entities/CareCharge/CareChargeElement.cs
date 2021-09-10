@@ -1,9 +1,13 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge
 {
+    [MapTo(typeof(CareChargeElementPlainDomain))]
+    [MapListTo(typeof(CareChargeElementPlainDomain))]
     public class CareChargeElement : BaseEntity
     {
         [Key] public Guid Id { get; set; }

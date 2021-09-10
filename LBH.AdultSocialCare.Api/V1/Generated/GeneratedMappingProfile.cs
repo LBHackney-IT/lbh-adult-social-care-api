@@ -49,6 +49,9 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
     {
         public GeneratedMappingProfile()
         {
+            CreateMap<CareChargeElementPlainDomain, CareChargeElementCreationResponse>().ReverseMap();
+            CreateMap<CareChargeElementCreationRequest, CareChargeElementPlainDomain>().ReverseMap();
+            CreateMap<CareChargeElement, CareChargeElementPlainDomain>().ReverseMap();
         }
     }
 }

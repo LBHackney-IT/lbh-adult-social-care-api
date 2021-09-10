@@ -39,6 +39,8 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
 
         private static void GenerateMappings(IEnumerable<SyntaxTree> syntaxForrest, StringBuilder mappingExtensionBuilder, StringBuilder mappingProfileBuilder)
         {
+            var registeredMappings = new HashSet<KeyValuePair<string, string>>();
+
             foreach (var syntaxTree in syntaxForrest)
             {
                 var sourceType = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();
@@ -75,7 +77,14 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
                                         break;
                                 }
 
-                                WriteCreateMapStatement(sourceTypeName, targetTypeName, mappingProfileBuilder);
+                                var mappingPair = new KeyValuePair<string, string>(sourceTypeName, targetTypeName);
+
+                                if (!registeredMappings.Contains(mappingPair))
+                                {
+                                    // to avoid duplicate registrations for entities marked with both MapTo and MapListTo
+                                    WriteCreateMapStatement(sourceTypeName, targetTypeName, mappingProfileBuilder);
+                                    registeredMappings.Add(mappingPair);
+                                }
                             }
                         }
                     }
@@ -103,7 +112,7 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
             codeBuilder.AppendLine($@"
                 public static IEnumerable<{targetTypeName}> To{postfix}(this IEnumerable<{sourceTypeName}> input)
                 {{
-                    return _mapper.Map<{targetTypeName}>(input);  
+                    return _mapper.Map<IEnumerable<{targetTypeName}>>(input);  
                 }}");
         }
 

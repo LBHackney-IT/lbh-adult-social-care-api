@@ -1,7 +1,11 @@
 using System;
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
+    [MapTo(typeof(CareChargeElementCreationResponse))]
+    [MapListTo(typeof(CareChargeElementCreationResponse))]
     public class CareChargeElementPlainDomain
     {
         public Guid Id { get; set; }
