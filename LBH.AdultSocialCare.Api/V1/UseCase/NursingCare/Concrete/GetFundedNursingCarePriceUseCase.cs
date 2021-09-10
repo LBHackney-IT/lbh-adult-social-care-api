@@ -8,9 +8,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
 {
     public class GetFundedNursingCarePriceUseCase : IGetFundedNursingCarePriceUseCase
     {
-        private readonly IFundedNursingCaseGateway _gateway;
+        private readonly IFundedNursingCareGateway _gateway;
 
-        public GetFundedNursingCarePriceUseCase(IFundedNursingCaseGateway gateway)
+        public GetFundedNursingCarePriceUseCase(IFundedNursingCareGateway gateway)
         {
             _gateway = gateway;
         }

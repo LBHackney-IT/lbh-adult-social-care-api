@@ -67,9 +67,9 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
             codeBuilder.AppendLine($@"
                 namespace LBH.AdultSocialCare.Api.V1.Extensions
                 {{
-                    public static class Temp{ClassNamePostfix}Extensions
+                    public static class {ClassNamePostfix}Extensions
                     {{
-                        public static void TempRegister{ClassNamePostfix}s(this IServiceCollection services)
+                        public static void Register{ClassNamePostfix}s(this IServiceCollection services)
                         {{");
         }
 
