@@ -6,8 +6,8 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge
 {
-    [MapTo(typeof(CareChargeElementPlainDomain))]
-    [MapListTo(typeof(CareChargeElementPlainDomain))]
+    [GenerateMappingFor(typeof(CareChargeElementPlainDomain))]
+    [GenerateListMappingFor(typeof(CareChargeElementPlainDomain))]
     public class CareChargeElement : BaseEntity
     {
         [Key] public Guid Id { get; set; }

@@ -3,11 +3,11 @@ using System;
 namespace LBH.AdultSocialCare.Api.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class MapListToAttribute : Attribute
+    public class GenerateListMappingForAttribute : Attribute
     {
         private Type[] _mappingTargets;
 
-        public MapListToAttribute(params Type[] mappingTargets)
+        public GenerateListMappingForAttribute(params Type[] mappingTargets)
         {
             _mappingTargets = mappingTargets;
         }

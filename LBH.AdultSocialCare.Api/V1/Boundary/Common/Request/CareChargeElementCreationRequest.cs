@@ -5,8 +5,8 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
 {
-    [MapTo(typeof(CareChargeElementPlainDomain))]
-    [MapListTo(typeof(CareChargeElementPlainDomain))]
+    [GenerateMappingFor(typeof(CareChargeElementPlainDomain))]
+    [GenerateListMappingFor(typeof(CareChargeElementPlainDomain))]
     public class CareChargeElementCreationRequest
     {
         [Required]

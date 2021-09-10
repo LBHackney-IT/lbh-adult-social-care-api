@@ -4,8 +4,8 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
-    [MapTo(typeof(CareChargeElementCreationResponse))]
-    [MapListTo(typeof(CareChargeElementCreationResponse))]
+    [GenerateMappingFor(typeof(CareChargeElementCreationResponse))]
+    [GenerateListMappingFor(typeof(CareChargeElementCreationResponse))]
     public class CareChargeElementPlainDomain
     {
         public Guid Id { get; set; }

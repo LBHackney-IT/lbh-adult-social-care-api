@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
@@ -56,7 +55,7 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
                             .OfType<IdentifierNameSyntax>()
                             .FirstOrDefault()?.Identifier.Text;
 
-                        if ((attributeName == "MapTo") || (attributeName == "MapListTo"))
+                        if ((attributeName == "GenerateMappingFor") || (attributeName == "GenerateListMappingFor"))
                         {
                             var typeofExpressions = attribute.DescendantNodes().OfType<TypeOfExpressionSyntax>();
 
@@ -67,11 +66,11 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
 
                                 switch (attributeName)
                                 {
-                                    case "MapTo":
+                                    case "GenerateMappingFor":
                                         WriteObjectMappingMethod(sourceTypeName, targetTypeName, mappingExtensionBuilder);
                                         WriteObjectMappingMethod(targetTypeName, sourceTypeName, mappingExtensionBuilder);
                                         break;
-                                    case "MapListTo":
+                                    case "GenerateListMappingFor":
                                         WriteListMappingMethod(sourceTypeName, targetTypeName, mappingExtensionBuilder);
                                         WriteListMappingMethod(targetTypeName, sourceTypeName, mappingExtensionBuilder);
                                         break;
