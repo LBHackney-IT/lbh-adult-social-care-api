@@ -26,11 +26,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
         private readonly ICareChargesGateway _careChargesGateway;
         private readonly IPackageCareChargeGateway _packageCareChargeGateway;
         private readonly ITransactionManager _transactionManager;
+        private readonly IChangeStatusResidentialCarePackageUseCase _changeStatusResidentialCarePackageUseCase;
 
         public CreateResidentialCareBrokerageUseCase(IResidentialCareBrokerageGateway residentialCareBrokerageGateway,
             IResidentialCarePackageGateway residentialCarePackageGateway,
             IMapper mapper, IChangeDatesOfResidentialCarePackageUseCase changeDatesOfResidentialCarePackageUseCase,
-            ICareChargesGateway careChargesGateway, IPackageCareChargeGateway packageCareChargeGateway, ITransactionManager transactionManager)
+            ICareChargesGateway careChargesGateway, IPackageCareChargeGateway packageCareChargeGateway, ITransactionManager transactionManager,
+            IChangeStatusResidentialCarePackageUseCase changeStatusResidentialCarePackageUseCase)
         {
             _residentialCareBrokerageGateway = residentialCareBrokerageGateway;
             _residentialCarePackageGateway = residentialCarePackageGateway;
@@ -39,6 +41,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
             _careChargesGateway = careChargesGateway;
             _packageCareChargeGateway = packageCareChargeGateway;
             _transactionManager = transactionManager;
+            _changeStatusResidentialCarePackageUseCase = changeStatusResidentialCarePackageUseCase;
         }
 
         public async Task<ResidentialCareBrokerageInfoResponse> ExecuteAsync(ResidentialCareBrokerageForCreationDomain brokerageForCreationDomain)
@@ -49,11 +52,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
             await using var transaction = await _transactionManager.BeginTransactionAsync().ConfigureAwait(false);
             try
             {
+                // Create brokerage info
                 var brokerageInfoDomain = await CreateBrokerageInfo(brokerageForCreationDomain).ConfigureAwait(false);
 
                 // Update residential care package. Stage, supplier and end date
                 await UpdatePackageAsync(residentialCarePackageFromDb, brokerageForCreationDomain).ConfigureAwait(false);
 
+                // Update package status
+                await ChangePackageStatusAsync(brokerageForCreationDomain.ResidentialCarePackageId).ConfigureAwait(false);
+
+                // Create care charges if selected
                 if (brokerageForCreationDomain.HasCareCharges)
                 {
                     await CreateProvisionalCareChargeAmountsAsync(residentialCarePackageFromDb.ClientId, residentialCarePackageFromDb.Id, brokerageForCreationDomain.CareChargeSettings.ClaimedBy, brokerageForCreationDomain.CareChargeSettings.CollectorReason, brokerageForCreationDomain.StartDate, brokerageForCreationDomain.EndDate).ConfigureAwait(false);
@@ -125,6 +133,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
             var packageForUpdateDomain = _mapper.Map<ResidentialCarePackageForUpdateDomain>(packagePlainDomain);
 
             await _residentialCarePackageGateway.UpdateAsync(packageForUpdateDomain).ConfigureAwait(false);
+        }
+
+        private async Task ChangePackageStatusAsync(Guid packageId)
+        {
+            //Change status of package
+            await _changeStatusResidentialCarePackageUseCase
+                .UpdateAsync(packageId, ApprovalHistoryConstants.ApprovedForBrokerageId)
+                .ConfigureAwait(false);
         }
 
         private async Task CreateProvisionalCareChargeAmountsAsync(Guid serviceUserId, Guid residentialCarePackageId, int collectorId, string claimCollectorReason, DateTimeOffset startDate, DateTimeOffset? endDate)

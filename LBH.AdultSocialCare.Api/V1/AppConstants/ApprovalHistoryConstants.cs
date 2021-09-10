@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace LBH.AdultSocialCare.Api.V1.AppConstants
 {
     public static class ApprovalHistoryConstants
@@ -38,33 +33,43 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants
                 case NewPackageId:
                     logText = NewPackage;
                     break;
+
                 case SubmittedForApprovalId:
                     logText = SubmittedForApproval;
                     break;
+
                 case RequestMoreInformationId:
                     logText = RequestMoreInformation;
                     break;
+
                 case PackageApprovedId:
                     logText = PackageApproved;
                     break;
+
                 case PackageBrokeredId:
                     logText = PackageBrokered;
                     break;
+
                 case ApprovedForCommercialId:
                     logText = ApprovedForCommercial;
                     break;
+
                 case ClarifyingCommercialsId:
                     logText = ClarifyingCommercials;
                     break;
+
                 case ApprovedForBrokerageId:
                     logText = ApprovedForBrokerage;
                     break;
+
                 case PackagePoIssuedId:
                     logText = PackagePoIssued;
                     break;
+
                 case BrokeredDealRejectedId:
                     logText = BrokeredDealRejected;
                     break;
+
                 case BrokeredEndedId:
                     logText = BrokeredEnded;
                     break;

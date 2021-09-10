@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
@@ -7,6 +5,8 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
 {
@@ -20,19 +20,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         private readonly IGetResidentialCareBrokerageUseCase _getResidentialCareBrokerageUseCase;
         private readonly ICreateResidentialCareBrokerageUseCase _createResidentialCareBrokerageUseCase;
         private readonly IChangeStatusResidentialCarePackageUseCase _changeStatusResidentialCarePackageUseCase;
-        private readonly IChangeDatesOfResidentialCarePackageUseCase _changeDatesOfResidentialCarePackageUseCase;
         private readonly ISetStageToResidentialCarePackageUseCase _setStageToResidentialCarePackageUseCase;
 
         public ResidentialCareBrokerageController(IGetResidentialCareBrokerageUseCase getResidentialCareBrokerageUseCase,
             ICreateResidentialCareBrokerageUseCase createResidentialCareBrokerageUseCase,
             IChangeStatusResidentialCarePackageUseCase changeStatusResidentialCarePackageUseCase,
-            IChangeDatesOfResidentialCarePackageUseCase changeDatesOfResidentialCarePackageUseCase,
             ISetStageToResidentialCarePackageUseCase setStageToResidentialCarePackageUseCase)
         {
             _getResidentialCareBrokerageUseCase = getResidentialCareBrokerageUseCase;
             _createResidentialCareBrokerageUseCase = createResidentialCareBrokerageUseCase;
             _changeStatusResidentialCarePackageUseCase = changeStatusResidentialCarePackageUseCase;
-            _changeDatesOfResidentialCarePackageUseCase = changeDatesOfResidentialCarePackageUseCase;
             _setStageToResidentialCarePackageUseCase = setStageToResidentialCarePackageUseCase;
         }
 
@@ -62,21 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         [ProducesDefaultResponseType]
         public async Task<ActionResult<ResidentialCareBrokerageInfoResponse>> CreateResidentialCareBrokerage([FromBody] ResidentialCareBrokerageForCreationRequest residentialCareBrokerageForCreationRequest)
         {
-            var residentialCareBrokerageCreationDomain = residentialCareBrokerageForCreationRequest.ToDomain();
-            var result = await _createResidentialCareBrokerageUseCase.ExecuteAsync(residentialCareBrokerageCreationDomain).ConfigureAwait(false);
-
-            //Change start / end dates of the package
-            await _changeDatesOfResidentialCarePackageUseCase
-                .UpdateAsync(
-                    residentialCareBrokerageForCreationRequest.ResidentialCarePackageId,
-                    residentialCareBrokerageForCreationRequest.StartDate,
-                    residentialCareBrokerageForCreationRequest.EndDate)
-                .ConfigureAwait(false);
-
-            //Change status of package
-            await _changeStatusResidentialCarePackageUseCase
-                .UpdateAsync(residentialCareBrokerageForCreationRequest.ResidentialCarePackageId, ApprovalHistoryConstants.ApprovedForBrokerageId)
-                .ConfigureAwait(false);
+            var result = await _createResidentialCareBrokerageUseCase.ExecuteAsync(residentialCareBrokerageForCreationRequest.ToDomain()).ConfigureAwait(false);
             return Ok(result);
         }
 
