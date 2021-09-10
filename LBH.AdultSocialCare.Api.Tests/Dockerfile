@@ -10,10 +10,8 @@ WORKDIR /app
 # Copy csproj and restore as distinct layers
 COPY ./LBH.AdultSocialCare.Api.sln ./
 COPY ./LBH.AdultSocialCare.Api/LBH.AdultSocialCare.Api.csproj ./LBH.AdultSocialCare.Api/
-COPY ./LBH.AdultSocialCare.Api.CodeGenerator/LBH.AdultSocialCare.Api.CodeGenerator.csproj ./LBH.AdultSocialCare.Api.CodeGenerator/
 COPY ./LBH.AdultSocialCare.Api.Tests/LBH.AdultSocialCare.Api.Tests.csproj ./LBH.AdultSocialCare.Api.Tests/
 
-RUN dotnet restore ./LBH.AdultSocialCare.Api.CodeGenerator/LBH.AdultSocialCare.Api.CodeGenerator.csproj
 RUN dotnet restore ./LBH.AdultSocialCare.Api/LBH.AdultSocialCare.Api.csproj
 RUN dotnet restore ./LBH.AdultSocialCare.Api.Tests/LBH.AdultSocialCare.Api.Tests.csproj
 
