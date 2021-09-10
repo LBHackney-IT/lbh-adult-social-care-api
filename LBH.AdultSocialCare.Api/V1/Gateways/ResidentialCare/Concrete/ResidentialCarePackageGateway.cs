@@ -9,6 +9,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,19 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
             var result = await _databaseContext.ResidentialCarePackages
                 .SingleOrDefaultAsync(item => item.Id == residentialCarePackageId).ConfigureAwait(false);
             return result?.ToPlainDomain();
+        }
+
+        public async Task<ResidentialCarePackagePlainDomain> CheckResidentialCarePackageExistsAsync(Guid residentialCarePackageId)
+        {
+            var package = await _databaseContext.ResidentialCarePackages
+                .SingleOrDefaultAsync(item => item.Id == residentialCarePackageId).ConfigureAwait(false);
+
+            if (package == null)
+            {
+                throw new ApiException($"Residential care package with id {residentialCarePackageId} not found", StatusCodes.Status404NotFound);
+            }
+
+            return package.ToPlainDomain();
         }
 
         public async Task<ResidentialCarePackageDomain> ChangeStatusAsync(Guid residentialCarePackageId, int statusId)

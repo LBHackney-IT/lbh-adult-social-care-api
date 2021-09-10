@@ -341,12 +341,12 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ResidentialCareBrokerageInfoDomain, ResidentialCareBrokerageInfo>();
             CreateMap<ResidentialCareBrokerageInfoDomain, ResidentialCareBrokerageInfoResponse>();
             CreateMap<ResidentialCareBrokerageInfoResponse, ResidentialCareBrokerageInfoDomain>();
-            CreateMap<ResidentialCareBrokerageInfoCreationDomain, ResidentialCareBrokerageCreationRequest>();
-            CreateMap<ResidentialCareBrokerageCreationRequest, ResidentialCareBrokerageInfoCreationDomain>();
+            CreateMap<ResidentialCareBrokerageForCreationDomain, ResidentialCareBrokerageForCreationRequest>();
+            CreateMap<ResidentialCareBrokerageForCreationRequest, ResidentialCareBrokerageForCreationDomain>();
             CreateMap<ResidentialCareAdditionalNeedsCostCreationDomain, ResidentialCareAdditionalNeedsCostCreationRequest>();
             CreateMap<ResidentialCareAdditionalNeedsCostCreationRequest, ResidentialCareAdditionalNeedsCostCreationDomain>();
-            CreateMap<ResidentialCareBrokerageInfoCreationDomain, ResidentialCareBrokerageInfo>();
-            CreateMap<ResidentialCareBrokerageInfo, ResidentialCareBrokerageInfoCreationDomain>();
+            CreateMap<ResidentialCareBrokerageForCreationDomain, ResidentialCareBrokerageInfo>();
+            CreateMap<ResidentialCareBrokerageInfo, ResidentialCareBrokerageForCreationDomain>();
             CreateMap<ResidentialCareAdditionalNeedsCostCreationDomain, ResidentialCareAdditionalNeedsCost>();
             CreateMap<ResidentialCareAdditionalNeedsCost, ResidentialCareAdditionalNeedsCostCreationDomain>();
             CreateMap<ResidentialCareAdditionalNeedsCost, ResidentialCareAdditionalNeedsCostDomain>();

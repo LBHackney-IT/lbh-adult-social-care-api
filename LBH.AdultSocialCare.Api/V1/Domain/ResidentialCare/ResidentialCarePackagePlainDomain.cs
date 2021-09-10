@@ -5,7 +5,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare
     public class ResidentialCarePackagePlainDomain
     {
         public Guid Id { get; set; }
-        public Guid? ClientId { get; set; }
+        public Guid ClientId { get; set; }
         public bool IsFixedPeriod { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }

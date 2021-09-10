@@ -182,9 +182,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return domain;
         }
 
-        public static ResidentialCareBrokerageInfoCreationDomain ToDomain(this ResidentialCareBrokerageCreationRequest residentialCareBrokerageCreationRequest)
+        public static ResidentialCareBrokerageForCreationDomain ToDomain(this ResidentialCareBrokerageForCreationRequest residentialCareBrokerageForCreationRequest)
         {
-            var domain = _mapper.Map<ResidentialCareBrokerageInfoCreationDomain>(residentialCareBrokerageCreationRequest);
+            var domain = _mapper.Map<ResidentialCareBrokerageForCreationDomain>(residentialCareBrokerageForCreationRequest);
             return domain;
         }
 

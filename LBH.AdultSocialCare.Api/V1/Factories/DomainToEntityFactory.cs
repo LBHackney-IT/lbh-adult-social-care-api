@@ -195,9 +195,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ResidentialCareRequestMoreInformation>(residentialCareRequestMoreInformationDomain);
         }
 
-        public static ResidentialCareBrokerageInfo ToDb(this ResidentialCareBrokerageInfoCreationDomain residentialCareBrokerageInfoCreationDomain)
+        public static ResidentialCareBrokerageInfo ToDb(this ResidentialCareBrokerageForCreationDomain residentialCareBrokerageForCreationDomain)
         {
-            return _mapper.Map<ResidentialCareBrokerageInfo>(residentialCareBrokerageInfoCreationDomain);
+            return _mapper.Map<ResidentialCareBrokerageInfo>(residentialCareBrokerageForCreationDomain);
         }
 
         #endregion ResidentialCareBrokerage

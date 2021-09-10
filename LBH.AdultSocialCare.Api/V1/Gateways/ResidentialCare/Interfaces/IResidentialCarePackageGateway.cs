@@ -16,6 +16,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces
 
         public Task<ResidentialCarePackagePlainDomain> GetPlainAsync(Guid residentialCarePackageId);
 
+        public Task<ResidentialCarePackagePlainDomain> CheckResidentialCarePackageExistsAsync(Guid residentialCarePackageId);
+
         public Task<ResidentialCarePackageDomain> ChangeStatusAsync(Guid residentialCarePackageId, int statusId);
 
         public Task<IEnumerable<ResidentialCarePackageDomain>> ListAsync();
