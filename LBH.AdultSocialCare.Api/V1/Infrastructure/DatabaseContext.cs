@@ -1,5 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
@@ -17,13 +18,12 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
@@ -102,6 +102,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<ProvisionalCareChargeAmount> ProvisionalCareChargeAmounts { get; set; }
         public DbSet<PackageCareCharge> PackageCareCharges { get; set; }
         public DbSet<CareChargeElement> CareChargeElements { get; set; }
+
+        public DbSet<InvoiceCreditNote> InvoiceCreditNotes { get; set; }
+        public DbSet<InvoiceItemPriceEffect> InvoiceItemPriceEffects { get; set; }
+        public DbSet<InvoiceNoteChargeType> InvoiceNoteChargeTypes { get; set; }
 
         #region CustomFunctions
 
