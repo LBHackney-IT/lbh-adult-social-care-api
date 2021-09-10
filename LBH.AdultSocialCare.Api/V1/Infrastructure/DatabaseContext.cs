@@ -208,6 +208,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             modelBuilder.ApplyConfiguration(new CareChargeTypeSeed());
             modelBuilder.ApplyConfiguration(new ProvisionalCareChargeAmountSeed());
 
+            // Seed care charges helpers
+            modelBuilder.ApplyConfiguration(new InvoiceItemPriceEffectSeed());
+            modelBuilder.ApplyConfiguration(new InvoiceNoteChargeTypeSeed());
+
             #endregion Database Seeds
 
             #region Entity Config
