@@ -89,7 +89,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
 
                 if (brokerageInfoCreationDomain.HasCareCharges)
                 {
-                    await CreateProvisionalCareChargeAmountsAsync(nursingCarePackageFromDb.ClientId, nursingCarePackageFromDb.Id, brokerageInfoCreationDomain.CareChargeSettings.ClaimedBy, brokerageInfoCreationDomain.CareChargeSettings.CollectorReason, brokerageInfoCreationDomain.StartDate, brokerageInfoCreationDomain.EndDate).ConfigureAwait(false);
+                    await CreateProvisionalCareChargeAmountsAsync(nursingCarePackageFromDb.ClientId, brokerageInfoCreationDomain.SupplierId, nursingCarePackageFromDb.Id, brokerageInfoCreationDomain.CareChargeSettings.ClaimedBy, brokerageInfoCreationDomain.CareChargeSettings.CollectorReason, brokerageInfoCreationDomain.StartDate, brokerageInfoCreationDomain.EndDate).ConfigureAwait(false);
                 }
 
                 await transaction.CommitAsync().ConfigureAwait(false);
@@ -146,7 +146,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
                 .ConfigureAwait(false);
         }
 
-        private async Task CreateProvisionalCareChargeAmountsAsync(Guid serviceUserId, Guid nursingCarePackageId, int collectorId, string claimCollectorReason, DateTimeOffset startDate, DateTimeOffset? endDate)
+        private async Task CreateProvisionalCareChargeAmountsAsync(Guid serviceUserId, int supplierId, Guid nursingCarePackageId, int collectorId, string claimCollectorReason, DateTimeOffset startDate, DateTimeOffset? endDate)
         {
             // Get provisional amount for this client
             var provisionalAmount = await _careChargesGateway.GetUsingServiceUserIdAsync(serviceUserId).ConfigureAwait(false);
@@ -157,6 +157,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
                 PackageId = nursingCarePackageId,
                 PackageTypeId = PackageTypesConstants.NursingCarePackageId,
                 IsProvisional = true,
+                ServiceUserId = serviceUserId,
+                SupplierId = supplierId,
                 CareChargeElements = new List<CareChargeElement>()
                 {
                     new CareChargeElement

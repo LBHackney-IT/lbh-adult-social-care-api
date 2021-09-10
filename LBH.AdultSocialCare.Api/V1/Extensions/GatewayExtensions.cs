@@ -70,6 +70,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IFundedNursingCaseGateway, FundedNursingCareGateway>();
             services.AddScoped<ICareChargesGateway, CareChargesGateway>();
             services.AddScoped<IPackageCareChargeGateway, PackageCareChargeGateway>();
+            services.AddScoped<IInvoiceCreditNoteGateway, InvoiceCreditNoteGateway>();
         }
     }
 }

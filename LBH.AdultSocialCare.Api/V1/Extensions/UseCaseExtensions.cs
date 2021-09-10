@@ -365,6 +365,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
 
             services.AddScoped<ICareChargeUseCase, CareChargeUseCase>();
             services.AddScoped<ICreateCareChargeElementUseCase, CreateCareChargeElementUseCase>();
+            services.AddScoped<ICancelCareChargeElementUseCase, CancelCareChargeElementUseCase>();
 
             #endregion CareCharges
         }

@@ -706,6 +706,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<PackageCareChargePlainDomain>(packageCareCharge);
         }
 
+        public static InvoiceCreditNotePlainDomain ToPlainDomain(this InvoiceCreditNote invoiceCreditNote)
+        {
+            return _mapper.Map<InvoiceCreditNotePlainDomain>(invoiceCreditNote);
+        }
+
         #endregion CareCharges
     }
 }
