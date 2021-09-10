@@ -9,7 +9,7 @@ RUN dotnet restore
 # Copy everything else and build
 COPY . ./
 # Do not run GodeGenerator.exe on CI server
-ENV SKIP_CODE_GENERATION = 1
+ENV SKIP_CODE_GENERATION=1
 RUN dotnet build -c Release -o out
 RUN dotnet publish -c Release -o out
 
