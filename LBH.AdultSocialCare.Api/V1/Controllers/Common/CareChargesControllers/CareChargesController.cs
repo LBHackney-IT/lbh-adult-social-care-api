@@ -1,17 +1,17 @@
-using Common.Exceptions.CustomExceptions;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
-namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
+namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.CareChargesControllers
 {
     [Route("api/v1/care-charges")]
     [Produces("application/json")]
