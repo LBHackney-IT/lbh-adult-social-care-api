@@ -29,6 +29,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             _createCareChargeElementUseCase = createCareChargeElementUseCase;
         }
 
+        /// <summary>
+        /// Gets the provisional care charge amount using service user id.
+        /// </summary>
+        /// <param name="serviceUserId">The service user identifier.</param>
+        /// <returns>Details of provisional care charges as is set at the current moment</returns>
+        /// <response code="200">When provisional amount is found</response>
+        /// <response code="404">When service user is not found</response>
         [HttpGet("service-users/{serviceUserId}/default")]
         [ProducesResponseType(typeof(ProvisionalCareChargeAmountPlainResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiException), StatusCodes.Status404NotFound)]

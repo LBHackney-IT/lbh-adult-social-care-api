@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 {
-    public class CancelInvoiceElementUseCase : ICancelInvoiceElementUseCase
+    public class CancelCareChargeElementUseCase : ICancelCareChargeElementUseCase
     {
         private readonly ICareChargesGateway _careChargesGateway;
         private readonly IInvoiceCreditNoteGateway _invoiceCreditNoteGateway;
         private readonly IPackageCareChargeGateway _packageCareChargeGateway;
 
-        public CancelInvoiceElementUseCase(ICareChargesGateway careChargesGateway, IInvoiceCreditNoteGateway invoiceCreditNoteGateway, IPackageCareChargeGateway packageCareChargeGateway)
+        public CancelCareChargeElementUseCase(ICareChargesGateway careChargesGateway, IInvoiceCreditNoteGateway invoiceCreditNoteGateway, IPackageCareChargeGateway packageCareChargeGateway)
         {
             _careChargesGateway = careChargesGateway;
             _invoiceCreditNoteGateway = invoiceCreditNoteGateway;
