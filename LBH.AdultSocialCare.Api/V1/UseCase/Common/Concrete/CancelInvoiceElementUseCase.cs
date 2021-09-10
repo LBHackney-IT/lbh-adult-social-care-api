@@ -1,10 +1,9 @@
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using System;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 {
@@ -63,7 +62,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
                     await _invoiceCreditNoteGateway.CreateInvoiceCreditNoteAsync(newInvoiceCreditNote)
                         .ConfigureAwait(false);
-
                 }
             }
 
