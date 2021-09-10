@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace LBH.AdultSocialCare.Api.CodeGenerator
+namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
 {
     public class MappingsGenerator : IGenerator
     {
-        public void Run(string path)
+        public void Run(string path, IEnumerable<SyntaxTree> syntaxForrest)
         {
             var mappingExtensionBuilder = new StringBuilder();
             var mappingProfileBuilder = new StringBuilder();
@@ -21,27 +22,26 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator
             WriteExtensionsClassHeader(mappingExtensionBuilder);
             WriteProfileClassHeader(mappingProfileBuilder);
 
-            GenerateMappings(path, mappingExtensionBuilder, mappingProfileBuilder);
+            GenerateMappings(syntaxForrest, mappingExtensionBuilder, mappingProfileBuilder);
 
             WriteExtensionsClassFooter(mappingExtensionBuilder);
             WriteProfileClassFooter(mappingProfileBuilder);
 
             Directory.CreateDirectory(Path.Combine(path, "Generated"));
 
-            File.WriteAllText(Path.Combine(path, "Generated", "MappingExtensions.cs"), mappingExtensionBuilder.ToString(), Encoding.ASCII);
-            File.WriteAllText(Path.Combine(path, "Generated", "GeneratedMappingProfile.cs"), mappingProfileBuilder.ToString(), Encoding.ASCII);
+            File.WriteAllText(
+                Path.Combine(path, "Generated", "MappingExtensions.cs"),
+                CodeFormatter.Format(mappingExtensionBuilder), Encoding.ASCII);
+            File.WriteAllText(
+                Path.Combine(path, "Generated", "GeneratedMappingProfile.cs"),
+                CodeFormatter.Format(mappingProfileBuilder), Encoding.ASCII);
         }
 
-        private static void GenerateMappings(string path, StringBuilder mappingExtensionBuilder, StringBuilder mappingProfileBuilder)
+        private static void GenerateMappings(IEnumerable<SyntaxTree> syntaxForrest, StringBuilder mappingExtensionBuilder, StringBuilder mappingProfileBuilder)
         {
-            var syntaxTrees = Directory
-                .EnumerateFiles(path, "*.cs", SearchOption.AllDirectories)
-                .Select(file =>
-                    CSharpSyntaxTree.ParseText(File.ReadAllText(file)));
-
-            foreach (var tree in syntaxTrees)
+            foreach (var syntaxTree in syntaxForrest)
             {
-                var sourceType = tree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();
+                var sourceType = syntaxTree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>().FirstOrDefault();
 
                 if (sourceType != null)
                 {
@@ -89,10 +89,10 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator
             var postfix = GetPostfix(entityName, targetTypeName);
 
             codeBuilder.AppendLine($@"
-        public static {targetTypeName} To{postfix}(this {sourceTypeName} input)
-        {{
-            return _mapper.Map<{targetTypeName}>(input);  
-        }}");
+                public static {targetTypeName} To{postfix}(this {sourceTypeName} input)
+                {{
+                    return _mapper.Map<{targetTypeName}>(input);  
+                }}");
         }
 
         private static void WriteListMappingMethod(string sourceTypeName, string targetTypeName, StringBuilder codeBuilder)
@@ -101,16 +101,15 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator
             var postfix = GetPostfix(entityName, targetTypeName);
 
             codeBuilder.AppendLine($@"
-        public static IEnumerable<{targetTypeName}> To{postfix}(this IEnumerable<{sourceTypeName}> input)
-        {{
-            return _mapper.Map<{targetTypeName}>(input);  
-        }}");
+                public static IEnumerable<{targetTypeName}> To{postfix}(this IEnumerable<{sourceTypeName}> input)
+                {{
+                    return _mapper.Map<{targetTypeName}>(input);  
+                }}");
         }
 
         private static void WriteCreateMapStatement(string sourceTypeName, string targetTypeName, StringBuilder codeBuilder)
         {
-            codeBuilder.Append($@"
-            CreateMap<{sourceTypeName}, {targetTypeName}>().ReverseMap();");
+            codeBuilder.Append($"CreateMap<{sourceTypeName}, {targetTypeName}>().ReverseMap();");
         }
 
         private static string GetEntityName(string name1, string name2)
@@ -186,8 +185,7 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator
 
         private static void WriteUsingList(string path, StringBuilder codeBuilder)
         {
-            // Don't know how to detect namespace of target type in reasonable way,
-            // so add all known namespaces for all types of DTOs / entities
+            // Add all known namespaces for all types of DTOs / entities
             // assume that namespace corresponds directory name
             var extraUsings = new[] { "AutoMapper", "System", "System.Collections.Generic", "System.Linq", "HttpServices.Models.Requests", "LBH.AdultSocialCare.Api.V1.Infrastructure.Entities" };
 
@@ -213,42 +211,42 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator
         private static void WriteExtensionsClassHeader(StringBuilder codeBuilder)
         {
             codeBuilder.AppendLine(@"
-namespace LBH.AdultSocialCare.Api.V1.Factories
-{
-    public static partial class MappingExtensions
-    {
-        private static IMapper _mapper { get; set; }
+                namespace LBH.AdultSocialCare.Api.V1.Factories
+                {
+                    public static partial class MappingExtensions
+                    {
+                        private static IMapper _mapper { get; set; }
 
-        public static void Configure(IMapper mapper)
-        {
-            _mapper = mapper;
-        }");
+                        public static void Configure(IMapper mapper)
+                        {
+                            _mapper = mapper;
+                        }");
         }
 
         private static void WriteProfileClassHeader(StringBuilder codeBuilder)
         {
             codeBuilder.AppendLine(@"
-namespace LBH.AdultSocialCare.Api.V1.Profiles
-{
-    public class GeneratedMappingProfile : Profile
-    {
-        public GeneratedMappingProfile()
-        {");
+                namespace LBH.AdultSocialCare.Api.V1.Profiles
+                {
+                    public class GeneratedMappingProfile : Profile
+                    {
+                        public GeneratedMappingProfile()
+                        {");
         }
 
         private static void WriteExtensionsClassFooter(StringBuilder codeBuilder)
         {
             codeBuilder.AppendLine(@"
-    }
-}");
+                }
+            }");
         }
 
         private static void WriteProfileClassFooter(StringBuilder codeBuilder)
         {
             codeBuilder.AppendLine(@"
-        }
-    }
-}");
+                    }
+                }
+            }");
         }
     }
 }
