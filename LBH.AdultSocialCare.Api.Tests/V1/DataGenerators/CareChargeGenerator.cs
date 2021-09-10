@@ -4,6 +4,7 @@ using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
+using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 {
@@ -18,11 +19,15 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 
         public async Task<PackageCareCharge> GetCareCharge()
         {
+            var client = await _context.Clients.FirstOrDefaultAsync().ConfigureAwait(false);
+            var supplier = await _context.Suppliers.FirstOrDefaultAsync().ConfigureAwait(false);
             var careCharge = _context.PackageCareCharges.Add(new PackageCareCharge
             {
                 CreatorId = new Guid(UserConstants.DefaultApiUserId),
                 UpdaterId = new Guid(UserConstants.DefaultApiUserId),
-                PackageTypeId = PackageTypesConstants.NursingCarePackageId
+                PackageTypeId = PackageTypesConstants.NursingCarePackageId,
+                ServiceUserId = client.Id,
+                SupplierId = supplier.Id
             });
 
             await _context.SaveChangesAsync().ConfigureAwait(false);
