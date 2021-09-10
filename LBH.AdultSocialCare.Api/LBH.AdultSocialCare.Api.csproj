@@ -83,7 +83,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="$(SolutionDir)\$(AssemblyName).CodeGenerator\bin\Debug\netcoreapp3.1\$(AssemblyName).CodeGenerator.exe $(ProjectDir)\V1\ $(ProjectDir)\V1\Factories\Generated.cs" />
+    <Exec Command="..\LBH.AdultSocialCare.Api.CodeGenerator\bin\Debug\netcoreapp3.1\LBH.AdultSocialCare.Api.CodeGenerator.exe $(ProjectDir)\V1\" />
   </Target>
 
 </Project>
