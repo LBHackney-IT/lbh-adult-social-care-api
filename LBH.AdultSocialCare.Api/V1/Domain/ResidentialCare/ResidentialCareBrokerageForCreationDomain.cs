@@ -1,23 +1,19 @@
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using System;
 using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare
 {
-    public class ResidentialCareBrokerageInfoCreationDomain
+    public class ResidentialCareBrokerageForCreationDomain
     {
-        /// <summary>
-        /// Gets or sets the Residential Care Package Id
-        /// </summary>
         public Guid ResidentialCarePackageId { get; set; }
-
         public int SupplierId { get; set; }
         public int StageId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Residential Core Per Week
-        /// </summary>
         public decimal ResidentialCore { get; set; }
-
+        public DateTimeOffset StartDate { get; set; }
+        public DateTimeOffset? EndDate { get; set; }
         public IEnumerable<ResidentialCareAdditionalNeedsCostCreationDomain> ResidentialCareAdditionalNeedsCosts { get; set; }
+        public bool HasCareCharges { get; set; }
+        public BrokerageCareChargeForChangeDomain CareChargeSettings { get; set; }
     }
 }

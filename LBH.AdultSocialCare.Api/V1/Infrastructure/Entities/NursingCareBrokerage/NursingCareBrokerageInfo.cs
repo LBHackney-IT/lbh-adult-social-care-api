@@ -10,7 +10,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerag
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)] public Guid NursingCareBrokerageId { get; set; }
         public Guid NursingCarePackageId { get; set; }
-        public decimal NursingCore { get; set; }
+        [Column(TypeName = "decimal(13, 2)")] public decimal NursingCore { get; set; }
         public bool HasCareCharges { get; set; }
         public virtual ICollection<NursingCareAdditionalNeedsCost> NursingCareAdditionalNeedsCosts { get; set; }
         [ForeignKey(nameof(NursingCarePackageId))] public NursingCarePackage NursingCarePackage { get; set; }

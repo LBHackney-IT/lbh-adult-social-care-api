@@ -15,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
         }
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)] public Guid Id { get; set; }
-        public Guid? ClientId { get; set; }
+        public Guid ClientId { get; set; }
         public bool IsFixedPeriod { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }

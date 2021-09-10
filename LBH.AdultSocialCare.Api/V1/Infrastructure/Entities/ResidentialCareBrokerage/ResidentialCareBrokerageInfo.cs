@@ -10,8 +10,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrok
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+
         public Guid ResidentialCarePackageId { get; set; }
-        public decimal ResidentialCore { get; set; }
+        [Column(TypeName = "decimal(13, 2)")] public decimal ResidentialCore { get; set; }
+        public bool HasCareCharges { get; set; }
         public virtual ICollection<ResidentialCareAdditionalNeedsCost> ResidentialCareAdditionalNeedsCosts { get; set; }
         [ForeignKey(nameof(ResidentialCarePackageId))] public ResidentialCarePackage ResidentialCarePackage { get; set; }
     }

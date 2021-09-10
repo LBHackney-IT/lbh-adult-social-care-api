@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210910045004_ClientIdNotOptionalOnResidentialCarePackage")]
+    partial class ClientIdNotOptionalOnResidentialCarePackage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2721,7 +2723,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("AdditionalNeedsCost")
-                        .HasColumnType("decimal(13, 2)");
+                        .HasColumnType("numeric");
 
                     b.Property<int>("AdditionalNeedsPaymentTypeId")
                         .HasColumnType("integer");
@@ -2821,7 +2823,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("NursingCore")
-                        .HasColumnType("decimal(13, 2)");
+                        .HasColumnType("numeric");
 
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
@@ -3548,7 +3550,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("AdditionalNeedsCost")
-                        .HasColumnType("decimal(13, 2)");
+                        .HasColumnType("numeric");
 
                     b.Property<int>("AdditionalNeedsPaymentTypeId")
                         .HasColumnType("integer");
@@ -3641,14 +3643,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("HasCareCharges")
-                        .HasColumnType("boolean");
-
                     b.Property<Guid>("ResidentialCarePackageId")
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("ResidentialCore")
-                        .HasColumnType("decimal(13, 2)");
+                        .HasColumnType("numeric");
 
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
