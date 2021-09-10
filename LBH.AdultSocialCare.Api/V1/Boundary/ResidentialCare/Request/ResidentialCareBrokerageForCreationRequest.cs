@@ -1,9 +1,11 @@
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
 {
-    public class ResidentialCareBrokerageCreationRequest
+    public class ResidentialCareBrokerageForCreationRequest
     {
         /// <summary>
         /// Gets or sets the Residential Care Package Id
@@ -38,8 +40,13 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
         public IEnumerable<ResidentialCareAdditionalNeedsCostCreationRequest> ResidentialCareAdditionalNeedsCosts { get; set; }
 
         /// <summary>
-        /// Gets or sets the Creator Id
+        /// True if package has care charges and false otherwise. If true, provide care charge settings in request
         /// </summary>
-        public Guid CreatorId { get; set; }
+        [Required] public bool? HasCareCharges { get; set; }
+
+        /// <summary>
+        /// If package has care charges, set claimed by and reason if relevant on this object
+        /// </summary>
+        public BrokerageCareChargeForChangeRequest CareChargeSettings { get; set; }
     }
 }

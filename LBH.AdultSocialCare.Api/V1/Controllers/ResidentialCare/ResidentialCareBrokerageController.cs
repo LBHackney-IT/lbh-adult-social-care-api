@@ -49,7 +49,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         /// <summary>
         /// Creates the residential care package brokerage.
         /// </summary>
-        /// <param name="residentialCareBrokerageCreationRequest">The residential care package brokerage for creation.</param>
+        /// <param name="residentialCareBrokerageForCreationRequest">The residential care package brokerage for creation.</param>
         /// <returns>A newly created residential care package brokerage</returns>
         /// <response code="200">Returns ID of the newly created item</response>
         /// <response code="400">If the item is null</response>
@@ -60,9 +60,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<ResidentialCareBrokerageInfoResponse>> CreateResidentialCareBrokerage([FromBody] ResidentialCareBrokerageCreationRequest residentialCareBrokerageCreationRequest)
+        public async Task<ActionResult<ResidentialCareBrokerageInfoResponse>> CreateResidentialCareBrokerage([FromBody] ResidentialCareBrokerageForCreationRequest residentialCareBrokerageForCreationRequest)
         {
-            if (residentialCareBrokerageCreationRequest == null)
+            if (residentialCareBrokerageForCreationRequest == null)
             {
                 return BadRequest("Object for creation cannot be null.");
             }
@@ -72,20 +72,20 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
                 return UnprocessableEntity(ModelState);
             }
 
-            var residentialCareBrokerageCreationDomain = residentialCareBrokerageCreationRequest.ToDomain();
+            var residentialCareBrokerageCreationDomain = residentialCareBrokerageForCreationRequest.ToDomain();
             var result = await _createResidentialCareBrokerageUseCase.ExecuteAsync(residentialCareBrokerageCreationDomain).ConfigureAwait(false);
 
             //Change start / end dates of the package
             await _changeDatesOfResidentialCarePackageUseCase
                 .UpdateAsync(
-                    residentialCareBrokerageCreationRequest.ResidentialCarePackageId,
-                    residentialCareBrokerageCreationRequest.StartDate,
-                    residentialCareBrokerageCreationRequest.EndDate)
+                    residentialCareBrokerageForCreationRequest.ResidentialCarePackageId,
+                    residentialCareBrokerageForCreationRequest.StartDate,
+                    residentialCareBrokerageForCreationRequest.EndDate)
                 .ConfigureAwait(false);
 
             //Change status of package
             await _changeStatusResidentialCarePackageUseCase
-                .UpdateAsync(residentialCareBrokerageCreationRequest.ResidentialCarePackageId, ApprovalHistoryConstants.ApprovedForBrokerageId)
+                .UpdateAsync(residentialCareBrokerageForCreationRequest.ResidentialCarePackageId, ApprovalHistoryConstants.ApprovedForBrokerageId)
                 .ConfigureAwait(false);
             return Ok(result);
         }

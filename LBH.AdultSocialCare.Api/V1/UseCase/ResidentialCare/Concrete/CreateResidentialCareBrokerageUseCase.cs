@@ -26,25 +26,25 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
             _mapper = mapper;
         }
 
-        public async Task<ResidentialCareBrokerageInfoResponse> ExecuteAsync(ResidentialCareBrokerageInfoCreationDomain residentialCareBrokerageInfoCreationDomain)
+        public async Task<ResidentialCareBrokerageInfoResponse> ExecuteAsync(ResidentialCareBrokerageForCreationDomain residentialCareBrokerageForCreationDomain)
         {
-            var brokerageInfo = await _residentialCareBrokerageGateway.GetAsync(residentialCareBrokerageInfoCreationDomain.ResidentialCarePackageId).ConfigureAwait(false);
+            var brokerageInfo = await _residentialCareBrokerageGateway.GetAsync(residentialCareBrokerageForCreationDomain.ResidentialCarePackageId).ConfigureAwait(false);
 
             if (brokerageInfo.ResidentialCareBrokerageId != Guid.Empty)
             {
-                throw new ApiException($"A brokerage for residential care package {residentialCareBrokerageInfoCreationDomain.ResidentialCarePackageId} already exists");
+                throw new ApiException($"A brokerage for residential care package {residentialCareBrokerageForCreationDomain.ResidentialCarePackageId} already exists");
             }
 
-            var residentialCareBrokerageInfoEntity = residentialCareBrokerageInfoCreationDomain.ToDb();
+            var residentialCareBrokerageInfoEntity = residentialCareBrokerageForCreationDomain.ToDb();
             var res = await _residentialCareBrokerageGateway.CreateAsync(residentialCareBrokerageInfoEntity).ConfigureAwait(false);
             if (res == null) return null;
-            var residentialCarePackageDomain = await _residentialCarePackageGateway.GetAsync(residentialCareBrokerageInfoCreationDomain.ResidentialCarePackageId).ConfigureAwait(false);
+            var residentialCarePackageDomain = await _residentialCarePackageGateway.GetAsync(residentialCareBrokerageForCreationDomain.ResidentialCarePackageId).ConfigureAwait(false);
             if (residentialCarePackageDomain == null)
             {
-                throw new ApiException($"Residential care package with id {residentialCareBrokerageInfoCreationDomain.ResidentialCarePackageId} not found", StatusCodes.Status404NotFound);
+                throw new ApiException($"Residential care package with id {residentialCareBrokerageForCreationDomain.ResidentialCarePackageId} not found", StatusCodes.Status404NotFound);
             }
-            residentialCarePackageDomain.StageId = residentialCareBrokerageInfoCreationDomain.StageId;
-            residentialCarePackageDomain.SupplierId = residentialCareBrokerageInfoCreationDomain.SupplierId;
+            residentialCarePackageDomain.StageId = residentialCareBrokerageForCreationDomain.StageId;
+            residentialCarePackageDomain.SupplierId = residentialCareBrokerageForCreationDomain.SupplierId;
             var residentialCarePackageForUpdateDomain = new ResidentialCarePackageForUpdateDomain();
             _mapper.Map(residentialCarePackageDomain, residentialCarePackageForUpdateDomain);
             // Update package
