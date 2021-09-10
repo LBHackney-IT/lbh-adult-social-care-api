@@ -98,6 +98,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                     }),
                     ResidentialCore = nc.ResidentialCareBrokerageInfo.ResidentialCore,
                     StageId = nc.StageId,
+                    HasCareCharges = nc.ResidentialCareBrokerageInfo.HasCareCharges,
                     SupplierId = nc.SupplierId,
                     CreatorId = nc.CreatorId,
                     UpdatorId = nc.UpdaterId
