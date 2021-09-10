@@ -43,15 +43,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
 
         public async Task<ResidentialCareBrokerageInfoResponse> ExecuteAsync(ResidentialCareBrokerageForCreationDomain brokerageForCreationDomain)
         {
-            var residentialCarePackageFromDb = await _residentialCarePackageGateway.CheckResidentialCarePackageExistsAsync(brokerageForCreationDomain.ResidentialCarePackageId).ConfigureAwait(false);
-
-            // Check if residential care brokerage info already created and reject this request
-            var brokerageInfo = await _residentialCareBrokerageGateway.GetAsync(brokerageForCreationDomain.ResidentialCarePackageId).ConfigureAwait(false);
-
-            if (brokerageInfo.ResidentialCareBrokerageId != Guid.Empty)
-            {
-                throw new ApiException($"Brokerage information for residential care package with id {brokerageForCreationDomain.ResidentialCarePackageId} already exists", StatusCodes.Status409Conflict);
-            }
+            var (residentialCarePackageFromDb, brokerageInfo) =
+                await ValidateBrokerageInfoAsync(brokerageForCreationDomain).ConfigureAwait(false);
 
             await using var transaction = await _transactionManager.BeginTransactionAsync().ConfigureAwait(false);
             try
@@ -75,6 +68,42 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
                 await transaction.RollbackAsync().ConfigureAwait(false);
                 throw;
             }
+        }
+
+        private async Task<(ResidentialCarePackagePlainDomain, ResidentialCareBrokerageInfoDomain)>
+            ValidateBrokerageInfoAsync(ResidentialCareBrokerageForCreationDomain brokerageForCreationDomain)
+        {
+            switch (brokerageForCreationDomain.HasCareCharges)
+            {
+                case true when brokerageForCreationDomain.CareChargeSettings == null:
+                    throw new ApiException($"Package is selected to have care charges and no settings provided",
+                        StatusCodes.Status422UnprocessableEntity);
+                case true when brokerageForCreationDomain.CareChargeSettings.ClaimedBy == PackageCostClaimersConstants.Hackney && string.IsNullOrEmpty(brokerageForCreationDomain.CareChargeSettings.CollectorReason):
+                    throw new ApiException(
+                        $"When care charges for a package are set to be reclaimed by hackney, please provide a reason",
+                        StatusCodes.Status422UnprocessableEntity);
+            }
+
+            // Check residential care package exists
+            var residentialCarePackageFromDb = await _residentialCarePackageGateway.CheckResidentialCarePackageExistsAsync(brokerageForCreationDomain.ResidentialCarePackageId).ConfigureAwait(false);
+
+            // If S117 no care charges
+            if (residentialCarePackageFromDb.IsThisUserUnderS117 && brokerageForCreationDomain.HasCareCharges)
+            {
+                throw new ApiException(
+                    $"Service user with id {residentialCarePackageFromDb.ClientId} is under S117. Care charges not allowed.",
+                    StatusCodes.Status422UnprocessableEntity);
+            }
+
+            // Check if residential care brokerage info already created and reject this request
+            var brokerageInfo = await _residentialCareBrokerageGateway.GetAsync(brokerageForCreationDomain.ResidentialCarePackageId).ConfigureAwait(false);
+
+            if (brokerageInfo.ResidentialCareBrokerageId != Guid.Empty)
+            {
+                throw new ApiException($"Brokerage information for residential care package with id {brokerageForCreationDomain.ResidentialCarePackageId} already exists", StatusCodes.Status409Conflict);
+            }
+
+            return (residentialCarePackageFromDb, brokerageInfo);
         }
 
         private async Task<ResidentialCareBrokerageInfoDomain> CreateBrokerageInfo(
