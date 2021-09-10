@@ -147,7 +147,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
         {
             // Get provisional amount for this client
             var provisionalAmount = await _careChargesGateway.GetUsingServiceUserIdAsync(serviceUserId).ConfigureAwait(false);
-            if (provisionalAmount == null) return;
+            if (provisionalAmount == null)
+            {
+                throw new ApiException(
+                    $"Provisional care charge amount for service user with id {serviceUserId} not found",
+                    StatusCodes.Status404NotFound);
+            }
 
             var packageCareCharge = new PackageCareCharge
             {

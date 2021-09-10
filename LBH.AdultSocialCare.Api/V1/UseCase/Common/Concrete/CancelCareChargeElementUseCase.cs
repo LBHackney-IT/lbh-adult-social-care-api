@@ -1,7 +1,9 @@
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
 
@@ -31,6 +33,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             // Get care charge element if it exists
             var careChargeElementFromDb = await _careChargesGateway
                 .CheckCareChargeElementExistsAsync(packageCareChargeId, careElementId).ConfigureAwait(false);
+
+            switch (careChargeElementFromDb.StatusId)
+            {
+                case (int) CareChargeElementStatusEnum.Cancelled:
+                    throw new ApiException($"Care element with id {careElementId} already cancelled",
+                        StatusCodes.Status400BadRequest);
+                case (int) CareChargeElementStatusEnum.Ended:
+                    throw new ApiException($"Ended care element with id {careElementId} cannot be cancelled. Only active active elements can be cancelled",
+                        StatusCodes.Status400BadRequest);
+            }
 
             //Check if element has been invoiced. If true add invoice credit note for that period
             if (careChargeElementFromDb.PaidUpTo != null)

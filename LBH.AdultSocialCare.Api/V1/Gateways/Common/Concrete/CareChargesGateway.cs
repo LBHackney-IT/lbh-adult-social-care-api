@@ -38,7 +38,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
             // Use age to get provisional amount range
             var provisionalAmount = await _dbContext.ProvisionalCareChargeAmounts
-                .Where(pca => (clientAge >= pca.AgeFrom && clientAge <= pca.AgeTo) &&
+                .Where(pca => (clientAge >= pca.AgeFrom && (pca.AgeTo == null || clientAge <= pca.AgeTo)) &&
                               (todayDate >= EF.Property<DateTime>(pca, nameof(pca.StartDate)).Date &&
                                (pca.EndDate == null || todayDate <= EF.Property<DateTime>(pca, nameof(pca.EndDate)).Date)))
                 .OrderBy(pca => pca.StartDate)
