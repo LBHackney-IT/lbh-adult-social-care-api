@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
@@ -9,7 +7,9 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
 {
@@ -34,7 +34,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
             }
             catch (Exception ex)
             {
-                throw new DbSaveFailedException("Could not save residential brokerage to database" + ex.Message);
+                throw new DbSaveFailedException($"Could not save residential brokerage to database: {ex.InnerException?.Message}", ex);
             }
         }
 

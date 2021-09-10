@@ -62,16 +62,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         [ProducesDefaultResponseType]
         public async Task<ActionResult<ResidentialCareBrokerageInfoResponse>> CreateResidentialCareBrokerage([FromBody] ResidentialCareBrokerageForCreationRequest residentialCareBrokerageForCreationRequest)
         {
-            if (residentialCareBrokerageForCreationRequest == null)
-            {
-                return BadRequest("Object for creation cannot be null.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return UnprocessableEntity(ModelState);
-            }
-
             var residentialCareBrokerageCreationDomain = residentialCareBrokerageForCreationRequest.ToDomain();
             var result = await _createResidentialCareBrokerageUseCase.ExecuteAsync(residentialCareBrokerageCreationDomain).ConfigureAwait(false);
 

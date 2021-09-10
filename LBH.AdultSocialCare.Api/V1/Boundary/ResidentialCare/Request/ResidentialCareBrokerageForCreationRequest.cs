@@ -25,7 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
         /// <summary>
         /// Gets or sets the Start Date
         /// </summary>
-        public DateTimeOffset? StartDate { get; set; }
+        [Required] public DateTimeOffset? StartDate { get; set; }
 
         /// <summary>
         /// Gets or sets the End Date
