@@ -1,5 +1,6 @@
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
@@ -59,6 +60,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
             // Update element and save
             element.StatusId = newElementStatusId;
+
+            if (newElementStatusId == (int) CareChargeElementStatusEnum.Ended)
+            {
+                element.EndDate = DateTimeOffset.Now;
+            }
+
             try
             {
                 await _dbContext.SaveChangesAsync().ConfigureAwait(false);
