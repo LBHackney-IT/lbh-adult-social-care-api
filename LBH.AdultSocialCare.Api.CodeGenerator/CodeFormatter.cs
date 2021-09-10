@@ -11,7 +11,7 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator
             var sourceTree = CSharpSyntaxTree.ParseText(codeBuilder.ToString());
             var root = sourceTree.GetRoot().NormalizeWhitespace();
 
-            return root.ToFullString() + "\r\n";
+            return root.ToFullString() + "\n";
         }
     }
 }
