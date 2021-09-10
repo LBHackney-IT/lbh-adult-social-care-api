@@ -4,12 +4,12 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 {
@@ -45,6 +45,38 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 .ConfigureAwait(false);
 
             return provisionalAmount?.ToDomain();
+        }
+
+        public async Task<bool> UpdateCareChargeElementStatusAsync(Guid packageCareChargeId, Guid careElementId, int newElementStatusId)
+        {
+            // Get care charge element
+            var element = await GetCareChargeElementAsync(packageCareChargeId, careElementId).ConfigureAwait(false);
+
+            if (element == null)
+            {
+                throw new ApiException($"Care charge element with Id {careElementId} not found");
+            }
+
+            // Update element and save
+            element.StatusId = newElementStatusId;
+            try
+            {
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new DbSaveFailedException($"Failed to update care element status {ex.InnerException?.Message}",
+                    ex);
+            }
+        }
+
+        private async Task<CareChargeElement> GetCareChargeElementAsync(Guid packageCareChargeId, Guid careElementId)
+        {
+            var element = await _dbContext.CareChargeElements
+                .Where(ce => ce.Id.Equals(careElementId) && ce.CareChargeId.Equals(packageCareChargeId))
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+            return element;
         }
 
         public async Task<IEnumerable<CareChargeElementPlainDomain>> CreateCareChargeElementsAsync(IEnumerable<CareChargeElementPlainDomain> elementDomains)
