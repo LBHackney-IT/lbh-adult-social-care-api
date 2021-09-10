@@ -82,7 +82,7 @@
     <Folder Include="V1\Generated" />
   </ItemGroup>
 
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="!exists('$(SKIP_CODE_GENERATION)')">
       <Exec Command="..\LBH.AdultSocialCare.Api.CodeGenerator\bin\Debug\netcoreapp3.1\LBH.AdultSocialCare.Api.CodeGenerator.exe $(ProjectDir)\V1\" />
   </Target>
 
