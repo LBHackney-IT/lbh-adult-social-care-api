@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -12,7 +11,7 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator
             var sourceTree = CSharpSyntaxTree.ParseText(codeBuilder.ToString());
             var root = sourceTree.GetRoot().NormalizeWhitespace();
 
-            return root.ToFullString() + Environment.NewLine;
+            return root.ToFullString() + "\r\n";
         }
     }
 }
