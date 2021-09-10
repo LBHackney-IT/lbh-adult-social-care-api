@@ -1,4 +1,4 @@
-﻿namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
+namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
 {
     public class UseCaseRegistrationGenerator : BaseServiceRegistrationGenerator
     {
