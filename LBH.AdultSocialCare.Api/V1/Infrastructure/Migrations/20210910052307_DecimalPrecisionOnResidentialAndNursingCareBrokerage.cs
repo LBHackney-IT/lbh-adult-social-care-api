@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
