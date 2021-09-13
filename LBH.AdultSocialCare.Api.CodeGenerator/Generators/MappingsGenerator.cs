@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using LBH.AdultSocialCare.Api.CodeGenerator.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -15,8 +16,8 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
             var mappingExtensionBuilder = new StringBuilder();
             var mappingProfileBuilder = new StringBuilder();
 
-            WriteUsingList(path, mappingExtensionBuilder);
-            WriteUsingList(path, mappingProfileBuilder);
+            WriteUsingList(mappingExtensionBuilder, syntaxForrest);
+            WriteUsingList(mappingProfileBuilder, syntaxForrest);
 
             WriteExtensionsClassHeader(mappingExtensionBuilder);
             WriteProfileClassHeader(mappingProfileBuilder);
@@ -28,12 +29,12 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
 
             Directory.CreateDirectory(Path.Combine(path, "Generated"));
 
-            File.WriteAllText(
-                Path.Combine(path, "Generated", "MappingExtensions.cs"),
-                CodeFormatter.Format(mappingExtensionBuilder), Encoding.ASCII);
-            File.WriteAllText(
-                Path.Combine(path, "Generated", "GeneratedMappingProfile.cs"),
-                CodeFormatter.Format(mappingProfileBuilder), Encoding.ASCII);
+            SourceCodeWriter.Write(
+                mappingExtensionBuilder.ToString(),
+                Path.Combine(path, "Generated", "MappingExtensions.cs"));
+            SourceCodeWriter.Write(
+                mappingProfileBuilder.ToString(),
+                Path.Combine(path, "Generated", "GeneratedMappingProfile.cs"));
         }
 
         private static void GenerateMappings(IEnumerable<SyntaxTree> syntaxForrest, StringBuilder mappingExtensionBuilder, StringBuilder mappingProfileBuilder)
@@ -191,28 +192,22 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
             return targetTypeName[postfixStartIndex..];
         }
 
-        private static void WriteUsingList(string path, StringBuilder codeBuilder)
+        private static void WriteUsingList(StringBuilder codeBuilder, IEnumerable<SyntaxTree> syntaxForrest)
         {
             // Add all known namespaces for all types of DTOs / entities
             // assume that namespace corresponds directory name
-            var extraUsings = new[] { "AutoMapper", "System", "System.Collections.Generic", "System.Linq", "HttpServices.Models.Requests", "LBH.AdultSocialCare.Api.V1.Infrastructure.Entities" };
+            var extraUsings = new[] { "AutoMapper", "System", "System.Collections.Generic", "System.Linq", "HttpServices.Models.Requests" };
 
             foreach (var @using in extraUsings)
             {
                 codeBuilder.AppendLine($"using {@using};");
             }
 
-            var directories = new List<string>();
+            var usings = NamespaceResolver.FindNamespaces(syntaxForrest, "Boundary", "Domain", "Infrastructure.Entities");
 
-            directories.AddRange(Directory.GetDirectories(Path.Combine(path, "Boundary"), "*", SearchOption.AllDirectories));
-            directories.AddRange(Directory.GetDirectories(Path.Combine(path, "Domain"), "*", SearchOption.AllDirectories));
-            directories.AddRange(Directory.GetDirectories(Path.Combine(path, @"Infrastructure\Entities"), "*", SearchOption.AllDirectories));
-
-            foreach (var directory in directories)
+            foreach (var @using in usings)
             {
-                var @using = directory.Remove(0, path.Length).Replace('\\', '.');
-
-                codeBuilder.AppendLine($"using LBH.AdultSocialCare.Api.V1.{@using};");
+                codeBuilder.AppendLine($"using {@using};");
             }
         }
 

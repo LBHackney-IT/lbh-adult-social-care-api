@@ -1,10 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using LBH.AdultSocialCare.Api.V1.Gateways.Common;
-using LBH.AdultSocialCare.Api.V1.Gateways.DayCare;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.Gateways.Security;
+using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.DayCare.Concrete;

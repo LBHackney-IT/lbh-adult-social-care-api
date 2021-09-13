@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using LBH.AdultSocialCare.Api.CodeGenerator.Helpers;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -10,7 +11,7 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
     public abstract class BaseServiceRegistrationGenerator : IGenerator
     {
         protected abstract string SourceNamespace { get; }
-        protected abstract string SourceDirectory { get; }
+        protected abstract string ShortNamespace { get; }
         protected abstract string ClassNamePostfix { get; }
         protected abstract string GeneratedFileName { get; }
 
@@ -18,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
         {
             var codeBuilder = new StringBuilder();
 
-            WriteUsingList(path, codeBuilder);
+            WriteUsingList(path, codeBuilder, syntaxForrest);
             WriteClassHeader(codeBuilder);
 
             var useCaseSyntaxForrest = syntaxForrest
@@ -43,22 +44,20 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
 
             WriteClassFooter(codeBuilder);
 
-            File.WriteAllText(
-                Path.Combine(path, "Generated", GeneratedFileName),
-                CodeFormatter.Format(codeBuilder), Encoding.ASCII);
+            SourceCodeWriter.Write(
+                codeBuilder.ToString(),
+                Path.Combine(path, "Generated", GeneratedFileName));
         }
 
-        private void WriteUsingList(string path, StringBuilder codeBuilder)
+        private void WriteUsingList(string path, StringBuilder codeBuilder, IEnumerable<SyntaxTree> syntaxForrest)
         {
             codeBuilder.AppendLine("using Microsoft.Extensions.DependencyInjection;");
 
-            var useCaseDirectories = Directory.GetDirectories(Path.Combine(path, SourceDirectory), "*", SearchOption.AllDirectories);
+            var usings = NamespaceResolver.FindNamespaces(syntaxForrest, ShortNamespace);
 
-            foreach (var directory in useCaseDirectories)
+            foreach (var @using in usings)
             {
-                var @using = directory.Remove(0, path.Length).Replace('\\', '.');
-
-                codeBuilder.AppendLine($"using LBH.AdultSocialCare.Api.V1.{@using};");
+                codeBuilder.AppendLine($"using {@using};");
             }
         }
 
