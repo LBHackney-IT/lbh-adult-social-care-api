@@ -1,17 +1,17 @@
-using Common.Exceptions.CustomExceptions;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
-namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
+namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.CareChargesControllers
 {
     [Route("api/v1/care-charges")]
     [Produces("application/json")]
@@ -29,6 +29,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             _createCareChargeElementUseCase = createCareChargeElementUseCase;
         }
 
+        /// <summary>
+        /// Gets the provisional care charge amount using service user id.
+        /// </summary>
+        /// <param name="serviceUserId">The service user identifier.</param>
+        /// <returns>Details of provisional care charges as is set at the current moment</returns>
+        /// <response code="200">When provisional amount is found</response>
+        /// <response code="404">When service user is not found</response>
         [HttpGet("service-users/{serviceUserId}/default")]
         [ProducesResponseType(typeof(ProvisionalCareChargeAmountPlainResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiException), StatusCodes.Status404NotFound)]

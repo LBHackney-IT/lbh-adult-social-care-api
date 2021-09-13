@@ -64,7 +64,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
                 // Create care charges if selected
                 if (brokerageForCreationDomain.HasCareCharges)
                 {
-                    await CreateProvisionalCareChargeAmountsAsync(residentialCarePackageFromDb.ClientId, residentialCarePackageFromDb.Id, brokerageForCreationDomain.CareChargeSettings.ClaimedBy, brokerageForCreationDomain.CareChargeSettings.CollectorReason, brokerageForCreationDomain.StartDate, brokerageForCreationDomain.EndDate).ConfigureAwait(false);
+                    await CreateProvisionalCareChargeAmountsAsync(residentialCarePackageFromDb.ClientId, brokerageForCreationDomain.SupplierId, residentialCarePackageFromDb.Id, brokerageForCreationDomain.CareChargeSettings.ClaimedBy, brokerageForCreationDomain.CareChargeSettings.CollectorReason, brokerageForCreationDomain.StartDate, brokerageForCreationDomain.EndDate).ConfigureAwait(false);
                 }
 
                 await transaction.CommitAsync().ConfigureAwait(false);
@@ -143,17 +143,24 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
                 .ConfigureAwait(false);
         }
 
-        private async Task CreateProvisionalCareChargeAmountsAsync(Guid serviceUserId, Guid residentialCarePackageId, int collectorId, string claimCollectorReason, DateTimeOffset startDate, DateTimeOffset? endDate)
+        private async Task CreateProvisionalCareChargeAmountsAsync(Guid serviceUserId, int supplierId, Guid residentialCarePackageId, int collectorId, string claimCollectorReason, DateTimeOffset startDate, DateTimeOffset? endDate)
         {
             // Get provisional amount for this client
             var provisionalAmount = await _careChargesGateway.GetUsingServiceUserIdAsync(serviceUserId).ConfigureAwait(false);
-            if (provisionalAmount == null) return;
+            if (provisionalAmount == null)
+            {
+                throw new ApiException(
+                    $"Provisional care charge amount for service user with id {serviceUserId} not found",
+                    StatusCodes.Status404NotFound);
+            }
 
             var packageCareCharge = new PackageCareCharge
             {
                 PackageId = residentialCarePackageId,
                 PackageTypeId = PackageTypesConstants.ResidentialCarePackageId,
                 IsProvisional = true,
+                ServiceUserId = serviceUserId,
+                SupplierId = supplierId,
                 CareChargeElements = new List<CareChargeElement>()
                 {
                     new CareChargeElement

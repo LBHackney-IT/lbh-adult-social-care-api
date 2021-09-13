@@ -535,6 +535,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ProvisionalCareChargeAmountPlainDomain, ProvisionalCareChargeAmountPlainResponse>().ReverseMap();
             CreateMap<BrokerageCareChargeForChangeRequest, BrokerageCareChargeForChangeDomain>();
             CreateMap<PackageCareCharge, PackageCareChargePlainDomain>();
+            CreateMap<InvoiceCreditNote, InvoiceCreditNotePlainDomain>();
 
             #endregion Care Charges
         }

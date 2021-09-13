@@ -18,5 +18,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public DateTimeOffset? EndDate { get; set; }
         public DateTimeOffset? PaidUpTo { get; set; }
         public DateTimeOffset? PreviousPaidUpTo { get; set; }
+        public decimal Amount { get; set; }
     }
 }

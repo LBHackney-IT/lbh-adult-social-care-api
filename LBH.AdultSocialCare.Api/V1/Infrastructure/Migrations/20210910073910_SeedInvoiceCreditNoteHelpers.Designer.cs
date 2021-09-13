@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210910073910_SeedInvoiceCreditNoteHelpers")]
+    partial class SeedInvoiceCreditNoteHelpers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -203,9 +205,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<int>("ChargeTypeId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ClaimCollectorId")
-                        .HasColumnType("integer");
-
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
 
@@ -222,8 +221,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<bool>("HasBeenAddedToUserInvoice")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("PackageId")
-                        .HasColumnType("uuid");
+                    b.Property<int>("PackageId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("PackageTypeId")
                         .HasColumnType("integer");
@@ -248,8 +247,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasIndex("CareChargeElementId");
 
                     b.HasIndex("ChargeTypeId");
-
-                    b.HasIndex("ClaimCollectorId");
 
                     b.HasIndex("CreatorId");
 
@@ -350,12 +347,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<int>("PackageTypeId")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("ServiceUserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("SupplierId")
-                        .HasColumnType("integer");
-
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
 
@@ -364,10 +355,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasIndex("CreatorId");
 
                     b.HasIndex("PackageTypeId");
-
-                    b.HasIndex("ServiceUserId");
-
-                    b.HasIndex("SupplierId");
 
                     b.HasIndex("UpdaterId");
 
@@ -4421,12 +4408,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageCostClaimer", "ClaimCollector")
-                        .WithMany()
-                        .HasForeignKey("ClaimCollectorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
@@ -4473,18 +4454,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Package", "Package")
                         .WithMany()
                         .HasForeignKey("PackageTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Client", "ServiceUser")
-                        .WithMany()
-                        .HasForeignKey("ServiceUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Supplier", "Supplier")
-                        .WithMany()
-                        .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
