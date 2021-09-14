@@ -13,6 +13,7 @@ using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.BusinessRules;
 using LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing;
 using LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators;
+using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;

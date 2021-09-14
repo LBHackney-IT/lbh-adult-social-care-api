@@ -6,6 +6,7 @@ using HttpServices.Models.Requests;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators;
+using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing

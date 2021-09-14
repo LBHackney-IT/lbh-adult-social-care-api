@@ -14,6 +14,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.BusinessRules;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
