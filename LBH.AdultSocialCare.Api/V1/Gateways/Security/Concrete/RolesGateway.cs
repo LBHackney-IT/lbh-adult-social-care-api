@@ -11,11 +11,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Security.Concrete
 {
-    public class RoleGateway : IRolesGateway
+    public class RolesGateway : IRolesGateway
     {
         private readonly DatabaseContext _databaseContext;
 
-        public RoleGateway(DatabaseContext databaseContext)
+        public RolesGateway(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
         }

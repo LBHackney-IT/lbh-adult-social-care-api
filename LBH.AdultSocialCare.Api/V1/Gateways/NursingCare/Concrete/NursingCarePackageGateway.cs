@@ -24,15 +24,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
         private readonly IMapper _mapper;
         private readonly IIdentityHelperUseCase _identityHelperUseCase;
         private readonly ITransactionsService _transactionsService;
-        private readonly IFundedNursingCaseGateway _fundedNursingCaseGateway;
+        private readonly IFundedNursingCareGateway _fundedNursingCareGateway;
 
-        public NursingCarePackageGateway(DatabaseContext databaseContext, IMapper mapper, IIdentityHelperUseCase identityHelperUseCase, ITransactionsService transactionsService, IFundedNursingCaseGateway fundedNursingCaseGateway)
+        public NursingCarePackageGateway(DatabaseContext databaseContext, IMapper mapper, IIdentityHelperUseCase identityHelperUseCase, ITransactionsService transactionsService, IFundedNursingCareGateway fundedNursingCareGateway)
         {
             _databaseContext = databaseContext;
             _mapper = mapper;
             _identityHelperUseCase = identityHelperUseCase;
             _transactionsService = transactionsService;
-            _fundedNursingCaseGateway = fundedNursingCaseGateway;
+            _fundedNursingCareGateway = fundedNursingCareGateway;
         }
 
         public async Task<NursingCarePackageDomain> UpdateAsync(NursingCarePackageForUpdateDomain nursingCarePackageForUpdate)
@@ -203,7 +203,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                     .FirstOrDefaultAsync().ConfigureAwait(false);
 
             // Get fnc costs in the start and end range
-            var fncPrices = await _fundedNursingCaseGateway.GetFundedNursingCarePricingInRangeAsync(minInvoiceDate, dateTo)
+            var fncPrices = await _fundedNursingCareGateway.GetFundedNursingCarePricingInRangeAsync(minInvoiceDate, dateTo)
                 .ConfigureAwait(false);
             var fncPriceList = fncPrices.ToList();
 

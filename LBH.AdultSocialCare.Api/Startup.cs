@@ -209,6 +209,7 @@ namespace LBH.AdultSocialCare.Api
             DomainToEntityFactory.Configure(mapper);
             EntityToDomainFactory.Configure(mapper);
             ResponseFactory.Configure(mapper);
+            MappingExtensions.Configure(mapper);
 
             // TODO
             // If you DON'T use the renaming script, PLEASE replace with your own API name manually

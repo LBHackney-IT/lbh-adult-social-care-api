@@ -1,8 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
 {
+    [GenerateMappingFor(typeof(CareChargeElementPlainDomain))]
+    [GenerateListMappingFor(typeof(CareChargeElementPlainDomain))]
     public class CareChargeElementCreationRequest
     {
         [Required]

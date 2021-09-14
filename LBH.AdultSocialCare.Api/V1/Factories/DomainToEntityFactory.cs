@@ -422,14 +422,5 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion
-
-        #region Care Charge
-
-        public static CareChargeElement ToEntity(this CareChargeElementPlainDomain careChargeElement)
-        {
-            return _mapper.Map<CareChargeElement>(careChargeElement);
-        }
-
-        #endregion Care Charge
     }
 }

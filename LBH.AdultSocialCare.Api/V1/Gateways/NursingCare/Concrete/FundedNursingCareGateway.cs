@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
 {
-    public class FundedNursingCareGateway : IFundedNursingCaseGateway
+    public class FundedNursingCareGateway : IFundedNursingCareGateway
     {
         private readonly DatabaseContext _context;
 

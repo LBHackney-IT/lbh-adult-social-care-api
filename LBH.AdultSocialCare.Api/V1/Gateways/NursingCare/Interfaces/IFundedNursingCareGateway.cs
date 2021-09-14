@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces
 {
-    public interface IFundedNursingCaseGateway
+    public interface IFundedNursingCareGateway
     {
         Task<FundedNursingCareDomain> UpsertFundedNursingCaseAsync(FundedNursingCareDomain fundedNursingCareDomain);
 

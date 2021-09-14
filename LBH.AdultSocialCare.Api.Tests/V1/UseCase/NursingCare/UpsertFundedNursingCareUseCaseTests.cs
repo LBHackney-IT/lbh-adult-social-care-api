@@ -61,10 +61,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.NursingCare
                 Times.Once);
         }
 
-        private static UpsertFundedNursingCareUseCase InitUseCase(out Mock<IFundedNursingCaseGateway> fncGateway,
+        private static UpsertFundedNursingCareUseCase InitUseCase(out Mock<IFundedNursingCareGateway> fncGateway,
             out Mock<ISupplierGateway> supplierGateway, int supplierId = 1)
         {
-            fncGateway = new Mock<IFundedNursingCaseGateway>();
+            fncGateway = new Mock<IFundedNursingCareGateway>();
             supplierGateway = new Mock<ISupplierGateway>();
 
             supplierGateway
