@@ -26,7 +26,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             {
                 StageId = 1,
                 StatusId = 2,
-                ClientId = client.Id
+                ClientId = client.Id,
+                StartDate = DateTimeOffset.Now.AddDays(-30)
             };
 
             await _context.NursingCarePackages.AddAsync(package).ConfigureAwait(false);

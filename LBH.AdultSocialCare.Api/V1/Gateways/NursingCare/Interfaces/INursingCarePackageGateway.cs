@@ -26,8 +26,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces
 
         public Task<int> GetClientPackagesCountAsync(Guid clientId);
 
-        Task<bool> GenerateNursingCareInvoices(DateTimeOffset dateTo);
+        Task<List<NursingCarePackage>> GetFullPackagesByIds(IEnumerable<Guid> packageIds);
+
+        Task<List<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset dateTo);
 
         Task<bool> ResetInvoicePaidUpToDate(List<Guid> nursingCarePackageIds);
+
+        Task RefreshPaidUpToDateAsync(List<NursingCarePackage> packages, DateTimeOffset paidUpTo);
     }
 }

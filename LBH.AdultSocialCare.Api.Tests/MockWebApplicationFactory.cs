@@ -28,6 +28,7 @@ namespace LBH.AdultSocialCare.Api.Tests
 
             _connection = new SqliteConnection(connectionString);
             _connection.Open(); // connection should stay open to keep SQLite in-memory database alive
+            _connection.CreateFunction("comparedates", (DateTimeOffset date1, DateTimeOffset date2) => date1.CompareTo(date2));
 
             CreateDatabaseContext();
 

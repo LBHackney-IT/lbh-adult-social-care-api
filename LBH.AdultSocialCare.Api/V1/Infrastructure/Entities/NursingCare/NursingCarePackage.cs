@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
 {
@@ -46,5 +47,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
         public ICollection<NursingCareApprovalHistory> NursingCareApprovalHistories { get; set; }
         public virtual NursingCareBrokerageInfo NursingCareBrokerageInfo { get; set; }
         public virtual FundedNursingCare FundedNursingCare { get; set; }
+        public virtual PackageCareCharge CareCharge { get; set; }
     }
 }

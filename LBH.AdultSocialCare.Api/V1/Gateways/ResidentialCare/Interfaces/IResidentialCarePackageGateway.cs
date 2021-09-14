@@ -3,6 +3,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces
 {
@@ -26,10 +27,14 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces
 
         public Task<IEnumerable<ResidentialCareTypeOfStayOptionDomain>> GetListOfResidentialCareTypeOfStayOptionAsync();
 
-        public Task<int> GetClientPackagesCountAsync(Guid clientId);
+        Task<int> GetClientPackagesCountAsync(Guid clientId);
 
-        Task<bool> GenerateResidentialCareInvoices(DateTimeOffset dateTo);
+        Task<List<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset dateTo);
+
+        Task<List<ResidentialCarePackage>> GetPackagesByIds(List<Guid> packageIds);
 
         Task<bool> ResetResidentialInvoicePaidUpToDate(List<Guid> residentialCarePackageIds);
+
+        Task RefreshPaidUpToDateAsync(List<NursingCarePackage> nursingCarePackages, DateTimeOffset paidUpTo);
     }
 }
