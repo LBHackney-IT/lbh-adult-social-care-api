@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
+using Newtonsoft.Json;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
@@ -22,11 +24,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
     {
         private readonly ICareChargeUseCase _careChargeUseCase;
         private readonly ICreateCareChargeElementUseCase _createCareChargeElementUseCase;
+        private readonly IGetCareChargePackagesUseCase _getCareChargePackagesUseCase;
 
-        public CareChargesController(ICareChargeUseCase careChargeUseCase, ICreateCareChargeElementUseCase createCareChargeElementUseCase)
+        public CareChargesController(ICareChargeUseCase careChargeUseCase, ICreateCareChargeElementUseCase createCareChargeElementUseCase,
+            IGetCareChargePackagesUseCase getCareChargePackagesUseCase)
         {
             _careChargeUseCase = careChargeUseCase;
             _createCareChargeElementUseCase = createCareChargeElementUseCase;
+            _getCareChargePackagesUseCase = getCareChargePackagesUseCase;
         }
 
         [HttpGet("service-users/{serviceUserId}/default")]
@@ -84,6 +89,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
                 .ConfigureAwait(false);
 
             return Ok(careChargeElements.ToCreationResponse());
+        }
+
+        [HttpGet("packages")]
+        [ProducesResponseType(typeof(PagedCareChargePackagesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<PagedCareChargePackagesResponse>> GetCareChargePackages([FromQuery] CareChargePackagesParameters parameters)
+        {
+            var result = await _getCareChargePackagesUseCase.GetCareChargePackages(parameters).ConfigureAwait(false);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
+            return Ok(result);
         }
     }
 }

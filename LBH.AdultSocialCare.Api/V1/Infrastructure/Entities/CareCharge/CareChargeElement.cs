@@ -19,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge
         public DateTimeOffset? PaidUpTo { get; set; }
         public DateTimeOffset? PreviousPaidUpTo { get; set; }
         [ForeignKey(nameof(CareChargeId))] public PackageCareCharge PackageCareCharge { get; set; }
-        [ForeignKey(nameof(StatusId))] public CareChargeStatus CareChargeStatus { get; set; }
+        [ForeignKey(nameof(StatusId))] public CareChargeElementStatus CareChargeElementStatus { get; set; }
         [ForeignKey(nameof(TypeId))] public CareChargeType CareChargeType { get; set; }
         [ForeignKey(nameof(ClaimCollectorId))] public PackageCostClaimer ClaimCollector { get; set; }
     }

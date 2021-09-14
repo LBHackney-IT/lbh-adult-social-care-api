@@ -9,7 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 {
@@ -72,6 +74,101 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 await transaction.RollbackAsync().ConfigureAwait(false);
                 throw new DbSaveFailedException("Saving care charge element failed", ex);
             }
+        }
+
+        public async Task<PagedList<CareChargePackagesDomain>> GetCareChargePackages(CareChargePackagesParameters parameters)
+        {
+            var careChargePackagesCount = await GetCareChargePackagesCount(parameters).ConfigureAwait(false);
+            var careChargePackageList = await GetCareChargePackagesList(parameters).ConfigureAwait(false);
+
+            var paginatedCareChargePackageList = careChargePackageList
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize);
+
+            return PagedList<CareChargePackagesDomain>.ToPagedList(paginatedCareChargePackageList, careChargePackagesCount, parameters.PageNumber, parameters.PageSize);
+        }
+
+        private async Task<int> GetCareChargePackagesCount(CareChargePackagesParameters parameters)
+        {
+            var packageCount = 0;
+
+            packageCount += await _dbContext.ResidentialCarePackages
+                .FilterCareChargeResidentialCareList(parameters.FirstName, parameters.LastName,
+                    parameters.DateOfBirth, parameters.PostCode, parameters.MosaicId, parameters.ModifiedAt, parameters.ModifiedBy).Include(p => p.ResidentialCareApprovalHistories)
+                .Include(item => item.ResidentialCareBrokerageInfo)
+                .Where(rc => rc.ResidentialCareBrokerageInfo.HasCareCharges == true)
+                .CountAsync().ConfigureAwait(false);
+
+            packageCount += await _dbContext.NursingCarePackages
+                .FilterCareChargeNursingCareList(parameters.FirstName, parameters.LastName,
+                    parameters.DateOfBirth, parameters.PostCode, parameters.MosaicId, parameters.ModifiedAt, parameters.ModifiedBy).Include(p => p.NursingCareApprovalHistories)
+                .Include(item => item.NursingCareBrokerageInfo)
+                .Where(nc => nc.NursingCareBrokerageInfo.HasCareCharges == true)
+                .CountAsync().ConfigureAwait(false);
+
+            return packageCount;
+        }
+
+        private async Task<List<CareChargePackagesDomain>> GetCareChargePackagesList(CareChargePackagesParameters parameters)
+        {
+            var packageList = new List<CareChargePackagesDomain>();
+
+            var residentialCare = await GetCareChargeResidentialCarePackages(parameters).ConfigureAwait(false);
+            packageList.AddRange(residentialCare);
+
+            var nursingCare = await GetCareChargeNursingCarePackages(parameters).ConfigureAwait(false);
+            packageList.AddRange(nursingCare);
+
+            return packageList;
+        }
+
+        private async Task<List<CareChargePackagesDomain>> GetCareChargeResidentialCarePackages(CareChargePackagesParameters parameters)
+        {
+            var residentialCarePackageList = await _dbContext.ResidentialCarePackages
+                .FilterCareChargeResidentialCareList(parameters.FirstName, parameters.LastName,
+                    parameters.DateOfBirth, parameters.PostCode, parameters.MosaicId, parameters.ModifiedAt, parameters.ModifiedBy)
+                .Include(item => item.ResidentialCareBrokerageInfo)
+                .Include(item => item.Client)
+                .Include(item => item.Updater)
+                .Where(rc =>rc.ResidentialCareBrokerageInfo.HasCareCharges == true)
+                .Select(rc => new CareChargePackagesDomain()
+                {
+                    ServiceUser = $"{rc.Client.FirstName} {rc.Client.LastName}",
+                    DateOfBirth = rc.Client.DateOfBirth,
+                    Address = $"{rc.Client.AddressLine1} {rc.Client.AddressLine2} {rc.Client.AddressLine3} {rc.Client.County} {rc.Client.Town} {rc.Client.PostCode}",
+                    HackneyId = rc.Client.HackneyId,
+                    PackageType = PackageTypesConstants.ResidentialCarePackage,
+                    StartDate = rc.StartDate,
+                    LastModified = rc.DateUpdated,
+                    ModifiedBy = rc.Updater.Name
+                })
+                .ToListAsync().ConfigureAwait(false);
+            return residentialCarePackageList;
+        }
+
+        private async Task<List<CareChargePackagesDomain>> GetCareChargeNursingCarePackages(CareChargePackagesParameters parameters)
+        {
+            var nursingCarePackageList = await _dbContext.NursingCarePackages
+                .FilterCareChargeNursingCareList(parameters.FirstName, parameters.LastName,
+                    parameters.DateOfBirth, parameters.PostCode, parameters.MosaicId, parameters.ModifiedAt, parameters.ModifiedBy)
+                .Include(item => item.NursingCareBrokerageInfo)
+                .Include(item => item.Client)
+                .Include(item => item.Updater)
+                .Where(nc => nc.NursingCareBrokerageInfo.HasCareCharges == true)
+                .Select(nc => new CareChargePackagesDomain()
+                {
+                    ServiceUser = $"{nc.Client.FirstName} {nc.Client.LastName}",
+                    DateOfBirth = nc.Client.DateOfBirth,
+                    Address = $"{nc.Client.AddressLine1} {nc.Client.AddressLine2} {nc.Client.AddressLine3} {nc.Client.County} {nc.Client.Town} {nc.Client.PostCode}",
+                    HackneyId = nc.Client.HackneyId,
+                    PackageType = PackageTypesConstants.NursingCarePackage,
+                    PackageId = nc.Id,
+                    StartDate = nc.StartDate,
+                    LastModified = nc.DateUpdated,
+                    ModifiedBy = nc.Updater.Name
+                })
+                .ToListAsync().ConfigureAwait(false);
+            return nursingCarePackageList;
         }
     }
 }

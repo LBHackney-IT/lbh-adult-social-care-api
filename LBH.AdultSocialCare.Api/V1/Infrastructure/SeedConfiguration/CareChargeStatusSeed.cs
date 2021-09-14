@@ -5,23 +5,23 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
-    public class CareChargeStatusSeed : IEntityTypeConfiguration<CareChargeStatus>
+    public class CareChargeStatusSeed : IEntityTypeConfiguration<CareChargeElementStatus>
     {
-        public void Configure(EntityTypeBuilder<CareChargeStatus> builder)
+        public void Configure(EntityTypeBuilder<CareChargeElementStatus> builder)
         {
-            builder.HasData(new CareChargeStatus
+            builder.HasData(new CareChargeElementStatus
             {
                 Id = (int) CareChargeElementStatusEnum.Active,
                 StatusName = nameof(CareChargeElementStatusEnum.Active)
-            }, new CareChargeStatus
+            }, new CareChargeElementStatus
             {
                 Id = (int) CareChargeElementStatusEnum.Ended,
                 StatusName = nameof(CareChargeElementStatusEnum.Ended)
-            }, new CareChargeStatus
+            }, new CareChargeElementStatus
             {
                 Id = (int) CareChargeElementStatusEnum.Cancelled,
                 StatusName = nameof(CareChargeElementStatusEnum.Cancelled)
-            }, new CareChargeStatus
+            }, new CareChargeElementStatus
             {
                 Id = (int) CareChargeElementStatusEnum.Future,
                 StatusName = nameof(CareChargeElementStatusEnum.Future)

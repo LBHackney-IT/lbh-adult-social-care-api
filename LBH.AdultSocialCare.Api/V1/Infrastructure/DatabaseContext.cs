@@ -97,7 +97,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<FundedNursingCareCollector> FundedNursingCareCollectors { get; set; }
         public DbSet<FundedNursingCarePrice> FundedNursingCarePrices { get; set; }
         public DbSet<FundedNursingCare> FundedNursingCares { get; set; }
-        public DbSet<CareChargeStatus> CareChargeStatuses { get; set; }
+        public DbSet<CareChargeElementStatus> CareChargeElementStatuses { get; set; }
         public DbSet<CareChargeType> CareChargeTypes { get; set; }
         public DbSet<ProvisionalCareChargeAmount> ProvisionalCareChargeAmounts { get; set; }
         public DbSet<PackageCareCharge> PackageCareCharges { get; set; }

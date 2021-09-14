@@ -99,5 +99,27 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
         public static IQueryable<Supplier> FilterByName(this IQueryable<Supplier> clientsQuery, string name) =>
             clientsQuery.Where(s => String.IsNullOrEmpty(name)
                                     || s.SupplierName.ToLower().Contains(name.ToLower()));
+
+        public static IQueryable<NursingCarePackage> FilterCareChargeNursingCareList(this IQueryable<NursingCarePackage> nursingCarePackages, string firstName, string lastName,
+            DateTime? dateOfBirth, string postCode, int? mosaicId, DateTimeOffset? modifiedAt, Guid? modifiedBy) =>
+            nursingCarePackages.Where(h =>
+            (firstName != null ? h.Client.FirstName.ToLower().Contains(firstName.ToLower()) : h.Equals(h)) &&
+            (lastName != null ? h.Client.LastName.ToLower().Contains(lastName.ToLower()) : h.Equals(h)) &&
+            (dateOfBirth.Equals(null) || h.Client.DateOfBirth == dateOfBirth) &&
+            (postCode != null ? h.Client.PostCode.ToLower().Contains(postCode.ToLower()) : h.Equals(h)) &&
+            (mosaicId.Equals(null) || h.Client.HackneyId == mosaicId) &&
+            (modifiedBy.Equals(null) || h.UpdaterId == modifiedBy) &&
+            (modifiedAt.Equals(null) || h.DateUpdated == modifiedAt));
+
+        public static IQueryable<ResidentialCarePackage> FilterCareChargeResidentialCareList(this IQueryable<ResidentialCarePackage> residentialCarePackages, string firstName, string lastName,
+            DateTime? dateOfBirth, string postCode, int? mosaicId, DateTimeOffset? modifiedAt, Guid? modifiedBy) =>
+            residentialCarePackages.Where(h =>
+                (firstName != null ? h.Client.FirstName.ToLower().Contains(firstName.ToLower()) : h.Equals(h)) &&
+                (lastName != null ? h.Client.LastName.ToLower().Contains(lastName.ToLower()) : h.Equals(h)) &&
+                (dateOfBirth.Equals(null) || h.Client.DateOfBirth == dateOfBirth) &&
+                (postCode != null ? h.Client.PostCode.ToLower().Contains(postCode.ToLower()) : h.Equals(h)) &&
+                (mosaicId.Equals(null) || h.Client.HackneyId == mosaicId) &&
+                (modifiedBy.Equals(null) || h.UpdaterId == modifiedBy) &&
+                (modifiedAt.Equals(null) || h.DateUpdated == modifiedAt));
     }
 }

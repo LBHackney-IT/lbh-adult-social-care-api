@@ -538,6 +538,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CareChargeElementPlainDomain, CareChargeElement>().ReverseMap();
             CreateMap<BrokerageCareChargeForChangeRequest, BrokerageCareChargeForChangeDomain>();
             CreateMap<PackageCareCharge, PackageCareChargePlainDomain>();
+            CreateMap<CareChargePackagesDomain, CareChargePackagesResponse>();
+
 
             #endregion Care Charges
         }

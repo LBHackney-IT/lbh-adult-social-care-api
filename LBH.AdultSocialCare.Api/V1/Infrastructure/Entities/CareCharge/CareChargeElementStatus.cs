@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge
 {
-    public class CareChargeStatus
+    public class CareChargeElementStatus
     {
         [Key]
         public int Id { get; set; }
