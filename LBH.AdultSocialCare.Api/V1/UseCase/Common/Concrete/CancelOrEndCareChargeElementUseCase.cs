@@ -48,7 +48,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             // Cancel care charge element
             var cancelResult = await _careChargesGateway
                 .UpdateCareChargeElementStatusAsync(packageCareChargeId, careElementId,
-                    (int) CareChargeElementStatusEnum.Cancelled).ConfigureAwait(false);
+                    (int) CareChargeElementStatusEnum.Cancelled, careChargeElementFromDb.EndDate).ConfigureAwait(false);
             return cancelResult;
         }
 
@@ -114,7 +114,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                     throw new ApiException($"Care element with id {careElementId} already ended",
                         StatusCodes.Status400BadRequest);
                 case (int) CareChargeElementStatusEnum.Cancelled:
-                    throw new ApiException($"Ended care element with id {careElementId} cannot be ended. Only active elements can be ended",
+                    throw new ApiException($"Canceled care element with id {careElementId} cannot be ended. Only active elements can be ended",
                         StatusCodes.Status400BadRequest);
             }
 
@@ -127,12 +127,22 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                     .ConfigureAwait(false);
             }
 
-            // Return without changing status if date is greater than today
-            if (newEndDate.Date > today.Date) return true;
+            bool endResult;
 
-            var endResult = await _careChargesGateway
-                .UpdateCareChargeElementStatusAsync(packageCareChargeId, careElementId,
-                    (int) CareChargeElementStatusEnum.Ended).ConfigureAwait(false);
+            // Set new end date and return without changing status if date is greater than today
+            if (newEndDate.Date > today.Date)
+            {
+                endResult = await _careChargesGateway
+                    .UpdateCareChargeElementStatusAsync(packageCareChargeId, careElementId,
+                        (int) CareChargeElementStatusEnum.Active, newEndDate.Date).ConfigureAwait(false);
+            }
+            else
+            {
+                endResult = await _careChargesGateway
+                    .UpdateCareChargeElementStatusAsync(packageCareChargeId, careElementId,
+                        (int) CareChargeElementStatusEnum.Ended, newEndDate.Date).ConfigureAwait(false);
+            }
+
             return endResult;
         }
     }

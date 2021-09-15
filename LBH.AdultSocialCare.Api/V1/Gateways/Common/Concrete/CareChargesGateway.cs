@@ -1,6 +1,5 @@
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
@@ -48,7 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             return provisionalAmount?.ToDomain();
         }
 
-        public async Task<bool> UpdateCareChargeElementStatusAsync(Guid packageCareChargeId, Guid careElementId, int newElementStatusId)
+        public async Task<bool> UpdateCareChargeElementStatusAsync(Guid packageCareChargeId, Guid careElementId, int newElementStatusId, DateTimeOffset? newEndDate)
         {
             // Get care charge element
             var element = await GetCareChargeElementAsync(packageCareChargeId, careElementId).ConfigureAwait(false);
@@ -61,9 +60,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             // Update element and save
             element.StatusId = newElementStatusId;
 
-            if (newElementStatusId == (int) CareChargeElementStatusEnum.Ended)
+            if (newEndDate == null || newEndDate > element.StartDate)
             {
-                element.EndDate = DateTimeOffset.Now;
+                element.EndDate = newEndDate;
             }
 
             try
