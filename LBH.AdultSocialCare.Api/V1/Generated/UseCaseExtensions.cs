@@ -45,6 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetAllUsersUseCase, GetAllUsersUseCase>();
             services.AddScoped<IGetApprovedPackagesUseCase, GetApprovedPackagesUseCase>();
             services.AddScoped<IGetBrokeredPackagesUseCase, GetBrokeredPackagesUseCase>();
+            services.AddScoped<IGetCareChargePackagesUseCase, GetCareChargePackagesUseCase>();
             services.AddScoped<IGetFundedNursingCareCollectorsUseCase, GetFundedNursingCareCollectorsUseCase>();
             services.AddScoped<IGetOpportunityLengthOptionsListUseCase, GetOpportunityLengthOptionsListUseCase>();
             services.AddScoped<IGetOpportunityTimesPerMonthOptionsListUseCase, GetOpportunityTimesPerMonthOptionsListUseCase>();
@@ -144,22 +145,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetRoleUseCase, GetRoleUseCase>();
             services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
             services.AddScoped<IIdentityHelperUseCase, IdentityHelperUseCase>();
-
-            #endregion IdentityHelper
-
-            #region AdditionalNeedPaymentType
-
-            services.AddScoped<IGetNursingCareAdditionalNeedsPaymentTypesUseCase, GetNursingCareAdditionalNeedsPaymentTypesUseCase>();
-
-            #endregion AdditionalNeedPaymentType
-
-            #region CareCharges
-
-            services.AddScoped<ICareChargeUseCase, CareChargeUseCase>();
-            services.AddScoped<ICreateCareChargeElementUseCase, CreateCareChargeElementUseCase>();
-            services.AddScoped<IGetCareChargePackagesUseCase, GetCareChargePackagesUseCase>();
-
-            #endregion CareCharges
             services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
             services.AddScoped<IUpsertRoleUseCase, UpsertRoleUseCase>();
         }
