@@ -13,7 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces
 
         Task<decimal> GetFundedNursingCarePriceAsync(DateTimeOffset dateTime);
 
-        Task<FundedNursingCarePriceDomain> GetFundedNursingCarePricingAsync(DateTimeOffset dateTime);
+        Task<IEnumerable<FundedNursingCarePriceDomain>> GetFundedNursingCarePricesAsync();
 
         Task<IEnumerable<FundedNursingCarePriceDomain>> GetFundedNursingCarePricingInRangeAsync(DateTimeOffset startDate, DateTimeOffset endDate);
 

@@ -21,6 +21,8 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerag
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.BusinessRules;
+using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -702,5 +704,19 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion CareCharges
+
+        #region Package wrappers for invoicing
+
+        public static IEnumerable<GenericPackage> ToInvoicingDomain(this IEnumerable<NursingCarePackage> package)
+        {
+            return _mapper.Map<IEnumerable<GenericPackage>>(package);
+        }
+
+        public static IEnumerable<GenericPackage> ToInvoicingDomain(this IEnumerable<ResidentialCarePackage> package)
+        {
+            return _mapper.Map<IEnumerable<GenericPackage>>(package);
+        }
+
+        #endregion Package wrappers for invoicing
     }
 }

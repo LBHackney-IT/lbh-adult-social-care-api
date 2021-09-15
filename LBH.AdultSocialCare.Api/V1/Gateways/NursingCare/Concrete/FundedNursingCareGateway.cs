@@ -61,9 +61,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
             return price?.PricePerWeek ?? 0;
         }
 
-        public async Task<FundedNursingCarePriceDomain> GetFundedNursingCarePricingAsync(DateTimeOffset dateTime)
+        public async Task<IEnumerable<FundedNursingCarePriceDomain>> GetFundedNursingCarePricesAsync()
         {
-            var fncPrice = await GetFundedNursingCarePriceFromDbAsync(dateTime).ConfigureAwait(false);
+            var fncPrice = await _context.FundedNursingCarePrices
+                .ToListAsync()
+                .ConfigureAwait(false);
+
             return fncPrice?.ToDomain();
         }
 
