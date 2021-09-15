@@ -12,11 +12,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.CareChargesControllers
     [ApiController]
     public class PackageCareChargesController : ControllerBase
     {
-        private readonly ICancelCareChargeElementUseCase _cancelCareChargeElementUseCase;
+        private readonly ICancelOrEndCareChargeElementUseCase _cancelOrEndCareChargeElementUseCase;
 
-        public PackageCareChargesController(ICancelCareChargeElementUseCase cancelCareChargeElementUseCase)
+        public PackageCareChargesController(ICancelOrEndCareChargeElementUseCase cancelOrEndCareChargeElementUseCase)
         {
-            _cancelCareChargeElementUseCase = cancelCareChargeElementUseCase;
+            _cancelOrEndCareChargeElementUseCase = cancelOrEndCareChargeElementUseCase;
         }
 
         [HttpPut("{packageCareChargeId}/care-charges/{careElementId}/cancel")]
@@ -24,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.CareChargesControllers
         [ProducesResponseType(typeof(ApiException), StatusCodes.Status404NotFound)]
         public async Task<ActionResult<ProvisionalCareChargeAmountPlainResponse>> ChangeCareChargeElementStatus(Guid packageCareChargeId, Guid careElementId)
         {
-            var cancelResult = await _cancelCareChargeElementUseCase.ExecuteAsync(packageCareChargeId, careElementId).ConfigureAwait(false);
+            var cancelResult = await _cancelOrEndCareChargeElementUseCase.ExecuteCancelAsync(packageCareChargeId, careElementId).ConfigureAwait(false);
             return Ok(cancelResult);
         }
     }
