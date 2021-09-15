@@ -51,7 +51,7 @@ namespace LBH.AdultSocialCare.Api.Tests
 
             AfterRequest?.Invoke();
 
-            return new TestResponse<TContent>()
+            return new TestResponse<TContent>
             {
                 Message = response,
                 Content = JsonConvert.DeserializeObject<TContent>(json)

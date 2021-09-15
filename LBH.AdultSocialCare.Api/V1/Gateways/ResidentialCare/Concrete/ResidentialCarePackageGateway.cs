@@ -209,7 +209,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
             return true;
         }
 
-        public async Task RefreshPaidUpToDateAsync(List<NursingCarePackage> packages, DateTimeOffset paidUpTo)
+        public async Task RefreshPaidUpToDateAsync(List<ResidentialCarePackage> packages, DateTimeOffset paidUpTo)
         {
             foreach (var package in packages)
             {

@@ -28,10 +28,12 @@ namespace LBH.AdultSocialCare.Api.Tests
 
             _connection = new SqliteConnection(connectionString);
             _connection.Open(); // connection should stay open to keep SQLite in-memory database alive
-            _connection.CreateFunction("comparedates", (DateTimeOffset date1, DateTimeOffset date2) => date1.CompareTo(date2));
+
+            _connection.CreateFunction("comparedates", (Func<DateTimeOffset?, DateTimeOffset?, int>) CompareDates);
 
             CreateDatabaseContext();
 
+            TransactionalApi = new Mock<IRestClient>();
             DataGenerator = new DataGenerator(DatabaseContext);
             RestClient = new TestRestClient(CreateClient())
             {
@@ -46,6 +48,8 @@ namespace LBH.AdultSocialCare.Api.Tests
         public TestRestClient RestClient { get; }
         public DatabaseContext DatabaseContext { get; private set; }
         public DataGenerator DataGenerator { get; }
+
+        public Mock<IRestClient> TransactionalApi { get; }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
@@ -127,6 +131,26 @@ namespace LBH.AdultSocialCare.Api.Tests
 
             DatabaseContext = new DatabaseContext(builder.Options, CreateHttpContextAccessor());
             DatabaseContext.Database.EnsureCreated();
+        }
+
+        private int CompareDates(DateTimeOffset? date1, DateTimeOffset? date2)
+        {
+            if (!date1.HasValue && !date2.HasValue)
+            {
+                return 0;
+            }
+            else if (!date1.HasValue)
+            {
+                return -1;
+            }
+            else if (!date2.HasValue)
+            {
+                return 1;
+            }
+            else
+            {
+                return date1.Value.Date.CompareTo(date2.Value.Date);
+            }
         }
 
         protected override void Dispose(bool disposing)

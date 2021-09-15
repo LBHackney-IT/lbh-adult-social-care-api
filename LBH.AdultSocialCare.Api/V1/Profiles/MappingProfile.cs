@@ -562,7 +562,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
                 .ForMember(d => d.OriginalPackage, opt => opt.MapFrom(s => s));
 
             CreateMap<ResidentialCarePackage, GenericPackage>()
-                .ForMember(d => d.BrokerageInfo, opt => opt.MapFrom(s => s.ResidentialCareBrokerageInfo));
+                .ForMember(d => d.BrokerageInfo, opt => opt.MapFrom(s => s.ResidentialCareBrokerageInfo))
+                .ForMember(d => d.OriginalPackage, opt => opt.MapFrom(s => s));
 
             #endregion Invoicing
         }

@@ -17,7 +17,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             _context = context;
         }
 
-        public async Task<PackageCareCharge> GetCareCharge()
+        public async Task<PackageCareCharge> GetCareCharge(int packageTypeId)
         {
             var client = await _context.Clients.FirstOrDefaultAsync().ConfigureAwait(false);
             var supplier = await _context.Suppliers.FirstOrDefaultAsync().ConfigureAwait(false);
@@ -25,7 +25,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             {
                 CreatorId = new Guid(UserConstants.DefaultApiUserId),
                 UpdaterId = new Guid(UserConstants.DefaultApiUserId),
-                PackageTypeId = PackageTypesConstants.NursingCarePackageId,
+                PackageTypeId = packageTypeId,
                 ServiceUserId = client.Id,
                 SupplierId = supplier.Id
             });

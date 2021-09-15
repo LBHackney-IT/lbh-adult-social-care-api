@@ -19,6 +19,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 
@@ -244,9 +245,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
         private async Task RefreshResidentialCarePackagePaidUpToDate(List<GenericPackage> packages, DateTimeOffset paidUpTo)
         {
-            var nursingCarePackages = packages.Select(p => p.OriginalPackage as NursingCarePackage).ToList();
+            var residentialCarePackages = packages.Select(p => p.OriginalPackage as ResidentialCarePackage).ToList();
 
-            await _residentialCarePackageGateway.RefreshPaidUpToDateAsync(nursingCarePackages, paidUpTo).ConfigureAwait(false);
+            await _residentialCarePackageGateway.RefreshPaidUpToDateAsync(residentialCarePackages, paidUpTo).ConfigureAwait(false);
         }
 
         #endregion

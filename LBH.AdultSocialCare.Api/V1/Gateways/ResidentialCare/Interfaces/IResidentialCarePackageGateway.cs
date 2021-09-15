@@ -35,6 +35,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces
 
         Task<bool> ResetResidentialInvoicePaidUpToDate(List<Guid> residentialCarePackageIds);
 
-        Task RefreshPaidUpToDateAsync(List<NursingCarePackage> nursingCarePackages, DateTimeOffset paidUpTo);
+        Task RefreshPaidUpToDateAsync(List<ResidentialCarePackage> nursingCarePackages, DateTimeOffset paidUpTo);
     }
 }
