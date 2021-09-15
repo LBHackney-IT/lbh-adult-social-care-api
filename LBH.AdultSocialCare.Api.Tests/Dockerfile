@@ -18,6 +18,7 @@ RUN dotnet restore ./LBH.AdultSocialCare.Api.Tests/LBH.AdultSocialCare.Api.Tests
 # Copy everything else and build
 COPY . .
 
+ENV SKIP_CODE_GENERATION=1
 RUN dotnet build -c debug -o out LBH.AdultSocialCare.Api.Tests/LBH.AdultSocialCare.Api.Tests.csproj
 
 CMD dotnet test

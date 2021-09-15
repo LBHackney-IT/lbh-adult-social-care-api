@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
             // Use age to get provisional amount range
             var provisionalAmount = await _dbContext.ProvisionalCareChargeAmounts
-                .Where(pca => (clientAge >= pca.AgeFrom && clientAge <= pca.AgeTo) &&
+                .Where(pca => (clientAge >= pca.AgeFrom && (pca.AgeTo == null || clientAge <= pca.AgeTo)) &&
                               (todayDate >= EF.Property<DateTime>(pca, nameof(pca.StartDate)).Date &&
                                (pca.EndDate == null || todayDate <= EF.Property<DateTime>(pca, nameof(pca.EndDate)).Date)))
                 .OrderBy(pca => pca.StartDate)
@@ -47,6 +47,60 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 .ConfigureAwait(false);
 
             return provisionalAmount?.ToDomain();
+        }
+
+        public async Task<bool> UpdateCareChargeElementStatusAsync(Guid packageCareChargeId, Guid careElementId, int newElementStatusId, DateTimeOffset? newEndDate)
+        {
+            // Get care charge element
+            var element = await GetCareChargeElementAsync(packageCareChargeId, careElementId).ConfigureAwait(false);
+
+            if (element == null)
+            {
+                throw new ApiException($"Care charge element with Id {careElementId} not found");
+            }
+
+            // Update element and save
+            element.StatusId = newElementStatusId;
+
+            if (newEndDate == null || newEndDate > element.StartDate)
+            {
+                element.EndDate = newEndDate;
+            }
+
+            try
+            {
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new DbSaveFailedException($"Failed to update care element status {ex.InnerException?.Message}",
+                    ex);
+            }
+        }
+
+        public async Task<CareChargeElementPlainDomain> CheckCareChargeElementExistsAsync(Guid packageCareChargeId,
+            Guid careElementId)
+        {
+            var element = await _dbContext.CareChargeElements
+                .Where(ce => ce.Id.Equals(careElementId) && ce.CareChargeId.Equals(packageCareChargeId))
+                .AsNoTracking()
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+
+            if (element == null)
+            {
+                throw new ApiException($"Care charge element with Id {careElementId} not found");
+            }
+
+            return element.ToPlainDomain();
+        }
+
+        private async Task<CareChargeElement> GetCareChargeElementAsync(Guid packageCareChargeId, Guid careElementId)
+        {
+            var element = await _dbContext.CareChargeElements
+                .Where(ce => ce.Id.Equals(careElementId) && ce.CareChargeId.Equals(packageCareChargeId))
+                .SingleOrDefaultAsync().ConfigureAwait(false);
+            return element;
         }
 
         public async Task<IEnumerable<CareChargeElementPlainDomain>> CreateCareChargeElementsAsync(IEnumerable<CareChargeElementPlainDomain> elementDomains)

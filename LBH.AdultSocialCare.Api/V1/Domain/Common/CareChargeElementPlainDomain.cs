@@ -1,7 +1,11 @@
 using System;
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
+    [GenerateMappingFor(typeof(CareChargeElementCreationResponse))]
+    [GenerateListMappingFor(typeof(CareChargeElementCreationResponse))]
     public class CareChargeElementPlainDomain
     {
         public Guid Id { get; set; }
@@ -14,5 +18,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public DateTimeOffset? EndDate { get; set; }
         public DateTimeOffset? PaidUpTo { get; set; }
         public DateTimeOffset? PreviousPaidUpTo { get; set; }
+        public decimal Amount { get; set; }
     }
 }

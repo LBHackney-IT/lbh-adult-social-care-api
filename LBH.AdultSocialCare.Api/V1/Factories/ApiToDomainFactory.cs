@@ -439,19 +439,5 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion TimeSlotShifts
-
-        #region Care Charge
-
-        public static CareChargeElementPlainDomain ToPlainDomain(this CareChargeElementCreationRequest request)
-        {
-            return _mapper.Map<CareChargeElementPlainDomain>(request);
-        }
-
-        public static IEnumerable<CareChargeElementPlainDomain> ToPlainDomain(this IEnumerable<CareChargeElementCreationRequest> request)
-        {
-            return _mapper.Map<IEnumerable<CareChargeElementPlainDomain>>(request);
-        }
-
-        #endregion Care Charge
     }
 }

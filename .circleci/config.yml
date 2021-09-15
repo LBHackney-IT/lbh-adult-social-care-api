@@ -80,6 +80,8 @@ commands:
           command: npm i -g serverless
       - run:
           name: Build lambda
+          environment:
+            SKIP_CODE_GENERATION: 1
           command: |
             cd ./LBH.AdultSocialCare.Api/
             chmod +x ./build.sh

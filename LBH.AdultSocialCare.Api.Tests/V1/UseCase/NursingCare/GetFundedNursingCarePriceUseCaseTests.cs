@@ -13,7 +13,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.NursingCare
         public async Task ShouldQueryActiveFncPrice()
         {
 
-            var gateway = new Mock<IFundedNursingCaseGateway>();
+            var gateway = new Mock<IFundedNursingCareGateway>();
             var useCase = new GetFundedNursingCarePriceUseCase(gateway.Object);
 
             var currentTime = DateTime.Now;

@@ -10,10 +10,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
 {
     public class UpsertFundedNursingCareUseCase : IUpsertFundedNursingCareUseCase
     {
-        private readonly IFundedNursingCaseGateway _fncGateway;
+        private readonly IFundedNursingCareGateway _fncGateway;
         private readonly ISupplierGateway _supplierGateway;
 
-        public UpsertFundedNursingCareUseCase(IFundedNursingCaseGateway fncGateway, ISupplierGateway supplierGateway)
+        public UpsertFundedNursingCareUseCase(IFundedNursingCareGateway fncGateway, ISupplierGateway supplierGateway)
         {
             _fncGateway = fncGateway;
             _supplierGateway = supplierGateway;

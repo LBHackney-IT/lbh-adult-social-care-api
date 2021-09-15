@@ -188,6 +188,144 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.InvoiceCreditNote", b =>
+                {
+                    b.Property<Guid>("InvoiceCreditNoteId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(13, 2)");
+
+                    b.Property<Guid?>("CareChargeElementId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("ChargeTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ClaimCollectorId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("HasBeenAddedToUserInvoice")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("PackageId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("PackageTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PriceEffectId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("SentOrInvoiced")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ServiceUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid?>("UpdaterId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("InvoiceCreditNoteId");
+
+                    b.HasIndex("CareChargeElementId");
+
+                    b.HasIndex("ChargeTypeId");
+
+                    b.HasIndex("ClaimCollectorId");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("PackageTypeId");
+
+                    b.HasIndex("PriceEffectId");
+
+                    b.HasIndex("ServiceUserId");
+
+                    b.HasIndex("SupplierId");
+
+                    b.HasIndex("UpdaterId");
+
+                    b.ToTable("InvoiceCreditNotes");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.InvoiceItemPriceEffect", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("EffectName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InvoiceItemPriceEffects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EffectName = "None"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EffectName = "Add"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            EffectName = "Subtract"
+                        });
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.InvoiceNoteChargeType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<string>("ChargeTypeName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("InvoiceNoteChargeTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ChargeTypeName = "OverCharge"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ChargeTypeName = "UnderCharge"
+                        });
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.PackageCareCharge", b =>
                 {
                     b.Property<Guid>("Id")
@@ -212,6 +350,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<int>("PackageTypeId")
                         .HasColumnType("integer");
 
+                    b.Property<Guid>("ServiceUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("integer");
+
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
 
@@ -220,6 +364,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasIndex("CreatorId");
 
                     b.HasIndex("PackageTypeId");
+
+                    b.HasIndex("ServiceUserId");
+
+                    b.HasIndex("SupplierId");
 
                     b.HasIndex("UpdaterId");
 
@@ -4261,6 +4409,59 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasForeignKey("UpdaterId");
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.InvoiceCreditNote", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.CareChargeElement", "CareChargeElement")
+                        .WithMany()
+                        .HasForeignKey("CareChargeElementId");
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.InvoiceNoteChargeType", "ChargeType")
+                        .WithMany()
+                        .HasForeignKey("ChargeTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageCostClaimer", "ClaimCollector")
+                        .WithMany()
+                        .HasForeignKey("ClaimCollectorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Package", "Package")
+                        .WithMany()
+                        .HasForeignKey("PackageTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.InvoiceItemPriceEffect", "PriceEffect")
+                        .WithMany()
+                        .HasForeignKey("PriceEffectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Client", "ServiceUser")
+                        .WithMany()
+                        .HasForeignKey("ServiceUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Updater")
+                        .WithMany()
+                        .HasForeignKey("UpdaterId");
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.PackageCareCharge", b =>
                 {
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
@@ -4272,6 +4473,18 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Package", "Package")
                         .WithMany()
                         .HasForeignKey("PackageTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Client", "ServiceUser")
+                        .WithMany()
+                        .HasForeignKey("ServiceUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

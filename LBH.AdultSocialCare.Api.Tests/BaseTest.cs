@@ -11,6 +11,7 @@ namespace LBH.AdultSocialCare.Api.Tests
             var config = new MapperConfiguration(options =>
             {
                 options.AddProfile<MappingProfile>();
+                options.AddProfile<GeneratedMappingProfile>();
             });
 
             Mapper = config.CreateMapper();
@@ -19,6 +20,7 @@ namespace LBH.AdultSocialCare.Api.Tests
             EntityToDomainFactory.Configure(Mapper);
             ResponseFactory.Configure(Mapper);
             ApiToDomainFactory.Configure(Mapper);
+            MappingExtensions.Configure(Mapper);
         }
 
         protected IMapper Mapper { get; }
