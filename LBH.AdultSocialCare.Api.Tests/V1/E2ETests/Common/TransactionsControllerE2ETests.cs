@@ -3,6 +3,7 @@ using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using HttpServices.Models.Requests;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using Moq;
 using Xunit;
 
@@ -36,7 +37,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             //     .Setup(api => api.PostAsync<Guid?>(
             //         It.IsAny<string>(),
             //         It.IsAny<PayRunForCreationRequest>(),
-            //         It.IsAny<string>())).Callback(() => Console.Beep());
+            //         It.IsAny<string>())).Callback<PayRunForCreationRequest>(req => req.);
 
             // TODO: VK: Add checks
             response.Message.StatusCode.Should().Be(HttpStatusCode.NoContent);
@@ -49,7 +50,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             foreach (var package in nursingCarePackages)
             {
                 var brokerage = await _fixture.DataGenerator.NursingCare.GetBrokerageInfo(package.Id).ConfigureAwait(false);
+                var careCharge = await _fixture.DataGenerator.CareCharge.GetCareCharge(PackageTypesConstants.NursingCarePackageId, package.Id).ConfigureAwait(false);
+
                 await _fixture.DataGenerator.NursingCare.GetAdditionalNeedsCost(brokerage.NursingCareBrokerageId, 1).ConfigureAwait(false);
+                await _fixture.DataGenerator.CareCharge.GetElements(careCharge.Id, 5).ConfigureAwait(false);
             }
         }
 
@@ -60,7 +64,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             foreach (var package in residentialCarePackages)
             {
                 var brokerage = await _fixture.DataGenerator.ResidentialCare.GetBrokerageInfo(package.Id).ConfigureAwait(false);
+                var careCharge = await _fixture.DataGenerator.CareCharge.GetCareCharge(PackageTypesConstants.NursingCarePackageId, package.Id).ConfigureAwait(false);
+
                 await _fixture.DataGenerator.ResidentialCare.GetAdditionalNeedsCost(brokerage.Id, 1).ConfigureAwait(false);
+                await _fixture.DataGenerator.CareCharge.GetElements(careCharge.Id, 5).ConfigureAwait(false);
             }
         }
     }

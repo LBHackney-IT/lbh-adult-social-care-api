@@ -1,13 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using HttpServices.Models.Requests;
 using LBH.AdultSocialCare.Api.Helpers;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 
 namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators
 {
     public class CareChargeGenerator : IInvoiceItemsGenerator
     {
+        private readonly ICareChargesGateway _careChargesGateway;
+        private readonly List<CareChargeElement> _affectedElements = new List<CareChargeElement>();
+
+        public CareChargeGenerator(ICareChargesGateway careChargesGateway)
+        {
+            _careChargesGateway = careChargesGateway;
+        }
+
         public IEnumerable<InvoiceItemForCreationRequest> Run(GenericPackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
         {
             var invoiceItems = new List<InvoiceItemForCreationRequest>();
@@ -16,22 +29,39 @@ namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators
 
             foreach (var element in package.CareCharge.CareChargeElements)
             {
-                var actualStartDate = Dates.Max(element.StartDate, invoiceEndDate);
-                var actualEndDate = Dates.Min(element.EndDate, invoiceStartDate);
+                if (element.StatusId != (int) CareChargeElementStatusEnum.Active) continue;
 
+                var actualStartDate = Dates.Max(element.StartDate, invoiceStartDate);
+                var actualEndDate = Dates.Min(element.EndDate, invoiceEndDate);
                 var actualWeeks = (actualEndDate.Date - actualStartDate.Date).Days / 7M;
+
+                if (actualWeeks <= 0) continue;
 
                 invoiceItems.Add(new InvoiceItemForCreationRequest
                 {
                     ItemName = element.Name ?? element.CareChargeType.OptionName,
                     PricePerUnit = element.Amount,
                     Quantity = actualWeeks,
-                    PriceEffect = "USE REAL PRICE EFFECT",
+                    PriceEffect = element.ClaimCollector.Id switch
+                    {
+                        PackageCostClaimersConstants.Hackney => "Add",
+                        PackageCostClaimersConstants.Supplier => "Subtract",
+                        _ => throw new InvalidOperationException("Unknown claim collector Id")
+                    },
                     ClaimedBy = element.ClaimCollector.Name
                 });
+
+                _affectedElements.Add(element.OriginalValue);
             }
 
             return invoiceItems;
+        }
+
+        public async Task OnInvoiceBatchGenerated(DateTimeOffset invoiceEndDate)
+        {
+            await _careChargesGateway
+                .RefreshCareChargeElementsPaidUpToDate(_affectedElements, invoiceEndDate)
+                .ConfigureAwait(false);
         }
     }
 }

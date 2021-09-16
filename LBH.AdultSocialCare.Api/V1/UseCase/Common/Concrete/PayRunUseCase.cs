@@ -10,11 +10,11 @@ using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.BusinessRules;
 using LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing;
 using LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
@@ -33,12 +33,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         private readonly INursingCarePackageGateway _nursingCarePackageGateway;
         private readonly IFundedNursingCareGateway _fundedNursingCareGateway;
         private readonly IResidentialCarePackageGateway _residentialCarePackageGateway;
+        private readonly ICareChargesGateway _careChargesGateway;
         private readonly IIdentityHelperUseCase _identityHelperUseCase;
+        private readonly ITransactionManager _transactionManager;
 
         public PayRunUseCase(ITransactionsService transactionsService, ISupplierGateway supplierGateway,
             IClientsGateway clientsGateway, INursingCarePackageGateway nursingCarePackageGateway,
             IFundedNursingCareGateway fundedNursingCareGateway, IResidentialCarePackageGateway residentialCarePackageGateway,
-            IIdentityHelperUseCase identityHelperUseCase)
+            ICareChargesGateway careChargesGateway, IIdentityHelperUseCase identityHelperUseCase, ITransactionManager transactionManager)
         {
             _transactionsService = transactionsService;
             _supplierGateway = supplierGateway;
@@ -46,7 +48,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             _nursingCarePackageGateway = nursingCarePackageGateway;
             _fundedNursingCareGateway = fundedNursingCareGateway;
             _residentialCarePackageGateway = residentialCarePackageGateway;
+            _careChargesGateway = careChargesGateway;
             _identityHelperUseCase = identityHelperUseCase;
+            _transactionManager = transactionManager;
         }
 
         public async Task<Guid?> CreateNewPayRunUseCase(string payRunType, PayRunForCreationRequest payRunForCreationRequest)
@@ -179,20 +183,20 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                 .GetFundedNursingCarePricesAsync()
                 .ConfigureAwait(false);
 
-            var invoiceGenerator = new InvoiceGenerator(_transactionsService, _identityHelperUseCase)
+            var invoiceGenerator = new InvoiceGenerator(_transactionsService, _identityHelperUseCase, _transactionManager)
             {
                 PackageTypeId = PackageTypesConstants.NursingCarePackageId,
 
                 GetUnpaidPackageIds = _nursingCarePackageGateway.GetUnpaidPackageIdsAsync,
                 GetUnpaidPackagesByIds = GetUnpaidNursingCarePackages,
-                RefreshPaidUpToDate = RefreshNursingCarePackagePaidUpToDate,
+                RefreshPackagesPaidUpToDate = RefreshNursingCarePackagePaidUpToDate,
 
                 Generators = new List<IInvoiceItemsGenerator>
                 {
                     new CoreCostGenerator("Residential Care Core Cost"),
                     new AdditionalNeedsCostGenerator(),
                     new FundedNursingCareGenerator(fncPrices.ToList()),
-                    new CareChargeGenerator()
+                    new CareChargeGenerator(_careChargesGateway)
                 }
             };
 
@@ -201,19 +205,19 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
         private async Task GenerateResidentialCareInvoices(DateTimeOffset dateTo)
         {
-            var invoiceGenerator = new InvoiceGenerator(_transactionsService, _identityHelperUseCase)
+            var invoiceGenerator = new InvoiceGenerator(_transactionsService, _identityHelperUseCase, _transactionManager)
             {
                 PackageTypeId = PackageTypesConstants.ResidentialCarePackageId,
 
                 GetUnpaidPackageIds = _residentialCarePackageGateway.GetUnpaidPackageIdsAsync,
                 GetUnpaidPackagesByIds = GetUnpaidResidentialCarePackages,
-                RefreshPaidUpToDate = RefreshResidentialCarePackagePaidUpToDate,
+                RefreshPackagesPaidUpToDate = RefreshResidentialCarePackagePaidUpToDate,
 
                 Generators = new List<IInvoiceItemsGenerator>
                 {
                     new CoreCostGenerator("Nursing Care Core Cost"),
                     new AdditionalNeedsCostGenerator(),
-                    new CareChargeGenerator()
+                    new CareChargeGenerator(_careChargesGateway)
                 }
             };
 
@@ -225,8 +229,27 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         private async Task<List<GenericPackage>> GetUnpaidNursingCarePackages(List<Guid> ids)
         {
             var packages = await _nursingCarePackageGateway.GetFullPackagesByIds(ids).ConfigureAwait(false);
+            var genericPackages = packages.ToInvoicingDomain().ToList();
 
-            return packages.ToInvoicingDomain().ToList();
+            await FillCareCharges(ids, genericPackages).ConfigureAwait(false);
+
+            return genericPackages;
+        }
+
+        private async Task FillCareCharges(List<Guid> ids, IEnumerable<GenericPackage> genericPackages)
+        {
+            var careCharges = await _careChargesGateway.GetCareChargesAsync(ids).ConfigureAwait(false);
+
+            // TODO: VK: Workaround to be removed after all packages are be in same table
+            var packageDictionary = genericPackages.ToDictionary(package => package.Id);
+
+            foreach (var careCharge in careCharges)
+            {
+                if (packageDictionary.ContainsKey(careCharge.PackageId))
+                {
+                    packageDictionary[careCharge.PackageId].CareCharge = careCharge;
+                }
+            }
         }
 
         private async Task RefreshNursingCarePackagePaidUpToDate(List<GenericPackage> packages, DateTimeOffset paidUpTo)
@@ -239,8 +262,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         private async Task<List<GenericPackage>> GetUnpaidResidentialCarePackages(List<Guid> ids)
         {
             var packages = await _residentialCarePackageGateway.GetPackagesByIds(ids).ConfigureAwait(false);
+            var genericPackages = packages.ToInvoicingDomain().ToList();
 
-            return packages.ToInvoicingDomain().ToList();
+            await FillCareCharges(ids, genericPackages).ConfigureAwait(false);
+
+            return genericPackages;
         }
 
         private async Task RefreshResidentialCarePackagePaidUpToDate(List<GenericPackage> packages, DateTimeOffset paidUpTo)

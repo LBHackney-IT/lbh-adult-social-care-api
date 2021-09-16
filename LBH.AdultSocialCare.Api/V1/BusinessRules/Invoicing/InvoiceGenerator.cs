@@ -7,6 +7,7 @@ using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
+using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing
@@ -15,11 +16,13 @@ namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing
     {
         private readonly ITransactionsService _transactionsService;
         private readonly IIdentityHelperUseCase _identityHelperUseCase;
+        private readonly ITransactionManager _transactionManager;
 
-        public InvoiceGenerator(ITransactionsService transactionsService, IIdentityHelperUseCase identityHelperUseCase)
+        public InvoiceGenerator(ITransactionsService transactionsService, IIdentityHelperUseCase identityHelperUseCase, ITransactionManager transactionManager)
         {
             _transactionsService = transactionsService;
             _identityHelperUseCase = identityHelperUseCase;
+            _transactionManager = transactionManager;
         }
 
         public int PackageTypeId { get; set; }
@@ -30,7 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing
 
         public Func<List<Guid>, Task<List<GenericPackage>>> GetUnpaidPackagesByIds { get; set; }
 
-        public Func<List<GenericPackage>, DateTimeOffset, Task> RefreshPaidUpToDate { get; set; }
+        public Func<List<GenericPackage>, DateTimeOffset, Task> RefreshPackagesPaidUpToDate { get; set; }
 
         public async Task GenerateUpTo(DateTimeOffset invoiceEndDate)
         {
@@ -63,7 +66,7 @@ namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing
                 }
 
                 await _transactionsService.BatchCreateInvoicesUseCase(invoices).ConfigureAwait(false);
-                await RefreshPaidUpToDate(affectedPackages, invoiceEndDate).ConfigureAwait(false);
+                await UpdateInvoicingStateAsync(invoiceEndDate, affectedPackages).ConfigureAwait(false);
             }
         }
 
@@ -92,6 +95,27 @@ namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing
                 PackageId = package.Id,
                 InvoiceItems = invoiceItems
             };
+        }
+
+        private async Task UpdateInvoicingStateAsync(DateTimeOffset invoiceEndDate, List<GenericPackage> affectedPackages)
+        {
+            await using var transaction = await _transactionManager.BeginTransactionAsync().ConfigureAwait(false);
+            try
+            {
+                await RefreshPackagesPaidUpToDate(affectedPackages, invoiceEndDate).ConfigureAwait(false);
+
+                foreach (var generator in Generators)
+                {
+                    await generator.OnInvoiceBatchGenerated(invoiceEndDate).ConfigureAwait(false);
+                }
+
+                await transaction.CommitAsync().ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync().ConfigureAwait(false);
+                throw;
+            }
         }
     }
 }

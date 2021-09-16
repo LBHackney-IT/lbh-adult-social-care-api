@@ -25,7 +25,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldCreateNewCareChargeElement()
         {
-            var careCharge = await _fixture.DataGenerator.CareCharge.GetCareCharge(PackageTypesConstants.NursingCarePackageId).ConfigureAwait(false);
+            var careCharge = await _fixture.DataGenerator.CareCharge
+                .GetCareCharge(PackageTypesConstants.NursingCarePackageId, Guid.NewGuid())
+                .ConfigureAwait(false);
 
             var request = RandomizeElementCreationRequests(careCharge.Id, 1).First();
             var response = await _fixture.RestClient
@@ -42,7 +44,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldAddFinancialAssessment()
         {
-            var careCharge = await _fixture.DataGenerator.CareCharge.GetCareCharge(PackageTypesConstants.NursingCarePackageId).ConfigureAwait(false);
+            var careCharge = await _fixture.DataGenerator.CareCharge
+                .GetCareCharge(PackageTypesConstants.NursingCarePackageId, Guid.Empty)
+                .ConfigureAwait(false);
 
             var request = RandomizeElementCreationRequests(careCharge.Id, 5);
             var response = await _fixture.RestClient
