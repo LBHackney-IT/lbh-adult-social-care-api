@@ -89,6 +89,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CareChargeElementCreationRequest>>(input);
         }
 
+        public static CareChargeElementForUpdateDomain ToDomain(this CareChargeElementForUpdateRequest input)
+        {
+            return _mapper.Map<CareChargeElementForUpdateDomain>(input);
+        }
+
+        public static CareChargeElementForUpdateRequest ToRequest(this CareChargeElementForUpdateDomain input)
+        {
+            return _mapper.Map<CareChargeElementForUpdateRequest>(input);
+        }
+
         public static EndCareChargeElementDomain ToDomain(this EndCareChargeElementRequest input)
         {
             return _mapper.Map<EndCareChargeElementDomain>(input);
