@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210916145944_ResidentialCareAdditionalNeedsUpdate")]
+    partial class ResidentialCareAdditionalNeedsUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2883,9 +2885,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("NursingCareAdditionalNeedsId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("NursingCareBrokerageId")
                         .HasColumnType("uuid");
 
@@ -2897,9 +2896,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasIndex("AdditionalNeedsPaymentTypeId");
 
                     b.HasIndex("CreatorId");
-
-                    b.HasIndex("NursingCareAdditionalNeedsId")
-                        .IsUnique();
 
                     b.HasIndex("NursingCareBrokerageId");
 
@@ -5105,12 +5101,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare.NursingCareAdditionalNeed", "NursingCareAdditionalNeed")
-                        .WithOne("NursingCareAdditionalNeedsCost")
-                        .HasForeignKey("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage.NursingCareAdditionalNeedsCost", "NursingCareAdditionalNeedsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
