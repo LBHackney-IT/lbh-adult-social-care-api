@@ -3,6 +3,7 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -14,10 +15,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.CareChargesControllers
     public class PackageCareChargesController : ControllerBase
     {
         private readonly ICancelOrEndCareChargeElementUseCase _cancelOrEndCareChargeElementUseCase;
+        private readonly IEditCareChargeElementUseCase _editCareChargeElementUseCase;
 
-        public PackageCareChargesController(ICancelOrEndCareChargeElementUseCase cancelOrEndCareChargeElementUseCase)
+        public PackageCareChargesController(ICancelOrEndCareChargeElementUseCase cancelOrEndCareChargeElementUseCase, IEditCareChargeElementUseCase editCareChargeElementUseCase)
         {
             _cancelOrEndCareChargeElementUseCase = cancelOrEndCareChargeElementUseCase;
+            _editCareChargeElementUseCase = editCareChargeElementUseCase;
         }
 
         [HttpPut("{packageCareChargeId}/care-charges/{careElementId}/cancel")]
@@ -37,6 +40,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.CareChargesControllers
             var endCareChargeElementDomain = endCareChargeElementRequest.ToDomain();
             var cancelResult = await _cancelOrEndCareChargeElementUseCase.ExecuteEndAsync(packageCareChargeId, careElementId, endCareChargeElementDomain.NewEndDate).ConfigureAwait(false);
             return Ok(cancelResult);
+        }
+
+        [HttpPut("{packageCareChargeId}/care-charges/care-charge-elements")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiException), StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<bool>> UpdateCareChargeElements(Guid packageCareChargeId, [FromBody] IEnumerable<CareChargeElementForUpdateRequest> careChargeElementsForUpdate)
+        {
+            var editResult = await _editCareChargeElementUseCase.ExecuteAsync(packageCareChargeId, careChargeElementsForUpdate.ToDomain()).ConfigureAwait(false);
+            return Ok(editResult);
         }
     }
 }
