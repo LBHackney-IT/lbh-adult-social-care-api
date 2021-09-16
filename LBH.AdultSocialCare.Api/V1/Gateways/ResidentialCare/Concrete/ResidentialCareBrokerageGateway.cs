@@ -92,6 +92,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                     ResidentialCareAdditionalNeedsCosts = nc.ResidentialCareBrokerageInfo.ResidentialCareAdditionalNeedsCosts.Select(anc => new ResidentialCareAdditionalNeedsCostDomain
                     {
                         ResidentialCareBrokerageId = anc.ResidentialCareBrokerageId,
+                        ResidentialCareAdditionalNeedsId = anc.ResidentialCareAdditionalNeedsId,
                         AdditionalNeedsPaymentTypeId = anc.AdditionalNeedsPaymentTypeId,
                         AdditionalNeedsPaymentTypeName = anc.AdditionalNeedsPaymentType.OptionName,
                         AdditionalNeedsCost = anc.AdditionalNeedsCost
@@ -112,6 +113,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                     .Where(nc => nc.ResidentialCarePackageId.Equals(residentialCarePackageId))
                     .Select(an => new ResidentialCareAdditionalNeedsCostDomain()
                     {
+                        ResidentialCareAdditionalNeedsId = an.Id,
                         AdditionalNeedsPaymentTypeId = an.AdditionalNeedsPaymentTypeId,
                         AdditionalNeedsPaymentTypeName = an.AdditionalNeedsPaymentType.OptionName,
                         AdditionalNeedsCost = 0,

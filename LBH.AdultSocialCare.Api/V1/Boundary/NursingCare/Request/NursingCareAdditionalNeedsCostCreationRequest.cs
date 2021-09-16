@@ -9,6 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request
 {
     public class NursingCareAdditionalNeedsCostCreationRequest
     {
+        public Guid NursingCareAdditionalNeedsId { get; set; }
         public int AdditionalNeedsPaymentTypeId { get; set; }
         public decimal AdditionalNeedsCost { get; set; }
     }

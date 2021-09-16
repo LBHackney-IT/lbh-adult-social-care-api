@@ -14,6 +14,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
         public string NeedToAddress { get; set; }
         public DateTimeOffset? StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
+
+        public virtual NursingCareAdditionalNeedsCost NursingCareAdditionalNeedsCost { get; set; }
         [ForeignKey(nameof(NursingCarePackageId))] public NursingCarePackage NursingCarePackage { get; set; }
         [ForeignKey(nameof(AdditionalNeedsPaymentTypeId))] public AdditionalNeedsPaymentType AdditionalNeedsPaymentType { get; set; }
     }

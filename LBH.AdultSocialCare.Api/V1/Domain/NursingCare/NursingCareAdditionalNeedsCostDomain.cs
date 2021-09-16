@@ -8,6 +8,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCare
     public class NursingCareAdditionalNeedsCostDomain
     {
         public Guid NursingCareBrokerageId { get; set; }
+        public Guid NursingCareAdditionalNeedsId { get; set; }
         public int AdditionalNeedsPaymentTypeId { get; set; }
         public string AdditionalNeedsPaymentTypeName { get; set; }
         public decimal AdditionalNeedsCost { get; set; }
