@@ -53,6 +53,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                     await _careChargesGateway.CreateCareChargeElementAsync(newCareChargeElement).ConfigureAwait(false);
                 }
 
+                await transaction.CommitAsync().ConfigureAwait(false);
+
                 return true;
             }
             catch (Exception)
