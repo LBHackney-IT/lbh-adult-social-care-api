@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
 {
     [GenerateMappingFor(typeof(CareChargeElementForUpdateDomain))]
+    [GenerateListMappingFor(typeof(CareChargeElementForUpdateDomain))]
     public class CareChargeElementForUpdateRequest
     {
         [Required, GuidNotEmpty] public Guid CareElementId { get; set; }
