@@ -1,9 +1,11 @@
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
@@ -19,7 +21,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
         public async Task<IEnumerable<CareChargeElementTypePlainDomain>> GetAllAsync()
         {
-            var res = await _dbContext.CareChargeTypes.ToListAsync().ConfigureAwait(false);
+            // Ignore provisional type. Back-end only
+            var res = await _dbContext.CareChargeTypes
+                .Where(ct => ct.Id != (int) CareChargeElementTypeEnum.Provisional)
+                .AsNoTracking()
+                .ToListAsync().ConfigureAwait(false);
             return res.ToElementTypePlainDomain();
         }
     }
