@@ -24,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<PackageCareChargeDomain>> GetCareChargesAsync(IEnumerable<Guid> packageIds)
+        public async Task<IEnumerable<PackageCareCharge>> GetCareChargesAsync(IEnumerable<Guid> packageIds)
         {
             var careCharges = await _dbContext.PackageCareCharges
                 .Where(cc => packageIds.Contains(cc.PackageId))
@@ -35,7 +35,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 .ToListAsync()
                 .ConfigureAwait(false);
 
-            return careCharges.ToDomain();
+            return careCharges;
         }
 
         public async Task<ProvisionalCareChargeAmountPlainDomain> GetUsingServiceUserIdAsync(Guid serviceUserId)

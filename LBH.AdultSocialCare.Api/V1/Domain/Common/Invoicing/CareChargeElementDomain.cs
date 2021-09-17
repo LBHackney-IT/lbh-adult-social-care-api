@@ -22,7 +22,5 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing
         public CareChargeStatus CareChargeStatus { get; set; }
         public CareChargeType CareChargeType { get; set; }
         public PackageCostClaimer ClaimCollector { get; set; }
-
-        public CareChargeElement OriginalValue { get; set; }
     }
 }

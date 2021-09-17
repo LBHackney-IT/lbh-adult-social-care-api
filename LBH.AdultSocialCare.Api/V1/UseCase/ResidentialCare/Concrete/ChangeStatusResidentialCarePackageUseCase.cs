@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
-using LBH.AdultSocialCare.Api.V1.BusinessRules;
+using LBH.AdultSocialCare.Api.V1.Core;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;

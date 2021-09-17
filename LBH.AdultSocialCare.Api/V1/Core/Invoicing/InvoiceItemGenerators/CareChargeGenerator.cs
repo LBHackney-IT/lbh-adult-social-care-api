@@ -9,9 +9,9 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 
-namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators
+namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators
 {
-    public class CareChargeGenerator : IInvoiceItemsGenerator
+    public class CareChargeGenerator : BaseInvoiceItemsGenerator
     {
         private readonly ICareChargesGateway _careChargesGateway;
         private readonly List<CareChargeElement> _affectedElements = new List<CareChargeElement>();
@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators
             _careChargesGateway = careChargesGateway;
         }
 
-        public IEnumerable<InvoiceItemForCreationRequest> Run(GenericPackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
+        public override IEnumerable<InvoiceItemForCreationRequest> Run(GenericPackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
         {
             var invoiceItems = new List<InvoiceItemForCreationRequest>();
 
@@ -44,20 +44,20 @@ namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators
                     Quantity = actualWeeks,
                     PriceEffect = element.ClaimCollector.Id switch
                     {
-                        PackageCostClaimersConstants.Hackney => "Add",
-                        PackageCostClaimersConstants.Supplier => "Subtract",
+                        PackageCostClaimersConstants.Hackney => PriceEffect.Add,
+                        PackageCostClaimersConstants.Supplier => PriceEffect.Subtract,
                         _ => throw new InvalidOperationException("Unknown claim collector Id")
                     },
                     ClaimedBy = element.ClaimCollector.Name
                 });
 
-                _affectedElements.Add(element.OriginalValue);
+                _affectedElements.Add(element);
             }
 
             return invoiceItems;
         }
 
-        public async Task OnInvoiceBatchGenerated(DateTimeOffset invoiceEndDate)
+        public override async Task OnInvoiceBatchGenerated(DateTimeOffset invoiceEndDate)
         {
             await _careChargesGateway
                 .RefreshCareChargeElementsPaidUpToDate(_affectedElements, invoiceEndDate)

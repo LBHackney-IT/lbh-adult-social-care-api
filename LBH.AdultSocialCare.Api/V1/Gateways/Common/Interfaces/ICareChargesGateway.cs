@@ -4,13 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
 {
     public interface ICareChargesGateway
     {
-        Task<IEnumerable<PackageCareChargeDomain>> GetCareChargesAsync(IEnumerable<Guid> packageIds);
+        Task<IEnumerable<PackageCareCharge>> GetCareChargesAsync(IEnumerable<Guid> packageIds);
 
         Task<ProvisionalCareChargeAmountPlainDomain> GetUsingServiceUserIdAsync(Guid serviceUserId);
 

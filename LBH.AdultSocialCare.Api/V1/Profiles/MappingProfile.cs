@@ -12,7 +12,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
-using LBH.AdultSocialCare.Api.V1.BusinessRules;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
@@ -539,8 +538,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<PackageCareCharge, PackageCareChargePlainDomain>();
             CreateMap<PackageCareCharge, PackageCareChargeDomain>();
             CreateMap<InvoiceCreditNote, InvoiceCreditNotePlainDomain>();
-            CreateMap<CareChargeElement, CareChargeElementDomain>()
-                .ForMember(d => d.OriginalValue, opt => opt.MapFrom(s => s));
+            CreateMap<CareChargeElement, CareChargeElementDomain>();
 
             #endregion Care Charges
 

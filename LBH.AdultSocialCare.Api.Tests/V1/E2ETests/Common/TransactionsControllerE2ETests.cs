@@ -1,9 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using HttpServices.Models.Requests;
+using HttpServices.Models.Responses;
+using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using Moq;
 using Xunit;
 
@@ -21,29 +26,32 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldCreatePayRun()
         {
-            await CreateNursingCarePackages().ConfigureAwait(false);
-            await CreateResidentialCarePackages().ConfigureAwait(false);
+            var nursingCarePackages = await CreateNursingCarePackages().ConfigureAwait(false);
+            var residentialCarePackages = await CreateResidentialCarePackages().ConfigureAwait(false);
 
             var request = new PayRunForCreationRequest
             {
                 DateTo = DateTimeOffset.Now
             };
 
+            var invoices = new List<InvoiceForCreationRequest>();
+
+            _fixture.TransactionalApi.SetupPostRequestInterceptor<IEnumerable<InvoiceResponse>>(
+                "api/v1/invoices/batch",
+                () => new List<InvoiceResponse>(),
+                (url, req, err) => invoices.AddRange((IEnumerable<InvoiceForCreationRequest>) req));
+
             var response = await _fixture.RestClient
                 .PostAsync<Guid?>("api/v1/transactions/pay-runs/ResidentialRecurring", request)
                 .ConfigureAwait(false);
 
-            // _fixture.TransactionalApi
-            //     .Setup(api => api.PostAsync<Guid?>(
-            //         It.IsAny<string>(),
-            //         It.IsAny<PayRunForCreationRequest>(),
-            //         It.IsAny<string>())).Callback<PayRunForCreationRequest>(req => req.);
+            invoices.Count.Should().BePositive();
+            invoices.Count.Should().Be(nursingCarePackages.Count + residentialCarePackages.Count);
 
-            // TODO: VK: Add checks
             response.Message.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
-        private async Task CreateNursingCarePackages()
+        private async Task<List<NursingCarePackage>> CreateNursingCarePackages()
         {
             var nursingCarePackages = await _fixture.DataGenerator.NursingCare.GetPackages(10).ConfigureAwait(false);
 
@@ -55,9 +63,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
                 await _fixture.DataGenerator.NursingCare.GetAdditionalNeedsCost(brokerage.NursingCareBrokerageId, 1).ConfigureAwait(false);
                 await _fixture.DataGenerator.CareCharge.GetElements(careCharge.Id, 5).ConfigureAwait(false);
             }
+
+            return nursingCarePackages;
         }
 
-        private async Task CreateResidentialCarePackages()
+        private async Task<List<ResidentialCarePackage>> CreateResidentialCarePackages()
         {
             var residentialCarePackages = await _fixture.DataGenerator.ResidentialCare.GetPackages(10).ConfigureAwait(false);
 
@@ -69,6 +79,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
                 await _fixture.DataGenerator.ResidentialCare.GetAdditionalNeedsCost(brokerage.Id, 1).ConfigureAwait(false);
                 await _fixture.DataGenerator.CareCharge.GetElements(careCharge.Id, 5).ConfigureAwait(false);
             }
+
+            return residentialCarePackages;
         }
     }
 }
