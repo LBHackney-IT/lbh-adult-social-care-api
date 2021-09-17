@@ -73,7 +73,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
         }
 
         [Theory]
-        [InlineData(PackageCostClaimersConstants.Hackney, PriceEffect.Add)]
+        [InlineData(PackageCostClaimersConstants.Hackney, PriceEffect.None)]
         [InlineData(PackageCostClaimersConstants.Supplier, PriceEffect.Subtract)]
         public void ShouldSetCorrectPriceEffectWhenCollectedByHackney(int claimCollectorId, string priceEffect)
         {

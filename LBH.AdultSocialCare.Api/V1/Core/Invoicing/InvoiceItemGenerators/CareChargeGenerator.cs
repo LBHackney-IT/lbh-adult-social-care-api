@@ -44,7 +44,7 @@ namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators
                     Quantity = actualWeeks,
                     PriceEffect = element.ClaimCollector.Id switch
                     {
-                        PackageCostClaimersConstants.Hackney => PriceEffect.Add,
+                        PackageCostClaimersConstants.Hackney => PriceEffect.None,
                         PackageCostClaimersConstants.Supplier => PriceEffect.Subtract,
                         _ => throw new InvalidOperationException("Unknown claim collector Id")
                     },
