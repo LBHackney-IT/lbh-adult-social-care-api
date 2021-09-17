@@ -1,7 +1,7 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 
-namespace LBH.AdultSocialCare.Api.V1.BusinessRules
+namespace LBH.AdultSocialCare.Api.V1.Core
 {
     public static class PackageStatusTransitions
     {

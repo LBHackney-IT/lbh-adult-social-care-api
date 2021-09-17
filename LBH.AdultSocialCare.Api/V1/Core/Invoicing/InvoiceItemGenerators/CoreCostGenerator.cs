@@ -4,9 +4,9 @@ using HttpServices.Models.Requests;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 
-namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators
+namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators
 {
-    public class CoreCostGenerator : IInvoiceItemsGenerator
+    public class CoreCostGenerator : BaseInvoiceItemsGenerator
     {
         private readonly string _coreCostName;
 
@@ -15,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators
             _coreCostName = coreCostName;
         }
 
-        public IEnumerable<InvoiceItemForCreationRequest> Run(GenericPackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
+        public override IEnumerable<InvoiceItemForCreationRequest> Run(GenericPackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
         {
             return new List<InvoiceItemForCreationRequest>
             {

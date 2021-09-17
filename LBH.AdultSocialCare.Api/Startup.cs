@@ -103,6 +103,8 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IRestClient, JsonRestClient>();
             services.AddScoped<ITransactionsService, TransactionsService>();
             services.ConfigureTransactionsApiClient(Configuration);
+
+            services.ConfigureInvoicing();
         }
 
         private static void ConfigureSwagger(IServiceCollection services) => services.AddSwaggerGen(c =>

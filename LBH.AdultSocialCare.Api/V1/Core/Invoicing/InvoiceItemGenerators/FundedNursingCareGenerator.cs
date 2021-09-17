@@ -1,24 +1,27 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using HttpServices.Models.Requests;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 
-namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators
+namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators
 {
-    public class FundedNursingCareGenerator : IInvoiceItemsGenerator
+    public class FundedNursingCareGenerator : BaseInvoiceItemsGenerator
     {
-        private readonly List<FundedNursingCarePriceDomain> _fncPrices;
+        private IEnumerable<FundedNursingCarePriceDomain> _fncPrices;
+        private readonly IFundedNursingCareGateway _fundedNursingCareGateway;
 
-        public FundedNursingCareGenerator(List<FundedNursingCarePriceDomain> fncPrices)
+        public FundedNursingCareGenerator(IFundedNursingCareGateway fundedNursingCareGateway)
         {
-            _fncPrices = fncPrices;
+            _fundedNursingCareGateway = fundedNursingCareGateway;
         }
 
-        public IEnumerable<InvoiceItemForCreationRequest> Run(GenericPackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
+        public override IEnumerable<InvoiceItemForCreationRequest> Run(GenericPackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
         {
             var invoiceItems = new List<InvoiceItemForCreationRequest>();
             var fundedNursingCare = (package.OriginalPackage as NursingCarePackage)?.FundedNursingCare; // TODO: VK: Review
@@ -34,7 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators
                 if (itemWeeks > 0)
                 {
                     var itemName = fundedNursingCare.FundedNursingCareCollector.OptionInvoiceName;
-                    var claimedBy = fundedNursingCare.FundedNursingCareCollector.ClaimedBy switch // TODO: VK: Introduce enums
+                    var claimedBy = fundedNursingCare.FundedNursingCareCollector.ClaimedBy switch // TODO: VK: Introduce enums, why are we using strings?
                     {
                         PackageCostClaimersConstants.Hackney => "Hackney",
                         PackageCostClaimersConstants.Supplier => "Supplier",
@@ -42,9 +45,9 @@ namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators
                     };
                     var priceEffect = claimedBy switch
                     {
-                        "Hackney" => "None",
-                        "Supplier" => "Subtract",
-                        _ => "Add"
+                        "Hackney" => PriceEffect.None,
+                        "Supplier" => PriceEffect.Subtract,
+                        _ => PriceEffect.Add
                     };
 
                     invoiceItems.Add(new InvoiceItemForCreationRequest
@@ -60,6 +63,13 @@ namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators
             }
 
             return invoiceItems;
+        }
+
+        public override async Task Initialize()
+        {
+            _fncPrices = await _fundedNursingCareGateway
+                .GetFundedNursingCarePricesAsync()
+                .ConfigureAwait(false);
         }
     }
 }

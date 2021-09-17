@@ -10,11 +10,10 @@ using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.BusinessRules;
-using LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing;
-using LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators;
+using LBH.AdultSocialCare.Api.V1.Core.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
@@ -30,23 +29,17 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         private readonly ITransactionsService _transactionsService;
         private readonly ISupplierGateway _supplierGateway;
         private readonly IClientsGateway _clientsGateway;
-        private readonly INursingCarePackageGateway _nursingCarePackageGateway;
-        private readonly IFundedNursingCareGateway _fundedNursingCareGateway;
-        private readonly IResidentialCarePackageGateway _residentialCarePackageGateway;
-        private readonly IIdentityHelperUseCase _identityHelperUseCase;
+        private readonly NursingCareInvoiceGenerator _nursingCareInvoiceGenerator;
+        private readonly ResidentialCareInvoiceGenerator _residentialCareInvoiceGenerator;
 
-        public PayRunUseCase(ITransactionsService transactionsService, ISupplierGateway supplierGateway,
-            IClientsGateway clientsGateway, INursingCarePackageGateway nursingCarePackageGateway,
-            IFundedNursingCareGateway fundedNursingCareGateway, IResidentialCarePackageGateway residentialCarePackageGateway,
-            IIdentityHelperUseCase identityHelperUseCase)
+        public PayRunUseCase(ITransactionsService transactionsService, ISupplierGateway supplierGateway, IClientsGateway clientsGateway,
+            NursingCareInvoiceGenerator nursingCareInvoiceGenerator, ResidentialCareInvoiceGenerator residentialCareInvoiceGenerator)
         {
             _transactionsService = transactionsService;
             _supplierGateway = supplierGateway;
             _clientsGateway = clientsGateway;
-            _nursingCarePackageGateway = nursingCarePackageGateway;
-            _fundedNursingCareGateway = fundedNursingCareGateway;
-            _residentialCarePackageGateway = residentialCarePackageGateway;
-            _identityHelperUseCase = identityHelperUseCase;
+            _nursingCareInvoiceGenerator = nursingCareInvoiceGenerator;
+            _residentialCareInvoiceGenerator = residentialCareInvoiceGenerator;
         }
 
         public async Task<Guid?> CreateNewPayRunUseCase(string payRunType, PayRunForCreationRequest payRunForCreationRequest)
@@ -165,91 +158,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
         private async Task<Guid?> CreateResidentialRecurringPayRun(PayRunForCreationRequest request)
         {
-            await GenerateNursingCareInvoices(request.DateTo.Date).ConfigureAwait(false);
-            await GenerateResidentialCareInvoices(request.DateTo.Date).ConfigureAwait(false);
+            await _nursingCareInvoiceGenerator.GenerateUpTo(request.DateTo.Date).ConfigureAwait(false);
+            await _residentialCareInvoiceGenerator.GenerateUpTo(request.DateTo.Date).ConfigureAwait(false);
 
             return await _transactionsService
                 .CreateResidentialRecurringPayRun(request)
                 .ConfigureAwait(false);
         }
-
-        private async Task GenerateNursingCareInvoices(DateTimeOffset dateTo)
-        {
-            var fncPrices = await _fundedNursingCareGateway
-                .GetFundedNursingCarePricesAsync()
-                .ConfigureAwait(false);
-
-            var invoiceGenerator = new InvoiceGenerator(_transactionsService, _identityHelperUseCase)
-            {
-                PackageTypeId = PackageTypesConstants.NursingCarePackageId,
-
-                GetUnpaidPackageIds = _nursingCarePackageGateway.GetUnpaidPackageIdsAsync,
-                GetUnpaidPackagesByIds = GetUnpaidNursingCarePackages,
-                RefreshPaidUpToDate = RefreshNursingCarePackagePaidUpToDate,
-
-                Generators = new List<IInvoiceItemsGenerator>
-                {
-                    new CoreCostGenerator("Residential Care Core Cost"),
-                    new AdditionalNeedsCostGenerator(),
-                    new FundedNursingCareGenerator(fncPrices.ToList()),
-                    new CareChargeGenerator()
-                }
-            };
-
-            await invoiceGenerator.GenerateUpTo(dateTo).ConfigureAwait(false);
-        }
-
-        private async Task GenerateResidentialCareInvoices(DateTimeOffset dateTo)
-        {
-            var invoiceGenerator = new InvoiceGenerator(_transactionsService, _identityHelperUseCase)
-            {
-                PackageTypeId = PackageTypesConstants.ResidentialCarePackageId,
-
-                GetUnpaidPackageIds = _residentialCarePackageGateway.GetUnpaidPackageIdsAsync,
-                GetUnpaidPackagesByIds = GetUnpaidResidentialCarePackages,
-                RefreshPaidUpToDate = RefreshResidentialCarePackagePaidUpToDate,
-
-                Generators = new List<IInvoiceItemsGenerator>
-                {
-                    new CoreCostGenerator("Nursing Care Core Cost"),
-                    new AdditionalNeedsCostGenerator(),
-                    new CareChargeGenerator()
-                }
-            };
-
-            await invoiceGenerator.GenerateUpTo(dateTo).ConfigureAwait(false);
-        }
-
-        #region Package / GenericPackage adapter methods
-
-        private async Task<List<GenericPackage>> GetUnpaidNursingCarePackages(List<Guid> ids)
-        {
-            var packages = await _nursingCarePackageGateway.GetFullPackagesByIds(ids).ConfigureAwait(false);
-
-            return packages.ToInvoicingDomain().ToList();
-        }
-
-        private async Task RefreshNursingCarePackagePaidUpToDate(List<GenericPackage> packages, DateTimeOffset paidUpTo)
-        {
-            var nursingCarePackages = packages.Select(p => p.OriginalPackage as NursingCarePackage).ToList();
-
-            await _nursingCarePackageGateway.RefreshPaidUpToDateAsync(nursingCarePackages, paidUpTo).ConfigureAwait(false);
-        }
-
-        private async Task<List<GenericPackage>> GetUnpaidResidentialCarePackages(List<Guid> ids)
-        {
-            var packages = await _residentialCarePackageGateway.GetPackagesByIds(ids).ConfigureAwait(false);
-
-            return packages.ToInvoicingDomain().ToList();
-        }
-
-        private async Task RefreshResidentialCarePackagePaidUpToDate(List<GenericPackage> packages, DateTimeOffset paidUpTo)
-        {
-            var residentialCarePackages = packages.Select(p => p.OriginalPackage as ResidentialCarePackage).ToList();
-
-            await _residentialCarePackageGateway.RefreshPaidUpToDateAsync(residentialCarePackages, paidUpTo).ConfigureAwait(false);
-        }
-
-        #endregion
     }
 }

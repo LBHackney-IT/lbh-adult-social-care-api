@@ -5,11 +5,11 @@ using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 
-namespace LBH.AdultSocialCare.Api.V1.BusinessRules.Invoicing.Generators
+namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators
 {
-    public class AdditionalNeedsCostGenerator : IInvoiceItemsGenerator
+    public class AdditionalNeedsCostGenerator : BaseInvoiceItemsGenerator
     {
-        public IEnumerable<InvoiceItemForCreationRequest> Run(GenericPackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
+        public override IEnumerable<InvoiceItemForCreationRequest> Run(GenericPackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
         {
             var invoiceItems = new List<InvoiceItemForCreationRequest>();
 

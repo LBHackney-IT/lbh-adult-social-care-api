@@ -58,7 +58,7 @@ namespace LBH.AdultSocialCare.Api.Tests
             builder.ConfigureTestServices(services =>
             {
                 services.RemoveAll<IRestClient>();
-                services.AddScoped(provider => Mock.Of<IRestClient>()); // TODO: Configure to intercept Transaction API calls
+                services.AddScoped<IRestClient>(provider => TransactionalApi.Object);
 
                 ConfigureHttpContextAccessor(services);
                 ConfigureAuthentication(services);
