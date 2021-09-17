@@ -1,16 +1,15 @@
-using System;
-using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge
 {
+    [GenerateMappingFor(typeof(CareChargeElementTypePlainDomain))]
+    [GenerateListMappingFor(typeof(CareChargeElementTypePlainDomain))]
     public class CareChargeType
     {
-        [Key]
-        public int Id { get; set; }
-
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)] public int Id { get; set; }
         public string OptionName { get; set; }
     }
 }
