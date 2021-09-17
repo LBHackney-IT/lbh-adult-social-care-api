@@ -22,11 +22,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.CareChargesControllers
     {
         private readonly ICareChargeUseCase _careChargeUseCase;
         private readonly ICreateCareChargeElementUseCase _createCareChargeElementUseCase;
+        private readonly ICareChargeElementTypeUseCase _careChargeElementTypeUseCase;
 
-        public CareChargesController(ICareChargeUseCase careChargeUseCase, ICreateCareChargeElementUseCase createCareChargeElementUseCase)
+        public CareChargesController(ICareChargeUseCase careChargeUseCase, ICreateCareChargeElementUseCase createCareChargeElementUseCase, ICareChargeElementTypeUseCase careChargeElementTypeUseCase)
         {
             _careChargeUseCase = careChargeUseCase;
             _createCareChargeElementUseCase = createCareChargeElementUseCase;
+            _careChargeElementTypeUseCase = careChargeElementTypeUseCase;
         }
 
         /// <summary>
@@ -91,6 +93,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.CareChargesControllers
                 .ConfigureAwait(false);
 
             return Ok(careChargeElements.ToCreationResponse());
+        }
+
+        /// <summary>
+        /// Gets all care charge element types.
+        /// </summary>
+        /// <returns>List of care charge element types to be used in adding new care charge contribution</returns>
+        /// <response code="200">List of types</response>
+        [HttpGet("care-charge-element-types")]
+        [ProducesResponseType(typeof(IEnumerable<CareChargeElementTypePlainResponse>), StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<CareChargeElementTypePlainResponse>>> GetAllCareChargeElementTypes()
+        {
+            var types = await _careChargeElementTypeUseCase.GetAllAsync().ConfigureAwait(false);
+            return Ok(types);
         }
     }
 }

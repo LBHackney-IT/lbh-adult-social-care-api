@@ -45,10 +45,12 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
         public GeneratedMappingProfile()
         {
             CreateMap<CareChargeElementPlainDomain, CareChargeElementCreationResponse>().ReverseMap();
+            CreateMap<CareChargeElementTypePlainDomain, CareChargeElementTypePlainResponse>().ReverseMap();
             CreateMap<CareChargeElementCreationRequest, CareChargeElementPlainDomain>().ReverseMap();
             CreateMap<CareChargeElementForUpdateRequest, CareChargeElementForUpdateDomain>().ReverseMap();
             CreateMap<EndCareChargeElementRequest, EndCareChargeElementDomain>().ReverseMap();
             CreateMap<CareChargeElement, CareChargeElementPlainDomain>().ReverseMap();
+            CreateMap<CareChargeType, CareChargeElementTypePlainDomain>().ReverseMap();
             CreateMap<PackageCareCharge, PackageCareChargeDomain>().ReverseMap();
         }
     }
