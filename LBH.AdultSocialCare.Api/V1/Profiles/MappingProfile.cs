@@ -538,6 +538,11 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CareChargePackagesDomain, CareChargePackagesResponse>();
 
             CreateMap<InvoiceCreditNote, InvoiceCreditNotePlainDomain>();
+            CreateMap<SinglePackageCareChargeDomain, SinglePackageCareChargeResponse>();
+            CreateMap<CarePackageDomain, CarePackageResponse>();
+            CreateMap<CarePackageBrokerageDomain, CarePackageBrokerageResponse>();
+            CreateMap<CarePackageElementDomain, CarePackageElementResponse>();
+            CreateMap<CareChargeElementDomain, CareChargeElementResponse>();
 
             #endregion Care Charges
         }
