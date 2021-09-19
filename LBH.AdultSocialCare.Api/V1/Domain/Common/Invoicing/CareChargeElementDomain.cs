@@ -19,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing
         public DateTimeOffset? PaidUpTo { get; set; }
         public DateTimeOffset? PreviousPaidUpTo { get; set; }
         public PackageCareCharge PackageCareCharge { get; set; }
-        public CareChargeStatus CareChargeStatus { get; set; }
+        public CareChargeElementStatus CareChargeStatus { get; set; }
         public CareChargeType CareChargeType { get; set; }
         public PackageCostClaimer ClaimCollector { get; set; }
     }

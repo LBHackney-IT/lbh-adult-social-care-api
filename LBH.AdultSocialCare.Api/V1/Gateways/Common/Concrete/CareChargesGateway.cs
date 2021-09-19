@@ -256,7 +256,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                     },
                     CareChargeElements = _dbContext.CareChargeElements
                         .Where(cce => cce.CareChargeId.Equals(careChargeId))
-                        .Select(items => new CareChargeElementDomain()
+                        .Select(items => new CareChargeElementForSinglePackageDomain()
                         {
                             Id = items.Id,
                             CareChargeId = items.CareChargeId,
@@ -339,7 +339,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                     },
                     CareChargeElements = _dbContext.CareChargeElements
                         .Where(cce => cce.CareChargeId.Equals(careChargeId))
-                        .Select(items => new CareChargeElementDomain()
+                        .Select(items => new CareChargeElementForSinglePackageDomain
                         {
                             Id = items.Id,
                             CareChargeId = items.CareChargeId,

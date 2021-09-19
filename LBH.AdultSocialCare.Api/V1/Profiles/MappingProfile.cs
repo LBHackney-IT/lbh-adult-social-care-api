@@ -545,7 +545,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CarePackageDomain, CarePackageResponse>();
             CreateMap<CarePackageBrokerageDomain, CarePackageBrokerageResponse>();
             CreateMap<CarePackageElementDomain, CarePackageElementResponse>();
-            CreateMap<CareChargeElementDomain, CareChargeElementResponse>();
+            CreateMap<CareChargeElementForSinglePackageDomain, CareChargeElementResponse>();
 
             #endregion Care Charges
 

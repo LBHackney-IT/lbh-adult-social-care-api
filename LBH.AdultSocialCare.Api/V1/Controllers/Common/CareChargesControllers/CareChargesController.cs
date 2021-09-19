@@ -28,10 +28,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.CareChargesControllers
         private readonly IGetSinglePackageCareChargeUseCase _getSinglePackageCareChargeUseCase;
         private readonly ICareChargeElementTypeUseCase _careChargeElementTypeUseCase;
 
-        public CareChargesController(ICareChargeUseCase careChargeUseCase, ICreateCareChargeElementUseCase createCareChargeElementUseCase,
+        public CareChargesController(ICareChargeUseCase careChargeUseCase,
+            ICreateCareChargeElementUseCase createCareChargeElementUseCase,
             IGetCareChargePackagesUseCase getCareChargePackagesUseCase,
+            ICareChargeElementTypeUseCase careChargeElementTypeUseCase,
             IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase)
-        public CareChargesController(ICareChargeUseCase careChargeUseCase, ICreateCareChargeElementUseCase createCareChargeElementUseCase, ICareChargeElementTypeUseCase careChargeElementTypeUseCase)
         {
             _careChargeUseCase = careChargeUseCase;
             _createCareChargeElementUseCase = createCareChargeElementUseCase;

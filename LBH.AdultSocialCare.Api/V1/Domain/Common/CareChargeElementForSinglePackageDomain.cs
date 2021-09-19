@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
-    public class CareChargeElementDomain
+    public class CareChargeElementForSinglePackageDomain
     {
         public Guid Id { get; set; }
         public Guid CareChargeId { get; set; }

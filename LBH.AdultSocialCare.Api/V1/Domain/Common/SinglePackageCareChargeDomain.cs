@@ -12,6 +12,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public ClientsDomain Client { get; set; }
         public CarePackageDomain CarePackage { get; set; }
         public CarePackageBrokerageDomain CarePackageBrokerage { get; set; }
-        public IEnumerable<CareChargeElementDomain> CareChargeElements { get; set; }
+        public IEnumerable<CareChargeElementForSinglePackageDomain> CareChargeElements { get; set; }
     }
 }
