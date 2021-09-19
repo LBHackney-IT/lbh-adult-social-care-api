@@ -13,6 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public string Address { get; set; }
         public int HackneyId { get; set; }
         public string PackageType { get; set; }
+        public int PackageTypeId { get; set; }
         public Guid PackageId { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset LastModified { get; set; }
