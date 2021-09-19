@@ -25,13 +25,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.CareChargesControllers
         private readonly ICareChargeUseCase _careChargeUseCase;
         private readonly ICreateCareChargeElementUseCase _createCareChargeElementUseCase;
         private readonly IGetCareChargePackagesUseCase _getCareChargePackagesUseCase;
+        private readonly IGetSinglePackageCareChargeUseCase _getSinglePackageCareChargeUseCase;
 
         public CareChargesController(ICareChargeUseCase careChargeUseCase, ICreateCareChargeElementUseCase createCareChargeElementUseCase,
-            IGetCareChargePackagesUseCase getCareChargePackagesUseCase)
+            IGetCareChargePackagesUseCase getCareChargePackagesUseCase,
+            IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase)
         {
             _careChargeUseCase = careChargeUseCase;
             _createCareChargeElementUseCase = createCareChargeElementUseCase;
             _getCareChargePackagesUseCase = getCareChargePackagesUseCase;
+            _getSinglePackageCareChargeUseCase = getSinglePackageCareChargeUseCase;
         }
 
         /// <summary>
@@ -107,6 +110,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.CareChargesControllers
             var result = await _getCareChargePackagesUseCase.GetCareChargePackages(parameters).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
             return Ok(result);
+        }
+
+        [HttpGet("elements")]
+        [ProducesResponseType(typeof(SinglePackageCareChargeResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<SinglePackageCareChargeResponse>> GetSinglePackageCareCharge([FromQuery] Guid packageId, int packageTypeId)
+        {
+            var singlePackageCareCharge = await _getSinglePackageCareChargeUseCase.GetSinglePackageCareCharge(packageId, packageTypeId).ConfigureAwait(false);
+            return Ok(singlePackageCareCharge);
         }
     }
 }

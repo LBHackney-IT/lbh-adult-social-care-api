@@ -7,7 +7,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
 {
     public class CareChargePackagesParameters : RequestParameters
     {
-        public int? StatusId { get; set; }
+        public string Status { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }
