@@ -100,7 +100,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
             clientsQuery.Where(s => String.IsNullOrEmpty(name)
                                     || s.SupplierName.ToLower().Contains(name.ToLower()));
 
-        public static IQueryable<NursingCarePackage> FilterCareChargeNursingCareList(this IQueryable<NursingCarePackage> nursingCarePackages, string firstName, string lastName,
+        public static IQueryable<NursingCarePackage> FilterCareChargeNursingCareList(this IQueryable<NursingCarePackage> nursingCarePackages, string status, string firstName, string lastName,
             DateTime? dateOfBirth, string postCode, int? mosaicId, DateTimeOffset? modifiedAt, Guid? modifiedBy) =>
             nursingCarePackages.Where(h =>
             (firstName != null ? h.Client.FirstName.ToLower().Contains(firstName.ToLower()) : h.Equals(h)) &&
@@ -109,9 +109,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
             (postCode != null ? h.Client.PostCode.ToLower().Contains(postCode.ToLower()) : h.Equals(h)) &&
             (mosaicId.Equals(null) || h.Client.HackneyId == mosaicId) &&
             (modifiedBy.Equals(null) || h.UpdaterId == modifiedBy) &&
-            (modifiedAt.Equals(null) || h.DateUpdated == modifiedAt));
+            (modifiedAt.Equals(null) || h.DateUpdated == modifiedAt) &&
+            (status != null ? h.NursingCareBrokerageInfo.HasCareCharges == (status == "Existing") : h.Equals(h)));
 
-        public static IQueryable<ResidentialCarePackage> FilterCareChargeResidentialCareList(this IQueryable<ResidentialCarePackage> residentialCarePackages, string firstName, string lastName,
+        public static IQueryable<ResidentialCarePackage> FilterCareChargeResidentialCareList(this IQueryable<ResidentialCarePackage> residentialCarePackages, string status, string firstName, string lastName,
             DateTime? dateOfBirth, string postCode, int? mosaicId, DateTimeOffset? modifiedAt, Guid? modifiedBy) =>
             residentialCarePackages.Where(h =>
                 (firstName != null ? h.Client.FirstName.ToLower().Contains(firstName.ToLower()) : h.Equals(h)) &&
@@ -120,6 +121,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
                 (postCode != null ? h.Client.PostCode.ToLower().Contains(postCode.ToLower()) : h.Equals(h)) &&
                 (mosaicId.Equals(null) || h.Client.HackneyId == mosaicId) &&
                 (modifiedBy.Equals(null) || h.UpdaterId == modifiedBy) &&
-                (modifiedAt.Equals(null) || h.DateUpdated == modifiedAt));
+                (modifiedAt.Equals(null) || h.DateUpdated == modifiedAt) &&
+                (status != null ? h.ResidentialCareBrokerageInfo.HasCareCharges == (status == "Existing") : h.Equals(h)));
+
     }
 }
