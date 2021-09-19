@@ -13,6 +13,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
@@ -535,9 +536,11 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ProvisionalCareChargeAmountPlainDomain, ProvisionalCareChargeAmountPlainResponse>().ReverseMap();
             CreateMap<BrokerageCareChargeForChangeRequest, BrokerageCareChargeForChangeDomain>();
             CreateMap<PackageCareCharge, PackageCareChargePlainDomain>();
+            CreateMap<PackageCareCharge, PackageCareChargeDomain>();
             CreateMap<CareChargePackagesDomain, CareChargePackagesResponse>();
 
             CreateMap<InvoiceCreditNote, InvoiceCreditNotePlainDomain>();
+            CreateMap<CareChargeElement, CareChargeElementDomain>();
             CreateMap<SinglePackageCareChargeDomain, SinglePackageCareChargeResponse>();
             CreateMap<CarePackageDomain, CarePackageResponse>();
             CreateMap<CarePackageBrokerageDomain, CarePackageBrokerageResponse>();
@@ -545,6 +548,32 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CareChargeElementDomain, CareChargeElementResponse>();
 
             #endregion Care Charges
+
+            #region Invoicing
+
+            CreateMap<NursingCareBrokerageInfo, BrokerageInfo>()
+                .ForMember(d => d.Core, opt => opt.MapFrom(s => s.NursingCore))
+                .ForMember(d => d.AdditionalNeedsCosts, opt => opt.MapFrom(s => s.NursingCareAdditionalNeedsCosts));
+
+            CreateMap<ResidentialCareBrokerageInfo, BrokerageInfo>()
+                .ForMember(d => d.Core, opt => opt.MapFrom(s => s.ResidentialCore))
+                .ForMember(d => d.AdditionalNeedsCosts, opt => opt.MapFrom(s => s.ResidentialCareAdditionalNeedsCosts));
+
+            CreateMap<NursingCareAdditionalNeedsCost, AdditionalNeedsCost>()
+                .ForMember(d => d.Cost, opt => opt.MapFrom(s => s.AdditionalNeedsCost));
+
+            CreateMap<ResidentialCareAdditionalNeedsCost, AdditionalNeedsCost>()
+                .ForMember(d => d.Cost, opt => opt.MapFrom(s => s.AdditionalNeedsCost));
+
+            CreateMap<NursingCarePackage, GenericPackage>()
+                .ForMember(d => d.BrokerageInfo, opt => opt.MapFrom(s => s.NursingCareBrokerageInfo))
+                .ForMember(d => d.OriginalPackage, opt => opt.MapFrom(s => s));
+
+            CreateMap<ResidentialCarePackage, GenericPackage>()
+                .ForMember(d => d.BrokerageInfo, opt => opt.MapFrom(s => s.ResidentialCareBrokerageInfo))
+                .ForMember(d => d.OriginalPackage, opt => opt.MapFrom(s => s));
+
+            #endregion Invoicing
         }
     }
 }

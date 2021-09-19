@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Helpers;
+using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions;
@@ -25,11 +27,28 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             _dbContext = dbContext;
         }
 
+        public async Task<IEnumerable<PackageCareCharge>> GetCareChargesAsync(IEnumerable<Guid> packageIds)
+        {
+            var careCharges = await _dbContext.PackageCareCharges
+                .Where(cc => packageIds.Contains(cc.PackageId))
+                .Include(cc => cc.CareChargeElements)
+                .ThenInclude(ce => ce.ClaimCollector)
+                .Include(cc => cc.CareChargeElements)
+                .ThenInclude(ce => ce.CareChargeType)
+                .ToListAsync()
+                .ConfigureAwait(false);
+
+            return careCharges;
+        }
+
         public async Task<ProvisionalCareChargeAmountPlainDomain> GetUsingServiceUserIdAsync(Guid serviceUserId)
         {
             // Get client age
-            var clientBirthDate = await _dbContext.Clients.Where(c => c.Id.Equals(serviceUserId)).Select(c => c.DateOfBirth)
+            var clientBirthDate = await _dbContext.Clients
+                .Where(c => c.Id.Equals(serviceUserId))
+                .Select(c => c.DateOfBirth)
                 .SingleOrDefaultAsync().ConfigureAwait(false);
+
             if (clientBirthDate == null)
             {
                 throw new ApiException($"Service user with Id {serviceUserId} not found");
@@ -127,6 +146,20 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             catch (Exception ex)
             {
                 await transaction.RollbackAsync().ConfigureAwait(false);
+                throw new DbSaveFailedException("Saving care charge element failed", ex);
+            }
+        }
+
+        public async Task<CareChargeElementPlainDomain> CreateCareChargeElementAsync(CareChargeElement careChargeElement)
+        {
+            try
+            {
+                await _dbContext.CareChargeElements.AddAsync(careChargeElement).ConfigureAwait(false);
+                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+                return careChargeElement.ToPlainDomain();
+            }
+            catch (Exception ex)
+            {
                 throw new DbSaveFailedException("Saving care charge element failed", ex);
             }
         }
@@ -400,6 +433,17 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 })
                 .ToListAsync().ConfigureAwait(false);
             return nursingCarePackageList;
+        }
+
+        public async Task RefreshCareChargeElementsPaidUpToDate(IEnumerable<CareChargeElement> elements, DateTimeOffset paidUpTo)
+        {
+            foreach (var element in elements)
+            {
+                element.PreviousPaidUpTo = element.PaidUpTo;
+                element.PaidUpTo = Dates.Min(paidUpTo, element.PaidUpTo);
+            }
+
+            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

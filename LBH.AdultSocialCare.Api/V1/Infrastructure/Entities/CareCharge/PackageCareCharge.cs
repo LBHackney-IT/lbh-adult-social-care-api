@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge
 {
+    [GenerateMappingFor(typeof(PackageCareChargeDomain))]
+    [GenerateListMappingFor(typeof(PackageCareChargeDomain))]
     public class PackageCareCharge : BaseEntity
     {
         [Key] public Guid Id { get; set; }

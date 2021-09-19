@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
 {
@@ -164,12 +165,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                 .ConfigureAwait(false);
         }
 
-        public async Task<bool> GenerateResidentialCareInvoices(DateTimeOffset dateTo)
+        public async Task<List<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset dateTo)
         {
-            var todayDate = DateTimeOffset.Now.Date;
-            if (dateTo > todayDate) dateTo = todayDate;
-            dateTo = dateTo.Date;
-            var residentialCarePackagesIds = await _databaseContext.ResidentialCarePackages
+            return await _databaseContext.ResidentialCarePackages
                 .Where(rc =>
                     ((rc.EndDate == null && rc.PaidUpTo == null) ||
                      (rc.EndDate == null && rc.PaidUpTo != null &&
@@ -183,96 +181,18 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                 .Select(rc => rc.Id)
                 .ToListAsync()
                 .ConfigureAwait(false);
+        }
 
-            var residentialCarePackages = await _databaseContext.ResidentialCarePackages
-                .Where(rc => residentialCarePackagesIds.Contains(rc.Id))
+
+        public async Task<List<ResidentialCarePackage>> GetPackagesByIds(List<Guid> packageIds)
+        {
+            return await _databaseContext.ResidentialCarePackages
+                .Where(rc => packageIds.Contains(rc.Id))
                 .Include(rc => rc.ResidentialCareBrokerageInfo)
                 .ThenInclude(rc => rc.ResidentialCareAdditionalNeedsCosts)
                 .ThenInclude(rc => rc.AdditionalNeedsPaymentType)
                 .ToListAsync()
                 .ConfigureAwait(false);
-
-            var invoicesForCreation = new List<InvoiceForCreationRequest>();
-
-            foreach (var residentialCarePackage in residentialCarePackages)
-            {
-                var startDate = residentialCarePackage.PaidUpTo ?? residentialCarePackage.StartDate;
-                var dateDiff = (dateTo.Date - startDate.Date).Days;
-
-                if (dateDiff <= 0) continue;
-
-                var weeks = (decimal) dateDiff / 7;
-
-                var invoiceItems = new List<InvoiceItemForCreationRequest>()
-                {
-                    new InvoiceItemForCreationRequest
-                    {
-                        ItemName = $"Residential Care Core Cost {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
-                        PricePerUnit = residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCore,
-                        Quantity = weeks,
-                        PriceEffect = "Add",
-                        CreatorId = _identityHelperUseCase.GetUserId()
-                    }
-                };
-
-                //TODO refactor creation invoice item logic
-                if (residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCareAdditionalNeedsCosts.Count > 0)
-                {
-                    foreach (var residentialCareAdditionalNeedsCost in residentialCarePackage.ResidentialCareBrokerageInfo.ResidentialCareAdditionalNeedsCosts)
-                        // create invoice item for additional needs item except one off cost
-                        if (residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentTypeId != AdditionalNeedPaymentTypesConstants.OneOff)
-                            invoiceItems.Add(new InvoiceItemForCreationRequest
-                            {
-                                ItemName =
-                                    $"Additional Needs {residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentType.OptionName} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
-                                PricePerUnit = residentialCareAdditionalNeedsCost.AdditionalNeedsCost,
-                                Quantity = weeks,
-                                PriceEffect = "Add",
-                                CreatorId = _identityHelperUseCase.GetUserId()
-                            });
-                        else if (residentialCarePackage.PaidUpTo == null)
-                            invoiceItems.Add(new InvoiceItemForCreationRequest
-                            {
-                                ItemName =
-                                    $"Additional Needs {residentialCareAdditionalNeedsCost.AdditionalNeedsPaymentType.OptionName} {startDate:dd MMM yyyy} - {dateTo:dd MMM yyyy}",
-                                PricePerUnit = residentialCareAdditionalNeedsCost.AdditionalNeedsCost,
-                                Quantity = 1,
-                                PriceEffect = "Add",
-                                CreatorId = _identityHelperUseCase.GetUserId()
-                            });
-                }
-
-                invoicesForCreation.Add(new InvoiceForCreationRequest
-                {
-                    PackageTypeId = PackageTypesConstants.ResidentialCarePackageId,
-                    ServiceUserId = residentialCarePackage.ClientId,
-                    DateFrom = startDate.Date,
-                    DateTo = dateTo,
-                    PackageId = residentialCarePackage.Id,
-                    SupplierId = residentialCarePackage.SupplierId,
-                    InvoiceItems = invoiceItems,
-                    CreatorId = _identityHelperUseCase.GetUserId(),
-                });
-
-                residentialCarePackage.PreviousPaidUpTo = residentialCarePackage.PaidUpTo;
-
-                residentialCarePackage.PaidUpTo = dateTo.Date;
-            }
-
-            /*foreach (var invoiceForCreationRequest in invoicesForCreation)
-            {
-                var res = await _transactionsService.CreateInvoiceUseCase(invoiceForCreationRequest)
-                    .ConfigureAwait(false);
-            }*/
-
-            if (invoicesForCreation.Count > 0)
-            {
-                await _transactionsService.BatchCreateInvoicesUseCase(invoicesForCreation).ConfigureAwait(false);
-            }
-
-            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
-
-            return true;
         }
 
         public async Task<bool> ResetResidentialInvoicePaidUpToDate(List<Guid> residentialCarePackageIds)
@@ -287,6 +207,17 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
             await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
 
             return true;
+        }
+
+        public async Task RefreshPaidUpToDateAsync(List<ResidentialCarePackage> packages, DateTimeOffset paidUpTo)
+        {
+            foreach (var package in packages)
+            {
+                package.PreviousPaidUpTo = package.PaidUpTo;
+                package.PaidUpTo = paidUpTo;
+            }
+
+            await _databaseContext.SaveChangesAsync().ConfigureAwait(false);
         }
     }
 }

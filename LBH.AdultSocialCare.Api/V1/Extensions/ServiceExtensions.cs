@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
+using LBH.AdultSocialCare.Api.V1.Core.Invoicing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -116,6 +117,10 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 });
         }
 
+        public static void ConfigureInvoicing(this IServiceCollection services)
+        {
+            services.AddTransient<NursingCareInvoiceGenerator>();
+            services.AddTransient<ResidentialCareInvoiceGenerator>();
+        }
     }
-
 }

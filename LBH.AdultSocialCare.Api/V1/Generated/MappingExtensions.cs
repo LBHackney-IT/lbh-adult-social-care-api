@@ -22,6 +22,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
@@ -68,6 +69,26 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CareChargeElementPlainDomain>>(input);
         }
 
+        public static CareChargeElementTypePlainResponse ToResponse(this CareChargeElementTypePlainDomain input)
+        {
+            return _mapper.Map<CareChargeElementTypePlainResponse>(input);
+        }
+
+        public static CareChargeElementTypePlainDomain ToDomain(this CareChargeElementTypePlainResponse input)
+        {
+            return _mapper.Map<CareChargeElementTypePlainDomain>(input);
+        }
+
+        public static IEnumerable<CareChargeElementTypePlainResponse> ToResponse(this IEnumerable<CareChargeElementTypePlainDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CareChargeElementTypePlainResponse>>(input);
+        }
+
+        public static IEnumerable<CareChargeElementTypePlainDomain> ToDomain(this IEnumerable<CareChargeElementTypePlainResponse> input)
+        {
+            return _mapper.Map<IEnumerable<CareChargeElementTypePlainDomain>>(input);
+        }
+
         public static CareChargeElementPlainDomain ToPlainDomain(this CareChargeElementCreationRequest input)
         {
             return _mapper.Map<CareChargeElementPlainDomain>(input);
@@ -86,6 +107,26 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<CareChargeElementCreationRequest> ToCreationRequest(this IEnumerable<CareChargeElementPlainDomain> input)
         {
             return _mapper.Map<IEnumerable<CareChargeElementCreationRequest>>(input);
+        }
+
+        public static CareChargeElementForUpdateDomain ToDomain(this CareChargeElementForUpdateRequest input)
+        {
+            return _mapper.Map<CareChargeElementForUpdateDomain>(input);
+        }
+
+        public static CareChargeElementForUpdateRequest ToRequest(this CareChargeElementForUpdateDomain input)
+        {
+            return _mapper.Map<CareChargeElementForUpdateRequest>(input);
+        }
+
+        public static IEnumerable<CareChargeElementForUpdateDomain> ToDomain(this IEnumerable<CareChargeElementForUpdateRequest> input)
+        {
+            return _mapper.Map<IEnumerable<CareChargeElementForUpdateDomain>>(input);
+        }
+
+        public static IEnumerable<CareChargeElementForUpdateRequest> ToRequest(this IEnumerable<CareChargeElementForUpdateDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CareChargeElementForUpdateRequest>>(input);
         }
 
         public static EndCareChargeElementDomain ToDomain(this EndCareChargeElementRequest input)
@@ -116,6 +157,46 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<CareChargeElement> ToEntity(this IEnumerable<CareChargeElementPlainDomain> input)
         {
             return _mapper.Map<IEnumerable<CareChargeElement>>(input);
+        }
+
+        public static CareChargeElementTypePlainDomain ToElementTypePlainDomain(this CareChargeType input)
+        {
+            return _mapper.Map<CareChargeElementTypePlainDomain>(input);
+        }
+
+        public static CareChargeType ToType(this CareChargeElementTypePlainDomain input)
+        {
+            return _mapper.Map<CareChargeType>(input);
+        }
+
+        public static IEnumerable<CareChargeElementTypePlainDomain> ToElementTypePlainDomain(this IEnumerable<CareChargeType> input)
+        {
+            return _mapper.Map<IEnumerable<CareChargeElementTypePlainDomain>>(input);
+        }
+
+        public static IEnumerable<CareChargeType> ToType(this IEnumerable<CareChargeElementTypePlainDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CareChargeType>>(input);
+        }
+
+        public static PackageCareChargeDomain ToDomain(this PackageCareCharge input)
+        {
+            return _mapper.Map<PackageCareChargeDomain>(input);
+        }
+
+        public static PackageCareCharge ToEntity(this PackageCareChargeDomain input)
+        {
+            return _mapper.Map<PackageCareCharge>(input);
+        }
+
+        public static IEnumerable<PackageCareChargeDomain> ToDomain(this IEnumerable<PackageCareCharge> input)
+        {
+            return _mapper.Map<IEnumerable<PackageCareChargeDomain>>(input);
+        }
+
+        public static IEnumerable<PackageCareCharge> ToEntity(this IEnumerable<PackageCareChargeDomain> input)
+        {
+            return _mapper.Map<IEnumerable<PackageCareCharge>>(input);
         }
     }
 }

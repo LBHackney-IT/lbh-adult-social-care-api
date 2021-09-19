@@ -9,10 +9,18 @@ using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
+using LBH.AdultSocialCare.Api.V1.Core.Invoicing;
+using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
+using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 {
@@ -21,18 +29,17 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         private readonly ITransactionsService _transactionsService;
         private readonly ISupplierGateway _supplierGateway;
         private readonly IClientsGateway _clientsGateway;
-        private readonly INursingCarePackageGateway _nursingCarePackageGateway;
-        private readonly IResidentialCarePackageGateway _residentialCarePackageGateway;
+        private readonly NursingCareInvoiceGenerator _nursingCareInvoiceGenerator;
+        private readonly ResidentialCareInvoiceGenerator _residentialCareInvoiceGenerator;
 
-        public PayRunUseCase(ITransactionsService transactionsService, ISupplierGateway supplierGateway,
-            IClientsGateway clientsGateway, INursingCarePackageGateway nursingCarePackageGateway,
-            IResidentialCarePackageGateway residentialCarePackageGateway)
+        public PayRunUseCase(ITransactionsService transactionsService, ISupplierGateway supplierGateway, IClientsGateway clientsGateway,
+            NursingCareInvoiceGenerator nursingCareInvoiceGenerator, ResidentialCareInvoiceGenerator residentialCareInvoiceGenerator)
         {
             _transactionsService = transactionsService;
             _supplierGateway = supplierGateway;
             _clientsGateway = clientsGateway;
-            _nursingCarePackageGateway = nursingCarePackageGateway;
-            _residentialCarePackageGateway = residentialCarePackageGateway;
+            _nursingCareInvoiceGenerator = nursingCareInvoiceGenerator;
+            _residentialCareInvoiceGenerator = residentialCareInvoiceGenerator;
         }
 
         public async Task<Guid?> CreateNewPayRunUseCase(string payRunType, PayRunForCreationRequest payRunForCreationRequest)
@@ -149,17 +156,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             };
         }
 
-        private async Task<Guid?> CreateResidentialRecurringPayRun(PayRunForCreationRequest payRunForCreationRequest)
+        private async Task<Guid?> CreateResidentialRecurringPayRun(PayRunForCreationRequest request)
         {
-            // Generate nursing care invoices
-            await _nursingCarePackageGateway.GenerateNursingCareInvoices(payRunForCreationRequest.DateTo.Date)
-                .ConfigureAwait(false);
+            await _nursingCareInvoiceGenerator.GenerateUpTo(request.DateTo.Date).ConfigureAwait(false);
+            await _residentialCareInvoiceGenerator.GenerateUpTo(request.DateTo.Date).ConfigureAwait(false);
 
-            // Generate residential care invoices
-            await _residentialCarePackageGateway.GenerateResidentialCareInvoices(payRunForCreationRequest.DateTo.Date)
-                .ConfigureAwait(false);
-
-            return await _transactionsService.CreateResidentialRecurringPayRun(payRunForCreationRequest)
+            return await _transactionsService
+                .CreateResidentialRecurringPayRun(request)
                 .ConfigureAwait(false);
         }
     }

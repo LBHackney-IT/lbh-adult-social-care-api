@@ -5,6 +5,7 @@ using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HttpServices.Helpers;
 
@@ -290,6 +291,8 @@ namespace HttpServices.Services.Concrete
 
         public async Task<IEnumerable<InvoiceResponse>> BatchCreateInvoicesUseCase(IEnumerable<InvoiceForCreationRequest> invoices)
         {
+            if (!invoices.Any()) return new List<InvoiceResponse>();
+
             return await _restClient
                 .PostAsync<IEnumerable<InvoiceResponse>>(
                     "api/v1/invoices/batch",
