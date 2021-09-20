@@ -25,9 +25,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
         public async Task ShouldGetNursingCareApproverPackageContent()
         {
             var package = await _fixture.DataGenerator.NursingCare.GetPackage().ConfigureAwait(false);
+            var additionalNeeds = await _fixture.DataGenerator.NursingCare.GetAdditionalNeeds(package.Id).ConfigureAwait(false);
             var brokerage = await _fixture.DataGenerator.NursingCare.GetBrokerageInfo(package.Id).ConfigureAwait(false);
 
             var costs = await GenerateAdditionalNeedsCosts(brokerage.NursingCareBrokerageId,
+                additionalNeeds.Id,
                 AdditionalNeedPaymentTypesConstants.WeeklyCost, AdditionalNeedPaymentTypesConstants.WeeklyCost,
                 AdditionalNeedPaymentTypesConstants.OneOff, AdditionalNeedPaymentTypesConstants.OneOff)
                 .ConfigureAwait(false);
@@ -75,14 +77,14 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
             approvalHistory.StatusId.Should().Be(ApprovalHistoryConstants.PackageApprovedId);
         }
 
-        private async Task<List<NursingCareAdditionalNeedsCost>> GenerateAdditionalNeedsCosts(Guid brokerageId, params int[] types)
+        private async Task<List<NursingCareAdditionalNeedsCost>> GenerateAdditionalNeedsCosts(Guid brokerageId,Guid additionalNeedsId, params int[] types)
         {
             var result = new List<NursingCareAdditionalNeedsCost>();
 
             foreach (var costType in types)
             {
                 result.Add(await _fixture.DataGenerator.NursingCare
-                    .GetAdditionalNeedsCost(brokerageId, costType)
+                    .GetAdditionalNeedsCost(brokerageId, additionalNeedsId, costType)
                     .ConfigureAwait(false));
 
             }

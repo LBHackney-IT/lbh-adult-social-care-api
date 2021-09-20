@@ -52,10 +52,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
 
             foreach (var package in nursingCarePackages)
             {
+                var additionalNeeds = await _fixture.DataGenerator.NursingCare.GetAdditionalNeeds(package.Id).ConfigureAwait(false);
                 var brokerage = await _fixture.DataGenerator.NursingCare.GetBrokerageInfo(package.Id).ConfigureAwait(false);
                 var careCharge = await _fixture.DataGenerator.CareCharge.GetCareCharge(PackageTypesConstants.NursingCarePackageId, package.Id).ConfigureAwait(false);
 
-                await _fixture.DataGenerator.NursingCare.GetAdditionalNeedsCost(brokerage.NursingCareBrokerageId, 1).ConfigureAwait(false);
+                await _fixture.DataGenerator.NursingCare.GetAdditionalNeedsCost(brokerage.NursingCareBrokerageId, additionalNeeds.Id, 1).ConfigureAwait(false);
                 await _fixture.DataGenerator.CareCharge.GetElements(careCharge.Id, 5).ConfigureAwait(false);
             }
 
@@ -68,10 +69,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
 
             foreach (var package in residentialCarePackages)
             {
+                var additionalNeeds = await _fixture.DataGenerator.ResidentialCare.GetAdditionalNeeds(package.Id).ConfigureAwait(false);
                 var brokerage = await _fixture.DataGenerator.ResidentialCare.GetBrokerageInfo(package.Id).ConfigureAwait(false);
                 var careCharge = await _fixture.DataGenerator.CareCharge.GetCareCharge(PackageTypesConstants.NursingCarePackageId, package.Id).ConfigureAwait(false);
 
-                await _fixture.DataGenerator.ResidentialCare.GetAdditionalNeedsCost(brokerage.Id, 1).ConfigureAwait(false);
+                await _fixture.DataGenerator.ResidentialCare.GetAdditionalNeedsCost(brokerage.Id, additionalNeeds.Id, 1).ConfigureAwait(false);
                 await _fixture.DataGenerator.CareCharge.GetElements(careCharge.Id, 5).ConfigureAwait(false);
             }
 

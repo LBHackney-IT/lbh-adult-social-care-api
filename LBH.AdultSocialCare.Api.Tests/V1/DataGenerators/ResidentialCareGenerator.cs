@@ -48,6 +48,21 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             return result;
         }
 
+        public async Task<ResidentialCareAdditionalNeed> GetAdditionalNeeds(Guid packageId)
+        {
+            var additionalNeeds = new ResidentialCareAdditionalNeed()
+            {
+                ResidentialCarePackageId = packageId,
+                NeedToAddress = "test",
+                AdditionalNeedsPaymentTypeId = 1
+            };
+
+            _context.ResidentialCareAdditionalNeeds.Add(additionalNeeds);
+            await _context.SaveChangesAsync().ConfigureAwait(false);
+
+            return additionalNeeds;
+        }
+
         public async Task<ResidentialCareBrokerageInfo> GetBrokerageInfo(Guid packageId)
         {
             var brokerage = new ResidentialCareBrokerageInfo
@@ -62,11 +77,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             return brokerage;
         }
 
-        public async Task<ResidentialCareAdditionalNeedsCost> GetAdditionalNeedsCost(Guid brokerageId, int type)
+        public async Task<ResidentialCareAdditionalNeedsCost> GetAdditionalNeedsCost(Guid brokerageId, Guid additionalNeedsId, int type)
         {
             var cost = new ResidentialCareAdditionalNeedsCost
             {
                 ResidentialCareBrokerageId = brokerageId,
+                ResidentialCareAdditionalNeedsId = additionalNeedsId,
                 AdditionalNeedsPaymentTypeId = type,
                 AdditionalNeedsCost = new Bogus.Faker().Finance.Amount(10.0m),
                 CreatorId = new Guid(UserConstants.DefaultApiUserId)
