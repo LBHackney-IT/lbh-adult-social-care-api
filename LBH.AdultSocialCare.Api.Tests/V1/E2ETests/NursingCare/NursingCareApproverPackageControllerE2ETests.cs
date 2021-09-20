@@ -77,7 +77,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
             approvalHistory.StatusId.Should().Be(ApprovalHistoryConstants.PackageApprovedId);
         }
 
-        private async Task<List<NursingCareAdditionalNeedsCost>> GenerateAdditionalNeedsCosts(Guid brokerageId,Guid additionalNeedsId, params int[] types)
+        private async Task<List<NursingCareAdditionalNeedsCost>> GenerateAdditionalNeedsCosts(Guid brokerageId, Guid additionalNeedsId, params int[] types)
         {
             var result = new List<NursingCareAdditionalNeedsCost>();
 
