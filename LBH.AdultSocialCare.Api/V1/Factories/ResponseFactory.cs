@@ -782,7 +782,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             return _mapper.Map<ProvisionalCareChargeAmountPlainResponse>(provisionalCareChargeDomain);
         }
-        
+
         public static IEnumerable<CareChargePackagesResponse> ToResponse(this IEnumerable<CareChargePackagesDomain> careChargePackagesDomains)
         {
             return _mapper.Map<IEnumerable<CareChargePackagesResponse>>(careChargePackagesDomains);
