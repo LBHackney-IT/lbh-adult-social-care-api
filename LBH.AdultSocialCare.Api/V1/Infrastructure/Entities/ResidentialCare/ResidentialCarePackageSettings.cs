@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
@@ -6,12 +7,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
 {
     public class ResidentialCarePackageSettings : BaseEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         public Guid CarePackageId { get; set; }
-
-        public int PackageTypeId { get; set; }
 
         public bool IsRespiteCare { get; set; }
 

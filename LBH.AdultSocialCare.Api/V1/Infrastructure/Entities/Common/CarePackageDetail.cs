@@ -11,8 +11,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         public Guid CarePackageId { get; set; }
 
-        public int PackageTypeId { get; set; }
-
         public string PackageDetailType { get; set; }   // TODO: VK: TBD
 
         public string ServiceUserNeeds { get; set; }
@@ -30,6 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         public string UnitOfMeasure { get; set; }
 
+        [ForeignKey(nameof(CarePackageId))]
         public CarePackage Package { get; set; }
     }
 }

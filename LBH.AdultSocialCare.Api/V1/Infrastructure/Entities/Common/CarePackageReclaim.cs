@@ -17,8 +17,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         public Guid CarePackageId { get; set; }
 
-        public int PackageTypeId { get; set; }
-
         [Column(TypeName = "decimal(13, 2)")]
         public decimal Cost { get; set; }
 
@@ -45,6 +43,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
         [ForeignKey(nameof(StatusId))]
         public ReclaimStatus Status { get; set; }
 
+        [ForeignKey(nameof(CarePackageId))]
         public CarePackage Package { get; set; }
 
         public virtual ICollection<CarePackageReclaimElement> Elements { get; set; }
