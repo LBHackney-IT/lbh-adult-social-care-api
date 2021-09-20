@@ -11,20 +11,20 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
         {
             builder.HasData(new CareChargeStatus
             {
-                Id = (int) CareChargeElementStatusEnum.Active,
-                StatusName = nameof(CareChargeElementStatusEnum.Active)
+                Id = (int) ReclaimStatus.Active,
+                StatusName = nameof(ReclaimStatus.Active)
             }, new CareChargeStatus
             {
-                Id = (int) CareChargeElementStatusEnum.Ended,
-                StatusName = nameof(CareChargeElementStatusEnum.Ended)
+                Id = (int) ReclaimStatus.Ended,
+                StatusName = nameof(ReclaimStatus.Ended)
             }, new CareChargeStatus
             {
-                Id = (int) CareChargeElementStatusEnum.Cancelled,
-                StatusName = nameof(CareChargeElementStatusEnum.Cancelled)
+                Id = (int) ReclaimStatus.Cancelled,
+                StatusName = nameof(ReclaimStatus.Cancelled)
             }, new CareChargeStatus
             {
-                Id = (int) CareChargeElementStatusEnum.Future,
-                StatusName = nameof(CareChargeElementStatusEnum.Future)
+                Id = (int) ReclaimStatus.Future,
+                StatusName = nameof(ReclaimStatus.Future)
             });
         }
     }

@@ -27,7 +27,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
         [Fact]
         public void ShouldConsiderOnlyActiveElements()
         {
-            var elementStatuses = Enum.GetValues(typeof(CareChargeElementStatusEnum));
+            var elementStatuses = Enum.GetValues(typeof(ReclaimStatus));
             var package = CreatePackage(elementStatuses.Length);
 
             for (var i = 0; i < elementStatuses.Length; i++)
@@ -36,7 +36,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
             }
 
             var invoiceItems = _generator.Run(package, DateTimeOffset.Now.AddDays(-30), DateTimeOffset.Now.AddDays(30)).ToList();
-            var activeElement = package.CareCharge.CareChargeElements.First(el => el.StatusId == (int) CareChargeElementStatusEnum.Active);
+            var activeElement = package.CareCharge.CareChargeElements.First(el => el.StatusId == (int) ReclaimStatus.Active);
 
             invoiceItems.Count.Should().Be(1);
             invoiceItems.First().PricePerUnit.Should().Be(activeElement.Amount);
@@ -102,7 +102,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
                 package.CareCharge.CareChargeElements.Add(new CareChargeElement
                 {
                     Amount = 1.23m * (i + 1),
-                    StatusId = (int) CareChargeElementStatusEnum.Active,
+                    StatusId = (int) ReclaimStatus.Active,
                     StartDate = DateTimeOffset.Now.AddDays(-10),
                     EndDate = DateTimeOffset.Now.AddDays(10),
                     CareChargeType = new CareChargeType

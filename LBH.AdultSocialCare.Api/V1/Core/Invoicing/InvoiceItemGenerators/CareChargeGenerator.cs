@@ -29,7 +29,7 @@ namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators
 
             foreach (var element in package.CareCharge.CareChargeElements)
             {
-                if (element.StatusId != (int) CareChargeElementStatusEnum.Active) continue;
+                if (element.StatusId != (int) ReclaimStatus.Active) continue;
 
                 var actualStartDate = Dates.Max(element.StartDate, invoiceStartDate);
                 var actualEndDate = Dates.Min(element.EndDate, invoiceEndDate);

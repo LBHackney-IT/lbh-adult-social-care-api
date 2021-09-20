@@ -165,7 +165,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
                 {
                     new CareChargeElement
                     {
-                        StatusId = (int) CareChargeElementStatusEnum.Active,
+                        StatusId = (int) ReclaimStatus.Active,
                         TypeId = (int) CareChargeElementTypeEnum.Provisional,
                         ClaimCollectorId = collectorId,
                         ClaimReasons = claimCollectorReason,

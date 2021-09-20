@@ -38,7 +38,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                     var newCareChargeElement = new CareChargeElement
                     {
                         CareChargeId = packageCareChargeId,
-                        StatusId = (int) CareChargeElementStatusEnum.Active,
+                        StatusId = (int) ReclaimStatus.Active,
                         TypeId = careChargeElement.TypeId,
                         ClaimCollectorId = careChargeElement.CollectorId,
                         ClaimReasons = null,

@@ -49,7 +49,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
                     CareChargeId = careChargeId,
                     Amount = 10.0m,
                     ClaimCollectorId = PackageCostClaimersConstants.Hackney,
-                    StatusId = (int) CareChargeElementStatusEnum.Active,
+                    StatusId = (int) ReclaimStatus.Active,
                     TypeId = (int) CareChargeElementTypeEnum.WithoutPropertyOneToTwelveWeeks
                 }).Entity);
             }

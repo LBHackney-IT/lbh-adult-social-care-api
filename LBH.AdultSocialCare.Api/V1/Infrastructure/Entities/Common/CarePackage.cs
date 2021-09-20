@@ -11,7 +11,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        public int PackageTypeId { get; set; }
+        public int PackageType { get; set; }
 
         public Guid ServiceUserId { get; set; }
 
@@ -38,9 +38,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         [ForeignKey(nameof(SupplierId))]
         public Supplier Supplier { get; set; }
-
-        [ForeignKey(nameof(PackageTypeId))]
-        public PackageType PackageType { get; set; }
 
         [ForeignKey(nameof(StatusId))]
         public PackageStatus Status { get; set; }
