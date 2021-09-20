@@ -2,15 +2,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 {
-    public enum PaymentType
+    public enum PaymentPeriod
     {
         [Display(Name = "Weekly")]
-        WeeklyCost = 1,
+        Weekly = 1,
 
         [Display(Name = "One-off")]
         OneOff = 2,
 
-        [Display(Name = "Fixed period")]
+        [Display(Name = "Fixed")]
         FixedPeriod = 3
     }
 }

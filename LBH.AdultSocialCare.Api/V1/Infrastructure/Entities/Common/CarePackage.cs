@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 
@@ -31,7 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         public bool HasReclaim { get; set; }            // TODO: VK: looks like a calculated field
 
-        public string Period { get; set; }              // TODO: VK: TBD
+        public PaymentPeriod Period { get; set; }
 
         [ForeignKey(nameof(ServiceUserId))]
         public Client ServiceUser { get; set; }         // TODO: VK: Client or ServiceUser?
