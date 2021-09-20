@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 {
@@ -15,7 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         public string ServiceUserNeeds { get; set; }
 
-        public string Period { get; set; }              // TODO: VK: TBD
+        public PaymentType Period { get; set; }
 
         public DateTimeOffset StartDate { get; set; }
 

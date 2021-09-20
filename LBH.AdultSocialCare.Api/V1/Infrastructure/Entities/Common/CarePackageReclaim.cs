@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
@@ -8,11 +7,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 {
     public class CarePackageReclaim : BaseEntity
     {
-        public CarePackageReclaim()
-        {
-            Elements = new List<CarePackageReclaimElement>();
-        }
-
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
@@ -27,11 +21,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         public ReclaimStatus Status { get; set; }
 
+        public ReclaimType Type { get; set; }
+
+        public ReclaimSubType SubType { get; set; }
+
         public DateTimeOffset StartDate { get; set; }
 
         public DateTimeOffset? EndDate { get; set; }
 
         public string Description { get; set; }
+
+        public string ClaimReason { get; set; }
 
         public string AssessmentFileUrl { get; set; }
 
@@ -40,7 +40,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         [ForeignKey(nameof(CarePackageId))]
         public CarePackage Package { get; set; }
-
-        public virtual ICollection<CarePackageReclaimElement> Elements { get; set; }
     }
 }
