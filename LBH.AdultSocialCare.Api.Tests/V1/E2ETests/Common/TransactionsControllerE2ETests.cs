@@ -29,17 +29,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             var nursingCarePackages = await CreateNursingCarePackages().ConfigureAwait(false);
             var residentialCarePackages = await CreateResidentialCarePackages().ConfigureAwait(false);
 
-            var request = new PayRunForCreationRequest
-            {
-                DateTo = DateTimeOffset.Now
-            };
-
+            var request = new PayRunForCreationRequest();
             var invoices = new List<InvoiceForCreationRequest>();
 
             _fixture.TransactionalApi.SetupPostRequestInterceptor<IEnumerable<InvoiceResponse>>(
                 "api/v1/invoices/batch",
-                () => new List<InvoiceResponse>(),
-                (url, req, err) => invoices.AddRange((IEnumerable<InvoiceForCreationRequest>) req));
+                req => invoices.AddRange((IEnumerable<InvoiceForCreationRequest>) req));
 
             var response = await _fixture.RestClient
                 .PostAsync<Guid?>("api/v1/transactions/pay-runs/ResidentialRecurring", request)
