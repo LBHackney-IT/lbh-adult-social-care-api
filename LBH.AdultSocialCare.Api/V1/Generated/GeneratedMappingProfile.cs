@@ -24,6 +24,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;

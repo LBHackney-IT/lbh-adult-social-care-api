@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
@@ -223,6 +224,53 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 .HasName("comparedates");
 
             #endregion DB Functions
+
+            modelBuilder.Entity<CarePackage>().HasKey(e => new { e.Id, e.PackageTypeId });
+
+            modelBuilder.Entity<NursingCarePackageSettings>(entity =>
+            {
+                entity.HasKey(e => new { e.Id, e.CarePackageId, e.PackageTypeId });
+                entity
+                    .HasOne(s => s.Package)
+                    .WithOne(p => p.NursingCareSettings)
+                    .HasForeignKey<NursingCarePackageSettings>(s => new { s.CarePackageId, s.PackageTypeId });
+            });
+
+            modelBuilder.Entity<ResidentialCarePackageSettings>(entity =>
+            {
+                entity.HasKey(e => new { e.Id, e.CarePackageId, e.PackageTypeId });
+                entity
+                    .HasOne(s => s.Package)
+                    .WithOne(p => p.ResidentialCareSettings)
+                    .HasForeignKey<ResidentialCarePackageSettings>(s => new { s.CarePackageId, s.PackageTypeId });
+            });
+
+            modelBuilder.Entity<CarePackageReclaim>(entity =>
+            {
+                entity.HasKey(r => new { r.Id, r.CarePackageId, r.PackageTypeId });
+                entity
+                    .HasOne(r => r.Package)
+                    .WithMany(p => p.Reclaims)
+                    .HasForeignKey(r => new { r.CarePackageId, r.PackageTypeId });
+            });
+
+            modelBuilder.Entity<CarePackageDetail>(entity =>
+            {
+                entity.HasKey(d => new { d.Id, d.CarePackageId, d.PackageTypeId });
+                entity
+                    .HasOne(d => d.Package)
+                    .WithMany(p => p.Details)
+                    .HasForeignKey(d => new { d.CarePackageId, d.PackageTypeId });
+            });
+
+            modelBuilder.Entity<CarePackageReclaimElement>(entity =>
+            {
+                entity.HasKey(el => new { el.Id, el.CarePackageReclaimId, el.CarePackageId, el.PackageTypeId });
+                entity
+                    .HasOne(el => el.Reclaim)
+                    .WithMany(r => r.Elements)
+                    .HasForeignKey(el => new { el.CarePackageReclaimId, el.CarePackageId, el.PackageTypeId });
+            });
 
             // Home care
             modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.Minutes);
