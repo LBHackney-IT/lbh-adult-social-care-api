@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 
+using PackageStatusNew = LBH.AdultSocialCare.Api.V1.AppConstants.Enums.PackageStatus;
+
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 {
     public class CarePackage : BaseEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
         public int PackageType { get; set; }
@@ -26,9 +29,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         public DateTimeOffset? EndDate { get; set; }
 
-        public int StatusId { get; set; }
+        public PackageStatusNew Status { get; set; }    // TODO: VK: Remove alias after legacy PackageStatus will be removed
 
-        public int StageId { get; set; }
+        public PackageStage Stage { get; set; }
 
         public bool HasReclaim { get; set; }            // TODO: VK: looks like a calculated field
 
@@ -39,12 +42,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         [ForeignKey(nameof(SupplierId))]
         public Supplier Supplier { get; set; }
-
-        [ForeignKey(nameof(StatusId))]
-        public PackageStatus Status { get; set; }
-
-        [ForeignKey(nameof(StageId))]
-        public Stage Stage { get; set; }
 
         public NursingCarePackageSettings NursingCareSettings { get; set; }
 
