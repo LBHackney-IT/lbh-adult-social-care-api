@@ -1,8 +1,13 @@
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using System;
 using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare
 {
+    [GenerateMappingFor(typeof(CarePackage))]
+    [GenerateMappingFor(typeof(ResidentialCarePackageSettings))]
     public class ResidentialCarePackageForCreationDomain
     {
         public Guid ClientId { get; set; }
