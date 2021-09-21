@@ -21,8 +21,8 @@ namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing
 
         public NursingCareInvoiceGenerator(
             ITransactionsService transactionsService, IIdentityHelperUseCase identityHelperUseCase,
-            ITransactionManager transactionManager, INursingCarePackageGateway nursingCarePackageGateway,
-            ICareChargesGateway careChargesGateway, IFundedNursingCareGateway fundedNursingCareGateway) : base(transactionsService, identityHelperUseCase, transactionManager, careChargesGateway)
+            IDatabaseManager databaseManager, INursingCarePackageGateway nursingCarePackageGateway,
+            ICareChargesGateway careChargesGateway, IFundedNursingCareGateway fundedNursingCareGateway) : base(transactionsService, identityHelperUseCase, databaseManager, careChargesGateway)
         {
             _nursingCarePackageGateway = nursingCarePackageGateway;
 

@@ -23,7 +23,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.NursingCare
         private readonly Mock<IUpsertFundedNursingCareUseCase> _upsertFundedNursingCareUseCase;
         private readonly Mock<IChangeStatusNursingCarePackageUseCase> _changeStatusUseCase;
         private readonly Mock<IDbContextTransaction> _transaction;
-        private readonly Mock<ITransactionManager> _transactionManager;
+        private readonly Mock<IDatabaseManager> _transactionManager;
         private readonly Guid _packageId;
 
         private readonly CreateNursingCareBrokerageUseCase _useCase;
@@ -35,7 +35,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.NursingCare
             _upsertFundedNursingCareUseCase = new Mock<IUpsertFundedNursingCareUseCase>();
             _changeStatusUseCase = new Mock<IChangeStatusNursingCarePackageUseCase>();
             _transaction = new Mock<IDbContextTransaction>();
-            _transactionManager = new Mock<ITransactionManager>();
+            _transactionManager = new Mock<IDatabaseManager>();
 
             _packageId = Guid.NewGuid();
 

@@ -25,13 +25,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
         private readonly IChangeDatesOfResidentialCarePackageUseCase _changeDatesOfResidentialCarePackageUseCase;
         private readonly ICareChargesGateway _careChargesGateway;
         private readonly IPackageCareChargeGateway _packageCareChargeGateway;
-        private readonly ITransactionManager _transactionManager;
+        private readonly IDatabaseManager _databaseManager;
         private readonly IChangeStatusResidentialCarePackageUseCase _changeStatusResidentialCarePackageUseCase;
 
         public CreateResidentialCareBrokerageUseCase(IResidentialCareBrokerageGateway residentialCareBrokerageGateway,
             IResidentialCarePackageGateway residentialCarePackageGateway,
             IMapper mapper, IChangeDatesOfResidentialCarePackageUseCase changeDatesOfResidentialCarePackageUseCase,
-            ICareChargesGateway careChargesGateway, IPackageCareChargeGateway packageCareChargeGateway, ITransactionManager transactionManager,
+            ICareChargesGateway careChargesGateway, IPackageCareChargeGateway packageCareChargeGateway, IDatabaseManager databaseManager,
             IChangeStatusResidentialCarePackageUseCase changeStatusResidentialCarePackageUseCase)
         {
             _residentialCareBrokerageGateway = residentialCareBrokerageGateway;
@@ -40,7 +40,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
             _changeDatesOfResidentialCarePackageUseCase = changeDatesOfResidentialCarePackageUseCase;
             _careChargesGateway = careChargesGateway;
             _packageCareChargeGateway = packageCareChargeGateway;
-            _transactionManager = transactionManager;
+            _databaseManager = databaseManager;
             _changeStatusResidentialCarePackageUseCase = changeStatusResidentialCarePackageUseCase;
         }
 
@@ -49,7 +49,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
             var (residentialCarePackageFromDb, brokerageInfo) =
                 await ValidateBrokerageInfoAsync(brokerageForCreationDomain).ConfigureAwait(false);
 
-            await using var transaction = await _transactionManager.BeginTransactionAsync().ConfigureAwait(false);
+            await using var transaction = await _databaseManager.BeginTransactionAsync().ConfigureAwait(false);
             try
             {
                 // Create brokerage info
