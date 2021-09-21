@@ -37,16 +37,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             {
                 if (element.EndDate is null || element.EndDate > DateTimeProvider.Now)
                 {
-                    statusId = (int) CareChargeElementStatusEnum.Active;
+                    statusId = (int) ReclaimStatus.Active;
                 }
                 else
                 {
-                    statusId = (int) CareChargeElementStatusEnum.Ended;
+                    statusId = (int) ReclaimStatus.Ended;
                 }
             }
             else
             {
-                statusId = (int) CareChargeElementStatusEnum.Future;
+                statusId = (int) ReclaimStatus.Future;
             }
 
             return statusId;

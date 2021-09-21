@@ -38,7 +38,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             response.Content.Should().BeEquivalentTo(request, opt => opt.Excluding(e => e.StatusId));
 
             response.Content.Id.Should().NotBe(Guid.Empty);
-            response.Content.StatusId.Should().Be((int) CareChargeElementStatusEnum.Active);
+            response.Content.StatusId.Should().Be((int) ReclaimStatus.Active);
         }
 
         [Fact]
@@ -63,7 +63,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
                 response.Content.Should().Contain(e => e.ClaimCollectorId == requestElement.ClaimCollectorId);
             }
 
-            response.Content.Should().OnlyContain(e => e.StatusId == (int) CareChargeElementStatusEnum.Active);
+            response.Content.Should().OnlyContain(e => e.StatusId == (int) ReclaimStatus.Active);
             response.Content.Should().OnlyContain(e => e.Id != Guid.Empty);
         }
 

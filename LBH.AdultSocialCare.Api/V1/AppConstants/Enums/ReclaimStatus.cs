@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 {
-    public enum CareChargeElementStatusEnum
+    public enum ReclaimStatus
     {
         [Display(Name = "Active")]
         Active = 1,
