@@ -114,6 +114,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<InvoiceCreditNote> InvoiceCreditNotes { get; set; }
         public DbSet<InvoiceItemPriceEffect> InvoiceItemPriceEffects { get; set; }
         public DbSet<InvoiceNoteChargeType> InvoiceNoteChargeTypes { get; set; }
+        public DbSet<CarePackageHistory> CarePackageHistories { get; set; }
 
         #region CustomFunctions
 
