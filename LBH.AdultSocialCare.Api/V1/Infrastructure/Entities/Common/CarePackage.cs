@@ -31,5 +31,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
         public ResidentialCarePackageSettings ResidentialCareSettings { get; set; }
         public virtual ICollection<CarePackageDetail> Details { get; set; }
         public virtual ICollection<CarePackageReclaim> Reclaims { get; set; }
+        public virtual ICollection<CarePackageHistory> Histories { get; set; }
     }
 }

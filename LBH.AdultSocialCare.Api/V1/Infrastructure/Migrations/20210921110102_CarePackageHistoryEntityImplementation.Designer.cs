@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210921110102_CarePackageHistoryEntityImplementation")]
+    partial class CarePackageHistoryEntityImplementation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -738,11 +740,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset?>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<bool>("HasReclaim")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("PackageType")
                         .HasColumnType("integer");
 
                     b.Property<string>("PackagingScheduling")
                         .HasColumnType("text");
+
+                    b.Property<int>("Period")
+                        .HasColumnType("integer");
 
                     b.Property<string>("PrimarySupportReason")
                         .HasColumnType("text");
@@ -3921,16 +3929,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("HasDischargePackage")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("HasRespiteCare")
+                    b.Property<bool>("IsDischarge")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsImmediate")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsReEnablement")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsRespiteCare")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsS117Client")
@@ -4882,7 +4890,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.CarePackageHistory", b =>
                 {
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.CarePackage", "CarePackage")
-                        .WithMany("Histories")
+                        .WithMany("CarePackageHistories")
                         .HasForeignKey("CarePackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
