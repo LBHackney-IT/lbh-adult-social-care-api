@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using PackageStatusNew = LBH.AdultSocialCare.Api.V1.AppConstants.Enums.PackageStatus;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 {
@@ -23,9 +22,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
         public string PackagingScheduling { get; set; } // TODO: VK: too complex for string?
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
-        public PackageStatusNew Status { get; set; }    // TODO: VK: Remove alias after legacy PackageStatus will be removed
-        public PackageStage Stage { get; set; }
-        public PaymentPeriod Period { get; set; }
+        public PackageStatusEnum Status { get; set; }    // TODO: VK: Remove alias after legacy PackageStatus will be removed
+        public PackageStageEnum Stage { get; set; }
 
         [ForeignKey(nameof(ServiceUserId))] public Client ServiceUser { get; set; }         // TODO: VK: Client or ServiceUser?
         [ForeignKey(nameof(SupplierId))] public Supplier Supplier { get; set; }

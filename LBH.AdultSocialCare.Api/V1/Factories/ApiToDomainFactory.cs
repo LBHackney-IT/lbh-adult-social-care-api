@@ -102,11 +102,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static ResidentialCarePackageForCreationDomain ToDomain(this ResidentialCarePackageForCreationRequest residentialCarePackageForCreation)
         {
             var res = _mapper.Map<ResidentialCarePackageForCreationDomain>(residentialCarePackageForCreation);
-            // Set status to 1 for new package
-            if (res.StatusId == 0)
-            {
-                res.StatusId = 1;
-            }
             return res;
         }
 

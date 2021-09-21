@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 {
     // TODO: VK: There is a discrepancy between stages in constants and DB - what is actual?
-    public enum PackageStage
+    public enum PackageStageEnum
     {
         [Display(Name = "New")]
         New = 1,

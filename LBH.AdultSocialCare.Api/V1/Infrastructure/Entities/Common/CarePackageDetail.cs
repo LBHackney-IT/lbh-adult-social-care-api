@@ -16,7 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         public string ServiceUserNeeds { get; set; }
 
-        public PaymentPeriod Period { get; set; }
+        public PaymentPeriodEnum Period { get; set; }
 
         public DateTimeOffset StartDate { get; set; }
 

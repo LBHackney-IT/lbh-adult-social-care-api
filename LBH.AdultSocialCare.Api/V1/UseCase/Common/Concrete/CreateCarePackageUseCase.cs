@@ -5,6 +5,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 {
@@ -30,9 +31,22 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             // Get and set random client on package
             var randomClient = await _clientsGateway.GetRandomAsync().ConfigureAwait(false);
             carePackageEntity.ServiceUserId = randomClient.Id;
+            carePackageEntity.PackageType = (int) PackageTypeEnum.ResidentialCare;
+            carePackageEntity.Status = PackageStatusEnum.New;
 
             carePackageEntity.ResidentialCareSettings = carePackageSettingsEntity;
             _carePackageGateway.Create(carePackageEntity);
+
+            // Set package status and record the change in package history
+            //Change status of package
+            /*await _changeStatusResidentialCarePackageUseCase
+                .UpdateAsync(residentialCarePackageResponse.Id, ApprovalHistoryConstants.NewPackageId)
+                .ConfigureAwait(false);
+
+            await _changeStatusResidentialCarePackageUseCase
+                .UpdateAsync(residentialCarePackageResponse.Id, ApprovalHistoryConstants.SubmittedForApprovalId)
+                .ConfigureAwait(false);*/
+
             await _dbManager.SaveAsync("Failed to create residential care package").ConfigureAwait(false);
             return carePackageEntity.ToPlainDomain().ToResponse();
         }

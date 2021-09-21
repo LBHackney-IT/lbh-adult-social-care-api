@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 {
     // TODO: VK: There is a discrepancy between statuses in constants and DB - what is actual?
-    public enum PackageStatus
+    public enum PackageStatusEnum
     {
         [Display(Name = "New Package")]
         New = 1,
