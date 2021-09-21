@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ICreateResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces.ICreateResidentialCarePackageUseCase;
 using IGetAllResidentialCareHomeTypeUseCase = LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces.IGetAllResidentialCareHomeTypeUseCase;
 using IGetAllResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces.IGetAllResidentialCarePackageUseCase;
 using IGetAllResidentialCareTypeOfStayOptionUseCase = LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces.IGetAllResidentialCareTypeOfStayOptionUseCase;
@@ -33,7 +32,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         private readonly IGetAllResidentialCarePackageUseCase _getAllResidentialCarePackageUseCase;
         private readonly IGetAllResidentialCareHomeTypeUseCase _getAllResidentialCareHomeTypeUseCase;
         private readonly IGetAllResidentialCareTypeOfStayOptionUseCase _getAllResidentialCareTypeOfStayOptionUseCase;
-        private readonly ICreateResidentialCarePackageUseCase _createResidentialCarePackageUseCase;
         private readonly IGetAllResidentialCareApprovalHistoryUseCase _getAllResidentialCareApprovalHistoryUseCase;
         private readonly ICreateCarePackageUseCase _createPackageUseCase;
 
@@ -43,7 +41,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
             IGetAllResidentialCarePackageUseCase getAllResidentialCarePackageUseCase,
             IGetAllResidentialCareHomeTypeUseCase getAllResidentialCareHomeTypeUseCase,
             IGetAllResidentialCareTypeOfStayOptionUseCase getAllResidentialCareTypeOfStayOptionUseCase,
-            ICreateResidentialCarePackageUseCase createResidentialCarePackageUseCase,
             IGetAllResidentialCareApprovalHistoryUseCase getAllResidentialCareApprovalHistoryUseCase, ICreateCarePackageUseCase createPackageUseCase
             )
         {
@@ -53,7 +50,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
             _getAllResidentialCarePackageUseCase = getAllResidentialCarePackageUseCase;
             _getAllResidentialCareHomeTypeUseCase = getAllResidentialCareHomeTypeUseCase;
             _getAllResidentialCareTypeOfStayOptionUseCase = getAllResidentialCareTypeOfStayOptionUseCase;
-            _createResidentialCarePackageUseCase = createResidentialCarePackageUseCase;
             _getAllResidentialCareApprovalHistoryUseCase = getAllResidentialCareApprovalHistoryUseCase;
             _createPackageUseCase = createPackageUseCase;
         }
