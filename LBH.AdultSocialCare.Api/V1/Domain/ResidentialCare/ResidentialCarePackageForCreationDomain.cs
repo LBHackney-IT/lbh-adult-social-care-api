@@ -18,7 +18,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare
 
         // Package settings
         public bool HasRespiteCare { get; set; }
-
         public bool HasDischargePackage { get; set; }
         public bool IsImmediate { get; set; }
         public bool IsReEnablement { get; set; }

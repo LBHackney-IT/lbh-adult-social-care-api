@@ -8,7 +8,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
     {
         // Core package
         [Required, GuidNotEmpty] public Guid ServiceUserId { get; set; }
-
         [Required] public string PrimarySupportReason { get; set; }
         [Required] public string PackagingScheduling { get; set; }
         [Required] public DateTimeOffset? StartDate { get; set; }
@@ -16,7 +15,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
 
         // Package settings
         [Required] public bool? HasRespiteCare { get; set; }
-
         [Required] public bool? HasDischargePackage { get; set; }
         [Required] public bool? IsImmediate { get; set; }
         [Required] public bool? IsReEnablement { get; set; }
