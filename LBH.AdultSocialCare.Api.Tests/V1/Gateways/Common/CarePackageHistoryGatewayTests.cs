@@ -29,7 +29,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
             Context.Clients.Add(user);
             await Context.SaveChangesAsync().ConfigureAwait(false);
 
-            var carePackage = new CarePackage() {ServiceUserId = Guid.Parse(UserConstants.DefaultApiUserId)};
+            var carePackage = new CarePackage() { ServiceUserId = Guid.Parse(UserConstants.DefaultApiUserId) };
             Context.CarePackages.Add(carePackage);
             await Context.SaveChangesAsync().ConfigureAwait(false);
 
