@@ -10,10 +10,12 @@ namespace LBH.AdultSocialCare.Api.Tests
             NursingCare = new NursingCareGenerator(context);
             ResidentialCare = new ResidentialCareGenerator(context);
             CareCharge = new CareChargeGenerator(context);
+            CarePackages = new CarePackageGenerator(context);
         }
 
         public NursingCareGenerator NursingCare { get; }
         public ResidentialCareGenerator ResidentialCare { get; }
         public CareChargeGenerator CareCharge { get; }
+        public CarePackageGenerator CarePackages { get; }
     }
 }

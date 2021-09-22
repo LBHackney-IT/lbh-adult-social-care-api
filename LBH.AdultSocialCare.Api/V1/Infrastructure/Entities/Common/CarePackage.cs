@@ -15,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
-        public int PackageType { get; set; }
+        public PackageType PackageType { get; set; }
 
         public Guid ServiceUserId { get; set; }
 
