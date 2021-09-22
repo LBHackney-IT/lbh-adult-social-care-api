@@ -1,15 +1,16 @@
-using LBH.AdultSocialCare.Api.V1.AppConstants;
+using Common.Exceptions.Models;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
+using LBH.AdultSocialCare.Api.V1.Controllers.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
-using LBH.AdultSocialCare.Api.V1.Controllers.Common;
-using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces;
-using ICreateResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces.ICreateResidentialCarePackageUseCase;
 using IGetAllResidentialCareHomeTypeUseCase = LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces.IGetAllResidentialCareHomeTypeUseCase;
 using IGetAllResidentialCarePackageUseCase = LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces.IGetAllResidentialCarePackageUseCase;
 using IGetAllResidentialCareTypeOfStayOptionUseCase = LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces.IGetAllResidentialCareTypeOfStayOptionUseCase;
@@ -31,8 +32,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         private readonly IGetAllResidentialCarePackageUseCase _getAllResidentialCarePackageUseCase;
         private readonly IGetAllResidentialCareHomeTypeUseCase _getAllResidentialCareHomeTypeUseCase;
         private readonly IGetAllResidentialCareTypeOfStayOptionUseCase _getAllResidentialCareTypeOfStayOptionUseCase;
-        private readonly ICreateResidentialCarePackageUseCase _createResidentialCarePackageUseCase;
         private readonly IGetAllResidentialCareApprovalHistoryUseCase _getAllResidentialCareApprovalHistoryUseCase;
+        private readonly ICreateCarePackageUseCase _createPackageUseCase;
 
         public ResidentialCarePackageController(IUpdateResidentialCarePackageUseCase updateResidentialCarePackageUseCase,
             IGetResidentialCarePackageUseCase getResidentialCarePackageUseCase,
@@ -40,8 +41,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
             IGetAllResidentialCarePackageUseCase getAllResidentialCarePackageUseCase,
             IGetAllResidentialCareHomeTypeUseCase getAllResidentialCareHomeTypeUseCase,
             IGetAllResidentialCareTypeOfStayOptionUseCase getAllResidentialCareTypeOfStayOptionUseCase,
-            ICreateResidentialCarePackageUseCase createResidentialCarePackageUseCase,
-            IGetAllResidentialCareApprovalHistoryUseCase getAllResidentialCareApprovalHistoryUseCase
+            IGetAllResidentialCareApprovalHistoryUseCase getAllResidentialCareApprovalHistoryUseCase, ICreateCarePackageUseCase createPackageUseCase
             )
         {
             _updateResidentialCarePackageUseCase = updateResidentialCarePackageUseCase;
@@ -50,42 +50,22 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
             _getAllResidentialCarePackageUseCase = getAllResidentialCarePackageUseCase;
             _getAllResidentialCareHomeTypeUseCase = getAllResidentialCareHomeTypeUseCase;
             _getAllResidentialCareTypeOfStayOptionUseCase = getAllResidentialCareTypeOfStayOptionUseCase;
-            _createResidentialCarePackageUseCase = createResidentialCarePackageUseCase;
             _getAllResidentialCareApprovalHistoryUseCase = getAllResidentialCareApprovalHistoryUseCase;
+            _createPackageUseCase = createPackageUseCase;
         }
 
-        /// <summary>Creates the specified residential care package request.</summary>
+        /// <summary>Creates a new residential care package.</summary>
         /// <param name="residentialCarePackageForCreationRequest">The residential care package request.</param>
         /// <returns>The residential care package created.</returns>
-        [ProducesResponseType(typeof(ResidentialCarePackageResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
-        public async Task<ActionResult<ResidentialCarePackageResponse>> CreateResidentialCarePackage(ResidentialCarePackageForCreationRequest residentialCarePackageForCreationRequest)
+        public async Task<ActionResult<CarePackagePlainResponse>> CreateResidentialCarePackage([FromBody] ResidentialCarePackageForCreationRequest residentialCarePackageForCreationRequest)
         {
-            if (residentialCarePackageForCreationRequest == null)
-            {
-                return BadRequest("Object for creation cannot be null.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return UnprocessableEntity(ModelState);
-            }
-
             var residentialCarePackageForCreationDomain = residentialCarePackageForCreationRequest.ToDomain();
-            var residentialCarePackageResponse = await _createResidentialCarePackageUseCase.ExecuteAsync(residentialCarePackageForCreationDomain).ConfigureAwait(false);
-            //Change status of package
-            await _changeStatusResidentialCarePackageUseCase
-                .UpdateAsync(residentialCarePackageResponse.Id, ApprovalHistoryConstants.NewPackageId)
-                .ConfigureAwait(false);
-
-            await _changeStatusResidentialCarePackageUseCase
-                .UpdateAsync(residentialCarePackageResponse.Id, ApprovalHistoryConstants.SubmittedForApprovalId)
-                .ConfigureAwait(false);
-
+            var residentialCarePackageResponse = await _createPackageUseCase.ResidentialAsync(residentialCarePackageForCreationDomain).ConfigureAwait(false);
             return Ok(residentialCarePackageResponse);
         }
 

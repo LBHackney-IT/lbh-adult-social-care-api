@@ -172,7 +172,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete
                 .ConfigureAwait(false);
         }
 
-
         public async Task<List<NursingCarePackage>> GetFullPackagesByIds(IEnumerable<Guid> packageIds)
         {
             return await _databaseContext.NursingCarePackages

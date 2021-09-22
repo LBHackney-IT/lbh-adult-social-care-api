@@ -13,19 +13,19 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
     public class EditCareChargeElementUseCase : IEditCareChargeElementUseCase
     {
         private readonly ICancelOrEndCareChargeElementUseCase _cancelOrEndCareChargeElementUseCase;
-        private readonly ITransactionManager _transactionManager;
+        private readonly IDatabaseManager _databaseManager;
         private readonly ICareChargesGateway _careChargesGateway;
 
-        public EditCareChargeElementUseCase(ICancelOrEndCareChargeElementUseCase cancelOrEndCareChargeElementUseCase, ITransactionManager transactionManager, ICareChargesGateway careChargesGateway)
+        public EditCareChargeElementUseCase(ICancelOrEndCareChargeElementUseCase cancelOrEndCareChargeElementUseCase, IDatabaseManager databaseManager, ICareChargesGateway careChargesGateway)
         {
             _cancelOrEndCareChargeElementUseCase = cancelOrEndCareChargeElementUseCase;
-            _transactionManager = transactionManager;
+            _databaseManager = databaseManager;
             _careChargesGateway = careChargesGateway;
         }
 
         public async Task<bool> ExecuteAsync(Guid packageCareChargeId, IEnumerable<CareChargeElementForUpdateDomain> careChargeElementsForUpdate)
         {
-            await using var transaction = await _transactionManager.BeginTransactionAsync().ConfigureAwait(false);
+            await using var transaction = await _databaseManager.BeginTransactionAsync().ConfigureAwait(false);
             try
             {
                 foreach (var careChargeElement in careChargeElementsForUpdate)

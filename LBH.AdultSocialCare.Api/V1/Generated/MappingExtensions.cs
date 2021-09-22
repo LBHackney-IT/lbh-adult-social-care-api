@@ -90,6 +90,46 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CareChargeElementTypePlainDomain>>(input);
         }
 
+        public static CarePackagePlainResponse ToResponse(this CarePackagePlainDomain input)
+        {
+            return _mapper.Map<CarePackagePlainResponse>(input);
+        }
+
+        public static CarePackagePlainDomain ToDomain(this CarePackagePlainResponse input)
+        {
+            return _mapper.Map<CarePackagePlainDomain>(input);
+        }
+
+        public static IEnumerable<CarePackagePlainResponse> ToResponse(this IEnumerable<CarePackagePlainDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackagePlainResponse>>(input);
+        }
+
+        public static IEnumerable<CarePackagePlainDomain> ToDomain(this IEnumerable<CarePackagePlainResponse> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackagePlainDomain>>(input);
+        }
+
+        public static CarePackage ToEntity(this ResidentialCarePackageForCreationDomain input)
+        {
+            return _mapper.Map<CarePackage>(input);
+        }
+
+        public static ResidentialCarePackageForCreationDomain ToForCreationDomain(this CarePackage input)
+        {
+            return _mapper.Map<ResidentialCarePackageForCreationDomain>(input);
+        }
+
+        public static ResidentialCarePackageSettings ToSettings(this ResidentialCarePackageForCreationDomain input)
+        {
+            return _mapper.Map<ResidentialCarePackageSettings>(input);
+        }
+
+        public static ResidentialCarePackageForCreationDomain ToForCreationDomain(this ResidentialCarePackageSettings input)
+        {
+            return _mapper.Map<ResidentialCarePackageForCreationDomain>(input);
+        }
+
         public static CareChargeElementPlainDomain ToPlainDomain(this CareChargeElementCreationRequest input)
         {
             return _mapper.Map<CareChargeElementPlainDomain>(input);
@@ -198,6 +238,26 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<PackageCareCharge> ToEntity(this IEnumerable<PackageCareChargeDomain> input)
         {
             return _mapper.Map<IEnumerable<PackageCareCharge>>(input);
+        }
+
+        public static CarePackagePlainDomain ToPlainDomain(this CarePackage input)
+        {
+            return _mapper.Map<CarePackagePlainDomain>(input);
+        }
+
+        public static CarePackage ToEntity(this CarePackagePlainDomain input)
+        {
+            return _mapper.Map<CarePackage>(input);
+        }
+
+        public static IEnumerable<CarePackagePlainDomain> ToPlainDomain(this IEnumerable<CarePackage> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackagePlainDomain>>(input);
+        }
+
+        public static IEnumerable<CarePackage> ToEntity(this IEnumerable<CarePackagePlainDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackage>>(input);
         }
     }
 }

@@ -1,8 +1,6 @@
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
-using HttpServices.Models.Requests;
 using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
@@ -15,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
 {
@@ -182,7 +179,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete
                 .ToListAsync()
                 .ConfigureAwait(false);
         }
-
 
         public async Task<List<ResidentialCarePackage>> GetPackagesByIds(List<Guid> packageIds)
         {

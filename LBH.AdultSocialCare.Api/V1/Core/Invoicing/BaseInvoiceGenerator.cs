@@ -17,16 +17,16 @@ namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing
     {
         private readonly ITransactionsService _transactionsService;
         private readonly IIdentityHelperUseCase _identityHelperUseCase;
-        private readonly ITransactionManager _transactionManager;
+        private readonly IDatabaseManager _databaseManager;
         private readonly ICareChargesGateway _careChargesGateway;
 
         protected BaseInvoiceGenerator(
             ITransactionsService transactionsService, IIdentityHelperUseCase identityHelperUseCase,
-            ITransactionManager transactionManager, ICareChargesGateway careChargesGateway)
+            IDatabaseManager databaseManager, ICareChargesGateway careChargesGateway)
         {
             _transactionsService = transactionsService;
             _identityHelperUseCase = identityHelperUseCase;
-            _transactionManager = transactionManager;
+            _databaseManager = databaseManager;
             _careChargesGateway = careChargesGateway;
         }
 
@@ -113,7 +113,7 @@ namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing
 
         private async Task UpdateInvoicingStateAsync(DateTimeOffset invoiceEndDate, List<GenericPackage> affectedPackages)
         {
-            await using var transaction = await _transactionManager.BeginTransactionAsync().ConfigureAwait(false);
+            await using var transaction = await _databaseManager.BeginTransactionAsync().ConfigureAwait(false);
             try
             {
                 await RefreshPackagesPaidUpToDate(affectedPackages, invoiceEndDate).ConfigureAwait(false);

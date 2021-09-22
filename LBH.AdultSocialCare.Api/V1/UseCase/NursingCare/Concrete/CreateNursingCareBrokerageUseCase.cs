@@ -23,7 +23,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
         private readonly IChangeStatusNursingCarePackageUseCase _changeStatusNursingCarePackageUseCase;
         private readonly INursingCareBrokerageGateway _nursingCareBrokerageGateway;
         private readonly INursingCarePackageGateway _nursingCarePackageGateway;
-        private readonly ITransactionManager _transactionManager;
+        private readonly IDatabaseManager _databaseManager;
         private readonly IMapper _mapper;
         private readonly ICareChargesGateway _careChargesGateway;
         private readonly IPackageCareChargeGateway _packageCareChargeGateway;
@@ -33,14 +33,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
             IChangeStatusNursingCarePackageUseCase changeStatusNursingCarePackageUseCase,
             INursingCareBrokerageGateway nursingCareBrokerageGateway,
             INursingCarePackageGateway nursingCarePackageGateway,
-            ITransactionManager transactionManager,
+            IDatabaseManager databaseManager,
             IMapper mapper, ICareChargesGateway careChargesGateway, IPackageCareChargeGateway packageCareChargeGateway)
         {
             _upsertFundedNursingCareUseCase = upsertFundedNursingCareUseCase;
             _changeStatusNursingCarePackageUseCase = changeStatusNursingCarePackageUseCase;
             _nursingCareBrokerageGateway = nursingCareBrokerageGateway;
             _nursingCarePackageGateway = nursingCarePackageGateway;
-            _transactionManager = transactionManager;
+            _databaseManager = databaseManager;
             _mapper = mapper;
             _careChargesGateway = careChargesGateway;
             _packageCareChargeGateway = packageCareChargeGateway;
@@ -78,7 +78,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
                 throw new ApiException($"Brokerage information for nursing care package with id {brokerageInfoCreationDomain.NursingCarePackageId} already exists", StatusCodes.Status409Conflict);
             }
 
-            await using var transaction = await _transactionManager.BeginTransactionAsync().ConfigureAwait(false);
+            await using var transaction = await _databaseManager.BeginTransactionAsync().ConfigureAwait(false);
             try
             {
                 var brokerageInfoDomain = await CreateBrokerageInfoAsync(brokerageInfoCreationDomain).ConfigureAwait(false);
