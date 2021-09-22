@@ -25,7 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             var carePackageDetails = await _dbContext.CarePackageDetails
                                                     .Where(cpr => cpr.CarePackageId == carePackageId)
                                                     .Select(cpr => _mapper.Map<CarePackageDetailDomain>(cpr))
-                                                    .ToListAsync().ConfigureAwait(false);
+                                                    .ToListAsync();
 
             return carePackageDetails;
         }

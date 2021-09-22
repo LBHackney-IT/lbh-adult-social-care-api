@@ -9,7 +9,7 @@
     <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <NoWarn>1701;1702;CA2234;CA1054</NoWarn>
+    <NoWarn>1701;1702;CA2234;CA1054;CA2007</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <NoWarn>1701;1702;2234;CA1054
