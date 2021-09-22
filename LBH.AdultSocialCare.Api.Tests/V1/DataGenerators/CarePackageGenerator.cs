@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
@@ -20,14 +21,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
         {
             var serviceUser = await _context.Clients.FirstOrDefaultAsync().ConfigureAwait(false);
 
-            var package = new CarePackage
-            {
-                PackageType = type,
-                Stage = PackageStage.New,
-                Status = PackageStatus.New,
-                ServiceUserId = serviceUser.Id,
-                StartDate = DateTimeOffset.Now.AddDays(-30)
-            };
+            var package = TestDataHelper.CreateCarePackage(packageType:type, serviceUserId: serviceUser.Id, status: PackageStatus.New,
+                stage: PackageStage.New, startDate: DateTimeOffset.Now.AddDays(-30));
 
             await _context.CarePackages.AddAsync(package).ConfigureAwait(false);
             await _context.SaveChangesAsync().ConfigureAwait(false);

@@ -28,7 +28,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         public async Task<CarePackagePlainResponse> ResidentialAsync(
             ResidentialCarePackageForCreationDomain residentialCarePackageForCreation)
         {
-            var validPackageSchedulingOptions = new[] { "Interim", "Temporary", "LongTerm" };
+            var validPackageSchedulingOptions = Enum.GetValues(typeof(PackageScheduling))
+                .Cast<PackageScheduling>()
+                .Select(p => nameof(p))
+                .ToArray();
 
             if (!validPackageSchedulingOptions.Contains(residentialCarePackageForCreation.PackagingScheduling, StringComparer.OrdinalIgnoreCase))
             {
