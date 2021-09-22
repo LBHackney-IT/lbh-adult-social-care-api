@@ -22,7 +22,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 
             var package = new CarePackage
             {
-                PackageType = type,
+                PackageType = (int) type,
                 Stage = PackageStage.New,
                 Status = PackageStatus.New,
                 ServiceUserId = serviceUser.Id,
