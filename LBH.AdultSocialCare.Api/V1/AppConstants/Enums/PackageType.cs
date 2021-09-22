@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 {
-    public enum PackageTypeEnum
+    public enum PackageType
     {
         [Display(Name = "Home Care Package")]
         HomeCare = 1,

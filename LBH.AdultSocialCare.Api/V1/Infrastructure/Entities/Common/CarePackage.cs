@@ -22,8 +22,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
         public string PackagingScheduling { get; set; } // TODO: VK: too complex for string?
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
-        public PackageStatusEnum Status { get; set; }    // TODO: VK: Remove alias after legacy PackageStatus will be removed
-        public PackageStageEnum Stage { get; set; }
+        public AppConstants.Enums.PackageStatus Status { get; set; }    // TODO: VK: Remove alias after legacy PackageStatus will be removed
+        public PackageStage Stage { get; set; }
 
         [ForeignKey(nameof(ServiceUserId))] public Client ServiceUser { get; set; }         // TODO: VK: Client or ServiceUser?
         [ForeignKey(nameof(SupplierId))] public Supplier Supplier { get; set; }

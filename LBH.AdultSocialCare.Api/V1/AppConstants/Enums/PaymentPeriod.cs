@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 {
-    public enum PaymentPeriodEnum
+    public enum PaymentPeriod
     {
         [Display(Name = "Weekly")]
         Weekly = 1,
