@@ -15,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
     public class CarePackage : BaseEntity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)] public Guid Id { get; set; }
-        public int PackageType { get; set; }
+        public PackageType PackageType { get; set; }
         public Guid ServiceUserId { get; set; }
         public int? SupplierId { get; set; }
         public string PrimarySupportReason { get; set; }
