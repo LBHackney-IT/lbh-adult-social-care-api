@@ -28,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         public async Task<CarePackagePlainResponse> CreateAsync(
             CarePackageForCreationDomain carePackageForCreation)
         {
-            var validPackageTypes = new[] {PackageType.ResidentialCare, PackageType.NursingCare};
+            var validPackageTypes = new[] { PackageType.ResidentialCare, PackageType.NursingCare };
             if (!validPackageTypes.Contains(carePackageForCreation.PackageType))
             {
                 throw new ApiException($"Please select a valid package type.",
