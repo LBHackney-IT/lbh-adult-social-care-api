@@ -43,6 +43,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
             {
                 ServiceUserId = carePackage.ServiceUserId,
                 PrimarySupportReason = carePackage.PrimarySupportReason,
+                PackageType = carePackage.PackageType,
                 HasRespiteCare = carePackageSettings.HasRespiteCare,
                 HasDischargePackage = carePackageSettings.HasDischargePackage,
                 IsImmediate = carePackageSettings.IsImmediate,
