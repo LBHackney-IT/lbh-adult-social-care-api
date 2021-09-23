@@ -1,4 +1,5 @@
 using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
 
@@ -12,6 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare
         public Guid ServiceUserId { get; set; }
 
         public string PrimarySupportReason { get; set; }
+        public PackageType PackageType { get; set; }
 
         // Package settings
         public bool HasRespiteCare { get; set; }
