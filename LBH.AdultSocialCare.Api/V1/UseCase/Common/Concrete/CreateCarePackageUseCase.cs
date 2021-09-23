@@ -6,6 +6,7 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -30,13 +31,24 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         {
             var validPackageSchedulingOptions = Enum.GetValues(typeof(PackageScheduling))
                 .Cast<PackageScheduling>()
-                .Select(p => nameof(p))
+                .Select(p => p.ToString())
                 .ToArray();
 
             if (!validPackageSchedulingOptions.Contains(residentialCarePackageForCreation.PackagingScheduling, StringComparer.OrdinalIgnoreCase))
             {
                 throw new ApiException(
                     $"Package scheduling option {residentialCarePackageForCreation.PackagingScheduling} is not valid");
+            }
+
+            switch (residentialCarePackageForCreation.PackagingScheduling)
+            {
+                // Check valid date range
+                case nameof(PackageScheduling.Interim) when residentialCarePackageForCreation.EndDate == null || residentialCarePackageForCreation.EndDate > residentialCarePackageForCreation.StartDate.AddDays(42):
+                    throw new ApiException("End date value expected to be under 6 weeks", StatusCodes.Status422UnprocessableEntity);
+                case nameof(PackageScheduling.Temporary) when residentialCarePackageForCreation.EndDate == null || residentialCarePackageForCreation.EndDate > residentialCarePackageForCreation.StartDate.AddDays(365):
+                    throw new ApiException("End date value expected to be under 52 weeks", StatusCodes.Status422UnprocessableEntity);
+                case nameof(PackageScheduling.LongTerm) when residentialCarePackageForCreation.EndDate != null && residentialCarePackageForCreation.StartDate.AddDays(365) > residentialCarePackageForCreation.EndDate:
+                    throw new ApiException("End date value expected to be null or over 52 weeks", StatusCodes.Status422UnprocessableEntity);
             }
 
             var carePackageEntity = residentialCarePackageForCreation.ToEntity();
