@@ -1,104 +1,47 @@
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
-    public class PackageStatusSeed : IEntityTypeConfiguration<PackageStatus>
+    public class PackageStatusSeed : IEntityTypeConfiguration<PackageStatusOption>
     {
-        public void Configure(EntityTypeBuilder<PackageStatus> builder)
+        public void Configure(EntityTypeBuilder<PackageStatusOption> builder)
         {
             var dateTimeOffset = new DateTimeOffset(AppTimeConstants.CreateUpdateDefaultDateTime).ToOffset(TimeSpan.Zero);
-            builder.HasData(new PackageStatus
+            builder.HasData(new PackageStatusOption
             {
-                Id = 1,
-                StatusName = "Draft",
-                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                DateCreated = dateTimeOffset,
-                DateUpdated = dateTimeOffset
-            }, new PackageStatus
+                Id = (int) AppConstants.Enums.PackageStatus.Draft,
+                StatusName = nameof(AppConstants.Enums.PackageStatus.Draft),
+                StatusDisplayName = AppConstants.Enums.PackageStatus.Draft.GetDisplayName(),
+            }, new PackageStatusOption
             {
-                Id = 2,
-                StatusName = "For Contents Approval",
-                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                DateCreated = dateTimeOffset,
-                DateUpdated = dateTimeOffset
-            }, new PackageStatus
+                Id = (int) AppConstants.Enums.PackageStatus.New,
+                StatusName = nameof(AppConstants.Enums.PackageStatus.New),
+                StatusDisplayName = AppConstants.Enums.PackageStatus.New.GetDisplayName(),
+            }, new PackageStatusOption
             {
-                Id = 3,
-                StatusName = "Clarification Needed",
-                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                DateCreated = dateTimeOffset,
-                DateUpdated = dateTimeOffset
-            }, new PackageStatus
+                Id = (int) AppConstants.Enums.PackageStatus.SubmittedForApproval,
+                StatusName = nameof(AppConstants.Enums.PackageStatus.SubmittedForApproval),
+                StatusDisplayName = AppConstants.Enums.PackageStatus.SubmittedForApproval.GetDisplayName(),
+            }, new PackageStatusOption
             {
-                Id = 4,
-                StatusName = "Contents Approved",
-                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                DateCreated = dateTimeOffset,
-                DateUpdated = dateTimeOffset
-            }, new PackageStatus
+                Id = (int) AppConstants.Enums.PackageStatus.Rejected,
+                StatusName = nameof(AppConstants.Enums.PackageStatus.Rejected),
+                StatusDisplayName = AppConstants.Enums.PackageStatus.Rejected.GetDisplayName(),
+            }, new PackageStatusOption
             {
-                Id = 5,
-                StatusName = "Brokering",
-                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                DateCreated = dateTimeOffset,
-                DateUpdated = dateTimeOffset
-            }, new PackageStatus
+                Id = (int) AppConstants.Enums.PackageStatus.ClarificationNeeded,
+                StatusName = nameof(AppConstants.Enums.PackageStatus.ClarificationNeeded),
+                StatusDisplayName = AppConstants.Enums.PackageStatus.ClarificationNeeded.GetDisplayName(),
+            }, new PackageStatusOption
             {
-                Id = 6,
-                StatusName = "Commercially Approved Needed",
-                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                DateCreated = dateTimeOffset,
-                DateUpdated = dateTimeOffset
-            }, new PackageStatus
-            {
-                Id = 7,
-                StatusName = "Clarifying Commercials",
-                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                DateCreated = dateTimeOffset,
-                DateUpdated = dateTimeOffset
-            }, new PackageStatus
-            {
-                Id = 8,
-                StatusName = "Commercials Approved",
-                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                DateCreated = dateTimeOffset,
-                DateUpdated = dateTimeOffset
-            }, new PackageStatus
-            {
-                Id = 9,
-                StatusName = "PO Issued",
-                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                DateCreated = dateTimeOffset,
-                DateUpdated = dateTimeOffset
-            }, new PackageStatus
-            {
-                Id = 10,
-                StatusName = "Suspended",
-                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                DateCreated = dateTimeOffset,
-                DateUpdated = dateTimeOffset
-            }, new PackageStatus
-            {
-                Id = 11,
-                StatusName = "Ended",
-                CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                UpdaterId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                DateCreated = dateTimeOffset,
-                DateUpdated = dateTimeOffset
+                Id = (int) AppConstants.Enums.PackageStatus.Approved,
+                StatusName = nameof(AppConstants.Enums.PackageStatus.Approved),
+                StatusDisplayName = AppConstants.Enums.PackageStatus.Approved.GetDisplayName(),
             });
         }
     }

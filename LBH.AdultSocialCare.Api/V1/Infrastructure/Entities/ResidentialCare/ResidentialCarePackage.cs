@@ -34,7 +34,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare
         public DateTimeOffset? PreviousPaidUpTo { get; set; }
 
         [ForeignKey(nameof(ClientId))] public Client Client { get; set; }
-        [ForeignKey(nameof(StatusId))] public PackageStatus Status { get; set; }
+        [ForeignKey(nameof(StatusId))] public PackageStatusOption Status { get; set; }
         [ForeignKey(nameof(StageId))] public Stage Stage { get; set; }
         [ForeignKey(nameof(SupplierId))] public Supplier Supplier { get; set; }
         [ForeignKey(nameof(TypeOfResidentialCareHomeId))] public TypeOfResidentialCareHome TypeOfCareHome { get; set; }

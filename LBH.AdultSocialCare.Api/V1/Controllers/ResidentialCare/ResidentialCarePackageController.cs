@@ -55,17 +55,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.ResidentialCare
         }
 
         /// <summary>Creates a new residential care package.</summary>
-        /// <param name="residentialCarePackageForCreationRequest">The residential care package request.</param>
+        /// <param name="carePackageForCreationRequest">The residential care package request.</param>
         /// <returns>The residential care package created.</returns>
         [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
-        public async Task<ActionResult<CarePackagePlainResponse>> CreateResidentialCarePackage([FromBody] ResidentialCarePackageForCreationRequest residentialCarePackageForCreationRequest)
+        public async Task<ActionResult<CarePackagePlainResponse>> CreateResidentialCarePackage([FromBody] CarePackageForCreationRequest carePackageForCreationRequest)
         {
-            var residentialCarePackageForCreationDomain = residentialCarePackageForCreationRequest.ToDomain();
-            var residentialCarePackageResponse = await _createPackageUseCase.ResidentialAsync(residentialCarePackageForCreationDomain).ConfigureAwait(false);
+            var residentialCarePackageForCreationDomain = carePackageForCreationRequest.ToDomain();
+            var residentialCarePackageResponse = await _createPackageUseCase.CreateAsync(residentialCarePackageForCreationDomain).ConfigureAwait(false);
             return Ok(residentialCarePackageResponse);
         }
 

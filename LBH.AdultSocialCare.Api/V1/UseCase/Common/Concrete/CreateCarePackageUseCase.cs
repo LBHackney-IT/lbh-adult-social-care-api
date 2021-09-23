@@ -1,4 +1,3 @@
-using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
@@ -6,8 +5,6 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
-using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
@@ -25,40 +22,24 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             _clientsGateway = clientsGateway;
         }
 
-        public async Task<CarePackagePlainResponse> ResidentialAsync(
-            ResidentialCarePackageForCreationDomain residentialCarePackageForCreation)
+        public async Task<CarePackagePlainResponse> CreateAsync(
+            CarePackageForCreationDomain carePackageForCreation)
         {
-            var validPackageSchedulingOptions = new[] { "Interim", "Temporary", "LongTerm" };
-
-            if (!validPackageSchedulingOptions.Contains(residentialCarePackageForCreation.PackagingScheduling, StringComparer.OrdinalIgnoreCase))
-            {
-                throw new ApiException(
-                    $"Package scheduling option {residentialCarePackageForCreation.PackagingScheduling} is not valid");
-            }
-
-            var carePackageEntity = residentialCarePackageForCreation.ToEntity();
-            var carePackageSettingsEntity = residentialCarePackageForCreation.ToSettings();
+            var carePackageEntity = carePackageForCreation.ToEntity();
+            var carePackageSettingsEntity = carePackageForCreation.ToSettings();
 
             // Get and set random client on package
             var randomClient = await _clientsGateway.GetRandomAsync().ConfigureAwait(false);
             carePackageEntity.ServiceUserId = randomClient.Id;
             carePackageEntity.PackageType = PackageType.ResidentialCare;
-            carePackageEntity.Status = PackageStatus.New;
+            carePackageEntity.Status = PackageStatus.Draft;
 
-            carePackageEntity.ResidentialCareSettings = carePackageSettingsEntity;
+            carePackageEntity.CarePackageSettings = carePackageSettingsEntity;
             _carePackageGateway.Create(carePackageEntity);
 
-            // Set package status and record the change in package history
-            //Change status of package
-            /*await _changeStatusResidentialCarePackageUseCase
-                .UpdateAsync(residentialCarePackageResponse.Id, ApprovalHistoryConstants.NewPackageId)
-                .ConfigureAwait(false);
+            // TODO: Create record in package history?
 
-            await _changeStatusResidentialCarePackageUseCase
-                .UpdateAsync(residentialCarePackageResponse.Id, ApprovalHistoryConstants.SubmittedForApprovalId)
-                .ConfigureAwait(false);*/
-
-            await _dbManager.SaveAsync("Failed to create residential care package").ConfigureAwait(false);
+            await _dbManager.SaveAsync("Failed to create care package").ConfigureAwait(false);
             return carePackageEntity.ToPlainDomain().ToResponse();
         }
     }
