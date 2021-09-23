@@ -40,8 +40,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         }
 
         public DbSet<CarePackage> CarePackages { get; set; }
-        public DbSet<NursingCarePackageSettings> NursingCarePackageSettings { get; set; }
-        public DbSet<ResidentialCarePackageSettings> ResidentialCarePackageSettings { get; set; }
+        public DbSet<CarePackageSettings> CarePackageSettings { get; set; }
 
         public DbSet<CarePackageDetail> CarePackageDetails { get; set; }
         public DbSet<CarePackageReclaim> CarePackageReclaims { get; set; }
@@ -61,7 +60,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<HomeCareServiceTypeMinutes> HomeCareServiceTypeMinutes { get; set; }
         public DbSet<HomeCarePackageSlots> HomeCarePackageSlots { get; set; }
         public DbSet<Client> Clients { get; set; }
-        public DbSet<PackageStatus> PackageStatuses { get; set; }
+        public DbSet<PackageStatusOption> PackageStatuses { get; set; }
         public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
         public DbSet<ResidentialCarePackage> ResidentialCarePackages { get; set; }
         public DbSet<NursingCarePackage> NursingCarePackages { get; set; }
