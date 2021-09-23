@@ -4,13 +4,16 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 {
     public enum PaymentPeriod
     {
+        [Display(Name = "Hourly")]
+        Hourly = 1,
+
         [Display(Name = "Weekly")]
-        Weekly = 1,
+        Weekly = 2,
 
         [Display(Name = "One-off")]
-        OneOff = 2,
+        OneOff = 3,
 
         [Display(Name = "Fixed")]
-        FixedPeriod = 3
+        Fixed = 4
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
@@ -23,10 +22,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             var package = new CarePackage
             {
                 PackageType = type,
-                Stage = PackageStage.New,
                 Status = PackageStatus.New,
-                ServiceUserId = serviceUser.Id,
-                StartDate = DateTimeOffset.Now.AddDays(-30)
+                ServiceUserId = serviceUser.Id
             };
 
             await _context.CarePackages.AddAsync(package).ConfigureAwait(false);
