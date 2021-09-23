@@ -99,9 +99,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region ResidentialCarePackage
 
-        public static ResidentialCarePackage ToDb(this ResidentialCarePackageForCreationDomain residentialCarePackageForCreationDomain)
+        public static ResidentialCarePackage ToDb(this CarePackageForCreationDomain carePackageForCreationDomain)
         {
-            return _mapper.Map<ResidentialCarePackage>(residentialCarePackageForCreationDomain);
+            return _mapper.Map<ResidentialCarePackage>(carePackageForCreationDomain);
         }
 
         public static ResidentialCareApprovalHistory ToDb(this ResidentialCareApprovalHistoryDomain residentialCareApprovalHistory)

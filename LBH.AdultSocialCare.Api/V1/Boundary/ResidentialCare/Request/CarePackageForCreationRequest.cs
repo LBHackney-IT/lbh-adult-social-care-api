@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
 {
-    public class ResidentialCarePackageForCreationRequest
+    public class CarePackageForCreationRequest
     {
         // Core package
         [Required, GuidNotEmpty]

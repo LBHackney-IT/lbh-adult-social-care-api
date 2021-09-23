@@ -22,11 +22,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             _clientsGateway = clientsGateway;
         }
 
-        public async Task<CarePackagePlainResponse> ResidentialAsync(
-            ResidentialCarePackageForCreationDomain residentialCarePackageForCreation)
+        public async Task<CarePackagePlainResponse> CreateAsync(
+            CarePackageForCreationDomain carePackageForCreation)
         {
-            var carePackageEntity = residentialCarePackageForCreation.ToEntity();
-            var carePackageSettingsEntity = residentialCarePackageForCreation.ToSettings();
+            var carePackageEntity = carePackageForCreation.ToEntity();
+            var carePackageSettingsEntity = carePackageForCreation.ToSettings();
 
             // Get and set random client on package
             var randomClient = await _clientsGateway.GetRandomAsync().ConfigureAwait(false);

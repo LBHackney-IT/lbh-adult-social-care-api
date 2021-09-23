@@ -35,11 +35,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.IsS117Client, f => f.Random.Bool());
         }
 
-        public static ResidentialCarePackageForCreationRequest ResidentialCarePackageCreationRequest(PackageType? packageType = null, Guid? serviceUserId = null, PackageStatus? status = null, Guid? settingId = null, Guid? carePackageId = null)
+        public static CarePackageForCreationRequest CarePackageCreationRequest(PackageType? packageType = null, Guid? serviceUserId = null, PackageStatus? status = null, Guid? settingId = null, Guid? carePackageId = null)
         {
             var carePackage = CreateCarePackage(packageType, serviceUserId, status);
             var carePackageSettings = CreateCarePackageSettings(settingId, carePackageId);
-            return new ResidentialCarePackageForCreationRequest
+            return new CarePackageForCreationRequest
             {
                 ServiceUserId = carePackage.ServiceUserId,
                 PrimarySupportReason = carePackage.PrimarySupportReason,

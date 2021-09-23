@@ -6,7 +6,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare
 {
     [GenerateMappingFor(typeof(CarePackage))]
     [GenerateMappingFor(typeof(CarePackageSettings))]
-    public class ResidentialCarePackageForCreationDomain
+    public class CarePackageForCreationDomain
     {
         // Core package
         public Guid ServiceUserId { get; set; }

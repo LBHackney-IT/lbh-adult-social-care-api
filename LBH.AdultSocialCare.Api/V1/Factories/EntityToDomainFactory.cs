@@ -547,9 +547,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region ResidentialCarePackage
 
-        public static IList<ResidentialCarePackageForCreationDomain> ToDomain(this IList<ResidentialCarePackage> residentialCarePackagesEntity)
+        public static IList<CarePackageForCreationDomain> ToDomain(this IList<ResidentialCarePackage> residentialCarePackagesEntity)
         {
-            return _mapper.Map<IList<ResidentialCarePackageForCreationDomain>>(residentialCarePackagesEntity);
+            return _mapper.Map<IList<CarePackageForCreationDomain>>(residentialCarePackagesEntity);
         }
 
         public static IList<TypeOfResidentialCareHomeDomain> ToDomain(this IList<TypeOfResidentialCareHome> typeOfResidentialCareHomes)

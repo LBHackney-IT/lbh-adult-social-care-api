@@ -110,24 +110,24 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CarePackagePlainDomain>>(input);
         }
 
-        public static CarePackage ToEntity(this ResidentialCarePackageForCreationDomain input)
+        public static CarePackage ToEntity(this CarePackageForCreationDomain input)
         {
             return _mapper.Map<CarePackage>(input);
         }
 
-        public static ResidentialCarePackageForCreationDomain ToForCreationDomain(this CarePackage input)
+        public static CarePackageForCreationDomain ToForCreationDomain(this CarePackage input)
         {
-            return _mapper.Map<ResidentialCarePackageForCreationDomain>(input);
+            return _mapper.Map<CarePackageForCreationDomain>(input);
         }
 
-        public static CarePackageSettings ToSettings(this ResidentialCarePackageForCreationDomain input)
+        public static CarePackageSettings ToSettings(this CarePackageForCreationDomain input)
         {
             return _mapper.Map<CarePackageSettings>(input);
         }
 
-        public static ResidentialCarePackageForCreationDomain ToForCreationDomain(this CarePackageSettings input)
+        public static CarePackageForCreationDomain ToForCreationDomain(this CarePackageSettings input)
         {
-            return _mapper.Map<ResidentialCarePackageForCreationDomain>(input);
+            return _mapper.Map<CarePackageForCreationDomain>(input);
         }
 
         public static CareChargeElementPlainDomain ToPlainDomain(this CareChargeElementCreationRequest input)

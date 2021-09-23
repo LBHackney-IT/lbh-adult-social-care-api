@@ -149,13 +149,13 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ResidentialCareTypeOfStayOption, ResidentialCareTypeOfStayOptionDomain>();
             CreateMap<ResidentialCareTypeOfStayOptionDomain, ResidentialCareTypeOfStayOptionResponse>();
             CreateMap<ResidentialCarePackageForUpdateRequest, ResidentialCarePackageDomain>();
-            CreateMap<ResidentialCarePackageForCreationRequest, ResidentialCarePackageForCreationDomain>();
+            CreateMap<CarePackageForCreationRequest, CarePackageForCreationDomain>();
             CreateMap<ResidentialCareAdditionalNeedForCreationRequest, ResidentialCareAdditionalNeedForCreationDomain>();
             CreateMap<ResidentialCareAdditionalNeedsCreationRequest, ResidentialCareAdditionalNeedForCreationDomain>();
             CreateMap<ResidentialCareAdditionalNeedForCreationDomain, ResidentialCareAdditionalNeed>();
             CreateMap<ResidentialCareAdditionalNeed, ResidentialCareAdditionalNeedsDomain>();
             CreateMap<ResidentialCareAdditionalNeedsDomain, ResidentialCareAdditionalNeedsResponse>();
-            CreateMap<ResidentialCarePackageForCreationDomain, ResidentialCarePackage>();
+            CreateMap<CarePackageForCreationDomain, ResidentialCarePackage>();
             CreateMap<ResidentialCarePackageForUpdateDomain, ResidentialCarePackage>();
             CreateMap<TypeOfResidentialCareHomeDomain, TypeOfResidentialCareHomeResponse>();
             CreateMap<ResidentialCareApprovalHistory, ResidentialCareApprovalHistoryDomain>();

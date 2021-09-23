@@ -19,9 +19,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete
             _clientsGateway = clientsGateway;
         }
 
-        public async Task<ResidentialCarePackageResponse> ExecuteAsync(ResidentialCarePackageForCreationDomain residentialCarePackageForCreation)
+        public async Task<ResidentialCarePackageResponse> ExecuteAsync(CarePackageForCreationDomain carePackageForCreation)
         {
-            var residentialCarePackageEntity = residentialCarePackageForCreation.ToDb();
+            var residentialCarePackageEntity = carePackageForCreation.ToDb();
             var client = await _clientsGateway.GetRandomAsync().ConfigureAwait(false);
             residentialCarePackageEntity.ClientId = client.Id;
             var res = await _residentialCarePackageGateway.CreateAsync(residentialCarePackageEntity).ConfigureAwait(false);

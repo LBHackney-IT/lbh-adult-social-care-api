@@ -38,12 +38,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
             var useCase =
                 new CreateCarePackageUseCase(_dbManager.Object, _carePackageGateway.Object, _clientsGateway.Object);
             var packageCreationRequest = TestDataHelper
-                .ResidentialCarePackageCreationRequest(serviceUserId: Guid.Parse(UserConstants.DefaultApiUserId),
+                .CarePackageCreationRequest(serviceUserId: Guid.Parse(UserConstants.DefaultApiUserId),
                     packageType: PackageType.ResidentialCare);
             var packageCreationDomain = packageCreationRequest.ToDomain();
 
             //Act
-            await useCase.ResidentialAsync(packageCreationDomain).ConfigureAwait(false);
+            await useCase.CreateAsync(packageCreationDomain).ConfigureAwait(false);
 
             // Assert
             _carePackageGateway.Verify(x => x.Create(It.IsAny<CarePackage>()), Times.Once());
