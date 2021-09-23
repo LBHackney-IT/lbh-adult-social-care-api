@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using LBH.AdultSocialCare.Api.V1.UseCase;
+using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
@@ -21,6 +23,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
     {
         public static void RegisterUseCases(this IServiceCollection services)
         {
+            services.AddScoped<IGetCarePackageDetailsUseCase, GetCarePackageDetailsUseCase>();
             services.AddScoped<IDeleteClientsUseCase, DeleteClientsUseCase>();
             services.AddScoped<IGetAllClientsUseCase, GetAllClientsUseCase>();
             services.AddScoped<IGetClientPackagesCountUseCase, GetClientPackagesCountUseCase>();
