@@ -385,14 +385,12 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region PackageStatus
 
-        public static PackageStatus ToEntity(this StatusDomain statusDomain)
+        public static PackageStatusOption ToEntity(this StatusDomain statusDomain)
         {
-            return new PackageStatus
+            return new PackageStatusOption
             {
                 Id = statusDomain.Id,
-                StatusName = statusDomain.StatusName,
-                CreatorId = statusDomain.CreatorId,
-                UpdaterId = statusDomain.UpdaterId
+                StatusName = statusDomain.StatusName
             };
         }
 

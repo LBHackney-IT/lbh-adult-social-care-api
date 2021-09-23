@@ -120,12 +120,12 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ResidentialCarePackageForCreationDomain>(input);
         }
 
-        public static ResidentialCarePackageSettings ToSettings(this ResidentialCarePackageForCreationDomain input)
+        public static CarePackageSettings ToSettings(this ResidentialCarePackageForCreationDomain input)
         {
-            return _mapper.Map<ResidentialCarePackageSettings>(input);
+            return _mapper.Map<CarePackageSettings>(input);
         }
 
-        public static ResidentialCarePackageForCreationDomain ToForCreationDomain(this ResidentialCarePackageSettings input)
+        public static ResidentialCarePackageForCreationDomain ToForCreationDomain(this CarePackageSettings input)
         {
             return _mapper.Map<ResidentialCarePackageForCreationDomain>(input);
         }

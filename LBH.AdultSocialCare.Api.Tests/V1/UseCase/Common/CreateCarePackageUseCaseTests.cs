@@ -20,8 +20,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
         private readonly Mock<ICarePackageGateway> _carePackageGateway;
         private readonly Mock<IClientsGateway> _clientsGateway;
 
-        private readonly DateTimeOffset _today = DateTimeOffset.Now;
-
         public CreateCarePackageUseCaseTests()
         {
             _dbManager = new Mock<IDatabaseManager>();
@@ -41,8 +39,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
                 new CreateCarePackageUseCase(_dbManager.Object, _carePackageGateway.Object, _clientsGateway.Object);
             var packageCreationRequest = TestDataHelper
                 .ResidentialCarePackageCreationRequest(serviceUserId: Guid.Parse(UserConstants.DefaultApiUserId),
-                    startDate: _today, endDate: _today.AddDays(30), packageType: PackageType.ResidentialCare,
-                    packageScheduling: nameof(PackageScheduling.Interim));
+                    packageType: PackageType.ResidentialCare);
             var packageCreationDomain = packageCreationRequest.ToDomain();
 
             //Act

@@ -14,7 +14,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             _gateway = roleGateway;
         }
 
-        public async Task<IList<PackageStatus>> GetAllAsync()
+        public async Task<IList<PackageStatusOption>> GetAllAsync()
         {
             return await _gateway.ListAsync().ConfigureAwait(false);
         }

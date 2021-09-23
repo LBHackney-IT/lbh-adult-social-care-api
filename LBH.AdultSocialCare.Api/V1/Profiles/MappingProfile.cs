@@ -486,7 +486,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #region PackageStatus
 
-            CreateMap<PackageStatus, StatusDomain>();
+            CreateMap<PackageStatusOption, StatusDomain>();
             CreateMap<StatusDomain, StatusResponse>();
 
             #endregion PackageStatus

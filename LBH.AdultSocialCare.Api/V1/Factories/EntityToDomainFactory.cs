@@ -1,5 +1,6 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
@@ -21,7 +22,6 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerag
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using System.Collections.Generic;
 using System.Linq;
-using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -616,18 +616,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region PackageStatus
 
-        public static StatusDomain ToDomain(this PackageStatus statusEntity)
+        public static StatusDomain ToDomain(this PackageStatusOption statusOptionEntity)
         {
             return new StatusDomain
             {
-                Id = statusEntity.Id,
-                StatusName = statusEntity.StatusName,
-                CreatorId = statusEntity.CreatorId,
-                UpdaterId = statusEntity.UpdaterId
+                Id = statusOptionEntity.Id,
+                StatusName = statusOptionEntity.StatusName
             };
         }
 
-        public static IEnumerable<StatusDomain> ToDomain(this List<PackageStatus> packageStatus)
+        public static IEnumerable<StatusDomain> ToDomain(this List<PackageStatusOption> packageStatus)
         {
             return _mapper.Map<IEnumerable<StatusDomain>>(packageStatus);
         }

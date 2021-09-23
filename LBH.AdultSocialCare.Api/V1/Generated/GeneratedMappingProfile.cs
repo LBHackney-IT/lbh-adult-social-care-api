@@ -49,7 +49,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CareChargeElementTypePlainDomain, CareChargeElementTypePlainResponse>().ReverseMap();
             CreateMap<CarePackagePlainDomain, CarePackagePlainResponse>().ReverseMap();
             CreateMap<ResidentialCarePackageForCreationDomain, CarePackage>().ReverseMap();
-            CreateMap<ResidentialCarePackageForCreationDomain, ResidentialCarePackageSettings>().ReverseMap();
+            CreateMap<ResidentialCarePackageForCreationDomain, CarePackageSettings>().ReverseMap();
             CreateMap<CareChargeElementCreationRequest, CareChargeElementPlainDomain>().ReverseMap();
             CreateMap<CareChargeElementForUpdateRequest, CareChargeElementForUpdateDomain>().ReverseMap();
             CreateMap<EndCareChargeElementRequest, EndCareChargeElementDomain>().ReverseMap();
