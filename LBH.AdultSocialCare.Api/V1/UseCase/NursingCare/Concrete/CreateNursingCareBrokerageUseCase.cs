@@ -13,6 +13,7 @@ using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
@@ -48,6 +49,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete
 
         public async Task<NursingCareBrokerageInfoResponse> ExecuteAsync(NursingCareBrokerageInfoCreationDomain brokerageInfoCreationDomain)
         {
+            // TODO: Consider using CareChargeSettings itself as indicator of having care charges, this would simplify validation
             switch (brokerageInfoCreationDomain.HasCareCharges)
             {
                 case true when brokerageInfoCreationDomain.CareChargeSettings == null:

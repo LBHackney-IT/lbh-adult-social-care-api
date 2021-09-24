@@ -9,6 +9,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways
 
         void Save(string errorMessage);
 
-        Task SaveAsync(string errorMessage);
+        Task SaveAsync(string errorMessage = "Failed to perform save operation");
     }
 }
