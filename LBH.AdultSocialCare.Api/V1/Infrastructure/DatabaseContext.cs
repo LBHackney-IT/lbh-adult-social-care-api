@@ -1,6 +1,7 @@
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
@@ -24,7 +25,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
@@ -44,6 +44,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
         public DbSet<CarePackageDetail> CarePackageDetails { get; set; }
         public DbSet<CarePackageReclaim> CarePackageReclaims { get; set; }
+        public DbSet<CarePackageSchedulingOption> CarePackageSchedulingOptions { get; set; }
 
         public DbSet<DayCarePackage> DayCarePackages { get; set; }
         public DbSet<EscortPackage> EscortPackages { get; set; }
@@ -219,6 +220,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed care charges helpers
             modelBuilder.ApplyConfiguration(new InvoiceItemPriceEffectSeed());
             modelBuilder.ApplyConfiguration(new InvoiceNoteChargeTypeSeed());
+
+            // Seed care package lookups
+            modelBuilder.ApplyConfiguration(new CarePackageSchedulingOptionsSeed());
 
             #endregion Database Seeds
 
