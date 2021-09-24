@@ -12,7 +12,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
         public string PrimarySupportReason { get; set; }
         public PackageStatus Status { get; set; }
         public DateTimeOffset DateCreated { get; set; }
-        public DateTimeOffset DateUpdated { get; set; }
+        public DateTimeOffset? DateUpdated { get; set; }
         public Guid CreatorId { get; set; }
         public Guid? UpdaterId { get; set; }
     }
