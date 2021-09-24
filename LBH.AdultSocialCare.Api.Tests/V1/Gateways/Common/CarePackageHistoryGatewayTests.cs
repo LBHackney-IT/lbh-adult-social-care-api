@@ -1,13 +1,15 @@
+using FluentAssertions;
+using LBH.AdultSocialCare.Api.Tests.Extensions;
+using LBH.AdultSocialCare.Api.Tests.V1.Helper;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using Microsoft.EntityFrameworkCore;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentAssertions;
-using LBH.AdultSocialCare.Api.Tests.V1.Constants;
-using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
-using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
@@ -25,37 +27,29 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
         public async Task ShouldReturnHistoriesForPackage()
         {
             //Arrange
-            var user = new Client() { Id = Guid.Parse(UserConstants.DefaultApiUserId) };
-            Context.Clients.Add(user);
-            await Context.SaveChangesAsync().ConfigureAwait(false);
+            var carePackageId = new Guid();
+            var historyList = new List<CarePackageHistory>();
 
-            var carePackage = new CarePackage() { ServiceUserId = Guid.Parse(UserConstants.DefaultApiUserId) };
-            Context.CarePackages.Add(carePackage);
-            await Context.SaveChangesAsync().ConfigureAwait(false);
-
-            var carePackageId = carePackage.Id;
-            var carePackageHistory = new List<CarePackageHistory>()
+            for (var i = 0; i < 10; i++)
             {
-                new CarePackageHistory
-                {
-                    CarePackageId = carePackageId,
-                    Description = "test"
-                },
-                new CarePackageHistory
-                {
-                    CarePackageId = carePackageId,
-                    Description = "test 1"
-                },
-            };
+                historyList.Add(TestDataHelper.CreateCarePackageHistory(carePackageId: carePackageId));
+            }
 
-            Context.CarePackageHistories.AddRange(carePackageHistory);
-            await Context.SaveChangesAsync().ConfigureAwait(false);
+            var carePackageHistory = historyList.AsAsyncQueryable();
+
+            var mockSet = new Mock<DbSet<CarePackageHistory>>();
+            mockSet.As<IQueryable<CarePackageHistory>>().Setup(m => m.Provider).Returns(carePackageHistory.Provider);
+            mockSet.As<IQueryable<CarePackageHistory>>().Setup(m => m.Expression).Returns(carePackageHistory.Expression);
+            mockSet.As<IQueryable<CarePackageHistory>>().Setup(m => m.ElementType).Returns(carePackageHistory.ElementType);
+            mockSet.As<IQueryable<CarePackageHistory>>().Setup(m => m.GetEnumerator()).Returns(carePackageHistory.GetEnumerator());
+
+            Context.CarePackageHistories = mockSet.Object;
 
             //Act
-            var res = await _gateway.ListAsync(carePackageId).ConfigureAwait(false);
+            var histories = await _gateway.ListAsync(carePackageId);
 
             //Assert
-            res.Should().HaveCount(2);
+            histories.Should().HaveCount(10);
         }
 
         [Fact]

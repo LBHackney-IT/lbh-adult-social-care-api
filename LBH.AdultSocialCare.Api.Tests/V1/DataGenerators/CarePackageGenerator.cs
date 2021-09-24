@@ -23,7 +23,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             {
                 PackageType = type,
                 Status = PackageStatus.New,
-                ServiceUserId = serviceUser.Id
+                ServiceUserId = serviceUser.Id,
+                PrimarySupportReasonId = 1,
+                PackageScheduling = PackageScheduling.LongTerm
             };
 
             await _context.CarePackages.AddAsync(package).ConfigureAwait(false);
