@@ -12,7 +12,11 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
         public Guid ServiceUserId { get; set; }
 
         [Required]
-        public string PrimarySupportReason { get; set; }
+        public int? PrimarySupportReasonId { get; set; }
+
+        [Required]
+        [EnumDataType(typeof(PackageScheduling))]
+        public PackageScheduling? PackageScheduling { get; set; }
 
         [Range(1, 4)]
         public PackageType PackageType { get; set; }

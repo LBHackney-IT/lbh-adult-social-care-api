@@ -1,8 +1,8 @@
+using System;
 using Bogus;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using System;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
 {
@@ -17,7 +17,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.PackageType, f => packageType ?? f.PickRandom<PackageType>())
                 .RuleFor(cp => cp.ServiceUserId, f => serviceUserId ?? f.Random.Guid())
                 .RuleFor(cp => cp.SupplierId, f => f.UniqueIndex)
-                .RuleFor(cp => cp.PrimarySupportReason, f => f.Lorem.Paragraph(3))
+                .RuleFor(cp => cp.PackageScheduling, f => f.PickRandom<PackageScheduling>())
+                .RuleFor(cp => cp.PrimarySupportReasonId, f => f.PickRandom(1, 2))
                 /*.RuleFor(cp => cp.StartDate,
                     f => startDate ?? f.Date.BetweenOffset(today.AddDays(-300), today.AddDays(-200)))*/
                 .RuleFor(cp => cp.Status, f => status ?? f.PickRandom<PackageStatus>());
@@ -42,7 +43,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
             return new CarePackageForCreationRequest
             {
                 ServiceUserId = carePackage.ServiceUserId,
-                PrimarySupportReason = carePackage.PrimarySupportReason,
+                PrimarySupportReasonId = carePackage.PrimarySupportReasonId,
+                PackageScheduling = carePackage.PackageScheduling,
                 PackageType = carePackage.PackageType,
                 HasRespiteCare = carePackageSettings.HasRespiteCare,
                 HasDischargePackage = carePackageSettings.HasDischargePackage,
