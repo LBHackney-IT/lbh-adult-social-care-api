@@ -60,6 +60,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
         {
             return new Faker<CarePackageDetail>()
                 .RuleFor(d => d.Cost, f => f.PickRandom(1.2m, 3.4m, 5.6m, 7.8m, 9.1m, 12.34m, 56.78m, 91.12m, 123.45m, 456.78m)) // Workaround to avoid precision loss in SQLite
+                .RuleFor(d => d.CostPeriod, f => f.PickRandom(PaymentPeriod.Weekly, PaymentPeriod.OneOff))
                 .RuleFor(d => d.StartDate, f => f.Date.Past().Date)
                 .RuleFor(d => d.EndDate, f => f.Date.Future().Date)
                 .RuleFor(d => d.Type, type)

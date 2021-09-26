@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             // Imitate remove, create and update at once
             request.Details.RemoveAt(1);
             request.Details.RemoveAt(2);
-            request.Details.Add(TestDataHelper.CreateCarePackageDetailDomainList(1, PackageDetailType.AdditionalNeedWeekly).First().ToRequest());
+            request.Details.Add(TestDataHelper.CreateCarePackageDetailDomainList(1, PackageDetailType.AdditionalNeed).First().ToRequest());
 
             foreach (var detail in request.Details)
             {

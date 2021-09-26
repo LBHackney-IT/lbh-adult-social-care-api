@@ -24,6 +24,10 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
         public decimal? Cost { get; set; }
 
         [Required]
+        [EnumDataType(typeof(PaymentPeriod))]
+        public PaymentPeriod CostPeriod { get; set; }
+
+        [Required]
         public DateTimeOffset? StartDate { get; set; }
 
         public DateTimeOffset? EndDate { get; set; }

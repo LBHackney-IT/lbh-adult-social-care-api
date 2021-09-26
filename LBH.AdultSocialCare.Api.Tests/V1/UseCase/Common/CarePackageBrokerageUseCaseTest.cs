@@ -48,7 +48,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
         {
             var brokerageInfo = new CarePackageBrokerageDomain
             {
-                Details = TestDataHelper.CreateCarePackageDetailDomainList(3, PackageDetailType.AdditionalNeedWeekly)
+                Details = TestDataHelper.CreateCarePackageDetailDomainList(3, PackageDetailType.AdditionalNeed)
             };
 
             _useCase.ExecuteAsync(_package.Id, brokerageInfo);
@@ -134,7 +134,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
         {
             var brokerageInfo = new CarePackageBrokerageDomain
             {
-                Details = TestDataHelper.CreateCarePackageDetailDomainList(1, PackageDetailType.AdditionalNeedWeekly)
+                Details = TestDataHelper.CreateCarePackageDetailDomainList(1, PackageDetailType.AdditionalNeed)
             };
 
             _useCase
@@ -201,7 +201,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 
         private List<CarePackageDetailDomain> FillPackageDetails()
         {
-            var packageDetails = TestDataHelper.CreateCarePackageDetailDomainList(3, PackageDetailType.AdditionalNeedWeekly);
+            var packageDetails = TestDataHelper.CreateCarePackageDetailDomainList(3, PackageDetailType.AdditionalNeed);
 
             foreach (var detail in packageDetails)
             {

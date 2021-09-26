@@ -15,6 +15,8 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 
         public decimal? Cost { get; set; }
 
+        public PaymentPeriod CostPeriod { get; set; }
+
         public DateTimeOffset? StartDate { get; set; }
 
         public DateTimeOffset? EndDate { get; set; }

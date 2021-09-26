@@ -7,7 +7,6 @@ using AutoMapper;
 using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
@@ -77,11 +76,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                 throw new ApiException("Core cost cannot be specified in Details list", HttpStatusCode.BadRequest);
             }
 
-            var newDetail = requestedDetail.ToEntity();
-            // TODO: VK: Use single type for Additional Weekly and Additional One Off, and handle CostPeriod separately, they repeat each other
-            newDetail.CostPeriod = newDetail.Type.ToPaymentPeriod();
-
-            package.Details.Add(newDetail);
+            package.Details.Add(requestedDetail.ToEntity());
         }
 
         private void UpdateDetail(CarePackage package, CarePackageDetailDomain requestedDetail)
@@ -91,7 +86,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             if (existingDetail != null)
             {
                 _mapper.Map(requestedDetail, existingDetail);
-                existingDetail.CostPeriod = existingDetail.Type.ToPaymentPeriod();
             }
             else
             {

@@ -39,8 +39,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 
         public async Task<ICollection<CarePackageDetail>> CreatePackageDetails(CarePackage package)
         {
-            package.Details.AddRange(TestDataHelper.CreateCarePackageDetailList(2, PackageDetailType.AdditionalNeedWeekly));
-            package.Details.AddRange(TestDataHelper.CreateCarePackageDetailList(2, PackageDetailType.AdditionalNeedOneOff));
+            package.Details.AddRange(TestDataHelper.CreateCarePackageDetailList(5, PackageDetailType.AdditionalNeed));
 
             await _context.SaveChangesAsync();
             return package.Details;
