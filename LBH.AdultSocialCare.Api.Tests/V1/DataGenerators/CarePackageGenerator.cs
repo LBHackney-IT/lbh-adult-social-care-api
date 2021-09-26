@@ -1,5 +1,10 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Tests.Extensions;
+using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +35,15 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             await _context.SaveChangesAsync().ConfigureAwait(false);
 
             return package;
+        }
+
+        public async Task<ICollection<CarePackageDetail>> CreatePackageDetails(CarePackage package)
+        {
+            package.Details.AddRange(TestDataHelper.CreateCarePackageDetailList(2, PackageDetailType.AdditionalNeedWeekly));
+            package.Details.AddRange(TestDataHelper.CreateCarePackageDetailList(2, PackageDetailType.AdditionalNeedOneOff));
+
+            await _context.SaveChangesAsync();
+            return package.Details;
         }
     }
 }

@@ -5,9 +5,12 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
+    [GenerateMappingFor(typeof(CarePackageDetail))]
     [GenerateListMappingFor(typeof(CarePackageDetail))]
     public class CarePackageDetailDomain
     {
+        public Guid? Id { get; set; }
+
         public PackageDetailType Type { get; set; }
 
         public decimal? Cost { get; set; }

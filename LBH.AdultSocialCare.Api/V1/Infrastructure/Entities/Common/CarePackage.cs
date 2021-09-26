@@ -14,6 +14,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
     [GenerateListMappingFor(typeof(CarePackagePlainDomain))]
     public class CarePackage : BaseEntity
     {
+        public CarePackage()
+        {
+            Details = new List<CarePackageDetail>();
+            Reclaims = new List<CarePackageReclaim>();
+            Histories = new List<CarePackageHistory>();
+        }
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         public PackageType PackageType { get; set; }
