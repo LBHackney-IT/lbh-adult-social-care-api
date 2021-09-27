@@ -13,19 +13,19 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
             builder.HasData(
                 new CarePackageSchedulingOption
                 {
-                    Id = (int) PackageScheduling.Interim,
+                    Id = PackageScheduling.Interim,
                     OptionName = PackageScheduling.Interim.GetDisplayName(),
                     OptionPeriod = PackageScheduling.Interim.ToDescription()
                 },
                 new CarePackageSchedulingOption
                 {
-                    Id = (int) PackageScheduling.Temporary,
+                    Id = PackageScheduling.Temporary,
                     OptionName = PackageScheduling.Temporary.GetDisplayName(),
                     OptionPeriod = PackageScheduling.Temporary.ToDescription()
                 },
                 new CarePackageSchedulingOption
                 {
-                    Id = (int) PackageScheduling.LongTerm,
+                    Id = PackageScheduling.LongTerm,
                     OptionName = PackageScheduling.LongTerm.GetDisplayName(),
                     OptionPeriod = PackageScheduling.LongTerm.ToDescription()
                 });
