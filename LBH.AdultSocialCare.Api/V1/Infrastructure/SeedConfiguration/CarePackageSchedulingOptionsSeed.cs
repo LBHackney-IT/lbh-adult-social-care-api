@@ -3,6 +3,8 @@ using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
@@ -10,25 +12,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
     {
         public void Configure(EntityTypeBuilder<CarePackageSchedulingOption> builder)
         {
-            builder.HasData(
-                new CarePackageSchedulingOption
-                {
-                    Id = PackageScheduling.Interim,
-                    OptionName = PackageScheduling.Interim.GetDisplayName(),
-                    OptionPeriod = PackageScheduling.Interim.ToDescription()
-                },
-                new CarePackageSchedulingOption
-                {
-                    Id = PackageScheduling.Temporary,
-                    OptionName = PackageScheduling.Temporary.GetDisplayName(),
-                    OptionPeriod = PackageScheduling.Temporary.ToDescription()
-                },
-                new CarePackageSchedulingOption
-                {
-                    Id = PackageScheduling.LongTerm,
-                    OptionName = PackageScheduling.LongTerm.GetDisplayName(),
-                    OptionPeriod = PackageScheduling.LongTerm.ToDescription()
-                });
+            var packageSchedulingOptions = Enum.GetValues(typeof(PackageScheduling))
+                .OfType<PackageScheduling>()
+                .Select(x =>
+                    new CarePackageSchedulingOption()
+                    {
+                        Id = x,
+                        OptionName = x.GetDisplayName(),
+                        OptionPeriod = x.ToDescription()
+                    })
+                .ToArray();
+            builder.HasData(packageSchedulingOptions);
         }
     }
 }
