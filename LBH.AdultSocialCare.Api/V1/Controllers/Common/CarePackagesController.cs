@@ -5,6 +5,7 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
@@ -17,10 +18,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
     public class CarePackagesController : ControllerBase
     {
         private readonly ICreateCarePackageUseCase _createCarePackageUseCase;
+        private readonly ICarePackageOptionsUseCase _carePackageOptionsUseCase;
 
-        public CarePackagesController(ICreateCarePackageUseCase createCarePackageUseCase)
+        public CarePackagesController(ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase)
         {
             _createCarePackageUseCase = createCarePackageUseCase;
+            _carePackageOptionsUseCase = carePackageOptionsUseCase;
         }
 
         /// <summary>Creates a new care package.</summary>
@@ -35,6 +38,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         {
             var residentialCarePackageResponse = await _createCarePackageUseCase.CreateAsync(carePackageForCreationRequest.ToDomain()).ConfigureAwait(false);
             return Ok(residentialCarePackageResponse);
+        }
+
+        [ProducesResponseType(typeof(IEnumerable<CarePackageSchedulingOptionResponse>), StatusCodes.Status200OK)]
+        [HttpGet("package-scheduling-options")]
+        public ActionResult<IEnumerable<CarePackageSchedulingOptionResponse>> GetCarePackageSchedulingOptions()
+        {
+            var packageSchedulingOptions = _carePackageOptionsUseCase.GetCarePackageSchedulingOptions();
+            return Ok(packageSchedulingOptions);
         }
     }
 }
