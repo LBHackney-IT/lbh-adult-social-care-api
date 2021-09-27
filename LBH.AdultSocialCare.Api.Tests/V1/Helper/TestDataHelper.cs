@@ -4,6 +4,10 @@ using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Factories;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
 {
@@ -89,6 +93,26 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.Description, f => f.Lorem.Paragraph(2))
                 .RuleFor(cp => cp.RequestMoreInformation, f => f.Lorem.Paragraph(6))
                 .RuleFor(cp => cp.StatusId, f => f.Random.Int(1, 10));
+        }
+
+        public static List<CarePackageDetail> CreateCarePackageDetailList(int count, PackageDetailType type)
+        {
+            return new Faker<CarePackageDetail>()
+                .RuleFor(d => d.Cost, f => f.PickRandom(1.2m, 3.4m, 5.6m, 7.8m, 9.1m, 12.34m, 56.78m, 91.12m, 123.45m, 456.78m)) // Workaround to avoid precision loss in SQLite
+                .RuleFor(d => d.CostPeriod, f => f.PickRandom(PaymentPeriod.Weekly, PaymentPeriod.OneOff))
+                .RuleFor(d => d.StartDate, f => f.Date.Past().Date)
+                .RuleFor(d => d.EndDate, f => f.Date.Future().Date)
+                .RuleFor(d => d.Type, type)
+                .Generate(count);
+        }
+
+        public static List<CarePackageDetailDomain> CreateCarePackageDetailDomainList(int count, PackageDetailType type)
+        {
+            var result = CreateCarePackageDetailList(count, type).ToDomain().ToList();
+
+            result.ForEach(detail => detail.Id = null);
+
+            return result;
         }
     }
 }
