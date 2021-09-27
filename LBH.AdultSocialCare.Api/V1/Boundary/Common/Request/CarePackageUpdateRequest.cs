@@ -1,4 +1,5 @@
 using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -25,5 +26,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
 
         [Required]
         public bool? IsS117Client { get; set; }
+
+        [Required]
+        [EnumDataType(typeof(PackageScheduling))]
+        public PackageScheduling PackageScheduling { get; set; }
     }
 }

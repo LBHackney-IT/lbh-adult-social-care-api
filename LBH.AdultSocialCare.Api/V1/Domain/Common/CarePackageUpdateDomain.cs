@@ -1,9 +1,11 @@
 using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
     [GenerateMappingFor(typeof(CarePackageSettings))]
+    [GenerateMappingFor(typeof(CarePackage))]
     public class CarePackageUpdateDomain
     {
         public int PrimarySupportReasonId { get; set; }
@@ -17,5 +19,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public bool IsReEnablement { get; set; }
 
         public bool IsS117Client { get; set; }
+        public PackageScheduling PackageScheduling { get; set; }
     }
 }

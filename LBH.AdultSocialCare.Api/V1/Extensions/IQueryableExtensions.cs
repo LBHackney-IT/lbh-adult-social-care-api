@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
@@ -14,6 +14,16 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             return list
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize);
+        }
+
+        public static IQueryable<T> TrackChanges<T>(this IQueryable<T> list, bool trackChanges) where T : class
+        {
+            if (trackChanges)
+            {
+                return list;
+            }
+            return list
+                .AsNoTracking();
         }
     }
 }
