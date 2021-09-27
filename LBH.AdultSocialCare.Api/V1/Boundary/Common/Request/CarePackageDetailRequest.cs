@@ -14,8 +14,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
         [GuidNotEmpty]
         public Guid? Id { get; set; }
 
-        // TODO: VK: extend validation to deny out of range enum values, add custom Newtonsoft converter
-        [Range(1, 3)]
         [Required]
         public PackageDetailType Type { get; set; }
 
@@ -24,7 +22,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
         public decimal? Cost { get; set; }
 
         [Required]
-        [EnumDataType(typeof(PaymentPeriod))]
         public PaymentPeriod CostPeriod { get; set; }
 
         [Required]
