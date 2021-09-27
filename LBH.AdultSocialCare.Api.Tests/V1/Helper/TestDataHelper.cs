@@ -1,6 +1,7 @@
 using Bogus;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
 {
     public static class TestDataHelper
     {
-        public static CarePackage CreateCarePackage(PackageType? packageType = null, Guid? serviceUserId = null, PackageStatus? status = null)
+        public static CarePackage CreateCarePackage(PackageType? packageType = null, Guid? serviceUserId = null, PackageStatus? status = null, int? primarySupportReasonId = null)
         {
             var today = DateTimeOffset.Now;
 
@@ -21,7 +22,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.PackageType, f => packageType ?? f.PickRandom<PackageType>())
                 .RuleFor(cp => cp.ServiceUserId, f => serviceUserId ?? f.Random.Guid())
                 .RuleFor(cp => cp.SupplierId, f => f.UniqueIndex)
-                .RuleFor(cp => cp.PrimarySupportReason, f => f.Lorem.Paragraph(3))
+                .RuleFor(cp => cp.PackageScheduling, f => f.PickRandom<PackageScheduling>())
+                .RuleFor(cp => cp.PrimarySupportReasonId, f => primarySupportReasonId ?? f.PickRandom(1, 2))
                 /*.RuleFor(cp => cp.StartDate,
                     f => startDate ?? f.Date.BetweenOffset(today.AddDays(-300), today.AddDays(-200)))*/
                 .RuleFor(cp => cp.Status, f => status ?? f.PickRandom<PackageStatus>());
@@ -46,7 +48,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
             return new CarePackageForCreationRequest
             {
                 ServiceUserId = carePackage.ServiceUserId,
-                PrimarySupportReason = carePackage.PrimarySupportReason,
+                PrimarySupportReasonId = carePackage.PrimarySupportReasonId,
+                PackageScheduling = carePackage.PackageScheduling,
                 PackageType = carePackage.PackageType,
                 HasRespiteCare = carePackageSettings.HasRespiteCare,
                 HasDischargePackage = carePackageSettings.HasDischargePackage,
@@ -54,6 +57,42 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 IsReEnablement = carePackageSettings.IsReEnablement,
                 IsS117Client = carePackageSettings.IsS117Client
             };
+        }
+
+        public static PrimarySupportReason CreatePrimarySupportReason()
+        {
+            return new Faker<PrimarySupportReason>()
+                .RuleFor(cp => cp.PrimarySupportReasonId, f => f.UniqueIndex)
+                .RuleFor(cp => cp.PrimarySupportReasonName, f => f.Random.String(30, 50))
+                .RuleFor(cp => cp.CederBudgetCode, f => f.Random.String(4, 10));
+        }
+
+        public static User CreateUser(Guid? userId = null)
+        {
+            var userEmail = Faker.Internet.Email();
+            return new Faker<User>()
+                .RuleFor(cp => cp.Id, f => userId ?? f.Random.Guid())
+                .RuleFor(cp => cp.ConcurrencyStamp, f => f.Random.String(10, 30))
+                .RuleFor(cp => cp.Email, f => userEmail)
+                .RuleFor(cp => cp.EmailConfirmed, f => f.Random.Bool())
+                .RuleFor(cp => cp.NormalizedEmail, f => userEmail.ToUpper())
+                .RuleFor(cp => cp.NormalizedUserName, f => userEmail.ToUpper())
+                .RuleFor(cp => cp.PasswordHash, f => f.Random.String(6, 8))
+                .RuleFor(cp => cp.PhoneNumber, f => f.Phone.PhoneNumber())
+                .RuleFor(cp => cp.PhoneNumberConfirmed, f => f.Random.Bool())
+                .RuleFor(cp => cp.TwoFactorEnabled, f => f.Random.Bool())
+                .RuleFor(cp => cp.Name, f => f.Person.FullName)
+                .RuleFor(cp => cp.UserName, f => userEmail);
+        }
+
+        public static CarePackageHistory CreateCarePackageHistory(Guid? carePackageId = null)
+        {
+            return new Faker<CarePackageHistory>()
+                .RuleFor(cp => cp.Id, f => f.UniqueIndex)
+                .RuleFor(cp => cp.CarePackageId, f => carePackageId ?? f.Random.Guid())
+                .RuleFor(cp => cp.Description, f => f.Lorem.Paragraph(2))
+                .RuleFor(cp => cp.RequestMoreInformation, f => f.Lorem.Paragraph(6))
+                .RuleFor(cp => cp.StatusId, f => f.Random.Int(1, 10));
         }
 
         public static List<CarePackageDetail> CreateCarePackageDetailList(int count, PackageDetailType type)
