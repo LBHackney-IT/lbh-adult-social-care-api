@@ -39,6 +39,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public DatabaseContext()
+        {
+        }
+
         public DbSet<CarePackage> CarePackages { get; set; }
         public DbSet<CarePackageSettings> CarePackageSettings { get; set; }
 
