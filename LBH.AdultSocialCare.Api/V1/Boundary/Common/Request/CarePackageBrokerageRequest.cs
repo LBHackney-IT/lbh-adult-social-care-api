@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
@@ -12,6 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
     public class CarePackageBrokerageRequest : IValidatableObject
     {
         [Required]
+        [Column(TypeName = "decimal(13, 2)")]
         public decimal? CoreCost { get; set; }
 
         [Required]
