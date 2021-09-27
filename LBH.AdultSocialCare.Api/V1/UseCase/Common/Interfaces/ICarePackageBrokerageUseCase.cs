@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
 {
     public interface ICarePackageBrokerageUseCase
     {
-        Task CreateCarePackageBrokerageAsync(Guid packageId, CarePackageBrokerageDomain brokerageRequest);
+        Task ExecuteAsync(Guid packageId, CarePackageBrokerageDomain brokerageInfo);
     }
 }
