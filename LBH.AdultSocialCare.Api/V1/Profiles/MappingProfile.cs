@@ -21,6 +21,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
@@ -567,6 +568,17 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
                 .ForMember(d => d.OriginalPackage, opt => opt.MapFrom(s => s));
 
             #endregion Invoicing
+
+            #region CarePackageReclaim
+
+            CreateMap<FundedNursingCareCreationRequest, CarePackageReclaimCreationDomain>();
+            CreateMap<CareChargeReclaimCreationRequest, CarePackageReclaimCreationDomain>();
+            CreateMap<FundedNursingCareUpdateRequest, CarePackageReclaimForUpdateDomain>();
+            CreateMap<CareChargeReclaimUpdateRequest, CarePackageReclaimForUpdateDomain>();
+            CreateMap<CarePackageReclaim, CarePackageReclaimForUpdateDomain>();
+            CreateMap<CarePackageReclaimForUpdateDomain, CarePackageReclaim>();
+
+            #endregion
         }
     }
 }

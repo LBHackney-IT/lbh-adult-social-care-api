@@ -32,6 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<ICareChargeUseCase, CareChargeUseCase>();
             services.AddScoped<ICarePackageBrokerageUseCase, CarePackageBrokerageUseCase>();
             services.AddScoped<ICreateCareChargeElementUseCase, CreateCareChargeElementUseCase>();
+            services.AddScoped<ICreateCarePackageReclaimUseCase, CreateCarePackageReclaimUseCase>();
             services.AddScoped<ICreateCarePackageUseCase, CreateCarePackageUseCase>();
             services.AddScoped<ICreateSupplierCostUseCase, CreateSupplierCostUseCase>();
             services.AddScoped<ICreateSupplierUseCase, CreateSupplierUseCase>();
@@ -49,6 +50,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetAllUsersUseCase, GetAllUsersUseCase>();
             services.AddScoped<IGetApprovedPackagesUseCase, GetApprovedPackagesUseCase>();
             services.AddScoped<IGetBrokeredPackagesUseCase, GetBrokeredPackagesUseCase>();
+            services.AddScoped<IGetCarePackageReclaimUseCase, GetCarePackageReclaimUseCase>();
             services.AddScoped<IGetFundedNursingCareCollectorsUseCase, GetFundedNursingCareCollectorsUseCase>();
             services.AddScoped<IGetOpportunityLengthOptionsListUseCase, GetOpportunityLengthOptionsListUseCase>();
             services.AddScoped<IGetOpportunityTimesPerMonthOptionsListUseCase, GetOpportunityTimesPerMonthOptionsListUseCase>();
@@ -60,6 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetTermTimeConsiderationOptionsListUseCase, GetTermTimeConsiderationOptionsListUseCase>();
             services.AddScoped<IPayRunUseCase, PayRunUseCase>();
             services.AddScoped<IResetPackagePaidUpToDateUseCase, ResetPackagePaidUpToDateUseCase>();
+            services.AddScoped<IUpdateCarePackageReclaimUseCase, UpdateCarePackageReclaimUseCase>();
             services.AddScoped<IUpsertPackageUseCase, UpsertPackageUseCase>();
             services.AddScoped<IUpsertStatusUseCase, UpsertStatusUseCase>();
             services.AddScoped<IChangeDayCarePackageStatusUseCase, ChangeDayCarePackageStatusUseCase>();

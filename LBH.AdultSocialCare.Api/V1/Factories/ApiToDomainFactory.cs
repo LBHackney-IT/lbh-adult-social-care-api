@@ -434,5 +434,29 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion TimeSlotShifts
+
+        #region Reclaim
+
+        public static CarePackageReclaimCreationDomain ToDomain(this CareChargeReclaimCreationRequest carePackageReclaimCreationRequest)
+        {
+            return _mapper.Map<CarePackageReclaimCreationDomain>(carePackageReclaimCreationRequest);
+        }
+
+        public static CarePackageReclaimCreationDomain ToDomain(this FundedNursingCareCreationRequest fundedNursingCareCreationRequest)
+        {
+            return _mapper.Map<CarePackageReclaimCreationDomain>(fundedNursingCareCreationRequest);
+        }
+
+        public static CarePackageReclaimForUpdateDomain ToDomain(this CareChargeReclaimUpdateRequest carePackageReclaimUpdateRequest)
+        {
+            return _mapper.Map<CarePackageReclaimForUpdateDomain>(carePackageReclaimUpdateRequest);
+        }
+
+        public static CarePackageReclaimForUpdateDomain ToDomain(this FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
+        {
+            return _mapper.Map<CarePackageReclaimForUpdateDomain>(fundedNursingCareUpdateRequest);
+        }
+
+        #endregion
     }
 }
