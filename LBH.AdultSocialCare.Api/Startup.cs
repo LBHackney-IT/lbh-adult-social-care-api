@@ -25,6 +25,7 @@ using System.Linq;
 using System.Reflection;
 using HttpServices.Services.Concrete;
 using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.Providers;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
@@ -55,6 +56,7 @@ namespace LBH.AdultSocialCare.Api
                 {
                     config.ReturnHttpNotAcceptable = true;
                     config.Filters.Add(typeof(LBHExceptionFilter));
+                    config.ModelValidatorProviders.Add(new EnumValidatorProvider());
 
                     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                     config.Filters.Add(new AuthorizeFilter(policy));

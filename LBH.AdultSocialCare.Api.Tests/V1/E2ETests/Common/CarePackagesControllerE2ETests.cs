@@ -1,15 +1,15 @@
+using System;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using System;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackage
+namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
 {
     public class CarePackagesControllerE2ETests : IClassFixture<MockWebApplicationFactory>
     {
