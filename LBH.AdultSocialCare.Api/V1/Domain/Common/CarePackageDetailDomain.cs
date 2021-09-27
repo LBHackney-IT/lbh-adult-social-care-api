@@ -20,7 +20,5 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public DateTimeOffset? StartDate { get; set; }
 
         public DateTimeOffset? EndDate { get; set; }
-
-        public string ServiceUserNeeds { get; set; }
     }
 }
