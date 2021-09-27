@@ -64,7 +64,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare
         /// <summary>
         /// Gets or sets the PackageStatuses Object
         /// </summary>
-        public PackageStatus Status { get; set; }
+        public PackageStatusOption Status { get; set; }
 
         /// <summary>
         /// Gets or sets the Stage Id

@@ -12,11 +12,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         public Guid CarePackageId { get; set; }
 
-        public string PackageDetailType { get; set; }   // TODO: VK: TBD
+        public PackageDetailType Type { get; set; }
 
         public string ServiceUserNeeds { get; set; }
 
-        public PaymentPeriod Period { get; set; }
+        public PaymentPeriod CostPeriod { get; set; }
+
+        public PaymentPeriod ServicePeriod { get; set; }
 
         public DateTimeOffset StartDate { get; set; }
 
@@ -24,8 +26,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         [Column(TypeName = "decimal(13, 2)")]
         public decimal Cost { get; set; }
-
-        public string CostPer { get; set; }            // TODO: VK: TBD
 
         public string UnitOfMeasure { get; set; }
 

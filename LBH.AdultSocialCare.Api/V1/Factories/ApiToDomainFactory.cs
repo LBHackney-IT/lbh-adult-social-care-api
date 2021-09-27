@@ -99,9 +99,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return res;
         }
 
-        public static ResidentialCarePackageForCreationDomain ToDomain(this ResidentialCarePackageForCreationRequest residentialCarePackageForCreation)
+        public static CarePackageForCreationDomain ToDomain(this CarePackageForCreationRequest carePackageForCreation)
         {
-            var res = _mapper.Map<ResidentialCarePackageForCreationDomain>(residentialCarePackageForCreation);
+            var res = _mapper.Map<CarePackageForCreationDomain>(carePackageForCreation);
             return res;
         }
 

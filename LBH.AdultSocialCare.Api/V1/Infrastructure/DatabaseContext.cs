@@ -1,6 +1,7 @@
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
@@ -24,7 +25,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
@@ -39,12 +39,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             _httpContextAccessor = httpContextAccessor;
         }
 
+        public DatabaseContext()
+        {
+        }
+
         public DbSet<CarePackage> CarePackages { get; set; }
-        public DbSet<NursingCarePackageSettings> NursingCarePackageSettings { get; set; }
-        public DbSet<ResidentialCarePackageSettings> ResidentialCarePackageSettings { get; set; }
+        public DbSet<CarePackageSettings> CarePackageSettings { get; set; }
 
         public DbSet<CarePackageDetail> CarePackageDetails { get; set; }
         public DbSet<CarePackageReclaim> CarePackageReclaims { get; set; }
+        public DbSet<CarePackageSchedulingOption> CarePackageSchedulingOptions { get; set; }
 
         public DbSet<DayCarePackage> DayCarePackages { get; set; }
         public DbSet<EscortPackage> EscortPackages { get; set; }
@@ -61,7 +65,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<HomeCareServiceTypeMinutes> HomeCareServiceTypeMinutes { get; set; }
         public DbSet<HomeCarePackageSlots> HomeCarePackageSlots { get; set; }
         public DbSet<Client> Clients { get; set; }
-        public DbSet<PackageStatus> PackageStatuses { get; set; }
+        public DbSet<PackageStatusOption> PackageStatuses { get; set; }
         public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
         public DbSet<ResidentialCarePackage> ResidentialCarePackages { get; set; }
         public DbSet<NursingCarePackage> NursingCarePackages { get; set; }
@@ -220,6 +224,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed care charges helpers
             modelBuilder.ApplyConfiguration(new InvoiceItemPriceEffectSeed());
             modelBuilder.ApplyConfiguration(new InvoiceNoteChargeTypeSeed());
+
+            // Seed care package lookups
+            modelBuilder.ApplyConfiguration(new CarePackageSchedulingOptionsSeed());
 
             #endregion Database Seeds
 

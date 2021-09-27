@@ -1,5 +1,6 @@
 using Common.Exceptions.Models;
 using System;
+using System.Net;
 
 namespace Common.Exceptions.CustomExceptions
 {
@@ -22,9 +23,9 @@ namespace Common.Exceptions.CustomExceptions
             Detail = detail;
         }
 
-        public ApiException(Exception ex, int statusCode = 500) : base(ex.Message)
+        public ApiException(string message, HttpStatusCode statusCode)
+            : this(message, (int) statusCode)
         {
-            StatusCode = statusCode;
         }
     }
 }

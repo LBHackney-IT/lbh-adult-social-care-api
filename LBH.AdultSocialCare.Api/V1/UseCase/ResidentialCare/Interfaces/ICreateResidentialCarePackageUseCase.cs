@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces
 {
     public interface ICreateResidentialCarePackageUseCase
     {
-        public Task<ResidentialCarePackageResponse> ExecuteAsync(ResidentialCarePackageForCreationDomain residentialCarePackageForCreation);
+        public Task<ResidentialCarePackageResponse> ExecuteAsync(CarePackageForCreationDomain carePackageForCreation);
     }
 }

@@ -84,16 +84,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 
         /// <summary>Gets all.</summary>
         /// <returns>The List of PackageStatuses model</returns>
-        [ProducesResponseType(typeof(IList<PackageStatus>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IList<PackageStatusOption>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpGet]
         [Route("getAll")]
-        public async Task<ActionResult<IList<PackageStatus>>> GetAll()
+        public async Task<ActionResult<IList<PackageStatusOption>>> GetAll()
         {
             try
             {
-                IList<PackageStatus> result = await _getAllStatusUseCase.GetAllAsync().ConfigureAwait(false);
+                IList<PackageStatusOption> result = await _getAllStatusUseCase.GetAllAsync().ConfigureAwait(false);
 
                 if (result == null) return NotFound();
 

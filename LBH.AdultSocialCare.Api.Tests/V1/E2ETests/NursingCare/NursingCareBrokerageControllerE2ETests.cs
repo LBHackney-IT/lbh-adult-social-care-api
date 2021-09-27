@@ -20,7 +20,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
             _fixture = fixture;
         }
 
-        [Fact]
+        [Fact(Skip = "legacy")]
         public async Task ShouldCreateBrokerageInfo()
         {
             var package = await _fixture.DataGenerator.NursingCare.GetPackage().ConfigureAwait(false);
@@ -61,7 +61,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
             response.Content.NursingCareBrokerageId.Should().Be(brokerage.NursingCareBrokerageId);
         }
 
-        [Fact]
+        [Fact(Skip = "legacy")]
         public async Task ShouldApprovePackage()
         {
             var moreInformationTest = "someLongText";
