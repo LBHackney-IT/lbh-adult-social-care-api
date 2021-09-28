@@ -1,10 +1,11 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 {
@@ -23,6 +24,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 .Where(p => p.Id == packageId)
                 .Include(p => p.Details)
                 .FirstOrDefaultAsync();
+        }
+
+        public async Task<CarePackage> GetPackagePlainAsync(Guid packageId, bool trackChanges = false)
+        {
+            return await _dbContext.CarePackages.Where(cp => cp.Id.Equals(packageId)).TrackChanges(trackChanges).SingleOrDefaultAsync();
         }
 
         public void Create(CarePackage newCarePackage)

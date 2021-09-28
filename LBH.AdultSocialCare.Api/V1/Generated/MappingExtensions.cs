@@ -130,6 +130,26 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CarePackagePlainDomain>>(input);
         }
 
+        public static CarePackageSettings ToSettings(this CarePackageUpdateDomain input)
+        {
+            return _mapper.Map<CarePackageSettings>(input);
+        }
+
+        public static CarePackageUpdateDomain ToUpdateDomain(this CarePackageSettings input)
+        {
+            return _mapper.Map<CarePackageUpdateDomain>(input);
+        }
+
+        public static CarePackage ToEntity(this CarePackageUpdateDomain input)
+        {
+            return _mapper.Map<CarePackage>(input);
+        }
+
+        public static CarePackageUpdateDomain ToUpdateDomain(this CarePackage input)
+        {
+            return _mapper.Map<CarePackageUpdateDomain>(input);
+        }
+
         public static CarePackage ToEntity(this CarePackageForCreationDomain input)
         {
             return _mapper.Map<CarePackage>(input);
@@ -208,6 +228,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static CarePackageDetailRequest ToRequest(this CarePackageDetailDomain input)
         {
             return _mapper.Map<CarePackageDetailRequest>(input);
+        }
+
+        public static CarePackageUpdateDomain ToDomain(this CarePackageUpdateRequest input)
+        {
+            return _mapper.Map<CarePackageUpdateDomain>(input);
+        }
+
+        public static CarePackageUpdateRequest ToRequest(this CarePackageUpdateDomain input)
+        {
+            return _mapper.Map<CarePackageUpdateRequest>(input);
         }
 
         public static EndCareChargeElementDomain ToDomain(this EndCareChargeElementRequest input)
