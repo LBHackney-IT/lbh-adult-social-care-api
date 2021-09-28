@@ -47,15 +47,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            carePackageReclaim.CarePackageId.Should().Be(request.CarePackageId);
-            carePackageReclaim.Cost.Should().Be(request.Cost);
-            carePackageReclaim.ClaimCollector.Should().Be(request.ClaimCollector);
-            carePackageReclaim.SupplierId.Should().Be(request.SupplierId);
-            carePackageReclaim.Status.Should().Be(request.Status);
-            carePackageReclaim.Type.Should().Be(request.Type);
-            carePackageReclaim.StartDate.Should().Be(request.StartDate);
+            carePackageReclaim.Should().BeEquivalentTo(request, opt => opt
+                .Excluding(reclaim => reclaim.EndDate));
             carePackageReclaim.EndDate.Should().BeNull();
-            carePackageReclaim.Description.Should().Be(request.Description);
         }
 
         [Fact]
