@@ -7,6 +7,7 @@ using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -24,23 +25,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldCreateFundedNursingCareReclaimForExistingNursingCarePackage()
         {
-            var package = await _fixture.DataGenerator.CarePackages.CreatePackage(PackageType.NursingCare);
+            var package = await CreatePackage();
 
-            var request = new FundedNursingCareCreationRequest
-            {
-                CarePackageId = package.Id,
-                Cost = 200M,
-                ClaimCollector = (ClaimCollector) 1,
-                SupplierId = 1,
-                Status = (ReclaimStatus) 1,
-                Type = (ReclaimType) 1,
-                StartDate = DateTimeOffset.Now.Date.AddDays(-1),
-                EndDate = null,
-                Description = "Test"
-            };
+            var request = FundedNursingCareCreationRequest(package.Id);
 
-            var response = await _fixture.RestClient
-                .PostAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{request.CarePackageId}/reclaims/fnc", request);
+            var response = await CreateFncReclaim(request);
 
             var carePackageReclaim = await _fixture.DatabaseContext.CarePackageReclaims
                 .FirstAsync(c => c.CarePackageId == package.Id);
@@ -57,9 +46,49 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         {
             var packageId = Guid.NewGuid();
 
+            var request = FundedNursingCareCreationRequest(packageId);
+
+            var response = await CreateFncReclaim(request);
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task ShouldReturnFundedNursingCareReclaim()
+        {
+            var package = await CreatePackage();
+
+            var request = FundedNursingCareCreationRequest(package.Id);
+
+            await CreateFncReclaim(request);
+
+            var response = await _fixture.RestClient
+                .GetAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{request.CarePackageId}/reclaims/fnc");
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            response.Content.Should().BeEquivalentTo(request, opt => opt
+                .Excluding(reclaim => reclaim.EndDate));
+            response.Content.EndDate.Should().BeNull();
+        }
+
+        private async Task<CarePackage> CreatePackage()
+        {
+            return await _fixture.DataGenerator.CarePackages.CreatePackage(PackageType.NursingCare);
+        }
+
+        private async Task<TestResponse<CarePackageReclaimResponse>> CreateFncReclaim(FundedNursingCareCreationRequest request)
+        {
+            var response = await _fixture.RestClient
+                .PostAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{request.CarePackageId}/reclaims/fnc", request);
+            return response;
+        }
+
+        private static FundedNursingCareCreationRequest FundedNursingCareCreationRequest(Guid carePackageId)
+        {
             var request = new FundedNursingCareCreationRequest
             {
-                CarePackageId = packageId,
+                CarePackageId = carePackageId,
                 Cost = 200M,
                 ClaimCollector = (ClaimCollector) 1,
                 SupplierId = 1,
@@ -69,11 +98,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
                 EndDate = null,
                 Description = "Test"
             };
-
-            var response = await _fixture.RestClient
-                .PostAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{request.CarePackageId}/reclaims/fnc", request);
-
-            response.Message.StatusCode.Should().Be(HttpStatusCode.NotFound);
+            return request;
         }
     }
 }
