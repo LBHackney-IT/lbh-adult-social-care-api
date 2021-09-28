@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Claims;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
@@ -15,6 +11,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
+using System;
+using System.Linq;
+using System.Net.Http;
+using System.Security.Claims;
 
 namespace LBH.AdultSocialCare.Api.Tests
 {
