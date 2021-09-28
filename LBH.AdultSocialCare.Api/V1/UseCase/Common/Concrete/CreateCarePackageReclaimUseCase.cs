@@ -22,7 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         public async Task<CarePackageReclaimResponse> CreateCarePackageReclaim(CarePackageReclaimCreationDomain carePackageReclaimCreationDomain)
         {
             var carePackageReclaim = carePackageReclaimCreationDomain.ToEntity();
-            var res = await _carePackageReclaimGateway.CreateCarePackageReclaim(carePackageReclaim);
+            var res = await _carePackageReclaimGateway.CreateAsync(carePackageReclaim);
             return res.ToResponse();
         }
     }

@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
         public async Task<CarePackageReclaimResponse> GetCarePackageReclaim(Guid carePackageId, ReclaimType reclaimType)
         {
-            var res = await _carePackageReclaimGateway.GetCarePackageReclaim(carePackageId, reclaimType);
+            var res = await _carePackageReclaimGateway.GetAsync(carePackageId, reclaimType);
             return res.ToResponse();
         }
     }

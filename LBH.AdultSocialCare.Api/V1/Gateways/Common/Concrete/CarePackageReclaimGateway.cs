@@ -25,7 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             _mapper = mapper;
         }
 
-        public async Task<CarePackageReclaimDomain> Create(CarePackageReclaim carePackageReclaim)
+        public async Task<CarePackageReclaimDomain> CreateAsync(CarePackageReclaim carePackageReclaim)
         {
             var carePackage = await _dbContext.CarePackages
                 .FirstOrDefaultAsync(item => item.Id == carePackageReclaim.CarePackageId).ConfigureAwait(false);
@@ -47,7 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             }
         }
 
-        public async Task<bool> Update(CarePackageReclaimForUpdateDomain carePackageReclaimForUpdateDomain)
+        public async Task<bool> UpdateAsync(CarePackageReclaimForUpdateDomain carePackageReclaimForUpdateDomain)
         {
             var carePackageReclaim = await _dbContext.CarePackageReclaims
                 .FirstOrDefaultAsync(item => item.Id == carePackageReclaimForUpdateDomain.Id).ConfigureAwait(false);
@@ -69,7 +69,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             }
         }
 
-        public async Task<CarePackageReclaimDomain> Get(Guid carePackageId, ReclaimType reclaimType)
+        public async Task<CarePackageReclaimDomain> GetAsync(Guid carePackageId, ReclaimType reclaimType)
         {
             var carePackageReclaim = await _dbContext.CarePackageReclaims
                 .Where(a => a.CarePackageId.Equals(carePackageId) &&

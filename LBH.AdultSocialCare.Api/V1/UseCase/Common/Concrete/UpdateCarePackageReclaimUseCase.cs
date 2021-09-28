@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
         public async Task<bool> UpdateCarePackageReclaim(CarePackageReclaimForUpdateDomain carePackageReclaimForUpdateDomain)
         {
-            return await _carePackageReclaimGateway.UpdateCarePackageReclaim(carePackageReclaimForUpdateDomain);
+            return await _carePackageReclaimGateway.UpdateAsync(carePackageReclaimForUpdateDomain);
         }
     }
 }
