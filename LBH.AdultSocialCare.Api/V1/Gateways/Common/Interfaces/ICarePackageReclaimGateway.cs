@@ -10,8 +10,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
 {
     public interface ICarePackageReclaimGateway
     {
-        Task<CarePackageReclaimDomain> CreateCarePackageReclaim(CarePackageReclaim carePackageReclaim);
-        Task<bool> UpdateCarePackageReclaim(CarePackageReclaimForUpdateDomain carePackageReclaimForUpdateDomain);
-        Task<CarePackageReclaimDomain> GetCarePackageReclaim(Guid carePackageId, ReclaimType reclaimType);
+        Task<CarePackageReclaimDomain> Create(CarePackageReclaim carePackageReclaim);
+        Task<bool> Update(CarePackageReclaimForUpdateDomain carePackageReclaimForUpdateDomain);
+        Task<CarePackageReclaimDomain> Get(Guid carePackageId, ReclaimType reclaimType);
     }
 }
