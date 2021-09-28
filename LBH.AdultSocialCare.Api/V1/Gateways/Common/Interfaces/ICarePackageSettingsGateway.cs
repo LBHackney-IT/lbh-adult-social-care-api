@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
 {
     public interface ICarePackageSettingsGateway
     {
-        Task<CarePackageSettings> CheckPackageSettingsExistAsync(Guid packageId, bool trackChanges);
+        Task<CarePackageSettings> GetPackageSettingsPlainAsync(Guid carePackageId, bool trackChanges = false);
     }
 }

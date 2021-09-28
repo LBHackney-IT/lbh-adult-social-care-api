@@ -16,7 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 .Take(pageSize);
         }
 
-        public static IQueryable<T> TrackChanges<T>(this IQueryable<T> list, bool trackChanges) where T : class
+        public static IQueryable<T> TrackChanges<T>(this IQueryable<T> list, bool trackChanges = false) where T : class
         {
             if (trackChanges)
             {

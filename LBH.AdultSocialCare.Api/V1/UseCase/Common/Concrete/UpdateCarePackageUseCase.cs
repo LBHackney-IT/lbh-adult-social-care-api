@@ -1,4 +1,5 @@
 using AutoMapper;
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -27,8 +28,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
         public async Task<CarePackagePlainResponse> UpdateAsync(Guid carePackageId, CarePackageUpdateDomain carePackageUpdateDomain)
         {
-            var package = await _carePackageGateway.CheckPackageExistsAsync(carePackageId, true);
-            var packageSettings = await _carePackageSettings.CheckPackageSettingsExistAsync(carePackageId, true);
+            var package = await _carePackageGateway.GetPackagePlainAsync(carePackageId, true).EnsureExists($"Care package with id {carePackageId} not found");
+            var packageSettings = await _carePackageSettings.GetPackageSettingsPlainAsync(carePackageId, true)
+                .EnsureExists($"Package settings for package with id {carePackageId} not found");
 
             // Update values
             _mapper.Map(carePackageUpdateDomain, package);

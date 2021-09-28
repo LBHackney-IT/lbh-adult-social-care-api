@@ -8,7 +8,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
     {
         Task<CarePackage> GetPackageAsync(Guid packageId);
 
-        Task<CarePackage> CheckPackageExistsAsync(Guid packageId, bool trackChanges);
+        Task<CarePackage> GetPackagePlainAsync(Guid packageId, bool trackChanges = false);
 
         void Create(CarePackage newCarePackage);
     }

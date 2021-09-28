@@ -1,4 +1,3 @@
-using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
@@ -27,16 +26,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<CarePackage> CheckPackageExistsAsync(Guid packageId, bool trackChanges)
+        public async Task<CarePackage> GetPackagePlainAsync(Guid packageId, bool trackChanges = false)
         {
-            var carePackage = await _dbContext.CarePackages.Where(cp => cp.Id.Equals(packageId)).TrackChanges(trackChanges).SingleOrDefaultAsync();
-
-            if (carePackage == null)
-            {
-                throw new ApiException($"Care package with id {packageId} not found");
-            }
-
-            return carePackage;
+            return await _dbContext.CarePackages.Where(cp => cp.Id.Equals(packageId)).TrackChanges(trackChanges).SingleOrDefaultAsync();
         }
 
         public void Create(CarePackage newCarePackage)
