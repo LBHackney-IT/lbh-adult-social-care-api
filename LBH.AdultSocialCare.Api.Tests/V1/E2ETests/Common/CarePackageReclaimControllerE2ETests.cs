@@ -72,6 +72,37 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             response.Content.EndDate.Should().BeNull();
         }
 
+        [Fact]
+        public async Task ShouldUpdateFundedNursingCareReclaim()
+        {
+            var package = await CreatePackage();
+
+            var request = FundedNursingCareCreationRequest(package.Id);
+
+            var createdFncReclaim = await CreateFncReclaim(request);
+
+            var updateRequest = new FundedNursingCareUpdateRequest
+            {
+                Id = createdFncReclaim.Content.Id,
+                Cost = 300M,
+                ClaimCollector = createdFncReclaim.Content.ClaimCollector,
+                SupplierId = createdFncReclaim.Content.SupplierId,
+                Status = createdFncReclaim.Content.Status,
+                Type = createdFncReclaim.Content.Type,
+                StartDate = createdFncReclaim.Content.StartDate
+            };
+
+            var response = await _fixture.RestClient
+                .PutAsync<bool>($"api/v1/care-packages/{request.CarePackageId}/reclaims/fnc", updateRequest);
+
+            var carePackageReclaim = await _fixture.DatabaseContext.CarePackageReclaims
+                .FirstAsync(c => c.CarePackageId == package.Id);
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            carePackageReclaim.Cost.Should().Be(updateRequest.Cost);
+        }
+
         private async Task<CarePackage> CreatePackage()
         {
             return await _fixture.DataGenerator.CarePackages.CreatePackage(PackageType.NursingCare);
