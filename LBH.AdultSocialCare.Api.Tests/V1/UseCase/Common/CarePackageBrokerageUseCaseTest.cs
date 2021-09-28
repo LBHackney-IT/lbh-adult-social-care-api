@@ -22,7 +22,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
     {
         private readonly Mock<ICarePackageGateway> _gatewayMock;
         private readonly Mock<IDatabaseManager> _dbManagerMock;
-        private readonly CarePackageBrokerageUseCase _useCase;
+        private readonly UpsertCarePackageBrokerageUseCase _useCase;
         private readonly CarePackage _package;
 
         public CarePackageBrokerageUseCaseTest()
@@ -40,7 +40,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
                 .Setup(gateway => gateway.GetPackageAsync(_package.Id))
                 .ReturnsAsync(_package);
 
-            _useCase = new CarePackageBrokerageUseCase(_gatewayMock.Object, _dbManagerMock.Object, Mapper);
+            _useCase = new UpsertCarePackageBrokerageUseCase(_gatewayMock.Object, _dbManagerMock.Object, Mapper);
         }
 
         [Fact]

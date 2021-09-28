@@ -28,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             var package = await _fixture.DataGenerator.CarePackages.CreatePackage(PackageType.NursingCare);
             var details = await _fixture.DataGenerator.CarePackages.CreatePackageDetails(package);
 
-            var request = new CarePackageBrokerageRequest
+            var request = new CarePackageBrokerageCreationRequest
             {
                 CoreCost = 123.45m,
                 StartDate = DateTimeOffset.Now.Date.AddDays(-100),
@@ -61,7 +61,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             VerifyPackageDetails(package, request);
         }
 
-        private static void VerifyPackageDetails(CarePackage package, CarePackageBrokerageRequest request)
+        private static void VerifyPackageDetails(CarePackage package, CarePackageBrokerageCreationRequest request)
         {
             package.SupplierId.Should().Be(request.SupplierId);
             package.Details.Count.Should().Be(request.Details.Count + 1); // +1 for core cost detail

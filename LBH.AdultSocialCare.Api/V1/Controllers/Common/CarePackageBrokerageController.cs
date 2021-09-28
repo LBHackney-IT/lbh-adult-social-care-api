@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -15,11 +16,29 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
     [ApiVersion("1.0")]
     public class CarePackageBrokerageController : ControllerBase
     {
-        private readonly ICarePackageBrokerageUseCase _carePackageBrokerageUseCase;
+        private readonly IUpsertCarePackageBrokerageUseCase _upsertCarePackageBrokerageUseCase;
+        private readonly IGetCarePackageBrokerageUseCase _getCarePackageBrokerageUseCase;
 
-        public CarePackageBrokerageController(ICarePackageBrokerageUseCase carePackageBrokerageUseCase)
+        public CarePackageBrokerageController(
+            IUpsertCarePackageBrokerageUseCase upsertCarePackageBrokerageUseCase, IGetCarePackageBrokerageUseCase getCarePackageBrokerageUseCase)
         {
-            _carePackageBrokerageUseCase = carePackageBrokerageUseCase;
+            _upsertCarePackageBrokerageUseCase = upsertCarePackageBrokerageUseCase;
+            _getCarePackageBrokerageUseCase = getCarePackageBrokerageUseCase;
+        }
+
+        /// <summary>
+        /// Returns brokerage information for package with package Id given
+        /// </summary>
+        /// <param name="packageId">Unique identifier of the package to get brokerage for.</param>
+        /// <returns>Package brokerage information</returns>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<CarePackageBrokerageResponse>> GetCarePackageBrokerageAsync(Guid packageId)
+        {
+            var brokerageInfo = await _getCarePackageBrokerageUseCase.ExecuteAsync(packageId);
+            return Ok(brokerageInfo.ToResponse());
         }
 
         /// <summary>
@@ -27,21 +46,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         /// Removes existing package details not presented in request
         /// </summary>
         /// <param name="packageId">Unique identifier of the package to create or update details for</param>
-        /// <param name="brokerageRequest">Request with information about services and costs.</param>
+        /// <param name="request">Request with information about services and costs.</param>
         /// <returns>OK if operation is successful</returns>
         /// <response code="200">If operation have completed successfully</response>
         /// <response code="404">If package is not found</response>
         /// <response code="409">If package detail cannot be updated or deleted</response>
-        /// <response code="409">If core cost is already set for the given package</response>
+        /// <response code="422">If request contains some errors</response>
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> CreateCarePackageBrokerageInfo(Guid packageId, CarePackageBrokerageRequest brokerageRequest)
+        public async Task<ActionResult> CreateCarePackageBrokerageInfo(Guid packageId, CarePackageBrokerageCreationRequest request)
         {
-            await _carePackageBrokerageUseCase.ExecuteAsync(packageId, brokerageRequest.ToDomain());
+            await _upsertCarePackageBrokerageUseCase.ExecuteAsync(packageId, request.ToDomain());
             return Ok();
         }
     }
