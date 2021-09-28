@@ -1,5 +1,4 @@
 using FluentAssertions;
-using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
@@ -89,11 +88,15 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
 
             // Check package settings updated
             Assert.NotNull(packageSettingsEntity);
-            Assert.Equal(updatedCarePackageSettings.HasRespiteCare, packageSettingsEntity.HasRespiteCare);
-            Assert.Equal(updatedCarePackageSettings.HasDischargePackage, packageSettingsEntity.HasDischargePackage);
-            Assert.Equal(updatedCarePackageSettings.IsImmediate, packageSettingsEntity.IsImmediate);
-            Assert.Equal(updatedCarePackageSettings.IsReEnablement, packageSettingsEntity.IsReEnablement);
-            Assert.Equal(updatedCarePackageSettings.IsS117Client, packageSettingsEntity.IsS117Client);
+            var newSettings = new
+            {
+                updatedCarePackageSettings.HasRespiteCare,
+                updatedCarePackageSettings.HasDischargePackage,
+                updatedCarePackageSettings.IsImmediate,
+                updatedCarePackageSettings.IsReEnablement,
+                updatedCarePackageSettings.IsS117Client
+            };
+            packageSettingsEntity.Should().BeEquivalentTo(newSettings, opt => opt.ExcludingMissingMembers().ExcludingNestedObjects());
         }
     }
 }
