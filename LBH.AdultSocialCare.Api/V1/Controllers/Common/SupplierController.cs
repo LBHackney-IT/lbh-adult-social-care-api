@@ -57,7 +57,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpGet]
-        [Route("get-all")]
         public async Task<ActionResult<PagedResponse<SupplierResponse>>> GetSupplierList([FromQuery] RequestParameters parameters, string supplierName)
         {
             var result = await _getAllSupplierUseCase.GetAllAsync(parameters, supplierName).ConfigureAwait(false);
