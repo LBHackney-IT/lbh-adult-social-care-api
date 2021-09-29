@@ -92,7 +92,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.CarePackageId, f => carePackageId ?? f.Random.Guid())
                 .RuleFor(cp => cp.Description, f => f.Lorem.Paragraph(2))
                 .RuleFor(cp => cp.RequestMoreInformation, f => f.Lorem.Paragraph(6))
-                .RuleFor(cp => cp.StatusId, f => f.Random.Int(1, 10));
+                .RuleFor(cp => cp.Status, f => f.PickRandom<HistoryStatus>());
         }
 
         public static List<CarePackageDetail> CreateCarePackageDetailList(int count, PackageDetailType type)
