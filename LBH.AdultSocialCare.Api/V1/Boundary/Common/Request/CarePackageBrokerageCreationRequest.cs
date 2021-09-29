@@ -10,7 +10,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common;
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
 {
     [GenerateMappingFor(typeof(CarePackageBrokerageDomain))]
-    public class CarePackageBrokerageRequest : IValidatableObject
+    public class CarePackageBrokerageCreationRequest : IValidatableObject
     {
         [Required]
         [Column(TypeName = "decimal(13, 2)")]

@@ -30,9 +30,9 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<ICancelOrEndCareChargeElementUseCase, CancelOrEndCareChargeElementUseCase>();
             services.AddScoped<ICareChargeElementTypeUseCase, CareChargeElementTypeUseCase>();
             services.AddScoped<ICareChargeUseCase, CareChargeUseCase>();
-            services.AddScoped<ICarePackageBrokerageUseCase, CarePackageBrokerageUseCase>();
             services.AddScoped<ICarePackageOptionsUseCase, CarePackageOptionsUseCase>();
             services.AddScoped<ICreateCareChargeElementUseCase, CreateCareChargeElementUseCase>();
+            services.AddScoped<ICreateCarePackageReclaimUseCase, CreateCarePackageReclaimUseCase>();
             services.AddScoped<ICreateCarePackageUseCase, CreateCarePackageUseCase>();
             services.AddScoped<ICreateSupplierCostUseCase, CreateSupplierCostUseCase>();
             services.AddScoped<ICreateSupplierUseCase, CreateSupplierUseCase>();
@@ -50,6 +50,8 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetAllUsersUseCase, GetAllUsersUseCase>();
             services.AddScoped<IGetApprovedPackagesUseCase, GetApprovedPackagesUseCase>();
             services.AddScoped<IGetBrokeredPackagesUseCase, GetBrokeredPackagesUseCase>();
+            services.AddScoped<IGetCarePackageBrokerageUseCase, GetCarePackageBrokerageUseCase>();
+            services.AddScoped<IGetCarePackageReclaimUseCase, GetCarePackageReclaimUseCase>();
             services.AddScoped<IGetFundedNursingCareCollectorsUseCase, GetFundedNursingCareCollectorsUseCase>();
             services.AddScoped<IGetOpportunityLengthOptionsListUseCase, GetOpportunityLengthOptionsListUseCase>();
             services.AddScoped<IGetOpportunityTimesPerMonthOptionsListUseCase, GetOpportunityTimesPerMonthOptionsListUseCase>();
@@ -62,7 +64,9 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IPayRunUseCase, PayRunUseCase>();
             services.AddScoped<IResetPackagePaidUpToDateUseCase, ResetPackagePaidUpToDateUseCase>();
             services.AddScoped<ISubmitCarePackageUseCase, SubmitCarePackageUseCase>();
+            services.AddScoped<IUpdateCarePackageReclaimUseCase, UpdateCarePackageReclaimUseCase>();
             services.AddScoped<IUpdateCarePackageUseCase, UpdateCarePackageUseCase>();
+            services.AddScoped<IUpsertCarePackageBrokerageUseCase, UpsertCarePackageBrokerageUseCase>();
             services.AddScoped<IUpsertPackageUseCase, UpsertPackageUseCase>();
             services.AddScoped<IUpsertStatusUseCase, UpsertStatusUseCase>();
             services.AddScoped<IChangeDayCarePackageStatusUseCase, ChangeDayCarePackageStatusUseCase>();

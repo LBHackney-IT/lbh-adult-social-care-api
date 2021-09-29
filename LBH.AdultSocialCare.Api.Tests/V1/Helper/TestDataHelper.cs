@@ -1,13 +1,15 @@
 using Bogus;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Factories;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
 {
@@ -21,7 +23,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.Id, f => f.Random.Guid())
                 .RuleFor(cp => cp.PackageType, f => packageType ?? f.PickRandom<PackageType>())
                 .RuleFor(cp => cp.ServiceUserId, f => serviceUserId ?? f.Random.Guid())
-                .RuleFor(cp => cp.SupplierId, f => f.UniqueIndex)
+                .RuleFor(cp => cp.SupplierId, f => null)
                 .RuleFor(cp => cp.PackageScheduling, f => f.PickRandom<PackageScheduling>())
                 .RuleFor(cp => cp.PrimarySupportReasonId, f => primarySupportReasonId ?? f.PickRandom(1, 2))
                 /*.RuleFor(cp => cp.StartDate,
@@ -59,6 +61,23 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
             };
         }
 
+        public static CarePackageUpdateRequest CarePackageUpdateRequest(CarePackage carePackage, CarePackageSettings carePackageSettings)
+        {
+            if (carePackage == null) throw new ArgumentNullException(nameof(carePackage));
+            if (carePackageSettings == null) throw new ArgumentNullException(nameof(carePackageSettings));
+
+            return new CarePackageUpdateRequest()
+            {
+                PrimarySupportReasonId = carePackage.PrimarySupportReasonId,
+                PackageScheduling = carePackage.PackageScheduling,
+                HasRespiteCare = carePackageSettings.HasRespiteCare,
+                HasDischargePackage = carePackageSettings.HasDischargePackage,
+                IsImmediate = carePackageSettings.IsImmediate,
+                IsReEnablement = carePackageSettings.IsReEnablement,
+                IsS117Client = carePackageSettings.IsS117Client
+            };
+        }
+
         public static PrimarySupportReason CreatePrimarySupportReason()
         {
             return new Faker<PrimarySupportReason>()
@@ -75,8 +94,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.ConcurrencyStamp, f => f.Random.String(10, 30))
                 .RuleFor(cp => cp.Email, f => userEmail)
                 .RuleFor(cp => cp.EmailConfirmed, f => f.Random.Bool())
-                .RuleFor(cp => cp.NormalizedEmail, f => userEmail.ToUpper())
-                .RuleFor(cp => cp.NormalizedUserName, f => userEmail.ToUpper())
+                .RuleFor(cp => cp.NormalizedEmail, f => userEmail.ToUpper(CultureInfo.InvariantCulture))
+                .RuleFor(cp => cp.NormalizedUserName, f => userEmail.ToUpper(CultureInfo.InvariantCulture))
                 .RuleFor(cp => cp.PasswordHash, f => f.Random.String(6, 8))
                 .RuleFor(cp => cp.PhoneNumber, f => f.Phone.PhoneNumber())
                 .RuleFor(cp => cp.PhoneNumberConfirmed, f => f.Random.Bool())
@@ -95,11 +114,13 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.Status, f => f.PickRandom<HistoryStatus>());
         }
 
-        public static List<CarePackageDetail> CreateCarePackageDetailList(int count, PackageDetailType type)
+        public static List<CarePackageDetail> CreateCarePackageDetails(int count, PackageDetailType type)
         {
             return new Faker<CarePackageDetail>()
                 .RuleFor(d => d.Cost, f => f.PickRandom(1.2m, 3.4m, 5.6m, 7.8m, 9.1m, 12.34m, 56.78m, 91.12m, 123.45m, 456.78m)) // Workaround to avoid precision loss in SQLite
-                .RuleFor(d => d.CostPeriod, f => f.PickRandom(PaymentPeriod.Weekly, PaymentPeriod.OneOff))
+                .RuleFor(d => d.CostPeriod, f => type == PackageDetailType.CoreCost
+                    ? PaymentPeriod.Weekly
+                    : f.PickRandom(PaymentPeriod.Weekly, PaymentPeriod.OneOff))
                 .RuleFor(d => d.StartDate, f => f.Date.Past().Date)
                 .RuleFor(d => d.EndDate, f => f.Date.Future().Date)
                 .RuleFor(d => d.Type, type)
@@ -108,7 +129,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
 
         public static List<CarePackageDetailDomain> CreateCarePackageDetailDomainList(int count, PackageDetailType type)
         {
-            var result = CreateCarePackageDetailList(count, type).ToDomain().ToList();
+            var result = CreateCarePackageDetails(count, type).ToDomain().ToList();
 
             result.ForEach(detail => detail.Id = null);
 
