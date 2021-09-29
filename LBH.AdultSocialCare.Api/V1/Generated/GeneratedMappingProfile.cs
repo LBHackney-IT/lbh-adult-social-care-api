@@ -49,6 +49,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CareChargeElementTypePlainDomain, CareChargeElementTypePlainResponse>().ReverseMap();
             CreateMap<CarePackageBrokerageDomain, CarePackageBrokerageResponse>().ReverseMap();
             CreateMap<CarePackageDetailDomain, CarePackageDetail>().ReverseMap();
+            CreateMap<CarePackageDetailDomain, CarePackageDetailResponse>().ReverseMap();
             CreateMap<CarePackagePlainDomain, CarePackagePlainResponse>().ReverseMap();
             CreateMap<CarePackageUpdateDomain, CarePackageSettings>().ReverseMap();
             CreateMap<CarePackageUpdateDomain, CarePackage>().ReverseMap();

@@ -18,14 +18,14 @@ using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 {
-    public class CarePackageBrokerageUseCaseTest : BaseTest
+    public class UpsertCarePackageBrokerageUseCaseTest : BaseTest
     {
         private readonly Mock<ICarePackageGateway> _gatewayMock;
         private readonly Mock<IDatabaseManager> _dbManagerMock;
         private readonly UpsertCarePackageBrokerageUseCase _useCase;
         private readonly CarePackage _package;
 
-        public CarePackageBrokerageUseCaseTest()
+        public UpsertCarePackageBrokerageUseCaseTest()
         {
             _package = new CarePackage
             {

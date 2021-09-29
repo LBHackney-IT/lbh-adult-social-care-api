@@ -49,6 +49,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetAllUsersUseCase, GetAllUsersUseCase>();
             services.AddScoped<IGetApprovedPackagesUseCase, GetApprovedPackagesUseCase>();
             services.AddScoped<IGetBrokeredPackagesUseCase, GetBrokeredPackagesUseCase>();
+            services.AddScoped<IGetCarePackageBrokerageUseCase, GetCarePackageBrokerageUseCase>();
             services.AddScoped<IGetFundedNursingCareCollectorsUseCase, GetFundedNursingCareCollectorsUseCase>();
             services.AddScoped<IGetOpportunityLengthOptionsListUseCase, GetOpportunityLengthOptionsListUseCase>();
             services.AddScoped<IGetOpportunityTimesPerMonthOptionsListUseCase, GetOpportunityTimesPerMonthOptionsListUseCase>();
@@ -64,7 +65,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IUpsertCarePackageBrokerageUseCase, UpsertCarePackageBrokerageUseCase>();
             services.AddScoped<IUpsertPackageUseCase, UpsertPackageUseCase>();
             services.AddScoped<IUpsertStatusUseCase, UpsertStatusUseCase>();
-            services.AddScoped<IGetCarePackageBrokerageUseCase, GetCarePackageBrokerageUseCase>();
             services.AddScoped<IChangeDayCarePackageStatusUseCase, ChangeDayCarePackageStatusUseCase>();
             services.AddScoped<ICreateDayCareCollegeUseCase, CreateDayCareCollegeUseCase>();
             services.AddScoped<ICreateDayCarePackageHistoryUseCase, CreateDayCarePackageHistoryUseCase>();

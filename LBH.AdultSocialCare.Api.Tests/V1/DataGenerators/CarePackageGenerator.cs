@@ -39,12 +39,14 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             return package;
         }
 
-        public async Task<ICollection<CarePackageDetail>> CreatePackageDetails(CarePackage package)
+        public async Task<List<CarePackageDetail>> CreatePackageDetails(CarePackage package, int count, PackageDetailType type)
         {
-            package.Details.AddRange(TestDataHelper.CreateCarePackageDetailList(5, PackageDetailType.AdditionalNeed));
+            var details = TestDataHelper.CreateCarePackageDetails(count, type);
 
+            package.Details.AddRange(details);
             await _context.SaveChangesAsync();
-            return package.Details;
+
+            return details;
         }
     }
 }

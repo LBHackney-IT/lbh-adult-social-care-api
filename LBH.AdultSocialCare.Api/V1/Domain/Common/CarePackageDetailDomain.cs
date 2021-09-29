@@ -1,11 +1,13 @@
 using System;
 using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
     [GenerateMappingFor(typeof(CarePackageDetail))]
+    [GenerateMappingFor(typeof(CarePackageDetailResponse))]
     [GenerateListMappingFor(typeof(CarePackageDetail))]
     public class CarePackageDetailDomain
     {

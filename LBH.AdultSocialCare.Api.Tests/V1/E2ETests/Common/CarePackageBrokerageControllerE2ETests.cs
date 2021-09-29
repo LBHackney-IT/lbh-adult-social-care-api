@@ -3,9 +3,11 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
+using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Microsoft.EntityFrameworkCore;
@@ -16,17 +18,39 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
     public class CarePackageBrokerageControllerE2ETests : IClassFixture<MockWebApplicationFactory>
     {
         private readonly MockWebApplicationFactory _fixture;
+        private readonly CarePackageGenerator _generator;
 
         public CarePackageBrokerageControllerE2ETests(MockWebApplicationFactory fixture)
         {
             _fixture = fixture;
+            _generator = _fixture.DataGenerator.CarePackages;
+        }
+
+        [Fact]
+        public async Task ShouldReturnPackageBrokerageInfo()
+        {
+            var package = await _generator.CreatePackage(PackageType.NursingCare);
+
+            var coreCost = (await _generator.CreatePackageDetails(package, 1, PackageDetailType.CoreCost)).First();
+            var details = await _generator.CreatePackageDetails(package, 3, PackageDetailType.AdditionalNeed);
+
+            var response = await _fixture.RestClient
+                .GetAsync<CarePackageBrokerageResponse>($"api/v1/care-packages/{package.Id}/details");
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            response.Content.CoreCost.Should().Be(coreCost.Cost);
+            response.Content.StartDate.Should().Be(coreCost.StartDate);
+            response.Content.EndDate.Should().Be(coreCost.EndDate);
+            response.Content.SupplierId.Should().Be(package.SupplierId);
+            response.Content.Details.Should().BeEquivalentTo(details, opt => opt.ExcludingMissingMembers());
         }
 
         [Fact]
         public async Task ShouldUpdateCarePackageDetails()
         {
-            var package = await _fixture.DataGenerator.CarePackages.CreatePackage(PackageType.NursingCare);
-            var details = await _fixture.DataGenerator.CarePackages.CreatePackageDetails(package);
+            var package = await _generator.CreatePackage(PackageType.NursingCare);
+            var details = await _generator.CreatePackageDetails(package, 5, PackageDetailType.AdditionalNeed);
 
             var request = new CarePackageBrokerageCreationRequest
             {
@@ -49,8 +73,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             }
 
             var response = await _fixture.RestClient
-                .PutAsync<object>($"api/v1/care-packages/{package.Id}/details", request)
-                .ConfigureAwait(false);
+                .PutAsync<object>($"api/v1/care-packages/{package.Id}/details", request);
 
             package = await _fixture.DatabaseContext.CarePackages
                 .Include(p => p.Details)
