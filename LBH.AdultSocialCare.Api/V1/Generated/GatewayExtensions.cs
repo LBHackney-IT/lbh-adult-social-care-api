@@ -27,6 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<ICarePackageGateway, CarePackageGateway>();
             services.AddScoped<ICarePackageHistoryGateway, CarePackageHistoryGateway>();
             services.AddScoped<ICarePackageSettingsGateway, CarePackageSettingsGateway>();
+            services.AddScoped<ICarePackageReclaimGateway, CarePackageReclaimGateway>();
             services.AddScoped<IClientsGateway, ClientsGateway>();
             services.AddScoped<IInvoiceCreditNoteGateway, InvoiceCreditNoteGateway>();
             services.AddScoped<IOpportunityLengthOptionGateway, OpportunityLengthOptionGateway>();
