@@ -76,7 +76,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         /// <param name="carePackageId">An unique identifier of a package to be approved.</param>
         /// <param name="request">The care package update request object.</param>
         /// <returns>Ok when operation is successful.</returns>
-        [HttpPost("{carePackageId}")]
+        [HttpPost("{carePackageId}/submit")]
         [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
