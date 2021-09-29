@@ -90,12 +90,32 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CareChargeElementTypePlainDomain>>(input);
         }
 
+        public static CarePackageBrokerageResponse ToResponse(this CarePackageBrokerageDomain input)
+        {
+            return _mapper.Map<CarePackageBrokerageResponse>(input);
+        }
+
+        public static CarePackageBrokerageDomain ToDomain(this CarePackageBrokerageResponse input)
+        {
+            return _mapper.Map<CarePackageBrokerageDomain>(input);
+        }
+
         public static CarePackageDetail ToEntity(this CarePackageDetailDomain input)
         {
             return _mapper.Map<CarePackageDetail>(input);
         }
 
         public static CarePackageDetailDomain ToDomain(this CarePackageDetail input)
+        {
+            return _mapper.Map<CarePackageDetailDomain>(input);
+        }
+
+        public static CarePackageDetailResponse ToResponse(this CarePackageDetailDomain input)
+        {
+            return _mapper.Map<CarePackageDetailResponse>(input);
+        }
+
+        public static CarePackageDetailDomain ToDomain(this CarePackageDetailResponse input)
         {
             return _mapper.Map<CarePackageDetailDomain>(input);
         }
@@ -130,26 +150,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CarePackagePlainDomain>>(input);
         }
 
-        public static CarePackageSettings ToSettings(this CarePackageUpdateDomain input)
-        {
-            return _mapper.Map<CarePackageSettings>(input);
-        }
-
-        public static CarePackageUpdateDomain ToUpdateDomain(this CarePackageSettings input)
-        {
-            return _mapper.Map<CarePackageUpdateDomain>(input);
-        }
-
-        public static CarePackage ToEntity(this CarePackageUpdateDomain input)
-        {
-            return _mapper.Map<CarePackage>(input);
-        }
-
-        public static CarePackageUpdateDomain ToUpdateDomain(this CarePackage input)
-        {
-            return _mapper.Map<CarePackageUpdateDomain>(input);
-        }
-
         public static CarePackageReclaim ToEntity(this CarePackageReclaimCreationDomain input)
         {
             return _mapper.Map<CarePackageReclaim>(input);
@@ -168,6 +168,26 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static CarePackageReclaimDomain ToDomain(this CarePackageReclaimResponse input)
         {
             return _mapper.Map<CarePackageReclaimDomain>(input);
+        }
+
+        public static CarePackageSettings ToSettings(this CarePackageUpdateDomain input)
+        {
+            return _mapper.Map<CarePackageSettings>(input);
+        }
+
+        public static CarePackageUpdateDomain ToUpdateDomain(this CarePackageSettings input)
+        {
+            return _mapper.Map<CarePackageUpdateDomain>(input);
+        }
+
+        public static CarePackage ToEntity(this CarePackageUpdateDomain input)
+        {
+            return _mapper.Map<CarePackage>(input);
+        }
+
+        public static CarePackageUpdateDomain ToUpdateDomain(this CarePackage input)
+        {
+            return _mapper.Map<CarePackageUpdateDomain>(input);
         }
 
         public static CarePackage ToEntity(this CarePackageForCreationDomain input)
@@ -230,14 +250,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CareChargeElementForUpdateRequest>>(input);
         }
 
-        public static CarePackageBrokerageDomain ToDomain(this CarePackageBrokerageRequest input)
+        public static CarePackageBrokerageDomain ToDomain(this CarePackageBrokerageCreationRequest input)
         {
             return _mapper.Map<CarePackageBrokerageDomain>(input);
         }
 
-        public static CarePackageBrokerageRequest ToRequest(this CarePackageBrokerageDomain input)
+        public static CarePackageBrokerageCreationRequest ToCreationRequest(this CarePackageBrokerageDomain input)
         {
-            return _mapper.Map<CarePackageBrokerageRequest>(input);
+            return _mapper.Map<CarePackageBrokerageCreationRequest>(input);
         }
 
         public static CarePackageDetailDomain ToDomain(this CarePackageDetailRequest input)
