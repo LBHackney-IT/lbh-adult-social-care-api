@@ -1,11 +1,11 @@
-using System;
-using System.Security.Claims;
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Moq;
+using System;
+using System.Security.Claims;
 
 namespace LBH.AdultSocialCare.Api.Tests
 {
@@ -70,6 +70,6 @@ namespace LBH.AdultSocialCare.Api.Tests
             }
         }
 
-        #endregion
+        #endregion IDisposable implementation
     }
 }

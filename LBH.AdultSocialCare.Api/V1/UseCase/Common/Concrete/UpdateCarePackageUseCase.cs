@@ -28,9 +28,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
         public async Task<CarePackagePlainResponse> UpdateAsync(Guid carePackageId, CarePackageUpdateDomain carePackageUpdateDomain)
         {
-            var package = await _carePackageGateway.GetPackagePlainAsync(carePackageId, true).EnsureExists($"Care package with id {carePackageId} not found");
+            var package = await _carePackageGateway.GetPackagePlainAsync(carePackageId, true).EnsureExistsAsync($"Care package with id {carePackageId} not found");
+            // var package = await Ensure.ExistsAsync(() => _carePackageGateway.GetPackagePlainAsync(carePackageId, true), $"Care package with id {carePackageId} not found");
             var packageSettings = await _carePackageSettings.GetPackageSettingsPlainAsync(carePackageId, true)
-                .EnsureExists($"Package settings for package with id {carePackageId} not found");
+                .EnsureExistsAsync($"Package settings for package with id {carePackageId} not found");
 
             // Update values
             _mapper.Map(carePackageUpdateDomain, package);
