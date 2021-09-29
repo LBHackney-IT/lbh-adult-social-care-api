@@ -3,6 +3,7 @@ using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,6 +51,52 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
 
             response.Content.Count().Should().Be(Enum.GetNames(typeof(PackageScheduling)).Length);
+        }
+
+        [Fact]
+        public async Task ShouldUpdateCarePackage()
+        {
+            var carePackage = DatabaseDataHelper.SaveCarePackageToDatabase(_fixture.DatabaseContext);
+            var carePackageSettings = DatabaseDataHelper.SaveCarePackageSettingsToDatabase(_fixture.DatabaseContext, carePackage.Id);
+
+            var updatedCarePackageSettings = new CarePackageSettings
+            {
+                HasRespiteCare = true,
+                HasDischargePackage = true,
+                IsImmediate = true,
+                IsReEnablement = true,
+                IsS117Client = true
+            };
+
+            // Update some care package settings
+            carePackage.PrimarySupportReasonId = 2;
+            carePackage.PackageScheduling = PackageScheduling.LongTerm;
+
+            var carePackageUpdateRequest =
+                TestDataHelper.CarePackageUpdateRequest(carePackage, updatedCarePackageSettings);
+
+            var response = await _fixture.RestClient
+                .PutAsync<CarePackagePlainResponse>($"api/v1/care-packages/{carePackage.Id}", carePackageUpdateRequest)
+                .ConfigureAwait(false);
+
+            var packageSettingsEntity = _fixture.DatabaseContext.CarePackageSettings.SingleOrDefault(ps => ps.CarePackageId.Equals(carePackage.Id));
+
+            Assert.Equal(HttpStatusCode.OK, response.Message.StatusCode);
+            response.Content.Id.Should().Be(carePackage.Id);
+            response.Content.PackageType.Should().Be((int) carePackage.PackageType);
+            response.Content.Status.Should().Be(carePackage.Status);
+
+            // Check package settings updated
+            Assert.NotNull(packageSettingsEntity);
+            var newSettings = new
+            {
+                updatedCarePackageSettings.HasRespiteCare,
+                updatedCarePackageSettings.HasDischargePackage,
+                updatedCarePackageSettings.IsImmediate,
+                updatedCarePackageSettings.IsReEnablement,
+                updatedCarePackageSettings.IsS117Client
+            };
+            packageSettingsEntity.Should().BeEquivalentTo(newSettings, opt => opt.ExcludingMissingMembers().ExcludingNestedObjects());
         }
     }
 }
