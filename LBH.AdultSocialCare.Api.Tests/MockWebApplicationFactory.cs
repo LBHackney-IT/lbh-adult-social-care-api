@@ -15,6 +15,7 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
+using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
 
 namespace LBH.AdultSocialCare.Api.Tests
 {
@@ -34,7 +35,7 @@ namespace LBH.AdultSocialCare.Api.Tests
             CreateDatabaseContext();
 
             TransactionalApi = new Mock<IRestClient>();
-            DataGenerator = new DataGenerator(DatabaseContext);
+            Generator = new DatabaseTestDataGenerator(DatabaseContext);
             RestClient = new TestRestClient(CreateClient())
             {
                 // HACK: for some reason updates to existing entities done by API
@@ -47,7 +48,7 @@ namespace LBH.AdultSocialCare.Api.Tests
 
         public TestRestClient RestClient { get; }
         public DatabaseContext DatabaseContext { get; private set; }
-        public DataGenerator DataGenerator { get; }
+        public DatabaseTestDataGenerator Generator { get; }
 
         public Mock<IRestClient> TransactionalApi { get; }
 

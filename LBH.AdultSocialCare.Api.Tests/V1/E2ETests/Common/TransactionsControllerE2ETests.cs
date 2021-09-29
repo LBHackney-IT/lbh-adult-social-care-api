@@ -48,15 +48,15 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
 
         private async Task<List<NursingCarePackage>> CreateNursingCarePackages()
         {
-            var nursingCarePackages = await _fixture.DataGenerator.NursingCare.GetPackages(10).ConfigureAwait(false);
+            var nursingCarePackages = await _fixture.Generator.NursingCare.CreatePackages(10).ConfigureAwait(false);
 
             foreach (var package in nursingCarePackages)
             {
-                var brokerage = await _fixture.DataGenerator.NursingCare.GetBrokerageInfo(package.Id).ConfigureAwait(false);
-                var careCharge = await _fixture.DataGenerator.CareCharge.GetCareCharge(PackageTypesConstants.NursingCarePackageId, package.Id).ConfigureAwait(false);
+                var brokerage = await _fixture.Generator.NursingCare.CreateBrokerageInfo(package.Id).ConfigureAwait(false);
+                var careCharge = await _fixture.Generator.CareCharge.GetCareCharge(PackageTypesConstants.NursingCarePackageId, package.Id).ConfigureAwait(false);
 
-                await _fixture.DataGenerator.NursingCare.GetAdditionalNeedsCost(brokerage.NursingCareBrokerageId, 1).ConfigureAwait(false);
-                await _fixture.DataGenerator.CareCharge.GetElements(careCharge.Id, 5).ConfigureAwait(false);
+                await _fixture.Generator.NursingCare.CreateAdditionalNeedsCost(brokerage.NursingCareBrokerageId, 1).ConfigureAwait(false);
+                await _fixture.Generator.CareCharge.GetElements(careCharge.Id, 5).ConfigureAwait(false);
             }
 
             return nursingCarePackages;
@@ -64,15 +64,15 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
 
         private async Task<List<ResidentialCarePackage>> CreateResidentialCarePackages()
         {
-            var residentialCarePackages = await _fixture.DataGenerator.ResidentialCare.GetPackages(10).ConfigureAwait(false);
+            var residentialCarePackages = await _fixture.Generator.ResidentialCare.GetPackages(10).ConfigureAwait(false);
 
             foreach (var package in residentialCarePackages)
             {
-                var brokerage = await _fixture.DataGenerator.ResidentialCare.GetBrokerageInfo(package.Id).ConfigureAwait(false);
-                var careCharge = await _fixture.DataGenerator.CareCharge.GetCareCharge(PackageTypesConstants.NursingCarePackageId, package.Id).ConfigureAwait(false);
+                var brokerage = await _fixture.Generator.ResidentialCare.GetBrokerageInfo(package.Id).ConfigureAwait(false);
+                var careCharge = await _fixture.Generator.CareCharge.GetCareCharge(PackageTypesConstants.NursingCarePackageId, package.Id).ConfigureAwait(false);
 
-                await _fixture.DataGenerator.ResidentialCare.GetAdditionalNeedsCost(brokerage.Id, 1).ConfigureAwait(false);
-                await _fixture.DataGenerator.CareCharge.GetElements(careCharge.Id, 5).ConfigureAwait(false);
+                await _fixture.Generator.ResidentialCare.GetAdditionalNeedsCost(brokerage.Id, 1).ConfigureAwait(false);
+                await _fixture.Generator.CareCharge.GetElements(careCharge.Id, 5).ConfigureAwait(false);
             }
 
             return residentialCarePackages;
