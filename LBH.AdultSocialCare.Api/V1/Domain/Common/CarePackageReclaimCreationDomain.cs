@@ -1,21 +1,18 @@
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
+namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
-    [GenerateMappingFor(typeof(CarePackageReclaimDomain))]
-    public class CarePackageReclaim : BaseEntity
+    [GenerateMappingFor(typeof(CarePackageReclaim))]
+    public class CarePackageReclaimCreationDomain
     {
-        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
-
         public Guid CarePackageId { get; set; }
 
-        [Column(TypeName = "decimal(13, 2)")]
         public decimal Cost { get; set; }
 
         public ClaimCollector ClaimCollector { get; set; }
@@ -37,11 +34,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
         public string ClaimReason { get; set; }
 
         public string AssessmentFileUrl { get; set; }
-
-        [ForeignKey(nameof(SupplierId))]
-        public Supplier Supplier { get; set; }
-
-        [ForeignKey(nameof(CarePackageId))]
-        public CarePackage Package { get; set; }
     }
 }
