@@ -56,8 +56,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldUpdateCarePackage()
         {
-            var (carePackage, carePackageSettings) =
-                DatabaseDataHelper.SaveCarePackageToDatabase(_fixture.DatabaseContext, withCarePackageSettings: true);
+            var carePackage = DatabaseDataHelper.SaveCarePackageToDatabase(_fixture.DatabaseContext);
+            var carePackageSettings = DatabaseDataHelper.SaveCarePackageSettingsToDatabase(_fixture.DatabaseContext, carePackage.Id);
 
             var updatedCarePackageSettings = new CarePackageSettings
             {
