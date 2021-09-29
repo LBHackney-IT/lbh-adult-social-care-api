@@ -23,14 +23,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
         public async Task ExecuteAsync(Guid packageId, CarePackageSubmissionDomain packageSubmission)
         {
-            var package = (await _carePackageGateway
-                .GetPackageAsync(packageId))
-                .EnsureExists($"Care package {packageId} not found");
+            var package = await _carePackageGateway
+                .GetPackageAsync(packageId)
+                .EnsureExistsAsync($"Care package {packageId} not found");
 
             package.Status = PackageStatus.SubmittedForApproval;
             package.Histories.Add(new CarePackageHistory
             {
-                Status = HistoryStatus.ApprovedForBrokerage,
+                Status = HistoryStatus.SubmittedForApproval,
                 Description = packageSubmission.Notes
             });
 
