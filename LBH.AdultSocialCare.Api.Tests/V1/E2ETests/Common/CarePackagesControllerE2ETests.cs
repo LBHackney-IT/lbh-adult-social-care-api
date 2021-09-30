@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
@@ -97,6 +98,37 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
                 updatedCarePackageSettings.IsS117Client
             };
             packageSettingsEntity.Should().BeEquivalentTo(newSettings, opt => opt.ExcludingMissingMembers().ExcludingNestedObjects());
+        }
+
+        [Fact]
+        public async Task ShouldSubmitPackage()
+        {
+            var package = await _fixture.DataGenerator.CarePackages.CreatePackage(PackageType.NursingCare);
+
+            var request = new CarePackageSubmissionRequest
+            {
+                ApproverId = UserConstants.DefaultApiUserGuid,
+                Notes = "Hello world"
+            };
+
+            var response = await _fixture.RestClient
+                .PostAsync<IEnumerable<CarePackageSchedulingOptionResponse>>($"api/v1/care-packages/{package.Id}/submit", request)
+                .ConfigureAwait(false);
+
+            package = _fixture.DatabaseContext.CarePackages
+                .FirstOrDefault(p => p.Id == package.Id);
+            var historyEntry = _fixture.DatabaseContext.CarePackageHistories
+                .FirstOrDefault(h => h.CarePackageId == package.Id);
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            //TODO: VK: Save history approver
+
+            package?.Should().NotBeNull();
+            package?.Status.Should().Be(PackageStatus.SubmittedForApproval);
+            historyEntry?.Should().NotBeNull();
+            historyEntry?.Description.Should().Be(request.Notes);
+            historyEntry?.Status.Should().Be(HistoryStatus.SubmittedForApproval);
         }
     }
 }
