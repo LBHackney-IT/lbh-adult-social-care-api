@@ -24,8 +24,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
         [Fact]
         public async Task ShouldGetNursingCareApproverPackageContent()
         {
-            var package = await _fixture.DataGenerator.NursingCare.GetPackage().ConfigureAwait(false);
-            var brokerage = await _fixture.DataGenerator.NursingCare.GetBrokerageInfo(package.Id).ConfigureAwait(false);
+            var package = await _fixture.Generator.NursingCare.CreatePackage().ConfigureAwait(false);
+            var brokerage = await _fixture.Generator.NursingCare.CreateBrokerageInfo(package.Id).ConfigureAwait(false);
 
             var costs = await GenerateAdditionalNeedsCosts(brokerage.NursingCareBrokerageId,
                 AdditionalNeedPaymentTypesConstants.WeeklyCost, AdditionalNeedPaymentTypesConstants.WeeklyCost,
@@ -54,7 +54,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
         [Fact]
         public async Task ShouldApprovePackage()
         {
-            var package = await _fixture.DataGenerator.NursingCare.GetPackage().ConfigureAwait(false);
+            var package = await _fixture.Generator.NursingCare.CreatePackage().ConfigureAwait(false);
 
             var response = await _fixture.RestClient
                 .PutAsync<NursingCarePackageResponse>($"api/v1/nursing-care-packages/{package.Id}/approve-package-contents")
@@ -81,8 +81,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
 
             foreach (var costType in types)
             {
-                result.Add(await _fixture.DataGenerator.NursingCare
-                    .GetAdditionalNeedsCost(brokerageId, costType)
+                result.Add(await _fixture.Generator.NursingCare
+                    .CreateAdditionalNeedsCost(brokerageId, costType)
                     .ConfigureAwait(false));
 
             }

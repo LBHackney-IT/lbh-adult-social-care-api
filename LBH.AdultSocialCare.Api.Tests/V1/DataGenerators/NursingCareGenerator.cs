@@ -18,7 +18,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             _context = context;
         }
 
-        public async Task<NursingCarePackage> GetPackage()
+        public async Task<NursingCarePackage> CreatePackage()
         {
             var client = await _context.Clients.FirstOrDefaultAsync().ConfigureAwait(false);
 
@@ -36,19 +36,19 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             return package;
         }
 
-        public async Task<List<NursingCarePackage>> GetPackages(int count)
+        public async Task<List<NursingCarePackage>> CreatePackages(int count)
         {
             var result = new List<NursingCarePackage>();
 
             for (var i = 0; i < count; i++)
             {
-                result.Add(await GetPackage().ConfigureAwait(false));
+                result.Add(await CreatePackage().ConfigureAwait(false));
             }
 
             return result;
         }
 
-        public async Task<NursingCareBrokerageInfo> GetBrokerageInfo(Guid packageId)
+        public async Task<NursingCareBrokerageInfo> CreateBrokerageInfo(Guid packageId)
         {
             var brokerage = new NursingCareBrokerageInfo
             {
@@ -62,7 +62,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             return brokerage;
         }
 
-        public async Task<NursingCareAdditionalNeedsCost> GetAdditionalNeedsCost(Guid brokerageId, int type)
+        public async Task<NursingCareAdditionalNeedsCost> CreateAdditionalNeedsCost(Guid brokerageId, int type)
         {
             var cost = new NursingCareAdditionalNeedsCost
             {

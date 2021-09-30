@@ -25,7 +25,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldCreateNewCareChargeElement()
         {
-            var careCharge = await _fixture.DataGenerator.CareCharge
+            var careCharge = await _fixture.Generator.CareCharge
                 .GetCareCharge(PackageTypesConstants.NursingCarePackageId, Guid.NewGuid())
                 .ConfigureAwait(false);
 
@@ -44,7 +44,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldAddFinancialAssessment()
         {
-            var careCharge = await _fixture.DataGenerator.CareCharge
+            var careCharge = await _fixture.Generator.CareCharge
                 .GetCareCharge(PackageTypesConstants.NursingCarePackageId, Guid.Empty)
                 .ConfigureAwait(false);
 

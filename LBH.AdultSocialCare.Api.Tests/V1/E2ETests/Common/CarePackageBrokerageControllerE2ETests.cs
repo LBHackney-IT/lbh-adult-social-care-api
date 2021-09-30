@@ -18,21 +18,21 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
     public class CarePackageBrokerageControllerE2ETests : IClassFixture<MockWebApplicationFactory>
     {
         private readonly MockWebApplicationFactory _fixture;
-        private readonly CarePackageGenerator _generator;
+        private readonly DatabaseTestDataGenerator _generator;
 
         public CarePackageBrokerageControllerE2ETests(MockWebApplicationFactory fixture)
         {
             _fixture = fixture;
-            _generator = _fixture.DataGenerator.CarePackages;
+            _generator = _fixture.Generator;
         }
 
         [Fact]
         public async Task ShouldReturnPackageBrokerageInfo()
         {
-            var package = await _generator.CreatePackage(PackageType.NursingCare);
+            var package = _generator.CreateCarePackage(PackageType.NursingCare);
 
-            var coreCost = (await _generator.CreatePackageDetails(package, 1, PackageDetailType.CoreCost)).First();
-            var details = await _generator.CreatePackageDetails(package, 3, PackageDetailType.AdditionalNeed);
+            var coreCost = (_generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost)).First();
+            var details = _generator.CreateCarePackageDetails(package, 3, PackageDetailType.AdditionalNeed);
 
             var response = await _fixture.RestClient
                 .GetAsync<CarePackageBrokerageResponse>($"api/v1/care-packages/{package.Id}/details");
@@ -49,8 +49,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldUpdateCarePackageDetails()
         {
-            var package = await _generator.CreatePackage(PackageType.NursingCare);
-            var details = await _generator.CreatePackageDetails(package, 5, PackageDetailType.AdditionalNeed);
+            var package = _generator.CreateCarePackage();
+            var details = _generator.CreateCarePackageDetails(package, 5, PackageDetailType.AdditionalNeed);
 
             var request = new CarePackageBrokerageCreationRequest
             {
@@ -75,9 +75,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             var response = await _fixture.RestClient
                 .PutAsync<object>($"api/v1/care-packages/{package.Id}/details", request);
 
-            package = await _fixture.DatabaseContext.CarePackages
+            package = _fixture.DatabaseContext.CarePackages
                 .Include(p => p.Details)
-                .FirstAsync(p => p.Id == package.Id);
+                .First(p => p.Id == package.Id);
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
 
