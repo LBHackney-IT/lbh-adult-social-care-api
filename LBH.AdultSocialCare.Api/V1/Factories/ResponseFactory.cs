@@ -545,17 +545,13 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Packages
 
-        public static PackageResponse ToResponse(this PackageDomain packageDomain)
+        public static PackageResponse ToResponse(this PackageTypeDomain packageTypeDomain)
         {
             return new PackageResponse
             {
-                Id = packageDomain.Id,
-                PackageName = packageDomain.PackageType,
-                Sequence = packageDomain.Sequence,
-                CreatorId = packageDomain.CreatorId,
-                DateCreated = packageDomain.DateCreated,
-                UpdaterId = packageDomain.UpdaterId,
-                DateUpdated = packageDomain.DateUpdated
+                Id = packageTypeDomain.Id,
+                PackageName = packageTypeDomain.PackageType,
+                Sequence = packageTypeDomain.Sequence
             };
         }
 

@@ -1,13 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
@@ -19,15 +20,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
     public class PackageController : BaseController
     {
         private readonly IUpsertPackageUseCase _upsertPackageUseCase;
-        private readonly IGetPackageUseCase _getPackageUseCase;
-        private readonly IGetAllPackageUseCase _getAllPackageUseCase;
+        private readonly IGetPackageTypeUseCase _getPackageTypeUseCase;
         private readonly IDeletePackageUseCase _deletePackageUseCase;
 
-        public PackageController(IUpsertPackageUseCase upsertPackageUseCase, IGetPackageUseCase getPackageUseCase, IGetAllPackageUseCase getAllPackageUseCase, IDeletePackageUseCase deletePackageUseCase)
+        public PackageController(IUpsertPackageUseCase upsertPackageUseCase, IGetPackageTypeUseCase getPackageTypeUseCase, IDeletePackageUseCase deletePackageUseCase)
         {
             _upsertPackageUseCase = upsertPackageUseCase;
-            _getPackageUseCase = getPackageUseCase;
-            _getAllPackageUseCase = getAllPackageUseCase;
+            _getPackageTypeUseCase = getPackageTypeUseCase;
             _deletePackageUseCase = deletePackageUseCase;
         }
 
@@ -52,23 +51,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         }
 
         /// <summary>Gets the specified package identifier.</summary>
-        /// <param name="packageId">The package identifier.</param>
+        /// <param name="packageTypeId">The package identifier.</param>
         /// <returns>The package response.</returns>
         [HttpGet]
-        [Route("{packageId}")]
-        public async Task<ActionResult<PackageResponse>> Get(int packageId)
+        [Route("{packageTypeId}")]
+        public async Task<ActionResult<PackageResponse>> Get(int packageTypeId)
         {
-            try
-            {
-                var res = await _getPackageUseCase.GetAsync(packageId).ConfigureAwait(false);
-                var packageResponse = res.ToResponse();
-                if (packageResponse == null) return NotFound();
-                return Ok(packageResponse);
-            }
-            catch (FormatException ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var res = await _getPackageTypeUseCase.GetSingleAsync(packageTypeId).EnsureExistsAsync();
+            return Ok(res.ToResponse());
         }
 
         /// <summary>Gets all.</summary>
@@ -79,7 +69,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         {
             try
             {
-                IList<Package> result = await _getAllPackageUseCase.GetAllAsync().ConfigureAwait(false);
+                IList<Package> result = await _getPackageTypeUseCase.GetAllAsync().ConfigureAwait(false);
                 if (result == null) return NotFound();
                 return Ok(result.ToList());
             }

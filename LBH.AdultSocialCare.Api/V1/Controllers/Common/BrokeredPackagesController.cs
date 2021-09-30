@@ -22,19 +22,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
     public class BrokeredPackagesController : ControllerBase
     {
         private readonly IGetBrokeredPackagesUseCase _getBrokeredPackagesUseCase;
-        private readonly IGetAllPackageUseCase _getAllPackageUseCase;
+        private readonly IGetPackageTypeUseCase _getPackageTypeUseCase;
         private readonly IGetAllUsersUseCase _getAllUsersUseCase;
         private readonly IGetAllHomeCareStageUseCase _getAllHomeCareStageUseCase;
         private readonly IAssignToUserUseCase _assignToUserUseCase;
 
         public BrokeredPackagesController(IGetBrokeredPackagesUseCase getBrokeredPackagesUseCase,
-            IGetAllPackageUseCase getAllPackageUseCase,
+            IGetPackageTypeUseCase getPackageTypeUseCase,
             IGetAllUsersUseCase getAllUsersUseCase,
             IGetAllHomeCareStageUseCase getAllHomeCareStageUseCase,
             IAssignToUserUseCase assignToUserUseCase)
         {
             _getBrokeredPackagesUseCase = getBrokeredPackagesUseCase;
-            _getAllPackageUseCase = getAllPackageUseCase;
+            _getPackageTypeUseCase = getPackageTypeUseCase;
             _getAllUsersUseCase = getAllUsersUseCase;
             _getAllHomeCareStageUseCase = getAllHomeCareStageUseCase;
             _assignToUserUseCase = assignToUserUseCase;
@@ -79,7 +79,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesDefaultResponseType]
         public async Task<ActionResult<PackageResponse>> GetPackageTypes()
         {
-            var result = await _getAllPackageUseCase.GetAllAsync().ConfigureAwait(false);
+            var result = await _getPackageTypeUseCase.GetAllAsync().ConfigureAwait(false);
             return Ok(result);
         }
 

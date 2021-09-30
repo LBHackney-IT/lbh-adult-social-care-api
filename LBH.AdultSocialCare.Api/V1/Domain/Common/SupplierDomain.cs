@@ -22,7 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         /// <summary>
         /// Gets or sets the Package Type Id
         /// </summary>
-        public PackageDomain Package { get; set; }
+        public PackageTypeDomain PackageType { get; set; }
 
         /// <summary>
         /// Gets or sets the Is Supplier Internal

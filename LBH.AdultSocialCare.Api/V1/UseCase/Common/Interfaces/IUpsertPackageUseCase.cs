@@ -5,6 +5,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
 {
     public interface IUpsertPackageUseCase
     {
-        public Task<PackageDomain> ExecuteAsync(PackageDomain package);
+        public Task<PackageTypeDomain> ExecuteAsync(PackageTypeDomain packageType);
     }
 }
