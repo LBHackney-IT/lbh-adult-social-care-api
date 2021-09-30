@@ -12,9 +12,9 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public string PackageStatus { get; set; }
         public string ClientName { get; set; }
         public DateTimeOffset ClientDateOfBirth { get; set; }
-        public string HackneyId { get; set; }
+        public int HackneyId { get; set; }
         public string PostCode { get; set; }
         public string AssignedBrokerName { get; set; }
-        public string DateCreated { get; set; }
+        public DateTimeOffset DateCreated { get; set; }
     }
 }
