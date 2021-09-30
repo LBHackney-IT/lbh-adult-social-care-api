@@ -1,14 +1,14 @@
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 {
     public class CarePackageHistory : BaseEntity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public Guid CarePackageId { get; set; }
 
