@@ -51,6 +51,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
             await _useCase.ExecuteAsync(_package.Id, submissionInfo);
 
             _package.Status.Should().Be(PackageStatus.SubmittedForApproval);
+            _package.ApproverId.Should().Be(submissionInfo.ApproverId);
+
             _package.Histories.Should().ContainSingle(h =>
                 h.Description == submissionInfo.Notes &&
                 h.Status == HistoryStatus.SubmittedForApproval);

@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
 {
     public interface ISubmitCarePackageUseCase
     {
-        Task ExecuteAsync(Guid packageId, CarePackageSubmissionDomain request);
+        Task ExecuteAsync(Guid packageId, CarePackageSubmissionDomain submissionInfo);
     }
 }

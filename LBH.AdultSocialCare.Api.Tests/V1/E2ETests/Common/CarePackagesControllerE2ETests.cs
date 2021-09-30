@@ -122,10 +122,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            //TODO: VK: Save history approver
-
             package?.Should().NotBeNull();
             package?.Status.Should().Be(PackageStatus.SubmittedForApproval);
+            package?.ApproverId.Should().Be(request.ApproverId);
+
             historyEntry?.Should().NotBeNull();
             historyEntry?.Description.Should().Be(request.Notes);
             historyEntry?.Status.Should().Be(HistoryStatus.SubmittedForApproval);

@@ -21,17 +21,19 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             _dbManager = dbManager;
         }
 
-        public async Task ExecuteAsync(Guid packageId, CarePackageSubmissionDomain packageSubmission)
+        public async Task ExecuteAsync(Guid packageId, CarePackageSubmissionDomain submissionInfo)
         {
             var package = await _carePackageGateway
                 .GetPackageAsync(packageId)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
+            package.ApproverId = submissionInfo.ApproverId;
             package.Status = PackageStatus.SubmittedForApproval;
+
             package.Histories.Add(new CarePackageHistory
             {
                 Status = HistoryStatus.SubmittedForApproval,
-                Description = packageSubmission.Notes
+                Description = submissionInfo.Notes
             });
 
             await _dbManager.SaveAsync();
