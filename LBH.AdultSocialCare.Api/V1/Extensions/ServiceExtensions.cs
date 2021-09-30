@@ -16,6 +16,7 @@ using System.Security.Authentication;
 using System.Text;
 using LBH.AdultSocialCare.Api.V1.Core.Invoicing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
@@ -122,5 +123,13 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddTransient<NursingCareInvoiceGenerator>();
             services.AddTransient<ResidentialCareInvoiceGenerator>();
         }
+
+        public static void ConfigureResidentApiClient(this IServiceCollection services, IConfiguration configuration)
+            => services.AddHttpClient<IRestClient, JsonRestClient>(client =>
+            {
+                client.BaseAddress = new Uri(configuration["ResidentsAPI:BaseUrl"]);
+                client.DefaultRequestHeaders.Add("Accept", "application/json");
+                client.DefaultRequestHeaders.Add("User-Agent", "HASC API");
+            });
     }
 }

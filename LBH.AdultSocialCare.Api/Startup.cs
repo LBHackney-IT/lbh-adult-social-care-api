@@ -107,6 +107,10 @@ namespace LBH.AdultSocialCare.Api
             services.ConfigureTransactionsApiClient(Configuration);
 
             services.ConfigureInvoicing();
+
+            // set residents API http client
+            services.AddScoped<IResidentsService, ResidentsService>();
+            services.ConfigureResidentApiClient(Configuration);
         }
 
         private static void ConfigureSwagger(IServiceCollection services) => services.AddSwaggerGen(c =>
