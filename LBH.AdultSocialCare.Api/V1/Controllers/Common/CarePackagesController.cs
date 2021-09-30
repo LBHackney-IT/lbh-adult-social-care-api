@@ -22,12 +22,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         private readonly ICreateCarePackageUseCase _createCarePackageUseCase;
         private readonly ICarePackageOptionsUseCase _carePackageOptionsUseCase;
         private readonly IUpdateCarePackageUseCase _updateCarePackageUseCase;
+        private readonly ISubmitCarePackageUseCase _submitCarePackageUseCase;
 
-        public CarePackagesController(ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase, IUpdateCarePackageUseCase updateCarePackageUseCase)
+        public CarePackagesController(
+            ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase,
+            IUpdateCarePackageUseCase updateCarePackageUseCase, ISubmitCarePackageUseCase submitCarePackageUseCase)
         {
             _createCarePackageUseCase = createCarePackageUseCase;
             _carePackageOptionsUseCase = carePackageOptionsUseCase;
             _updateCarePackageUseCase = updateCarePackageUseCase;
+            _submitCarePackageUseCase = submitCarePackageUseCase;
         }
 
         /// <summary>Creates a new care package.</summary>
@@ -66,6 +70,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         {
             var residentialCarePackageResponse = await _updateCarePackageUseCase.UpdateAsync(carePackageId, carePackageUpdateRequest.ToDomain());
             return Ok(residentialCarePackageResponse);
+        }
+
+        /// <summary>Submits a care package for approval.</summary>
+        /// <param name="carePackageId">An unique identifier of a package to be approved.</param>
+        /// <param name="request">The care package update request object.</param>
+        /// <returns>Ok when operation is successful.</returns>
+        [HttpPost("{carePackageId}/submit")]
+        [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> SubmitForApproval(Guid carePackageId, CarePackageSubmissionRequest request)
+        {
+            await _submitCarePackageUseCase.ExecuteAsync(carePackageId, request.ToDomain());
+            return Ok();
         }
     }
 }

@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20210929132432_carePackageHistoriesStatusIdNaming")]
+    partial class carePackageHistoriesStatusIdNaming
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -726,12 +728,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("ApproverId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("BrokerId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
 
@@ -763,10 +759,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApproverId");
-
-                    b.HasIndex("BrokerId");
 
                     b.HasIndex("CreatorId");
 
@@ -4748,14 +4740,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.CarePackage", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Approver")
-                        .WithMany()
-                        .HasForeignKey("ApproverId");
-
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Broker")
-                        .WithMany()
-                        .HasForeignKey("BrokerId");
-
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
