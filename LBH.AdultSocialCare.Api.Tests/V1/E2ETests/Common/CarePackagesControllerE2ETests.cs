@@ -103,7 +103,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldSubmitPackage()
         {
-            var package = await _fixture.DataGenerator.CarePackages.CreatePackage(PackageType.NursingCare);
+            var package = _fixture.Generator.CreateCarePackage(type: PackageType.NursingCare);
 
             var request = new CarePackageSubmissionRequest
             {
