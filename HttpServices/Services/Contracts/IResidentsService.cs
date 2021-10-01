@@ -8,6 +8,6 @@ namespace HttpServices.Services.Contracts
 {
     public interface IResidentsService
     {
-        Task<ServiceUserInformationResponse> GetAsync(int residentsId);
+        Task<ServiceUserInformationResponse> GetServiceUserInformationAsync(int hackneyId);
     }
 }

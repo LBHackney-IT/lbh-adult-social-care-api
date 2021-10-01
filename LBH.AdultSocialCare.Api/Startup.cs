@@ -109,6 +109,7 @@ namespace LBH.AdultSocialCare.Api
             services.ConfigureInvoicing();
 
             // set residents API http client
+            services.AddScoped<IResidentRestClient, ResidentRestClient>();
             services.AddScoped<IResidentsService, ResidentsService>();
             services.ConfigureResidentApiClient(Configuration);
         }

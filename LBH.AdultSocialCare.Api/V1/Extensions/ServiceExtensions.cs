@@ -125,11 +125,17 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
         }
 
         public static void ConfigureResidentApiClient(this IServiceCollection services, IConfiguration configuration)
-            => services.AddHttpClient<IRestClient, JsonRestClient>(client =>
+            => services.AddHttpClient<IResidentRestClient, ResidentRestClient>(resident =>
             {
-                client.BaseAddress = new Uri(configuration["ResidentsAPI:BaseUrl"]);
-                client.DefaultRequestHeaders.Add("Accept", "application/json");
-                client.DefaultRequestHeaders.Add("User-Agent", "HASC API");
+                resident.BaseAddress = new Uri(configuration["ResidentsAPI:BaseUrl"]);
+                resident.DefaultRequestHeaders.Add("Accept", "application/json");
+                resident.DefaultRequestHeaders.Add("User-Agent", "HASC API");
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler()
+            {
+                ClientCertificateOptions = ClientCertificateOption.Automatic,
+                SslProtocols = SslProtocols.Tls12,
+                AllowAutoRedirect = false,
+                UseDefaultCredentials = true
             });
     }
 }

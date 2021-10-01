@@ -10,21 +10,21 @@ namespace HttpServices.Services.Concrete
 {
     public class ResidentsService : IResidentsService
     {
-        private readonly IRestClient _restClient;
+        private readonly IResidentRestClient _residentRestClient;
 
-        public ResidentsService(IRestClient restClient)
+        public ResidentsService(IResidentRestClient residentRestClient)
         {
-            _restClient = restClient;
+            _residentRestClient = residentRestClient;
         }
 
-        public async Task<ServiceUserInformationResponse> GetAsync(int residentsId)
+        public async Task<ServiceUserInformationResponse> GetServiceUserInformationAsync(int hackneyId)
         {
             var url = new UrlFormatter()
                 .SetBaseUrl("residents")
-                .AddParameter("id", residentsId)
+                .AddParameter("id", hackneyId)
                 .ToString();
 
-            return await _restClient
+            return await _residentRestClient
                 .GetAsync<ServiceUserInformationResponse>(url, "Could not retrieve service user information");
         }
     }
