@@ -118,7 +118,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
         {
             return new Faker<CarePackageReclaim>()
                 .RuleFor(r => r.CarePackageId, packageId)
-                .RuleFor(r => r.Cost, f => f.PickRandom(1.2m, 3.4m, 5.6m, 7.8m, 9.1m, 12.34m, 56.78m, 91.12m, 123.45m, 456.78m)) // Workaround to avoid precision loss in SQLite)
+                .RuleFor(r => r.Cost, f =>  Math.Round(f.Random.Decimal(0m, 1000m), 2)) // Workaround to avoid precision loss in SQLite)
                 .RuleFor(r => r.StartDate, f => f.Date.Past().Date)
                 .RuleFor(r => r.EndDate, f => f.Date.Future().Date)
                 .RuleFor(r => r.Description, f => f.Lorem.Paragraph())
@@ -129,7 +129,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
         public static List<CarePackageDetail> CreateCarePackageDetails(int count, PackageDetailType type)
         {
             return new Faker<CarePackageDetail>()
-                .RuleFor(d => d.Cost, f => f.PickRandom(1.2m, 3.4m, 5.6m, 7.8m, 9.1m, 12.34m, 56.78m, 91.12m, 123.45m, 456.78m)) // Workaround to avoid precision loss in SQLite
+                .RuleFor(r => r.Cost, f =>  Math.Round(f.Random.Decimal(0m, 1000m), 2)) // Workaround to avoid precision loss in SQLite)
                 .RuleFor(d => d.CostPeriod, f => type == PackageDetailType.CoreCost
                     ? PaymentPeriod.Weekly
                     : f.PickRandom(PaymentPeriod.Weekly, PaymentPeriod.OneOff))
