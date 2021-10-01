@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -25,7 +23,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldCreateFundedNursingCareReclaimForExistingNursingCarePackage()
         {
-            var package = await CreatePackage();
+            var package = CreatePackage();
 
             var request = FundedNursingCareCreationRequest(package.Id);
 
@@ -56,7 +54,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldReturnFundedNursingCareReclaim()
         {
-            var package = await CreatePackage();
+            var package = CreatePackage();
 
             var request = FundedNursingCareCreationRequest(package.Id);
 
@@ -75,7 +73,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldUpdateFundedNursingCareReclaim()
         {
-            var package = await CreatePackage();
+            var package = CreatePackage();
 
             var request = FundedNursingCareCreationRequest(package.Id);
 
@@ -103,9 +101,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             carePackageReclaim.Cost.Should().Be(updateRequest.Cost);
         }
 
-        private async Task<CarePackage> CreatePackage()
+        private CarePackage CreatePackage()
         {
-            return await _fixture.DataGenerator.CarePackages.CreatePackage(PackageType.NursingCare);
+            return _fixture.Generator.CreateCarePackage(PackageType.NursingCare);
         }
 
         private async Task<TestResponse<CarePackageReclaimResponse>> CreateFncReclaim(FundedNursingCareCreationRequest request)

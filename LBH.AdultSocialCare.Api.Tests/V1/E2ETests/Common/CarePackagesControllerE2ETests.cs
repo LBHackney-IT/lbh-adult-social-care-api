@@ -57,8 +57,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldUpdateCarePackage()
         {
-            var carePackage = DatabaseDataHelper.SaveCarePackageToDatabase(_fixture.DatabaseContext);
-            var carePackageSettings = DatabaseDataHelper.SaveCarePackageSettingsToDatabase(_fixture.DatabaseContext, carePackage.Id);
+            var carePackage = _fixture.Generator.CreateCarePackage();
+            var carePackageSettings = _fixture.Generator.CreateCarePackageSettings(carePackage.Id);
 
             var updatedCarePackageSettings = new CarePackageSettings
             {
@@ -103,7 +103,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldSubmitPackage()
         {
-            var package = await _fixture.DataGenerator.CarePackages.CreatePackage(PackageType.NursingCare);
+            var package = _fixture.Generator.CreateCarePackage(type: PackageType.NursingCare);
 
             var request = new CarePackageSubmissionRequest
             {
