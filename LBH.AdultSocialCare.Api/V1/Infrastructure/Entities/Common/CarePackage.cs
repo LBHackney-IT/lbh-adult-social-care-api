@@ -23,16 +23,32 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
         public Guid Id { get; set; }
 
         public PackageType PackageType { get; set; }
+        public PackageStatus Status { get; set; }
+
         public Guid ServiceUserId { get; set; }
         public int? SupplierId { get; set; }
-        public int PrimarySupportReasonId { get; set; }
-        public PackageStatus Status { get; set; }
-        public PackageScheduling PackageScheduling { get; set; }
+        public Guid? ApproverId { get; set; }
+        public Guid? BrokerId { get; set; }
 
-        [ForeignKey(nameof(ServiceUserId))] public Client ServiceUser { get; set; }
-        [ForeignKey(nameof(SupplierId))] public Supplier Supplier { get; set; }
-        [ForeignKey(nameof(PrimarySupportReasonId))] public PrimarySupportReason PrimarySupportReason { get; set; }
+        public int PrimarySupportReasonId { get; set; }
+        public PackageScheduling PackageScheduling { get; set; }
         public CarePackageSettings CarePackageSettings { get; set; }
+
+        [ForeignKey(nameof(ServiceUserId))]
+        public Client ServiceUser { get; set; }
+
+        [ForeignKey(nameof(SupplierId))]
+        public Supplier Supplier { get; set; }
+
+        [ForeignKey(nameof(ApproverId))]
+        public User Approver { get; set; }
+
+        [ForeignKey(nameof(BrokerId))]
+        public User Broker { get; set; }
+
+        [ForeignKey(nameof(PrimarySupportReasonId))]
+        public PrimarySupportReason PrimarySupportReason { get; set; }
+
         public virtual ICollection<CarePackageDetail> Details { get; set; }
         public virtual ICollection<CarePackageReclaim> Reclaims { get; set; }
         public virtual ICollection<CarePackageHistory> Histories { get; set; }

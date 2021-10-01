@@ -321,14 +321,12 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Packages
 
-        public static PackageDomain ToDomain(this PackageRequest packageEntity)
+        public static PackageTypeDomain ToDomain(this PackageRequest packageEntity)
         {
-            return new PackageDomain
+            return new PackageTypeDomain
             {
                 Id = packageEntity.Id,
-                PackageType = packageEntity.PackageType,
-                DateCreated = packageEntity.DateCreated,
-                DateUpdated = packageEntity.DateUpdated
+                PackageType = packageEntity.PackageType
             };
         }
 

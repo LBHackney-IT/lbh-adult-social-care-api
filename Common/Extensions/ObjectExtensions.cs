@@ -16,14 +16,15 @@ namespace Common.Extensions
             return obj;
         }
 
-        public static Task<T> EnsureExistsAsync<T>(this Task<T> obj, string errorMessage = "Entity not found")
+        public static async Task<T> EnsureExistsAsync<T>(this Task<T> task, string errorMessage = "Entity not found")
         {
-            if (obj.Result is null)
+            var result = await task;
+            if (result is null)
             {
                 throw new ApiException(errorMessage, HttpStatusCode.NotFound);
             }
 
-            return obj;
+            return result;
         }
     }
 }

@@ -4,8 +4,8 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
 {
-    public interface ICarePackageBrokerageUseCase
+    public interface ISubmitCarePackageUseCase
     {
-        Task ExecuteAsync(Guid packageId, CarePackageBrokerageDomain brokerageInfo);
+        Task ExecuteAsync(Guid packageId, CarePackageSubmissionDomain submissionInfo);
     }
 }

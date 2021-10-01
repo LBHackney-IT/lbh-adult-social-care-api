@@ -1,3 +1,4 @@
+using Common.Exceptions.CustomExceptions;
 using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
@@ -22,12 +23,18 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         private readonly ICreateCarePackageUseCase _createCarePackageUseCase;
         private readonly ICarePackageOptionsUseCase _carePackageOptionsUseCase;
         private readonly IUpdateCarePackageUseCase _updateCarePackageUseCase;
+        private readonly ISubmitCarePackageUseCase _submitCarePackageUseCase;
+        private readonly IGetCarePackageUseCase _getCarePackageUseCase;
 
-        public CarePackagesController(ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase, IUpdateCarePackageUseCase updateCarePackageUseCase)
+        public CarePackagesController(
+            ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase,
+            IUpdateCarePackageUseCase updateCarePackageUseCase, ISubmitCarePackageUseCase submitCarePackageUseCase, IGetCarePackageUseCase getCarePackageUseCase)
         {
             _createCarePackageUseCase = createCarePackageUseCase;
             _carePackageOptionsUseCase = carePackageOptionsUseCase;
             _updateCarePackageUseCase = updateCarePackageUseCase;
+            _submitCarePackageUseCase = submitCarePackageUseCase;
+            _getCarePackageUseCase = getCarePackageUseCase;
         }
 
         /// <summary>Creates a new care package.</summary>
@@ -42,6 +49,28 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         {
             var residentialCarePackageResponse = await _createCarePackageUseCase.CreateAsync(carePackageForCreationRequest.ToDomain());
             return Ok(residentialCarePackageResponse);
+        }
+
+        /// <summary>Gets a list of care packages</summary>
+        /// <returns>All care packages</returns>
+        [ProducesResponseType(typeof(IEnumerable<CarePackageResponse>), StatusCodes.Status200OK)]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CarePackageResponse>>> GetAllCarePackages()
+        {
+            var res = await _getCarePackageUseCase.GetAllAsync();
+            return Ok(res);
+        }
+
+        /// <summary>Gets settings for a care package.</summary>
+        /// <param name="carePackageId">The care package identifier.</param>
+        /// <returns>Care package settings if success</returns>
+        [ProducesResponseType(typeof(ApiException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(CarePackageSettingsResponse), StatusCodes.Status200OK)]
+        [HttpGet("{carePackageId}/settings")]
+        public async Task<ActionResult<CarePackageSettingsResponse>> GetCarePackageSettings(Guid carePackageId)
+        {
+            var res = await _getCarePackageUseCase.GetCarePackageSettingsAsync(carePackageId);
+            return Ok(res);
         }
 
         /// <summary>Gets care package scheduling options.</summary>
@@ -66,6 +95,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         {
             var residentialCarePackageResponse = await _updateCarePackageUseCase.UpdateAsync(carePackageId, carePackageUpdateRequest.ToDomain());
             return Ok(residentialCarePackageResponse);
+        }
+
+        /// <summary>Submits a care package for approval.</summary>
+        /// <param name="carePackageId">An unique identifier of a package to be approved.</param>
+        /// <param name="request">The care package update request object.</param>
+        /// <returns>Ok when operation is successful.</returns>
+        [HttpPost("{carePackageId}/submit")]
+        [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> SubmitForApproval(Guid carePackageId, CarePackageSubmissionRequest request)
+        {
+            await _submitCarePackageUseCase.ExecuteAsync(carePackageId, request.ToDomain());
+            return Ok();
         }
     }
 }

@@ -16,9 +16,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             _gateway = packageGateway;
         }
 
-        public async Task<PackageDomain> ExecuteAsync(PackageDomain package)
+        public async Task<PackageTypeDomain> ExecuteAsync(PackageTypeDomain packageType)
         {
-            Package packageEntity = package.ToEntity();
+            Package packageEntity = packageType.ToEntity();
             packageEntity = await _gateway.UpsertAsync(packageEntity).ConfigureAwait(false);
             return packageEntity?.ToDomain();
         }

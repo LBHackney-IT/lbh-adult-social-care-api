@@ -1,5 +1,7 @@
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
@@ -9,6 +11,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
         Task<CarePackage> GetPackageAsync(Guid packageId);
 
         Task<CarePackage> GetPackagePlainAsync(Guid packageId, bool trackChanges = false);
+
+        Task<IEnumerable<CarePackageDomain>> GetAllPackagesAsync();
+
+        Task<CarePackageSettingsDomain> GetCarePackageSettingsAsync(Guid carePackageId);
 
         void Create(CarePackage newCarePackage);
     }

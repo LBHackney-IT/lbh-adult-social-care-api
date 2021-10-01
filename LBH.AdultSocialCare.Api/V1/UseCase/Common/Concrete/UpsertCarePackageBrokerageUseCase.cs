@@ -15,13 +15,13 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 {
-    public class CarePackageBrokerageUseCase : ICarePackageBrokerageUseCase
+    public class UpsertCarePackageBrokerageUseCase : IUpsertCarePackageBrokerageUseCase
     {
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _databaseManager;
         private readonly IMapper _mapper;
 
-        public CarePackageBrokerageUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager databaseManager, IMapper mapper)
+        public UpsertCarePackageBrokerageUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager databaseManager, IMapper mapper)
         {
             _carePackageGateway = carePackageGateway;
             _databaseManager = databaseManager;

@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
 using System.Security.Claims;
+using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
 
 namespace LBH.AdultSocialCare.Api.Tests
 {
@@ -16,14 +17,14 @@ namespace LBH.AdultSocialCare.Api.Tests
         protected BaseInMemoryDatabaseTest()
         {
             Context = CreateDatabaseContext();
-            DataGenerator = new DataGenerator(Context);
+            Generator = new DatabaseTestDataGenerator(Context);
 
             Context.Database.EnsureCreated();
         }
 
         protected DatabaseContext Context { get; }
 
-        protected DataGenerator DataGenerator { get; }
+        protected DatabaseTestDataGenerator Generator { get; }
 
         private DatabaseContext CreateDatabaseContext()
         {

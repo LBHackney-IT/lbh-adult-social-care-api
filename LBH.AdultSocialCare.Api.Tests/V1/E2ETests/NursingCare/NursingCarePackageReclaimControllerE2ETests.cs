@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.NursingCare
         [Fact]
         public async Task ShouldCreateNursingPackageReclaim()
         {
-            var package = await _fixture.DataGenerator.NursingCare.GetPackage().ConfigureAwait(false);
+            var package = await _fixture.Generator.NursingCare.CreatePackage().ConfigureAwait(false);
 
             var request = new NursingCarePackageClaimCreationRequest
             {
