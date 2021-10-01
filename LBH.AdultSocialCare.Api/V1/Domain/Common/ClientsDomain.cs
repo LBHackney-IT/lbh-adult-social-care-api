@@ -2,6 +2,7 @@ using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
+    //TODO FK: change name to ServiceUserDomain after code clean up
     public class ClientsDomain
     {
         /// <summary>

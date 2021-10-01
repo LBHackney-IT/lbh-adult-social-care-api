@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
-
+    //TODO FK: change name to ServiceUser after code clean up
     public class Client : BaseEntity
     {
 
