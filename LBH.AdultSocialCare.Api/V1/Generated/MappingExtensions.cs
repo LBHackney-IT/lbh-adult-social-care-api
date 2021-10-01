@@ -190,6 +190,26 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<CarePackageReclaimDomain>(input);
         }
 
+        public static CarePackageSettingsResponse ToResponse(this CarePackageSettingsDomain input)
+        {
+            return _mapper.Map<CarePackageSettingsResponse>(input);
+        }
+
+        public static CarePackageSettingsDomain ToDomain(this CarePackageSettingsResponse input)
+        {
+            return _mapper.Map<CarePackageSettingsDomain>(input);
+        }
+
+        public static IEnumerable<CarePackageSettingsResponse> ToResponse(this IEnumerable<CarePackageSettingsDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageSettingsResponse>>(input);
+        }
+
+        public static IEnumerable<CarePackageSettingsDomain> ToDomain(this IEnumerable<CarePackageSettingsResponse> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageSettingsDomain>>(input);
+        }
+
         public static CarePackageSettings ToSettings(this CarePackageUpdateDomain input)
         {
             return _mapper.Map<CarePackageSettings>(input);

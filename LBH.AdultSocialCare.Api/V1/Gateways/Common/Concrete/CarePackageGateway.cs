@@ -49,6 +49,24 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             }).ToListAsync();
         }
 
+        public async Task<CarePackageSettingsDomain> GetCarePackageSettingsAsync(Guid carePackageId)
+        {
+            return await _dbContext.CarePackageSettings.Where(ps => ps.CarePackageId.Equals(carePackageId))
+                .Select(ps => new CarePackageSettingsDomain
+                {
+                    Id = ps.Id,
+                    CarePackageId = ps.CarePackageId,
+                    PackageType = ps.Package.PackageType,
+                    PrimarySupportReasonId = ps.Package.PrimarySupportReasonId,
+                    PrimarySupportReasonName = ps.Package.PrimarySupportReason.PrimarySupportReasonName,
+                    HasRespiteCare = ps.HasRespiteCare,
+                    HasDischargePackage = ps.HasDischargePackage,
+                    IsImmediate = ps.IsImmediate,
+                    IsReEnablement = ps.IsReEnablement,
+                    IsS117Client = ps.IsS117Client
+                }).SingleOrDefaultAsync();
+        }
+
         public void Create(CarePackage newCarePackage)
         {
             _dbContext.CarePackages.Add(newCarePackage);
