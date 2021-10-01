@@ -36,6 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IPackageCostClaimersGateway, PackageCostClaimersGateway>();
             services.AddScoped<IPackageGateway, PackageGateway>();
             services.AddScoped<IPrimarySupportReasonGateway, PrimarySupportReasonGateway>();
+            services.AddScoped<IServiceUserGateway, ServiceUserGateway>();
             services.AddScoped<IStatusGateway, StatusGateway>();
             services.AddScoped<ISubmittedPackageRequestsGateway, SubmittedPackageRequestsGateway>();
             services.AddScoped<ISupplierBillGateway, SupplierBillGateway>();

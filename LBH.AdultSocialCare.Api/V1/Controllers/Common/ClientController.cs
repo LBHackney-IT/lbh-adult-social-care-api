@@ -13,6 +13,7 @@ using Microsoft.Extensions.Primitives;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
+    //TODO possibly will be removed
     [Route("api/v1/clients")]
     [Produces("application/json")]
     [ApiController]

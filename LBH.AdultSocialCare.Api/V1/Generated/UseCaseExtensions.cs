@@ -57,6 +57,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetOpportunityLengthOptionsListUseCase, GetOpportunityLengthOptionsListUseCase>();
             services.AddScoped<IGetOpportunityTimesPerMonthOptionsListUseCase, GetOpportunityTimesPerMonthOptionsListUseCase>();
             services.AddScoped<IGetPackageTypeUseCase, GetPackageTypeUseCase>();
+            services.AddScoped<IGetServiceUserUseCase, GetServiceUserUseCase>();
             services.AddScoped<IGetStatusUseCase, GetStatusUseCase>();
             services.AddScoped<IGetSubmittedPackageRequestsUseCase, GetSubmittedPackageRequestsUseCase>();
             services.AddScoped<IGetSupplierBillUseCase, GetSupplierBillUseCase>();
