@@ -1,4 +1,3 @@
-using Common.Exceptions.CustomExceptions;
 using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
@@ -10,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
@@ -25,16 +25,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         private readonly IUpdateCarePackageUseCase _updateCarePackageUseCase;
         private readonly ISubmitCarePackageUseCase _submitCarePackageUseCase;
         private readonly IGetCarePackageUseCase _getCarePackageUseCase;
+        private readonly ICarePackageSummaryUseCase _carePackageSummaryUseCase;
 
         public CarePackagesController(
             ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase,
-            IUpdateCarePackageUseCase updateCarePackageUseCase, ISubmitCarePackageUseCase submitCarePackageUseCase, IGetCarePackageUseCase getCarePackageUseCase)
+            IUpdateCarePackageUseCase updateCarePackageUseCase, ISubmitCarePackageUseCase submitCarePackageUseCase,
+            IGetCarePackageUseCase getCarePackageUseCase, ICarePackageSummaryUseCase carePackageSummaryUseCase)
         {
             _createCarePackageUseCase = createCarePackageUseCase;
             _carePackageOptionsUseCase = carePackageOptionsUseCase;
             _updateCarePackageUseCase = updateCarePackageUseCase;
             _submitCarePackageUseCase = submitCarePackageUseCase;
             _getCarePackageUseCase = getCarePackageUseCase;
+            _carePackageSummaryUseCase = carePackageSummaryUseCase;
         }
 
         /// <summary>Creates a new care package.</summary>
@@ -110,6 +113,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         {
             await _submitCarePackageUseCase.ExecuteAsync(carePackageId, request.ToDomain());
             return Ok();
+        }
+
+        /// <summary>Returns a financial care package summary.</summary>
+        /// <param name="carePackageId">An unique identifier of a package to get summary of.</param>
+        /// <returns>A financial care package summary response.</returns>
+        [HttpGet("{carePackageId}/summary")]
+        [ProducesResponseType(typeof(CarePackageSummaryResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<CarePackageSummaryResponse>> GetSummary(Guid carePackageId)
+        {
+            var result = await _carePackageSummaryUseCase.ExecuteAsync(carePackageId);
+            return Ok(result);
         }
     }
 }
