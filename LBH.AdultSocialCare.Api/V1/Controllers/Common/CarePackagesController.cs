@@ -23,15 +23,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         private readonly ICarePackageOptionsUseCase _carePackageOptionsUseCase;
         private readonly IUpdateCarePackageUseCase _updateCarePackageUseCase;
         private readonly ISubmitCarePackageUseCase _submitCarePackageUseCase;
+        private readonly IGetCarePackageUseCase _getCarePackageUseCase;
 
         public CarePackagesController(
             ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase,
-            IUpdateCarePackageUseCase updateCarePackageUseCase, ISubmitCarePackageUseCase submitCarePackageUseCase)
+            IUpdateCarePackageUseCase updateCarePackageUseCase, ISubmitCarePackageUseCase submitCarePackageUseCase, IGetCarePackageUseCase getCarePackageUseCase)
         {
             _createCarePackageUseCase = createCarePackageUseCase;
             _carePackageOptionsUseCase = carePackageOptionsUseCase;
             _updateCarePackageUseCase = updateCarePackageUseCase;
             _submitCarePackageUseCase = submitCarePackageUseCase;
+            _getCarePackageUseCase = getCarePackageUseCase;
         }
 
         /// <summary>Creates a new care package.</summary>
@@ -46,6 +48,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         {
             var residentialCarePackageResponse = await _createCarePackageUseCase.CreateAsync(carePackageForCreationRequest.ToDomain());
             return Ok(residentialCarePackageResponse);
+        }
+
+        /// <summary>Gets a list of care packages</summary>
+        /// <returns>All care packages</returns>
+        [ProducesResponseType(typeof(IEnumerable<CarePackageResponse>), StatusCodes.Status200OK)]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CarePackageResponse>>> GetAllCarePackages()
+        {
+            var res = await _getCarePackageUseCase.GetAllAsync();
+            return Ok(res);
         }
 
         /// <summary>Gets care package scheduling options.</summary>

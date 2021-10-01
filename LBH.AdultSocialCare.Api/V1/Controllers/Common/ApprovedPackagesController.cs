@@ -20,15 +20,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
     public class ApprovedPackagesController : ControllerBase
     {
         private readonly IGetApprovedPackagesUseCase _getApprovedPackagesUseCase;
-        private readonly IGetAllPackageUseCase _getAllPackageUseCase;
+        private readonly IGetPackageTypeUseCase _getPackageTypeUseCase;
         private readonly IGetAllUsersUseCase _getAllUsersUseCase;
 
         public ApprovedPackagesController(IGetApprovedPackagesUseCase getApprovedPackagesUseCase,
-            IGetAllPackageUseCase getAllPackageUseCase,
+            IGetPackageTypeUseCase getPackageTypeUseCase,
             IGetAllUsersUseCase getAllUsersUseCase)
         {
             _getApprovedPackagesUseCase = getApprovedPackagesUseCase;
-            _getAllPackageUseCase = getAllPackageUseCase;
+            _getPackageTypeUseCase = getPackageTypeUseCase;
             _getAllUsersUseCase = getAllUsersUseCase;
         }
 
@@ -93,7 +93,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesDefaultResponseType]
         public async Task<ActionResult<IEnumerable<PackageResponse>>> GetPackageTypes()
         {
-            var result = await _getAllPackageUseCase.GetAllAsync().ConfigureAwait(false);
+            var result = await _getPackageTypeUseCase.GetAllAsync().ConfigureAwait(false);
             return Ok(result);
         }
 

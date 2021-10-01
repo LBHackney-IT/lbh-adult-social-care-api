@@ -41,7 +41,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IEditCareChargeElementUseCase, EditCareChargeElementUseCase>();
             services.AddScoped<IGetAllAmountOptionUseCase, GetAllAmountOptionUseCase>();
             services.AddScoped<IGetAllPackageStatusUseCase, GetAllPackageStatusUseCase>();
-            services.AddScoped<IGetAllPackageUseCase, GetAllPackageUseCase>();
             services.AddScoped<IGetAllPrimarySupportReasonsUseCase, GetAllPrimarySupportReasonsUseCase>();
             services.AddScoped<IGetAllReclaimCategoryUseCase, GetAllReclaimCategoryUseCase>();
             services.AddScoped<IGetAllReclaimFromUseCase, GetAllReclaimFromUseCase>();
@@ -52,10 +51,11 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetBrokeredPackagesUseCase, GetBrokeredPackagesUseCase>();
             services.AddScoped<IGetCarePackageBrokerageUseCase, GetCarePackageBrokerageUseCase>();
             services.AddScoped<IGetCarePackageReclaimUseCase, GetCarePackageReclaimUseCase>();
+            services.AddScoped<IGetCarePackageUseCase, GetCarePackageUseCase>();
             services.AddScoped<IGetFundedNursingCareCollectorsUseCase, GetFundedNursingCareCollectorsUseCase>();
             services.AddScoped<IGetOpportunityLengthOptionsListUseCase, GetOpportunityLengthOptionsListUseCase>();
             services.AddScoped<IGetOpportunityTimesPerMonthOptionsListUseCase, GetOpportunityTimesPerMonthOptionsListUseCase>();
-            services.AddScoped<IGetPackageUseCase, GetPackageUseCase>();
+            services.AddScoped<IGetPackageTypeUseCase, GetPackageTypeUseCase>();
             services.AddScoped<IGetStatusUseCase, GetStatusUseCase>();
             services.AddScoped<IGetSubmittedPackageRequestsUseCase, GetSubmittedPackageRequestsUseCase>();
             services.AddScoped<IGetSupplierBillUseCase, GetSupplierBillUseCase>();

@@ -302,15 +302,13 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Packages
 
-        public static Package ToEntity(this PackageDomain packageDomain)
+        public static Package ToEntity(this PackageTypeDomain packageTypeDomain)
         {
             return new Package
             {
-                Id = packageDomain.Id,
-                PackageType = packageDomain.PackageType,
-                Sequence = packageDomain.Sequence,
-                CreatorId = packageDomain.CreatorId,
-                UpdaterId = packageDomain.UpdaterId
+                Id = packageTypeDomain.Id,
+                PackageType = packageTypeDomain.PackageType,
+                Sequence = packageTypeDomain.Sequence
             };
         }
 
