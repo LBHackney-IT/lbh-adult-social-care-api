@@ -5,6 +5,7 @@ using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
@@ -39,6 +40,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
                 packageType: type,
                 status: PackageStatus.New);
 
+            carePackage.SupplierId = _context.Suppliers.FirstOrDefault()?.Id;
+
             _context.CarePackages.Add(carePackage);
             _context.SaveChanges();
 
@@ -71,6 +74,17 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             _context.SaveChanges();
 
             return packageSettings;
+        }
+
+        public CarePackageReclaim CreateCarePackageReclaim(CarePackage package, ReclaimType type, ClaimCollector collector)
+        {
+            var reclaim = TestDataHelper.CreateCarePackageReclaim(package.Id, type, collector);
+            reclaim.SupplierId = _context.Suppliers.First().Id;
+
+            _context.CarePackageReclaims.Add(reclaim);
+            _context.SaveChanges();
+
+            return reclaim;
         }
     }
 }

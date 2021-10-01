@@ -4,10 +4,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 {
     [GenerateListMappingFor(typeof(CarePackageDetailRequest))]
+    [GenerateListMappingFor(typeof(CarePackageDetailResponse))]
     public class CarePackageDetail : BaseEntity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
