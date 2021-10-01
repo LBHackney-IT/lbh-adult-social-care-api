@@ -1,9 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 {
+    [GenerateMappingFor(typeof(CarePackageSettingsDomain))]
     public class CarePackageSettings : BaseEntity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

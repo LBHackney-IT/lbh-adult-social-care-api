@@ -23,9 +23,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
         public async Task<CarePackage> GetPackageAsync(Guid packageId)
         {
+            // TODO: VK: optimize
             return await _dbContext.CarePackages
                 .Where(p => p.Id == packageId)
                 .Include(p => p.Details)
+                .Include(p => p.Reclaims)
+                .Include(p => p.CarePackageSettings)
+                .Include(p => p.PrimarySupportReason)
+                .Include(p => p.ServiceUser)
+                .Include(p => p.Supplier)
                 .FirstOrDefaultAsync();
         }
 

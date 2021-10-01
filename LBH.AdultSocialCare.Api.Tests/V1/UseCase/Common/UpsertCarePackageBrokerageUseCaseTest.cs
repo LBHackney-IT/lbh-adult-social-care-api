@@ -100,7 +100,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
             foreach (var detail in brokerageInfo.Details)
             {
                 detail.Cost += 10;
-                detail.StartDate = detail.StartDate?.AddDays(-10) ?? DateTimeOffset.Now.Date.AddDays(-100);
+                detail.StartDate = detail.StartDate.AddDays(-10);
                 detail.EndDate = detail.EndDate?.AddDays(10) ?? DateTimeOffset.Now.Date.AddDays(100);
             }
 

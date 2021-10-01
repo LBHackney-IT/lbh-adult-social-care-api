@@ -230,6 +230,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<CarePackageUpdateDomain>(input);
         }
 
+        public static SubTotalReclaimResponse ToResponse(this SubTotalReclaimDomain input)
+        {
+            return _mapper.Map<SubTotalReclaimResponse>(input);
+        }
+
+        public static SubTotalReclaimDomain ToDomain(this SubTotalReclaimResponse input)
+        {
+            return _mapper.Map<SubTotalReclaimDomain>(input);
+        }
+
         public static CarePackage ToEntity(this CarePackageForCreationDomain input)
         {
             return _mapper.Map<CarePackage>(input);
@@ -430,6 +440,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CarePackageDetail>>(input);
         }
 
+        public static IEnumerable<CarePackageDetailResponse> ToResponse(this IEnumerable<CarePackageDetail> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageDetailResponse>>(input);
+        }
+
+        public static IEnumerable<CarePackageDetail> ToEntity(this IEnumerable<CarePackageDetailResponse> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageDetail>>(input);
+        }
+
         public static CarePackageReclaimDomain ToDomain(this CarePackageReclaim input)
         {
             return _mapper.Map<CarePackageReclaimDomain>(input);
@@ -438,6 +458,26 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static CarePackageReclaim ToEntity(this CarePackageReclaimDomain input)
         {
             return _mapper.Map<CarePackageReclaim>(input);
+        }
+
+        public static IEnumerable<CarePackageReclaimDomain> ToDomain(this IEnumerable<CarePackageReclaim> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageReclaimDomain>>(input);
+        }
+
+        public static IEnumerable<CarePackageReclaim> ToEntity(this IEnumerable<CarePackageReclaimDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageReclaim>>(input);
+        }
+
+        public static CarePackageSettingsDomain ToDomain(this CarePackageSettings input)
+        {
+            return _mapper.Map<CarePackageSettingsDomain>(input);
+        }
+
+        public static CarePackageSettings ToEntity(this CarePackageSettingsDomain input)
+        {
+            return _mapper.Map<CarePackageSettings>(input);
         }
     }
 }

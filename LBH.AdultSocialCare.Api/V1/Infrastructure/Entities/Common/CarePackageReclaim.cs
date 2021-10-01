@@ -8,6 +8,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common;
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 {
     [GenerateMappingFor(typeof(CarePackageReclaimDomain))]
+    [GenerateListMappingFor(typeof(CarePackageReclaimDomain))]
     public class CarePackageReclaim : BaseEntity
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]

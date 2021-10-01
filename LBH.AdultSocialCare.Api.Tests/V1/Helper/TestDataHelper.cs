@@ -114,6 +114,18 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.Status, f => f.PickRandom<HistoryStatus>());
         }
 
+        public static CarePackageReclaim CreateCarePackageReclaim(Guid packageId, ReclaimType type, ClaimCollector collector)
+        {
+            return new Faker<CarePackageReclaim>()
+                .RuleFor(r => r.CarePackageId, packageId)
+                .RuleFor(r => r.Cost, f => f.PickRandom(1.2m, 3.4m, 5.6m, 7.8m, 9.1m, 12.34m, 56.78m, 91.12m, 123.45m, 456.78m)) // Workaround to avoid precision loss in SQLite)
+                .RuleFor(r => r.StartDate, f => f.Date.Past().Date)
+                .RuleFor(r => r.EndDate, f => f.Date.Future().Date)
+                .RuleFor(r => r.Description, f => f.Lorem.Paragraph())
+                .RuleFor(r => r.ClaimCollector, collector)
+                .RuleFor(r => r.Type, type);
+        }
+
         public static List<CarePackageDetail> CreateCarePackageDetails(int count, PackageDetailType type)
         {
             return new Faker<CarePackageDetail>()

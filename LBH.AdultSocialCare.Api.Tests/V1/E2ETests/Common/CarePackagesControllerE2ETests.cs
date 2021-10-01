@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using Xunit;
 
@@ -17,10 +18,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
     public class CarePackagesControllerE2ETests : IClassFixture<MockWebApplicationFactory>
     {
         private readonly MockWebApplicationFactory _fixture;
+        private readonly DatabaseTestDataGenerator _generator;
 
         public CarePackagesControllerE2ETests(MockWebApplicationFactory fixture)
         {
             _fixture = fixture;
+            _generator = _fixture.Generator;
         }
 
         [Fact]
@@ -129,6 +132,25 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             historyEntry?.Should().NotBeNull();
             historyEntry?.Description.Should().Be(request.Notes);
             historyEntry?.Status.Should().Be(HistoryStatus.SubmittedForApproval);
+        }
+
+        [Fact]
+        public async Task ShouldReturnPackageSummary()
+        {
+            var package = _generator.CreateCarePackage();
+
+            _generator.CreateCarePackageReclaim(package, ReclaimType.Fnc, ClaimCollector.Hackney);
+            _generator.CreateCarePackageReclaim(package, ReclaimType.CareCharge, ClaimCollector.Supplier);
+
+            _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
+            _generator.CreateCarePackageDetails(package, 5, PackageDetailType.AdditionalNeed);
+
+            var response = await _fixture.RestClient
+                .GetAsync<CarePackageSummaryResponse>($"api/v1/care-packages/{package.Id}/summary")
+                .ConfigureAwait(false);
+
+            // TODO: VK: Add more checks
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }
 }
