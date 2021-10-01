@@ -1,3 +1,4 @@
+using Common.Exceptions.CustomExceptions;
 using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
@@ -57,6 +58,18 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         public async Task<ActionResult<IEnumerable<CarePackageResponse>>> GetAllCarePackages()
         {
             var res = await _getCarePackageUseCase.GetAllAsync();
+            return Ok(res);
+        }
+
+        /// <summary>Gets settings for a care package.</summary>
+        /// <param name="carePackageId">The care package identifier.</param>
+        /// <returns>Care package settings if success</returns>
+        [ProducesResponseType(typeof(ApiException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(CarePackageSettingsResponse), StatusCodes.Status200OK)]
+        [HttpGet("{carePackageId}/settings")]
+        public async Task<ActionResult<CarePackageSettingsResponse>> GetCarePackageSettings(Guid carePackageId)
+        {
+            var res = await _getCarePackageUseCase.GetCarePackageSettingsAsync(carePackageId);
             return Ok(res);
         }
 
