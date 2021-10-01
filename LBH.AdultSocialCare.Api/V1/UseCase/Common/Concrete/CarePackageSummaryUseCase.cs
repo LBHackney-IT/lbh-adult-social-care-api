@@ -6,6 +6,7 @@ using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
@@ -32,7 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             var additionalNeeds = package.Details
                 .Where(d => d.Type == PackageDetailType.AdditionalNeed).ToList();
 
-            additionalNeeds.ForEach(n => n.Cost = Decimal.Negate(n.Cost));
+            NegateNetOffCosts(package);
 
             var summary = new CarePackageSummaryDomain
             {
@@ -41,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
                 StartDate = coreCost.StartDate,
                 EndDate = coreCost.EndDate,
-                CostOfPlacement = Decimal.Negate(coreCost.Cost),
+                CostOfPlacement = coreCost.Cost,
 
                 Supplier = package.Supplier.ToDomain(),
                 ServiceUser = package.ServiceUser.ToDomain(),
@@ -54,17 +55,25 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                 CareCharges = package.Reclaims.FirstOrDefault(r => r.Type is ReclaimType.CareCharge)?.ToDomain()
             };
 
-            if (summary.CareCharges?.ClaimCollector is ClaimCollector.Supplier)
-            {
-                summary.CareCharges.Cost = Decimal.Negate(summary.CareCharges.Cost);
-            }
-
             FillSubTotalReclaimedByHackney(summary);
             FillSubTotalReclaimedBySupplier(summary);
 
             CalculateTotals(summary);
 
             return summary;
+        }
+
+        private static void NegateNetOffCosts(CarePackage package)
+        {
+            foreach (var detail in package.Details)
+            {
+                detail.Cost = Decimal.Negate(detail.Cost);
+            }
+
+            foreach (var reclaim in package.Reclaims.Where(r => r.ClaimCollector is ClaimCollector.Supplier))
+            {
+                reclaim.Cost = Decimal.Negate(reclaim.Cost);
+            }
         }
 
         private static void FillSubTotalReclaimedByHackney(CarePackageSummaryDomain summary)
@@ -110,7 +119,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
             if (summary.FundedNursingCare?.ClaimCollector is ClaimCollector.Supplier)
             {
-                summary.FncPayment = -summary.FundedNursingCare.Cost;
+                summary.FncPayment = summary.FundedNursingCare.Cost;
                 summary.SubTotalCost += summary.FncPayment.Value;
             }
 

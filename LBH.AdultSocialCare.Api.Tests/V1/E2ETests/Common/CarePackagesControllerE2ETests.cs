@@ -145,9 +145,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
             _generator.CreateCarePackageDetails(package, 5, PackageDetailType.AdditionalNeed);
 
+            _generator.CreateCarePackageSettings(package.Id);
+
             var response = await _fixture.RestClient
-                .GetAsync<CarePackageSummaryResponse>($"api/v1/care-packages/{package.Id}/summary")
-                .ConfigureAwait(false);
+                .GetAsync<CarePackageSummaryResponse>($"api/v1/care-packages/{package.Id}/summary");
 
             // TODO: VK: Add more checks
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
