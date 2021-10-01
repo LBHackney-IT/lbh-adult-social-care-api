@@ -49,7 +49,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                 }
             }
 
-            var serviceUserDomain =  await _serviceUserGateway.GetAsync(hackneyId)
+            var serviceUserDomain = await _serviceUserGateway.GetAsync(hackneyId)
                 .EnsureExistsAsync($"service user with hackney Id : {hackneyId} not found");
 
             return serviceUserDomain.ToResponse();
