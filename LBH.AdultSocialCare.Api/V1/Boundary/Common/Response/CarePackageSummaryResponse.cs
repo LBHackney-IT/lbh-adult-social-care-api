@@ -31,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
         public CarePackageReclaimResponse FundedNursingCare { get; set; }
         public CarePackageReclaimResponse CareCharges { get; set; }
 
-        public SubTotalReclaimResponse SubTotalReclaimedByHackney { get; set; }
-        public SubTotalReclaimResponse SubTotalReclaimedBySupplier { get; set; }
+        public CarePackageSummaryReclaimsResponse HackneyReclaims { get; set; }
+        public CarePackageSummaryReclaimsResponse SupplierReclaims { get; set; }
     }
 }

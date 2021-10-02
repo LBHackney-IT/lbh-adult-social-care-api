@@ -29,7 +29,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public CarePackageReclaimDomain FundedNursingCare { get; set; }
         public CarePackageReclaimDomain CareCharges { get; set; }
 
-        public SubTotalReclaimDomain SubTotalReclaimedByHackney { get; set; }
-        public SubTotalReclaimDomain SubTotalReclaimedBySupplier { get; set; }
+        public CarePackageSummaryReclaimsDomain HackneyReclaims { get; set; }
+        public CarePackageSummaryReclaimsDomain SupplierReclaims { get; set; }
     }
 }

@@ -65,11 +65,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
         private static void NegateNetOffCosts(CarePackage package)
         {
-            foreach (var detail in package.Details)
-            {
-                detail.Cost = Decimal.Negate(detail.Cost);
-            }
-
             foreach (var reclaim in package.Reclaims.Where(r => r.ClaimCollector is ClaimCollector.Supplier))
             {
                 reclaim.Cost = Decimal.Negate(reclaim.Cost);
@@ -80,16 +75,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         {
             if (summary.FundedNursingCare?.ClaimCollector is ClaimCollector.Hackney)
             {
-                summary.SubTotalReclaimedByHackney ??= new SubTotalReclaimDomain();
-                summary.SubTotalReclaimedByHackney.Fnc = summary.FundedNursingCare.Cost;
-                summary.SubTotalReclaimedByHackney.SubTotal += summary.FundedNursingCare.Cost;
+                summary.HackneyReclaims ??= new CarePackageSummaryReclaimsDomain();
+                summary.HackneyReclaims.Fnc = summary.FundedNursingCare.Cost;
+                summary.HackneyReclaims.SubTotal += summary.FundedNursingCare.Cost;
             }
 
             if (summary.CareCharges?.ClaimCollector is ClaimCollector.Hackney)
             {
-                summary.SubTotalReclaimedByHackney ??= new SubTotalReclaimDomain();
-                summary.SubTotalReclaimedByHackney.CareCharge = summary.CareCharges.Cost;
-                summary.SubTotalReclaimedByHackney.SubTotal += summary.CareCharges.Cost;
+                summary.HackneyReclaims ??= new CarePackageSummaryReclaimsDomain();
+                summary.HackneyReclaims.CareCharge = summary.CareCharges.Cost;
+                summary.HackneyReclaims.SubTotal += summary.CareCharges.Cost;
             }
         }
 
@@ -97,16 +92,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         {
             if (summary.FundedNursingCare?.ClaimCollector is ClaimCollector.Supplier)
             {
-                summary.SubTotalReclaimedBySupplier ??= new SubTotalReclaimDomain();
-                summary.SubTotalReclaimedBySupplier.Fnc = summary.FundedNursingCare.Cost;
-                summary.SubTotalReclaimedBySupplier.SubTotal += summary.FundedNursingCare.Cost;
+                summary.SupplierReclaims ??= new CarePackageSummaryReclaimsDomain();
+                summary.SupplierReclaims.Fnc = summary.FundedNursingCare.Cost;
+                summary.SupplierReclaims.SubTotal += summary.FundedNursingCare.Cost;
             }
 
             if (summary.CareCharges?.ClaimCollector is ClaimCollector.Supplier)
             {
-                summary.SubTotalReclaimedBySupplier ??= new SubTotalReclaimDomain();
-                summary.SubTotalReclaimedBySupplier.CareCharge = summary.CareCharges.Cost;
-                summary.SubTotalReclaimedBySupplier.SubTotal += summary.CareCharges.Cost;
+                summary.SupplierReclaims ??= new CarePackageSummaryReclaimsDomain();
+                summary.SupplierReclaims.CareCharge = summary.CareCharges.Cost;
+                summary.SupplierReclaims.SubTotal += summary.CareCharges.Cost;
             }
         }
 
@@ -125,10 +120,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
             summary.TotalWeeklyCost = summary.SubTotalCost;
 
-            if (summary.SubTotalReclaimedBySupplier != null)
+            if (summary.SupplierReclaims != null)
             {
                 // FNC is already included in SubTotalCost
-                summary.TotalWeeklyCost += summary.SubTotalReclaimedBySupplier.CareCharge;
+                summary.TotalWeeklyCost += summary.SupplierReclaims.CareCharge;
             }
         }
     }

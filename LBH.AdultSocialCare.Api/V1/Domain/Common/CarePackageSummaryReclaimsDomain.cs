@@ -3,8 +3,8 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
-    [GenerateMappingFor(typeof(SubTotalReclaimResponse))]
-    public class SubTotalReclaimDomain
+    [GenerateMappingFor(typeof(CarePackageSummaryReclaimsResponse))]
+    public class CarePackageSummaryReclaimsDomain
     {
         public decimal Fnc { get; set; }
         public decimal CareCharge { get; set; }
