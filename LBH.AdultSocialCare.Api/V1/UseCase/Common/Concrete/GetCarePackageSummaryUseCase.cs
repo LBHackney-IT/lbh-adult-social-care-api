@@ -11,11 +11,11 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 {
-    public class CarePackageSummaryUseCase : ICarePackageSummaryUseCase
+    public class GetCarePackageSummaryUseCase : IGetCarePackageSummaryUseCase
     {
         private readonly ICarePackageGateway _carePackageGateway;
 
-        public CarePackageSummaryUseCase(ICarePackageGateway carePackageGateway)
+        public GetCarePackageSummaryUseCase(ICarePackageGateway carePackageGateway)
         {
             _carePackageGateway = carePackageGateway;
         }
