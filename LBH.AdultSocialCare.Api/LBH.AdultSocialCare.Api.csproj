@@ -90,6 +90,7 @@
 
   <ItemGroup>
     <Folder Include="V1\Generated" />
+    <Folder Include="V1\Infrastructure\Enums" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="$(SKIP_CODE_GENERATION)!=1">

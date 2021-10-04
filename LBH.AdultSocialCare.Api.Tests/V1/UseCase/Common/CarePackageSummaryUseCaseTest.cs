@@ -4,6 +4,7 @@ using Common.Exceptions.CustomExceptions;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
@@ -31,7 +32,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 
             var gateway = new Mock<ICarePackageGateway>();
             gateway
-                .Setup(m => m.GetPackageAsync(_package.Id))
+                .Setup(m => m.GetPackageAsync(_package.Id, PackageFields.All))
                 .ReturnsAsync(_package);
 
             _useCase = new GetCarePackageSummaryUseCase(gateway.Object);

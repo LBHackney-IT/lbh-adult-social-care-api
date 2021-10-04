@@ -6,6 +6,7 @@ using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
 {
@@ -20,9 +21,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
 
         public async Task<CarePackageBrokerageDomain> ExecuteAsync(Guid packageId)
         {
-            var package = (await _carePackageGateway
-                    .GetPackageAsync(packageId))
-                .EnsureExists($"Care package {packageId} not found");
+            var package = await _carePackageGateway
+                .GetPackageAsync(packageId, PackageFields.Details)
+                .EnsureExistsAsync($"Care package {packageId} not found");
 
             var coreCost = package.Details
                 .SingleOrDefault(d => d.Type is PackageDetailType.CoreCost)

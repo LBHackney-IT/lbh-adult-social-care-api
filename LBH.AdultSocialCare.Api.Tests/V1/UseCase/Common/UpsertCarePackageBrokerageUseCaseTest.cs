@@ -10,6 +10,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using Microsoft.AspNetCore.Http;
@@ -37,7 +38,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
             _dbManagerMock = new Mock<IDatabaseManager>();
 
             _gatewayMock
-                .Setup(gateway => gateway.GetPackageAsync(_package.Id))
+                .Setup(gateway => gateway.GetPackageAsync(_package.Id, PackageFields.Details))
                 .ReturnsAsync(_package);
 
             _useCase = new UpsertCarePackageBrokerageUseCase(_gatewayMock.Object, _dbManagerMock.Object, Mapper);
@@ -233,7 +234,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 
         private void VerifyDatabaseCalls()
         {
-            _gatewayMock.Verify(mock => mock.GetPackageAsync(_package.Id), Times.Once);
+            _gatewayMock.Verify(mock => mock.GetPackageAsync(_package.Id, It.IsAny<PackageFields>()), Times.Once);
             _dbManagerMock.Verify(mock => mock.SaveAsync(It.IsAny<string>()), Times.Once);
         }
     }
