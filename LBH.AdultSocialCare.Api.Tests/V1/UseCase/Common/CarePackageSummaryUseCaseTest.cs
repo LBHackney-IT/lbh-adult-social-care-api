@@ -37,13 +37,13 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 
             _useCase = new GetCarePackageSummaryUseCase(_gateway.Object);
         }
-    
+
         [Theory]
         //                                                           Total
-        [InlineData(ReclaimType.Fnc,        ClaimCollector.Supplier, 80)]
-        [InlineData(ReclaimType.Fnc,        ClaimCollector.Hackney,  100)]
+        [InlineData(ReclaimType.Fnc, ClaimCollector.Supplier, 80)]
+        [InlineData(ReclaimType.Fnc, ClaimCollector.Hackney, 100)]
         [InlineData(ReclaimType.CareCharge, ClaimCollector.Supplier, 80)]
-        [InlineData(ReclaimType.CareCharge, ClaimCollector.Hackney,  100)]
+        [InlineData(ReclaimType.CareCharge, ClaimCollector.Hackney, 100)]
         public async Task ShouldConsiderReclaimCollector(ReclaimType reclaimType, ClaimCollector collector, decimal totalWeeklyCost)
         {
             AddCoreCost(100);
@@ -71,10 +71,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 
         [Theory]
         //          FNC                    | CareCharge             | Hackney sub | Supplier sub
-        [InlineData(ClaimCollector.Hackney,  ClaimCollector.Supplier, 10,           -30)]
-        [InlineData(ClaimCollector.Hackney,  ClaimCollector.Hackney,  40,           0)]
-        [InlineData(ClaimCollector.Supplier, ClaimCollector.Hackney,  30,           -10)]
-        [InlineData(ClaimCollector.Supplier, ClaimCollector.Supplier, 0,            -40)]
+        [InlineData(ClaimCollector.Hackney, ClaimCollector.Supplier, 10, -30)]
+        [InlineData(ClaimCollector.Hackney, ClaimCollector.Hackney, 40, 0)]
+        [InlineData(ClaimCollector.Supplier, ClaimCollector.Hackney, 30, -10)]
+        [InlineData(ClaimCollector.Supplier, ClaimCollector.Supplier, 0, -40)]
         public async Task ShouldFillReclaimsSubTotals(
             ClaimCollector fncCollector, ClaimCollector careChargesCollector, decimal hackneySubTotal, decimal supplierSubTotal)
         {
