@@ -4849,7 +4849,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.CarePackageSettings", b =>
                 {
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.CarePackage", "Package")
-                        .WithOne("CarePackageSettings")
+                        .WithOne("Settings")
                         .HasForeignKey("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.CarePackageSettings", "CarePackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

@@ -46,7 +46,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
                 Supplier = package.Supplier?.ToDomain(),
                 ServiceUser = package.ServiceUser?.ToDomain(),
-                Settings = package.CarePackageSettings?.ToDomain(),
+                Settings = package.Settings?.ToDomain(),
 
                 AdditionalWeeklyNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.Weekly).ToDomain(),
                 AdditionalOneOffNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.OneOff).ToDomain(),

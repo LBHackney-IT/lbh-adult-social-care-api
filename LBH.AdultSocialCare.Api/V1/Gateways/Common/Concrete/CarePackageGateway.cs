@@ -28,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 .Where(p => p.Id == packageId)
                 .Include(p => p.Details)
                 .Include(p => p.Reclaims)
-                .Include(p => p.CarePackageSettings)
+                .Include(p => p.Settings)
                 .Include(p => p.PrimarySupportReason)
                 .Include(p => p.ServiceUser)
                 .Include(p => p.Supplier)

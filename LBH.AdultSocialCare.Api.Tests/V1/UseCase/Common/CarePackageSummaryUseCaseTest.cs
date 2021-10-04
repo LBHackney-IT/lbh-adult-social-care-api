@@ -26,7 +26,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
                 PackageType = PackageType.NursingCare,
                 Supplier = new Supplier(),
                 ServiceUser = new Client(),
-                CarePackageSettings = new CarePackageSettings()
+                Settings = new CarePackageSettings()
             };
 
             var gateway = new Mock<ICarePackageGateway>();
