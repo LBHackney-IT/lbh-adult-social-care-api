@@ -44,20 +44,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                 EndDate = coreCost.EndDate,
                 CostOfPlacement = coreCost.Cost,
 
-                Supplier = package.Supplier.ToDomain(),
-                ServiceUser = package.ServiceUser.ToDomain(),
-                Settings = package.CarePackageSettings.ToDomain(),
+                Supplier = package.Supplier?.ToDomain(),
+                ServiceUser = package.ServiceUser?.ToDomain(),
+                Settings = package.CarePackageSettings?.ToDomain(),
 
                 AdditionalWeeklyNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.Weekly).ToDomain(),
                 AdditionalOneOffNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.OneOff).ToDomain(),
 
+                CareCharges = package.Reclaims.Where(r => r.Type is ReclaimType.CareCharge).ToDomain(),
                 FundedNursingCare = package.Reclaims.FirstOrDefault(r => r.Type is ReclaimType.Fnc)?.ToDomain(),
-                CareCharges = package.Reclaims.FirstOrDefault(r => r.Type is ReclaimType.CareCharge)?.ToDomain()
             };
 
-            FillSubTotalReclaimedByHackney(summary);
-            FillSubTotalReclaimedBySupplier(summary);
-
+            CalculateReclaimSubTotals(package, summary);
             CalculateTotals(summary);
 
             return summary;
@@ -71,37 +69,43 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             }
         }
 
-        private static void FillSubTotalReclaimedByHackney(CarePackageSummaryDomain summary)
+        private static void CalculateReclaimSubTotals(CarePackage package, CarePackageSummaryDomain summary)
         {
-            if (summary.FundedNursingCare?.ClaimCollector is ClaimCollector.Hackney)
+            if (package.Reclaims.Any(r => r.ClaimCollector is ClaimCollector.Hackney))
             {
-                summary.HackneyReclaims ??= new CarePackageSummaryReclaimsDomain();
-                summary.HackneyReclaims.Fnc = summary.FundedNursingCare.Cost;
-                summary.HackneyReclaims.SubTotal += summary.FundedNursingCare.Cost;
+                summary.HackneyReclaims = new CarePackageSummaryReclaimsDomain();
             }
 
-            if (summary.CareCharges?.ClaimCollector is ClaimCollector.Hackney)
+            if (package.Reclaims.Any(r => r.ClaimCollector is ClaimCollector.Supplier))
             {
-                summary.HackneyReclaims ??= new CarePackageSummaryReclaimsDomain();
-                summary.HackneyReclaims.CareCharge = summary.CareCharges.Cost;
-                summary.HackneyReclaims.SubTotal += summary.CareCharges.Cost;
-            }
-        }
-
-        private static void FillSubTotalReclaimedBySupplier(CarePackageSummaryDomain summary)
-        {
-            if (summary.FundedNursingCare?.ClaimCollector is ClaimCollector.Supplier)
-            {
-                summary.SupplierReclaims ??= new CarePackageSummaryReclaimsDomain();
-                summary.SupplierReclaims.Fnc = summary.FundedNursingCare.Cost;
-                summary.SupplierReclaims.SubTotal += summary.FundedNursingCare.Cost;
+                summary.SupplierReclaims = new CarePackageSummaryReclaimsDomain();
             }
 
-            if (summary.CareCharges?.ClaimCollector is ClaimCollector.Supplier)
+            switch (summary.FundedNursingCare?.ClaimCollector)
             {
-                summary.SupplierReclaims ??= new CarePackageSummaryReclaimsDomain();
-                summary.SupplierReclaims.CareCharge = summary.CareCharges.Cost;
-                summary.SupplierReclaims.SubTotal += summary.CareCharges.Cost;
+                case ClaimCollector.Hackney:
+                    summary.HackneyReclaims.Fnc = summary.FundedNursingCare.Cost;
+                    summary.HackneyReclaims.SubTotal += summary.FundedNursingCare.Cost;
+                    break;
+                case ClaimCollector.Supplier:
+                    summary.SupplierReclaims.Fnc = summary.FundedNursingCare.Cost;
+                    summary.SupplierReclaims.SubTotal += summary.FundedNursingCare.Cost;
+                    break;
+            }
+
+            foreach (var reclaim in summary.CareCharges)
+            {
+                switch (reclaim.ClaimCollector)
+                {
+                    case ClaimCollector.Hackney:
+                        summary.HackneyReclaims.CareCharge += reclaim.Cost;
+                        summary.HackneyReclaims.SubTotal += reclaim.Cost;
+                        break;
+                    case ClaimCollector.Supplier:
+                        summary.SupplierReclaims.CareCharge += reclaim.Cost;
+                        summary.SupplierReclaims.SubTotal += reclaim.Cost;
+                        break;
+                }
             }
         }
 
