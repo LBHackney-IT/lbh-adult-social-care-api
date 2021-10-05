@@ -8,9 +8,11 @@ using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
@@ -26,18 +28,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         private readonly IGetCarePackageReclaimUseCase _getCarePackageReclaimUseCase;
         private readonly IGetFundedNursingCarePriceUseCase _getFundedNursingCarePriceUseCase;
         private readonly ICareChargeUseCase _getCareChargeUseCase;
+        private readonly IGetCareChargePackagesUseCase _getCareChargePackagesUseCase;
 
         public CarePackageReclaimController(ICreateCarePackageReclaimUseCase createCarePackageReclaimUseCase,
             IUpdateCarePackageReclaimUseCase updateCarePackageReclaimUseCase,
             IGetCarePackageReclaimUseCase getCarePackageReclaimUseCase,
             IGetFundedNursingCarePriceUseCase getFundedNursingCarePriceUseCase,
-            ICareChargeUseCase getCareChargeUseCase)
+            ICareChargeUseCase getCareChargeUseCase,
+            IGetCareChargePackagesUseCase getCareChargePackagesUseCase)
         {
             _createCarePackageReclaimUseCase = createCarePackageReclaimUseCase;
             _updateCarePackageReclaimUseCase = updateCarePackageReclaimUseCase;
             _getCarePackageReclaimUseCase = getCarePackageReclaimUseCase;
             _getFundedNursingCarePriceUseCase = getFundedNursingCarePriceUseCase;
             _getCareChargeUseCase = getCareChargeUseCase;
+            _getCareChargePackagesUseCase = getCareChargePackagesUseCase;
         }
 
         /// <summary>Creates a new funded nursing care reclaim.</summary>
@@ -151,6 +156,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         {
             var provisionalAmount = await _getCareChargeUseCase.GetUsingServiceUserIdAsync(serviceUserId);
             return Ok(provisionalAmount.Amount);
+        }
+
+        [HttpGet("care-charges/packages")]
+        [ProducesResponseType(typeof(PagedCareChargePackagesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<PagedCareChargePackagesResponse>> GetCareChargePackages([FromQuery] CareChargePackagesParameters parameters)
+        {
+            var result = await _getCareChargePackagesUseCase.GetCareChargePackages(parameters).ConfigureAwait(false);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
+            return Ok(result);
         }
     }
 }
