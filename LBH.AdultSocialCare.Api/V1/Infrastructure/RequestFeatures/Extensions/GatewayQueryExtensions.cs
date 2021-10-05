@@ -1,9 +1,11 @@
-using System;
-using System.Linq;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
+using System;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
 {
@@ -95,5 +97,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
         public static IQueryable<Supplier> FilterByName(this IQueryable<Supplier> clientsQuery, string name) =>
             clientsQuery.Where(s => String.IsNullOrEmpty(name)
                                     || s.SupplierName.ToLower().Contains(name.ToLower()));
+
+        public static IQueryable<CarePackage> FilterBrokerViewPackages(this IQueryable<CarePackage> packages, Guid? serviceUserId, PackageStatus? status, Guid? brokerId, DateTimeOffset? fromDate, DateTimeOffset? toDate) =>
+            packages.Where(package => (serviceUserId == null || package.ServiceUserId.Equals(serviceUserId))
+                                && (status == null || package.Status.Equals(status))
+                                && (brokerId == null || package.BrokerId.Equals(brokerId))
+                                && (fromDate == null || package.DateCreated >= fromDate)
+                                && (toDate == null || package.DateCreated <= toDate));
     }
 }

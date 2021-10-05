@@ -50,6 +50,36 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             _mapper = mapper;
         }
 
+        public static BrokerPackageItemResponse ToResponse(this BrokerPackageItemDomain input)
+        {
+            return _mapper.Map<BrokerPackageItemResponse>(input);
+        }
+
+        public static BrokerPackageItemDomain ToDomain(this BrokerPackageItemResponse input)
+        {
+            return _mapper.Map<BrokerPackageItemDomain>(input);
+        }
+
+        public static IEnumerable<BrokerPackageItemResponse> ToResponse(this IEnumerable<BrokerPackageItemDomain> input)
+        {
+            return _mapper.Map<IEnumerable<BrokerPackageItemResponse>>(input);
+        }
+
+        public static IEnumerable<BrokerPackageItemDomain> ToDomain(this IEnumerable<BrokerPackageItemResponse> input)
+        {
+            return _mapper.Map<IEnumerable<BrokerPackageItemDomain>>(input);
+        }
+
+        public static BrokerPackageViewResponse ToResponse(this BrokerPackageViewDomain input)
+        {
+            return _mapper.Map<BrokerPackageViewResponse>(input);
+        }
+
+        public static BrokerPackageViewDomain ToDomain(this BrokerPackageViewResponse input)
+        {
+            return _mapper.Map<BrokerPackageViewDomain>(input);
+        }
+
         public static CareChargeElementCreationResponse ToCreationResponse(this CareChargeElementPlainDomain input)
         {
             return _mapper.Map<CareChargeElementCreationResponse>(input);

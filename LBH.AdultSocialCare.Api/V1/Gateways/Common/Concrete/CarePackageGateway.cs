@@ -2,14 +2,16 @@ using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 {
@@ -20,6 +22,55 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
         public CarePackageGateway(DatabaseContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<BrokerPackageViewDomain> GetBrokerPackageViewListAsync(
+            BrokerPackageViewQueryParameters queryParameters)
+        {
+            var packages = await _dbContext.CarePackages
+                .FilterBrokerViewPackages(queryParameters.ServiceUserId, queryParameters.Status,
+                    queryParameters.BrokerId, queryParameters.FromDate, queryParameters.ToDate)
+                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+                .Take(queryParameters.PageSize)
+                .AsNoTracking()
+                .Select(cp => new BrokerPackageItemDomain
+                {
+                    ServiceUserName =
+                        $"{cp.ServiceUser.FirstName} {cp.ServiceUser.MiddleName ?? string.Empty} {cp.ServiceUser.LastName}",
+                    DateOfBirth = cp.ServiceUser.DateOfBirth,
+                    Address = cp.ServiceUser.AddressLine1,
+                    HackneyId = cp.ServiceUser.HackneyId.ToString(),
+                    PackageType = cp.PackageType.GetDisplayName(),
+                    PackageStatus = cp.Status.GetDisplayName(),
+                    BrokerName = cp.Broker.Name,
+                    DateAssigned = cp.DateCreated
+                }).ToListAsync();
+
+            var packageCount = await _dbContext.CarePackages
+                .FilterBrokerViewPackages(queryParameters.ServiceUserId, queryParameters.Status,
+                    queryParameters.BrokerId, queryParameters.FromDate, queryParameters.ToDate)
+                .CountAsync();
+
+            var pagedPackages = PagedList<BrokerPackageItemDomain>.ToPagedList(packages, packageCount, queryParameters.PageNumber, queryParameters.PageSize);
+
+            var statusCount = await _dbContext.CarePackages
+                .FilterBrokerViewPackages(queryParameters.ServiceUserId, queryParameters.Status,
+                    queryParameters.BrokerId, queryParameters.FromDate, queryParameters.ToDate)
+                .Select(p => new { p.Id, p.Status })
+                .GroupBy(p => p.Status)
+                .Select(p => new CarePackageByStatusDomain
+                {
+                    StatusName = p.Key.GetDisplayName(),
+                    Number = p.Count()
+                })
+                .ToListAsync();
+
+            return new BrokerPackageViewDomain
+            {
+                Packages = pagedPackages,
+                StatusCount = statusCount.ToDictionary(statusGroup => statusGroup.StatusName, statusGroup => statusGroup.Number),
+                PagingMetaData = pagedPackages.PagingMetaData
+            };
         }
 
         public async Task<CarePackage> GetPackageAsync(Guid packageId, PackageFields fields = PackageFields.All)

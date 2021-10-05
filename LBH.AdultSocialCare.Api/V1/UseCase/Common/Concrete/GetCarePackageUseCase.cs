@@ -2,6 +2,7 @@ using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         {
             var settings = await _carePackageGateway.GetCarePackageSettingsAsync(carePackageId).EnsureExistsAsync($"Settings for care package with id {carePackageId} not found");
             return settings.ToResponse();
+        }
+
+        public async Task<BrokerPackageViewResponse> GetBrokerPackageViewListAsync(BrokerPackageViewQueryParameters queryParameters)
+        {
+            var result = await _carePackageGateway.GetBrokerPackageViewListAsync(queryParameters);
+            return result.ToResponse();
         }
     }
 }
