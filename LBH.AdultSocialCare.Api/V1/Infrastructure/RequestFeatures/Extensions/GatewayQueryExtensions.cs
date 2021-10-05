@@ -1,15 +1,11 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
 {
     public static class GatewayQueryExtensions
     {

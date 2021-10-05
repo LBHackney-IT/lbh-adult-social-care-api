@@ -1,6 +1,6 @@
 using System;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters
 {
     public class ApprovedPackagesParameters : RequestParameters
     {
