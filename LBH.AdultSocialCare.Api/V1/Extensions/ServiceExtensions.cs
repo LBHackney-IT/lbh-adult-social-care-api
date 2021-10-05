@@ -118,12 +118,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 });
         }
 
-        public static void ConfigureInvoicing(this IServiceCollection services)
-        {
-            services.AddTransient<NursingCareInvoiceGenerator>();
-            services.AddTransient<ResidentialCareInvoiceGenerator>();
-        }
-
         public static void ConfigureResidentApiClient(this IServiceCollection services, IConfiguration configuration)
             => services.AddHttpClient<IResidentRestClient, ResidentRestClient>(resident =>
             {

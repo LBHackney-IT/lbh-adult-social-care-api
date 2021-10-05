@@ -1,67 +1,55 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.Linq;
+using Common.Extensions;
 using HttpServices.Models.Requests;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
-using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators
 {
     public class CareChargeGenerator : BaseInvoiceItemsGenerator
     {
-        private readonly ICareChargesGateway _careChargesGateway;
-        private readonly List<CareChargeElement> _affectedElements = new List<CareChargeElement>();
-
-        public CareChargeGenerator(ICareChargesGateway careChargesGateway)
-        {
-            _careChargesGateway = careChargesGateway;
-        }
-
-        public override IEnumerable<InvoiceItemForCreationRequest> Run(GenericPackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
+        public override IEnumerable<InvoiceItemForCreationRequest> Run(CarePackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
         {
             var invoiceItems = new List<InvoiceItemForCreationRequest>();
 
-            if (package.CareCharge is null) return invoiceItems;
+            var careCharges = package.Reclaims
+                .Where(r => r.Type is ReclaimType.CareCharge)
+                .ToList();
 
-            foreach (var element in package.CareCharge.CareChargeElements)
+            foreach (var careCharge in careCharges)
             {
-                if (element.StatusId != (int) ReclaimStatus.Active) continue;
+                if (careCharge.Status != ReclaimStatus.Active) continue;
 
-                var actualStartDate = Dates.Max(element.StartDate, invoiceStartDate);
-                var actualEndDate = Dates.Min(element.EndDate, invoiceEndDate);
+                var actualStartDate = Dates.Max(careCharge.StartDate, invoiceStartDate);
+                var actualEndDate = Dates.Min(careCharge.EndDate, invoiceEndDate);
                 var actualWeeks = (actualEndDate.Date - actualStartDate.Date).Days / 7M;
 
                 if (actualWeeks <= 0) continue;
 
                 invoiceItems.Add(new InvoiceItemForCreationRequest
                 {
-                    ItemName = element.Name ?? element.CareChargeType.OptionName,
-                    PricePerUnit = element.Amount,
+                    ItemName = careCharge.Description ?? careCharge.SubType.GetDisplayName(),
+                    PricePerUnit = careCharge.Cost,
                     Quantity = actualWeeks,
-                    PriceEffect = element.ClaimCollector.Id switch
+                    PriceEffect = careCharge.ClaimCollector switch
                     {
-                        PackageCostClaimersConstants.Hackney => PriceEffect.None,
-                        PackageCostClaimersConstants.Supplier => PriceEffect.Subtract,
+                        ClaimCollector.Hackney => PriceEffect.None,
+                        ClaimCollector.Supplier => PriceEffect.Subtract,
                         _ => throw new InvalidOperationException("Unknown claim collector Id")
                     },
-                    ClaimedBy = element.ClaimCollector.Name
+                    ClaimedBy = careCharge.ClaimCollector.GetDisplayName()
                 });
 
-                _affectedElements.Add(element);
+                // TODO: VK: Add PaidUpTo / PreviousPaidUpTo
+                // reclaim.PreviousPaidUpTo = reclaim.PaidUpTo;
+                // reclaim.PaidUpTo = Dates.Min(invoiceEndDate, reclaim.PaidUpTo);
             }
 
             return invoiceItems;
-        }
-
-        public override async Task OnInvoiceBatchGenerated(DateTimeOffset invoiceEndDate)
-        {
-            await _careChargesGateway
-                .RefreshCareChargeElementsPaidUpToDate(_affectedElements, invoiceEndDate)
-                .ConfigureAwait(false);
         }
     }
 }

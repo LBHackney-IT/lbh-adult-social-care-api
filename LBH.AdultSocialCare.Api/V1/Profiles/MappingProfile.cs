@@ -559,14 +559,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ResidentialCareAdditionalNeedsCost, AdditionalNeedsCost>()
                 .ForMember(d => d.Cost, opt => opt.MapFrom(s => s.AdditionalNeedsCost));
 
-            CreateMap<NursingCarePackage, GenericPackage>()
-                .ForMember(d => d.BrokerageInfo, opt => opt.MapFrom(s => s.NursingCareBrokerageInfo))
-                .ForMember(d => d.OriginalPackage, opt => opt.MapFrom(s => s));
-
-            CreateMap<ResidentialCarePackage, GenericPackage>()
-                .ForMember(d => d.BrokerageInfo, opt => opt.MapFrom(s => s.ResidentialCareBrokerageInfo))
-                .ForMember(d => d.OriginalPackage, opt => opt.MapFrom(s => s));
-
             #endregion Invoicing
 
             #region CarePackageReclaim
