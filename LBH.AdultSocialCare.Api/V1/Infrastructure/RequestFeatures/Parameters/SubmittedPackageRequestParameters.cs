@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters
 {
     public class SubmittedPackageRequestParameters : RequestParameters
     {

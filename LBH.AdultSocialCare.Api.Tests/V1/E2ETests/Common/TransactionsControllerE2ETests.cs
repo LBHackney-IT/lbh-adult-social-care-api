@@ -1,15 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using LBH.AdultSocialCare.Api.Tests.Extensions;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
-using Moq;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
@@ -26,13 +25,13 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         [Fact]
         public async Task ShouldCreatePayRun()
         {
-            var nursingCarePackages = await CreateNursingCarePackages().ConfigureAwait(false);
-            var residentialCarePackages = await CreateResidentialCarePackages().ConfigureAwait(false);
+            var nursingCarePackages = CreatePackages(PackageType.NursingCare);
+            var residentialCarePackages = CreatePackages(PackageType.ResidentialCare);
 
             var request = new PayRunForCreationRequest();
             var invoices = new List<InvoiceForCreationRequest>();
 
-            _fixture.TransactionalApi.SetupPostRequestInterceptor<IEnumerable<InvoiceResponse>>(
+            _fixture.OutgoingRestClient.SetupPostRequestInterceptor<IEnumerable<InvoiceResponse>>(
                 "api/v1/invoices/batch",
                 req => invoices.AddRange((IEnumerable<InvoiceForCreationRequest>) req));
 
@@ -46,36 +45,18 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             response.Message.StatusCode.Should().Be(HttpStatusCode.NoContent);
         }
 
-        private async Task<List<NursingCarePackage>> CreateNursingCarePackages()
+        private List<CarePackage> CreatePackages(PackageType type)
         {
-            var nursingCarePackages = await _fixture.Generator.NursingCare.CreatePackages(10).ConfigureAwait(false);
+            var packages = 5.ItemsOf(() => _fixture.Generator.CreateCarePackage(type)).ToList();
 
-            foreach (var package in nursingCarePackages)
+            foreach (var package in packages)
             {
-                var brokerage = await _fixture.Generator.NursingCare.CreateBrokerageInfo(package.Id).ConfigureAwait(false);
-                var careCharge = await _fixture.Generator.CareCharge.GetCareCharge(PackageTypesConstants.NursingCarePackageId, package.Id).ConfigureAwait(false);
-
-                await _fixture.Generator.NursingCare.CreateAdditionalNeedsCost(brokerage.NursingCareBrokerageId, 1).ConfigureAwait(false);
-                await _fixture.Generator.CareCharge.GetElements(careCharge.Id, 5).ConfigureAwait(false);
+                _fixture.Generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
+                _fixture.Generator.CreateCarePackageDetails(package, 2, PackageDetailType.AdditionalNeed);
+                _fixture.Generator.CreateCarePackageReclaim(package, ReclaimType.CareCharge, ClaimCollector.Hackney);
             }
 
-            return nursingCarePackages;
-        }
-
-        private async Task<List<ResidentialCarePackage>> CreateResidentialCarePackages()
-        {
-            var residentialCarePackages = await _fixture.Generator.ResidentialCare.GetPackages(10).ConfigureAwait(false);
-
-            foreach (var package in residentialCarePackages)
-            {
-                var brokerage = await _fixture.Generator.ResidentialCare.GetBrokerageInfo(package.Id).ConfigureAwait(false);
-                var careCharge = await _fixture.Generator.CareCharge.GetCareCharge(PackageTypesConstants.NursingCarePackageId, package.Id).ConfigureAwait(false);
-
-                await _fixture.Generator.ResidentialCare.GetAdditionalNeedsCost(brokerage.Id, 1).ConfigureAwait(false);
-                await _fixture.Generator.CareCharge.GetElements(careCharge.Id, 5).ConfigureAwait(false);
-            }
-
-            return residentialCarePackages;
+            return packages;
         }
     }
 }

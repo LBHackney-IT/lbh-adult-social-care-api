@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Net.Http;
 using System.Threading.Tasks;
 using HttpServices.Helpers;
 using HttpServices.Models.Responses;
@@ -10,11 +8,12 @@ namespace HttpServices.Services.Concrete
 {
     public class ResidentsService : IResidentsService
     {
-        private readonly IResidentRestClient _residentRestClient;
+        private readonly IRestClient _restClient;
 
-        public ResidentsService(IResidentRestClient residentRestClient)
+        public ResidentsService(HttpClient httpClient, IRestClient restClient)
         {
-            _residentRestClient = residentRestClient;
+            _restClient = restClient;
+            restClient.Init(httpClient);
         }
 
         public async Task<ServiceUserInformationResponse> GetServiceUserInformationAsync(int hackneyId)
@@ -24,7 +23,7 @@ namespace HttpServices.Services.Concrete
                 .AddParameter("id", hackneyId)
                 .ToString();
 
-            return await _residentRestClient
+            return await _restClient
                 .GetAsync<ServiceUserInformationResponse>(url, "Could not retrieve service user information");
         }
     }

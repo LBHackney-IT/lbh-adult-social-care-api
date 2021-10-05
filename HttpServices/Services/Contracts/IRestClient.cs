@@ -1,3 +1,4 @@
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace HttpServices.Services.Contracts
@@ -7,6 +8,11 @@ namespace HttpServices.Services.Contracts
     /// </summary>
     public interface IRestClient
     {
+        /// <summary>
+        /// Allows caller to do extra configuration for a given HttpClient instance.
+        /// </summary>
+        public void Init(HttpClient httpClient);
+
         /// <summary>
         /// Sends a GET request to specified url
         /// </summary>

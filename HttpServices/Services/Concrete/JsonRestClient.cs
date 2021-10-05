@@ -1,12 +1,10 @@
 using System;
-using System.Net;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Common.Extensions;
-using HttpServices.Models;
 using HttpServices.Services.Contracts;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace HttpServices.Services.Concrete
@@ -16,11 +14,14 @@ namespace HttpServices.Services.Concrete
     /// </summary>
     public class JsonRestClient : IRestClient
     {
-        private readonly HttpClient _httpClient;
+        private HttpClient _httpClient;
 
-        public JsonRestClient(HttpClient httpClient)
+        public void Init(HttpClient httpClient)
         {
             _httpClient = httpClient;
+
+            _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
+            _httpClient.DefaultRequestHeaders.Add("User-Agent", "HASC API");
         }
 
         /// <summary>
@@ -57,6 +58,8 @@ namespace HttpServices.Services.Concrete
 
         private async Task<TResult> SubmitRequest<TResult>(string url, object payload, string errorMessage, HttpMethod method)
         {
+            Debug.Assert(_httpClient != null, "Init() method must be called before making any requests");
+
             var httpRequestMessage = new HttpRequestMessage
             {
                 Method = method,

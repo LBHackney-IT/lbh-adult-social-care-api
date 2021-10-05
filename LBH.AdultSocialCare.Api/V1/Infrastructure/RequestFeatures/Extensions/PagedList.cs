@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using HttpServices.Models.Features;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
 {
     public class PagedList<T> : List<T>
     {

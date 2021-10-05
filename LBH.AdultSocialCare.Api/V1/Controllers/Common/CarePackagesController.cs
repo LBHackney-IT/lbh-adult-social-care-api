@@ -1,15 +1,16 @@
+using Common.Exceptions.CustomExceptions;
 using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Common.Exceptions.CustomExceptions;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
@@ -126,6 +127,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         {
             var result = await _getCarePackageSummaryUseCase.ExecuteAsync(carePackageId);
             return Ok(result);
+        }
+
+        /// <summary>Gets list of care packages for the broker view </summary>
+        /// <param name="queryParameters">Query parameters to filter list of packages returned.</param>
+        /// <returns>List of packages if success</returns>
+        [ProducesResponseType(typeof(BrokerPackageViewResponse), StatusCodes.Status200OK)]
+        [HttpGet("broker-view")]
+        public async Task<ActionResult<BrokerPackageViewResponse>> GetBrokerPackageView([FromQuery] BrokerPackageViewQueryParameters queryParameters)
+        {
+            var res = await _getCarePackageUseCase.GetBrokerPackageViewListAsync(queryParameters);
+            return Ok(res);
         }
     }
 }

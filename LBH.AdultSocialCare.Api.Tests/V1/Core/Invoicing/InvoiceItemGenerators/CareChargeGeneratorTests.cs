@@ -1,16 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using Common.Extensions;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators;
-using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
-using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
-using Moq;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
@@ -21,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
 
         public CareChargeGeneratorTests()
         {
-            _generator = new CareChargeGenerator(Mock.Of<ICareChargesGateway>());
+            _generator = new CareChargeGenerator();
         }
 
         [Fact]
@@ -32,40 +26,40 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
 
             for (var i = 0; i < elementStatuses.Length; i++)
             {
-                package.CareCharge.CareChargeElements.ElementAt(i).StatusId = (int) elementStatuses.GetValue(i);
+                package.Reclaims.ElementAt(i).Status = (ReclaimStatus) i;
             }
 
             var invoiceItems = _generator.Run(package, DateTimeOffset.Now.AddDays(-30), DateTimeOffset.Now.AddDays(30)).ToList();
-            var activeElement = package.CareCharge.CareChargeElements.First(el => el.StatusId == (int) ReclaimStatus.Active);
+            var activeElement = package.Reclaims.First(el => el.Status is ReclaimStatus.Active);
 
             invoiceItems.Count.Should().Be(1);
-            invoiceItems.First().PricePerUnit.Should().Be(activeElement.Amount);
+            invoiceItems.First().PricePerUnit.Should().Be(activeElement.Cost);
         }
 
         [Fact]
-        public void ShouldConsiderElementsDateRange()
+        public void ShouldConsiderReclaimDateRange()
         {
             var package = CreatePackage(5);
 
-            var pastElement = package.CareCharge.CareChargeElements.First();
-            var futureElement = package.CareCharge.CareChargeElements.Last();
+            var pastReclaim = package.Reclaims.First();
+            var futureReclaim = package.Reclaims.Last();
 
-            pastElement.StartDate = DateTimeOffset.Now.AddDays(-365);
-            pastElement.EndDate = DateTimeOffset.Now.AddDays(-265);
-            futureElement.StartDate = DateTimeOffset.Now.AddDays(265);
-            futureElement.EndDate = DateTimeOffset.Now.AddDays(365);
+            pastReclaim.StartDate = DateTimeOffset.Now.AddDays(-365);
+            pastReclaim.EndDate = DateTimeOffset.Now.AddDays(-265);
+            futureReclaim.StartDate = DateTimeOffset.Now.AddDays(265);
+            futureReclaim.EndDate = DateTimeOffset.Now.AddDays(365);
 
             var invoiceItems = _generator.Run(package, DateTimeOffset.Now.AddDays(-30), DateTimeOffset.Now.AddDays(30)).ToList();
 
-            invoiceItems.Count.Should().Be(package.CareCharge.CareChargeElements.Count - 2);
-            invoiceItems.Should().NotContain(el => el.PricePerUnit == pastElement.Amount);
-            invoiceItems.Should().NotContain(el => el.PricePerUnit == futureElement.Amount);
+            invoiceItems.Count.Should().Be(package.Reclaims.Count - 2);
+            invoiceItems.Should().NotContain(el => el.PricePerUnit == pastReclaim.Cost);
+            invoiceItems.Should().NotContain(el => el.PricePerUnit == futureReclaim.Cost);
         }
 
         [Fact]
         public void ShouldNotCreateInvoiceItemsWithoutCareCharge()
         {
-            var package = new GenericPackage();
+            var package = new CarePackage();
 
             var invoices = _generator.Run(package, DateTimeOffset.Now.AddDays(-30), DateTimeOffset.Now.AddDays(30));
 
@@ -73,13 +67,13 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
         }
 
         [Theory]
-        [InlineData(PackageCostClaimersConstants.Hackney, PriceEffect.None)]
-        [InlineData(PackageCostClaimersConstants.Supplier, PriceEffect.Subtract)]
-        public void ShouldSetCorrectPriceEffectWhenCollectedByHackney(int claimCollectorId, string priceEffect)
+        [InlineData(ClaimCollector.Hackney, PriceEffect.None)]
+        [InlineData(ClaimCollector.Supplier, PriceEffect.Subtract)]
+        public void ShouldSetCorrectPriceEffectWhenCollectedByHackney(ClaimCollector collector, string priceEffect)
         {
             var package = CreatePackage(1);
 
-            package.CareCharge.CareChargeElements.First().ClaimCollector.Id = claimCollectorId;
+            package.Reclaims.First().ClaimCollector = collector;
 
             var invoiceItems = _generator.Run(package, DateTimeOffset.Now.AddDays(-30), DateTimeOffset.Now.AddDays(30)).ToList();
 
@@ -87,33 +81,21 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
             invoiceItems.First().PriceEffect.Should().Be(priceEffect);
         }
 
-        private static GenericPackage CreatePackage(int careChargeElementsCount)
+        private static CarePackage CreatePackage(int reclaimsCount)
         {
-            var package = new GenericPackage
-            {
-                CareCharge = new PackageCareCharge
-                {
-                    CareChargeElements = new List<CareChargeElement>()
-                }
-            };
+            var package = new CarePackage();
 
-            for (var i = 0; i < careChargeElementsCount; i++)
+            for (var i = 0; i < reclaimsCount; i++)
             {
-                package.CareCharge.CareChargeElements.Add(new CareChargeElement
+                package.Reclaims.Add(new CarePackageReclaim
                 {
-                    Amount = 1.23m * (i + 1),
-                    StatusId = (int) ReclaimStatus.Active,
+                    Cost = 1.23m * (i + 1),
+                    Status = ReclaimStatus.Active,
                     StartDate = DateTimeOffset.Now.AddDays(-10),
                     EndDate = DateTimeOffset.Now.AddDays(10),
-                    CareChargeType = new CareChargeType
-                    {
-                        Id = (int) CareChargeElementTypeEnum.WithoutPropertyOneToTwelveWeeks,
-                        OptionName = CareChargeElementTypeEnum.WithoutPropertyOneToTwelveWeeks.GetDisplayName()
-                    },
-                    ClaimCollector = new PackageCostClaimer
-                    {
-                        Id = PackageCostClaimersConstants.Hackney
-                    }
+                    Type = ReclaimType.CareCharge,
+                    SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
+                    ClaimCollector = ClaimCollector.Hackney
                 });
             }
 
