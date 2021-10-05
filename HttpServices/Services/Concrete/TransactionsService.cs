@@ -6,6 +6,7 @@ using HttpServices.Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using HttpServices.Helpers;
 
@@ -24,9 +25,13 @@ namespace HttpServices.Services.Concrete
             "DirectPaymentsReleaseHolds"
         };
 
-        public TransactionsService(IRestClient restClient)
+        public TransactionsService(HttpClient httpClient, IRestClient restClient)
         {
+            // a hack to get benefits of both typed HttpClient and HtpClient wrapper
+            // with error handling, deserialization and mock request interceptors
+            // Be sure IRestClient is transient, not scoped
             _restClient = restClient;
+            _restClient.Init(httpClient);
         }
 
         public async Task<IEnumerable<DepartmentResponse>> GetPaymentDepartments()

@@ -101,17 +101,12 @@ namespace LBH.AdultSocialCare.Api
             services.RegisterGateways();
             services.RegisterUseCases();
 
-            // Configure transaction API client
-            services.AddScoped<IRestClient, JsonRestClient>();
-            services.AddScoped<ITransactionsService, TransactionsService>();
+            // Configure API clients
+            services.AddTransient<IRestClient, JsonRestClient>();
             services.ConfigureTransactionsApiClient(Configuration);
+            services.ConfigureResidentApiClient(Configuration);
 
             services.ConfigureInvoicing();
-
-            // set residents API http client
-            services.AddScoped<IResidentRestClient, ResidentRestClient>();
-            services.AddScoped<IResidentsService, ResidentsService>();
-            services.ConfigureResidentApiClient(Configuration);
         }
 
         private static void ConfigureSwagger(IServiceCollection services) => services.AddSwaggerGen(c =>
