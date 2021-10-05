@@ -1,19 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Common.Extensions;
 using HttpServices.Models.Requests;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators
 {
     public class FundedNursingCareGenerator : BaseInvoiceItemsGenerator
     {
-        private IEnumerable<FundedNursingCarePriceDomain> _fncPrices;
+        private List<FundedNursingCarePriceDomain> _fncPrices;
         private readonly IFundedNursingCareGateway _fundedNursingCareGateway;
 
         public FundedNursingCareGenerator(IFundedNursingCareGateway fundedNursingCareGateway)
@@ -21,10 +23,11 @@ namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators
             _fundedNursingCareGateway = fundedNursingCareGateway;
         }
 
-        public override IEnumerable<InvoiceItemForCreationRequest> Run(GenericPackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
+        public override IEnumerable<InvoiceItemForCreationRequest> Run(CarePackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
         {
             var invoiceItems = new List<InvoiceItemForCreationRequest>();
-            var fundedNursingCare = (package.OriginalPackage as NursingCarePackage)?.FundedNursingCare; // TODO: VK: Review
+            var fundedNursingCare = package.Reclaims
+                .FirstOrDefault(r => r.Type is ReclaimType.Fnc);
 
             if (fundedNursingCare is null) return invoiceItems;
 
@@ -36,28 +39,21 @@ namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators
 
                 if (itemWeeks > 0)
                 {
-                    var itemName = fundedNursingCare.FundedNursingCareCollector.OptionInvoiceName;
-                    var claimedBy = fundedNursingCare.FundedNursingCareCollector.ClaimedBy switch // TODO: VK: Introduce enums, why are we using strings?
+                    var priceEffect = fundedNursingCare.ClaimCollector switch
                     {
-                        PackageCostClaimersConstants.Hackney => "Hackney",
-                        PackageCostClaimersConstants.Supplier => "Supplier",
-                        _ => "Hackney"
-                    };
-                    var priceEffect = claimedBy switch
-                    {
-                        "Hackney" => PriceEffect.None,
-                        "Supplier" => PriceEffect.Subtract,
+                        ClaimCollector.Hackney => PriceEffect.None,
+                        ClaimCollector.Supplier => PriceEffect.Subtract,
                         _ => PriceEffect.Add
                     };
 
                     invoiceItems.Add(new InvoiceItemForCreationRequest
                     {
-                        ItemName = itemName,
+                        // ItemName = fundedNursingCare.FundedNursingCareCollector.OptionInvoiceName, // TODO: VK: Clarify
                         PricePerUnit = price.PricePerWeek,
                         Quantity = itemWeeks,
                         PriceEffect = priceEffect,
-                        ClaimedBy = claimedBy,
-                        ReclaimedFrom = fundedNursingCare.ReclaimFrom.ReclaimFromName
+                        ClaimedBy = fundedNursingCare.ClaimCollector.GetDisplayName(),
+                        // ReclaimedFrom = fundedNursingCare.ReclaimFrom.ReclaimFromName // TODO: VK: Clarify
                     });
                 }
             }
@@ -67,9 +63,7 @@ namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators
 
         public override async Task Initialize()
         {
-            _fncPrices = await _fundedNursingCareGateway
-                .GetFundedNursingCarePricesAsync()
-                .ConfigureAwait(false);
+            _fncPrices = (await _fundedNursingCareGateway.GetFundedNursingCarePricesAsync()).ToList();
         }
     }
 }

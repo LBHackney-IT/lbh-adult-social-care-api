@@ -21,5 +21,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
         Task<CarePackageSettingsDomain> GetCarePackageSettingsAsync(Guid carePackageId);
 
         void Create(CarePackage newCarePackage);
+
+        Task<List<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset dateTo);
+
+        Task<List<CarePackage>> GetByIdsAsync(IEnumerable<Guid> packageIds, PackageFields fields = PackageFields.All);
     }
 }
