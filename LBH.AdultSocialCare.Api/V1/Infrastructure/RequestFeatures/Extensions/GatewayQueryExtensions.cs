@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Domain;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
+using System;
+using System.Linq;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
 {
     public static class GatewayQueryExtensions
     {
@@ -99,5 +97,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestExtensions
         public static IQueryable<Supplier> FilterByName(this IQueryable<Supplier> clientsQuery, string name) =>
             clientsQuery.Where(s => String.IsNullOrEmpty(name)
                                     || s.SupplierName.ToLower().Contains(name.ToLower()));
+
+        public static IQueryable<CarePackage> FilterBrokerViewPackages(this IQueryable<CarePackage> packages, Guid? serviceUserId, PackageStatus? status, Guid? brokerId, DateTimeOffset? fromDate, DateTimeOffset? toDate) =>
+            packages.Where(package => (serviceUserId == null || package.ServiceUserId.Equals(serviceUserId))
+                                && (status == null || package.Status.Equals(status))
+                                && (brokerId == null || package.BrokerId.Equals(brokerId))
+                                && (fromDate == null || package.DateCreated >= fromDate)
+                                && (toDate == null || package.DateCreated <= toDate));
     }
 }

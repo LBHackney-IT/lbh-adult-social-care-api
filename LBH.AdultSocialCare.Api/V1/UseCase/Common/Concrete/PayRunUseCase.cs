@@ -27,19 +27,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
     public class PayRunUseCase : IPayRunUseCase
     {
         private readonly ITransactionsService _transactionsService;
+        private readonly InvoiceGenerator _invoiceGenerator;
         private readonly ISupplierGateway _supplierGateway;
         private readonly IClientsGateway _clientsGateway;
-        private readonly NursingCareInvoiceGenerator _nursingCareInvoiceGenerator;
-        private readonly ResidentialCareInvoiceGenerator _residentialCareInvoiceGenerator;
 
-        public PayRunUseCase(ITransactionsService transactionsService, ISupplierGateway supplierGateway, IClientsGateway clientsGateway,
-            NursingCareInvoiceGenerator nursingCareInvoiceGenerator, ResidentialCareInvoiceGenerator residentialCareInvoiceGenerator)
+        public PayRunUseCase(
+            ITransactionsService transactionsService, InvoiceGenerator invoiceGenerator,
+            ISupplierGateway supplierGateway, IClientsGateway clientsGateway)
         {
             _transactionsService = transactionsService;
+            _invoiceGenerator = invoiceGenerator;
             _supplierGateway = supplierGateway;
             _clientsGateway = clientsGateway;
-            _nursingCareInvoiceGenerator = nursingCareInvoiceGenerator;
-            _residentialCareInvoiceGenerator = residentialCareInvoiceGenerator;
         }
 
         public async Task<Guid?> CreateNewPayRunUseCase(string payRunType, PayRunForCreationRequest payRunForCreationRequest)
@@ -158,8 +157,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
         private async Task<Guid?> CreateResidentialRecurringPayRun(PayRunForCreationRequest request)
         {
-            await _nursingCareInvoiceGenerator.GenerateUpTo(request.DateTo.Date).ConfigureAwait(false);
-            await _residentialCareInvoiceGenerator.GenerateUpTo(request.DateTo.Date).ConfigureAwait(false);
+            await _invoiceGenerator.GenerateUpTo(request.DateTo.Date);
 
             return await _transactionsService
                 .CreateResidentialRecurringPayRun(request)

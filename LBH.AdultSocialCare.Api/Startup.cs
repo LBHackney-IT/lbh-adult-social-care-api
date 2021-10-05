@@ -26,6 +26,7 @@ using System.Reflection;
 using HttpServices.Services.Concrete;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.Providers;
+using LBH.AdultSocialCare.Api.V1.Core.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
@@ -106,7 +107,7 @@ namespace LBH.AdultSocialCare.Api
             services.ConfigureTransactionsApiClient(Configuration);
             services.ConfigureResidentApiClient(Configuration);
 
-            services.ConfigureInvoicing();
+            services.AddTransient<InvoiceGenerator>();
         }
 
         private static void ConfigureSwagger(IServiceCollection services) => services.AddSwaggerGen(c =>

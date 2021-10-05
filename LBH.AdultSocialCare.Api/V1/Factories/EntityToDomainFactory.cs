@@ -1,6 +1,5 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
@@ -697,19 +696,5 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion CareCharges
-
-        #region Package wrappers for invoicing
-
-        public static IEnumerable<GenericPackage> ToInvoicingDomain(this IEnumerable<NursingCarePackage> package)
-        {
-            return _mapper.Map<IEnumerable<GenericPackage>>(package);
-        }
-
-        public static IEnumerable<GenericPackage> ToInvoicingDomain(this IEnumerable<ResidentialCarePackage> package)
-        {
-            return _mapper.Map<IEnumerable<GenericPackage>>(package);
-        }
-
-        #endregion Package wrappers for invoicing
     }
 }
