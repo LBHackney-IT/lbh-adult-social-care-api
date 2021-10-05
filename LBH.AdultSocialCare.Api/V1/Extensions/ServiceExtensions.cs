@@ -14,9 +14,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
-using LBH.AdultSocialCare.Api.V1.Core.Invoicing;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
@@ -26,19 +24,25 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
     {
 
         public static void ConfigureTransactionsApiClient(this IServiceCollection services, IConfiguration configuration)
-            => services.AddHttpClient<IRestClient, JsonRestClient>(client =>
-            {
-                client.BaseAddress = new Uri(configuration["HASCHttpClients:TransactionsBaseUrl"]);
-                client.DefaultRequestHeaders.Add("x-api-key", configuration["HASCHttpClients:TransactionsApiKey"]);
-                client.DefaultRequestHeaders.Add("Accept", "application/json");
-                client.DefaultRequestHeaders.Add("User-Agent", "HASC API");
-            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler()
-            {
-                ClientCertificateOptions = ClientCertificateOption.Automatic,
-                SslProtocols = SslProtocols.Tls12,
-                AllowAutoRedirect = false,
-                UseDefaultCredentials = true
-            });
+        {
+            services
+                .AddHttpClient<ITransactionsService, TransactionsService>(client =>
+                {
+                    client.BaseAddress = new Uri(configuration["HASCHttpClients:TransactionsBaseUrl"]);
+                    client.DefaultRequestHeaders.Add("x-api-key", configuration["HASCHttpClients:TransactionsApiKey"]);
+                })
+                .ConfigureMessageHandlers();
+        }
+
+        public static void ConfigureResidentApiClient(this IServiceCollection services, IConfiguration configuration)
+        {
+            services
+                .AddHttpClient<IResidentsService, ResidentsService>(client =>
+                {
+                    client.BaseAddress = new Uri(configuration["ResidentsAPI:BaseUrl"]);
+                })
+                .ConfigureMessageHandlers();
+        }
 
         public static void ConfigureIdentityService(this IServiceCollection services) => services.AddIdentity<User, Role>(
                 o =>
@@ -118,18 +122,15 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 });
         }
 
-        public static void ConfigureResidentApiClient(this IServiceCollection services, IConfiguration configuration)
-            => services.AddHttpClient<IResidentRestClient, ResidentRestClient>(resident =>
-            {
-                resident.BaseAddress = new Uri(configuration["ResidentsAPI:BaseUrl"]);
-                resident.DefaultRequestHeaders.Add("Accept", "application/json");
-                resident.DefaultRequestHeaders.Add("User-Agent", "HASC API");
-            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler()
+        private static IHttpClientBuilder ConfigureMessageHandlers(this IHttpClientBuilder builder)
+        {
+            return builder.ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
             {
                 ClientCertificateOptions = ClientCertificateOption.Automatic,
                 SslProtocols = SslProtocols.Tls12,
                 AllowAutoRedirect = false,
                 UseDefaultCredentials = true
             });
+        }
     }
 }

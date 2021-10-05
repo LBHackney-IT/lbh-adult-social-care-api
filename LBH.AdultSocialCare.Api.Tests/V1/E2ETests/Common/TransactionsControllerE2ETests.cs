@@ -31,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             var request = new PayRunForCreationRequest();
             var invoices = new List<InvoiceForCreationRequest>();
 
-            _fixture.TransactionalApi.SetupPostRequestInterceptor<IEnumerable<InvoiceResponse>>(
+            _fixture.OutgoingRestClient.SetupPostRequestInterceptor<IEnumerable<InvoiceResponse>>(
                 "api/v1/invoices/batch",
                 req => invoices.AddRange((IEnumerable<InvoiceForCreationRequest>) req));
 

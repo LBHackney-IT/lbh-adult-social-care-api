@@ -12,10 +12,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
+using Microsoft.Extensions.Configuration;
 
 namespace LBH.AdultSocialCare.Api.Tests
 {
@@ -28,14 +30,15 @@ namespace LBH.AdultSocialCare.Api.Tests
             var connectionString = $"DataSource=file:DB{Guid.NewGuid()}?mode=memory&cache=shared";
 
             _connection = new SqliteConnection(connectionString);
-            _connection.Open(); // connection should stay open to keep SQLite in-memory database alive
 
+            _connection.Open(); // connection should stay open to keep SQLite in-memory database alive
             _connection.CreateFunction("comparedates", (Func<DateTimeOffset?, DateTimeOffset?, int>) CompareDates);
 
             CreateDatabaseContext();
 
-            TransactionalApi = new Mock<IRestClient>();
             Generator = new DatabaseTestDataGenerator(DatabaseContext);
+
+            OutgoingRestClient = new Mock<IRestClient>();
             RestClient = new TestRestClient(CreateClient())
             {
                 // HACK: for some reason updates to existing entities done by API
@@ -50,7 +53,21 @@ namespace LBH.AdultSocialCare.Api.Tests
         public DatabaseContext DatabaseContext { get; private set; }
         public DatabaseTestDataGenerator Generator { get; }
 
-        public Mock<IRestClient> TransactionalApi { get; }
+        public Mock<IRestClient> OutgoingRestClient { get; }
+
+        protected override TestServer CreateServer(IWebHostBuilder builder)
+        {
+            builder.ConfigureAppConfiguration((context, configBuilder) =>
+            {
+                ((ConfigurationBuilder) configBuilder).AddInMemoryCollection(
+                    new Dictionary<string, string>
+                    {
+                        ["HASCHttpClients:TransactionsBaseUrl"] = "http://127.0.0.1",
+                        ["ResidentsAPI:BaseUrl"] = "http://127.0.0.1"
+                    });
+            });
+            return base.CreateServer(builder);
+        }
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
@@ -59,7 +76,7 @@ namespace LBH.AdultSocialCare.Api.Tests
             builder.ConfigureTestServices(services =>
             {
                 services.RemoveAll<IRestClient>();
-                services.AddScoped<IRestClient>(provider => TransactionalApi.Object);
+                services.AddScoped(provider => OutgoingRestClient.Object);
 
                 ConfigureHttpContextAccessor(services);
                 ConfigureAuthentication(services);
