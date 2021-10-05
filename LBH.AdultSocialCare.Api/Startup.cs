@@ -26,6 +26,7 @@ using System.Reflection;
 using HttpServices.Services.Concrete;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.Providers;
+using LBH.AdultSocialCare.Api.V1.Core.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
 using Microsoft.AspNetCore.Authorization;
@@ -106,7 +107,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<ITransactionsService, TransactionsService>();
             services.ConfigureTransactionsApiClient(Configuration);
 
-            services.ConfigureInvoicing();
+            services.AddTransient<InvoiceGenerator>();
 
             // set residents API http client
             services.AddScoped<IResidentRestClient, ResidentRestClient>();

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 {
@@ -24,15 +25,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
         public async Task<CarePackage> GetPackageAsync(Guid packageId, PackageFields fields = PackageFields.All)
         {
-            var query = _dbContext.CarePackages.Where(p => p.Id == packageId);
-
-            if (fields.HasFlag(PackageFields.Details)) query = query.Include(p => p.Details);
-            if (fields.HasFlag(PackageFields.Reclaims)) query = query.Include(p => p.Reclaims);
-            if (fields.HasFlag(PackageFields.Settings)) query = query.Include(p => p.Settings);
-            if (fields.HasFlag(PackageFields.Supplier)) query = query.Include(p => p.Supplier);
-            if (fields.HasFlag(PackageFields.Histories)) query = query.Include(p => p.Histories);
-            if (fields.HasFlag(PackageFields.ServiceUser)) query = query.Include(p => p.ServiceUser);
-            if (fields.HasFlag(PackageFields.PrimarySupportReason)) query = query.Include(p => p.PrimarySupportReason);
+            var query = BuildPackageQuery(
+                _dbContext.CarePackages.Where(p => p.Id == packageId), fields);
 
             return await query.FirstOrDefaultAsync();
         }
@@ -78,6 +72,35 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
         public void Create(CarePackage newCarePackage)
         {
             _dbContext.CarePackages.Add(newCarePackage);
+        }
+
+        public async Task<List<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset dateTo)
+        {
+            // TODO: VK: Temporary stub, handle PaidUpTo dates
+            return await _dbContext.CarePackages
+                .Select(p => p.Id)
+                .ToListAsync();
+        }
+
+        public async Task<List<CarePackage>> GetByIdsAsync(IEnumerable<Guid> packageIds, PackageFields fields = PackageFields.All)
+        {
+            var query = BuildPackageQuery(
+                _dbContext.CarePackages.Where(p => packageIds.Contains(p.Id)), fields);
+
+            return await query.ToListAsync();
+        }
+
+        private static IQueryable<CarePackage> BuildPackageQuery(IQueryable<CarePackage> query, PackageFields fields)
+        {
+            if (fields.HasFlag(PackageFields.Details)) query = query.Include(p => p.Details);
+            if (fields.HasFlag(PackageFields.Reclaims)) query = query.Include(p => p.Reclaims);
+            if (fields.HasFlag(PackageFields.Settings)) query = query.Include(p => p.Settings);
+            if (fields.HasFlag(PackageFields.Supplier)) query = query.Include(p => p.Supplier);
+            if (fields.HasFlag(PackageFields.Histories)) query = query.Include(p => p.Histories);
+            if (fields.HasFlag(PackageFields.ServiceUser)) query = query.Include(p => p.ServiceUser);
+            if (fields.HasFlag(PackageFields.PrimarySupportReason)) query = query.Include(p => p.PrimarySupportReason);
+
+            return query;
         }
     }
 }
