@@ -5,11 +5,13 @@ using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 
@@ -30,7 +32,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
         public async Task ExecuteAsync(Guid packageId, CarePackageBrokerageDomain brokerageInfo)
         {
-            var package = await EnsurePackage(packageId);
+            var package = await _carePackageGateway
+                .GetPackageAsync(packageId, PackageFields.Details)
+                .EnsureExistsAsync($"Care package {packageId} not found");
 
             package.SupplierId = brokerageInfo.SupplierId;
 
@@ -106,18 +110,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             {
                 package.Details.Remove(detail);
             }
-        }
-
-        private async Task<CarePackage> EnsurePackage(Guid packageId)
-        {
-            var package = await _carePackageGateway.GetPackageAsync(packageId);
-
-            if (package is null)
-            {
-                throw new ApiException($"Care package {packageId} not found", HttpStatusCode.NotFound);
-            }
-
-            return package;
         }
     }
 }

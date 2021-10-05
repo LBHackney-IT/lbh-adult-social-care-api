@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 {
@@ -21,18 +22,19 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             _dbContext = dbContext;
         }
 
-        public async Task<CarePackage> GetPackageAsync(Guid packageId)
+        public async Task<CarePackage> GetPackageAsync(Guid packageId, PackageFields fields = PackageFields.All)
         {
-            // TODO: VK: optimize
-            return await _dbContext.CarePackages
-                .Where(p => p.Id == packageId)
-                .Include(p => p.Details)
-                .Include(p => p.Reclaims)
-                .Include(p => p.CarePackageSettings)
-                .Include(p => p.PrimarySupportReason)
-                .Include(p => p.ServiceUser)
-                .Include(p => p.Supplier)
-                .FirstOrDefaultAsync();
+            var query = _dbContext.CarePackages.Where(p => p.Id == packageId);
+
+            if (fields.HasFlag(PackageFields.Details)) query = query.Include(p => p.Details);
+            if (fields.HasFlag(PackageFields.Reclaims)) query = query.Include(p => p.Reclaims);
+            if (fields.HasFlag(PackageFields.Settings)) query = query.Include(p => p.Settings);
+            if (fields.HasFlag(PackageFields.Supplier)) query = query.Include(p => p.Supplier);
+            if (fields.HasFlag(PackageFields.Histories)) query = query.Include(p => p.Histories);
+            if (fields.HasFlag(PackageFields.ServiceUser)) query = query.Include(p => p.ServiceUser);
+            if (fields.HasFlag(PackageFields.PrimarySupportReason)) query = query.Include(p => p.PrimarySupportReason);
+
+            return await query.FirstOrDefaultAsync();
         }
 
         public async Task<CarePackage> GetPackagePlainAsync(Guid packageId, bool trackChanges = false)

@@ -25,19 +25,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         private readonly IUpdateCarePackageUseCase _updateCarePackageUseCase;
         private readonly ISubmitCarePackageUseCase _submitCarePackageUseCase;
         private readonly IGetCarePackageUseCase _getCarePackageUseCase;
-        private readonly ICarePackageSummaryUseCase _carePackageSummaryUseCase;
+        private readonly IGetCarePackageSummaryUseCase _getCarePackageSummaryUseCase;
 
         public CarePackagesController(
             ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase,
             IUpdateCarePackageUseCase updateCarePackageUseCase, ISubmitCarePackageUseCase submitCarePackageUseCase,
-            IGetCarePackageUseCase getCarePackageUseCase, ICarePackageSummaryUseCase carePackageSummaryUseCase)
+            IGetCarePackageUseCase getCarePackageUseCase, IGetCarePackageSummaryUseCase getCarePackageSummaryUseCase)
         {
             _createCarePackageUseCase = createCarePackageUseCase;
             _carePackageOptionsUseCase = carePackageOptionsUseCase;
             _updateCarePackageUseCase = updateCarePackageUseCase;
             _submitCarePackageUseCase = submitCarePackageUseCase;
             _getCarePackageUseCase = getCarePackageUseCase;
-            _carePackageSummaryUseCase = carePackageSummaryUseCase;
+            _getCarePackageSummaryUseCase = getCarePackageSummaryUseCase;
         }
 
         /// <summary>Creates a new care package.</summary>
@@ -124,7 +124,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesDefaultResponseType]
         public async Task<ActionResult<CarePackageSummaryResponse>> GetSummary(Guid carePackageId)
         {
-            var result = await _carePackageSummaryUseCase.ExecuteAsync(carePackageId);
+            var result = await _getCarePackageSummaryUseCase.ExecuteAsync(carePackageId);
             return Ok(result);
         }
     }

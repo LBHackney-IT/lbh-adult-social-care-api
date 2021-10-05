@@ -150,7 +150,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             var response = await _fixture.RestClient
                 .GetAsync<CarePackageSummaryResponse>($"api/v1/care-packages/{package.Id}/summary");
 
-            // TODO: VK: Add more checks
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
         }
     }
