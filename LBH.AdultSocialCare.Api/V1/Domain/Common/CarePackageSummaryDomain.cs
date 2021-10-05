@@ -27,7 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public decimal TotalWeeklyCost { get; set; }
 
         public CarePackageReclaimDomain FundedNursingCare { get; set; }
-        public CarePackageReclaimDomain CareCharges { get; set; }
+        public IEnumerable<CarePackageReclaimDomain> CareCharges { get; set; }
 
         public CarePackageSummaryReclaimsDomain HackneyReclaims { get; set; }
         public CarePackageSummaryReclaimsDomain SupplierReclaims { get; set; }

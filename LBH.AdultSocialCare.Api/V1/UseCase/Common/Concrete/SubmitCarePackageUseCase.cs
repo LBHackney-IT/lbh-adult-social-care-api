@@ -5,6 +5,7 @@ using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 
@@ -24,7 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         public async Task ExecuteAsync(Guid packageId, CarePackageSubmissionDomain submissionInfo)
         {
             var package = await _carePackageGateway
-                .GetPackageAsync(packageId)
+                .GetPackageAsync(packageId, PackageFields.None)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
             package.ApproverId = submissionInfo.ApproverId;

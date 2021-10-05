@@ -32,7 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 
         public int PrimarySupportReasonId { get; set; }
         public PackageScheduling PackageScheduling { get; set; }
-        public CarePackageSettings CarePackageSettings { get; set; }
+        public CarePackageSettings Settings { get; set; }
 
         [ForeignKey(nameof(ServiceUserId))]
         public Client ServiceUser { get; set; }

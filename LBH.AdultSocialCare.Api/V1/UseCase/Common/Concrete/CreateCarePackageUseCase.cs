@@ -43,7 +43,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             carePackageEntity.ServiceUserId = randomClient.Id;
             carePackageEntity.Status = PackageStatus.Draft;
 
-            carePackageEntity.CarePackageSettings = carePackageSettingsEntity;
+            carePackageEntity.Settings = carePackageSettingsEntity;
             _carePackageGateway.Create(carePackageEntity);
 
             // TODO: Create record in package history?
