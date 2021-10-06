@@ -180,7 +180,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         /// <summary>
         /// Gets the single package care charge detail.
         /// </summary>
-        /// <param name="packageId">The care package id.</param>
+        /// <param name="carePackageId">The care package id.</param>
         /// <returns>Details of care charges with care package information.</returns>
         /// <response code="200">When care package has care charges</response>
         /// <response code="404">When care package is not found</response>
@@ -188,9 +188,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(SinglePackageCareChargeResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult<SinglePackageCareChargeResponse>> GetSinglePackageCareCharge(Guid packageId)
+        public async Task<ActionResult<SinglePackageCareChargeResponse>> GetSinglePackageCareCharge(Guid carePackageId)
         {
-            var singlePackageCareCharge = await _getSinglePackageCareChargeUseCase.GetSinglePackageCareCharge(packageId).ConfigureAwait(false);
+            var singlePackageCareCharge = await _getSinglePackageCareChargeUseCase.GetSinglePackageCareCharge(carePackageId).ConfigureAwait(false);
             return Ok(singlePackageCareCharge);
         }
     }
