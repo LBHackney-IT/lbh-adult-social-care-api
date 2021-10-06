@@ -31,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
         public async Task<CarePackageReclaimDomain> CreateAsync(CarePackageReclaim carePackageReclaim)
         {
             var carePackage = await _dbContext.CarePackages
-                .FirstOrDefaultAsync(item => item.Id == carePackageReclaim.CarePackageId).ConfigureAwait(false);
+                .FirstOrDefaultAsync(item => item.Id == carePackageReclaim.CarePackageId);
 
             if (carePackage == null)
             {
@@ -41,7 +41,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             var entry = await _dbContext.CarePackageReclaims.AddAsync(carePackageReclaim);
             try
             {
-                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+                await _dbContext.SaveChangesAsync();
                 return entry.Entity.ToDomain();
             }
             catch (Exception ex)
@@ -53,7 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
         public async Task<bool> UpdateAsync(CarePackageReclaimForUpdateDomain carePackageReclaimForUpdateDomain)
         {
             var carePackageReclaim = await _dbContext.CarePackageReclaims
-                .FirstOrDefaultAsync(item => item.Id == carePackageReclaimForUpdateDomain.Id).ConfigureAwait(false);
+                .FirstOrDefaultAsync(item => item.Id == carePackageReclaimForUpdateDomain.Id);
 
             if (carePackageReclaim == null)
             {
@@ -63,7 +63,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             _mapper.Map(carePackageReclaimForUpdateDomain, carePackageReclaim);
             try
             {
-                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+                await _dbContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
@@ -84,8 +84,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
         public async Task<PagedList<CareChargePackagesDomain>> GetCareChargePackages(CareChargePackagesParameters parameters)
         {
-            var careChargePackagesCount = await GetCareChargePackagesCount(parameters).ConfigureAwait(false);
-            var careChargePackagesList = await GetCareChargePackagesList(parameters).ConfigureAwait(false);
+            var careChargePackagesCount = await GetCareChargePackagesCount(parameters);
+            var careChargePackagesList = await GetCareChargePackagesList(parameters);
 
             var paginatedCareChargePackageList = careChargePackagesList
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
@@ -94,12 +94,31 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             return PagedList<CareChargePackagesDomain>.ToPagedList(paginatedCareChargePackageList, careChargePackagesCount, parameters.PageNumber, parameters.PageSize);
         }
 
+        public async Task<SinglePackageCareChargeDomain> GetSinglePackageCareCharge(Guid packageId)
+        {
+            return await _dbContext.CarePackages
+                .Where(c => c.Id.Equals(packageId))
+                .Include(item => item.ServiceUser)
+                .Include(item => item.Supplier)
+                .Include(item => item.Reclaims)
+                .Include(item => item.Settings)
+                .Select(c => new SinglePackageCareChargeDomain
+                {
+                    PackageType = c.PackageType.GetDisplayName(),
+                    CareChargeStatus = c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge) ? "Existing" : "New",
+                    Supplier = c.Supplier.ToDomain(),
+                    ServiceUser = c.ServiceUser.ToDomain(),
+                    Settings = c.Settings.ToDomain(),
+                    CareCharges = c.Reclaims.Where(r => r.Type == ReclaimType.CareCharge).ToDomain()
+                }).SingleOrDefaultAsync();
+        }
+
         private async Task<int> GetCareChargePackagesCount(CareChargePackagesParameters parameters)
         {
             return await _dbContext.CarePackages
                 .FilterCareChargeCarePackageList(parameters.Status, parameters.FirstName, parameters.LastName,
                     parameters.DateOfBirth, parameters.PostCode, parameters.MosaicId, parameters.ModifiedAt, parameters.ModifiedBy)
-                .CountAsync().ConfigureAwait(false);
+                .CountAsync();
         }
 
         private async Task<List<CareChargePackagesDomain>> GetCareChargePackagesList(CareChargePackagesParameters parameters)
@@ -123,7 +142,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                     LastModified = c.DateUpdated,
                     ModifiedBy = c.Updater.Name
                 })
-                .ToListAsync().ConfigureAwait(false);
+                .ToListAsync();
         }
     }
 }

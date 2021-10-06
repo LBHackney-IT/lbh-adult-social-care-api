@@ -784,6 +784,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CareChargePackagesResponse>>(careChargePackagesDomains);
         }
 
+        public static SinglePackageCareChargeResponse ToResponse(this SinglePackageCareChargeDomain singlePackageCareChargeDomain)
+        {
+            return _mapper.Map<SinglePackageCareChargeResponse>(singlePackageCareChargeDomain);
+        }
+
         #endregion CareCharges
     }
 }

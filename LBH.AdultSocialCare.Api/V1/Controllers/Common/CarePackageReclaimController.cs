@@ -29,13 +29,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         private readonly IGetFundedNursingCarePriceUseCase _getFundedNursingCarePriceUseCase;
         private readonly ICareChargeUseCase _getCareChargeUseCase;
         private readonly IGetCareChargePackagesUseCase _getCareChargePackagesUseCase;
+        private readonly IGetSinglePackageCareChargeUseCase _getSinglePackageCareChargeUseCase;
 
         public CarePackageReclaimController(ICreateCarePackageReclaimUseCase createCarePackageReclaimUseCase,
             IUpdateCarePackageReclaimUseCase updateCarePackageReclaimUseCase,
             IGetCarePackageReclaimUseCase getCarePackageReclaimUseCase,
             IGetFundedNursingCarePriceUseCase getFundedNursingCarePriceUseCase,
             ICareChargeUseCase getCareChargeUseCase,
-            IGetCareChargePackagesUseCase getCareChargePackagesUseCase)
+            IGetCareChargePackagesUseCase getCareChargePackagesUseCase,
+            IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase)
         {
             _createCarePackageReclaimUseCase = createCarePackageReclaimUseCase;
             _updateCarePackageReclaimUseCase = updateCarePackageReclaimUseCase;
@@ -43,6 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             _getFundedNursingCarePriceUseCase = getFundedNursingCarePriceUseCase;
             _getCareChargeUseCase = getCareChargeUseCase;
             _getCareChargePackagesUseCase = getCareChargePackagesUseCase;
+            _getSinglePackageCareChargeUseCase = getSinglePackageCareChargeUseCase;
         }
 
         /// <summary>Creates a new funded nursing care reclaim.</summary>
@@ -158,6 +161,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             return Ok(provisionalAmount.Amount);
         }
 
+        /// <summary>
+        /// Gets the paginated care package list with care charge information.
+        /// </summary>
+        /// <param name="parameters">Parameters to filter list of care packages.</param>
+        /// <returns>List of care packages with care charge status</returns>
         [HttpGet("care-charges/packages")]
         [ProducesResponseType(typeof(PagedCareChargePackagesResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -167,6 +175,23 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             var result = await _getCareChargePackagesUseCase.GetCareChargePackages(parameters).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
             return Ok(result);
+        }
+
+        /// <summary>
+        /// Gets the single package care charge detail.
+        /// </summary>
+        /// <param name="packageId">The care package id.</param>
+        /// <returns>Details of care charges with care package information.</returns>
+        /// <response code="200">When care package has care charges</response>
+        /// <response code="404">When care package is not found</response>
+        [HttpGet("care-charges/detail")]
+        [ProducesResponseType(typeof(SinglePackageCareChargeResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<SinglePackageCareChargeResponse>> GetSinglePackageCareCharge(Guid packageId)
+        {
+            var singlePackageCareCharge = await _getSinglePackageCareChargeUseCase.GetSinglePackageCareCharge(packageId).ConfigureAwait(false);
+            return Ok(singlePackageCareCharge);
         }
     }
 }
