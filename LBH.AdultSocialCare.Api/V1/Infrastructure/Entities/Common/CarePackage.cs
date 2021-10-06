@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 {
+    [GenerateMappingFor(typeof(CarePackageDomain))]
     [GenerateMappingFor(typeof(CarePackagePlainDomain))]
     [GenerateListMappingFor(typeof(CarePackagePlainDomain))]
     public class CarePackage : BaseEntity

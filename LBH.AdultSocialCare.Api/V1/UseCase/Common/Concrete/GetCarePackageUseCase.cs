@@ -7,6 +7,8 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 {
@@ -19,10 +21,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             _carePackageGateway = carePackageGateway;
         }
 
-        public async Task<IEnumerable<CarePackageResponse>> GetAllAsync()
+        public async Task<IEnumerable<CarePackageListItemResponse>> GetAllAsync()
         {
             var packages = await _carePackageGateway.GetAllPackagesAsync();
             return packages.ToResponse();
+        }
+
+        public async Task<CarePackageDomain> GetSingleAsync(Guid packageId)
+        {
+            var package = await _carePackageGateway.GetPackageAsync(packageId,
+                PackageFields.ServiceUser | PackageFields.Settings | PackageFields.PrimarySupportReason);
+
+            return package.ToDomain();
         }
 
         public async Task<CarePackageSettingsResponse> GetCarePackageSettingsAsync(Guid carePackageId)
