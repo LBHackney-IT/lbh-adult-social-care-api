@@ -1,16 +1,16 @@
 using System;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
 {
     public class CarePackageResponse
     {
-        public Guid CarePackageId { get; set; }
-        public string PackageStatus { get; set; }
-        public string ClientName { get; set; }
-        public DateTimeOffset ClientDateOfBirth { get; set; }
-        public int HackneyId { get; set; }
-        public string PostCode { get; set; }
-        public string AssignedBrokerName { get; set; }
-        public DateTimeOffset DateCreated { get; set; }
+        public Guid Id { get; set; }
+        public PackageType PackageType { get; set; }
+        public PackageScheduling PackageScheduling { get; set; }
+        public int PrimarySupportReasonId { get; set; }
+
+        public ServiceUserBasicResponse ServiceUser { get; set; }
+        public CarePackageSettingsResponse Settings { get; set; }
     }
 }

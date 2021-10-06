@@ -343,6 +343,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             #endregion Entity Config
 
+            AddEnumConstrains(modelBuilder);
             AdjustModelForTesting(modelBuilder);
         }
 
@@ -409,6 +410,36 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 .Entries()
                 .Where(e => e.Entity is BaseEntity && e.State == entityState)
                 .Select(e => (BaseEntity) e.Entity);
+        }
+
+        private static void AddEnumConstrains(ModelBuilder modelBuilder)
+        {
+            foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+            {
+                var properties = entityType.GetProperties();
+
+                foreach (var property in properties)
+                {
+                    if (property.ClrType.IsEnum)
+                    {
+                        var enumValues = Enum.GetValues(property.ClrType).Cast<int>();
+                        var enumValuesString = String.Join(", ", enumValues);
+
+                        // TODO: VK: Review nullable enum fields and remove this
+                        if (!property.IsNullable)
+                        {
+                            enumValuesString = $"0, {enumValuesString}";
+                        }
+
+                        modelBuilder
+                            .Entity(entityType.ClrType)
+                            .HasCheckConstraint(
+                                // generate constrains like CK_CarePackages_Status CHECK ("Status" IN (1, 2, 3))
+                                $"CK_{entityType.GetTableName()}_{property.GetColumnName()}",
+                                $"\"{property.GetColumnName()}\" IN ({enumValuesString})");
+                    }
+                }
+            }
         }
 
         private void AdjustModelForTesting(ModelBuilder modelBuilder)

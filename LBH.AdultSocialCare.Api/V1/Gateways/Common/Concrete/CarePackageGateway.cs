@@ -86,9 +86,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             return await _dbContext.CarePackages.Where(cp => cp.Id.Equals(packageId)).TrackChanges(trackChanges).SingleOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<CarePackageDomain>> GetAllPackagesAsync()
+        public async Task<IEnumerable<CarePackageListItemDomain>> GetAllPackagesAsync()
         {
-            return await _dbContext.CarePackages.Select(cp => new CarePackageDomain
+            return await _dbContext.CarePackages.Select(cp => new CarePackageListItemDomain
             {
                 CarePackageId = cp.Id,
                 PackageStatus = cp.Status.GetDisplayName(),

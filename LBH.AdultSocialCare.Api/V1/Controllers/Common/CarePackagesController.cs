@@ -57,12 +57,26 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 
         /// <summary>Gets a list of care packages</summary>
         /// <returns>All care packages</returns>
-        [ProducesResponseType(typeof(IEnumerable<CarePackageResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<CarePackageListItemResponse>), StatusCodes.Status200OK)]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CarePackageResponse>>> GetAllCarePackages()
+        public async Task<ActionResult<IEnumerable<CarePackageListItemResponse>>> GetAllCarePackages()
         {
             var res = await _getCarePackageUseCase.GetAllAsync();
             return Ok(res);
+        }
+
+        /// <summary>
+        /// Returns information about a single package with the given carePackageId.
+        /// </summary>
+        /// <param name="carePackageId">Unique identifier of a package.</param>
+        /// <returns>Information about a single package with the given carePackageId.</returns>
+        [ProducesResponseType(typeof(ApiException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(CarePackageResponse), StatusCodes.Status200OK)]
+        [HttpGet("{carePackageId}")]
+        public async Task<ActionResult<CarePackageResponse>> GetCarePackageAsync(Guid carePackageId)
+        {
+            var package = await _getCarePackageUseCase.GetSingleAsync(carePackageId);
+            return Ok(package.ToResponse());
         }
 
         /// <summary>Gets settings for a care package.</summary>

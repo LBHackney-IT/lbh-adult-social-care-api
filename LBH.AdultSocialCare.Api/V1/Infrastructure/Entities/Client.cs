@@ -1,10 +1,13 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
     //TODO FK: change name to ServiceUser after code clean up
+    [GenerateMappingFor(typeof(ServiceUserBasicDomain))]
     public class Client : BaseEntity
     {
 
