@@ -162,6 +162,21 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         }
 
         [Fact]
+        public async Task ShouldReturnCorePackage()
+        {
+            var package = _generator.CreateCarePackage();
+            var packageSettings = _generator.CreateCarePackageSettings(package.Id);
+
+            var response = await _fixture.RestClient
+                .GetAsync<CarePackageCoreResponse>($"api/v1/care-packages/{package.Id}/core");
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            response.Content.CarePackageId.Should().Be(package.Id);
+            response.Content.Should().BeEquivalentTo(packageSettings, opt => opt.ExcludingMissingMembers().ExcludingNestedObjects());
+        }
+
+        [Fact]
         public async Task ShouldReturnPackageSummary()
         {
             var package = _generator.CreateCarePackage();

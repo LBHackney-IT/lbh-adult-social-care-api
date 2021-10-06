@@ -79,15 +79,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             return Ok(package.ToResponse());
         }
 
-        /// <summary>Gets settings for a care package.</summary>
+        /// <summary>Gets core settings for a care package.</summary>
         /// <param name="carePackageId">The care package identifier.</param>
-        /// <returns>Care package settings if success</returns>
+        /// <returns>Core care package settings if success</returns>
         [ProducesResponseType(typeof(ApiException), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(CarePackageSettingsResponse), StatusCodes.Status200OK)]
-        [HttpGet("{carePackageId}/settings")]
-        public async Task<ActionResult<CarePackageSettingsResponse>> GetCarePackageSettings(Guid carePackageId)
+        [ProducesResponseType(typeof(CarePackageCoreResponse), StatusCodes.Status200OK)]
+        [HttpGet("{carePackageId}/core")]
+        public async Task<ActionResult<CarePackageCoreResponse>> GetCarePackageCore(Guid carePackageId)
         {
-            var res = await _getCarePackageUseCase.GetCarePackageSettingsAsync(carePackageId);
+            var res = await _getCarePackageUseCase.GetCarePackageCoreAsync(carePackageId);
             return Ok(res);
         }
 

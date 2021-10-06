@@ -13,7 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
 
         Task<CarePackageDomain> GetSingleAsync(Guid packageId);
 
-        Task<CarePackageSettingsResponse> GetCarePackageSettingsAsync(Guid carePackageId);
+        Task<CarePackageCoreResponse> GetCarePackageCoreAsync(Guid carePackageId);
 
         Task<BrokerPackageViewResponse> GetBrokerPackageViewListAsync(BrokerPackageViewQueryParameters queryParameters);
     }

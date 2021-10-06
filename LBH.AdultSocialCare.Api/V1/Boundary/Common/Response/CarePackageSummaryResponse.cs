@@ -1,7 +1,6 @@
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using System;
 using System.Collections.Generic;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
 {
