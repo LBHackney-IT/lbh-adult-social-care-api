@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces
 {
     public interface IRegisterUserUseCase
     {
-        public Task<UsersResponse> RegisterUserAsync(UserForRegistrationDomain user);
+        public Task<AppUserResponse> RegisterUserAsync(UserForRegistrationDomain user);
     }
 }

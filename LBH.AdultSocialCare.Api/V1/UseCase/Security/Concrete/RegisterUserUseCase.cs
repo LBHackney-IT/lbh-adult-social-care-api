@@ -28,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Security.Concrete
             _roleManager = roleManager;
         }
 
-        public async Task<UsersResponse> RegisterUserAsync(UserForRegistrationDomain user)
+        public async Task<AppUserResponse> RegisterUserAsync(UserForRegistrationDomain user)
         {
             var userEntity = user.ToEntity();
             var result = await _userManager.CreateAsync(userEntity, user.Password).ConfigureAwait(false);
