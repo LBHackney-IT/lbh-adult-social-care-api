@@ -101,6 +101,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             return Ok(packageSchedulingOptions);
         }
 
+        /// <summary>Gets care package status options.</summary>
+        /// <returns>All possible care package statuses</returns>
+        [ProducesResponseType(typeof(IEnumerable<CarePackageStatusOptionResponse>), StatusCodes.Status200OK)]
+        [HttpGet("package-status-options")]
+        public ActionResult<IEnumerable<CarePackageStatusOptionResponse>> GetCarePackageStatusOptions()
+        {
+            var packageStatusOptions = _carePackageOptionsUseCase.GetCarePackageStatusOptions();
+            return Ok(packageStatusOptions);
+        }
+
         /// <summary>Updates the care package.</summary>
         /// <param name="carePackageId">The care package identifier.</param>
         /// <param name="carePackageUpdateRequest">The care package update request object.</param>

@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 {
@@ -29,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
         public ResidentialCareGenerator ResidentialCare { get; }
         public CareChargeGenerator CareCharge { get; }
 
-        #endregion
+        #endregion Legacy
 
         public CarePackage CreateCarePackage(PackageType type = PackageType.ResidentialCare)
         {
