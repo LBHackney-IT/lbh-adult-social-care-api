@@ -31,6 +31,14 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 
         [Description("80f1ea68-9335-4efe-b247-7aa58cc45af0")]
         [Display(Name = "User")]
-        User = 7
+        User = 7,
+
+        [Description("1e958e66-b2a3-4e9d-9806-c5ca8bafda5d")]
+        [Display(Name = "Broker Manager")]
+        BrokerManager = 8,
+
+        [Description("1f0bea0c-9f9a-4ef1-b911-83e2113dd503")]
+        [Display(Name = "Broker Assistant")]
+        BrokerAssistant = 9
     }
 }
