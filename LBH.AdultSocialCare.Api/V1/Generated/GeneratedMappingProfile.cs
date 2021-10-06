@@ -53,6 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CarePackageDetailDomain, CarePackageDetail>().ReverseMap();
             CreateMap<CarePackageDetailDomain, CarePackageDetailResponse>().ReverseMap();
             CreateMap<CarePackageDomain, CarePackageResponse>().ReverseMap();
+            CreateMap<CarePackageListItemDomain, CarePackageListItemResponse>().ReverseMap();
             CreateMap<CarePackagePlainDomain, CarePackagePlainResponse>().ReverseMap();
             CreateMap<CarePackageReclaimCreationDomain, CarePackageReclaim>().ReverseMap();
             CreateMap<CarePackageReclaimDomain, CarePackageReclaimResponse>().ReverseMap();
@@ -60,8 +61,10 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CarePackageSummaryReclaimsDomain, CarePackageSummaryReclaimsResponse>().ReverseMap();
             CreateMap<CarePackageUpdateDomain, CarePackageSettings>().ReverseMap();
             CreateMap<CarePackageUpdateDomain, CarePackage>().ReverseMap();
+            CreateMap<ServiceUserBasicDomain, ServiceUserBasicResponse>().ReverseMap();
             CreateMap<CarePackageForCreationDomain, CarePackage>().ReverseMap();
             CreateMap<CarePackageForCreationDomain, CarePackageSettings>().ReverseMap();
+            CreateMap<Client, ServiceUserBasicDomain>().ReverseMap();
             CreateMap<CareChargeElementCreationRequest, CareChargeElementPlainDomain>().ReverseMap();
             CreateMap<CareChargeElementForUpdateRequest, CareChargeElementForUpdateDomain>().ReverseMap();
             CreateMap<CarePackageBrokerageCreationRequest, CarePackageBrokerageDomain>().ReverseMap();
@@ -72,6 +75,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CareChargeElement, CareChargeElementPlainDomain>().ReverseMap();
             CreateMap<CareChargeType, CareChargeElementTypePlainDomain>().ReverseMap();
             CreateMap<PackageCareCharge, PackageCareChargeDomain>().ReverseMap();
+            CreateMap<CarePackage, CarePackageDomain>().ReverseMap();
             CreateMap<CarePackage, CarePackagePlainDomain>().ReverseMap();
             CreateMap<CarePackageDetail, CarePackageDetailRequest>().ReverseMap();
             CreateMap<CarePackageDetail, CarePackageDetailResponse>().ReverseMap();
