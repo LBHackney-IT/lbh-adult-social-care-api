@@ -147,7 +147,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
 
             response.Content.Id.Should().Be(package.Id);
             response.Content.ServiceUser.HackneyId.Should().Be(package.ServiceUser.HackneyId);
-            response.Content.PrimarySupportReason.PrimarySupportReasonId.Should().Be(package.PrimarySupportReasonId);
+            response.Content.PrimarySupportReasonId.Should().Be(package.PrimarySupportReasonId);
         }
 
         [Fact]

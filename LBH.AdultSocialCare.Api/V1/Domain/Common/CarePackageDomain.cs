@@ -11,9 +11,9 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public Guid Id { get; set; }
         public PackageType PackageType { get; set; }
         public PackageScheduling PackageScheduling { get; set; }
+        public int PrimarySupportReasonId { get; set; }
 
         public ServiceUserBasicDomain ServiceUser { get; set; }
-        public PrimarySupportReasonDomain PrimarySupportReason { get; set; }
         public CarePackageSettingsDomain Settings { get; set; }
     }
 }
