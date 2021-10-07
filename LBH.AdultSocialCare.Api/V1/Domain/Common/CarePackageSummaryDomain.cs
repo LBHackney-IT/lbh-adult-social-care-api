@@ -13,6 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 
         public string PackageType { get; set; }
         public string PrimarySupportReason { get; set; }
+        public string SchedulingPeriod { get; set; }
 
         public SupplierDomain Supplier { get; set; }
         public ClientsDomain ServiceUser { get; set; }
