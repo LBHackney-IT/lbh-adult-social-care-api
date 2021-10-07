@@ -16,6 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 1,
                 PackageTypeId = 1,
                 SupplierName = "ABC Limited",
+                Address = "15 Atherden Rd, Lower Clapton, London E5 0QP",
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
                 FundedNursingCareCollector = null,
@@ -26,6 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
             {
                 Id = 2,
                 SupplierName = "XYZ Ltd",
+                Address = "54 Crown Street, Belgravia, London WC1E 9YP",
                 PackageTypeId = 1,
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,

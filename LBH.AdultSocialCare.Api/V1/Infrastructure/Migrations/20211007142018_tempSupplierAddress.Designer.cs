@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211007142018_tempSupplierAddress")]
+    partial class tempSupplierAddress
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -4219,20 +4221,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             ConcurrencyStamp = "7",
                             Name = "User",
                             NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = new Guid("1e958e66-b2a3-4e9d-9806-c5ca8bafda5d"),
-                            ConcurrencyStamp = "8",
-                            Name = "Broker Manager",
-                            NormalizedName = "BROKER MANAGER"
-                        },
-                        new
-                        {
-                            Id = new Guid("1f0bea0c-9f9a-4ef1-b911-83e2113dd503"),
-                            ConcurrencyStamp = "9",
-                            Name = "Broker Assistant",
-                            NormalizedName = "BROKER ASSISTANT"
                         });
                 });
 

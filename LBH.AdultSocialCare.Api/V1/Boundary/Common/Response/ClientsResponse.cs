@@ -84,5 +84,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
         /// Gets or sets the Date Updated
         /// </summary>
         public DateTimeOffset? DateUpdated { get; set; }
+
+        public string FullName { get; set; }
+
+        public int Age { get; set; }
     }
 }

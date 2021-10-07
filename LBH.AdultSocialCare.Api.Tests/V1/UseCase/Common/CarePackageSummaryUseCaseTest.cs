@@ -25,6 +25,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
             {
                 Id = Guid.NewGuid(),
                 PackageType = PackageType.NursingCare,
+                PackageScheduling = PackageScheduling.Temporary,
                 Supplier = new Supplier(),
                 ServiceUser = new Client(),
                 Settings = new CarePackageSettings()
