@@ -140,7 +140,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         public async Task<ActionResult<CarePackageSummaryResponse>> GetSummary(Guid carePackageId)
         {
             var result = await _getCarePackageSummaryUseCase.ExecuteAsync(carePackageId);
-            return Ok(result);
+            return Ok(result.ToResponse());
         }
 
         /// <summary>Gets list of care packages for the broker view </summary>
