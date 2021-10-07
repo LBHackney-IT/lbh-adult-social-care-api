@@ -498,33 +498,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion HomeCare
 
-        #region Clients
-
-        public static ClientsResponse ToResponse(this ClientsDomain clientsDomain)
-        {
-            return new ClientsResponse
-            {
-                Id = clientsDomain.Id,
-                FirstName = clientsDomain.FirstName,
-                MiddleName = clientsDomain.MiddleName,
-                LastName = clientsDomain.LastName,
-                DateOfBirth = clientsDomain.DateOfBirth,
-                HackneyId = clientsDomain.HackneyId,
-                AddressLine1 = clientsDomain.AddressLine1,
-                AddressLine2 = clientsDomain.AddressLine2,
-                AddressLine3 = clientsDomain.AddressLine3,
-                Town = clientsDomain.Town,
-                County = clientsDomain.County,
-                PostCode = clientsDomain.PostCode,
-                CreatorId = clientsDomain.CreatorId,
-                DateCreated = clientsDomain.DateCreated,
-                UpdaterId = clientsDomain.UpdaterId,
-                DateUpdated = clientsDomain.DateUpdated
-            };
-        }
-
-        #endregion Clients
-
         #region NursingCareAdditionalNeeds
 
         public static NursingCareAdditionalNeedsResponse ToResponse(this NursingCareAdditionalNeedsDomain nursingCareAdditionalNeedsDomain)

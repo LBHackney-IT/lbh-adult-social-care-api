@@ -290,6 +290,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<CarePackageUpdateDomain>(input);
         }
 
+        public static ClientsResponse ToResponse(this ClientsDomain input)
+        {
+            return _mapper.Map<ClientsResponse>(input);
+        }
+
+        public static ClientsDomain ToDomain(this ClientsResponse input)
+        {
+            return _mapper.Map<ClientsDomain>(input);
+        }
+
         public static ServiceUserBasicResponse ToResponse(this ServiceUserBasicDomain input)
         {
             return _mapper.Map<ServiceUserBasicResponse>(input);
