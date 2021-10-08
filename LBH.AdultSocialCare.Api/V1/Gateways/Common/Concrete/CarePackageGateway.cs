@@ -113,7 +113,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                     PrimarySupportReasonName = ps.Package.PrimarySupportReason.PrimarySupportReasonName,
                     HasRespiteCare = ps.HasRespiteCare,
                     HasDischargePackage = ps.HasDischargePackage,
-                    IsImmediate = ps.IsImmediate,
+                    HospitalAvoidance = ps.HospitalAvoidance,
                     IsReEnablement = ps.IsReEnablement,
                     IsS117Client = ps.IsS117Client
                 }).SingleOrDefaultAsync();

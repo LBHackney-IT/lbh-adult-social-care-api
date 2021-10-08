@@ -65,7 +65,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
                 CarePackageId = carePackageId,
                 HasRespiteCare = false,
                 HasDischargePackage = false,
-                IsImmediate = false,
+                HospitalAvoidance = false,
                 IsReEnablement = false,
                 IsS117Client = false
             };

@@ -67,7 +67,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             {
                 HasRespiteCare = true,
                 HasDischargePackage = true,
-                IsImmediate = true,
+                HospitalAvoidance = true,
                 IsReEnablement = true,
                 IsS117Client = true
             };
@@ -96,7 +96,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             {
                 updatedCarePackageSettings.HasRespiteCare,
                 updatedCarePackageSettings.HasDischargePackage,
-                updatedCarePackageSettings.IsImmediate,
+                IsImmediate = updatedCarePackageSettings.HospitalAvoidance,
                 updatedCarePackageSettings.IsReEnablement,
                 updatedCarePackageSettings.IsS117Client
             };
