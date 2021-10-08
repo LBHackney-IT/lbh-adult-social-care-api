@@ -27,7 +27,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
         {
             _package = new CarePackage
             {
-                Id = Guid.NewGuid()
+                Id = Guid.NewGuid(),
+                SupplierId = 1
             };
 
             _gatewayMock = new Mock<ICarePackageGateway>();
@@ -68,6 +69,19 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
                 .Invoking(useCase => useCase.ExecuteAsync(Guid.NewGuid(), It.IsAny<CarePackageSubmissionDomain>()))
                 .Should().Throw<ApiException>()
                 .Where(ex => ex.StatusCode == StatusCodes.Status404NotFound);
+
+            _dbManagerMock.Verify(mock => mock.SaveAsync(It.IsAny<string>()), Times.Never);
+        }
+
+        [Fact]
+        public void ShouldFailOnMissingSupplier()
+        {
+            _package.SupplierId = null;
+
+            _useCase
+                .Invoking(useCase => useCase.ExecuteAsync(_package.Id, It.IsAny<CarePackageSubmissionDomain>()))
+                .Should().Throw<ApiException>()
+                .Where(ex => ex.StatusCode == StatusCodes.Status500InternalServerError);
 
             _dbManagerMock.Verify(mock => mock.SaveAsync(It.IsAny<string>()), Times.Never);
         }
