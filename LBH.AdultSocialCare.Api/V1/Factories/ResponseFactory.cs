@@ -1,12 +1,10 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
@@ -23,35 +21,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static void Configure(IMapper mapper)
         {
             _mapper = mapper;
-        }
-
-        #region DayCarePackage
-
-        public static DayCarePackageResponse ToResponse(this DayCarePackageDomain dayCarePackageDomain)
-        {
-            return _mapper.Map<DayCarePackageResponse>(dayCarePackageDomain);
-        }
-
-        public static DayCarePackageForApprovalDetailsResponse ToResponse(this DayCarePackageForApprovalDetailsDomain dayCarePackageForApprovalDetailsDomain)
-        {
-            return _mapper.Map<DayCarePackageForApprovalDetailsResponse>(dayCarePackageForApprovalDetailsDomain);
-        }
-
-        public static IEnumerable<DayCarePackageResponse> ToResponse(this IEnumerable<DayCarePackageDomain> dayCarePackageDomains)
-        {
-            return _mapper.Map<IEnumerable<DayCarePackageResponse>>(dayCarePackageDomains);
-        }
-
-        #endregion DayCarePackage
-
-        public static DayCarePackageOpportunityResponse ToResponse(this DayCarePackageOpportunityDomain dayCarePackageOpportunityDomain)
-        {
-            return _mapper.Map<DayCarePackageOpportunityResponse>(dayCarePackageOpportunityDomain);
-        }
-
-        public static IEnumerable<DayCarePackageOpportunityResponse> ToResponse(this IEnumerable<DayCarePackageOpportunityDomain> dayCarePackageOpportunityDomains)
-        {
-            return _mapper.Map<IEnumerable<DayCarePackageOpportunityResponse>>(dayCarePackageOpportunityDomains);
         }
 
         #region TermTimeConsiderations
@@ -295,24 +264,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion HomeCareApproveBrokered
 
-        #region DayCareApproveBrokered
-
-        public static DayCareApproveBrokeredResponse ToResponse(this DayCareApproveBrokeredDomain dayCareApproveBrokeredDomain)
-        {
-            return _mapper.Map<DayCareApproveBrokeredResponse>(dayCareApproveBrokeredDomain);
-        }
-
-        #endregion DayCareApproveBrokered
-
-        #region DayCareApprovePackage
-
-        public static DayCareApprovePackageResponse ToResponse(this DayCareApprovePackageDomain dayCareApprovePackageDomain)
-        {
-            return _mapper.Map<DayCareApprovePackageResponse>(dayCareApprovePackageDomain);
-        }
-
-        #endregion DayCareApprovePackage
-
         #region NursingCareApprovePackage
 
         public static NursingCareApprovePackageResponse ToResponse(this NursingCareApprovePackageDomain nursingCareApprovePackageDomain)
@@ -377,20 +328,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion ResidentialCareBrokerage
 
-        #region DayCareCollege
-
-        public static DayCareCollegeResponse ToResponse(this DayCareCollegeDomain dayCareCollegeDomain)
-        {
-            return _mapper.Map<DayCareCollegeResponse>(dayCareCollegeDomain);
-        }
-
-        public static IEnumerable<DayCareCollegeResponse> ToResponse(this IEnumerable<DayCareCollegeDomain> dayCareCollegeDomain)
-        {
-            return _mapper.Map<IEnumerable<DayCareCollegeResponse>>(dayCareCollegeDomain);
-        }
-
-        #endregion DayCareCollege
-
         #region PackageReclaim
 
         public static HomeCarePackageClaimResponse ToResponse(this HomeCarePackageClaimDomain homeCarePackageClaimDomain)
@@ -413,11 +350,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<ReclaimAmountOptionResponse>>(reclaimAmountOptionDomain);
         }
 
-        public static DayCarePackageClaimResponse ToResponse(this DayCarePackageClaimDomain dayCarePackageClaimDomain)
-        {
-            return _mapper.Map<DayCarePackageClaimResponse>(dayCarePackageClaimDomain);
-        }
-
         public static NursingCarePackageClaimResponse ToResponse(this NursingCarePackageClaimDomain nursingCarePackageClaimDomain)
         {
             return _mapper.Map<NursingCarePackageClaimResponse>(nursingCarePackageClaimDomain);
@@ -429,20 +361,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion PackageReclaim
-
-        #region DayCareBrokerage
-
-        public static DayCarePackageForBrokerageResponse ToResponse(this DayCarePackageForBrokerageDomain dayCarePackageForBrokerageDomain)
-        {
-            return _mapper.Map<DayCarePackageForBrokerageResponse>(dayCarePackageForBrokerageDomain);
-        }
-
-        public static IEnumerable<DayCareBrokerageStageResponse> ToResponse(this IEnumerable<DayCareBrokerageStageDomain> dayCareBrokerageStageDomains)
-        {
-            return _mapper.Map<IEnumerable<DayCareBrokerageStageResponse>>(dayCareBrokerageStageDomains);
-        }
-
-        #endregion DayCareBrokerage
 
         #region HomeCare
 

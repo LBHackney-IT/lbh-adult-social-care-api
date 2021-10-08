@@ -2,8 +2,6 @@ using AutoMapper;
 using HttpServices.Models.Requests;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.DayCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request;
@@ -14,7 +12,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
@@ -22,9 +19,6 @@ using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
@@ -42,48 +36,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
     {
         public MappingProfile()
         {
-            #region DayCarePackage
-
-            CreateMap<DayCarePackageForCreationDomain, DayCarePackage>();
-            CreateMap<DayCarePackageForUpdateDomain, DayCarePackage>();
-            CreateMap<DayCarePackage, DayCarePackageDomain>()
-                .ForMember(dc => dc.PackageName, opt => opt.MapFrom(b => "Day Care package"))
-                .ForMember(dc => dc.ClientName,
-                    opt => opt.MapFrom(b => $"{b.Client.FirstName} {b.Client.MiddleName} {b.Client.LastName}"))
-                .ForMember(dc => dc.TermTimeConsiderationOptionName,
-                    opt => opt.MapFrom(b => b.TermTimeConsiderationOption.OptionName))
-                .ForMember(dc => dc.CreatorName,
-                    opt => opt.MapFrom(b => $"{b.Creator.Name}"))
-                .ForMember(dc => dc.UpdaterName,
-                    opt => opt.MapFrom(b => $"{b.Updater.Name}"));
-            CreateMap<DayCarePackageForCreationRequest, DayCarePackageForCreationDomain>();
-            CreateMap<DayCarePackageForUpdateRequest, DayCarePackageForUpdateDomain>();
-            CreateMap<DayCarePackageDomain, DayCarePackageResponse>();
-            CreateMap<DayCarePackageDomain, EscortPackage>();
-            CreateMap<DayCarePackageDomain, TransportPackage>();
-            CreateMap<DayCarePackageDomain, TransportEscortPackage>();
-
-            CreateMap<DayCarePackageOpportunityForCreationDomain, DayCarePackageOpportunity>();
-            CreateMap<DayCarePackageOpportunityForUpdateDomain, DayCarePackageOpportunity>();
-            CreateMap<DayCarePackageOpportunity, DayCarePackageOpportunityDomain>()
-                .ForMember(dco => dco.HowLong,
-                    opt => opt.MapFrom(b => b.OpportunityLengthOption))
-                .ForMember(dco => dco.HowManyTimesPerMonth,
-                    opt => opt.MapFrom(b => b.OpportunityTimesPerMonthOption));
-            CreateMap<DayCarePackageOpportunityForCreationRequest, DayCarePackageOpportunityForCreationDomain>()
-                .ForMember(dco => dco.OpportunityLengthOptionId,
-                opt => opt.MapFrom(b => b.HowLongId))
-                .ForMember(dco => dco.OpportunityTimePerMonthOptionId,
-                opt => opt.MapFrom(b => b.HowManyTimesPerMonthId));
-            CreateMap<DayCarePackageOpportunityForUpdateRequest, DayCarePackageOpportunityForUpdateDomain>()
-                .ForMember(dco => dco.OpportunityLengthOptionId,
-                    opt => opt.MapFrom(b => b.HowLongId))
-                .ForMember(dco => dco.OpportunityTimePerMonthOptionId,
-                    opt => opt.MapFrom(b => b.HowManyTimesPerMonthId));
-            CreateMap<DayCarePackageOpportunityDomain, DayCarePackageOpportunityResponse>();
-
-            #endregion DayCarePackage
-
             #region TermTimeConsiderationOptions
 
             CreateMap<TermTimeConsiderationOption, TermTimeConsiderationOptionDomain>();
@@ -240,37 +192,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #endregion HomeCareApproveBrokered
 
-            #region DayCareApproveBrokered
-
-            CreateMap<DayCareApproveBrokeredDomain, DayCareApproveBrokeredResponse>();
-            CreateMap<DayCareApproveBrokeredResponse, DayCareApproveBrokeredDomain>();
-            CreateMap<DayCarePackageBreakDownDomain, DayCarePackageBreakDownResponse>();
-            CreateMap<DayCarePackageBreakDownResponse, DayCarePackageBreakDownDomain>();
-            CreateMap<DayCarePackageElementsCostingDomain, DayCarePackageElementsCostingResponse>();
-            CreateMap<DayCarePackageElementsCostingResponse, DayCarePackageElementsCostingDomain>();
-
-            #endregion DayCareApproveBrokered
-
-            #region DayCareApprovePackage
-
-            CreateMap<DayCareApprovePackageDomain, DayCareApprovePackageResponse>();
-            CreateMap<DayCareApprovePackageResponse, DayCareApprovePackageDomain>();
-            CreateMap<DayCarePackageForApprovalDetailsDomain, DayCarePackageForApprovalDetailsResponse>();
-            CreateMap<DayCareApprovalHistoryForCreationDomain, DayCareApprovalHistory>();
-
-            #endregion DayCareApprovePackage
-
-            #region DayCarePackageBrokerage
-
-            CreateMap<DayCarePackageForBrokerageDomain, DayCarePackageForBrokerageResponse>();
-            CreateMap<DayCareBrokerageInfoForCreationRequest, DayCareBrokerageInfoForCreationDomain>();
-            CreateMap<DayCareBrokerageInfoForCreationDomain, DayCareBrokerageInfo>();
-            CreateMap<DayCareBrokerageInfoDomain, DayCareBrokerageInfo>();
-            CreateMap<DayCareBrokerageInfo, DayCareBrokerageInfoDomain>();
-            CreateMap<DayCareBrokerageStageDomain, DayCareBrokerageStageResponse>();
-
-            #endregion DayCarePackageBrokerage
-
             #region NursingCareApprovePackage
 
             CreateMap<NursingCareApprovePackageDomain, NursingCareApprovePackageResponse>();
@@ -365,17 +286,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #endregion Stage
 
-            #region DayCareCollege
-
-            CreateMap<DayCarePackageForCreationDomain, DayCareCollege>();
-            CreateMap<DayCarePackageForUpdateDomain, DayCareCollege>();
-            CreateMap<DayCareCollege, DayCareCollegeDomain>();
-            CreateMap<DayCareCollegeForCreationRequest, DayCareCollegeForCreationDomain>();
-            CreateMap<DayCareCollegeForCreationDomain, DayCareCollege>();
-            CreateMap<DayCareCollegeDomain, DayCareCollegeResponse>();
-
-            #endregion DayCareCollege
-
             #region ServiceUsers
 
             CreateMap<User, AppUserDomain>();
@@ -383,13 +293,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<UsersMinimalDomain, UsersMinimalResponse>();
 
             #endregion ServiceUsers
-
-            #region DayCareBrokerage
-
-            CreateMap<DayCareRequestMoreInformationForCreationRequest, DayCareRequestMoreInformationDomain>();
-            CreateMap<DayCareRequestMoreInformationDomain, DayCareRequestMoreInformationForCreationRequest>();
-
-            #endregion DayCareBrokerage
 
             #region PackageReclaim
 
@@ -407,14 +310,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ReclaimCategoryDomain, ReclaimCategoryResponse>();
             CreateMap<ReclaimFrom, ReclaimFromDomain>();
             CreateMap<ReclaimFromDomain, ReclaimFromResponse>();
-            CreateMap<DayCarePackageReclaim, DayCarePackageClaimDomain>();
-            CreateMap<DayCarePackageClaimDomain, DayCarePackageReclaim>();
-            CreateMap<DayCarePackageClaimDomain, DayCarePackageClaimResponse>();
-            CreateMap<DayCarePackageClaimResponse, DayCarePackageClaimDomain>();
-            CreateMap<DayCarePackageClaimCreationDomain, DayCarePackageClaimCreationRequest>();
-            CreateMap<DayCarePackageClaimCreationRequest, DayCarePackageClaimCreationDomain>();
-            CreateMap<DayCarePackageClaimCreationDomain, DayCarePackageReclaim>();
-            CreateMap<DayCarePackageReclaim, DayCarePackageClaimCreationDomain>();
             CreateMap<NursingCarePackageReclaim, NursingCarePackageClaimDomain>();
             CreateMap<NursingCarePackageClaimDomain, NursingCarePackageReclaim>();
             CreateMap<NursingCarePackageClaimDomain, NursingCarePackageClaimResponse>();

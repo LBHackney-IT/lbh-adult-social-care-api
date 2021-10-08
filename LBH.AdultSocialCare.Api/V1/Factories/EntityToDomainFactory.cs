@@ -1,14 +1,11 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
@@ -32,36 +29,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             _mapper = mapper;
         }
-
-        #region DayCarePackage
-
-        public static DayCarePackageDomain ToDomain(this DayCarePackage dayCarePackageEntity)
-        {
-            return _mapper.Map<DayCarePackageDomain>(dayCarePackageEntity);
-        }
-
-        public static IEnumerable<DayCarePackageDomain> ToDomain(this List<DayCarePackage> dayCarePackageEntities)
-        {
-            return _mapper.Map<IEnumerable<DayCarePackageDomain>>(dayCarePackageEntities);
-        }
-
-        #endregion DayCarePackage
-
-        #region DayCarePackageOpportunity
-
-        public static DayCarePackageOpportunityDomain ToDomain(
-            this DayCarePackageOpportunity dayCarePackageOpportunityEntity)
-        {
-            return _mapper.Map<DayCarePackageOpportunityDomain>(dayCarePackageOpportunityEntity);
-        }
-
-        public static IEnumerable<DayCarePackageOpportunityDomain> ToDomain(
-            this List<DayCarePackageOpportunity> dayCarePackageOpportunityEntities)
-        {
-            return _mapper.Map<IEnumerable<DayCarePackageOpportunityDomain>>(dayCarePackageOpportunityEntities);
-        }
-
-        #endregion DayCarePackageOpportunity
 
         #region TermTimeConsiderationOptions
 
@@ -372,20 +339,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion ResidentialCareBrokerage
 
-        #region DayCareCollege
-
-        public static DayCareCollegeDomain ToDomain(this DayCareCollege dayCareCollegeEntity)
-        {
-            return _mapper.Map<DayCareCollegeDomain>(dayCareCollegeEntity);
-        }
-
-        public static IEnumerable<DayCareCollegeDomain> ToDomain(this List<DayCareCollege> dayCareCollegeEntities)
-        {
-            return _mapper.Map<IEnumerable<DayCareCollegeDomain>>(dayCareCollegeEntities);
-        }
-
-        #endregion DayCareCollege
-
         #region PackageReclaim
 
         public static HomeCarePackageClaimDomain ToDomain(this HomeCarePackageReclaim homeCarePackageReclaim)
@@ -423,11 +376,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 }).ToList();
         }
 
-        public static DayCarePackageClaimDomain ToDomain(this DayCarePackageReclaim dayCarePackageReclaim)
-        {
-            return _mapper.Map<DayCarePackageClaimDomain>(dayCarePackageReclaim);
-        }
-
         public static NursingCarePackageClaimDomain ToDomain(this NursingCarePackageReclaim nursingCarePackageReclaim)
         {
             return _mapper.Map<NursingCarePackageClaimDomain>(nursingCarePackageReclaim);
@@ -439,15 +387,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion PackageReclaim
-
-        #region DayCareBrokerage
-
-        public static DayCareBrokerageInfoDomain ToDomain(this DayCareBrokerageInfo dayCareBrokerageInfoEntity)
-        {
-            return _mapper.Map<DayCareBrokerageInfoDomain>(dayCareBrokerageInfoEntity);
-        }
-
-        #endregion DayCareBrokerage
 
         #region HomeCare
 

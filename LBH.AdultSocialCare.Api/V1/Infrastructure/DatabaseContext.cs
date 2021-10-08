@@ -2,9 +2,6 @@ using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
@@ -59,14 +56,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<CarePackageReclaim> CarePackageReclaims { get; set; }
         public DbSet<CarePackageSchedulingOption> CarePackageSchedulingOptions { get; set; }
 
-        public DbSet<DayCarePackage> DayCarePackages { get; set; }
-        public DbSet<EscortPackage> EscortPackages { get; set; }
-        public DbSet<TransportPackage> TransportPackages { get; set; }
-        public DbSet<TransportEscortPackage> TransportEscortPackages { get; set; }
-        public DbSet<DayCareBrokerageInfo> DayCareBrokerageInfo { get; set; }
-        public DbSet<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
-        public DbSet<DayCarePackageStatus> DayCarePackageStatuses { get; set; }
-        public DbSet<DayCareApprovalHistory> DayCareApprovalHistory { get; set; }
         public DbSet<Package> Packages { get; set; }
         public DbSet<TimeSlotShifts> TimeSlotShifts { get; set; }
         public DbSet<HomeCarePackage> HomeCarePackage { get; set; }
@@ -96,15 +85,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<NursingCareApprovalHistory> NursingCareApprovalHistories { get; set; }
         public DbSet<ResidentialCareApprovalHistory> ResidentialCareApprovalHistories { get; set; }
         public DbSet<HomeCareRequestMoreInformation> HomeCareRequestMoreInformations { get; set; }
-        public DbSet<DayCareRequestMoreInformation> DayCareRequestMoreInformations { get; set; }
         public DbSet<ResidentialCareRequestMoreInformation> ResidentialCareRequestMoreInformations { get; set; }
         public DbSet<NursingCareRequestMoreInformation> NursingCareRequestMoreInformations { get; set; }
-        public DbSet<DayCareCollege> DayCareColleges { get; set; }
         public DbSet<HomeCarePackageReclaim> HomeCarePackageReclaims { get; set; }
         public DbSet<ReclaimAmountOption> ReclaimAmountOptions { get; set; }
         public DbSet<ReclaimCategory> ReclaimCategories { get; set; }
         public DbSet<ReclaimFrom> ReclaimFroms { get; set; }
-        public DbSet<DayCarePackageReclaim> DayCarePackageReclaims { get; set; }
         public DbSet<NursingCarePackageReclaim> NursingCarePackageReclaims { get; set; }
         public DbSet<ResidentialCarePackageReclaim> ResidentialCarePackageReclaims { get; set; }
         public DbSet<NursingCareBrokerageInfo> NursingCareBrokerageInfos { get; set; }
@@ -202,9 +188,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed CarerType
             modelBuilder.ApplyConfiguration(new CarerTypeSeed());
 
-            // Seed day care package status
-            modelBuilder.ApplyConfiguration(new DayCarePackageStatusSeed());
-
             // Seed package reclaim amount option
             modelBuilder.ApplyConfiguration(new PackageReclaimAmountOptionSeed());
 
@@ -271,18 +254,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 entity.HasIndex(e => e.OptionName).IsUnique();
             });
 
-            modelBuilder.Entity<DayCarePackage>(entity =>
-            {
-                entity.HasOne(d => d.Status)
-                    .WithMany()
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-
-                entity.HasOne(a => a.DayCareBrokerageInfo)
-                    .WithOne(b => b.DayCarePackage)
-                    .HasForeignKey<DayCareBrokerageInfo>(b => b.DayCarePackageId);
-            });
-
             modelBuilder.Entity<NursingCarePackage>(entity =>
             {
                 entity.HasOne(n => n.Status)
@@ -329,38 +300,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                     .WithMany(r => r.ResidentialCareAdditionalNeeds)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.ClientCascade);
-            });
-
-            modelBuilder.Entity<DayCareApprovalHistory>(entity =>
-            {
-                entity.HasOne(r => r.DayCarePackage)
-                    .WithMany(da => da.DayCareApprovalHistories)
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-
-                entity.HasOne(r => r.PackageStatus)
-                    .WithMany()
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-            });
-
-            modelBuilder.Entity<DayCarePackageStatus>(entity =>
-            {
-                entity.HasIndex(e => new { e.SequenceNumber, e.Stage, e.PackageAction })
-                    .IsUnique();
-            });
-
-            modelBuilder.Entity<AppUserRole>(entity =>
-            {
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.UserRoles)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(d => d.Role)
-                    .WithMany(p => p.UserRoles)
-                    .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             #endregion Entity Config

@@ -1,8 +1,5 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
@@ -15,7 +12,6 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageR
 using System.Collections.Generic;
 using System.Linq;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.DayCare;
 using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
@@ -48,40 +44,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion HomeCarePackage
-
-        #region DayCarePackage
-
-        public static DayCarePackage ToDb(this DayCarePackageForCreationDomain dayCarePackageForCreationDomain)
-        {
-            return _mapper.Map<DayCarePackage>(dayCarePackageForCreationDomain);
-        }
-
-        public static DayCarePackageOpportunity ToDb(this DayCarePackageOpportunityForCreationDomain dayCarePackageOpportunityForCreationDomain)
-        {
-            return _mapper.Map<DayCarePackageOpportunity>(dayCarePackageOpportunityForCreationDomain);
-        }
-
-        public static DayCareApprovalHistory ToDb(this DayCareApprovalHistoryForCreationDomain dayCareApprovalHistoryForCreationDomain)
-        {
-            return _mapper.Map<DayCareApprovalHistory>(dayCareApprovalHistoryForCreationDomain);
-        }
-
-        public static EscortPackage ToEscortPackage(this DayCarePackageDomain dayCarePackageDomain)
-        {
-            return _mapper.Map<EscortPackage>(dayCarePackageDomain);
-        }
-
-        public static TransportPackage ToTransportPackage(this DayCarePackageDomain dayCarePackageDomain)
-        {
-            return _mapper.Map<TransportPackage>(dayCarePackageDomain);
-        }
-
-        public static TransportEscortPackage ToTransportEscortPackage(this DayCarePackageDomain dayCarePackageDomain)
-        {
-            return _mapper.Map<TransportEscortPackage>(dayCarePackageDomain);
-        }
-
-        #endregion DayCarePackage
 
         #region NursingCarePackage
 
@@ -146,34 +108,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion HomeCareBrokerage
 
-        #region DayCareCollege
-
-        public static DayCareCollege ToDb(this DayCareCollegeForCreationDomain dayCareCollegeForCreationDomain)
-        {
-            return _mapper.Map<DayCareCollege>(dayCareCollegeForCreationDomain);
-        }
-
-        #endregion DayCareCollege
-
-        #region DayCareBrokerage
-
-        public static DayCareRequestMoreInformation ToDb(this DayCareRequestMoreInformationDomain dayCareRequestMoreInformationDomain)
-        {
-            return _mapper.Map<DayCareRequestMoreInformation>(dayCareRequestMoreInformationDomain);
-        }
-
-        public static DayCareBrokerageInfo ToDb(this DayCareBrokerageInfoForCreationDomain dayCareBrokerageInfoForCreationDomain)
-        {
-            return _mapper.Map<DayCareBrokerageInfo>(dayCareBrokerageInfoForCreationDomain);
-        }
-
-        public static DayCareBrokerageInfo ToDb(this DayCareBrokerageInfoDomain dayCareBrokerageInfoDomain)
-        {
-            return _mapper.Map<DayCareBrokerageInfo>(dayCareBrokerageInfoDomain);
-        }
-
-        #endregion DayCareBrokerage
-
         #region NursingCareBrokerage
 
         public static NursingCareRequestMoreInformation ToDb(this NursingCareRequestMoreInformationDomain nursingCareRequestMoreInformationDomain)
@@ -212,11 +146,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<HomeCarePackageReclaim> ToDb(this IEnumerable<HomeCarePackageClaimCreationDomain> homeCarePackageClaimsCreationDomain)
         {
             return _mapper.Map<IEnumerable<HomeCarePackageReclaim>>(homeCarePackageClaimsCreationDomain);
-        }
-
-        public static DayCarePackageReclaim ToDb(this DayCarePackageClaimCreationDomain dayCarePackageClaimCreationDomain)
-        {
-            return _mapper.Map<DayCarePackageReclaim>(dayCarePackageClaimCreationDomain);
         }
 
         public static NursingCarePackageReclaim ToDb(this NursingCarePackageClaimCreationDomain nursingCarePackageClaimCreationDomain)

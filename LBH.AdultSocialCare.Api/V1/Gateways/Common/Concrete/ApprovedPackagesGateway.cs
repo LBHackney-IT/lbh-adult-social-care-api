@@ -173,38 +173,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             return nursingCarePackageList;
         }
 
-        private async Task<List<ApprovedPackagesDomain>> GetDayCarePackages(ApprovedPackagesParameters parameters, int statusId)
-        {
-            var dayCarePackageList = await _databaseContext.DayCarePackages
-                .FilterApprovedDayCareList(statusId, parameters.HackneyId, parameters.SocialWorkerId)
-                .Include(item => item.Client)
-                .Include(item => item.Status)
-                .Include(item => item.DayCareApprovalHistories)
-                .Where(p => !parameters.ApproverId.HasValue ||
-                            p.DayCareApprovalHistories.Any(h => h.Creator.Id == parameters.ApproverId))
-                .Select(dc => new ApprovedPackagesDomain()
-                {
-                    PackageId = dc.DayCarePackageId,
-                    ServiceUserId = dc.ClientId,
-                    ServiceUser = $"{dc.Client.FirstName} {dc.Client.MiddleName} {dc.Client.LastName}",
-                    HackneyId = dc.Client.HackneyId,
-                    PackageType = PackageTypesConstants.DayCarePackage,
-                    PackageTypeId = PackageTypesConstants.DayCarePackageId,
-                    Approver = dc.DayCareApprovalHistories
-                        .Where(x => x.PackageStatusId == ApprovalHistoryConstants.PackageApprovedId)
-                        .Select(x => x.Creator.Name).SingleOrDefault(),
-                    SubmittedBy = dc.DayCareApprovalHistories
-                        .Where(x => x.PackageStatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
-                        .Select(x => x.Creator.Name).SingleOrDefault(),
-                    LastUpdated = dc.DateUpdated,
-                    CareValue = _databaseContext.DayCareBrokerageInfo
-                        .Where(x => x.DayCarePackageId == dc.DayCarePackageId)
-                        .Select(x => x.CorePackageCostPerDay).SingleOrDefault(),
-                })
-                .ToListAsync().ConfigureAwait(false);
-            return dayCarePackageList;
-        }
-
         private async Task<int> GetPackagesCount(ApprovedPackagesParameters parameters, int statusId)
         {
             var packageCount = 0;
@@ -228,10 +196,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                                 p.NursingCareApprovalHistories.Any(h => h.Creator.Id == parameters.ApproverId))
                     .CountAsync().ConfigureAwait(false);
             }
-
-            //packageCount += await _databaseContext.DayCarePackages
-            //    .FilterApprovedDayCareList(statusId, parameters.HackneyId, parameters.SocialWorkerId)
-            //    .CountAsync().ConfigureAwait(false);
 
             //packageCount += await _databaseContext.HomeCarePackage
             //    .FilterApprovedHomeCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId)

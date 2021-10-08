@@ -152,35 +152,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 .ToListAsync().ConfigureAwait(false);
         }
 
-        private async Task<List<SubmittedPackageRequestsDomain>> GetDayCarePackages(SubmittedPackageRequestParameters parameters)
-        {
-            return await _databaseContext.DayCarePackages
-                .Where(x => x.StatusId <= ApprovalHistoryConstants.BrokeredEndedId)
-                .FilterDayCareList(parameters.StatusId, parameters.ClientName)
-                .Include(item => item.Client)
-                .Include(item => item.Status)
-                .Include(item => item.DayCareApprovalHistories)
-                .Select(dc => new SubmittedPackageRequestsDomain()
-                {
-                    PackageId = dc.DayCarePackageId,
-                    ClientId = dc.ClientId,
-                    Client = $"{dc.Client.FirstName} {dc.Client.MiddleName} {dc.Client.LastName}",
-                    DateOfBirth = dc.Client.DateOfBirth,
-                    CategoryId = PackageTypesConstants.DayCarePackageId,
-                    Category = PackageTypesConstants.DayCarePackage,
-                    StatusName = dc.Status.StatusName,
-                    Approver = dc.DayCareApprovalHistories.Where(x => x.PackageStatusId == ApprovalHistoryConstants.PackageApprovedId).
-                        Select(x => $"{x.Creator.Name}").SingleOrDefault(),
-                    SubmittedDaysAgo =
-                        dc.DayCareApprovalHistories
-                            .Where(x => x.PackageStatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
-                            .Select(x => DateTimeOffset.Now.Date.Subtract(x.DateCreated.Date).Days).SingleOrDefault(),
-                    PrimarySupportReason = "",
-                    DateCreated = dc.DateCreated
-                })
-                .ToListAsync().ConfigureAwait(false);
-        }
-
         private async Task<int> GetPackagesCount(SubmittedPackageRequestParameters parameters)
         {
             var packageCount = 0;

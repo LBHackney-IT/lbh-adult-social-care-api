@@ -27,11 +27,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
                 (statusId.Equals(null) || h.StatusId == statusId) &&
                 (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)));
 
-        public static IQueryable<DayCarePackage> FilterDayCareList(this IQueryable<DayCarePackage> dayCarePackages, int? statusId, string clientName) =>
-            dayCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)));
-
         public static IQueryable<ResidentialCarePackage> FilterApprovedResidentialCareList(this IQueryable<ResidentialCarePackage> residentialCarePackages, int? statusId, int? hackneyId, string clientName,
             Guid? socialWorkerId) =>
             residentialCarePackages.Where(h =>
@@ -46,13 +41,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
                 (statusId.Equals(null) || h.StatusId == statusId) &&
                 (hackneyId.Equals(null) || h.Client.HackneyId == hackneyId) &&
                 (clientName != null ? $"{h.Client.FirstName} {h.Client.LastName}".ToLower().Contains(clientName.ToLower()) : h.Equals(h)) &&
-                (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId));
-
-        public static IQueryable<DayCarePackage> FilterApprovedDayCareList(this IQueryable<DayCarePackage> dayCarePackages, int? statusId, int? hackneyId,
-            Guid? socialWorkerId) =>
-            dayCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (hackneyId.Equals(null) || h.Client.HackneyId == hackneyId) &&
                 (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId));
 
         public static IQueryable<NursingCarePackage> FilterApprovedNursingCareList(this IQueryable<NursingCarePackage> nursingCarePackages, int? statusId, int? hackneyId, string clientName,
