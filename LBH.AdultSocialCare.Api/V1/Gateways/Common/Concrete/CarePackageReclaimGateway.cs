@@ -77,7 +77,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             var carePackageReclaim = await _dbContext.CarePackageReclaims
                 .Where(a => a.CarePackageId.Equals(carePackageId) &&
                             a.Type.Equals(reclaimType))
-                .SingleOrDefaultAsync();
+                .FirstOrDefaultAsync();
 
             return carePackageReclaim?.ToDomain();
         }
