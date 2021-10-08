@@ -92,37 +92,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             return residentialCarePackageList;
         }
 
-        private async Task<List<SubmittedPackageRequestsDomain>> GetHomeCarePackages(SubmittedPackageRequestParameters parameters)
-        {
-            var homeCarePackageList = await _databaseContext.HomeCarePackage
-                .Where(x => x.StatusId <= ApprovalHistoryConstants.BrokeredEndedId)
-                .FilterHomeCareList(parameters.StatusId, parameters.ClientName)
-                .Include(item => item.Client)
-                .Include(item => item.Status)
-                .Include(item => item.HomeCareApprovalHistories)
-                .Select(hp => new SubmittedPackageRequestsDomain()
-                {
-                    PackageId = hp.Id,
-                    ClientId = hp.ClientId,
-                    Client = $"{hp.Client.FirstName} {hp.Client.MiddleName} {hp.Client.LastName}",
-                    DateOfBirth = hp.Client.DateOfBirth,
-                    CategoryId = PackageTypesConstants.HomeCarePackageId,
-                    Category = PackageTypesConstants.HomeCarePackage,
-                    StatusName = hp.Status.StatusName,
-                    Approver = hp.HomeCareApprovalHistories
-                        .Where(x => x.StatusId == ApprovalHistoryConstants.PackageApprovedId)
-                        .Select(x => $"{x.Creator.Name}").SingleOrDefault(),
-                    SubmittedDaysAgo =
-                        hp.HomeCareApprovalHistories
-                            .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
-                            .Select(x => DateTimeOffset.Now.Date.Subtract(x.ApprovedDate.Date).Days).SingleOrDefault(),
-                    PrimarySupportReason = "",
-                    DateCreated = hp.DateCreated
-                })
-                .ToListAsync().ConfigureAwait(false);
-            return homeCarePackageList;
-        }
-
         private async Task<List<SubmittedPackageRequestsDomain>> GetNursingPackages(SubmittedPackageRequestParameters parameters)
         {
             return await _databaseContext.NursingCarePackages

@@ -109,38 +109,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             return residentialCarePackageList;
         }
 
-        private async Task<List<ApprovedPackagesDomain>> GetHomeCarePackages(ApprovedPackagesParameters parameters, int statusId)
-        {
-            var homeCarePackageList = await _databaseContext.HomeCarePackage
-                .FilterApprovedHomeCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId)
-                .Include(item => item.Client)
-                .Include(item => item.Status)
-                .Include(item => item.HomeCareApprovalHistories)
-                .Where(p => !parameters.ApproverId.HasValue ||
-                            p.HomeCareApprovalHistories.Any(h => h.Creator.Id == parameters.ApproverId))
-                .Select(hc => new ApprovedPackagesDomain()
-                {
-                    PackageId = hc.Id,
-                    ServiceUserId = hc.ClientId,
-                    ServiceUser = $"{hc.Client.FirstName} {hc.Client.MiddleName} {hc.Client.LastName}",
-                    HackneyId = hc.Client.HackneyId,
-                    PackageType = PackageTypesConstants.HomeCarePackage,
-                    PackageTypeId = PackageTypesConstants.HomeCarePackageId,
-                    Approver = hc.HomeCareApprovalHistories
-                        .Where(x => x.StatusId == ApprovalHistoryConstants.PackageApprovedId)
-                        .Select(x => x.Creator.Name).SingleOrDefault(),
-                    SubmittedBy = hc.HomeCareApprovalHistories
-                        .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
-                        .Select(x => x.Creator.Name).SingleOrDefault(),
-                    LastUpdated = hc.DateUpdated,
-                    CareValue = _databaseContext.HomeCarePackageCosts
-                        .Where(x => x.HomeCarePackageId == hc.Id)
-                        .Sum(x => x.TotalCost),
-                })
-                .ToListAsync().ConfigureAwait(false);
-            return homeCarePackageList;
-        }
-
         private async Task<List<ApprovedPackagesDomain>> GetNursingPackages(ApprovedPackagesParameters parameters, int statusId)
         {
             var nursingCarePackageList = await _databaseContext.NursingCarePackages

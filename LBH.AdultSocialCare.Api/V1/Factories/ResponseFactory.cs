@@ -1,11 +1,9 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.HomeCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
@@ -215,54 +213,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<SupplierResponse>>(supplierDomain);
         }
 
-        public static IEnumerable<HomeCareSupplierCostResponse> ToResponse(this IEnumerable<HomeCareSupplierCostDomain> homeCareSupplierCostDomains)
-        {
-            return _mapper.Map<IEnumerable<HomeCareSupplierCostResponse>>(homeCareSupplierCostDomains);
-        }
-
         #endregion Supplier
-
-        #region HomeCareBrokerage
-
-        public static IEnumerable<StageResponse> ToResponse(this IEnumerable<StageDomain> homeCareStageDomains)
-        {
-            return _mapper.Map<IEnumerable<StageResponse>>(homeCareStageDomains);
-        }
-
-        public static HomeCareBrokerageResponse ToResponse(this HomeCareBrokerageDomain homeCareBrokerageDomain)
-        {
-            return _mapper.Map<HomeCareBrokerageResponse>(homeCareBrokerageDomain);
-        }
-
-        public static HomeCareBrokerageResponse ToResponse(this HomeCareBrokerageCreationDomain homeCareBrokerageDomain)
-        {
-            return _mapper.Map<HomeCareBrokerageResponse>(homeCareBrokerageDomain);
-        }
-
-        public static IEnumerable<HomeCareApprovalHistoryResponse> ToResponse(this IEnumerable<HomeCareApprovalHistoryDomain> homeCareApprovalHistoryDomain)
-        {
-            return _mapper.Map<IEnumerable<HomeCareApprovalHistoryResponse>>(homeCareApprovalHistoryDomain);
-        }
-
-        #endregion HomeCareBrokerage
-
-        #region HomeCareApprovePackage
-
-        public static HomeCareApprovePackageResponse ToResponse(this HomeCareApprovePackageDomain homeCareApprovePackageDomain)
-        {
-            return _mapper.Map<HomeCareApprovePackageResponse>(homeCareApprovePackageDomain);
-        }
-
-        #endregion HomeCareApprovePackage
-
-        #region HomeCareApproveBrokered
-
-        public static HomeCareApproveBrokeredResponse ToResponse(this HomeCareApproveBrokeredDomain homeCareApproveBrokeredDomain)
-        {
-            return _mapper.Map<HomeCareApproveBrokeredResponse>(homeCareApproveBrokeredDomain);
-        }
-
-        #endregion HomeCareApproveBrokered
 
         #region NursingCareApprovePackage
 
@@ -330,11 +281,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region PackageReclaim
 
-        public static HomeCarePackageClaimResponse ToResponse(this HomeCarePackageClaimDomain homeCarePackageClaimDomain)
-        {
-            return _mapper.Map<HomeCarePackageClaimResponse>(homeCarePackageClaimDomain);
-        }
-
         public static IEnumerable<ReclaimFromResponse> ToResponse(this IEnumerable<ReclaimFromDomain> reclaimFromDomain)
         {
             return _mapper.Map<IEnumerable<ReclaimFromResponse>>(reclaimFromDomain);
@@ -361,60 +307,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion PackageReclaim
-
-        #region HomeCare
-
-        public static HomeCarePackageResponse ToResponse(this HomeCarePackageDomain homeCarePackageDomain)
-        {
-            return new HomeCarePackageResponse
-            {
-                Id = homeCarePackageDomain.Id,
-                ClientId = homeCarePackageDomain.ClientId,
-                Client = homeCarePackageDomain.Client,
-                StartDate = homeCarePackageDomain.StartDate,
-                EndDate = homeCarePackageDomain.EndDate,
-                IsFixedPeriod = homeCarePackageDomain.IsFixedPeriod,
-                IsOngoingPeriod = homeCarePackageDomain.IsOngoingPeriod,
-                IsThisAnImmediateService = homeCarePackageDomain.IsThisAnImmediateService,
-                IsThisuserUnderS117 = homeCarePackageDomain.IsThisuserUnderS117,
-                CreatorId = homeCarePackageDomain.CreatorId,
-                UpdaterId = homeCarePackageDomain.UpdaterId,
-                StatusId = homeCarePackageDomain.StatusId,
-                Status = homeCarePackageDomain.Status,
-                StageId = homeCarePackageDomain.StageId,
-                SupplierId = homeCarePackageDomain.SupplierId
-            };
-        }
-
-        public static IList<HomeCarePackageResponse> ToResponse(this IList<HomeCarePackageDomain> homeCarePackagesDomain)
-        {
-            return _mapper.Map<IList<HomeCarePackageResponse>>(homeCarePackagesDomain);
-        }
-
-        public static HomeCarePackageSlotsResponseList ToResponse(
-            this HomeCarePackageSlotListDomain homeCarePackageSlotListDomain)
-        {
-            return new HomeCarePackageSlotsResponseList
-            {
-                Id = homeCarePackageSlotListDomain.Id,
-                HomeCarePackageId = homeCarePackageSlotListDomain.HomeCarePackageId,
-                HomeCarePackageSlots = homeCarePackageSlotListDomain.HomeCarePackageSlots.Select(item
-                        => new HomeCarePackageSlotResponse
-                        {
-                            ServiceId = item.ServiceId,
-                            NeedToAddress = item.NeedToAddress,
-                            WhatShouldBeDone = item.WhatShouldBeDone,
-                            PrimaryInMinutes = item.PrimaryInMinutes,
-                            SecondaryInMinutes = item.SecondaryInMinutes,
-                            TimeSlotShiftId = item.TimeSlotShiftId,
-                            TimeSlotShift = item.TimeSlotShift,
-                            DayId = item.DayId
-                        })
-                    .ToList()
-            };
-        }
-
-        #endregion HomeCare
 
         #region NursingCareAdditionalNeeds
 
@@ -504,25 +396,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Roles
-
-        #region HomeCareServiceTypes
-
-        public static HomeCareServiceResponse ToResponse(this HomeCareServiceDomain homeCareServiceDomain)
-        {
-            return new HomeCareServiceResponse
-            {
-                Id = homeCareServiceDomain.Id,
-                ServiceName = homeCareServiceDomain.ServiceName,
-                PackageId = homeCareServiceDomain.PackageId,
-                Package = homeCareServiceDomain.Package,
-                CreatorId = homeCareServiceDomain.CreatorId,
-                DateCreated = homeCareServiceDomain.DateCreated,
-                UpdaterId = homeCareServiceDomain.UpdaterId,
-                DateUpdated = homeCareServiceDomain.DateUpdated
-            };
-        }
-
-        #endregion HomeCareServiceTypes
 
         #region ServiceUsers
 

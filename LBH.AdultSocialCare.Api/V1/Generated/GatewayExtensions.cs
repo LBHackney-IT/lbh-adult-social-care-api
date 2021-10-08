@@ -3,8 +3,6 @@ using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCare.Concrete;
-using LBH.AdultSocialCare.Api.V1.Gateways.HomeCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete;
@@ -18,7 +16,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
     {
         public static void RegisterGateways(this IServiceCollection services)
         {
-            services.AddScoped<IApprovalHistoryGateway, ApprovalHistoryGateway>();
             services.AddScoped<IApprovedPackagesGateway, ApprovedPackagesGateway>();
             services.AddScoped<IBrokeredPackagesGateway, BrokeredPackagesGateway>();
             services.AddScoped<ICareChargeElementTypeGateway, CareChargeElementTypeGateway>();
@@ -38,20 +35,8 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IServiceUserGateway, ServiceUserGateway>();
             services.AddScoped<IStatusGateway, StatusGateway>();
             services.AddScoped<ISubmittedPackageRequestsGateway, SubmittedPackageRequestsGateway>();
-            services.AddScoped<ISupplierCostGateway, SupplierCostGateway>();
             services.AddScoped<ISupplierGateway, SupplierGateway>();
             services.AddScoped<ITermTimeConsiderationOptionGateway, TermTimeConsiderationOptionGateway>();
-            services.AddScoped<ITimeSlotShiftsGateway, TimeSlotShiftsGateway>();
-            services.AddScoped<IHomeCareApprovalHistoryGateway, HomeCareApprovalHistoryGateway>();
-            services.AddScoped<IHomeCareApproveBrokeredGateway, HomeCareApproveBrokeredGateway>();
-            services.AddScoped<IHomeCareApprovePackageGateway, HomeCareApprovePackageGateway>();
-            services.AddScoped<IHomeCareBrokerageGateway, HomeCareBrokerageGateway>();
-            services.AddScoped<IHomeCarePackageGateway, HomeCarePackageGateway>();
-            services.AddScoped<IHomeCarePackageReclaimGateway, HomeCarePackageReclaimGateway>();
-            services.AddScoped<IHomeCarePackageSlotsGateway, HomeCarePackageSlotsGateway>();
-            services.AddScoped<IHomeCareRequestMoreInformationGateway, HomeCareRequestMoreInformationGateway>();
-            services.AddScoped<IHomeCareServiceTypeGateway, HomeCareServiceTypeGateway>();
-            services.AddScoped<IHomeCareStageGateway, HomeCareStageGateway>();
             services.AddScoped<IFundedNursingCareGateway, FundedNursingCareGateway>();
             services.AddScoped<INursingCareAdditionalNeedsGateway, NursingCareAdditionalNeedsGateway>();
             services.AddScoped<INursingCareApprovalHistoryGateway, NursingCareApprovalHistoryGateway>();

@@ -2,9 +2,6 @@ using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
@@ -57,11 +54,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<CarePackageSchedulingOption> CarePackageSchedulingOptions { get; set; }
 
         public DbSet<Package> Packages { get; set; }
-        public DbSet<TimeSlotShifts> TimeSlotShifts { get; set; }
-        public DbSet<HomeCarePackage> HomeCarePackage { get; set; }
-        public DbSet<HomeCareServiceType> HomeCareServiceTypes { get; set; }
-        public DbSet<HomeCareServiceTypeMinutes> HomeCareServiceTypeMinutes { get; set; }
-        public DbSet<HomeCarePackageSlots> HomeCarePackageSlots { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<PackageStatusOption> PackageStatuses { get; set; }
         public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
@@ -71,23 +63,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<OpportunityTimesPerMonthOption> OpportunityTimesPerMonthOptions { get; set; }
         public DbSet<NursingCareAdditionalNeed> NursingCareAdditionalNeeds { get; set; }
         public DbSet<ResidentialCareAdditionalNeed> ResidentialCareAdditionalNeeds { get; set; }
-        public DbSet<HomeCarePackageCost> HomeCarePackageCosts { get; set; }
         public DbSet<TypeOfNursingCareHome> TypesOfNursingCareHomes { get; set; }
         public DbSet<TypeOfResidentialCareHome> TypesOfResidentialCareHomes { get; set; }
         public DbSet<NursingCareTypeOfStayOption> NursingCareTypeOfStayOptions { get; set; }
         public DbSet<ResidentialCareTypeOfStayOption> ResidentialCareTypeOfStayOptions { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
-        public DbSet<HomeCareSupplierCost> HomeCareSupplierCosts { get; set; }
         public DbSet<Stage> PackageStages { get; set; }
-        public DbSet<HomeCareStage> HomeCareStages { get; set; }
-        public DbSet<CarerType> CarerTypes { get; set; }
-        public DbSet<HomeCareApprovalHistory> HomeCareApprovalHistories { get; set; }
         public DbSet<NursingCareApprovalHistory> NursingCareApprovalHistories { get; set; }
         public DbSet<ResidentialCareApprovalHistory> ResidentialCareApprovalHistories { get; set; }
-        public DbSet<HomeCareRequestMoreInformation> HomeCareRequestMoreInformations { get; set; }
         public DbSet<ResidentialCareRequestMoreInformation> ResidentialCareRequestMoreInformations { get; set; }
         public DbSet<NursingCareRequestMoreInformation> NursingCareRequestMoreInformations { get; set; }
-        public DbSet<HomeCarePackageReclaim> HomeCarePackageReclaims { get; set; }
         public DbSet<ReclaimAmountOption> ReclaimAmountOptions { get; set; }
         public DbSet<ReclaimCategory> ReclaimCategories { get; set; }
         public DbSet<ReclaimFrom> ReclaimFroms { get; set; }
@@ -140,12 +125,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed day care how many times per month options
             modelBuilder.ApplyConfiguration(new OpportunityTimesPerMonthOptionsSeed());
 
-            // Seed home care service types
-            modelBuilder.ApplyConfiguration(new HomeCareServiceTypesSeed());
-            modelBuilder.ApplyConfiguration(new HomeCareServiceTypeMinutesSeed());
-
-            // Seed home care time slot shifts
-            modelBuilder.ApplyConfiguration(new TimeSlotShiftsSeed());
             // Seed package status types
             modelBuilder.ApplyConfiguration(new PackageStatusSeed());
 
@@ -181,12 +160,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed PackageStages
             modelBuilder.ApplyConfiguration(new StageSeed());
-
-            // Seed HomeCareStages
-            modelBuilder.ApplyConfiguration(new HomeCareStageSeed());
-
-            // Seed CarerType
-            modelBuilder.ApplyConfiguration(new CarerTypeSeed());
 
             // Seed package reclaim amount option
             modelBuilder.ApplyConfiguration(new PackageReclaimAmountOptionSeed());
@@ -232,9 +205,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             #endregion DB Functions
 
-            // Home care
-            modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.Minutes);
-
             modelBuilder.Entity<OpportunityLengthOption>(entity =>
             {
                 entity.HasKey(e => e.OpportunityLengthOptionId);
@@ -268,14 +238,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 entity.HasOne(a => a.FundedNursingCare)
                     .WithOne(b => b.NursingCarePackage)
                     .HasForeignKey<FundedNursingCare>(b => b.NursingCarePackageId);
-            });
-
-            modelBuilder.Entity<HomeCarePackage>(entity =>
-            {
-                entity.HasOne(h => h.Status)
-                    .WithMany()
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
             });
 
             modelBuilder.Entity<ResidentialCarePackage>(entity =>

@@ -5,7 +5,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.HomeCare.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -24,19 +23,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         private readonly IGetBrokeredPackagesUseCase _getBrokeredPackagesUseCase;
         private readonly IGetPackageTypeUseCase _getPackageTypeUseCase;
         private readonly IGetAllUsersUseCase _getAllUsersUseCase;
-        private readonly IGetAllHomeCareStageUseCase _getAllHomeCareStageUseCase;
         private readonly IAssignToUserUseCase _assignToUserUseCase;
 
         public BrokeredPackagesController(IGetBrokeredPackagesUseCase getBrokeredPackagesUseCase,
             IGetPackageTypeUseCase getPackageTypeUseCase,
             IGetAllUsersUseCase getAllUsersUseCase,
-            IGetAllHomeCareStageUseCase getAllHomeCareStageUseCase,
             IAssignToUserUseCase assignToUserUseCase)
         {
             _getBrokeredPackagesUseCase = getBrokeredPackagesUseCase;
             _getPackageTypeUseCase = getPackageTypeUseCase;
             _getAllUsersUseCase = getAllUsersUseCase;
-            _getAllHomeCareStageUseCase = getAllHomeCareStageUseCase;
             _assignToUserUseCase = assignToUserUseCase;
         }
 
@@ -100,16 +96,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         public async Task<ActionResult<IEnumerable<UsersMinimalResponse>>> GetSocialWorkers()
         {
             var result = await _getAllUsersUseCase.GetUsers(RolesEnum.SocialWorker.GetId()).ConfigureAwait(false);
-            return Ok(result);
-        }
-
-        [HttpGet("stages")]
-        [ProducesResponseType(typeof(IEnumerable<StageResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
-        public async Task<ActionResult<IEnumerable<StageResponse>>> GetStages()
-        {
-            var result = await _getAllHomeCareStageUseCase.GetAllAsync().ConfigureAwait(false);
             return Ok(result);
         }
 

@@ -126,39 +126,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             return residentialCarePackageList;
         }
 
-        private async Task<List<BrokeredPackagesDomain>> GetHomeCarePackages(BrokeredPackagesParameters parameters, int? statusId)
-        {
-            var homeCarePackageList = await _databaseContext.HomeCarePackage
-                .FilterBrokeredHomeCareList(statusId, parameters.HackneyId, parameters.ClientName, parameters.SocialWorkerId, parameters.StageId)
-                .Include(item => item.Client)
-                .Include(item => item.Status)
-                .Include(item => item.Stage)
-                .Include(item => item.HomeCareApprovalHistories)
-                .Select(hc => new BrokeredPackagesDomain()
-                {
-                    PackageId = hc.Id,
-                    ServiceUserId = hc.ClientId,
-                    ServiceUser = $"{hc.Client.FirstName} {hc.Client.MiddleName} {hc.Client.LastName}",
-                    HackneyId = hc.Client.HackneyId,
-                    PackageType = PackageTypesConstants.HomeCarePackage,
-                    PackageTypeId = PackageTypesConstants.HomeCarePackageId,
-                    OwnerId = hc.HomeCareApprovalHistories
-                        .Where(x => x.StatusId == ApprovalHistoryConstants.PackageBrokeredId)
-                        .Select(x => x.UserId).SingleOrDefault(),
-                    Owner = hc.HomeCareApprovalHistories
-                        .Where(x => x.StatusId == ApprovalHistoryConstants.PackageBrokeredId)
-                        .Select(x => x.Creator.Name).SingleOrDefault(),
-                    StartDate = hc.StartDate,
-                    Stage = hc.Stage.StageName,
-                    DaysSinceApproval = hc.HomeCareApprovalHistories
-                        .Where(x => x.StatusId == ApprovalHistoryConstants.SubmittedForApprovalId)
-                        .Select(x => DateTimeOffset.Now.Date.Subtract(x.ApprovedDate.Date).Days).SingleOrDefault(),
-                    LastUpdated = hc.DateUpdated
-                })
-                .ToListAsync().ConfigureAwait(false);
-            return homeCarePackageList;
-        }
-
         private async Task<List<BrokeredPackagesDomain>> GetNursingPackages(BrokeredPackagesParameters parameters, int statusId)
         {
             var nursingCarePackageList = await _databaseContext.NursingCarePackages

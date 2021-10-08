@@ -1,14 +1,10 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
@@ -256,12 +252,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<SupplierDomain>>(supplierEntities);
         }
 
-        public static IEnumerable<HomeCareSupplierCostDomain> ToDomain(
-            this List<HomeCareSupplierCost> homeCareSupplierCostEntities)
-        {
-            return _mapper.Map<IEnumerable<HomeCareSupplierCostDomain>>(homeCareSupplierCostEntities);
-        }
-
         #endregion Supplier
 
         #region HomeCareBrokerage
@@ -269,32 +259,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<StageDomain> ToDomain(this List<Stage> homeCareStageEntities)
         {
             return _mapper.Map<IEnumerable<StageDomain>>(homeCareStageEntities);
-        }
-
-        public static HomeCarePackageCostDomain ToDomain(this HomeCarePackageCost homeCarePackageCostEntity)
-        {
-            return _mapper.Map<HomeCarePackageCostDomain>(homeCarePackageCostEntity);
-        }
-
-        public static HomeCarePackageDomain ToDomain(this HomeCarePackage homeCarePackageEntity)
-        {
-            return _mapper.Map<HomeCarePackageDomain>(homeCarePackageEntity);
-        }
-
-        public static IEnumerable<HomeCarePackageCostDomain> ToDomain(this List<HomeCarePackageCost> homeCarePackageCostEntities)
-        {
-            return _mapper.Map<IEnumerable<HomeCarePackageCostDomain>>(homeCarePackageCostEntities);
-        }
-
-        public static IEnumerable<HomeCareApprovalHistoryDomain> ToDomain(
-            this List<HomeCareApprovalHistory> homeCareApprovalHistoryEntities)
-        {
-            return _mapper.Map<IEnumerable<HomeCareApprovalHistoryDomain>>(homeCareApprovalHistoryEntities);
-        }
-
-        public static HomeCareApprovalHistoryDomain ToDomain(this HomeCareApprovalHistory homeCareApprovalHistory)
-        {
-            return _mapper.Map<HomeCareApprovalHistoryDomain>(homeCareApprovalHistory);
         }
 
         #endregion HomeCareBrokerage
@@ -341,11 +305,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region PackageReclaim
 
-        public static HomeCarePackageClaimDomain ToDomain(this HomeCarePackageReclaim homeCarePackageReclaim)
-        {
-            return _mapper.Map<HomeCarePackageClaimDomain>(homeCarePackageReclaim);
-        }
-
         public static IEnumerable<ReclaimAmountOptionDomain> ToDomain(this ICollection<ReclaimAmountOption> reclaimAmountOptions)
         {
             return reclaimAmountOptions.Select(item
@@ -387,15 +346,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion PackageReclaim
-
-        #region HomeCare
-
-        public static IList<HomeCarePackageDomain> ToDomain(this IList<HomeCarePackage> homeCarePackagesEntity)
-        {
-            return _mapper.Map<IList<HomeCarePackageDomain>>(homeCarePackagesEntity);
-        }
-
-        #endregion HomeCare
 
         #region Clients
 
@@ -512,23 +462,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion Roles
 
-        #region HomeCareServiceTypes
-
-        public static HomeCareServiceDomain ToDomain(this HomeCareServiceType serviceEntity)
-        {
-            return new HomeCareServiceDomain
-            {
-                Id = serviceEntity.Id,
-                ServiceName = serviceEntity.ServiceName,
-                CreatorId = serviceEntity.CreatorId,
-                DateCreated = serviceEntity.DateCreated,
-                UpdaterId = serviceEntity.UpdaterId,
-                DateUpdated = serviceEntity.DateUpdated
-            };
-        }
-
-        #endregion HomeCareServiceTypes
-
         #region ServiceUsers
 
         public static AppUserDomain ToDomain(this User userEntity)
@@ -565,24 +498,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion PackageStatus
-
-        #region TimeSlotShifts
-
-        public static TimeSlotShiftsDomain ToDomain(this TimeSlotShifts timeSlotShiftsEntity)
-        {
-            return new TimeSlotShiftsDomain
-            {
-                Id = timeSlotShiftsEntity.Id,
-                TimeSlotShiftName = timeSlotShiftsEntity.TimeSlotShiftName,
-                TimeSlotTimeLabel = timeSlotShiftsEntity.TimeSlotTimeLabel,
-                CreatorId = timeSlotShiftsEntity.CreatorId,
-                DateCreated = timeSlotShiftsEntity.DateCreated,
-                UpdaterId = timeSlotShiftsEntity.UpdaterId,
-                DateUpdated = timeSlotShiftsEntity.DateUpdated
-            };
-        }
-
-        #endregion TimeSlotShifts
 
         #region PrimarySupportReason
 
