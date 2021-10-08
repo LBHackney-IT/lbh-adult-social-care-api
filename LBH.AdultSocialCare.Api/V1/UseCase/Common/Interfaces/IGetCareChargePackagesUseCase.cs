@@ -9,6 +9,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
 {
     public interface IGetCareChargePackagesUseCase
     {
-        Task<PagedCareChargePackagesResponse> GetCareChargePackages(CareChargePackagesParameters parameters);
+        Task<PagedResponse<CareChargePackagesResponse>> GetCareChargePackages(CareChargePackagesParameters parameters);
     }
 }

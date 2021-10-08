@@ -123,7 +123,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
                 .ToString();
 
             var response = await _fixture.RestClient
-                .GetAsync<PagedCareChargePackagesResponse>(url);
+                .GetAsync<PagedResponse<CareChargePackagesResponse>>(url);
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
         }

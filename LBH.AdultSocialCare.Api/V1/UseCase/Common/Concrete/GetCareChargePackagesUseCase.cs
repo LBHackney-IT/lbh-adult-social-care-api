@@ -19,10 +19,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             _carePackageReclaimGateway = carePackageReclaimGateway;
         }
 
-        public async Task<PagedCareChargePackagesResponse> GetCareChargePackages(CareChargePackagesParameters parameters)
+        public async Task<PagedResponse<CareChargePackagesResponse>> GetCareChargePackages(CareChargePackagesParameters parameters)
         {
             var result = await _carePackageReclaimGateway.GetCareChargePackages(parameters).ConfigureAwait(false);
-            return new PagedCareChargePackagesResponse()
+
+            return new PagedResponse<CareChargePackagesResponse>
             {
                 PagingMetaData = result.PagingMetaData,
                 Data = result.ToResponse()
