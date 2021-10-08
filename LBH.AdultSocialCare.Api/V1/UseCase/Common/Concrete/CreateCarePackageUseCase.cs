@@ -41,7 +41,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             // Get and set random client on package
             var randomClient = await _clientsGateway.GetRandomAsync().ConfigureAwait(false);
             carePackageEntity.ServiceUserId = randomClient.Id;
-            carePackageEntity.Status = PackageStatus.Draft;
+            carePackageEntity.Status = PackageStatus.New;
 
             carePackageEntity.Settings = carePackageSettingsEntity;
             _carePackageGateway.Create(carePackageEntity);

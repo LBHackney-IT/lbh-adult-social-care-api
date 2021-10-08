@@ -5,22 +5,25 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
     // TODO: VK: There is a discrepancy between statuses in constants and DB - what is actual?
     public enum PackageStatus
     {
-        [Display(Name = "Draft")]
-        Draft = 1,
-
         [Display(Name = "New")]
-        New = 2,
+        New = 1,
 
-        [Display(Name = "Submitted for Approval")]
+        [Display(Name = "In Progress")]
+        InProgress = 2,
+
+        [Display(Name = "Waiting for approval")]
         SubmittedForApproval = 3,
 
-        [Display(Name = "Reject Package")]
-        Rejected = 4,
-
-        [Display(Name = "Clarification Needed")]
-        ClarificationNeeded = 5,
-
         [Display(Name = "Approved")]
-        Approved = 6
+        Approved = 4,
+
+        [Display(Name = "Not Approved")]
+        NotApproved = 5,
+
+        [Display(Name = "Ended")]
+        Ended = 6,
+
+        [Display(Name = "Cancelled")]
+        Cancelled = 7,
     }
 }

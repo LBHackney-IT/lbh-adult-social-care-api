@@ -42,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             Assert.Single(carePackages);
             response.Content.Id.Should().NotBe(Guid.Empty);
             response.Content.PackageType.Should().Be((int) carePackageCreationRequest.PackageType);
-            response.Content.Status.Should().Be((int) PackageStatus.Draft);
+            response.Content.Status.Should().Be((int) PackageStatus.New);
         }
 
         [Fact]

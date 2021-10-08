@@ -38,7 +38,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             var carePackage = TestDataHelper.CreateCarePackage(
                 serviceUserId: serviceUser?.Id,
                 packageType: type,
-                status: PackageStatus.New);
+                status: PackageStatus.InProgress);
 
             carePackage.SupplierId = _context.Suppliers.FirstOrDefault()?.Id;
 
