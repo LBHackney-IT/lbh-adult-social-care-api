@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 
             _mockGateway.Setup(x => x.GetCareChargePackages(requestParam))
                 .ReturnsAsync(stubbedEntities);
-            
+
             // Act
             var expectedResponse = new PagedResponse<CareChargePackagesResponse>
             {
