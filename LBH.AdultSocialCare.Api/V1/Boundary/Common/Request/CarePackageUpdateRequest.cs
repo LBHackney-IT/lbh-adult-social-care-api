@@ -19,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
         public bool? HasDischargePackage { get; set; }
 
         [Required]
-        public bool? IsImmediate { get; set; }
+        public bool? HospitalAvoidance { get; set; }
 
         [Required]
         public bool? IsReEnablement { get; set; }

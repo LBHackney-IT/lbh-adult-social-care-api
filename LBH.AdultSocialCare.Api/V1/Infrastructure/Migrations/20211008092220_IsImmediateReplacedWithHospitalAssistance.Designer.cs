@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211008092220_IsImmediateReplacedWithHospitalAssistance")]
+    partial class IsImmediateReplacedWithHospitalAssistance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -784,7 +786,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasCheckConstraint("CK_CarePackages_PackageType", "\"PackageType\" IN (0, 1, 2, 3, 4)");
 
-                    b.HasCheckConstraint("CK_CarePackages_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7)");
+                    b.HasCheckConstraint("CK_CarePackages_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.CarePackageDetail", b =>
@@ -3681,44 +3683,38 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            StatusDisplayName = "Draft",
+                            StatusName = "Draft"
+                        },
+                        new
+                        {
+                            Id = 2,
                             StatusDisplayName = "New",
                             StatusName = "New"
                         },
                         new
                         {
-                            Id = 2,
-                            StatusDisplayName = "In Progress",
-                            StatusName = "InProgress"
-                        },
-                        new
-                        {
                             Id = 3,
-                            StatusDisplayName = "Waiting for approval",
+                            StatusDisplayName = "Submitted for Approval",
                             StatusName = "SubmittedForApproval"
                         },
                         new
                         {
                             Id = 4,
-                            StatusDisplayName = "Approved",
-                            StatusName = "Approved"
+                            StatusDisplayName = "Reject Package",
+                            StatusName = "Rejected"
                         },
                         new
                         {
                             Id = 5,
-                            StatusDisplayName = "Not Approved",
-                            StatusName = "NotApproved"
+                            StatusDisplayName = "Clarification Needed",
+                            StatusName = "ClarificationNeeded"
                         },
                         new
                         {
                             Id = 6,
-                            StatusDisplayName = "Ended",
-                            StatusName = "Ended"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            StatusDisplayName = "Cancelled",
-                            StatusName = "Cancelled"
+                            StatusDisplayName = "Approved",
+                            StatusName = "Approved"
                         });
                 });
 
@@ -4225,20 +4221,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             ConcurrencyStamp = "7",
                             Name = "User",
                             NormalizedName = "USER"
-                        },
-                        new
-                        {
-                            Id = new Guid("1e958e66-b2a3-4e9d-9806-c5ca8bafda5d"),
-                            ConcurrencyStamp = "8",
-                            Name = "Broker Manager",
-                            NormalizedName = "BROKER MANAGER"
-                        },
-                        new
-                        {
-                            Id = new Guid("1f0bea0c-9f9a-4ef1-b911-83e2113dd503"),
-                            ConcurrencyStamp = "9",
-                            Name = "Broker Assistant",
-                            NormalizedName = "BROKER ASSISTANT"
                         });
                 });
 

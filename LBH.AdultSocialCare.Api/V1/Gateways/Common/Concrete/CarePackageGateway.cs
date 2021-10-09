@@ -35,6 +35,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 .AsNoTracking()
                 .Select(cp => new BrokerPackageItemDomain
                 {
+                    PackageId = cp.Id,
+                    ServiceUserId = cp.ServiceUserId,
                     ServiceUserName =
                         $"{cp.ServiceUser.FirstName} {cp.ServiceUser.MiddleName ?? string.Empty} {cp.ServiceUser.LastName}",
                     DateOfBirth = cp.ServiceUser.DateOfBirth,
@@ -113,7 +115,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                     PrimarySupportReasonName = ps.Package.PrimarySupportReason.PrimarySupportReasonName,
                     HasRespiteCare = ps.HasRespiteCare,
                     HasDischargePackage = ps.HasDischargePackage,
-                    IsImmediate = ps.IsImmediate,
+                    HospitalAvoidance = ps.HospitalAvoidance,
                     IsReEnablement = ps.IsReEnablement,
                     IsS117Client = ps.IsS117Client
                 }).SingleOrDefaultAsync();

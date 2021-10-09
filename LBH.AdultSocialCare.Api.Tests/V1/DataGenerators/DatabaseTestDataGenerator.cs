@@ -37,7 +37,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             var carePackage = TestDataHelper.CreateCarePackage(
                 serviceUserId: serviceUser?.Id,
                 packageType: type,
-                status: PackageStatus.New);
+                status: PackageStatus.InProgress);
 
             carePackage.SupplierId = _context.Suppliers.FirstOrDefault()?.Id;
 
@@ -64,7 +64,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
                 CarePackageId = carePackageId,
                 HasRespiteCare = false,
                 HasDischargePackage = false,
-                IsImmediate = false,
+                HospitalAvoidance = false,
                 IsReEnablement = false,
                 IsS117Client = false
             };
