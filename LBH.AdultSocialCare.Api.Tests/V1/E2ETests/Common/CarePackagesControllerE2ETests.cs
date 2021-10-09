@@ -1,7 +1,9 @@
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
+using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
@@ -9,8 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
@@ -55,6 +55,17 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
 
             response.Content.Count().Should().Be(Enum.GetNames(typeof(PackageScheduling)).Length);
+        }
+
+        [Fact]
+        public async Task ShouldReturnPackageStatusOptionsList()
+        {
+            var response = await _fixture.RestClient
+                .GetAsync<IEnumerable<CarePackageStatusOptionResponse>>("api/v1/care-packages/package-status-options");
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            response.Content.Count().Should().Be(Enum.GetNames(typeof(PackageStatus)).Length);
         }
 
         [Fact]
@@ -148,6 +159,21 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             response.Content.Id.Should().Be(package.Id);
             response.Content.ServiceUser.HackneyId.Should().Be(package.ServiceUser.HackneyId);
             response.Content.PrimarySupportReasonId.Should().Be(package.PrimarySupportReasonId);
+        }
+
+        [Fact]
+        public async Task ShouldReturnCorePackage()
+        {
+            var package = _generator.CreateCarePackage();
+            var packageSettings = _generator.CreateCarePackageSettings(package.Id);
+
+            var response = await _fixture.RestClient
+                .GetAsync<CarePackageCoreResponse>($"api/v1/care-packages/{package.Id}/core");
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            response.Content.CarePackageId.Should().Be(package.Id);
+            response.Content.Should().BeEquivalentTo(packageSettings, opt => opt.ExcludingMissingMembers().ExcludingNestedObjects());
         }
 
         [Fact]

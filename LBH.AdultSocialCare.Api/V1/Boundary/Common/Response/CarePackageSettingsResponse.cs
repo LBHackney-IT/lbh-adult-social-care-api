@@ -1,4 +1,3 @@
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
@@ -7,9 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
     {
         public Guid Id { get; set; }
         public Guid CarePackageId { get; set; }
-        public PackageType PackageType { get; set; }
-        public int PrimarySupportReasonId { get; set; }
-        public string PrimarySupportReasonName { get; set; }
         public bool HasRespiteCare { get; set; }
         public bool HasDischargePackage { get; set; }
         public bool HospitalAvoidance { get; set; }

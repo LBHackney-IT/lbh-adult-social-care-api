@@ -14,12 +14,25 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         {
             return Enum.GetValues(typeof(PackageScheduling))
                 .OfType<PackageScheduling>()
-                .Select(x =>
+                .Select(ps =>
                     new CarePackageSchedulingOptionResponse()
                     {
-                        Id = x,
-                        OptionName = x.GetDisplayName(),
-                        OptionPeriod = x.ToDescription()
+                        Id = ps,
+                        OptionName = ps.GetDisplayName(),
+                        OptionPeriod = ps.ToDescription()
+                    })
+                .ToList();
+        }
+
+        public IEnumerable<CarePackageStatusOptionResponse> GetCarePackageStatusOptions()
+        {
+            return Enum.GetValues(typeof(PackageStatus))
+                .OfType<PackageStatus>()
+                .Select(ps =>
+                    new CarePackageStatusOptionResponse
+                    {
+                        Id = ps,
+                        StatusName = ps.GetDisplayName()
                     })
                 .ToList();
         }
