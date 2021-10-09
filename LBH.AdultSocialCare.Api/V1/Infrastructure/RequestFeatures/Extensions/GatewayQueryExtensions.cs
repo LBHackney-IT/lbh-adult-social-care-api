@@ -4,6 +4,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -104,5 +105,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
                                 && (brokerId == null || package.BrokerId.Equals(brokerId))
                                 && (fromDate == null || package.DateCreated >= fromDate)
                                 && (toDate == null || package.DateCreated <= toDate));
+
+        public static IQueryable<User> FilterAppUsers(this IQueryable<User> users, string searchTerm = "") =>
+            users.Where(u => (string.IsNullOrEmpty(searchTerm) || (EF.Functions.ILike(u.Name, $"%{searchTerm}%") || EF.Functions.ILike(u.Email, $"%{searchTerm}%"))));
     }
 }

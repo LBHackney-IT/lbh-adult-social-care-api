@@ -17,6 +17,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerag
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -28,7 +29,15 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
-    public class DatabaseContext : IdentityDbContext<User, Role, Guid>
+    public class DatabaseContext : IdentityDbContext<
+        User, // TUser
+        Role, // TRole
+        Guid, // TKey
+        IdentityUserClaim<Guid>, // TUserClaim
+        AppUserRole, // TUserRole,
+        IdentityUserLogin<Guid>, // TUserLogin
+        IdentityRoleClaim<Guid>, // TRoleClaim
+        IdentityUserToken<Guid>> // TUserToken>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -339,6 +348,19 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             {
                 entity.HasIndex(e => new { e.SequenceNumber, e.Stage, e.PackageAction })
                     .IsUnique();
+            });
+
+            modelBuilder.Entity<AppUserRole>(entity =>
+            {
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserRoles)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.UserRoles)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
             #endregion Entity Config

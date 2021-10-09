@@ -47,6 +47,10 @@
       <Compile Remove="V1\Infrastructure\Migrations\20210927092406_PackageSchedulingDisableIdentityEnumPK.Designer.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20210927095529_SchedulingEnumOptions.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20210927095529_SchedulingEnumOptions.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211006172739_AutoSeedEnums.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211006172739_AutoSeedEnums.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211006175844_IdentityTablesNavigation.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211006175844_IdentityTablesNavigation.Designer.cs" />
     </ItemGroup>
 
   <ItemGroup>

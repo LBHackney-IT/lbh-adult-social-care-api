@@ -608,16 +608,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region ServiceUsers
 
-        public static UsersResponse ToResponse(this UsersDomain usersDomain)
-        {
-            return new UsersResponse
-            {
-                Id = usersDomain.Id,
-                Name = usersDomain.Name,
-                Email = usersDomain.Email
-            };
-        }
-
         public static IEnumerable<UsersMinimalResponse> ToResponse(this IEnumerable<UsersMinimalDomain> usersDomains)
         {
             return _mapper.Map<IEnumerable<UsersMinimalResponse>>(usersDomains);

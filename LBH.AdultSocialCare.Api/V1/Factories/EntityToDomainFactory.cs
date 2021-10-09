@@ -592,9 +592,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region ServiceUsers
 
-        public static UsersDomain ToDomain(this User userEntity)
+        public static AppUserDomain ToDomain(this User userEntity)
         {
-            return new UsersDomain
+            return new AppUserDomain
             {
                 Id = userEntity.Id,
                 Name = userEntity.Name,
@@ -602,9 +602,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        public static IEnumerable<UsersDomain> ToDomain(this List<User> users)
+        public static IEnumerable<AppUserDomain> ToDomain(this List<User> users)
         {
-            return _mapper.Map<IEnumerable<UsersDomain>>(users);
+            return _mapper.Map<IEnumerable<AppUserDomain>>(users);
         }
 
         #endregion ServiceUsers

@@ -19,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 
         public HackneyTokenDomain ValidateHackneyJwtToken(HackneyTokenDomain hackneyTokenDomain);
 
-        public Task<UsersDomain> GetOrCreateUser(HackneyTokenDomain hackneyTokenDomain);
+        public Task<AppUserDomain> GetOrCreateUser(HackneyTokenDomain hackneyTokenDomain);
 
         Task<bool> AssignRolesToUser(Guid userId, IEnumerable<string> roles);
     }

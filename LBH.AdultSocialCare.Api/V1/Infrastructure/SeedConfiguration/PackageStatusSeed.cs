@@ -12,6 +12,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
     {
         public void Configure(EntityTypeBuilder<PackageStatusOption> builder)
         {
+            // var dateTimeOffset = new DateTimeOffset(AppTimeConstants.CreateUpdateDefaultDateTime).ToOffset(TimeSpan.Zero);
             var statusOptions = Enum.GetValues(typeof(PackageStatus))
                 .OfType<PackageStatus>()
                 .Select(x =>

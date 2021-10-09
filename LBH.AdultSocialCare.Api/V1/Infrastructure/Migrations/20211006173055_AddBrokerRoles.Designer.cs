@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211006173055_AddBrokerRoles")]
+    partial class AddBrokerRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -784,7 +786,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasCheckConstraint("CK_CarePackages_PackageType", "\"PackageType\" IN (0, 1, 2, 3, 4)");
 
-                    b.HasCheckConstraint("CK_CarePackages_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7)");
+                    b.HasCheckConstraint("CK_CarePackages_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.CarePackageDetail", b =>
@@ -1027,7 +1029,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<bool>("HasRespiteCare")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("HospitalAvoidance")
+                    b.Property<bool>("IsImmediate")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsReEnablement")
@@ -3681,44 +3683,38 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            StatusDisplayName = "Draft",
+                            StatusName = "Draft"
+                        },
+                        new
+                        {
+                            Id = 2,
                             StatusDisplayName = "New",
                             StatusName = "New"
                         },
                         new
                         {
-                            Id = 2,
-                            StatusDisplayName = "In Progress",
-                            StatusName = "InProgress"
-                        },
-                        new
-                        {
                             Id = 3,
-                            StatusDisplayName = "Waiting for approval",
+                            StatusDisplayName = "Submitted for Approval",
                             StatusName = "SubmittedForApproval"
                         },
                         new
                         {
                             Id = 4,
-                            StatusDisplayName = "Approved",
-                            StatusName = "Approved"
+                            StatusDisplayName = "Reject Package",
+                            StatusName = "Rejected"
                         },
                         new
                         {
                             Id = 5,
-                            StatusDisplayName = "Not Approved",
-                            StatusName = "NotApproved"
+                            StatusDisplayName = "Clarification Needed",
+                            StatusName = "ClarificationNeeded"
                         },
                         new
                         {
                             Id = 6,
-                            StatusDisplayName = "Ended",
-                            StatusName = "Ended"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            StatusDisplayName = "Cancelled",
-                            StatusName = "Cancelled"
+                            StatusDisplayName = "Approved",
+                            StatusName = "Approved"
                         });
                 });
 
@@ -4336,9 +4332,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
 
@@ -4382,7 +4375,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "15 Atherden Rd, Lower Clapton, London E5 0QP",
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
@@ -4394,7 +4386,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         new
                         {
                             Id = 2,
-                            Address = "54 Crown Street, Belgravia, London WC1E 9YP",
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),

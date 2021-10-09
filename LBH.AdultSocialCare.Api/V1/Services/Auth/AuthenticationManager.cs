@@ -156,7 +156,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
             }
         }
 
-        public async Task<UsersDomain> GetOrCreateUser(HackneyTokenDomain hackneyTokenDomain)
+        public async Task<AppUserDomain> GetOrCreateUser(HackneyTokenDomain hackneyTokenDomain)
         {
             var user = await _userManager.FindByEmailAsync(hackneyTokenDomain.Email).ConfigureAwait(false);
             switch (user)

@@ -378,8 +378,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #region ServiceUsers
 
-            CreateMap<User, UsersDomain>();
-            CreateMap<UsersDomain, UsersResponse>();
+            CreateMap<User, AppUserDomain>();
+            CreateMap<AppUserDomain, AppUserResponse>();
             CreateMap<UsersMinimalDomain, UsersMinimalResponse>();
 
             #endregion ServiceUsers
