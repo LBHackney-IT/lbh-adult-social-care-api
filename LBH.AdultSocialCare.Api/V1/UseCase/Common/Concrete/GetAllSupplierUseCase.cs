@@ -1,3 +1,4 @@
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
@@ -25,6 +26,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                 PagingMetaData = result.PagingMetaData,
                 Data = result.ToResponse()
             };
+        }
+
+        public async Task<SupplierResponse> GetSingleAsync(int supplierId)
+        {
+            var supplier = await _supplierGateway.GetAsync(supplierId)
+                .EnsureExistsAsync($"Supplier with id {supplierId} not found");
+
+            return supplier.ToResponse();
         }
     }
 }
