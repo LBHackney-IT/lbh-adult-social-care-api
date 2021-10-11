@@ -39,6 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             {
                 PackageType = package.PackageType.GetDisplayName(),
                 PrimarySupportReason = package.PrimarySupportReason?.PrimarySupportReasonName,
+                SchedulingPeriod = $"{package.PackageScheduling.GetDisplayName()} {package.PackageScheduling.ToDescription()}",
 
                 StartDate = coreCost.StartDate,
                 EndDate = coreCost.EndDate,
@@ -52,7 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                 AdditionalOneOffNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.OneOff).ToDomain(),
 
                 CareCharges = package.Reclaims.Where(r => r.Type is ReclaimType.CareCharge).ToDomain(),
-                FundedNursingCare = package.Reclaims.FirstOrDefault(r => r.Type is ReclaimType.Fnc)?.ToDomain(),
+                FundedNursingCare = package.Reclaims.FirstOrDefault(r => r.Type is ReclaimType.Fnc)?.ToDomain()
             };
 
             CalculateReclaimSubTotals(package, summary);

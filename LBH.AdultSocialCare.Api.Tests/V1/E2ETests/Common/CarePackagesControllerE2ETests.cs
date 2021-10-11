@@ -1,7 +1,9 @@
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
+using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
@@ -9,8 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
@@ -42,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             Assert.Single(carePackages);
             response.Content.Id.Should().NotBe(Guid.Empty);
             response.Content.PackageType.Should().Be((int) carePackageCreationRequest.PackageType);
-            response.Content.Status.Should().Be((int) PackageStatus.Draft);
+            response.Content.Status.Should().Be((int) PackageStatus.New);
         }
 
         [Fact]
@@ -58,6 +58,17 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         }
 
         [Fact]
+        public async Task ShouldReturnPackageStatusOptionsList()
+        {
+            var response = await _fixture.RestClient
+                .GetAsync<IEnumerable<CarePackageStatusOptionResponse>>("api/v1/care-packages/package-status-options");
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            response.Content.Count().Should().Be(Enum.GetNames(typeof(PackageStatus)).Length);
+        }
+
+        [Fact]
         public async Task ShouldUpdateCarePackage()
         {
             var carePackage = _fixture.Generator.CreateCarePackage();
@@ -67,7 +78,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             {
                 HasRespiteCare = true,
                 HasDischargePackage = true,
-                IsImmediate = true,
+                HospitalAvoidance = true,
                 IsReEnablement = true,
                 IsS117Client = true
             };
@@ -96,7 +107,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             {
                 updatedCarePackageSettings.HasRespiteCare,
                 updatedCarePackageSettings.HasDischargePackage,
-                updatedCarePackageSettings.IsImmediate,
+                IsImmediate = updatedCarePackageSettings.HospitalAvoidance,
                 updatedCarePackageSettings.IsReEnablement,
                 updatedCarePackageSettings.IsS117Client
             };
@@ -148,6 +159,21 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             response.Content.Id.Should().Be(package.Id);
             response.Content.ServiceUser.HackneyId.Should().Be(package.ServiceUser.HackneyId);
             response.Content.PrimarySupportReasonId.Should().Be(package.PrimarySupportReasonId);
+        }
+
+        [Fact]
+        public async Task ShouldReturnCorePackage()
+        {
+            var package = _generator.CreateCarePackage();
+            var packageSettings = _generator.CreateCarePackageSettings(package.Id);
+
+            var response = await _fixture.RestClient
+                .GetAsync<CarePackageCoreResponse>($"api/v1/care-packages/{package.Id}/core");
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            response.Content.CarePackageId.Should().Be(package.Id);
+            response.Content.Should().BeEquivalentTo(packageSettings, opt => opt.ExcludingMissingMembers().ExcludingNestedObjects());
         }
 
         [Fact]

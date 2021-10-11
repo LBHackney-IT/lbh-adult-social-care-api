@@ -51,6 +51,38 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.AppUserRole", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            RoleId = new Guid("7335e791-1d08-437a-974e-809944d29bc6")
+                        },
+                        new
+                        {
+                            UserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            RoleId = new Guid("4defe6f2-09cf-43f2-8c1f-f4cad04a582d")
+                        },
+                        new
+                        {
+                            UserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            RoleId = new Guid("97c46919-fd10-47f1-bcb9-fa6b513c4c83")
+                        });
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.CareChargeElement", b =>
                 {
                     b.Property<Guid>("Id")
@@ -782,9 +814,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasCheckConstraint("CK_CarePackages_PackageScheduling", "\"PackageScheduling\" IN (0, 1, 2, 3)");
 
-                    b.HasCheckConstraint("CK_CarePackages_PackageType", "\"PackageType\" IN (0, 1, 2, 3, 4)");
+                    b.HasCheckConstraint("CK_CarePackages_PackageType", "\"PackageType\" IN (0, 2, 4)");
 
-                    b.HasCheckConstraint("CK_CarePackages_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6)");
+                    b.HasCheckConstraint("CK_CarePackages_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.CarePackageDetail", b =>
@@ -1027,7 +1059,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<bool>("HasRespiteCare")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("IsImmediate")
+                    b.Property<bool>("HospitalAvoidance")
                         .HasColumnType("boolean");
 
                     b.Property<bool>("IsReEnablement")
@@ -3681,38 +3713,44 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
-                            StatusDisplayName = "Draft",
-                            StatusName = "Draft"
-                        },
-                        new
-                        {
-                            Id = 2,
                             StatusDisplayName = "New",
                             StatusName = "New"
                         },
                         new
                         {
+                            Id = 2,
+                            StatusDisplayName = "In Progress",
+                            StatusName = "InProgress"
+                        },
+                        new
+                        {
                             Id = 3,
-                            StatusDisplayName = "Submitted for Approval",
+                            StatusDisplayName = "Waiting for approval",
                             StatusName = "SubmittedForApproval"
                         },
                         new
                         {
                             Id = 4,
-                            StatusDisplayName = "Reject Package",
-                            StatusName = "Rejected"
+                            StatusDisplayName = "Approved",
+                            StatusName = "Approved"
                         },
                         new
                         {
                             Id = 5,
-                            StatusDisplayName = "Clarification Needed",
-                            StatusName = "ClarificationNeeded"
+                            StatusDisplayName = "Not Approved",
+                            StatusName = "NotApproved"
                         },
                         new
                         {
                             Id = 6,
-                            StatusDisplayName = "Approved",
-                            StatusName = "Approved"
+                            StatusDisplayName = "Ended",
+                            StatusName = "Ended"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            StatusDisplayName = "Cancelled",
+                            StatusName = "Cancelled"
                         });
                 });
 
@@ -3737,14 +3775,44 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         new
                         {
                             PrimarySupportReasonId = 1,
-                            CederBudgetCode = "Ceder Budget Code 1",
-                            PrimarySupportReasonName = "Primary Support Reason 1"
+                            CederBudgetCode = "Ceder - Physical Support",
+                            PrimarySupportReasonName = "Physical Support"
                         },
                         new
                         {
                             PrimarySupportReasonId = 2,
-                            CederBudgetCode = "Ceder Budget Code 2",
-                            PrimarySupportReasonName = "Primary Support Reason 2"
+                            CederBudgetCode = "Ceder Sensory Support",
+                            PrimarySupportReasonName = "Sensory Support"
+                        },
+                        new
+                        {
+                            PrimarySupportReasonId = 3,
+                            CederBudgetCode = "Ceder Support with memory and cognition",
+                            PrimarySupportReasonName = "Support with memory and cognition"
+                        },
+                        new
+                        {
+                            PrimarySupportReasonId = 4,
+                            CederBudgetCode = "Ceder Learning Disability Support",
+                            PrimarySupportReasonName = "Learning Disability Support"
+                        },
+                        new
+                        {
+                            PrimarySupportReasonId = 5,
+                            CederBudgetCode = "Ceder Mental Health Support (ASC)",
+                            PrimarySupportReasonName = "Mental Health Support (ASC)"
+                        },
+                        new
+                        {
+                            PrimarySupportReasonId = 6,
+                            CederBudgetCode = "Ceder Social Support",
+                            PrimarySupportReasonName = "Social Support"
+                        },
+                        new
+                        {
+                            PrimarySupportReasonId = 7,
+                            CederBudgetCode = "Ceder Mental Health Support (ELFT)",
+                            PrimarySupportReasonName = "Mental Health Support (ELFT)"
                         });
                 });
 
@@ -4219,6 +4287,20 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             ConcurrencyStamp = "7",
                             Name = "User",
                             NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = new Guid("1e958e66-b2a3-4e9d-9806-c5ca8bafda5d"),
+                            ConcurrencyStamp = "8",
+                            Name = "Broker Manager",
+                            NormalizedName = "BROKER MANAGER"
+                        },
+                        new
+                        {
+                            Id = new Guid("1f0bea0c-9f9a-4ef1-b911-83e2113dd503"),
+                            ConcurrencyStamp = "9",
+                            Name = "Broker Assistant",
+                            NormalizedName = "BROKER ASSISTANT"
                         });
                 });
 
@@ -4316,6 +4398,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("CreatorId")
                         .HasColumnType("uuid");
 
@@ -4359,24 +4444,122 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         new
                         {
                             Id = 1,
+                            Address = "Abbeleigh House",
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             HasSupplierFrameworkContractedRates = true,
                             IsSupplierInternal = true,
                             PackageTypeId = 1,
-                            SupplierName = "ABC Limited"
+                            SupplierName = "Abbeleigh House"
                         },
                         new
                         {
                             Id = 2,
+                            Address = "Abbey Care Complex",
                             CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                             DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             HasSupplierFrameworkContractedRates = true,
                             IsSupplierInternal = true,
                             PackageTypeId = 1,
-                            SupplierName = "XYZ Ltd"
+                            SupplierName = "Abbey Care Complex"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Acacia Lodge [Cedar Site 0]",
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            HasSupplierFrameworkContractedRates = true,
+                            IsSupplierInternal = true,
+                            PackageTypeId = 1,
+                            SupplierName = "Acacia Lodge"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "Hc-One Limited",
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            HasSupplierFrameworkContractedRates = true,
+                            IsSupplierInternal = true,
+                            PackageTypeId = 1,
+                            SupplierName = "Hc-One Limited"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Address = "Acorn Lodge",
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            HasSupplierFrameworkContractedRates = true,
+                            IsSupplierInternal = true,
+                            PackageTypeId = 1,
+                            SupplierName = "Acorn Lodge"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Address = "Albany Nursing Home",
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            HasSupplierFrameworkContractedRates = true,
+                            IsSupplierInternal = true,
+                            PackageTypeId = 1,
+                            SupplierName = "Albany Nursing Home"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Address = "Manor Farm Care Home",
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            HasSupplierFrameworkContractedRates = true,
+                            IsSupplierInternal = true,
+                            PackageTypeId = 1,
+                            SupplierName = "Manor Farm Care Home"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Address = "Four Seasons Health Care [Cedar Site 8] Lingfield Point",
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            HasSupplierFrameworkContractedRates = true,
+                            IsSupplierInternal = true,
+                            PackageTypeId = 1,
+                            SupplierName = "Four Seasons Health Care"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Address = "The Hornchurch Care Home",
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            HasSupplierFrameworkContractedRates = true,
+                            IsSupplierInternal = true,
+                            PackageTypeId = 1,
+                            SupplierName = "The Hornchurch Care Home"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Address = "Bupa Care Homes [Cedar Site 10] Wynne Road",
+                            CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                            DateCreated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            DateUpdated = new DateTimeOffset(new DateTime(2021, 5, 21, 9, 40, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
+                            HasSupplierFrameworkContractedRates = true,
+                            IsSupplierInternal = true,
+                            PackageTypeId = 1,
+                            SupplierName = "Bupa Care Homes"
                         });
                 });
 
@@ -4581,38 +4764,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            RoleId = new Guid("7335e791-1d08-437a-974e-809944d29bc6")
-                        },
-                        new
-                        {
-                            UserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            RoleId = new Guid("4defe6f2-09cf-43f2-8c1f-f4cad04a582d")
-                        },
-                        new
-                        {
-                            UserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                            RoleId = new Guid("97c46919-fd10-47f1-bcb9-fa6b513c4c83")
-                        });
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -4630,6 +4781,21 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.AppUserRole", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Role", "Role")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", "User")
+                        .WithMany("UserRoles")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge.CareChargeElement", b =>
@@ -5800,21 +5966,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
-                {
-                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")

@@ -130,6 +130,26 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<CarePackageBrokerageDomain>(input);
         }
 
+        public static CarePackageCoreResponse ToResponse(this CarePackageCoreDomain input)
+        {
+            return _mapper.Map<CarePackageCoreResponse>(input);
+        }
+
+        public static CarePackageCoreDomain ToDomain(this CarePackageCoreResponse input)
+        {
+            return _mapper.Map<CarePackageCoreDomain>(input);
+        }
+
+        public static IEnumerable<CarePackageCoreResponse> ToResponse(this IEnumerable<CarePackageCoreDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageCoreResponse>>(input);
+        }
+
+        public static IEnumerable<CarePackageCoreDomain> ToDomain(this IEnumerable<CarePackageCoreResponse> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageCoreDomain>>(input);
+        }
+
         public static CarePackageDetail ToEntity(this CarePackageDetailDomain input)
         {
             return _mapper.Map<CarePackageDetail>(input);
@@ -250,6 +270,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CarePackageSettingsDomain>>(input);
         }
 
+        public static CarePackageSummaryResponse ToResponse(this CarePackageSummaryDomain input)
+        {
+            return _mapper.Map<CarePackageSummaryResponse>(input);
+        }
+
+        public static CarePackageSummaryDomain ToDomain(this CarePackageSummaryResponse input)
+        {
+            return _mapper.Map<CarePackageSummaryDomain>(input);
+        }
+
         public static CarePackageSummaryReclaimsResponse ToResponse(this CarePackageSummaryReclaimsDomain input)
         {
             return _mapper.Map<CarePackageSummaryReclaimsResponse>(input);
@@ -280,6 +310,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<CarePackageUpdateDomain>(input);
         }
 
+        public static ClientsResponse ToResponse(this ClientsDomain input)
+        {
+            return _mapper.Map<ClientsResponse>(input);
+        }
+
+        public static ClientsDomain ToDomain(this ClientsResponse input)
+        {
+            return _mapper.Map<ClientsDomain>(input);
+        }
+
         public static ServiceUserBasicResponse ToResponse(this ServiceUserBasicDomain input)
         {
             return _mapper.Map<ServiceUserBasicResponse>(input);
@@ -308,6 +348,26 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static CarePackageForCreationDomain ToForCreationDomain(this CarePackageSettings input)
         {
             return _mapper.Map<CarePackageForCreationDomain>(input);
+        }
+
+        public static AppUserResponse ToResponse(this AppUserDomain input)
+        {
+            return _mapper.Map<AppUserResponse>(input);
+        }
+
+        public static AppUserDomain ToDomain(this AppUserResponse input)
+        {
+            return _mapper.Map<AppUserDomain>(input);
+        }
+
+        public static IEnumerable<AppUserResponse> ToResponse(this IEnumerable<AppUserDomain> input)
+        {
+            return _mapper.Map<IEnumerable<AppUserResponse>>(input);
+        }
+
+        public static IEnumerable<AppUserDomain> ToDomain(this IEnumerable<AppUserResponse> input)
+        {
+            return _mapper.Map<IEnumerable<AppUserDomain>>(input);
         }
 
         public static ServiceUserBasicDomain ToceUserBasicDomain(this Client input)

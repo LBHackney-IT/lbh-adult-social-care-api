@@ -79,15 +79,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             return Ok(package.ToResponse());
         }
 
-        /// <summary>Gets settings for a care package.</summary>
+        /// <summary>Gets core settings for a care package.</summary>
         /// <param name="carePackageId">The care package identifier.</param>
-        /// <returns>Care package settings if success</returns>
+        /// <returns>Core care package settings if success</returns>
         [ProducesResponseType(typeof(ApiException), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(CarePackageSettingsResponse), StatusCodes.Status200OK)]
-        [HttpGet("{carePackageId}/settings")]
-        public async Task<ActionResult<CarePackageSettingsResponse>> GetCarePackageSettings(Guid carePackageId)
+        [ProducesResponseType(typeof(CarePackageCoreResponse), StatusCodes.Status200OK)]
+        [HttpGet("{carePackageId}/core")]
+        public async Task<ActionResult<CarePackageCoreResponse>> GetCarePackageCore(Guid carePackageId)
         {
-            var res = await _getCarePackageUseCase.GetCarePackageSettingsAsync(carePackageId);
+            var res = await _getCarePackageUseCase.GetCarePackageCoreAsync(carePackageId);
             return Ok(res);
         }
 
@@ -99,6 +99,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         {
             var packageSchedulingOptions = _carePackageOptionsUseCase.GetCarePackageSchedulingOptions();
             return Ok(packageSchedulingOptions);
+        }
+
+        /// <summary>Gets care package status options.</summary>
+        /// <returns>All possible care package statuses</returns>
+        [ProducesResponseType(typeof(IEnumerable<CarePackageStatusOptionResponse>), StatusCodes.Status200OK)]
+        [HttpGet("package-status-options")]
+        public ActionResult<IEnumerable<CarePackageStatusOptionResponse>> GetCarePackageStatusOptions()
+        {
+            var packageStatusOptions = _carePackageOptionsUseCase.GetCarePackageStatusOptions();
+            return Ok(packageStatusOptions);
         }
 
         /// <summary>Updates the care package.</summary>
@@ -123,6 +133,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult> SubmitForApproval(Guid carePackageId, CarePackageSubmissionRequest request)
         {
@@ -140,7 +151,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         public async Task<ActionResult<CarePackageSummaryResponse>> GetSummary(Guid carePackageId)
         {
             var result = await _getCarePackageSummaryUseCase.ExecuteAsync(carePackageId);
-            return Ok(result);
+            return Ok(result.ToResponse());
         }
 
         /// <summary>Gets list of care packages for the broker view </summary>

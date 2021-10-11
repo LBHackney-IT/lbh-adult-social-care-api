@@ -18,7 +18,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
 
         Task<IEnumerable<CarePackageListItemDomain>> GetAllPackagesAsync();
 
-        Task<CarePackageSettingsDomain> GetCarePackageSettingsAsync(Guid carePackageId);
+        Task<CarePackageCoreDomain> GetCarePackageCoreAsync(Guid carePackageId);
 
         void Create(CarePackage newCarePackage);
 

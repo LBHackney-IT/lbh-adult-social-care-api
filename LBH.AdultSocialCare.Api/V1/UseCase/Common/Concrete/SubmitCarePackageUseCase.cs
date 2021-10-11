@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
@@ -28,6 +29,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                 .GetPackageAsync(packageId, PackageFields.None)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
+            // TODO: VK: Add validation for double submission
+
+            ValidatePackage(package);
+
             package.ApproverId = submissionInfo.ApproverId;
             package.Status = PackageStatus.SubmittedForApproval;
 
@@ -38,6 +43,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             });
 
             await _dbManager.SaveAsync();
+        }
+
+        private static void ValidatePackage(CarePackage package)
+        {
+            if (package.SupplierId is null)
+            {
+                throw new ApiException("Supplier must be assigned to a package before submitting");
+            }
         }
     }
 }

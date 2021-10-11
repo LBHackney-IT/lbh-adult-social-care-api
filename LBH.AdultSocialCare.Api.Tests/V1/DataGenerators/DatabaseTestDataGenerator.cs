@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 {
@@ -29,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
         public ResidentialCareGenerator ResidentialCare { get; }
         public CareChargeGenerator CareCharge { get; }
 
-        #endregion
+        #endregion Legacy
 
         public CarePackage CreateCarePackage(PackageType type = PackageType.ResidentialCare)
         {
@@ -38,7 +37,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             var carePackage = TestDataHelper.CreateCarePackage(
                 serviceUserId: serviceUser?.Id,
                 packageType: type,
-                status: PackageStatus.New);
+                status: PackageStatus.InProgress);
 
             carePackage.SupplierId = _context.Suppliers.FirstOrDefault()?.Id;
 
@@ -65,7 +64,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
                 CarePackageId = carePackageId,
                 HasRespiteCare = false,
                 HasDischargePackage = false,
-                IsImmediate = false,
+                HospitalAvoidance = false,
                 IsReEnablement = false,
                 IsS117Client = false
             };

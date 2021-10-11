@@ -8,6 +8,8 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
     [GenerateListMappingFor(typeof(BrokerPackageItemResponse))]
     public class BrokerPackageItemDomain
     {
+        public Guid PackageId { get; set; }
+        public Guid ServiceUserId { get; set; }
         public string ServiceUserName { get; set; }
         public DateTimeOffset DateOfBirth { get; set; }
         public string Address { get; set; }

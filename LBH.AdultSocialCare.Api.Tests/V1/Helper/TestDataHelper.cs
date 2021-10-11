@@ -38,7 +38,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.CarePackageId, f => carePackageId ?? f.Random.Guid())
                 .RuleFor(cp => cp.HasRespiteCare, f => f.Random.Bool())
                 .RuleFor(cp => cp.HasDischargePackage, f => f.Random.Bool())
-                .RuleFor(cp => cp.IsImmediate, f => f.Random.Bool())
+                .RuleFor(cp => cp.HospitalAvoidance, f => f.Random.Bool())
                 .RuleFor(cp => cp.IsReEnablement, f => f.Random.Bool())
                 .RuleFor(cp => cp.IsS117Client, f => f.Random.Bool());
         }
@@ -55,7 +55,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 PackageType = carePackage.PackageType,
                 HasRespiteCare = carePackageSettings.HasRespiteCare,
                 HasDischargePackage = carePackageSettings.HasDischargePackage,
-                IsImmediate = carePackageSettings.IsImmediate,
+                HospitalAvoidance = carePackageSettings.HospitalAvoidance,
                 IsReEnablement = carePackageSettings.IsReEnablement,
                 IsS117Client = carePackageSettings.IsS117Client
             };
@@ -72,7 +72,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 PackageScheduling = carePackage.PackageScheduling,
                 HasRespiteCare = carePackageSettings.HasRespiteCare,
                 HasDischargePackage = carePackageSettings.HasDischargePackage,
-                IsImmediate = carePackageSettings.IsImmediate,
+                HospitalAvoidance = carePackageSettings.HospitalAvoidance,
                 IsReEnablement = carePackageSettings.IsReEnablement,
                 IsS117Client = carePackageSettings.IsS117Client
             };

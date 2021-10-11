@@ -1,7 +1,6 @@
+using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using System;
 using System.Collections.Generic;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
 {
@@ -12,6 +11,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
 
         public string PackageType { get; set; }
         public string PrimarySupportReason { get; set; }
+        public string SchedulingPeriod { get; set; }
 
         public SupplierDomain Supplier { get; set; }
         public ClientsDomain ServiceUser { get; set; }

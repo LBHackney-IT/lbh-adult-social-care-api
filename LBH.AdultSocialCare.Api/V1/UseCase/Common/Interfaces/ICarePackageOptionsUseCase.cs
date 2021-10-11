@@ -6,5 +6,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
     public interface ICarePackageOptionsUseCase
     {
         IEnumerable<CarePackageSchedulingOptionResponse> GetCarePackageSchedulingOptions();
+
+        IEnumerable<CarePackageStatusOptionResponse> GetCarePackageStatusOptions();
     }
 }

@@ -17,6 +17,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// </summary>
         public string SupplierName { get; set; }
 
+        public string Address { get; set; }
+
         /// <summary>
         /// Gets or sets the Package Type Id
         /// </summary>

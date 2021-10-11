@@ -1,3 +1,4 @@
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Extensions;
@@ -29,10 +30,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         }
 
         [ProducesResponseType(typeof(SupplierResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesDefaultResponseType]
+        [ProducesResponseType(typeof(ApiException), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiException), StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
         public async Task<ActionResult<SupplierResponse>> CreateSupplier(
             SupplierCreationRequest supplierCreationRequest)
@@ -54,7 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         }
 
         [ProducesResponseType(typeof(IEnumerable<SupplierResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiException), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpGet]
         public async Task<ActionResult<PagedResponse<SupplierResponse>>> GetSupplierList([FromQuery] RequestParameters parameters, string supplierName)
@@ -62,6 +61,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             var result = await _getAllSupplierUseCase.GetAllAsync(parameters, supplierName).ConfigureAwait(false);
 
             Response.AddPaginationHeaders(result.PagingMetaData);
+
+            return Ok(result);
+        }
+
+        [ProducesResponseType(typeof(SupplierResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiException), StatusCodes.Status404NotFound)]
+        [HttpGet("{supplierId}")]
+        public async Task<ActionResult<SupplierResponse>> GetSingleSupplier(int supplierId)
+        {
+            var result = await _getAllSupplierUseCase.GetSingleAsync(supplierId);
 
             return Ok(result);
         }

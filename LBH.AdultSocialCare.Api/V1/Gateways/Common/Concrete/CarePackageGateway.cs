@@ -35,6 +35,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 .AsNoTracking()
                 .Select(cp => new BrokerPackageItemDomain
                 {
+                    PackageId = cp.Id,
+                    ServiceUserId = cp.ServiceUserId,
                     ServiceUserName =
                         $"{cp.ServiceUser.FirstName} {cp.ServiceUser.MiddleName ?? string.Empty} {cp.ServiceUser.LastName}",
                     DateOfBirth = cp.ServiceUser.DateOfBirth,
@@ -101,19 +103,20 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             }).ToListAsync();
         }
 
-        public async Task<CarePackageSettingsDomain> GetCarePackageSettingsAsync(Guid carePackageId)
+        public async Task<CarePackageCoreDomain> GetCarePackageCoreAsync(Guid carePackageId)
         {
             return await _dbContext.CarePackageSettings.Where(ps => ps.CarePackageId.Equals(carePackageId))
-                .Select(ps => new CarePackageSettingsDomain
+                .Select(ps => new CarePackageCoreDomain()
                 {
-                    Id = ps.Id,
                     CarePackageId = ps.CarePackageId,
+                    ServiceUserId = ps.Package.ServiceUserId,
                     PackageType = ps.Package.PackageType,
+                    PackageScheduling = ps.Package.PackageScheduling,
                     PrimarySupportReasonId = ps.Package.PrimarySupportReasonId,
                     PrimarySupportReasonName = ps.Package.PrimarySupportReason.PrimarySupportReasonName,
                     HasRespiteCare = ps.HasRespiteCare,
                     HasDischargePackage = ps.HasDischargePackage,
-                    IsImmediate = ps.IsImmediate,
+                    HospitalAvoidance = ps.HospitalAvoidance,
                     IsReEnablement = ps.IsReEnablement,
                     IsS117Client = ps.IsS117Client
                 }).SingleOrDefaultAsync();

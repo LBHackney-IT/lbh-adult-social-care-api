@@ -8,6 +8,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
 
         public string SupplierName { get; set; }
 
+        public string Address { get; set; }
+
         public int PackageTypeId { get; set; }
 
         public PackageResponse Package { get; set; }

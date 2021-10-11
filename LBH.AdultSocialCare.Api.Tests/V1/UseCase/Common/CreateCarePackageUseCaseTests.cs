@@ -76,8 +76,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 
         public static IEnumerable<object[]> InvalidCarePackageTestData()
         {
-            yield return new object[] { TestDataHelper.CarePackageCreationRequest(serviceUserId: Guid.Parse(UserConstants.DefaultApiUserId), packageType: PackageType.DayCare) };
-            yield return new object[] { TestDataHelper.CarePackageCreationRequest(serviceUserId: Guid.Parse(UserConstants.DefaultApiUserId), packageType: PackageType.HomeCare) };
+            yield return new object[] { TestDataHelper.CarePackageCreationRequest(serviceUserId: Guid.Parse(UserConstants.DefaultApiUserId), packageType: 0) };
+            yield return new object[] { TestDataHelper.CarePackageCreationRequest(serviceUserId: Guid.Parse(UserConstants.DefaultApiUserId), packageType: (PackageType) 123465) };
         }
     }
 }

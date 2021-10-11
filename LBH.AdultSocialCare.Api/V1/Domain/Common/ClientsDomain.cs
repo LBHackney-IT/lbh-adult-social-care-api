@@ -1,8 +1,12 @@
 using System;
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
     //TODO FK: change name to ServiceUserDomain after code clean up
+    [GenerateMappingFor(typeof(ClientsResponse))]
     public class ClientsDomain
     {
         /// <summary>
@@ -87,5 +91,9 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         /// Gets or sets the Date Updated
         /// </summary>
         public DateTimeOffset? DateUpdated { get; set; }
+
+        public string FullName => $"{FirstName} {MiddleName ?? string.Empty} {LastName}";
+
+        public int Age => DateOfBirth.GetAge(DateTime.Now);
     }
 }
