@@ -38,11 +38,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
             package.SupplierId = brokerageInfo.SupplierId;
 
-            AddCoreCost(package, brokerageInfo);
+            var coreCost = AddCoreCost(package, brokerageInfo);
             RemoveDetails(package, brokerageInfo.Details);
 
             foreach (var requestedDetail in brokerageInfo.Details)
             {
+                ValidateDetail(requestedDetail, coreCost);
+
                 if (requestedDetail.Id is null)
                 {
                     AddDetail(package, requestedDetail);
@@ -56,7 +58,22 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             await _databaseManager.SaveAsync();
         }
 
-        private static void AddCoreCost(CarePackage package, CarePackageBrokerageDomain brokerageInfo)
+        private static void ValidateDetail(CarePackageDetailDomain requestedDetail, CarePackageDetail coreCost)
+        {
+            if (requestedDetail.StartDate.Date < coreCost.StartDate.Date ||
+                requestedDetail.StartDate.Date > coreCost.EndDate?.Date)
+            {
+                throw new ApiException($"Start Date of {requestedDetail.Type.GetDisplayName()} should be within range package of package start - end dates");
+            }
+
+            if (requestedDetail.EndDate?.Date > coreCost.EndDate?.Date ||
+                requestedDetail.EndDate?.Date < coreCost.StartDate.Date)
+            {
+                throw new ApiException($"End Date of {requestedDetail.Type.GetDisplayName()} should be within range package of package start - end dates");
+            }
+        }
+
+        private static CarePackageDetail AddCoreCost(CarePackage package, CarePackageBrokerageDomain brokerageInfo)
         {
             var coreCostDetail = package.Details.FirstOrDefault(d => d.Type is PackageDetailType.CoreCost);
 
@@ -71,6 +88,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             coreCostDetail.CostPeriod = PaymentPeriod.Weekly;
             coreCostDetail.StartDate = brokerageInfo.StartDate;
             coreCostDetail.EndDate = brokerageInfo.EndDate;
+
+            return coreCostDetail;
         }
 
         private static void AddDetail(CarePackage package, CarePackageDetailDomain requestedDetail)
