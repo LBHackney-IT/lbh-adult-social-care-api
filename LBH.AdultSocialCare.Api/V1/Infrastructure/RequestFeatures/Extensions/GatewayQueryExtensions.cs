@@ -108,5 +108,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
 
         public static IQueryable<User> FilterAppUsers(this IQueryable<User> users, string searchTerm = "") =>
             users.Where(u => (string.IsNullOrEmpty(searchTerm) || (EF.Functions.ILike(u.Name, $"%{searchTerm}%") || EF.Functions.ILike(u.Email, $"%{searchTerm}%"))));
+
+        public static IQueryable<CarePackage> FilterCareChargeCarePackageList(this IQueryable<CarePackage> carePackages, string status, string firstName, string lastName,
+            DateTime? dateOfBirth, string postCode, int? mosaicId, DateTimeOffset? modifiedAt, Guid? modifiedBy) =>
+            carePackages.Where(c =>
+                (firstName != null ? c.ServiceUser.FirstName.ToLower().Contains(firstName.ToLower()) : c.Equals(c)) &&
+                (lastName != null ? c.ServiceUser.LastName.ToLower().Contains(lastName.ToLower()) : c.Equals(c)) &&
+                (dateOfBirth.Equals(null) || c.ServiceUser.DateOfBirth == dateOfBirth) &&
+                (postCode != null ? c.ServiceUser.PostCode.ToLower().Contains(postCode.ToLower()) : c.Equals(c)) &&
+                (mosaicId.Equals(null) || c.ServiceUser.HackneyId == mosaicId) &&
+                (modifiedBy.Equals(null) || c.UpdaterId == modifiedBy) &&
+                (modifiedAt.Equals(null) || c.DateUpdated == modifiedAt) &&
+                (status != null ? c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge) == (status == "Existing") : c.Equals(c)));
     }
 }
