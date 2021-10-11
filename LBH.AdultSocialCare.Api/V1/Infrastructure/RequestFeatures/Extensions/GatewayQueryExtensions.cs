@@ -99,8 +99,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
             clientsQuery.Where(s => String.IsNullOrEmpty(name)
                                     || s.SupplierName.ToLower().Contains(name.ToLower()));
 
-        public static IQueryable<CarePackage> FilterBrokerViewPackages(this IQueryable<CarePackage> packages, Guid? serviceUserId, PackageStatus? status, Guid? brokerId, DateTimeOffset? fromDate, DateTimeOffset? toDate) =>
+        public static IQueryable<CarePackage> FilterBrokerViewPackages(this IQueryable<CarePackage> packages, Guid? serviceUserId, string serviceUserName, PackageStatus? status, Guid? brokerId, DateTimeOffset? fromDate, DateTimeOffset? toDate) =>
             packages.Where(package => (serviceUserId == null || package.ServiceUserId.Equals(serviceUserId))
+                                && (String.IsNullOrEmpty(serviceUserName)
+                                    || package.ServiceUser.FirstName.ToLower().Contains(serviceUserName.ToLower())
+                                    || package.ServiceUser.LastName.ToLower().Contains(serviceUserName.ToLower()))
                                 && (status == null || package.Status.Equals(status))
                                 && (brokerId == null || package.BrokerId.Equals(brokerId))
                                 && (fromDate == null || package.DateCreated >= fromDate)
