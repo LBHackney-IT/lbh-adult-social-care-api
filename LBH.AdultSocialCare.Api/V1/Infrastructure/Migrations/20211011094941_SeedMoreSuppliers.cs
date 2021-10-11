@@ -7,6 +7,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql(@"UPDATE ""CarePackages"" SET ""SupplierId"" = 1 WHERE ""SupplierId"" > 2;
+            DELETE FROM ""Suppliers"" WHERE ""Id"" > 2;");
+
             migrationBuilder.UpdateData(
                 table: "Suppliers",
                 keyColumn: "Id",
