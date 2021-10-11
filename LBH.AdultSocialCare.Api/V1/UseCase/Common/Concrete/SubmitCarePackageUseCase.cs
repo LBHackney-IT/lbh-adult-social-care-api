@@ -29,6 +29,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                 .GetPackageAsync(packageId, PackageFields.None)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
+            // TODO: VK: Add validation for double submission
+
             ValidatePackage(package);
 
             package.ApproverId = submissionInfo.ApproverId;
