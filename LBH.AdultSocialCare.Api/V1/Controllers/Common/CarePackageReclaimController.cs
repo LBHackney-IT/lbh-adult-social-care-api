@@ -8,9 +8,11 @@ using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
@@ -26,18 +28,24 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         private readonly IGetCarePackageReclaimUseCase _getCarePackageReclaimUseCase;
         private readonly IGetFundedNursingCarePriceUseCase _getFundedNursingCarePriceUseCase;
         private readonly ICareChargeUseCase _getCareChargeUseCase;
+        private readonly IGetCareChargePackagesUseCase _getCareChargePackagesUseCase;
+        private readonly IGetSinglePackageCareChargeUseCase _getSinglePackageCareChargeUseCase;
 
         public CarePackageReclaimController(ICreateCarePackageReclaimUseCase createCarePackageReclaimUseCase,
             IUpdateCarePackageReclaimUseCase updateCarePackageReclaimUseCase,
             IGetCarePackageReclaimUseCase getCarePackageReclaimUseCase,
             IGetFundedNursingCarePriceUseCase getFundedNursingCarePriceUseCase,
-            ICareChargeUseCase getCareChargeUseCase)
+            ICareChargeUseCase getCareChargeUseCase,
+            IGetCareChargePackagesUseCase getCareChargePackagesUseCase,
+            IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase)
         {
             _createCarePackageReclaimUseCase = createCarePackageReclaimUseCase;
             _updateCarePackageReclaimUseCase = updateCarePackageReclaimUseCase;
             _getCarePackageReclaimUseCase = getCarePackageReclaimUseCase;
             _getFundedNursingCarePriceUseCase = getFundedNursingCarePriceUseCase;
             _getCareChargeUseCase = getCareChargeUseCase;
+            _getCareChargePackagesUseCase = getCareChargePackagesUseCase;
+            _getSinglePackageCareChargeUseCase = getSinglePackageCareChargeUseCase;
         }
 
         /// <summary>Creates a new funded nursing care reclaim.</summary>
@@ -151,6 +159,39 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         {
             var provisionalAmount = await _getCareChargeUseCase.GetUsingServiceUserIdAsync(serviceUserId);
             return Ok(provisionalAmount.Amount);
+        }
+
+        /// <summary>
+        /// Gets the paginated care package list with care charge information.
+        /// </summary>
+        /// <param name="parameters">Parameters to filter list of care packages.</param>
+        /// <returns>List of care packages with care charge status</returns>
+        [HttpGet("care-charges/packages")]
+        [ProducesResponseType(typeof(PagedCareChargePackagesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<PagedResponse<CareChargePackagesResponse>>> GetCareChargePackages([FromQuery] CareChargePackagesParameters parameters)
+        {
+            var result = await _getCareChargePackagesUseCase.GetCareChargePackages(parameters).ConfigureAwait(false);
+            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Gets the single package care charge detail.
+        /// </summary>
+        /// <param name="carePackageId">The care package id.</param>
+        /// <returns>Details of care charges with care package information.</returns>
+        /// <response code="200">When care package has care charges</response>
+        /// <response code="404">When care package is not found</response>
+        [HttpGet("care-charges/detail")]
+        [ProducesResponseType(typeof(SinglePackageCareChargeResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<SinglePackageCareChargeResponse>> GetSinglePackageCareCharge(Guid carePackageId)
+        {
+            var singlePackageCareCharge = await _getSinglePackageCareChargeUseCase.GetSinglePackageCareCharge(carePackageId).ConfigureAwait(false);
+            return Ok(singlePackageCareCharge);
         }
     }
 }

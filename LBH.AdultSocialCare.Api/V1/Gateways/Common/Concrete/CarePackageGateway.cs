@@ -109,6 +109,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 .Select(ps => new CarePackageCoreDomain()
                 {
                     CarePackageId = ps.CarePackageId,
+                    ServiceUserId = ps.Package.ServiceUserId,
                     PackageType = ps.Package.PackageType,
                     PackageScheduling = ps.Package.PackageScheduling,
                     PrimarySupportReasonId = ps.Package.PrimarySupportReasonId,
