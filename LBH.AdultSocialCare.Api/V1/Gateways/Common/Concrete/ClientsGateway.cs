@@ -37,17 +37,24 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
         public async Task<PagedList<ClientsDomain>> ListAsync(RequestParameters parameters, string clientName)
         {
-            var clientsCount = await _databaseContext.Clients
-                .FilterByName(clientName)
-                .CountAsync().ConfigureAwait(false);
+            try
+            {
+                var clientsCount = await _databaseContext.Clients
+                    .FilterByName(clientName)
+                    .CountAsync().ConfigureAwait(false);
 
-            var clientsPage = await _databaseContext.Clients
-                .FilterByName(clientName)
-                .GetPage(parameters.PageNumber, parameters.PageSize)
-                .ToListAsync().ConfigureAwait(false);
+                var clientsPage = await _databaseContext.Clients
+                    .FilterByName(clientName)
+                    .GetPage(parameters.PageNumber, parameters.PageSize)
+                    .ToListAsync().ConfigureAwait(false);
 
-            return PagedList<ClientsDomain>
-                .ToPagedList(clientsPage?.ToDomain(), clientsCount, parameters.PageNumber, parameters.PageSize);
+                return PagedList<ClientsDomain>
+                    .ToPagedList(clientsPage?.ToDomain(), clientsCount, parameters.PageNumber, parameters.PageSize);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"{ex.Message}");
+            }
         }
 
         public async Task<IEnumerable<ClientMinimalDomain>> GetClientMinimalInList(List<Guid> clientIds)
