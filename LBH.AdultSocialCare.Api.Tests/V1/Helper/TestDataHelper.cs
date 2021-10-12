@@ -74,7 +74,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 HasDischargePackage = carePackageSettings.HasDischargePackage,
                 HospitalAvoidance = carePackageSettings.HospitalAvoidance,
                 IsReEnablement = carePackageSettings.IsReEnablement,
-                IsS117Client = carePackageSettings.IsS117Client
+                IsS117Client = carePackageSettings.IsS117Client,
+                PackageType = carePackage.PackageType
             };
         }
 

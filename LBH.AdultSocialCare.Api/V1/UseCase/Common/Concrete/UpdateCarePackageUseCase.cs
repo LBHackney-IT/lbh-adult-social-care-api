@@ -33,6 +33,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
         public async Task<CarePackagePlainResponse> UpdateAsync(Guid carePackageId, CarePackageUpdateDomain carePackageUpdateDomain)
         {
             var package = await _carePackageGateway.GetPackagePlainAsync(carePackageId, true).EnsureExistsAsync($"Care package with id {carePackageId} not found");
+            var packageSettings = await _carePackageSettings.GetPackageSettingsPlainAsync(carePackageId, true)
+                .EnsureExistsAsync($"Package settings for package with id {carePackageId} not found");
 
             var allowedPackageStatuses = new[] { PackageStatus.New, PackageStatus.InProgress };
 
@@ -47,9 +49,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                 // Delete funded nursing care if added to package
                 await _carePackageGateway.DeleteReclaimsForPackage(carePackageId, ReclaimType.Fnc);
             }
-
-            var packageSettings = await _carePackageSettings.GetPackageSettingsPlainAsync(carePackageId, true)
-                .EnsureExistsAsync($"Package settings for package with id {carePackageId} not found");
 
             // Update values
             _mapper.Map(carePackageUpdateDomain, package);

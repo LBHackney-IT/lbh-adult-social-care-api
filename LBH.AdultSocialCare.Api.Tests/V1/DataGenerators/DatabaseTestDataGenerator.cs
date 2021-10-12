@@ -30,14 +30,14 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 
         #endregion Legacy
 
-        public CarePackage CreateCarePackage(PackageType type = PackageType.ResidentialCare)
+        public CarePackage CreateCarePackage(PackageType type = PackageType.ResidentialCare, PackageStatus status = PackageStatus.New)
         {
             var serviceUser = _context.Clients.FirstOrDefault();
 
             var carePackage = TestDataHelper.CreateCarePackage(
                 serviceUserId: serviceUser?.Id,
                 packageType: type,
-                status: PackageStatus.InProgress);
+                status: status);
 
             carePackage.SupplierId = _context.Suppliers.FirstOrDefault()?.Id;
 
