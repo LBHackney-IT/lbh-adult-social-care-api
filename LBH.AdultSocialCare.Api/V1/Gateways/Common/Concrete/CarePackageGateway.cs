@@ -1,4 +1,5 @@
 using Common.Extensions;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
@@ -125,6 +126,13 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
         public void Create(CarePackage newCarePackage)
         {
             _dbContext.CarePackages.Add(newCarePackage);
+        }
+
+        public async Task DeleteReclaimsForPackage(Guid packageId, ReclaimType reclaimType)
+        {
+            var reclaims = await _dbContext.CarePackageReclaims
+                .Where(pr => pr.CarePackageId.Equals(packageId) && pr.Type.Equals(reclaimType)).ToListAsync();
+            _dbContext.CarePackageReclaims.RemoveRange(reclaims);
         }
 
         public async Task<List<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset dateTo)
