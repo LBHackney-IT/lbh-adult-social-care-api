@@ -20,5 +20,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 
         public bool IsS117Client { get; set; }
         public PackageScheduling PackageScheduling { get; set; }
+        public PackageType PackageType { get; set; }
     }
 }

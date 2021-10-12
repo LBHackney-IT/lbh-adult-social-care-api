@@ -98,8 +98,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
 
             Assert.Equal(HttpStatusCode.OK, response.Message.StatusCode);
             response.Content.Id.Should().Be(carePackage.Id);
-            response.Content.PackageType.Should().Be((int) carePackage.PackageType);
-            response.Content.Status.Should().Be(carePackage.Status);
+            response.Content.PackageType.Should().Be((int) carePackageUpdateRequest.PackageType);
+            response.Content.Status.Should().Be(PackageStatus.InProgress);
 
             // Check package settings updated
             Assert.NotNull(packageSettingsEntity);

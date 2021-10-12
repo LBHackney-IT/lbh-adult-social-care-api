@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
@@ -21,6 +22,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
         Task<CarePackageCoreDomain> GetCarePackageCoreAsync(Guid carePackageId);
 
         void Create(CarePackage newCarePackage);
+
+        Task DeleteReclaimsForPackage(Guid packageId, ReclaimType reclaimType);
 
         Task<List<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset dateTo);
 
