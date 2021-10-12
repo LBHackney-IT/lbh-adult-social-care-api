@@ -48,8 +48,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                     .GetPage(parameters.PageNumber, parameters.PageSize)
                     .ToListAsync().ConfigureAwait(false);
 
-               return PagedList<ClientsDomain>
-                   .ToPagedList(clientsPage?.ToDomain(), clientsCount, parameters.PageNumber, parameters.PageSize);
+                return PagedList<ClientsDomain>
+                    .ToPagedList(clientsPage?.ToDomain(), clientsCount, parameters.PageNumber, parameters.PageSize);
             }
             catch (Exception ex)
             {
