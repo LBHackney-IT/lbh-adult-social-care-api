@@ -2,19 +2,6 @@ using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.DayCarePackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCarePackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -59,74 +46,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<CarePackageReclaim> CarePackageReclaims { get; set; }
         public DbSet<CarePackageSchedulingOption> CarePackageSchedulingOptions { get; set; }
 
-        public DbSet<DayCarePackage> DayCarePackages { get; set; }
-        public DbSet<EscortPackage> EscortPackages { get; set; }
-        public DbSet<TransportPackage> TransportPackages { get; set; }
-        public DbSet<TransportEscortPackage> TransportEscortPackages { get; set; }
-        public DbSet<DayCareBrokerageInfo> DayCareBrokerageInfo { get; set; }
-        public DbSet<DayCarePackageOpportunity> DayCarePackageOpportunities { get; set; }
-        public DbSet<DayCarePackageStatus> DayCarePackageStatuses { get; set; }
-        public DbSet<DayCareApprovalHistory> DayCareApprovalHistory { get; set; }
-        public DbSet<Package> Packages { get; set; }
-        public DbSet<TimeSlotShifts> TimeSlotShifts { get; set; }
-        public DbSet<HomeCarePackage> HomeCarePackage { get; set; }
-        public DbSet<HomeCareServiceType> HomeCareServiceTypes { get; set; }
-        public DbSet<HomeCareServiceTypeMinutes> HomeCareServiceTypeMinutes { get; set; }
-        public DbSet<HomeCarePackageSlots> HomeCarePackageSlots { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<PackageStatusOption> PackageStatuses { get; set; }
-        public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
-        public DbSet<ResidentialCarePackage> ResidentialCarePackages { get; set; }
-        public DbSet<NursingCarePackage> NursingCarePackages { get; set; }
-        public DbSet<OpportunityLengthOption> OpportunityLengthOptions { get; set; }
-        public DbSet<OpportunityTimesPerMonthOption> OpportunityTimesPerMonthOptions { get; set; }
-        public DbSet<NursingCareAdditionalNeed> NursingCareAdditionalNeeds { get; set; }
-        public DbSet<ResidentialCareAdditionalNeed> ResidentialCareAdditionalNeeds { get; set; }
-        public DbSet<HomeCarePackageCost> HomeCarePackageCosts { get; set; }
-        public DbSet<TypeOfNursingCareHome> TypesOfNursingCareHomes { get; set; }
-        public DbSet<TypeOfResidentialCareHome> TypesOfResidentialCareHomes { get; set; }
-        public DbSet<NursingCareTypeOfStayOption> NursingCareTypeOfStayOptions { get; set; }
-        public DbSet<ResidentialCareTypeOfStayOption> ResidentialCareTypeOfStayOptions { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
-        public DbSet<HomeCareSupplierCost> HomeCareSupplierCosts { get; set; }
-        public DbSet<Stage> PackageStages { get; set; }
-        public DbSet<HomeCareStage> HomeCareStages { get; set; }
-        public DbSet<CarerType> CarerTypes { get; set; }
-        public DbSet<HomeCareApprovalHistory> HomeCareApprovalHistories { get; set; }
-        public DbSet<NursingCareApprovalHistory> NursingCareApprovalHistories { get; set; }
-        public DbSet<ResidentialCareApprovalHistory> ResidentialCareApprovalHistories { get; set; }
-        public DbSet<HomeCareRequestMoreInformation> HomeCareRequestMoreInformations { get; set; }
-        public DbSet<DayCareRequestMoreInformation> DayCareRequestMoreInformations { get; set; }
-        public DbSet<ResidentialCareRequestMoreInformation> ResidentialCareRequestMoreInformations { get; set; }
-        public DbSet<NursingCareRequestMoreInformation> NursingCareRequestMoreInformations { get; set; }
-        public DbSet<DayCareCollege> DayCareColleges { get; set; }
-        public DbSet<HomeCarePackageReclaim> HomeCarePackageReclaims { get; set; }
-        public DbSet<ReclaimAmountOption> ReclaimAmountOptions { get; set; }
-        public DbSet<ReclaimCategory> ReclaimCategories { get; set; }
-        public DbSet<ReclaimFrom> ReclaimFroms { get; set; }
-        public DbSet<DayCarePackageReclaim> DayCarePackageReclaims { get; set; }
-        public DbSet<NursingCarePackageReclaim> NursingCarePackageReclaims { get; set; }
-        public DbSet<ResidentialCarePackageReclaim> ResidentialCarePackageReclaims { get; set; }
-        public DbSet<NursingCareBrokerageInfo> NursingCareBrokerageInfos { get; set; }
-        public DbSet<ResidentialCareBrokerageInfo> ResidentialCareBrokerageInfos { get; set; }
         public DbSet<PrimarySupportReason> PrimarySupportReasons { get; set; }
-        public DbSet<NursingCareAdditionalNeedsCost> NursingCareAdditionalNeedsCosts { get; set; }
-        public DbSet<AdditionalNeedsPaymentType> AdditionalNeedsPaymentTypes { get; set; }
-        public DbSet<ResidentialCareAdditionalNeedsCost> ResidentialCareAdditionalNeedsCosts { get; set; }
 
-        public DbSet<PackageCostClaimer> PackageCostClaimers { get; set; }
-        public DbSet<FundedNursingCareCollector> FundedNursingCareCollectors { get; set; }
         public DbSet<FundedNursingCarePrice> FundedNursingCarePrices { get; set; }
-        public DbSet<FundedNursingCare> FundedNursingCares { get; set; }
-        public DbSet<CareChargeStatus> CareChargeStatuses { get; set; }
-        public DbSet<CareChargeType> CareChargeTypes { get; set; }
         public DbSet<ProvisionalCareChargeAmount> ProvisionalCareChargeAmounts { get; set; }
-        public DbSet<PackageCareCharge> PackageCareCharges { get; set; }
-        public DbSet<CareChargeElement> CareChargeElements { get; set; }
 
-        public DbSet<InvoiceCreditNote> InvoiceCreditNotes { get; set; }
-        public DbSet<InvoiceItemPriceEffect> InvoiceItemPriceEffects { get; set; }
-        public DbSet<InvoiceNoteChargeType> InvoiceNoteChargeTypes { get; set; }
         public DbSet<CarePackageHistory> CarePackageHistories { get; set; }
 
         #region CustomFunctions
@@ -145,32 +72,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             #region Database Seeds
 
-            // Seed term time consideration options
-            modelBuilder.ApplyConfiguration(new TermTimeConsiderationOptionsSeed());
-
-            // Seed day care how long options
-            modelBuilder.ApplyConfiguration(new OpportunityLengthOptionsSeed());
-
-            // Seed day care how many times per month options
-            modelBuilder.ApplyConfiguration(new OpportunityTimesPerMonthOptionsSeed());
-
-            // Seed home care service types
-            modelBuilder.ApplyConfiguration(new HomeCareServiceTypesSeed());
-            modelBuilder.ApplyConfiguration(new HomeCareServiceTypeMinutesSeed());
-
-            // Seed home care time slot shifts
-            modelBuilder.ApplyConfiguration(new TimeSlotShiftsSeed());
             // Seed package status types
             modelBuilder.ApplyConfiguration(new PackageStatusSeed());
-
-            // Seed package types
-            modelBuilder.ApplyConfiguration(new PackageTypesSeed());
-
-            // Seed Type Of Nursing Care Home
-            modelBuilder.ApplyConfiguration(new TypeOfNursingCareHomeSeed());
-
-            // Seed Type Of Residential Care Home
-            modelBuilder.ApplyConfiguration(new TypeOfResidentialCareHomeSeed());
 
             // Seed User
             modelBuilder.ApplyConfiguration(new UserSeed());
@@ -184,55 +87,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed Client
             modelBuilder.ApplyConfiguration(new ClientSeed());
 
-            // Seed NursingCareTypeOfStayOptionSeed
-            modelBuilder.ApplyConfiguration(new NursingCareTypeOfStayOptionSeed());
-
-            // Seed ResidentialCareTypeOfStayOptionSeed
-            modelBuilder.ApplyConfiguration(new ResidentialCareTypeOfStayOptionSeed());
-
             // Seed Supplier
             modelBuilder.ApplyConfiguration(new SupplierSeed());
-
-            // Seed PackageStages
-            modelBuilder.ApplyConfiguration(new StageSeed());
-
-            // Seed HomeCareStages
-            modelBuilder.ApplyConfiguration(new HomeCareStageSeed());
-
-            // Seed CarerType
-            modelBuilder.ApplyConfiguration(new CarerTypeSeed());
-
-            // Seed day care package status
-            modelBuilder.ApplyConfiguration(new DayCarePackageStatusSeed());
-
-            // Seed package reclaim amount option
-            modelBuilder.ApplyConfiguration(new PackageReclaimAmountOptionSeed());
-
-            // Seed package reclaim category
-            modelBuilder.ApplyConfiguration(new PackageReclaimCategorySeed());
-
-            // Seed package reclaim from
-            modelBuilder.ApplyConfiguration(new PackageReclaimFromSeed());
 
             // Seed primary support reason
             modelBuilder.ApplyConfiguration(new PrimarySupportReasonSeed());
 
-            // Seed additional needs payment type
-            modelBuilder.ApplyConfiguration(new AdditionalNeedsPaymentTypeSeed());
-
-            // Seed FNC and reclaims-related constants
-            modelBuilder.ApplyConfiguration(new FundedNursingCareCollectorsSeed());
             modelBuilder.ApplyConfiguration(new FundedNursingCarePriceSeed());
-            modelBuilder.ApplyConfiguration(new PackageCostClaimersSeed());
 
             // Seed Care Charges
-            modelBuilder.ApplyConfiguration(new CareChargeStatusSeed());
-            modelBuilder.ApplyConfiguration(new CareChargeTypeSeed());
             modelBuilder.ApplyConfiguration(new ProvisionalCareChargeAmountSeed());
-
-            // Seed care charges helpers
-            modelBuilder.ApplyConfiguration(new InvoiceItemPriceEffectSeed());
-            modelBuilder.ApplyConfiguration(new InvoiceNoteChargeTypeSeed());
 
             // Seed care package lookups
             modelBuilder.ApplyConfiguration(new CarePackageSchedulingOptionsSeed());
@@ -248,120 +112,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 .HasName("comparedates");
 
             #endregion DB Functions
-
-            // Home care
-            modelBuilder.Entity<HomeCareServiceType>().HasMany(item => item.Minutes);
-
-            modelBuilder.Entity<OpportunityLengthOption>(entity =>
-            {
-                entity.HasKey(e => e.OpportunityLengthOptionId);
-
-                entity.HasIndex(e => e.OptionName).IsUnique();
-            });
-
-            modelBuilder.Entity<TermTimeConsiderationOption>(entity =>
-            {
-                entity.HasIndex(e => e.OptionName).IsUnique();
-            });
-
-            modelBuilder.Entity<OpportunityTimesPerMonthOption>(entity =>
-            {
-                entity.HasKey(e => e.OpportunityTimePerMonthOptionId);
-
-                entity.HasIndex(e => e.OptionName).IsUnique();
-            });
-
-            modelBuilder.Entity<DayCarePackage>(entity =>
-            {
-                entity.HasOne(d => d.Status)
-                    .WithMany()
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-
-                entity.HasOne(a => a.DayCareBrokerageInfo)
-                    .WithOne(b => b.DayCarePackage)
-                    .HasForeignKey<DayCareBrokerageInfo>(b => b.DayCarePackageId);
-            });
-
-            modelBuilder.Entity<NursingCarePackage>(entity =>
-            {
-                entity.HasOne(n => n.Status)
-                    .WithMany()
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-
-                entity.HasOne(a => a.NursingCareBrokerageInfo)
-                    .WithOne(b => b.NursingCarePackage)
-                    .HasForeignKey<NursingCareBrokerageInfo>(b => b.NursingCarePackageId);
-
-                entity.HasOne(a => a.FundedNursingCare)
-                    .WithOne(b => b.NursingCarePackage)
-                    .HasForeignKey<FundedNursingCare>(b => b.NursingCarePackageId);
-            });
-
-            modelBuilder.Entity<HomeCarePackage>(entity =>
-            {
-                entity.HasOne(h => h.Status)
-                    .WithMany()
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-            });
-
-            modelBuilder.Entity<ResidentialCarePackage>(entity =>
-            {
-                entity.HasOne(r => r.Status)
-                    .WithMany()
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-            });
-
-            modelBuilder.Entity<NursingCareAdditionalNeed>(entity =>
-            {
-                entity.HasOne(n => n.NursingCarePackage)
-                    .WithMany(n => n.NursingCareAdditionalNeeds)
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-            });
-
-            modelBuilder.Entity<ResidentialCareAdditionalNeed>(entity =>
-            {
-                entity.HasOne(r => r.ResidentialCarePackage)
-                    .WithMany(r => r.ResidentialCareAdditionalNeeds)
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-            });
-
-            modelBuilder.Entity<DayCareApprovalHistory>(entity =>
-            {
-                entity.HasOne(r => r.DayCarePackage)
-                    .WithMany(da => da.DayCareApprovalHistories)
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-
-                entity.HasOne(r => r.PackageStatus)
-                    .WithMany()
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-            });
-
-            modelBuilder.Entity<DayCarePackageStatus>(entity =>
-            {
-                entity.HasIndex(e => new { e.SequenceNumber, e.Stage, e.PackageAction })
-                    .IsUnique();
-            });
-
-            modelBuilder.Entity<AppUserRole>(entity =>
-            {
-                entity.HasOne(d => d.User)
-                    .WithMany(p => p.UserRoles)
-                    .HasForeignKey(d => d.UserId)
-                    .OnDelete(DeleteBehavior.Cascade);
-
-                entity.HasOne(d => d.Role)
-                    .WithMany(p => p.UserRoles)
-                    .HasForeignKey(d => d.RoleId)
-                    .OnDelete(DeleteBehavior.Cascade);
-            });
 
             #endregion Entity Config
 

@@ -10,7 +10,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
@@ -167,7 +166,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         /// <param name="parameters">Parameters to filter list of care packages.</param>
         /// <returns>List of care packages with care charge status</returns>
         [HttpGet("care-charges/packages")]
-        [ProducesResponseType(typeof(PagedCareChargePackagesResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedResponse<CareChargePackagesResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<PagedResponse<CareChargePackagesResponse>>> GetCareChargePackages([FromQuery] CareChargePackagesParameters parameters)

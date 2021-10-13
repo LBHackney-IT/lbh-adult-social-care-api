@@ -9,18 +9,9 @@ using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.Core.Invoicing;
-using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
-using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 {

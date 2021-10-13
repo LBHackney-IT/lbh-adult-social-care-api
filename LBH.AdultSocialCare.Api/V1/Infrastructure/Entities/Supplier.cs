@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 {
@@ -19,16 +18,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 
         public string Address { get; set; }
 
+        // TODO: VK: Remove or replace with PackageType enum
         /// <summary>
         /// Gets or sets the Package Type Id
         /// </summary>
         public int PackageTypeId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Package Type Id
-        /// </summary>
-        [ForeignKey(nameof(PackageTypeId))]
-        public Package Package { get; set; }
 
         /// <summary>
         /// Gets or sets the Is Supplier Internal
@@ -39,16 +33,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
         /// Gets or sets the Has Supplier Framework Contracted Rates
         /// </summary>
         public bool HasSupplierFrameworkContractedRates { get; set; }
-
-        /// <summary>
-        /// Gets or sets identifier of default Funded Nursing Care Collector
-        /// </summary>
-        public int? FundedNursingCareCollectorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets a reference to the default Funded Nursing Care Collector instance
-        /// </summary>
-        [ForeignKey(nameof(FundedNursingCareCollectorId))]
-        public FundedNursingCareCollector FundedNursingCareCollector { get; set; }
     }
 }
