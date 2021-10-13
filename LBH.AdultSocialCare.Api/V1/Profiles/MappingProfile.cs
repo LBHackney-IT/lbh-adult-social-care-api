@@ -2,8 +2,6 @@ using AutoMapper;
 using HttpServices.Models.Requests;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
@@ -236,13 +234,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #endregion Clients
 
-            #region AdditionalNeedsPaymentType
-
-            CreateMap<AdditionalNeedsPaymentType, AdditionalNeedsPaymentTypeDomain>();
-            CreateMap<AdditionalNeedsPaymentTypeDomain, AdditionalNeedsPaymentTypeResponse>();
-
-            #endregion AdditionalNeedsPaymentType
-
             #region Funded Nursing Care
 
             CreateMap<FundedNursingCarePrice, FundedNursingCarePriceDomain>();
@@ -260,17 +251,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CareChargeElement, CareChargeElementDomain>();
 
             #endregion Care Charges
-
-            #region Invoicing
-
-            CreateMap<ResidentialCareBrokerageInfo, BrokerageInfo>()
-                .ForMember(d => d.Core, opt => opt.MapFrom(s => s.ResidentialCore))
-                .ForMember(d => d.AdditionalNeedsCosts, opt => opt.MapFrom(s => s.ResidentialCareAdditionalNeedsCosts));
-
-            CreateMap<ResidentialCareAdditionalNeedsCost, AdditionalNeedsCost>()
-                .ForMember(d => d.Cost, opt => opt.MapFrom(s => s.AdditionalNeedsCost));
-
-            #endregion Invoicing
 
             #region CarePackageReclaim
 

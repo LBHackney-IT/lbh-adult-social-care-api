@@ -2,7 +2,6 @@ using AutoMapper;
 using System;
 using System.Collections.Generic;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
@@ -20,37 +19,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             _mapper = mapper;
         }
-
-        #region NursingCarePackage
-
-        public static NursingCarePackageForUpdateDomain ToDomain(this NursingCarePackageForUpdateRequest nursingCarePackageForUpdate, Guid nursingCarePackageId)
-        {
-            var res = _mapper.Map<NursingCarePackageForUpdateDomain>(nursingCarePackageForUpdate);
-            res.Id = nursingCarePackageId;
-            return res;
-        }
-
-        public static NursingCarePackageForCreationDomain ToDomain(this NursingCarePackageForCreationRequest nursingCarePackageForCreation)
-        {
-            var res = _mapper.Map<NursingCarePackageForCreationDomain>(nursingCarePackageForCreation);
-            // Set status to 1 for new package
-            if (res.StatusId == 0)
-            {
-                res.StatusId = 1;
-            }
-            return res;
-        }
-
-        #endregion NursingCarePackage
-
-        #region NursingCareAdditionalNeed
-
-        public static IEnumerable<NursingCareAdditionalNeedsDomain> ToDomain(this IEnumerable<NursingCareAdditionalNeedForCreationRequest> nursingCareAdditionalNeedsForCreation)
-        {
-            return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsDomain>>(nursingCareAdditionalNeedsForCreation);
-        }
-
-        #endregion NursingCareAdditionalNeed
 
         #region ResidentialCarePackage
 
@@ -88,22 +56,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion Supplier
 
-        #region NursingCareBrokerage
-
-        public static NursingCareRequestMoreInformationDomain ToDomain(this NursingCareRequestMoreInformationForCreationRequest nursingCareRequestMoreInformationForCreationRequest)
-        {
-            var domain = _mapper.Map<NursingCareRequestMoreInformationDomain>(nursingCareRequestMoreInformationForCreationRequest);
-            return domain;
-        }
-
-        public static NursingCareBrokerageInfoCreationDomain ToDomain(this NursingCareBrokerageCreationRequest nursingCareBrokerageCreationRequest)
-        {
-            var domain = _mapper.Map<NursingCareBrokerageInfoCreationDomain>(nursingCareBrokerageCreationRequest);
-            return domain;
-        }
-
-        #endregion NursingCareBrokerage
-
         #region ResidentialCareBrokerage
 
         public static ResidentialCareRequestMoreInformationDomain ToDomain(this ResidentialCareRequestMoreInformationForCreationRequest residentialCareRequestMoreInformationForCreationRequest)
@@ -121,12 +73,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         #endregion ResidentialCareBrokerage
 
         #region PackageReclaim
-
-        public static NursingCarePackageClaimCreationDomain ToDomain(this NursingCarePackageClaimCreationRequest nursingCarePackageClaimCreationRequest)
-        {
-            var res = _mapper.Map<NursingCarePackageClaimCreationDomain>(nursingCarePackageClaimCreationRequest);
-            return res;
-        }
 
         public static ResidentialCarePackageClaimCreationDomain ToDomain(this ResidentialCarePackageClaimCreationRequest residentialCarePackageClaimCreationRequest)
         {
@@ -160,21 +106,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Clients
-
-        #region NursingCareAdditionalNeeds
-
-        public static NursingCareAdditionalNeedsDomain ToDomain(this NursingCareAdditionalNeedsRequest nursingCareAdditionalNeedsEntity)
-        {
-            return new NursingCareAdditionalNeedsDomain
-            {
-                Id = nursingCareAdditionalNeedsEntity.Id,
-                NursingCarePackageId = nursingCareAdditionalNeedsEntity.NursingCarePackageId,
-                AdditionalNeedsPaymentTypeId = nursingCareAdditionalNeedsEntity.AdditionalNeedsPaymentTypeId,
-                NeedToAddress = nursingCareAdditionalNeedsEntity.NeedToAddress,
-            };
-        }
-
-        #endregion NursingCareAdditionalNeeds
 
         #region Packages
 

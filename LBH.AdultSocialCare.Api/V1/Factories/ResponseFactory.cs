@@ -1,6 +1,5 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.NursingCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
@@ -47,85 +46,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion OpportunityTimesPerMonthOptions
-
-        #region NursingCarePackage
-
-        public static NursingCarePackageResponse ToResponse(this NursingCarePackageDomain nursingCarePackageDomain)
-        {
-            // return _mapper.Map<NursingCarePackageResponse>(nursingCarePackageDomain);
-            return new NursingCarePackageResponse
-            {
-                Id = nursingCarePackageDomain.Id,
-                ClientId = nursingCarePackageDomain.ClientId,
-                IsFixedPeriod = nursingCarePackageDomain.IsFixedPeriod,
-                StartDate = nursingCarePackageDomain.StartDate,
-                EndDate = nursingCarePackageDomain.EndDate,
-                HasRespiteCare = nursingCarePackageDomain.HasRespiteCare,
-                HasDischargePackage = nursingCarePackageDomain.HasDischargePackage,
-                IsThisAnImmediateService = nursingCarePackageDomain.IsThisAnImmediateService,
-                IsThisUserUnderS117 = nursingCarePackageDomain.IsThisUserUnderS117,
-                TypeOfStayId = nursingCarePackageDomain.TypeOfStayId,
-                NeedToAddress = nursingCarePackageDomain.NeedToAddress,
-                TypeOfNursingCareHomeId = nursingCarePackageDomain.TypeOfNursingCareHomeId,
-                CreatorId = nursingCarePackageDomain.CreatorId,
-                UpdaterId = nursingCarePackageDomain.UpdaterId,
-                StatusId = nursingCarePackageDomain.StatusId,
-                ClientName = nursingCarePackageDomain.ClientName,
-                ClientHackneyId = nursingCarePackageDomain.ClientHackneyId,
-                ClientPostCode = nursingCarePackageDomain.ClientPostCode,
-                ClientDateOfBirth = nursingCarePackageDomain.ClientDateOfBirth,
-                ClientCanSpeakEnglish = nursingCarePackageDomain.ClientCanSpeakEnglish,
-                ClientPreferredContact = nursingCarePackageDomain.ClientPreferredContact,
-                StatusName = nursingCarePackageDomain.StatusName,
-                CreatorName = nursingCarePackageDomain.CreatorName,
-                UpdaterName = nursingCarePackageDomain.UpdaterName,
-                PackageName = nursingCarePackageDomain.PackageName,
-                TypeOfCareHomeName = nursingCarePackageDomain.TypeOfCareHomeName,
-                TypeOfStayOptionName = nursingCarePackageDomain.TypeOfStayOptionName,
-                NursingCareAdditionalNeeds = nursingCarePackageDomain.NursingCareAdditionalNeeds.ToResponse()
-            };
-        }
-
-        public static IEnumerable<NursingCarePackageResponse> ToResponse(this IEnumerable<NursingCarePackageDomain> nursingCarePackageDomains)
-        {
-            return _mapper.Map<IEnumerable<NursingCarePackageResponse>>(nursingCarePackageDomains);
-        }
-
-        #endregion NursingCarePackage
-
-        #region NursingCareAdditionalNeed
-
-        public static IEnumerable<NursingCareAdditionalNeedsResponse> ToResponse(this IEnumerable<NursingCareAdditionalNeedsDomain> nursingCareAdditionalNeedsDomain)
-        {
-            return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsResponse>>(nursingCareAdditionalNeedsDomain);
-        }
-
-        public static IEnumerable<AdditionalNeedsPaymentTypeResponse> ToResponse(this IEnumerable<AdditionalNeedsPaymentTypeDomain> additionalNeedsPaymentTypeDomains)
-        {
-            return _mapper.Map<IEnumerable<AdditionalNeedsPaymentTypeResponse>>(additionalNeedsPaymentTypeDomains);
-        }
-
-        #endregion NursingCareAdditionalNeed
-
-        #region NursingCareTypeOfStayOptions
-
-        public static IEnumerable<NursingCareTypeOfStayOptionResponse> ToResponse(this IEnumerable<NursingCareTypeOfStayOptionDomain> nursingCareTypeOfStayOptionDomains)
-        {
-            return nursingCareTypeOfStayOptionDomains.Select(item
-                => new NursingCareTypeOfStayOptionResponse
-                {
-                    TypeOfStayOptionId = item.TypeOfStayOptionId,
-                    OptionName = item.OptionName,
-                    OptionPeriod = item.OptionPeriod
-                }).ToList();
-        }
-
-        #endregion NursingCareTypeOfStayOptions
-
-        public static IEnumerable<TypeOfNursingCareHomeResponse> ToResponse(this IEnumerable<TypeOfNursingCareHomeDomain> typeOfNursingCareHomeDomain)
-        {
-            return _mapper.Map<IEnumerable<TypeOfNursingCareHomeResponse>>(typeOfNursingCareHomeDomain);
-        }
 
         #region ResidentialCarePackage
 
@@ -215,24 +135,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion Supplier
 
-        #region NursingCareApprovePackage
-
-        public static NursingCareApprovePackageResponse ToResponse(this NursingCareApprovePackageDomain nursingCareApprovePackageDomain)
-        {
-            return _mapper.Map<NursingCareApprovePackageResponse>(nursingCareApprovePackageDomain);
-        }
-
-        #endregion NursingCareApprovePackage
-
-        #region NursingCareApproveCommercial
-
-        public static NursingCareApproveCommercialResponse ToResponse(this NursingCareApproveCommercialDomain nursingCareApproveCommercialDomain)
-        {
-            return _mapper.Map<NursingCareApproveCommercialResponse>(nursingCareApproveCommercialDomain);
-        }
-
-        #endregion NursingCareApproveCommercial
-
         #region ResidentialCareApprovePackage
 
         public static ResidentialCareApprovePackageResponse ToResponse(this ResidentialCareApprovePackageDomain residentialCareApprovePackageDomain)
@@ -250,20 +152,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion ResidentialCareApproveBrokered
-
-        #region NursingCareBrokerage
-
-        public static IEnumerable<NursingCareApprovalHistoryResponse> ToResponse(this IEnumerable<NursingCareApprovalHistoryDomain> nursingCareApprovalHistoryDomain)
-        {
-            return _mapper.Map<IEnumerable<NursingCareApprovalHistoryResponse>>(nursingCareApprovalHistoryDomain);
-        }
-
-        public static NursingCareBrokerageInfoResponse ToResponse(this NursingCareBrokerageInfoDomain nursingCareBrokerageInfoDomain)
-        {
-            return _mapper.Map<NursingCareBrokerageInfoResponse>(nursingCareBrokerageInfoDomain);
-        }
-
-        #endregion NursingCareBrokerage
 
         #region ResidentialCareBrokerage
 
@@ -296,35 +184,12 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<ReclaimAmountOptionResponse>>(reclaimAmountOptionDomain);
         }
 
-        public static NursingCarePackageClaimResponse ToResponse(this NursingCarePackageClaimDomain nursingCarePackageClaimDomain)
-        {
-            return _mapper.Map<NursingCarePackageClaimResponse>(nursingCarePackageClaimDomain);
-        }
-
         public static ResidentialCarePackageClaimResponse ToResponse(this ResidentialCarePackageClaimDomain residentialCarePackageClaimDomain)
         {
             return _mapper.Map<ResidentialCarePackageClaimResponse>(residentialCarePackageClaimDomain);
         }
 
         #endregion PackageReclaim
-
-        #region NursingCareAdditionalNeeds
-
-        public static NursingCareAdditionalNeedsResponse ToResponse(this NursingCareAdditionalNeedsDomain nursingCareAdditionalNeedsDomain)
-        {
-            return new NursingCareAdditionalNeedsResponse
-            {
-                Id = nursingCareAdditionalNeedsDomain.Id,
-                NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
-                AdditionalNeedsPaymentTypeId = nursingCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeId,
-                AdditionalNeedsPaymentTypeName = nursingCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeName,
-                NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
-                CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
-                UpdatorId = nursingCareAdditionalNeedsDomain.UpdaterId,
-            };
-        }
-
-        #endregion NursingCareAdditionalNeeds
 
         #region Packages
 

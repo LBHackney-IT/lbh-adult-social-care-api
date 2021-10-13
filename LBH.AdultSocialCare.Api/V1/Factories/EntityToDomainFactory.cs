@@ -54,15 +54,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion OpportunityTimesPerMonthOptions
 
-        #region TypeOfNursingCareHome
-
-        public static IEnumerable<AdditionalNeedsPaymentTypeDomain> ToDomain(this ICollection<AdditionalNeedsPaymentType> additionalNeedsPaymentTypes)
-        {
-            return _mapper.Map<IEnumerable<AdditionalNeedsPaymentTypeDomain>>(additionalNeedsPaymentTypes);
-        }
-
-        #endregion TypeOfNursingCareHome
-
         #region ResidentialCarePackage
 
         public static ResidentialCarePackageDomain ToDomain(this ResidentialCarePackage residentialCarePackageEntity)
