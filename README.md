@@ -172,7 +172,7 @@ We use CircleCI to handle deployment, see [CircleCI config](./.circleci/config.y
 
 ### Infrastructure
 
-For deploying the Lambdas and related resources, we used the [Serverless framework](https://www.serverless.com) (see [serverless.yml](./serverless.yml)).
+For deploying the Lambdas and related resources, we used the [Serverless framework](https://www.serverless.com) (see [serverless.yml](./LBH.AdultSocialCare.Api/serverless.yml)).
 
 For managing the database in Staging, we use [Terraform](https://www.terraform.io) that is defined within `/terraform/staging` in this repository.
 
