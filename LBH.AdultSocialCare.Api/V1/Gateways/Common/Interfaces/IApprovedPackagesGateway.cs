@@ -10,8 +10,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
 {
     public interface IApprovedPackagesGateway
     {
-        Task<PagedList<ApprovedPackagesDomain>> GetApprovedPackages(ApprovedPackagesParameters parameters, int statusId);
-
         Task<IEnumerable<UsersMinimalDomain>> GetUsers(Guid roleId);
     }
 }

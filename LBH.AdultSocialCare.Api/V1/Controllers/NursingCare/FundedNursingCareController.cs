@@ -18,36 +18,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
     [ApiVersion("1.0")]
     public class PackageCostClaimersController : BaseController
     {
-        private readonly IGetFundedNursingCareCollectorsUseCase _getFundedNursingCareCollectorsUseCase;
         private readonly IGetFundedNursingCarePriceUseCase _getFundedNursingCarePriceUseCase;
 
         public PackageCostClaimersController(
-            IGetFundedNursingCareCollectorsUseCase getFundedNursingCareCollectorsUseCase,
             IGetFundedNursingCarePriceUseCase getFundedNursingCarePriceUseCase)
         {
-            _getFundedNursingCareCollectorsUseCase = getFundedNursingCareCollectorsUseCase;
             _getFundedNursingCarePriceUseCase = getFundedNursingCarePriceUseCase;
-        }
-
-        /// <summary>
-        /// Returns list of FNC collectors
-        /// </summary>
-        /// <returns>List of FNC collectors</returns>
-        [ProducesResponseType(typeof(IEnumerable<FundedNursingCareCollectorResponse>), StatusCodes.Status200OK)]
-        [ProducesDefaultResponseType]
-        [HttpGet("collectors")]
-        public async Task<ActionResult<IEnumerable<FundedNursingCareCollectorResponse>>> GetFncCollectors()
-        {
-            var collectors = await _getFundedNursingCareCollectorsUseCase
-                .GetFundedNursingCareCollectorsAsync()
-                .ConfigureAwait(false);
-
-            if (collectors is null || !collectors.Any())
-            {
-                return NotFound();
-            }
-
-            return Ok(collectors.ToResponse().ToList());
         }
 
         /// <summary>

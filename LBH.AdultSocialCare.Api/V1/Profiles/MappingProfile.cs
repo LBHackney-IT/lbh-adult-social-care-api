@@ -17,8 +17,6 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
@@ -50,30 +48,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<OpportunityTimesPerMonthOptionDomain, OpportunityTimesPerMonthOptionResponse>();
 
             #endregion OpportunityTimesPerMonthOptions
-
-            #region NursingCarePackage
-
-            CreateMap<TypeOfNursingCareHome, TypeOfNursingCareHomeDomain>();
-            CreateMap<NursingCarePackageDomain, NursingCarePackageResponse>();
-            CreateMap<NursingCarePackage, NursingCarePackageDomain>();
-            CreateMap<NursingCarePackageDomain, NursingCarePackage>();
-            CreateMap<NursingCareTypeOfStayOption, NursingCareTypeOfStayOptionDomain>();
-            CreateMap<NursingCareTypeOfStayOptionDomain, NursingCareTypeOfStayOptionResponse>();
-            CreateMap<NursingCarePackageForUpdateRequest, NursingCarePackageDomain>();
-            CreateMap<NursingCarePackageForCreationRequest, NursingCarePackageForCreationDomain>();
-            CreateMap<NursingCareAdditionalNeedForCreationRequest, NursingCareAdditionalNeedForCreationDomain>();
-            CreateMap<NursingCareAdditionalNeedForCreationDomain, NursingCareAdditionalNeed>();
-            CreateMap<NursingCareAdditionalNeed, NursingCareAdditionalNeedsDomain>();
-            CreateMap<NursingCareAdditionalNeedsDomain, NursingCareAdditionalNeedsResponse>();
-            CreateMap<NursingCarePackageForCreationDomain, NursingCarePackage>();
-            CreateMap<NursingCarePackageForUpdateDomain, NursingCarePackage>();
-            CreateMap<TypeOfNursingCareHomeDomain, TypeOfNursingCareHomeResponse>();
-            CreateMap<NursingCareApprovalHistory, NursingCareApprovalHistoryDomain>();
-            CreateMap<NursingCareApprovalHistoryDomain, NursingCareApprovalHistory>();
-            CreateMap<NursingCarePackage, NursingCarePackagePlainDomain>();
-            CreateMap<NursingCarePackagePlainDomain, NursingCarePackageForUpdateDomain>();
-
-            #endregion NursingCarePackage
 
             #region ResidentialCarePackage
 
@@ -115,20 +89,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #endregion Supplier
 
-            #region NursingCareApprovePackage
-
-            CreateMap<NursingCareApprovePackageDomain, NursingCareApprovePackageResponse>();
-            CreateMap<NursingCareApprovePackageResponse, NursingCareApprovePackageDomain>();
-
-            #endregion NursingCareApprovePackage
-
-            #region NursingCareApproveCommercial
-
-            CreateMap<NursingCareApproveCommercialDomain, NursingCareApproveCommercialResponse>();
-            CreateMap<NursingCareApproveCommercialResponse, NursingCareApproveCommercialDomain>();
-
-            #endregion NursingCareApproveCommercial
-
             #region ResidentialCareApprovePackage
 
             CreateMap<ResidentialCareApprovePackageDomain, ResidentialCareApprovePackageResponse>();
@@ -142,36 +102,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ResidentialCareApproveBrokeredResponse, ResidentialCareApproveBrokeredDomain>();
 
             #endregion ResidentialCareApproveBrokered
-
-            #region NursingCareBrokerage
-
-            CreateMap<NursingCareApprovalHistory, NursingCareApprovalHistoryDomain>();
-            CreateMap<NursingCareApprovalHistoryDomain, NursingCareApprovalHistory>();
-            CreateMap<NursingCareApprovalHistoryResponse, NursingCareApprovalHistoryDomain>();
-            CreateMap<NursingCareApprovalHistoryDomain, NursingCareApprovalHistoryResponse>();
-            CreateMap<NursingCareRequestMoreInformationForCreationRequest, NursingCareRequestMoreInformationDomain>();
-            CreateMap<NursingCareRequestMoreInformationDomain, NursingCareRequestMoreInformationForCreationRequest>();
-            CreateMap<NursingCareRequestMoreInformationDomain, NursingCareRequestMoreInformation>();
-            CreateMap<NursingCareRequestMoreInformation, NursingCareRequestMoreInformationDomain>();
-            CreateMap<NursingCareRequestMoreInformationDomain, NursingCareRequestMoreInformation>();
-            CreateMap<NursingCareBrokerageInfo, NursingCareBrokerageInfoDomain>();
-            CreateMap<NursingCareBrokerageInfoDomain, NursingCareBrokerageInfo>();
-            CreateMap<NursingCareBrokerageInfoDomain, NursingCareBrokerageInfoResponse>();
-            CreateMap<NursingCareBrokerageInfoResponse, NursingCareBrokerageInfoDomain>();
-            CreateMap<NursingCareBrokerageInfoCreationDomain, NursingCareBrokerageCreationRequest>();
-            CreateMap<NursingCareBrokerageCreationRequest, NursingCareBrokerageInfoCreationDomain>();
-            CreateMap<NursingCareAdditionalNeedsCostCreationDomain, NursingCareAdditionalNeedsCostCreationRequest>();
-            CreateMap<NursingCareAdditionalNeedsCostCreationRequest, NursingCareAdditionalNeedsCostCreationDomain>();
-            CreateMap<NursingCareBrokerageInfoCreationDomain, NursingCareBrokerageInfo>();
-            CreateMap<NursingCareBrokerageInfo, NursingCareBrokerageInfoCreationDomain>();
-            CreateMap<NursingCareAdditionalNeedsCostCreationDomain, NursingCareAdditionalNeedsCost>();
-            CreateMap<NursingCareAdditionalNeedsCost, NursingCareAdditionalNeedsCostCreationDomain>();
-            CreateMap<NursingCarePackageDomain, NursingCarePackageForUpdateDomain>();
-            CreateMap<NursingCarePackageForUpdateDomain, NursingCarePackageDomain>();
-            CreateMap<NursingCareAdditionalNeedsCost, NursingCareAdditionalNeedsCostDomain>();
-            CreateMap<NursingCareAdditionalNeedsCostDomain, NursingCareAdditionalNeedsCostResponse>();
-
-            #endregion NursingCareBrokerage
 
             #region ResidentialCareBrokerage
 
@@ -223,14 +153,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ReclaimCategoryDomain, ReclaimCategoryResponse>();
             CreateMap<ReclaimFrom, ReclaimFromDomain>();
             CreateMap<ReclaimFromDomain, ReclaimFromResponse>();
-            CreateMap<NursingCarePackageReclaim, NursingCarePackageClaimDomain>();
-            CreateMap<NursingCarePackageClaimDomain, NursingCarePackageReclaim>();
-            CreateMap<NursingCarePackageClaimDomain, NursingCarePackageClaimResponse>();
-            CreateMap<NursingCarePackageClaimResponse, NursingCarePackageClaimDomain>();
-            CreateMap<NursingCarePackageClaimCreationDomain, NursingCarePackageClaimCreationRequest>();
-            CreateMap<NursingCarePackageClaimCreationRequest, NursingCarePackageClaimCreationDomain>();
-            CreateMap<NursingCarePackageClaimCreationDomain, NursingCarePackageReclaim>();
-            CreateMap<NursingCarePackageReclaim, NursingCarePackageClaimCreationDomain>();
             CreateMap<ResidentialCarePackageReclaim, ResidentialCarePackageClaimDomain>();
             CreateMap<ResidentialCarePackageClaimDomain, ResidentialCarePackageReclaim>();
             CreateMap<ResidentialCarePackageClaimDomain, ResidentialCarePackageClaimResponse>();
@@ -323,12 +245,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #region Funded Nursing Care
 
-            CreateMap<FundedNursingCare, FundedNursingCareDomain>();
-            CreateMap<FundedNursingCareDomain, FundedNursingCare>();
-
-            CreateMap<FundedNursingCareCollector, FundedNursingCareCollectorDomain>();
-            CreateMap<FundedNursingCareCollectorDomain, FundedNursingCareCollectorResponse>();
-
             CreateMap<FundedNursingCarePrice, FundedNursingCarePriceDomain>();
 
             #endregion Funded Nursing Care
@@ -347,16 +263,9 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #region Invoicing
 
-            CreateMap<NursingCareBrokerageInfo, BrokerageInfo>()
-                .ForMember(d => d.Core, opt => opt.MapFrom(s => s.NursingCore))
-                .ForMember(d => d.AdditionalNeedsCosts, opt => opt.MapFrom(s => s.NursingCareAdditionalNeedsCosts));
-
             CreateMap<ResidentialCareBrokerageInfo, BrokerageInfo>()
                 .ForMember(d => d.Core, opt => opt.MapFrom(s => s.ResidentialCore))
                 .ForMember(d => d.AdditionalNeedsCosts, opt => opt.MapFrom(s => s.ResidentialCareAdditionalNeedsCosts));
-
-            CreateMap<NursingCareAdditionalNeedsCost, AdditionalNeedsCost>()
-                .ForMember(d => d.Cost, opt => opt.MapFrom(s => s.AdditionalNeedsCost));
 
             CreateMap<ResidentialCareAdditionalNeedsCost, AdditionalNeedsCost>()
                 .ForMember(d => d.Cost, opt => opt.MapFrom(s => s.AdditionalNeedsCost));

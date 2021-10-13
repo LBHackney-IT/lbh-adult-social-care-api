@@ -1,12 +1,8 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
-using System.Collections.Generic;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
@@ -29,20 +25,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             return _mapper.Map<T>(dto);
         }*/
-
-        #region NursingCarePackage
-
-        public static NursingCarePackage ToDb(this NursingCarePackageForCreationDomain nursingCarePackageForCreationDomain)
-        {
-            return _mapper.Map<NursingCarePackage>(nursingCarePackageForCreationDomain);
-        }
-
-        public static NursingCareApprovalHistory ToDb(this NursingCareApprovalHistoryDomain nursingCareApprovalHistoryDomain)
-        {
-            return _mapper.Map<NursingCareApprovalHistory>(nursingCareApprovalHistoryDomain);
-        }
-
-        #endregion NursingCarePackage
 
         #region ResidentialCarePackage
 
@@ -67,20 +49,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion Supplier
 
-        #region NursingCareBrokerage
-
-        public static NursingCareRequestMoreInformation ToDb(this NursingCareRequestMoreInformationDomain nursingCareRequestMoreInformationDomain)
-        {
-            return _mapper.Map<NursingCareRequestMoreInformation>(nursingCareRequestMoreInformationDomain);
-        }
-
-        public static NursingCareBrokerageInfo ToDb(this NursingCareBrokerageInfoCreationDomain nursingCareBrokerageInfoCreationDomain)
-        {
-            return _mapper.Map<NursingCareBrokerageInfo>(nursingCareBrokerageInfoCreationDomain);
-        }
-
-        #endregion NursingCareBrokerage
-
         #region ResidentialCareBrokerage
 
         public static ResidentialCareRequestMoreInformation ToDb(this ResidentialCareRequestMoreInformationDomain residentialCareRequestMoreInformationDomain)
@@ -96,11 +64,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         #endregion ResidentialCareBrokerage
 
         #region PackageReclaim
-
-        public static NursingCarePackageReclaim ToDb(this NursingCarePackageClaimCreationDomain nursingCarePackageClaimCreationDomain)
-        {
-            return _mapper.Map<NursingCarePackageReclaim>(nursingCarePackageClaimCreationDomain);
-        }
 
         public static ResidentialCarePackageReclaim ToDb(this ResidentialCarePackageClaimCreationDomain residentialCarePackageClaimCreationDomain)
         {
@@ -133,23 +96,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Clients
-
-        #region NursingCareAdditionalNeeds
-
-        public static NursingCareAdditionalNeed ToEntity(this NursingCareAdditionalNeedsDomain nursingCareAdditionalNeedsDomain)
-        {
-            return new NursingCareAdditionalNeed
-            {
-                Id = nursingCareAdditionalNeedsDomain.Id,
-                NursingCarePackageId = nursingCareAdditionalNeedsDomain.NursingCarePackageId,
-                AdditionalNeedsPaymentTypeId = nursingCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeId,
-                NeedToAddress = nursingCareAdditionalNeedsDomain.NeedToAddress,
-                CreatorId = nursingCareAdditionalNeedsDomain.CreatorId,
-                UpdaterId = nursingCareAdditionalNeedsDomain.UpdaterId,
-            };
-        }
-
-        #endregion NursingCareAdditionalNeeds
 
         #region Packages
 
@@ -229,14 +175,5 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion PackageStatus
-
-        #region Funded Nursing Care
-
-        public static FundedNursingCare ToEntity(this FundedNursingCareDomain fundedNursingCareDomain)
-        {
-            return _mapper.Map<FundedNursingCare>(fundedNursingCareDomain);
-        }
-
-        #endregion
     }
 }

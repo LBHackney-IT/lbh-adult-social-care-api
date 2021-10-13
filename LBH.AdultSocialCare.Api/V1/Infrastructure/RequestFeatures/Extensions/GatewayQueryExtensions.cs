@@ -16,11 +16,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
                 (statusId.Equals(null) || h.StatusId == statusId) &&
                 (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)));
 
-        public static IQueryable<NursingCarePackage> FilterNursingCareList(this IQueryable<NursingCarePackage> nursingCarePackages, int? statusId, string clientName) =>
-            nursingCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)));
-
         public static IQueryable<ResidentialCarePackage> FilterApprovedResidentialCareList(this IQueryable<ResidentialCarePackage> residentialCarePackages, int? statusId, int? hackneyId, string clientName,
             Guid? socialWorkerId) =>
             residentialCarePackages.Where(h =>
@@ -29,26 +24,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
                 (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)) &&
                 (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId));
 
-        public static IQueryable<NursingCarePackage> FilterApprovedNursingCareList(this IQueryable<NursingCarePackage> nursingCarePackages, int? statusId, int? hackneyId, string clientName,
-            Guid? socialWorkerId) =>
-            nursingCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (hackneyId != null ? h.Client.HackneyId.ToString().Contains(hackneyId.ToString()) : h.Equals(h)) &&
-                (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)) &&
-                (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId));
-
         public static IQueryable<ResidentialCarePackage> FilterBrokeredResidentialCareList(this IQueryable<ResidentialCarePackage> residentialCarePackages, int? statusId, int? hackneyId, string clientName,
             Guid? socialWorkerId, int? stageId) =>
             residentialCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (hackneyId.Equals(null) || h.Client.HackneyId == hackneyId) &&
-                (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId) &&
-                (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)) &&
-                (stageId.Equals(null) || h.StageId == stageId));
-
-        public static IQueryable<NursingCarePackage> FilterBrokeredNursingCareList(this IQueryable<NursingCarePackage> nursingCarePackages, int? statusId, int? hackneyId, string clientName,
-            Guid? socialWorkerId, int? stageId) =>
-            nursingCarePackages.Where(h =>
                 (statusId.Equals(null) || h.StatusId == statusId) &&
                 (hackneyId.Equals(null) || h.Client.HackneyId == hackneyId) &&
                 (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId) &&

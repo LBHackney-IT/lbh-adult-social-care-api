@@ -3,8 +3,6 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
@@ -58,37 +56,26 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<PackageStatusOption> PackageStatuses { get; set; }
         public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
         public DbSet<ResidentialCarePackage> ResidentialCarePackages { get; set; }
-        public DbSet<NursingCarePackage> NursingCarePackages { get; set; }
         public DbSet<OpportunityLengthOption> OpportunityLengthOptions { get; set; }
         public DbSet<OpportunityTimesPerMonthOption> OpportunityTimesPerMonthOptions { get; set; }
-        public DbSet<NursingCareAdditionalNeed> NursingCareAdditionalNeeds { get; set; }
         public DbSet<ResidentialCareAdditionalNeed> ResidentialCareAdditionalNeeds { get; set; }
-        public DbSet<TypeOfNursingCareHome> TypesOfNursingCareHomes { get; set; }
         public DbSet<TypeOfResidentialCareHome> TypesOfResidentialCareHomes { get; set; }
-        public DbSet<NursingCareTypeOfStayOption> NursingCareTypeOfStayOptions { get; set; }
         public DbSet<ResidentialCareTypeOfStayOption> ResidentialCareTypeOfStayOptions { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Stage> PackageStages { get; set; }
-        public DbSet<NursingCareApprovalHistory> NursingCareApprovalHistories { get; set; }
         public DbSet<ResidentialCareApprovalHistory> ResidentialCareApprovalHistories { get; set; }
         public DbSet<ResidentialCareRequestMoreInformation> ResidentialCareRequestMoreInformations { get; set; }
-        public DbSet<NursingCareRequestMoreInformation> NursingCareRequestMoreInformations { get; set; }
         public DbSet<ReclaimAmountOption> ReclaimAmountOptions { get; set; }
         public DbSet<ReclaimCategory> ReclaimCategories { get; set; }
         public DbSet<ReclaimFrom> ReclaimFroms { get; set; }
-        public DbSet<NursingCarePackageReclaim> NursingCarePackageReclaims { get; set; }
         public DbSet<ResidentialCarePackageReclaim> ResidentialCarePackageReclaims { get; set; }
-        public DbSet<NursingCareBrokerageInfo> NursingCareBrokerageInfos { get; set; }
         public DbSet<ResidentialCareBrokerageInfo> ResidentialCareBrokerageInfos { get; set; }
         public DbSet<PrimarySupportReason> PrimarySupportReasons { get; set; }
-        public DbSet<NursingCareAdditionalNeedsCost> NursingCareAdditionalNeedsCosts { get; set; }
         public DbSet<AdditionalNeedsPaymentType> AdditionalNeedsPaymentTypes { get; set; }
         public DbSet<ResidentialCareAdditionalNeedsCost> ResidentialCareAdditionalNeedsCosts { get; set; }
 
         public DbSet<PackageCostClaimer> PackageCostClaimers { get; set; }
-        public DbSet<FundedNursingCareCollector> FundedNursingCareCollectors { get; set; }
         public DbSet<FundedNursingCarePrice> FundedNursingCarePrices { get; set; }
-        public DbSet<FundedNursingCare> FundedNursingCares { get; set; }
         public DbSet<CareChargeStatus> CareChargeStatuses { get; set; }
         public DbSet<CareChargeType> CareChargeTypes { get; set; }
         public DbSet<ProvisionalCareChargeAmount> ProvisionalCareChargeAmounts { get; set; }
@@ -131,9 +118,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed package types
             modelBuilder.ApplyConfiguration(new PackageTypesSeed());
 
-            // Seed Type Of Nursing Care Home
-            modelBuilder.ApplyConfiguration(new TypeOfNursingCareHomeSeed());
-
             // Seed Type Of Residential Care Home
             modelBuilder.ApplyConfiguration(new TypeOfResidentialCareHomeSeed());
 
@@ -148,9 +132,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed Client
             modelBuilder.ApplyConfiguration(new ClientSeed());
-
-            // Seed NursingCareTypeOfStayOptionSeed
-            modelBuilder.ApplyConfiguration(new NursingCareTypeOfStayOptionSeed());
 
             // Seed ResidentialCareTypeOfStayOptionSeed
             modelBuilder.ApplyConfiguration(new ResidentialCareTypeOfStayOptionSeed());
@@ -176,8 +157,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed additional needs payment type
             modelBuilder.ApplyConfiguration(new AdditionalNeedsPaymentTypeSeed());
 
-            // Seed FNC and reclaims-related constants
-            modelBuilder.ApplyConfiguration(new FundedNursingCareCollectorsSeed());
             modelBuilder.ApplyConfiguration(new FundedNursingCarePriceSeed());
             modelBuilder.ApplyConfiguration(new PackageCostClaimersSeed());
 
@@ -224,34 +203,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 entity.HasIndex(e => e.OptionName).IsUnique();
             });
 
-            modelBuilder.Entity<NursingCarePackage>(entity =>
-            {
-                entity.HasOne(n => n.Status)
-                    .WithMany()
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-
-                entity.HasOne(a => a.NursingCareBrokerageInfo)
-                    .WithOne(b => b.NursingCarePackage)
-                    .HasForeignKey<NursingCareBrokerageInfo>(b => b.NursingCarePackageId);
-
-                entity.HasOne(a => a.FundedNursingCare)
-                    .WithOne(b => b.NursingCarePackage)
-                    .HasForeignKey<FundedNursingCare>(b => b.NursingCarePackageId);
-            });
-
             modelBuilder.Entity<ResidentialCarePackage>(entity =>
             {
                 entity.HasOne(r => r.Status)
                     .WithMany()
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-            });
-
-            modelBuilder.Entity<NursingCareAdditionalNeed>(entity =>
-            {
-                entity.HasOne(n => n.NursingCarePackage)
-                    .WithMany(n => n.NursingCareAdditionalNeeds)
                     .IsRequired()
                     .OnDelete(DeleteBehavior.ClientCascade);
             });

@@ -17,15 +17,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
         {
             _context = context;
 
-            NursingCare = new NursingCareGenerator(context);
-            ResidentialCare = new ResidentialCareGenerator(context);
             CareCharge = new CareChargeGenerator(context);
         }
 
         #region Legacy
 
-        public NursingCareGenerator NursingCare { get; }
-        public ResidentialCareGenerator ResidentialCare { get; }
         public CareChargeGenerator CareCharge { get; }
 
         #endregion Legacy

@@ -38,7 +38,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
 
             supplierDomain.SupplierName = String.Concat(supplier.SupplierName.Reverse());
             supplierDomain.PackageTypeId = PackageTypesConstants.NursingCarePackageId;
-            supplierDomain.FundedNursingCareCollectorId = 1;
 
             var updatedSupplier = await _gateway.UpdateAsync(supplierDomain).ConfigureAwait(false);
 

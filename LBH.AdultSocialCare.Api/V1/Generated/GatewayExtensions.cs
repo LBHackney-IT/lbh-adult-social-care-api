@@ -17,7 +17,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
         public static void RegisterGateways(this IServiceCollection services)
         {
             services.AddScoped<IApprovedPackagesGateway, ApprovedPackagesGateway>();
-            services.AddScoped<IBrokeredPackagesGateway, BrokeredPackagesGateway>();
             services.AddScoped<ICareChargeElementTypeGateway, CareChargeElementTypeGateway>();
             services.AddScoped<ICareChargesGateway, CareChargesGateway>();
             services.AddScoped<ICarePackageGateway, CarePackageGateway>();
@@ -29,23 +28,13 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IOpportunityLengthOptionGateway, OpportunityLengthOptionGateway>();
             services.AddScoped<IOpportunityTimesPerMonthOptionGateway, OpportunityTimesPerMonthOptionGateway>();
             services.AddScoped<IPackageCareChargeGateway, PackageCareChargeGateway>();
-            services.AddScoped<IPackageCostClaimersGateway, PackageCostClaimersGateway>();
             services.AddScoped<IPackageGateway, PackageGateway>();
             services.AddScoped<IPrimarySupportReasonGateway, PrimarySupportReasonGateway>();
             services.AddScoped<IServiceUserGateway, ServiceUserGateway>();
             services.AddScoped<IStatusGateway, StatusGateway>();
-            services.AddScoped<ISubmittedPackageRequestsGateway, SubmittedPackageRequestsGateway>();
             services.AddScoped<ISupplierGateway, SupplierGateway>();
             services.AddScoped<ITermTimeConsiderationOptionGateway, TermTimeConsiderationOptionGateway>();
             services.AddScoped<IFundedNursingCareGateway, FundedNursingCareGateway>();
-            services.AddScoped<INursingCareAdditionalNeedsGateway, NursingCareAdditionalNeedsGateway>();
-            services.AddScoped<INursingCareApprovalHistoryGateway, NursingCareApprovalHistoryGateway>();
-            services.AddScoped<INursingCareApproveCommercialGateway, NursingCareApproveCommercialGateway>();
-            services.AddScoped<INursingCareApprovePackageGateway, NursingCareApprovePackageGateway>();
-            services.AddScoped<INursingCareBrokerageGateway, NursingCareBrokerageGateway>();
-            services.AddScoped<INursingCarePackageGateway, NursingCarePackageGateway>();
-            services.AddScoped<INursingCarePackageReclaimGateway, NursingCarePackageReclaimGateway>();
-            services.AddScoped<INursingCareRequestMoreInformationGateway, NursingCareRequestMoreInformationGateway>();
             services.AddScoped<IResidentialCareAdditionalNeedsGateway, ResidentialCareAdditionalNeedsGateway>();
             services.AddScoped<IResidentialCareApprovalHistoryGateway, ResidentialCareApprovalHistoryGateway>();
             services.AddScoped<IResidentialCareApproveBrokeredGateway, ResidentialCareApproveBrokeredGateway>();

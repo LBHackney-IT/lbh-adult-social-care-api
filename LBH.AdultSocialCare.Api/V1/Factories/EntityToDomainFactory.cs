@@ -6,14 +6,12 @@ using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -56,77 +54,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion OpportunityTimesPerMonthOptions
 
-        #region NursingCarePackage
-
-        public static NursingCarePackageDomain ToDomain(this NursingCarePackage nursingCarePackageEntity)
-        {
-            return new NursingCarePackageDomain
-            {
-                Id = nursingCarePackageEntity.Id,
-                ClientId = nursingCarePackageEntity.ClientId,
-                IsFixedPeriod = nursingCarePackageEntity.IsFixedPeriod,
-                StartDate = nursingCarePackageEntity.StartDate,
-                EndDate = nursingCarePackageEntity.EndDate,
-                HasRespiteCare = nursingCarePackageEntity.HasRespiteCare,
-                HasDischargePackage = nursingCarePackageEntity.HasDischargePackage,
-                IsThisAnImmediateService = nursingCarePackageEntity.IsThisAnImmediateService,
-                IsThisUserUnderS117 = nursingCarePackageEntity.IsThisUserUnderS117,
-                TypeOfStayId = nursingCarePackageEntity.TypeOfStayId,
-                NeedToAddress = nursingCarePackageEntity.NeedToAddress,
-                TypeOfNursingCareHomeId = nursingCarePackageEntity.TypeOfNursingCareHomeId,
-                CreatorId = nursingCarePackageEntity.CreatorId,
-                UpdaterId = nursingCarePackageEntity.UpdaterId,
-                StatusId = nursingCarePackageEntity.StatusId,
-                SupplierId = nursingCarePackageEntity.SupplierId,
-                StageId = nursingCarePackageEntity.StageId,
-                ClientName = nursingCarePackageEntity.Client != null ? $"{nursingCarePackageEntity.Client.FirstName} {nursingCarePackageEntity.Client.MiddleName} {nursingCarePackageEntity.Client.LastName}" : null,
-                ClientHackneyId = nursingCarePackageEntity.Client?.HackneyId ?? 0,
-                ClientPostCode = nursingCarePackageEntity.Client?.PostCode,
-                ClientCanSpeakEnglish = nursingCarePackageEntity.Client?.CanSpeakEnglish,
-                ClientPreferredContact = nursingCarePackageEntity.Client?.PreferredContact,
-                ClientDateOfBirth = nursingCarePackageEntity.Client?.DateOfBirth,
-                StatusName = nursingCarePackageEntity.Status?.StatusName,
-                CreatorName = nursingCarePackageEntity.Creator != null ? $"{nursingCarePackageEntity.Creator.Name}" : null,
-                UpdaterName = nursingCarePackageEntity.Updater != null ? $"{nursingCarePackageEntity.Updater.Name}" : null,
-                PackageName = "Nursing Care Package",
-                TypeOfCareHomeName = nursingCarePackageEntity.TypeOfCareHome?.TypeOfCareHomeName,
-                TypeOfStayOptionName = nursingCarePackageEntity.TypeOfStayOption?.OptionName,
-                NursingCareAdditionalNeeds = nursingCarePackageEntity.NursingCareAdditionalNeeds.ToDomain()
-            };
-            // return _mapper.Map<NursingCarePackageDomain>(nursingCarePackageEntity);
-        }
-
-        public static IEnumerable<NursingCarePackageDomain> ToDomain(this List<NursingCarePackage> nursingCarePackageEntities)
-        {
-            return nursingCarePackageEntities.Select(entity => entity.ToDomain()).ToList();
-        }
-
-        public static NursingCarePackagePlainDomain ToPlainDomain(this NursingCarePackage nursingCarePackage)
-        {
-            return _mapper.Map<NursingCarePackagePlainDomain>(nursingCarePackage);
-        }
-
-        #endregion NursingCarePackage
-
-        #region NursingCareAdditionalNeed
-
-        public static IEnumerable<NursingCareAdditionalNeedsDomain> ToDomain(this ICollection<NursingCareAdditionalNeed> nursingCareAdditionalNeedsEntities)
-        {
-            return _mapper.Map<IEnumerable<NursingCareAdditionalNeedsDomain>>(nursingCareAdditionalNeedsEntities);
-        }
-
-        public static IEnumerable<TypeOfNursingCareHomeDomain> ToDomain(this ICollection<TypeOfNursingCareHome> typeOfNursingCareHome)
-        {
-            return typeOfNursingCareHome.Select(item
-                => new TypeOfNursingCareHomeDomain
-                {
-                    TypeOfCareHomeId = item.TypeOfCareHomeId,
-                    TypeOfCareHomeName = item.TypeOfCareHomeName
-                }).ToList();
-        }
-
-        #endregion NursingCareAdditionalNeed
-
         #region TypeOfNursingCareHome
 
         public static IEnumerable<AdditionalNeedsPaymentTypeDomain> ToDomain(this ICollection<AdditionalNeedsPaymentType> additionalNeedsPaymentTypes)
@@ -135,21 +62,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion TypeOfNursingCareHome
-
-        #region NursingCareTypeOfStayOptions
-
-        public static IEnumerable<NursingCareTypeOfStayOptionDomain> ToDomain(this ICollection<NursingCareTypeOfStayOption> nursingCareTypeOfStayOptions)
-        {
-            return nursingCareTypeOfStayOptions.Select(item
-                => new NursingCareTypeOfStayOptionDomain
-                {
-                    TypeOfStayOptionId = item.TypeOfStayOptionId,
-                    OptionName = item.OptionName,
-                    OptionPeriod = item.OptionPeriod
-                }).ToList();
-        }
-
-        #endregion NursingCareTypeOfStayOptions
 
         #region ResidentialCarePackage
 
@@ -263,26 +175,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion HomeCareBrokerage
 
-        #region NursingCareBrokerage
-
-        public static IEnumerable<NursingCareApprovalHistoryDomain> ToDomain(
-            this List<NursingCareApprovalHistory> nursingCareApprovalHistoryEntities)
-        {
-            return _mapper.Map<IEnumerable<NursingCareApprovalHistoryDomain>>(nursingCareApprovalHistoryEntities);
-        }
-
-        public static NursingCareBrokerageInfoDomain ToDomain(this NursingCareBrokerageInfo nursingCareBrokerageInfoEntity)
-        {
-            return _mapper.Map<NursingCareBrokerageInfoDomain>(nursingCareBrokerageInfoEntity);
-        }
-
-        public static NursingCareApprovalHistoryDomain ToDomain(this NursingCareApprovalHistory nursingCareApprovalHistory)
-        {
-            return _mapper.Map<NursingCareApprovalHistoryDomain>(nursingCareApprovalHistory);
-        }
-
-        #endregion NursingCareBrokerage
-
         #region ResidentialCareBrokerage
 
         public static IEnumerable<ResidentialCareApprovalHistoryDomain> ToDomain(
@@ -335,11 +227,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 }).ToList();
         }
 
-        public static NursingCarePackageClaimDomain ToDomain(this NursingCarePackageReclaim nursingCarePackageReclaim)
-        {
-            return _mapper.Map<NursingCarePackageClaimDomain>(nursingCarePackageReclaim);
-        }
-
         public static ResidentialCarePackageClaimDomain ToDomain(this ResidentialCarePackageReclaim residentialCarePackageReclaim)
         {
             return _mapper.Map<ResidentialCarePackageClaimDomain>(residentialCarePackageReclaim);
@@ -378,24 +265,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Clients
-
-        #region NursingCareAdditionalNeeds
-
-        public static NursingCareAdditionalNeedsDomain ToDomain(this NursingCareAdditionalNeed nursingCareAdditionalNeedEntity)
-        {
-            return new NursingCareAdditionalNeedsDomain
-            {
-                Id = nursingCareAdditionalNeedEntity.Id,
-                NursingCarePackageId = nursingCareAdditionalNeedEntity.NursingCarePackageId,
-                AdditionalNeedsPaymentTypeId = nursingCareAdditionalNeedEntity.AdditionalNeedsPaymentTypeId,
-                AdditionalNeedsPaymentTypeName = nursingCareAdditionalNeedEntity.AdditionalNeedsPaymentType.OptionName,
-                NeedToAddress = nursingCareAdditionalNeedEntity.NeedToAddress,
-                CreatorId = nursingCareAdditionalNeedEntity.CreatorId,
-                UpdaterId = nursingCareAdditionalNeedEntity.UpdaterId,
-            };
-        }
-
-        #endregion NursingCareAdditionalNeeds
 
         #region Packages
 
@@ -509,16 +378,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         #endregion PrimarySupportReason
 
         #region FundedNursingCare
-
-        public static IEnumerable<FundedNursingCareCollectorDomain> ToDomain(this List<FundedNursingCareCollector> collectors)
-        {
-            return _mapper.Map<IEnumerable<FundedNursingCareCollectorDomain>>(collectors);
-        }
-
-        public static FundedNursingCareDomain ToDomain(this FundedNursingCare fundedNursingCare)
-        {
-            return _mapper.Map<FundedNursingCareDomain>(fundedNursingCare);
-        }
 
         public static FundedNursingCarePriceDomain ToDomain(this FundedNursingCarePrice fundedNursingCarePrice)
         {

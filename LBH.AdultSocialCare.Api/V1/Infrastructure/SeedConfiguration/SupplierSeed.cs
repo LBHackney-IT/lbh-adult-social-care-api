@@ -19,7 +19,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Address = "Abbeleigh House",
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -31,7 +30,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 PackageTypeId = 1,
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -43,7 +41,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 PackageTypeId = 1,
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -55,7 +52,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 PackageTypeId = 1,
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -67,7 +63,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 PackageTypeId = 1,
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -79,7 +74,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 PackageTypeId = 1,
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -91,7 +85,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 PackageTypeId = 1,
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -103,7 +96,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 PackageTypeId = 1,
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -115,7 +107,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 PackageTypeId = 1,
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -127,7 +118,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 PackageTypeId = 1,
                 IsSupplierInternal = true,
                 HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
