@@ -1,8 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.Tests.Extensions;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Xunit;
 

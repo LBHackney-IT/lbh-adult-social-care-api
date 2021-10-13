@@ -4,23 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using HttpServices.Models.Requests;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {
@@ -37,6 +30,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CarePackageDetailDomain, CarePackageDetail>().ReverseMap();
             CreateMap<CarePackageDetailDomain, CarePackageDetailResponse>().ReverseMap();
             CreateMap<CarePackageDomain, CarePackageResponse>().ReverseMap();
+            CreateMap<CarePackageForCreationDomain, CarePackage>().ReverseMap();
+            CreateMap<CarePackageForCreationDomain, CarePackageSettings>().ReverseMap();
             CreateMap<CarePackageListItemDomain, CarePackageListItemResponse>().ReverseMap();
             CreateMap<CarePackagePlainDomain, CarePackagePlainResponse>().ReverseMap();
             CreateMap<CarePackageReclaimCreationDomain, CarePackageReclaim>().ReverseMap();
@@ -48,8 +43,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CarePackageUpdateDomain, CarePackage>().ReverseMap();
             CreateMap<ClientsDomain, ClientsResponse>().ReverseMap();
             CreateMap<ServiceUserBasicDomain, ServiceUserBasicResponse>().ReverseMap();
-            CreateMap<CarePackageForCreationDomain, CarePackage>().ReverseMap();
-            CreateMap<CarePackageForCreationDomain, CarePackageSettings>().ReverseMap();
             CreateMap<AppUserDomain, AppUserResponse>().ReverseMap();
             CreateMap<Client, ServiceUserBasicDomain>().ReverseMap();
             CreateMap<CareChargeElementCreationRequest, CareChargeElementPlainDomain>().ReverseMap();

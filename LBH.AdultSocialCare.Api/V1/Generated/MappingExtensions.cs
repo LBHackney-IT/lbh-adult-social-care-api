@@ -4,23 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using HttpServices.Models.Requests;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -173,6 +166,26 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<CarePackageDomain>(input);
         }
 
+        public static CarePackage ToEntity(this CarePackageForCreationDomain input)
+        {
+            return _mapper.Map<CarePackage>(input);
+        }
+
+        public static CarePackageForCreationDomain ToForCreationDomain(this CarePackage input)
+        {
+            return _mapper.Map<CarePackageForCreationDomain>(input);
+        }
+
+        public static CarePackageSettings ToSettings(this CarePackageForCreationDomain input)
+        {
+            return _mapper.Map<CarePackageSettings>(input);
+        }
+
+        public static CarePackageForCreationDomain ToForCreationDomain(this CarePackageSettings input)
+        {
+            return _mapper.Map<CarePackageForCreationDomain>(input);
+        }
+
         public static CarePackageListItemResponse ToResponse(this CarePackageListItemDomain input)
         {
             return _mapper.Map<CarePackageListItemResponse>(input);
@@ -311,26 +324,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static ServiceUserBasicDomain ToDomain(this ServiceUserBasicResponse input)
         {
             return _mapper.Map<ServiceUserBasicDomain>(input);
-        }
-
-        public static CarePackage ToEntity(this CarePackageForCreationDomain input)
-        {
-            return _mapper.Map<CarePackage>(input);
-        }
-
-        public static CarePackageForCreationDomain ToForCreationDomain(this CarePackage input)
-        {
-            return _mapper.Map<CarePackageForCreationDomain>(input);
-        }
-
-        public static CarePackageSettings ToSettings(this CarePackageForCreationDomain input)
-        {
-            return _mapper.Map<CarePackageSettings>(input);
-        }
-
-        public static CarePackageForCreationDomain ToForCreationDomain(this CarePackageSettings input)
-        {
-            return _mapper.Map<CarePackageForCreationDomain>(input);
         }
 
         public static AppUserResponse ToResponse(this AppUserDomain input)

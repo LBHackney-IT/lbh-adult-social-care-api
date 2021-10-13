@@ -3,9 +3,6 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -53,25 +50,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<Package> Packages { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<PackageStatusOption> PackageStatuses { get; set; }
-        public DbSet<TermTimeConsiderationOption> TermTimeConsiderationOptions { get; set; }
-        public DbSet<ResidentialCarePackage> ResidentialCarePackages { get; set; }
         public DbSet<OpportunityLengthOption> OpportunityLengthOptions { get; set; }
         public DbSet<OpportunityTimesPerMonthOption> OpportunityTimesPerMonthOptions { get; set; }
-        public DbSet<ResidentialCareAdditionalNeed> ResidentialCareAdditionalNeeds { get; set; }
-        public DbSet<TypeOfResidentialCareHome> TypesOfResidentialCareHomes { get; set; }
-        public DbSet<ResidentialCareTypeOfStayOption> ResidentialCareTypeOfStayOptions { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Stage> PackageStages { get; set; }
-        public DbSet<ResidentialCareApprovalHistory> ResidentialCareApprovalHistories { get; set; }
-        public DbSet<ResidentialCareRequestMoreInformation> ResidentialCareRequestMoreInformations { get; set; }
         public DbSet<ReclaimAmountOption> ReclaimAmountOptions { get; set; }
         public DbSet<ReclaimCategory> ReclaimCategories { get; set; }
         public DbSet<ReclaimFrom> ReclaimFroms { get; set; }
-        public DbSet<ResidentialCarePackageReclaim> ResidentialCarePackageReclaims { get; set; }
-        public DbSet<ResidentialCareBrokerageInfo> ResidentialCareBrokerageInfos { get; set; }
         public DbSet<PrimarySupportReason> PrimarySupportReasons { get; set; }
         public DbSet<AdditionalNeedsPaymentType> AdditionalNeedsPaymentTypes { get; set; }
-        public DbSet<ResidentialCareAdditionalNeedsCost> ResidentialCareAdditionalNeedsCosts { get; set; }
 
         public DbSet<PackageCostClaimer> PackageCostClaimers { get; set; }
         public DbSet<FundedNursingCarePrice> FundedNursingCarePrices { get; set; }
@@ -102,9 +89,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             #region Database Seeds
 
-            // Seed term time consideration options
-            modelBuilder.ApplyConfiguration(new TermTimeConsiderationOptionsSeed());
-
             // Seed day care how long options
             modelBuilder.ApplyConfiguration(new OpportunityLengthOptionsSeed());
 
@@ -117,9 +101,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed package types
             modelBuilder.ApplyConfiguration(new PackageTypesSeed());
 
-            // Seed Type Of Residential Care Home
-            modelBuilder.ApplyConfiguration(new TypeOfResidentialCareHomeSeed());
-
             // Seed User
             modelBuilder.ApplyConfiguration(new UserSeed());
 
@@ -131,9 +112,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed Client
             modelBuilder.ApplyConfiguration(new ClientSeed());
-
-            // Seed ResidentialCareTypeOfStayOptionSeed
-            modelBuilder.ApplyConfiguration(new ResidentialCareTypeOfStayOptionSeed());
 
             // Seed Supplier
             modelBuilder.ApplyConfiguration(new SupplierSeed());
@@ -190,32 +168,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 entity.HasIndex(e => e.OptionName).IsUnique();
             });
 
-            modelBuilder.Entity<TermTimeConsiderationOption>(entity =>
-            {
-                entity.HasIndex(e => e.OptionName).IsUnique();
-            });
-
             modelBuilder.Entity<OpportunityTimesPerMonthOption>(entity =>
             {
                 entity.HasKey(e => e.OpportunityTimePerMonthOptionId);
 
                 entity.HasIndex(e => e.OptionName).IsUnique();
-            });
-
-            modelBuilder.Entity<ResidentialCarePackage>(entity =>
-            {
-                entity.HasOne(r => r.Status)
-                    .WithMany()
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
-            });
-
-            modelBuilder.Entity<ResidentialCareAdditionalNeed>(entity =>
-            {
-                entity.HasOne(r => r.ResidentialCarePackage)
-                    .WithMany(r => r.ResidentialCareAdditionalNeeds)
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.ClientCascade);
             });
 
             #endregion Entity Config

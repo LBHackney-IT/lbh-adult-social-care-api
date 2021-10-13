@@ -1,9 +1,9 @@
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Validations;
 using System;
 using System.ComponentModel.DataAnnotations;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Validations;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request
+namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
 {
     public class CarePackageForCreationRequest
     {

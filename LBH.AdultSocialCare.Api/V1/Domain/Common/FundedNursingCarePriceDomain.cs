@@ -1,6 +1,6 @@
 using System;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain.NursingCare
+namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
     public class FundedNursingCarePriceDomain
     {

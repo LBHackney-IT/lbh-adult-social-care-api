@@ -1,13 +1,9 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -19,15 +15,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             _mapper = mapper;
         }
-
-        #region TermTimeConsiderations
-
-        public static IEnumerable<TermTimeConsiderationOptionResponse> ToResponse(this IEnumerable<TermTimeConsiderationOptionDomain> termTimeConsiderationDomains)
-        {
-            return _mapper.Map<IEnumerable<TermTimeConsiderationOptionResponse>>(termTimeConsiderationDomains);
-        }
-
-        #endregion TermTimeConsiderations
 
         #region OpportunityLengthOptions
 
@@ -47,80 +34,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion OpportunityTimesPerMonthOptions
 
-        #region ResidentialCarePackage
-
-        public static ResidentialCarePackageResponse ToResponse(this ResidentialCarePackageDomain residentialCarePackageDomain)
-        {
-            // return _mapper.Map<NursingCarePackageResponse>(nursingCarePackageDomain);
-            return new ResidentialCarePackageResponse
-            {
-                Id = residentialCarePackageDomain.Id,
-                ClientId = residentialCarePackageDomain.ClientId,
-                IsFixedPeriod = residentialCarePackageDomain.IsFixedPeriod,
-                StartDate = residentialCarePackageDomain.StartDate,
-                EndDate = residentialCarePackageDomain.EndDate,
-                HasRespiteCare = residentialCarePackageDomain.HasRespiteCare,
-                HasDischargePackage = residentialCarePackageDomain.HasDischargePackage,
-                IsThisAnImmediateService = residentialCarePackageDomain.IsThisAnImmediateService,
-                IsThisUserUnderS117 = residentialCarePackageDomain.IsThisUserUnderS117,
-                TypeOfStayId = residentialCarePackageDomain.TypeOfStayId,
-                NeedToAddress = residentialCarePackageDomain.NeedToAddress,
-                TypeOfResidentialCareHomeId = residentialCarePackageDomain.TypeOfResidentialCareHomeId,
-                CreatorId = residentialCarePackageDomain.CreatorId,
-                UpdaterId = residentialCarePackageDomain.UpdaterId,
-                StatusId = residentialCarePackageDomain.StatusId,
-                ClientName = residentialCarePackageDomain.ClientName,
-                ClientHackneyId = residentialCarePackageDomain.ClientHackneyId,
-                ClientPostCode = residentialCarePackageDomain.ClientPostCode,
-                ClientDateOfBirth = residentialCarePackageDomain.ClientDateOfBirth,
-                ClientCanSpeakEnglish = residentialCarePackageDomain.ClientCanSpeakEnglish,
-                ClientPreferredContact = residentialCarePackageDomain.ClientPreferredContact,
-                StatusName = residentialCarePackageDomain.StatusName,
-                CreatorName = residentialCarePackageDomain.CreatorName,
-                UpdaterName = residentialCarePackageDomain.UpdaterName,
-                PackageName = residentialCarePackageDomain.PackageName,
-                TypeOfCareHomeName = residentialCarePackageDomain.TypeOfCareHomeName,
-                TypeOfStayOptionName = residentialCarePackageDomain.TypeOfStayOptionName,
-                ResidentialCareAdditionalNeeds = residentialCarePackageDomain.ResidentialCareAdditionalNeeds.ToResponse()
-            };
-        }
-
-        public static IEnumerable<ResidentialCarePackageResponse> ToResponse(this IEnumerable<ResidentialCarePackageDomain> residentialCarePackageDomains)
-        {
-            return _mapper.Map<IEnumerable<ResidentialCarePackageResponse>>(residentialCarePackageDomains);
-        }
-
-        #endregion ResidentialCarePackage
-
-        #region ResidentialCareAdditionalNeed
-
-        public static IEnumerable<ResidentialCareAdditionalNeedsResponse> ToResponse(this IEnumerable<ResidentialCareAdditionalNeedsDomain> residentialCareAdditionalNeedsDomain)
-        {
-            return _mapper.Map<IEnumerable<ResidentialCareAdditionalNeedsResponse>>(residentialCareAdditionalNeedsDomain);
-        }
-
-        #endregion ResidentialCareAdditionalNeed
-
-        #region ResidentialCareTypeOfStayOptions
-
-        public static IEnumerable<ResidentialCareTypeOfStayOptionResponse> ToResponse(this IEnumerable<ResidentialCareTypeOfStayOptionDomain> residentialCareTypeOfStayOptionDomains)
-        {
-            return residentialCareTypeOfStayOptionDomains.Select(item
-                => new ResidentialCareTypeOfStayOptionResponse
-                {
-                    TypeOfStayOptionId = item.TypeOfStayOptionId,
-                    OptionName = item.OptionName,
-                    OptionPeriod = item.OptionPeriod
-                }).ToList();
-        }
-
-        #endregion ResidentialCareTypeOfStayOptions
-
-        public static IEnumerable<TypeOfResidentialCareHomeResponse> ToResponse(this IEnumerable<TypeOfResidentialCareHomeDomain> typeOfResidentialCareHomeDomain)
-        {
-            return _mapper.Map<IEnumerable<TypeOfResidentialCareHomeResponse>>(typeOfResidentialCareHomeDomain);
-        }
-
         #region Supplier
 
         public static SupplierResponse ToResponse(this SupplierDomain supplierDomain)
@@ -134,38 +47,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Supplier
-
-        #region ResidentialCareApprovePackage
-
-        public static ResidentialCareApprovePackageResponse ToResponse(this ResidentialCareApprovePackageDomain residentialCareApprovePackageDomain)
-        {
-            return _mapper.Map<ResidentialCareApprovePackageResponse>(residentialCareApprovePackageDomain);
-        }
-
-        #endregion ResidentialCareApprovePackage
-
-        #region ResidentialCareApproveBrokered
-
-        public static ResidentialCareApproveBrokeredResponse ToResponse(this ResidentialCareApproveBrokeredDomain residentialCareApproveBrokeredDomain)
-        {
-            return _mapper.Map<ResidentialCareApproveBrokeredResponse>(residentialCareApproveBrokeredDomain);
-        }
-
-        #endregion ResidentialCareApproveBrokered
-
-        #region ResidentialCareBrokerage
-
-        public static IEnumerable<ResidentialCareApprovalHistoryResponse> ToResponse(this IEnumerable<ResidentialCareApprovalHistoryDomain> residentialCareApprovalHistoryDomain)
-        {
-            return _mapper.Map<IEnumerable<ResidentialCareApprovalHistoryResponse>>(residentialCareApprovalHistoryDomain);
-        }
-
-        public static ResidentialCareBrokerageInfoResponse ToResponse(this ResidentialCareBrokerageInfoDomain residentialCareBrokerageInfoDomain)
-        {
-            return _mapper.Map<ResidentialCareBrokerageInfoResponse>(residentialCareBrokerageInfoDomain);
-        }
-
-        #endregion ResidentialCareBrokerage
 
         #region PackageReclaim
 
@@ -184,11 +65,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<ReclaimAmountOptionResponse>>(reclaimAmountOptionDomain);
         }
 
-        public static ResidentialCarePackageClaimResponse ToResponse(this ResidentialCarePackageClaimDomain residentialCarePackageClaimDomain)
-        {
-            return _mapper.Map<ResidentialCarePackageClaimResponse>(residentialCarePackageClaimDomain);
-        }
-
         #endregion PackageReclaim
 
         #region Packages
@@ -204,43 +80,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Packages
-
-        #region ResidentialCareAdditionalNeeds
-
-        public static ResidentialCareAdditionalNeedsResponse ToResponse(this ResidentialCareAdditionalNeedsDomain residentialCareAdditionalNeedsDomain)
-        {
-            return new ResidentialCareAdditionalNeedsResponse
-            {
-                Id = residentialCareAdditionalNeedsDomain.Id,
-                ResidentialCarePackageId = residentialCareAdditionalNeedsDomain.ResidentialCarePackageId,
-                AdditionalNeedsPaymentTypeId = residentialCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeId,
-                AdditionalNeedsPaymentTypeName = residentialCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeName,
-                NeedToAddress = residentialCareAdditionalNeedsDomain.NeedToAddress,
-                CreatorId = residentialCareAdditionalNeedsDomain.CreatorId,
-                UpdatorId = residentialCareAdditionalNeedsDomain.UpdatorId,
-            };
-        }
-
-        #endregion ResidentialCareAdditionalNeeds
-
-        #region ResidentialCarePackage
-
-        public static IList<ResidentialCarePackageResponse> ToResponse(this IList<CarePackageForCreationDomain> residentialCarePackagesDomain)
-        {
-            return _mapper.Map<IList<ResidentialCarePackageResponse>>(residentialCarePackagesDomain);
-        }
-
-        public static IList<TypeOfResidentialCareHomeResponse> ToResponse(this IList<TypeOfResidentialCareHomeDomain> typeOfResidentialCareHomesDomain)
-        {
-            return typeOfResidentialCareHomesDomain.Select(item
-                => new TypeOfResidentialCareHomeResponse
-                {
-                    TypeOfCareHomeId = item.TypeOfCareHomeId,
-                    TypeOfCareHomeName = item.TypeOfCareHomeName
-                }).ToList();
-        }
-
-        #endregion ResidentialCarePackage
 
         #region Roles
 

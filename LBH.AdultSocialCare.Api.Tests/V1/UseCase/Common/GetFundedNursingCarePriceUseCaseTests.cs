@@ -1,18 +1,17 @@
 using System;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using Moq;
 using Xunit;
 
-namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.NursingCare
+namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 {
     public class GetFundedNursingCarePriceUseCaseTests
     {
         [Fact]
         public async Task ShouldQueryActiveFncPrice()
         {
-
             var gateway = new Mock<IFundedNursingCareGateway>();
             var useCase = new GetFundedNursingCarePriceUseCase(gateway.Object);
 

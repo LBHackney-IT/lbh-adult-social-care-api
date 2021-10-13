@@ -1,17 +1,12 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
 using System.Collections.Generic;
 using System.Linq;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -23,16 +18,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             _mapper = mapper;
         }
-
-        #region TermTimeConsiderationOptions
-
-        public static IEnumerable<TermTimeConsiderationOptionDomain> ToDomain(
-            this List<TermTimeConsiderationOption> termTimeConsiderationOptionEntities)
-        {
-            return _mapper.Map<IEnumerable<TermTimeConsiderationOptionDomain>>(termTimeConsiderationOptionEntities);
-        }
-
-        #endregion TermTimeConsiderationOptions
 
         #region OpportunityLengthOptions
 
@@ -53,95 +38,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion OpportunityTimesPerMonthOptions
-
-        #region ResidentialCarePackage
-
-        public static ResidentialCarePackageDomain ToDomain(this ResidentialCarePackage residentialCarePackageEntity)
-        {
-            return new ResidentialCarePackageDomain
-            {
-                Id = residentialCarePackageEntity.Id,
-                ClientId = residentialCarePackageEntity.ClientId,
-                IsFixedPeriod = residentialCarePackageEntity.IsFixedPeriod,
-                StartDate = residentialCarePackageEntity.StartDate,
-                EndDate = residentialCarePackageEntity.EndDate,
-                HasRespiteCare = residentialCarePackageEntity.HasRespiteCare,
-                HasDischargePackage = residentialCarePackageEntity.HasDischargePackage,
-                IsThisAnImmediateService = residentialCarePackageEntity.IsThisAnImmediateService,
-                IsThisUserUnderS117 = residentialCarePackageEntity.IsThisUserUnderS117,
-                TypeOfStayId = residentialCarePackageEntity.TypeOfStayId,
-                NeedToAddress = residentialCarePackageEntity.NeedToAddress,
-                TypeOfResidentialCareHomeId = residentialCarePackageEntity.TypeOfResidentialCareHomeId,
-                CreatorId = residentialCarePackageEntity.CreatorId,
-                UpdaterId = residentialCarePackageEntity.UpdaterId,
-                StatusId = residentialCarePackageEntity.StatusId,
-                SupplierId = residentialCarePackageEntity.SupplierId,
-                StageId = residentialCarePackageEntity.StageId,
-                ClientName = residentialCarePackageEntity.Client != null ? $"{residentialCarePackageEntity.Client.FirstName} {residentialCarePackageEntity.Client.MiddleName} {residentialCarePackageEntity.Client.LastName}" : null,
-                ClientHackneyId = residentialCarePackageEntity.Client?.HackneyId ?? 0,
-                ClientPostCode = residentialCarePackageEntity.Client?.PostCode,
-                ClientCanSpeakEnglish = residentialCarePackageEntity.Client?.CanSpeakEnglish,
-                ClientPreferredContact = residentialCarePackageEntity.Client?.PreferredContact,
-                ClientDateOfBirth = residentialCarePackageEntity.Client?.DateOfBirth,
-                StatusName = residentialCarePackageEntity.Status?.StatusName,
-                CreatorName = residentialCarePackageEntity.Creator != null ? $"{residentialCarePackageEntity.Creator.Name}" : null,
-                UpdaterName = residentialCarePackageEntity.Updater != null ? $"{residentialCarePackageEntity.Updater.Name}" : null,
-                PackageName = "Residential Care Package",
-                TypeOfCareHomeName = residentialCarePackageEntity.TypeOfCareHome?.TypeOfCareHomeName,
-                TypeOfStayOptionName = residentialCarePackageEntity.TypeOfStayOption?.OptionName,
-                ResidentialCareAdditionalNeeds = residentialCarePackageEntity.ResidentialCareAdditionalNeeds.ToDomain()
-            };
-        }
-
-        public static IEnumerable<ResidentialCarePackageDomain> ToDomain(this List<ResidentialCarePackage> residentialCarePackageEntities)
-        {
-            return residentialCarePackageEntities.Select(entity => entity.ToDomain()).ToList();
-        }
-
-        public static ResidentialCarePackagePlainDomain ToPlainDomain(this ResidentialCarePackage residentialCarePackage)
-        {
-            return _mapper.Map<ResidentialCarePackagePlainDomain>(residentialCarePackage);
-        }
-
-        #endregion ResidentialCarePackage
-
-        #region ResidentialCareAdditionalNeed
-
-        public static IEnumerable<ResidentialCareAdditionalNeedsDomain> ToDomain(this ICollection<ResidentialCareAdditionalNeed> residentialCareAdditionalNeedsEntities)
-        {
-            return _mapper.Map<IEnumerable<ResidentialCareAdditionalNeedsDomain>>(residentialCareAdditionalNeedsEntities);
-        }
-
-        #endregion ResidentialCareAdditionalNeed
-
-        #region TypeOfResidentialCareHome
-
-        public static IEnumerable<TypeOfResidentialCareHomeDomain> ToDomain(this ICollection<TypeOfResidentialCareHome> typeOfResidentialCareHome)
-        {
-            return typeOfResidentialCareHome.Select(item
-                => new TypeOfResidentialCareHomeDomain
-                {
-                    TypeOfCareHomeId = item.TypeOfCareHomeId,
-                    TypeOfCareHomeName = item.TypeOfCareHomeName
-                }).ToList();
-        }
-
-        #endregion TypeOfResidentialCareHome
-
-        #region ResidentialCareTypeOfStayOptions
-
-        public static IEnumerable<ResidentialCareTypeOfStayOptionDomain> ToDomain(this ICollection<ResidentialCareTypeOfStayOption> residentialCareTypeOfStayOptions)
-        {
-            return residentialCareTypeOfStayOptions.Select(item
-                => new ResidentialCareTypeOfStayOptionDomain
-                {
-                    TypeOfStayOptionId = item.TypeOfStayOptionId,
-                    OptionName = item.OptionName,
-                    OptionPeriod = item.OptionPeriod
-                }).ToList();
-        }
-
-        #endregion ResidentialCareTypeOfStayOptions
 
         #region Supplier
 
@@ -165,26 +61,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion HomeCareBrokerage
-
-        #region ResidentialCareBrokerage
-
-        public static IEnumerable<ResidentialCareApprovalHistoryDomain> ToDomain(
-            this List<ResidentialCareApprovalHistory> residentialCareApprovalHistoryEntities)
-        {
-            return _mapper.Map<IEnumerable<ResidentialCareApprovalHistoryDomain>>(residentialCareApprovalHistoryEntities);
-        }
-
-        public static ResidentialCareBrokerageInfoDomain ToDomain(this ResidentialCareBrokerageInfo residentialCareBrokerageInfoEntity)
-        {
-            return _mapper.Map<ResidentialCareBrokerageInfoDomain>(residentialCareBrokerageInfoEntity);
-        }
-
-        public static ResidentialCareApprovalHistoryDomain ToDomain(this ResidentialCareApprovalHistory residentialCareApprovalHistory)
-        {
-            return _mapper.Map<ResidentialCareApprovalHistoryDomain>(residentialCareApprovalHistory);
-        }
-
-        #endregion ResidentialCareBrokerage
 
         #region PackageReclaim
 
@@ -216,11 +92,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                     ReclaimFromId = item.ReclaimFromId,
                     ReclaimFromName = item.ReclaimFromName
                 }).ToList();
-        }
-
-        public static ResidentialCarePackageClaimDomain ToDomain(this ResidentialCarePackageReclaim residentialCarePackageReclaim)
-        {
-            return _mapper.Map<ResidentialCarePackageClaimDomain>(residentialCarePackageReclaim);
         }
 
         #endregion PackageReclaim
@@ -270,43 +141,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Packages
-
-        #region ResidentialCareAdditionalNeeds
-
-        public static ResidentialCareAdditionalNeedsDomain ToDomain(this ResidentialCareAdditionalNeed residentialCareAdditionalNeedEntity)
-        {
-            return new ResidentialCareAdditionalNeedsDomain
-            {
-                Id = residentialCareAdditionalNeedEntity.Id,
-                ResidentialCarePackageId = residentialCareAdditionalNeedEntity.ResidentialCarePackageId,
-                AdditionalNeedsPaymentTypeId = residentialCareAdditionalNeedEntity.AdditionalNeedsPaymentTypeId,
-                AdditionalNeedsPaymentTypeName = residentialCareAdditionalNeedEntity.AdditionalNeedsPaymentType.OptionName,
-                NeedToAddress = residentialCareAdditionalNeedEntity.NeedToAddress,
-                CreatorId = residentialCareAdditionalNeedEntity.CreatorId,
-                UpdatorId = residentialCareAdditionalNeedEntity.UpdaterId,
-            };
-        }
-
-        #endregion ResidentialCareAdditionalNeeds
-
-        #region ResidentialCarePackage
-
-        public static IList<CarePackageForCreationDomain> ToDomain(this IList<ResidentialCarePackage> residentialCarePackagesEntity)
-        {
-            return _mapper.Map<IList<CarePackageForCreationDomain>>(residentialCarePackagesEntity);
-        }
-
-        public static IList<TypeOfResidentialCareHomeDomain> ToDomain(this IList<TypeOfResidentialCareHome> typeOfResidentialCareHomes)
-        {
-            return typeOfResidentialCareHomes.Select(item
-                => new TypeOfResidentialCareHomeDomain
-                {
-                    TypeOfCareHomeId = item.TypeOfCareHomeId,
-                    TypeOfCareHomeName = item.TypeOfCareHomeName
-                }).ToList();
-        }
-
-        #endregion ResidentialCarePackage
 
         #region Roles
 

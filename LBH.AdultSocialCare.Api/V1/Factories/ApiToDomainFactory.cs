@@ -1,12 +1,7 @@
 using AutoMapper;
-using System;
-using System.Collections.Generic;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -20,14 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             _mapper = mapper;
         }
 
-        #region ResidentialCarePackage
-
-        public static ResidentialCarePackageForUpdateDomain ToDomain(this ResidentialCarePackageForUpdateRequest residentialCarePackageForUpdate, Guid residentialCarePackageId)
-        {
-            var res = _mapper.Map<ResidentialCarePackageForUpdateDomain>(residentialCarePackageForUpdate);
-            res.Id = residentialCarePackageId;
-            return res;
-        }
+        #region CarePackage
 
         public static CarePackageForCreationDomain ToDomain(this CarePackageForCreationRequest carePackageForCreation)
         {
@@ -35,16 +23,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return res;
         }
 
-        #endregion ResidentialCarePackage
-
-        #region ResidentialCareAdditionalNeed
-
-        public static IEnumerable<ResidentialCareAdditionalNeedsDomain> ToDomain(this IEnumerable<ResidentialCareAdditionalNeedForCreationRequest> residentialCareAdditionalNeedsForCreation)
-        {
-            return _mapper.Map<IEnumerable<ResidentialCareAdditionalNeedsDomain>>(residentialCareAdditionalNeedsForCreation);
-        }
-
-        #endregion ResidentialCareAdditionalNeed
+        #endregion CarePackage
 
         #region Supplier
 
@@ -55,32 +34,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Supplier
-
-        #region ResidentialCareBrokerage
-
-        public static ResidentialCareRequestMoreInformationDomain ToDomain(this ResidentialCareRequestMoreInformationForCreationRequest residentialCareRequestMoreInformationForCreationRequest)
-        {
-            var domain = _mapper.Map<ResidentialCareRequestMoreInformationDomain>(residentialCareRequestMoreInformationForCreationRequest);
-            return domain;
-        }
-
-        public static ResidentialCareBrokerageForCreationDomain ToDomain(this ResidentialCareBrokerageForCreationRequest residentialCareBrokerageForCreationRequest)
-        {
-            var domain = _mapper.Map<ResidentialCareBrokerageForCreationDomain>(residentialCareBrokerageForCreationRequest);
-            return domain;
-        }
-
-        #endregion ResidentialCareBrokerage
-
-        #region PackageReclaim
-
-        public static ResidentialCarePackageClaimCreationDomain ToDomain(this ResidentialCarePackageClaimCreationRequest residentialCarePackageClaimCreationRequest)
-        {
-            var res = _mapper.Map<ResidentialCarePackageClaimCreationDomain>(residentialCarePackageClaimCreationRequest);
-            return res;
-        }
-
-        #endregion PackageReclaim
 
         #region Clients
 
@@ -119,21 +72,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Packages
-
-        #region ResidentialCareAdditionalNeeds
-
-        public static ResidentialCareAdditionalNeedsDomain ToDomain(this ResidentialCareAdditionalNeedsRequest residentialCareAdditionalNeedsEntity)
-        {
-            return new ResidentialCareAdditionalNeedsDomain
-            {
-                Id = residentialCareAdditionalNeedsEntity.Id,
-                ResidentialCarePackageId = residentialCareAdditionalNeedsEntity.ResidentialCarePackageId,
-                AdditionalNeedsPaymentTypeId = residentialCareAdditionalNeedsEntity.AdditionalNeedsPaymentTypeId,
-                NeedToAddress = residentialCareAdditionalNeedsEntity.NeedToAddress,
-            };
-        }
-
-        #endregion ResidentialCareAdditionalNeeds
 
         #region Roles
 

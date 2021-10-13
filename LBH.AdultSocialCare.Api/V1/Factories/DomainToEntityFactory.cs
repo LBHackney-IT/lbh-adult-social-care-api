@@ -1,11 +1,6 @@
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCarePackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Domain.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -21,25 +16,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             _mapper = mapper;
         }
 
-        /*public static T MapTo<T>(this IDto dto)
-        {
-            return _mapper.Map<T>(dto);
-        }*/
-
-        #region ResidentialCarePackage
-
-        public static ResidentialCarePackage ToDb(this CarePackageForCreationDomain carePackageForCreationDomain)
-        {
-            return _mapper.Map<ResidentialCarePackage>(carePackageForCreationDomain);
-        }
-
-        public static ResidentialCareApprovalHistory ToDb(this ResidentialCareApprovalHistoryDomain residentialCareApprovalHistory)
-        {
-            return _mapper.Map<ResidentialCareApprovalHistory>(residentialCareApprovalHistory);
-        }
-
-        #endregion ResidentialCarePackage
-
         #region Supplier
 
         public static Supplier ToDb(this SupplierCreationDomain supplierCreationDomain)
@@ -48,29 +24,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Supplier
-
-        #region ResidentialCareBrokerage
-
-        public static ResidentialCareRequestMoreInformation ToDb(this ResidentialCareRequestMoreInformationDomain residentialCareRequestMoreInformationDomain)
-        {
-            return _mapper.Map<ResidentialCareRequestMoreInformation>(residentialCareRequestMoreInformationDomain);
-        }
-
-        public static ResidentialCareBrokerageInfo ToDb(this ResidentialCareBrokerageForCreationDomain residentialCareBrokerageForCreationDomain)
-        {
-            return _mapper.Map<ResidentialCareBrokerageInfo>(residentialCareBrokerageForCreationDomain);
-        }
-
-        #endregion ResidentialCareBrokerage
-
-        #region PackageReclaim
-
-        public static ResidentialCarePackageReclaim ToDb(this ResidentialCarePackageClaimCreationDomain residentialCarePackageClaimCreationDomain)
-        {
-            return _mapper.Map<ResidentialCarePackageReclaim>(residentialCarePackageClaimCreationDomain);
-        }
-
-        #endregion PackageReclaim
 
         #region Clients
 
@@ -110,23 +63,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Packages
-
-        #region ResidentialCareAdditionalNeeds
-
-        public static ResidentialCareAdditionalNeed ToEntity(this ResidentialCareAdditionalNeedsDomain residentialCareAdditionalNeedsDomain)
-        {
-            return new ResidentialCareAdditionalNeed
-            {
-                Id = residentialCareAdditionalNeedsDomain.Id,
-                ResidentialCarePackageId = residentialCareAdditionalNeedsDomain.ResidentialCarePackageId,
-                AdditionalNeedsPaymentTypeId = residentialCareAdditionalNeedsDomain.AdditionalNeedsPaymentTypeId,
-                NeedToAddress = residentialCareAdditionalNeedsDomain.NeedToAddress,
-                CreatorId = residentialCareAdditionalNeedsDomain.CreatorId,
-                UpdaterId = residentialCareAdditionalNeedsDomain.UpdatorId,
-            };
-        }
-
-        #endregion ResidentialCareAdditionalNeeds
 
         #region Roles
 
