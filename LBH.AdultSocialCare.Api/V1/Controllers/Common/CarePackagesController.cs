@@ -76,7 +76,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         public async Task<ActionResult<CarePackageResponse>> GetCarePackageAsync(Guid carePackageId)
         {
             var package = await _getCarePackageUseCase.GetSingleAsync(carePackageId);
-            return Ok(package.ToResponse());
+            return Ok(package);
         }
 
         /// <summary>Gets core settings for a care package.</summary>

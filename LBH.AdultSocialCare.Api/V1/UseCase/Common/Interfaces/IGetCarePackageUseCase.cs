@@ -11,7 +11,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
     {
         Task<IEnumerable<CarePackageListItemResponse>> GetAllAsync();
 
-        Task<CarePackageDomain> GetSingleAsync(Guid packageId);
+        Task<CarePackageResponse> GetSingleAsync(Guid packageId);
 
         Task<CarePackageCoreResponse> GetCarePackageCoreAsync(Guid carePackageId);
 

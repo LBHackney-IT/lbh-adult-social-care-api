@@ -27,13 +27,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             return packages.ToResponse();
         }
 
-        public async Task<CarePackageDomain> GetSingleAsync(Guid packageId)
+        public async Task<CarePackageResponse> GetSingleAsync(Guid packageId)
         {
             var package = await _carePackageGateway
                 .GetPackageAsync(packageId, PackageFields.ServiceUser | PackageFields.Settings)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
-            return package.ToDomain();
+            return package.ToDomain().ToResponse();
         }
 
         public async Task<CarePackageCoreResponse> GetCarePackageCoreAsync(Guid carePackageId)

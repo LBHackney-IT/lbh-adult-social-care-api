@@ -4,6 +4,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
 {
     public class ServiceUserBasicResponse
     {
+        public Guid Id { get; set; }
         public int HackneyId { get; set; }
 
         public string FirstName { get; set; }
