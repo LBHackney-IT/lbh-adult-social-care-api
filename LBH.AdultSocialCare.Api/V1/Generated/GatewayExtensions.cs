@@ -13,7 +13,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
         public static void RegisterGateways(this IServiceCollection services)
         {
             services.AddScoped<IApprovedPackagesGateway, ApprovedPackagesGateway>();
-            services.AddScoped<ICareChargeElementTypeGateway, CareChargeElementTypeGateway>();
             services.AddScoped<ICareChargesGateway, CareChargesGateway>();
             services.AddScoped<ICarePackageGateway, CarePackageGateway>();
             services.AddScoped<ICarePackageHistoryGateway, CarePackageHistoryGateway>();
@@ -21,11 +20,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<ICarePackageSettingsGateway, CarePackageSettingsGateway>();
             services.AddScoped<IClientsGateway, ClientsGateway>();
             services.AddScoped<IFundedNursingCareGateway, FundedNursingCareGateway>();
-            services.AddScoped<IInvoiceCreditNoteGateway, InvoiceCreditNoteGateway>();
-            services.AddScoped<IOpportunityLengthOptionGateway, OpportunityLengthOptionGateway>();
-            services.AddScoped<IOpportunityTimesPerMonthOptionGateway, OpportunityTimesPerMonthOptionGateway>();
-            services.AddScoped<IPackageCareChargeGateway, PackageCareChargeGateway>();
-            services.AddScoped<IPackageGateway, PackageGateway>();
             services.AddScoped<IPrimarySupportReasonGateway, PrimarySupportReasonGateway>();
             services.AddScoped<IServiceUserGateway, ServiceUserGateway>();
             services.AddScoped<IStatusGateway, StatusGateway>();

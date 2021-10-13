@@ -19,26 +19,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             _mapper = mapper;
         }
 
-        #region OpportunityLengthOptions
-
-        public static IEnumerable<OpportunityLengthOptionDomain> ToDomain(
-            this List<OpportunityLengthOption> opportunityLengthOptionEntities)
-        {
-            return _mapper.Map<IEnumerable<OpportunityLengthOptionDomain>>(opportunityLengthOptionEntities);
-        }
-
-        #endregion OpportunityLengthOptions
-
-        #region OpportunityTimesPerMonthOptions
-
-        public static IEnumerable<OpportunityTimesPerMonthOptionDomain> ToDomain(
-            this List<OpportunityTimesPerMonthOption> opportunityTimesPerMonthOptionEntities)
-        {
-            return _mapper.Map<IEnumerable<OpportunityTimesPerMonthOptionDomain>>(opportunityTimesPerMonthOptionEntities);
-        }
-
-        #endregion OpportunityTimesPerMonthOptions
-
         #region Supplier
 
         public static SupplierDomain ToDomain(this Supplier supplierEntity)
@@ -84,16 +64,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
                 }).ToList();
         }
 
-        public static IEnumerable<ReclaimFromDomain> ToDomain(this ICollection<ReclaimFrom> reclaimFroms)
-        {
-            return reclaimFroms.Select(item
-                => new ReclaimFromDomain
-                {
-                    ReclaimFromId = item.ReclaimFromId,
-                    ReclaimFromName = item.ReclaimFromName
-                }).ToList();
-        }
-
         #endregion PackageReclaim
 
         #region Clients
@@ -128,20 +98,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion Clients
 
-        #region Packages
-
-        public static PackageTypeDomain ToDomain(this Package packageEntity)
-        {
-            return new PackageTypeDomain
-            {
-                Id = packageEntity.Id,
-                PackageType = packageEntity.PackageType,
-                Sequence = packageEntity.Sequence
-            };
-        }
-
-        #endregion Packages
-
         #region Roles
 
         public static RolesDomain ToDomain(this Role roleEntity)
@@ -175,24 +131,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion ServiceUsers
 
-        #region PackageStatus
-
-        public static StatusDomain ToDomain(this PackageStatusOption statusOptionEntity)
-        {
-            return new StatusDomain
-            {
-                Id = statusOptionEntity.Id,
-                StatusName = statusOptionEntity.StatusName
-            };
-        }
-
-        public static IEnumerable<StatusDomain> ToDomain(this List<PackageStatusOption> packageStatus)
-        {
-            return _mapper.Map<IEnumerable<StatusDomain>>(packageStatus);
-        }
-
-        #endregion PackageStatus
-
         #region PrimarySupportReason
 
         public static IEnumerable<PrimarySupportReasonDomain> ToDomain(this List<PrimarySupportReason> primarySupportReasons)
@@ -221,16 +159,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static ProvisionalCareChargeAmountPlainDomain ToDomain(this ProvisionalCareChargeAmount provisionalCareCharge)
         {
             return _mapper.Map<ProvisionalCareChargeAmountPlainDomain>(provisionalCareCharge);
-        }
-
-        public static PackageCareChargePlainDomain ToPlainDomain(this PackageCareCharge packageCareCharge)
-        {
-            return _mapper.Map<PackageCareChargePlainDomain>(packageCareCharge);
-        }
-
-        public static InvoiceCreditNotePlainDomain ToPlainDomain(this InvoiceCreditNote invoiceCreditNote)
-        {
-            return _mapper.Map<InvoiceCreditNotePlainDomain>(invoiceCreditNote);
         }
 
         #endregion CareCharges

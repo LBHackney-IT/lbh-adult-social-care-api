@@ -12,11 +12,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
     [ApiController]
     [ApiExplorerSettings(GroupName = "v1")]
     [ApiVersion("1.0")]
-    public class PackageCostClaimersController : BaseController
+    public class FundedNursingCarePriceController : BaseController
     {
         private readonly IGetFundedNursingCarePriceUseCase _getFundedNursingCarePriceUseCase;
 
-        public PackageCostClaimersController(
+        public FundedNursingCarePriceController(
             IGetFundedNursingCarePriceUseCase getFundedNursingCarePriceUseCase)
         {
             _getFundedNursingCarePriceUseCase = getFundedNursingCarePriceUseCase;

@@ -60,19 +60,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion Clients
 
-        #region Packages
-
-        public static PackageTypeDomain ToDomain(this PackageRequest packageEntity)
-        {
-            return new PackageTypeDomain
-            {
-                Id = packageEntity.Id,
-                PackageType = packageEntity.PackageType
-            };
-        }
-
-        #endregion Packages
-
         #region Roles
 
         public static RoleForCreationDomain ToDomain(this RoleForCreationRequest rolesEntity)
@@ -113,35 +100,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion ServiceUsers
-
-        #region PackageStatus
-
-        public static StatusDomain ToDomain(this StatusRequest statusEntity)
-        {
-            return new StatusDomain
-            {
-                Id = statusEntity.Id,
-                StatusName = statusEntity.StatusName
-            };
-        }
-
-        #endregion PackageStatus
-
-        #region TimeSlotShifts
-
-        public static TimeSlotShiftsDomain ToDomain(this TimeSlotShiftsRequest timeSlotShiftsEntity)
-        {
-            return new TimeSlotShiftsDomain
-            {
-                Id = timeSlotShiftsEntity.Id,
-                TimeSlotShiftName = timeSlotShiftsEntity.TimeSlotShiftName,
-                TimeSlotTimeLabel = timeSlotShiftsEntity.TimeSlotTimeLabel,
-                DateCreated = timeSlotShiftsEntity.DateCreated,
-                DateUpdated = timeSlotShiftsEntity.DateUpdated
-            };
-        }
-
-        #endregion TimeSlotShifts
 
         #region Reclaim
 

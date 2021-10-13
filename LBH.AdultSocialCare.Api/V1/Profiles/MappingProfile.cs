@@ -5,7 +5,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
@@ -18,20 +17,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
     {
         public MappingProfile()
         {
-            #region OpportunityLengthOptions
-
-            CreateMap<OpportunityLengthOption, OpportunityLengthOptionDomain>();
-            CreateMap<OpportunityLengthOptionDomain, OpportunityLengthOptionResponse>();
-
-            #endregion OpportunityLengthOptions
-
-            #region OpportunityTimesPerMonthOptions
-
-            CreateMap<OpportunityTimesPerMonthOption, OpportunityTimesPerMonthOptionDomain>();
-            CreateMap<OpportunityTimesPerMonthOptionDomain, OpportunityTimesPerMonthOptionResponse>();
-
-            #endregion OpportunityTimesPerMonthOptions
-
             #region Supplier
 
             CreateMap<Supplier, SupplierDomain>();
@@ -67,8 +52,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<ReclaimAmountOptionDomain, ReclaimAmountOptionResponse>();
             CreateMap<ReclaimCategory, ReclaimCategoryDomain>();
             CreateMap<ReclaimCategoryDomain, ReclaimCategoryResponse>();
-            CreateMap<ReclaimFrom, ReclaimFromDomain>();
-            CreateMap<ReclaimFromDomain, ReclaimFromResponse>();
 
             #endregion PackageReclaim
 
@@ -117,13 +100,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #endregion BrokeredPackages
 
-            #region PackageStatus
-
-            CreateMap<PackageStatusOption, StatusDomain>();
-            CreateMap<StatusDomain, StatusResponse>();
-
-            #endregion PackageStatus
-
             #region Invoice
 
             CreateMap<InvoiceDomain, InvoiceResponse>();
@@ -154,11 +130,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             CreateMap<ProvisionalCareChargeAmount, ProvisionalCareChargeAmountPlainDomain>();
             CreateMap<ProvisionalCareChargeAmountPlainDomain, ProvisionalCareChargeAmountPlainResponse>().ReverseMap();
-            CreateMap<BrokerageCareChargeForChangeRequest, BrokerageCareChargeForChangeDomain>();
-            CreateMap<PackageCareCharge, PackageCareChargePlainDomain>();
-            CreateMap<PackageCareCharge, PackageCareChargeDomain>();
-            CreateMap<InvoiceCreditNote, InvoiceCreditNotePlainDomain>();
-            CreateMap<CareChargeElement, CareChargeElementDomain>();
 
             #endregion Care Charges
 

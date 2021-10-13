@@ -18,16 +18,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities
 
         public string Address { get; set; }
 
+        // TODO: VK: Remove or replace with PackageType enum
         /// <summary>
         /// Gets or sets the Package Type Id
         /// </summary>
         public int PackageTypeId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Package Type Id
-        /// </summary>
-        [ForeignKey(nameof(PackageTypeId))]
-        public Package Package { get; set; }
 
         /// <summary>
         /// Gets or sets the Is Supplier Internal

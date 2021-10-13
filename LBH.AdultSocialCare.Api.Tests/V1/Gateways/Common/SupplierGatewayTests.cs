@@ -41,9 +41,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
 
             var updatedSupplier = await _gateway.UpdateAsync(supplierDomain).ConfigureAwait(false);
 
-            updatedSupplier.Should()
-                .BeEquivalentTo(supplierDomain, config => config
-                .Excluding(s => s.UpdaterId)); // just created entity doesn't have UpdaterId
+            updatedSupplier.Should().BeEquivalentTo(supplierDomain, config => config);
         }
 
         [Fact]

@@ -47,30 +47,18 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<CarePackageReclaim> CarePackageReclaims { get; set; }
         public DbSet<CarePackageSchedulingOption> CarePackageSchedulingOptions { get; set; }
 
-        public DbSet<Package> Packages { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<PackageStatusOption> PackageStatuses { get; set; }
-        public DbSet<OpportunityLengthOption> OpportunityLengthOptions { get; set; }
-        public DbSet<OpportunityTimesPerMonthOption> OpportunityTimesPerMonthOptions { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<Stage> PackageStages { get; set; }
         public DbSet<ReclaimAmountOption> ReclaimAmountOptions { get; set; }
         public DbSet<ReclaimCategory> ReclaimCategories { get; set; }
         public DbSet<ReclaimFrom> ReclaimFroms { get; set; }
         public DbSet<PrimarySupportReason> PrimarySupportReasons { get; set; }
-        public DbSet<AdditionalNeedsPaymentType> AdditionalNeedsPaymentTypes { get; set; }
 
-        public DbSet<PackageCostClaimer> PackageCostClaimers { get; set; }
         public DbSet<FundedNursingCarePrice> FundedNursingCarePrices { get; set; }
-        public DbSet<CareChargeStatus> CareChargeStatuses { get; set; }
-        public DbSet<CareChargeType> CareChargeTypes { get; set; }
         public DbSet<ProvisionalCareChargeAmount> ProvisionalCareChargeAmounts { get; set; }
-        public DbSet<PackageCareCharge> PackageCareCharges { get; set; }
-        public DbSet<CareChargeElement> CareChargeElements { get; set; }
 
-        public DbSet<InvoiceCreditNote> InvoiceCreditNotes { get; set; }
-        public DbSet<InvoiceItemPriceEffect> InvoiceItemPriceEffects { get; set; }
-        public DbSet<InvoiceNoteChargeType> InvoiceNoteChargeTypes { get; set; }
         public DbSet<CarePackageHistory> CarePackageHistories { get; set; }
 
         #region CustomFunctions
@@ -89,17 +77,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             #region Database Seeds
 
-            // Seed day care how long options
-            modelBuilder.ApplyConfiguration(new OpportunityLengthOptionsSeed());
-
-            // Seed day care how many times per month options
-            modelBuilder.ApplyConfiguration(new OpportunityTimesPerMonthOptionsSeed());
-
             // Seed package status types
             modelBuilder.ApplyConfiguration(new PackageStatusSeed());
-
-            // Seed package types
-            modelBuilder.ApplyConfiguration(new PackageTypesSeed());
 
             // Seed User
             modelBuilder.ApplyConfiguration(new UserSeed());
@@ -131,20 +110,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed primary support reason
             modelBuilder.ApplyConfiguration(new PrimarySupportReasonSeed());
 
-            // Seed additional needs payment type
-            modelBuilder.ApplyConfiguration(new AdditionalNeedsPaymentTypeSeed());
-
             modelBuilder.ApplyConfiguration(new FundedNursingCarePriceSeed());
-            modelBuilder.ApplyConfiguration(new PackageCostClaimersSeed());
 
             // Seed Care Charges
-            modelBuilder.ApplyConfiguration(new CareChargeStatusSeed());
-            modelBuilder.ApplyConfiguration(new CareChargeTypeSeed());
             modelBuilder.ApplyConfiguration(new ProvisionalCareChargeAmountSeed());
-
-            // Seed care charges helpers
-            modelBuilder.ApplyConfiguration(new InvoiceItemPriceEffectSeed());
-            modelBuilder.ApplyConfiguration(new InvoiceNoteChargeTypeSeed());
 
             // Seed care package lookups
             modelBuilder.ApplyConfiguration(new CarePackageSchedulingOptionsSeed());
@@ -160,20 +129,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 .HasName("comparedates");
 
             #endregion DB Functions
-
-            modelBuilder.Entity<OpportunityLengthOption>(entity =>
-            {
-                entity.HasKey(e => e.OpportunityLengthOptionId);
-
-                entity.HasIndex(e => e.OptionName).IsUnique();
-            });
-
-            modelBuilder.Entity<OpportunityTimesPerMonthOption>(entity =>
-            {
-                entity.HasKey(e => e.OpportunityTimePerMonthOptionId);
-
-                entity.HasIndex(e => e.OptionName).IsUnique();
-            });
 
             #endregion Entity Config
 

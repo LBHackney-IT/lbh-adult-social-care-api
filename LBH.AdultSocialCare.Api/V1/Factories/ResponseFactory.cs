@@ -16,24 +16,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             _mapper = mapper;
         }
 
-        #region OpportunityLengthOptions
-
-        public static IEnumerable<OpportunityLengthOptionResponse> ToResponse(this IEnumerable<OpportunityLengthOptionDomain> opportunityLengthOptionDomains)
-        {
-            return _mapper.Map<IEnumerable<OpportunityLengthOptionResponse>>(opportunityLengthOptionDomains);
-        }
-
-        #endregion OpportunityLengthOptions
-
-        #region OpportunityTimesPerMonthOptions
-
-        public static IEnumerable<OpportunityTimesPerMonthOptionResponse> ToResponse(this IEnumerable<OpportunityTimesPerMonthOptionDomain> opportunityTimesPerMonthOptionDomains)
-        {
-            return _mapper.Map<IEnumerable<OpportunityTimesPerMonthOptionResponse>>(opportunityTimesPerMonthOptionDomains);
-        }
-
-        #endregion OpportunityTimesPerMonthOptions
-
         #region Supplier
 
         public static SupplierResponse ToResponse(this SupplierDomain supplierDomain)
@@ -47,39 +29,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Supplier
-
-        #region PackageReclaim
-
-        public static IEnumerable<ReclaimFromResponse> ToResponse(this IEnumerable<ReclaimFromDomain> reclaimFromDomain)
-        {
-            return _mapper.Map<IEnumerable<ReclaimFromResponse>>(reclaimFromDomain);
-        }
-
-        public static IEnumerable<ReclaimCategoryResponse> ToResponse(this IEnumerable<ReclaimCategoryDomain> homeCarePackageReclaimCategoryDomain)
-        {
-            return _mapper.Map<IEnumerable<ReclaimCategoryResponse>>(homeCarePackageReclaimCategoryDomain);
-        }
-
-        public static IEnumerable<ReclaimAmountOptionResponse> ToResponse(this IEnumerable<ReclaimAmountOptionDomain> reclaimAmountOptionDomain)
-        {
-            return _mapper.Map<IEnumerable<ReclaimAmountOptionResponse>>(reclaimAmountOptionDomain);
-        }
-
-        #endregion PackageReclaim
-
-        #region Packages
-
-        public static PackageResponse ToResponse(this PackageTypeDomain packageTypeDomain)
-        {
-            return new PackageResponse
-            {
-                Id = packageTypeDomain.Id,
-                PackageName = packageTypeDomain.PackageType,
-                Sequence = packageTypeDomain.Sequence
-            };
-        }
-
-        #endregion Packages
 
         #region Roles
 
@@ -109,44 +58,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion ServiceUsers
-
-        #region PackageStatus
-
-        public static StatusResponse ToResponse(this StatusDomain statusDomain)
-        {
-            return new StatusResponse
-            {
-                Id = statusDomain.Id,
-                StatusName = statusDomain.StatusName,
-                CreatorId = statusDomain.CreatorId,
-                UpdaterId = statusDomain.UpdaterId
-            };
-        }
-
-        public static IEnumerable<StatusResponse> ToResponse(this IEnumerable<StatusDomain> statusDomains)
-        {
-            return _mapper.Map<IEnumerable<StatusResponse>>(statusDomains);
-        }
-
-        #endregion PackageStatus
-
-        #region TimeSlotShifts
-
-        public static TimeSlotShiftsResponse ToResponse(this TimeSlotShiftsDomain timeSlotShiftsDomain)
-        {
-            return new TimeSlotShiftsResponse
-            {
-                Id = timeSlotShiftsDomain.Id,
-                TimeSlotShiftName = timeSlotShiftsDomain.TimeSlotShiftName,
-                TimeSlotTimeLabel = timeSlotShiftsDomain.TimeSlotTimeLabel,
-                CreatorId = timeSlotShiftsDomain.CreatorId,
-                DateCreated = timeSlotShiftsDomain.DateCreated,
-                UpdaterId = timeSlotShiftsDomain.UpdaterId,
-                DateUpdated = timeSlotShiftsDomain.DateUpdated
-            };
-        }
-
-        #endregion TimeSlotShifts
 
         #region SupplierBill
 

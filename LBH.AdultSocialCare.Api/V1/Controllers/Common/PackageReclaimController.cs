@@ -16,14 +16,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
     {
         private readonly IGetAllAmountOptionUseCase _getAllAmountOptionUseCase;
         private readonly IGetAllReclaimCategoryUseCase _getAllReclaimCategoryUseCase;
-        private readonly IGetAllReclaimFromUseCase _getAllReclaimFromUseCase;
 
-        public PackageReclaimController(IGetAllAmountOptionUseCase getAllAmountOptionUseCase, IGetAllReclaimCategoryUseCase getAllReclaimCategoryUseCase,
-            IGetAllReclaimFromUseCase getAllReclaimFromUseCase)
+        public PackageReclaimController(IGetAllAmountOptionUseCase getAllAmountOptionUseCase, IGetAllReclaimCategoryUseCase getAllReclaimCategoryUseCase)
         {
             _getAllAmountOptionUseCase = getAllAmountOptionUseCase;
             _getAllReclaimCategoryUseCase = getAllReclaimCategoryUseCase;
-            _getAllReclaimFromUseCase = getAllReclaimFromUseCase;
         }
 
         [ProducesResponseType(typeof(IEnumerable<ReclaimAmountOptionResponse>), StatusCodes.Status200OK)]
@@ -33,16 +30,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         public async Task<ActionResult<IEnumerable<ReclaimAmountOptionResponse>>> GetAmountOptionsList()
         {
             var result = await _getAllAmountOptionUseCase.GetAllAsync().ConfigureAwait(false);
-            return Ok(result);
-        }
-
-        [ProducesResponseType(typeof(IEnumerable<ReclaimFromResponse>), StatusCodes.Status200OK)]
-        [ProducesDefaultResponseType]
-        [HttpGet]
-        [Route("reclaim-from")]
-        public async Task<ActionResult<IEnumerable<ReclaimFromResponse>>> GetTypeOfReclaimFromOptionList()
-        {
-            var result = await _getAllReclaimFromUseCase.GetAllAsync().ConfigureAwait(false);
             return Ok(result);
         }
 

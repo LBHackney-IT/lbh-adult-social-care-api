@@ -50,20 +50,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion Clients
 
-        #region Packages
-
-        public static Package ToEntity(this PackageTypeDomain packageTypeDomain)
-        {
-            return new Package
-            {
-                Id = packageTypeDomain.Id,
-                PackageType = packageTypeDomain.PackageType,
-                Sequence = packageTypeDomain.Sequence
-            };
-        }
-
-        #endregion Packages
-
         #region Roles
 
         public static Role ToEntity(this RoleForCreationDomain rolesDomain)
@@ -98,18 +84,5 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion ServiceUsers
-
-        #region PackageStatus
-
-        public static PackageStatusOption ToEntity(this StatusDomain statusDomain)
-        {
-            return new PackageStatusOption
-            {
-                Id = statusDomain.Id,
-                StatusName = statusDomain.StatusName
-            };
-        }
-
-        #endregion PackageStatus
     }
 }

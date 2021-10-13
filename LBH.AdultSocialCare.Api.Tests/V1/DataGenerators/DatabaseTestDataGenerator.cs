@@ -16,15 +16,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
         public DatabaseTestDataGenerator(DatabaseContext context)
         {
             _context = context;
-
-            CareCharge = new CareChargeGenerator(context);
         }
-
-        #region Legacy
-
-        public CareChargeGenerator CareCharge { get; }
-
-        #endregion Legacy
 
         public CarePackage CreateCarePackage(PackageType type = PackageType.ResidentialCare, PackageStatus status = PackageStatus.New)
         {
