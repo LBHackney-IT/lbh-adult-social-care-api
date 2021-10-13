@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.V1.Domain.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare

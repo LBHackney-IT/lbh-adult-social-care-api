@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using Moq;
 using Xunit;
 

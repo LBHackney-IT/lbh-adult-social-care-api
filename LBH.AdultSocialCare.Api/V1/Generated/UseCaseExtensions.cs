@@ -4,8 +4,6 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.ResidentialCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Concrete;
@@ -41,6 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetCarePackageReclaimUseCase, GetCarePackageReclaimUseCase>();
             services.AddScoped<IGetCarePackageSummaryUseCase, GetCarePackageSummaryUseCase>();
             services.AddScoped<IGetCarePackageUseCase, GetCarePackageUseCase>();
+            services.AddScoped<IGetFundedNursingCarePriceUseCase, GetFundedNursingCarePriceUseCase>();
             services.AddScoped<IGetOpportunityLengthOptionsListUseCase, GetOpportunityLengthOptionsListUseCase>();
             services.AddScoped<IGetOpportunityTimesPerMonthOptionsListUseCase, GetOpportunityTimesPerMonthOptionsListUseCase>();
             services.AddScoped<IGetPackageTypeUseCase, GetPackageTypeUseCase>();
@@ -55,7 +54,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IUpsertCarePackageBrokerageUseCase, UpsertCarePackageBrokerageUseCase>();
             services.AddScoped<IUpsertPackageUseCase, UpsertPackageUseCase>();
             services.AddScoped<IUpsertStatusUseCase, UpsertStatusUseCase>();
-            services.AddScoped<IGetFundedNursingCarePriceUseCase, GetFundedNursingCarePriceUseCase>();
             services.AddScoped<IChangeDatesOfResidentialCarePackageUseCase, ChangeDatesOfResidentialCarePackageUseCase>();
             services.AddScoped<IChangeStatusResidentialCarePackageUseCase, ChangeStatusResidentialCarePackageUseCase>();
             services.AddScoped<ICreateResidentialCareBrokerageUseCase, CreateResidentialCareBrokerageUseCase>();

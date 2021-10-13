@@ -2,8 +2,8 @@ using Microsoft.Extensions.DependencyInjection;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
-using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Concrete;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.NursingCare.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.ResidentialCare.Interfaces;
@@ -24,6 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<ICarePackageReclaimGateway, CarePackageReclaimGateway>();
             services.AddScoped<ICarePackageSettingsGateway, CarePackageSettingsGateway>();
             services.AddScoped<IClientsGateway, ClientsGateway>();
+            services.AddScoped<IFundedNursingCareGateway, FundedNursingCareGateway>();
             services.AddScoped<IInvoiceCreditNoteGateway, InvoiceCreditNoteGateway>();
             services.AddScoped<IOpportunityLengthOptionGateway, OpportunityLengthOptionGateway>();
             services.AddScoped<IOpportunityTimesPerMonthOptionGateway, OpportunityTimesPerMonthOptionGateway>();
@@ -34,7 +35,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IStatusGateway, StatusGateway>();
             services.AddScoped<ISupplierGateway, SupplierGateway>();
             services.AddScoped<ITermTimeConsiderationOptionGateway, TermTimeConsiderationOptionGateway>();
-            services.AddScoped<IFundedNursingCareGateway, FundedNursingCareGateway>();
             services.AddScoped<IResidentialCareAdditionalNeedsGateway, ResidentialCareAdditionalNeedsGateway>();
             services.AddScoped<IResidentialCareApprovalHistoryGateway, ResidentialCareApprovalHistoryGateway>();
             services.AddScoped<IResidentialCareApproveBrokeredGateway, ResidentialCareApproveBrokeredGateway>();

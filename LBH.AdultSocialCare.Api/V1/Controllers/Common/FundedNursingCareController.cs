@@ -1,15 +1,11 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Controllers.Common;
-using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LBH.AdultSocialCare.Api.V1.Controllers.NursingCare
+namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
     [Route("api/v1/funded-nursing-care")]
     [Produces("application/json")]

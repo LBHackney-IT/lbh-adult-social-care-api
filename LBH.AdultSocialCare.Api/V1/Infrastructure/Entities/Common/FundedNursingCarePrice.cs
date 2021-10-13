@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 {
     public class FundedNursingCarePrice
     {

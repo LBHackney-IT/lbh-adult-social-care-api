@@ -17,7 +17,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCareBrokerage;

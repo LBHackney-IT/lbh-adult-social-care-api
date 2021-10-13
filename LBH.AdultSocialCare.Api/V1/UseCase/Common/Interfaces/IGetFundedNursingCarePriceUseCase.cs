@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces
+namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
 {
     public interface IGetFundedNursingCarePriceUseCase
     {

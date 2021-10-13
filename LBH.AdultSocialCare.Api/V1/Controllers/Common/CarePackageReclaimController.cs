@@ -10,7 +10,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.NursingCare.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 
