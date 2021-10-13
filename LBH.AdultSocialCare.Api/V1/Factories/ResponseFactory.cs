@@ -86,24 +86,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion SubmittedPackageRequests
 
-        #region ApprovedPackages
-
-        public static IEnumerable<ApprovedPackagesResponse> ToResponse(this IEnumerable<ApprovedPackagesDomain> approvedPackagesDomains)
-        {
-            return _mapper.Map<IEnumerable<ApprovedPackagesResponse>>(approvedPackagesDomains);
-        }
-
-        #endregion ApprovedPackages
-
-        #region ApprovedPackages
-
-        public static IEnumerable<BrokeredPackagesResponse> ToResponse(this IEnumerable<BrokeredPackagesDomain> brokeredPackagesDomains)
-        {
-            return _mapper.Map<IEnumerable<BrokeredPackagesResponse>>(brokeredPackagesDomains);
-        }
-
-        #endregion ApprovedPackages
-
         #region Invoice
 
         public static InvoiceResponse ToResponse(this InvoiceDomain invoiceDomain)

@@ -3,9 +3,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using System.Collections.Generic;
-using System.Linq;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -32,39 +30,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Supplier
-
-        #region HomeCareBrokerage
-
-        public static IEnumerable<StageDomain> ToDomain(this List<Stage> homeCareStageEntities)
-        {
-            return _mapper.Map<IEnumerable<StageDomain>>(homeCareStageEntities);
-        }
-
-        #endregion HomeCareBrokerage
-
-        #region PackageReclaim
-
-        public static IEnumerable<ReclaimAmountOptionDomain> ToDomain(this ICollection<ReclaimAmountOption> reclaimAmountOptions)
-        {
-            return reclaimAmountOptions.Select(item
-                => new ReclaimAmountOptionDomain
-                {
-                    AmountOptionId = item.AmountOptionId,
-                    AmountOptionName = item.AmountOptionName
-                }).ToList();
-        }
-
-        public static IEnumerable<ReclaimCategoryDomain> ToDomain(this ICollection<ReclaimCategory> reclaimCategories)
-        {
-            return reclaimCategories.Select(item
-                => new ReclaimCategoryDomain
-                {
-                    ReclaimCategoryId = item.ReclaimCategoryId,
-                    ReclaimCategoryName = item.ReclaimCategoryName
-                }).ToList();
-        }
-
-        #endregion PackageReclaim
 
         #region Clients
 

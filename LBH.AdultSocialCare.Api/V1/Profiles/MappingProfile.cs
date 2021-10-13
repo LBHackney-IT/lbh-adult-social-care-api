@@ -9,7 +9,6 @@ using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {
@@ -31,13 +30,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #endregion Supplier
 
-            #region Stage
-
-            CreateMap<Stage, StageDomain>();
-            CreateMap<StageDomain, Stage>();
-
-            #endregion Stage
-
             #region ServiceUsers
 
             CreateMap<User, AppUserDomain>();
@@ -45,15 +37,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<UsersMinimalDomain, UsersMinimalResponse>();
 
             #endregion ServiceUsers
-
-            #region PackageReclaim
-
-            CreateMap<ReclaimAmountOption, ReclaimAmountOptionDomain>();
-            CreateMap<ReclaimAmountOptionDomain, ReclaimAmountOptionResponse>();
-            CreateMap<ReclaimCategory, ReclaimCategoryDomain>();
-            CreateMap<ReclaimCategoryDomain, ReclaimCategoryResponse>();
-
-            #endregion PackageReclaim
 
             #region Roles
 
@@ -87,18 +70,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<SubmittedPackageRequestsDomain, SubmittedPackageRequestsResponse>();
 
             #endregion SubmittedPackageRequests
-
-            #region ApprovedPackages
-
-            CreateMap<ApprovedPackagesDomain, ApprovedPackagesResponse>();
-
-            #endregion ApprovedPackages
-
-            #region BrokeredPackages
-
-            CreateMap<BrokeredPackagesDomain, BrokeredPackagesResponse>();
-
-            #endregion BrokeredPackages
 
             #region Invoice
 

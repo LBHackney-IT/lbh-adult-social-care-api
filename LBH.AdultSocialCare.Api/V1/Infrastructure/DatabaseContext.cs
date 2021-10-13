@@ -2,7 +2,6 @@ using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.PackageReclaims;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -50,10 +49,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<Client> Clients { get; set; }
         public DbSet<PackageStatusOption> PackageStatuses { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
-        public DbSet<Stage> PackageStages { get; set; }
-        public DbSet<ReclaimAmountOption> ReclaimAmountOptions { get; set; }
-        public DbSet<ReclaimCategory> ReclaimCategories { get; set; }
-        public DbSet<ReclaimFrom> ReclaimFroms { get; set; }
         public DbSet<PrimarySupportReason> PrimarySupportReasons { get; set; }
 
         public DbSet<FundedNursingCarePrice> FundedNursingCarePrices { get; set; }
@@ -94,18 +89,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             // Seed Supplier
             modelBuilder.ApplyConfiguration(new SupplierSeed());
-
-            // Seed PackageStages
-            modelBuilder.ApplyConfiguration(new StageSeed());
-
-            // Seed package reclaim amount option
-            modelBuilder.ApplyConfiguration(new PackageReclaimAmountOptionSeed());
-
-            // Seed package reclaim category
-            modelBuilder.ApplyConfiguration(new PackageReclaimCategorySeed());
-
-            // Seed package reclaim from
-            modelBuilder.ApplyConfiguration(new PackageReclaimFromSeed());
 
             // Seed primary support reason
             modelBuilder.ApplyConfiguration(new PrimarySupportReasonSeed());
