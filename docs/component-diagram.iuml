@@ -1,0 +1,76 @@
+@startuml Basic Sample
+!define ICONURL https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/v2.3.0
+!includeurl ICONURL/common.puml
+!includeurl ICONURL/devicons2/postgresql.puml
+!includeurl ICONURL/devicons2/amazonwebservices_original.puml
+!includeurl ICONURL/devicons2/csharp_line.puml
+!includeurl ICONURL/devicons2/react_original.puml
+
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/v2.2.0/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/v2.2.0/C4_Component.puml
+
+' Design tags
+AddRelTag("rel_repo", $lineStyle = DashedLine(), $legendText=" ")
+AddRelTag("rel_ext", $lineStyle = DashedLine())
+
+
+' External Systems
+Container_Ext(dms, "Document Management System", "AWS S3 Blob SDK", "Allows components to manage files")
+Container_Ext(user_service, "Social Care Case Viewer API", "C#, ASP.NET Core", "Allows components to get user service information by resident-id")
+
+'
+Container(web_app, "Adult Social Care Front End", "Lambda, Next.js (React)", "Allows users to manage care package, invoices and payrun", $sprite="react_original")
+
+' System Boundary
+System_Boundary(c1, "Adult Social Care Finance System") {
+    ' AWS Service
+    Component(api_gateway, "API Gateway", "API Gateway", "Routing and auth via API keys", $sprite="amazonwebservices_original")
+    Component(aws_lambda, "Service API Lambda", "Lambda", "Provides", $sprite="amazonwebservices_original")
+    
+    ' Custom Service 
+    Component(care_package, "Care Package Service", "C#, ASP.NET Core", "Allows broker to manage (CRUD operation) care packages", $sprite="csharp_line")
+    Component(package_request, "Care Package Request Service", "C#, ASP.NET Core", "Allows broker manager/assistand to assign care package request to broker", $sprite="csharp_line")
+    Component(payments, "Payment Service", "C#, ASP.NET Core", "Allows users to manage payruns and invoicing request", $sprite="csharp_line")
+    Component(supplier, "Supplier Service", "C#, ASP.NET Core", "Allows users to manage payruns and invoicing request", $sprite="csharp_line")
+    
+    ' DB
+    ContainerDb(db, "Database", "PostgreSQL", "Holds care package, request, detail and invoice information", $sprite="postgresql")
+}
+
+Rel_D(web_app, api_gateway, "Uses", "HTTPS")
+' Api <-> Lambda
+Rel_D(api_gateway, aws_lambda, "Uses", "HTTPS")
+
+' Lambda <-> Related services
+Rel_D(aws_lambda, care_package, "Uses", "JSON/HTTPS")
+Rel_D(aws_lambda, package_request, "Uses", "JSON/HTTPS")
+Rel_D(aws_lambda, payments, "Uses", "JSON/HTTPS")
+Rel_D(aws_lambda, supplier, "Uses", "JSON/HTTPS")
+
+Rel_L(care_package, user_service, "Uses", "JSON/HTTPS")
+Rel_L(care_package, dms, "Uses", "JSON/HTTPS")
+
+'Rel_D(care_package, reclaim_repository, "Uses", "Entity Framework", $tags="rel_repo")
+'Rel_D(care_package, anp_repository, "Uses", "Entity Framework", $tags="rel_repo")
+'Rel_D(care_package, history_repository, "Uses", "Entity Framework", $tags="rel_repo")
+
+' Repo <-> DB
+'Rel_D(reclaim_repository, db, "Reads from and writes to", "Entity Framework/SSL")
+'Rel_D(anp_repository, db, "Reads from and writes to", "Entity Framework/SSL")
+'Rel_D(history_repository, db, "Reads from and writes to", "Entity Framework/SSL")
+'Rel_D(reclaim_repository, db, "Reads from and writes to", "Entity Framework/SSL")
+Rel_D(care_package, db, "Reads from and writes to", "Entity Framework/SSL")
+Rel_D(supplier, db, "Reads from and writes to", "Entity Framework/SSL")
+Rel_D(payments, db, "Reads from and writes to", "Entity Framework/SSL")
+Rel_D(package_request, db, "Reads from and writes to", "Entity Framework/SSL")
+
+Lay_R(care_package, package_request)
+Lay_R(package_request, payments)
+Lay_R(payments, supplier)
+
+SHOW_FLOATING_LEGEND()
+
+' Document Management System is still in discussion
+LAYOUT_AS_SKETCH()
+
+@enduml
