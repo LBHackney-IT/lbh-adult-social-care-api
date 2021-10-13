@@ -59,15 +59,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #endregion ServiceUsers
 
-        #region SupplierBill
-
-        public static SupplierBillResponse ToResponse(this SupplierBillDomain supplierBillDomain)
-        {
-            return _mapper.Map<SupplierBillResponse>(supplierBillDomain);
-        }
-
-        #endregion SupplierBill
-
         #region PrimaryReasonSupport
 
         public static IEnumerable<PrimarySupportReasonResponse> ToResponse(this IEnumerable<PrimarySupportReasonDomain> primarySupportReasonDomains)
@@ -76,15 +67,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion PrimaryReasonSupport
-
-        #region SubmittedPackageRequests
-
-        public static IEnumerable<SubmittedPackageRequestsResponse> ToResponse(this IEnumerable<SubmittedPackageRequestsDomain> submittedPackageRequestsDomains)
-        {
-            return _mapper.Map<IEnumerable<SubmittedPackageRequestsResponse>>(submittedPackageRequestsDomains);
-        }
-
-        #endregion SubmittedPackageRequests
 
         #region Invoice
 
@@ -113,15 +95,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion Clients
-
-        #region FncCollectors
-
-        public static IEnumerable<FundedNursingCareCollectorResponse> ToResponse(this IEnumerable<FundedNursingCareCollectorDomain> collectors)
-        {
-            return _mapper.Map<IEnumerable<FundedNursingCareCollectorResponse>>(collectors);
-        }
-
-        #endregion FncCollectors
 
         #region CareCharges
 

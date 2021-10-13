@@ -51,25 +51,12 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #endregion Roles
 
-            #region SupplierBill
-
-            CreateMap<SupplierBillDomain, SupplierBillResponse>();
-            CreateMap<SupplierBillItemDomain, SupplierBillItemResponse>();
-
-            #endregion SupplierBill
-
             #region PrimarySupportReason
 
             CreateMap<PrimarySupportReason, PrimarySupportReasonDomain>();
             CreateMap<PrimarySupportReasonDomain, PrimarySupportReasonResponse>();
 
             #endregion PrimarySupportReason
-
-            #region SubmittedPackageRequests
-
-            CreateMap<SubmittedPackageRequestsDomain, SubmittedPackageRequestsResponse>();
-
-            #endregion SubmittedPackageRequests
 
             #region Invoice
 
