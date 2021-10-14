@@ -1,4 +1,3 @@
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -7,7 +6,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
-    public class ClientSeed : IEntityTypeConfiguration<ServiceUser>
+    public class ServiceUserSeed : IEntityTypeConfiguration<ServiceUser>
     {
         public void Configure(EntityTypeBuilder<ServiceUser> builder)
         {

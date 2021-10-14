@@ -7,7 +7,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
     {
         public string PackageType { get; set; }
         public string CareChargeStatus { get; set; }
-        public ClientsResponse ServiceUser { get; set; }
+        public ServiceUserResponse ServiceUser { get; set; }
         public CarePackageSettingsResponse Settings { get; set; }
         public SupplierResponse Supplier { get; set; }
         public IEnumerable<CarePackageReclaimResponse> CareCharges { get; set; }

@@ -73,13 +73,12 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             #endregion Invoice
 
-            #region Clients
+            #region Service Users
 
-            CreateMap<ClientMinimalDomain, ClientMinimalResponse>();
-            CreateMap<ClientsDomain, ClientsResponse>();
-            CreateMap<ServiceUser, ClientsDomain>();
+            CreateMap<ServiceUserDomain, ServiceUserResponse>();
+            CreateMap<ServiceUser, ServiceUserDomain>();
 
-            #endregion Clients
+            #endregion Service Users
 
             #region Funded Nursing Care
 

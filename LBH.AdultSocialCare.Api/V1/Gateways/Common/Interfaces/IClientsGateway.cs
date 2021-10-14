@@ -9,6 +9,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
 {
+    // TODO: Merge with IServiceUser gateway
     public interface IClientsGateway
     {
         public Task<ServiceUser> UpsertAsync(ServiceUser serviceUser);
@@ -17,10 +18,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
 
         public Task<bool> DeleteAsync(Guid clientId);
 
-        public Task<PagedList<ClientsDomain>> ListAsync(RequestParameters parameters, string clientName);
-
-        public Task<IEnumerable<ClientMinimalDomain>> GetClientMinimalInList(List<Guid> clientIds);
-
-        Task<ClientsDomain> GetRandomAsync();
+        public Task<IEnumerable<ServiceUserMinimalDomain>> GetClientMinimalInList(List<Guid> clientIds);
     }
 }

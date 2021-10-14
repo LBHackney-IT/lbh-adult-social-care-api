@@ -1,9 +1,13 @@
 using System;
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
+namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
-    //TODO FK: change name to ServiceUserResponse delete redundant fields after code clean up
-    public class ClientsResponse
+    //TODO FK: change name to ServiceUserDomain after code clean up
+    [GenerateMappingFor(typeof(ServiceUserResponse))]
+    public class ServiceUserDomain
     {
         /// <summary>
         /// Gets or sets the Id
@@ -34,6 +38,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
         /// Gets or sets the Date Of Birth
         /// </summary>
         public DateTime DateOfBirth { get; set; }
+
+        public string PreferredContact { get; set; }  // eg phone
+        public string CanSpeakEnglish { get; set; }  // eg fluent
 
         /// <summary>
         /// Gets or sets the Address Line1
@@ -71,22 +78,22 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
         public Guid CreatorId { get; set; }
 
         /// <summary>
-        /// Gets or sets the Date Created
-        /// </summary>
-        public DateTimeOffset? DateCreated { get; set; }
-
-        /// <summary>
         /// Gets or sets the Updater Id
         /// </summary>
         public Guid? UpdaterId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the Date Created
+        /// </summary>
+        public DateTimeOffset? DateCreated { get; set; }
 
         /// <summary>
         /// Gets or sets the Date Updated
         /// </summary>
         public DateTimeOffset? DateUpdated { get; set; }
 
-        public string FullName { get; set; }
+        public string FullName => $"{FirstName} {MiddleName ?? string.Empty} {LastName}";
 
-        public int Age { get; set; }
+        public int Age => DateOfBirth.GetAge(DateTime.Now);
     }
 }

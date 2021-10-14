@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
 {
@@ -14,6 +16,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
 
         Task<int> GetServiceUserCountAsync(int hackneyId);
 
-        Task<ClientsDomain> GetAsync(int hackneyId);
+        Task<ServiceUserDomain> GetAsync(int hackneyId);
+
+        public Task<PagedList<ServiceUserDomain>> GetAllAsync(RequestParameters parameters, string serviceUserName);
+
+        Task<ServiceUserDomain> GetRandomAsync();
     }
 }

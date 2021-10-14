@@ -1,13 +1,8 @@
 using System;
-using Common.Extensions;
-using LBH.AdultSocialCare.Api.Attributes;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
-namespace LBH.AdultSocialCare.Api.V1.Domain.Common
+namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
 {
-    //TODO FK: change name to ServiceUserDomain after code clean up
-    [GenerateMappingFor(typeof(ClientsResponse))]
-    public class ClientsDomain
+    public class ServiceUserRequest
     {
         /// <summary>
         /// Gets or sets the Id
@@ -38,7 +33,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         /// Gets or sets the Date Of Birth
         /// </summary>
         public DateTime DateOfBirth { get; set; }
-
         public string PreferredContact { get; set; }  // eg phone
         public string CanSpeakEnglish { get; set; }  // eg fluent
 
@@ -73,16 +67,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public string PostCode { get; set; }
 
         /// <summary>
-        /// Gets or sets the Creator Id
-        /// </summary>
-        public Guid CreatorId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the Updater Id
-        /// </summary>
-        public Guid? UpdaterId { get; set; }
-
-        /// <summary>
         /// Gets or sets the Date Created
         /// </summary>
         public DateTimeOffset? DateCreated { get; set; }
@@ -91,9 +75,5 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         /// Gets or sets the Date Updated
         /// </summary>
         public DateTimeOffset? DateUpdated { get; set; }
-
-        public string FullName => $"{FirstName} {MiddleName ?? string.Empty} {LastName}";
-
-        public int Age => DateOfBirth.GetAge(DateTime.Now);
     }
 }

@@ -36,38 +36,17 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             return isSuccess;
         }
 
-        public async Task<PagedList<ClientsDomain>> ListAsync(RequestParameters parameters, string clientName)
-        {
-            try
-            {
-                var clientsCount = await _databaseContext.ServiceUsers
-                    .FilterByName(clientName)
-                    .CountAsync().ConfigureAwait(false);
-
-                var clientsPage = await _databaseContext.ServiceUsers
-                    .FilterByName(clientName)
-                    .GetPage(parameters.PageNumber, parameters.PageSize)
-                    .ToListAsync().ConfigureAwait(false);
-
-                return PagedList<ClientsDomain>
-                    .ToPagedList(clientsPage?.ToDomain(), clientsCount, parameters.PageNumber, parameters.PageSize);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"{ex.Message}");
-            }
-        }
-
-        public async Task<IEnumerable<ClientMinimalDomain>> GetClientMinimalInList(List<Guid> clientIds)
+        public async Task<IEnumerable<ServiceUserMinimalDomain>> GetClientMinimalInList(List<Guid> clientIds)
         {
             return await _databaseContext.ServiceUsers.Where(c => clientIds.Contains(c.Id))
-                .Select(c => new ClientMinimalDomain
+                .Select(c => new ServiceUserMinimalDomain
                 {
-                    ClientId = c.Id,
-                    ClientName = $"{c.FirstName ?? ""} {c.MiddleName ?? ""} {c.LastName ?? ""}"
+                    Id = c.Id,
+                    Name = $"{c.FirstName ?? ""} {c.MiddleName ?? ""} {c.LastName ?? ""}"
                 }).ToListAsync().ConfigureAwait(false);
         }
 
+        // TODO: Move to ServiceUserGateway and reconcile with 'get by hackney id' method
         public async Task<ServiceUser> GetAsync(Guid clientId)
         {
             return await _databaseContext.ServiceUsers.FirstOrDefaultAsync(item => item.Id == clientId).ConfigureAwait(false);
@@ -107,16 +86,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             return isSuccess
                 ? serviceUserToUpdate
                 : null;
-        }
-
-        public async Task<ClientsDomain> GetRandomAsync()
-        {
-            int total = await _databaseContext.ServiceUsers.CountAsync().ConfigureAwait(false);
-            Random r = new Random();
-            int offset = r.Next(0, total);
-
-            var result = await _databaseContext.ServiceUsers.Skip(offset).FirstOrDefaultAsync().ConfigureAwait(false);
-            return result?.ToDomain();
         }
     }
 }

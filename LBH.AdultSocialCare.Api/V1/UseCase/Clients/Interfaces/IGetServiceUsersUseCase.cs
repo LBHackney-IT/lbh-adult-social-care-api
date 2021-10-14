@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Clients.Interfaces
 {
-    public interface IGetAllClientsUseCase
+    public interface IGetServiceUsersUseCase
     {
-        Task<PagedResponse<ClientsResponse>> GetAllAsync(RequestParameters parameters, string clientName);
+        Task<PagedResponse<ServiceUserResponse>> GetAllAsync(RequestParameters parameters, string clientName);
     }
 }

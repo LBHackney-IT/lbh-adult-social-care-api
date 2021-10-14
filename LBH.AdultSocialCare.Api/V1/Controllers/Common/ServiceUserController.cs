@@ -26,12 +26,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 
         /// <summary>Return service user information.</summary>
         /// <returns>The Service User Information response.</returns>
-        [ProducesResponseType(typeof(ClientsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ServiceUserResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpGet("{hackneyId}")]
-        public async Task<ActionResult<ClientsResponse>> GetServiceUserInformation(int hackneyId)
+        public async Task<ActionResult<ServiceUserResponse>> GetServiceUserInformation(int hackneyId)
         {
             var result = await _getServiceUserUseCase.GetServiceUserInformation(hackneyId);
             return Ok(result);

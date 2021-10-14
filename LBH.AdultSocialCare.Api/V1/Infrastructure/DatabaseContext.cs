@@ -85,7 +85,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             modelBuilder.ApplyConfiguration(new UserRolesSeed());
 
             // Seed Client
-            modelBuilder.ApplyConfiguration(new ClientSeed());
+            modelBuilder.ApplyConfiguration(new ServiceUserSeed());
 
             // Seed Supplier
             modelBuilder.ApplyConfiguration(new SupplierSeed());

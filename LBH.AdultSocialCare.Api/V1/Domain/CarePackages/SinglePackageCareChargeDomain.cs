@@ -7,7 +7,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
     {
         public string PackageType { get; set; }
         public string CareChargeStatus { get; set; }
-        public ClientsDomain ServiceUser { get; set; }
+        public ServiceUserDomain ServiceUser { get; set; }
         public CarePackageSettingsDomain Settings { get; set; }
         public SupplierDomain Supplier { get; set; }
         public IEnumerable<CarePackageReclaimDomain> CareCharges { get; set; }

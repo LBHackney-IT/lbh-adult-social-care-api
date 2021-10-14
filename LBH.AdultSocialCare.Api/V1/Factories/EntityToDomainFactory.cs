@@ -32,9 +32,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Clients
 
-        public static ClientsDomain ToDomain(this ServiceUser serviceUserEntity)
+        public static ServiceUserDomain ToDomain(this ServiceUser serviceUserEntity)
         {
-            return new ClientsDomain
+            return new ServiceUserDomain
             {
                 Id = serviceUserEntity.Id,
                 FirstName = serviceUserEntity.FirstName,
@@ -55,9 +55,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             };
         }
 
-        public static IEnumerable<ClientsDomain> ToDomain(this List<ServiceUser> clientEntities)
+        public static IEnumerable<ServiceUserDomain> ToDomain(this List<ServiceUser> serviceUserEntities)
         {
-            return _mapper.Map<IEnumerable<ClientsDomain>>(clientEntities);
+            return _mapper.Map<IEnumerable<ServiceUserDomain>>(serviceUserEntities);
         }
 
         #endregion Clients

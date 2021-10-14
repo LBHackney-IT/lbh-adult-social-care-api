@@ -7,20 +7,20 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Clients.Concrete
 {
-    public class GetAllClientsUseCase : IGetAllClientsUseCase
+    public class GetServiceUsersUseCase : IGetServiceUsersUseCase
     {
-        private readonly IClientsGateway _clientsGateway;
+        private readonly IServiceUserGateway _serviceUserGateway;
 
-        public GetAllClientsUseCase(IClientsGateway clientsGateway)
+        public GetServiceUsersUseCase(IServiceUserGateway serviceUserGateway)
         {
-            _clientsGateway = clientsGateway;
+            _serviceUserGateway = serviceUserGateway;
         }
 
-        public async Task<PagedResponse<ClientsResponse>> GetAllAsync(RequestParameters parameters, string clientName)
+        public async Task<PagedResponse<ServiceUserResponse>> GetAllAsync(RequestParameters parameters, string clientName)
         {
-            var result = await _clientsGateway.ListAsync(parameters, clientName).ConfigureAwait(false);
+            var result = await _serviceUserGateway.GetAllAsync(parameters, clientName).ConfigureAwait(false);
 
-            return new PagedResponse<ClientsResponse>
+            return new PagedResponse<ServiceUserResponse>
             {
                 PagingMetaData = result.PagingMetaData,
                 Data = result.ToResponse()
