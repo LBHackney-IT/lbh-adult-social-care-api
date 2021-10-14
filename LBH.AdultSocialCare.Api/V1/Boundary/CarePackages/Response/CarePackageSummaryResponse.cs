@@ -15,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
         public string SchedulingPeriod { get; set; }
 
         public SupplierDomain Supplier { get; set; }
-        public ClientsDomain ServiceUser { get; set; }
+        public ServiceUserDomain ServiceUser { get; set; }
         public CarePackageSettingsDomain Settings { get; set; }
 
         public IEnumerable<CarePackageDetailResponse> AdditionalWeeklyNeeds { get; set; }

@@ -4,13 +4,11 @@ using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
@@ -19,13 +17,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
     {
         private readonly IDatabaseManager _dbManager;
         private readonly ICarePackageGateway _carePackageGateway;
-        private readonly IClientsGateway _clientsGateway;
+        private readonly IServiceUserGateway _serviceUserGateway;
 
-        public CreateCarePackageUseCase(IDatabaseManager dbManager, ICarePackageGateway carePackageGateway, IClientsGateway clientsGateway)
+        public CreateCarePackageUseCase(IDatabaseManager dbManager, ICarePackageGateway carePackageGateway, IServiceUserGateway serviceUserGateway)
         {
             _dbManager = dbManager;
             _carePackageGateway = carePackageGateway;
-            _clientsGateway = clientsGateway;
+            _serviceUserGateway = serviceUserGateway;
         }
 
         public async Task<CarePackagePlainResponse> CreateAsync(
@@ -42,7 +40,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var carePackageSettingsEntity = carePackageForCreation.ToSettings();
 
             // Get and set random client on package
-            var randomClient = await _clientsGateway.GetRandomAsync().ConfigureAwait(false);
+            var randomClient = await _serviceUserGateway.GetRandomAsync().ConfigureAwait(false);
             carePackageEntity.ServiceUserId = randomClient.Id;
             carePackageEntity.Status = PackageStatus.New;
 

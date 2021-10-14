@@ -7,14 +7,11 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
@@ -26,21 +23,21 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
     {
         private readonly Mock<IDatabaseManager> _dbManager;
         private readonly Mock<ICarePackageGateway> _carePackageGateway;
-        private readonly Mock<IClientsGateway> _clientsGateway;
+        private readonly Mock<IServiceUserGateway> _serviceUserGateway;
         private readonly CreateCarePackageUseCase _useCase;
 
         public CreateCarePackageUseCaseTests()
         {
             _dbManager = new Mock<IDatabaseManager>();
             _carePackageGateway = new Mock<ICarePackageGateway>();
-            _clientsGateway = new Mock<IClientsGateway>();
+            _serviceUserGateway = new Mock<IServiceUserGateway>();
 
             _carePackageGateway.Setup(x => x.Create(It.IsAny<CarePackage>())).Verifiable();
             _dbManager.Setup(x => x.SaveAsync(It.IsAny<string>())).Returns(() => Task.Run(() => 1));
-            _clientsGateway.Setup(x => x.GetRandomAsync()).ReturnsAsync(new ClientsDomain { Id = Guid.Parse(UserConstants.DefaultApiUserId) });
+            _serviceUserGateway.Setup(x => x.GetRandomAsync()).ReturnsAsync(new ServiceUserDomain { Id = Guid.Parse(UserConstants.DefaultApiUserId) });
 
             _useCase =
-                new CreateCarePackageUseCase(_dbManager.Object, _carePackageGateway.Object, _clientsGateway.Object);
+                new CreateCarePackageUseCase(_dbManager.Object, _carePackageGateway.Object, _serviceUserGateway.Object);
         }
 
         [Theory]
@@ -55,7 +52,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 
             // Assert
             _carePackageGateway.Verify(x => x.Create(It.IsAny<CarePackage>()), Times.Once());
-            _clientsGateway.Verify(x => x.GetRandomAsync(), Times.Once());
+            _serviceUserGateway.Verify(x => x.GetRandomAsync(), Times.Once());
             _dbManager.Verify(x => x.SaveAsync(It.IsAny<string>()), Times.Once());
         }
 

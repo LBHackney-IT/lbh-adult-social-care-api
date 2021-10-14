@@ -24,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             _serviceUserGateway = serviceUserGateway;
         }
 
-        public async Task<ClientsResponse> GetServiceUserInformation(int hackneyId)
+        public async Task<ServiceUserResponse> GetServiceUserInformation(int hackneyId)
         {
             var serviceUserCount = await _serviceUserGateway.GetServiceUserCountAsync(hackneyId);
 
@@ -35,7 +35,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
                 foreach (var item in serviceUserResponse.Residents)
                 {
-                    var newServiceUserDomain = new ClientsDomain()
+                    var newServiceUserDomain = new ServiceUserDomain()
                     {
                         HackneyId = hackneyId,
                         FirstName = item.FirstName,

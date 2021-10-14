@@ -266,16 +266,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<BrokerPackageViewDomain>(input);
         }
 
-        public static ClientsResponse ToResponse(this ClientsDomain input)
-        {
-            return _mapper.Map<ClientsResponse>(input);
-        }
-
-        public static ClientsDomain ToDomain(this ClientsResponse input)
-        {
-            return _mapper.Map<ClientsDomain>(input);
-        }
-
         public static ServiceUserBasicResponse ToResponse(this ServiceUserBasicDomain input)
         {
             return _mapper.Map<ServiceUserBasicResponse>(input);
@@ -284,6 +274,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static ServiceUserBasicDomain ToDomain(this ServiceUserBasicResponse input)
         {
             return _mapper.Map<ServiceUserBasicDomain>(input);
+        }
+
+        public static ServiceUserResponse ToResponse(this ServiceUserDomain input)
+        {
+            return _mapper.Map<ServiceUserResponse>(input);
+        }
+
+        public static ServiceUserDomain ToDomain(this ServiceUserResponse input)
+        {
+            return _mapper.Map<ServiceUserDomain>(input);
         }
 
         public static AppUserResponse ToResponse(this AppUserDomain input)
@@ -426,14 +426,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<CarePackageSettings>(input);
         }
 
-        public static ServiceUserBasicDomain ToceUserBasicDomain(this Client input)
+        public static ServiceUserBasicDomain ToBasicDomain(this ServiceUser input)
         {
             return _mapper.Map<ServiceUserBasicDomain>(input);
         }
 
-        public static Client Tont(this ServiceUserBasicDomain input)
+        public static ServiceUser ToEntity(this ServiceUserBasicDomain input)
         {
-            return _mapper.Map<Client>(input);
+            return _mapper.Map<ServiceUser>(input);
         }
     }
 }

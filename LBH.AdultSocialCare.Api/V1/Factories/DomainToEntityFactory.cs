@@ -28,24 +28,24 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Clients
 
-        public static Client ToEntity(this ClientsDomain clientsDomain)
+        public static ServiceUser ToEntity(this ServiceUserDomain serviceUserDomain)
         {
-            return new Client
+            return new ServiceUser
             {
-                Id = clientsDomain.Id,
-                FirstName = clientsDomain.FirstName,
-                MiddleName = clientsDomain.MiddleName,
-                LastName = clientsDomain.LastName,
-                DateOfBirth = clientsDomain.DateOfBirth,
-                HackneyId = clientsDomain.HackneyId,
-                AddressLine1 = clientsDomain.AddressLine1,
-                AddressLine2 = clientsDomain.AddressLine2,
-                AddressLine3 = clientsDomain.AddressLine3,
-                Town = clientsDomain.Town,
-                County = clientsDomain.County,
-                PostCode = clientsDomain.PostCode,
-                CreatorId = clientsDomain.CreatorId,
-                UpdaterId = clientsDomain.UpdaterId
+                Id = serviceUserDomain.Id,
+                FirstName = serviceUserDomain.FirstName,
+                MiddleName = serviceUserDomain.MiddleName,
+                LastName = serviceUserDomain.LastName,
+                DateOfBirth = serviceUserDomain.DateOfBirth,
+                HackneyId = serviceUserDomain.HackneyId,
+                AddressLine1 = serviceUserDomain.AddressLine1,
+                AddressLine2 = serviceUserDomain.AddressLine2,
+                AddressLine3 = serviceUserDomain.AddressLine3,
+                Town = serviceUserDomain.Town,
+                County = serviceUserDomain.County,
+                PostCode = serviceUserDomain.PostCode,
+                CreatorId = serviceUserDomain.CreatorId,
+                UpdaterId = serviceUserDomain.UpdaterId
             };
         }
 

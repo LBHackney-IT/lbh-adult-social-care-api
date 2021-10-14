@@ -8,6 +8,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
 {
     public interface IGetServiceUserUseCase
     {
-        Task<ClientsResponse> GetServiceUserInformation(int hackneyId);
+        Task<ServiceUserResponse> GetServiceUserInformation(int hackneyId);
     }
 }

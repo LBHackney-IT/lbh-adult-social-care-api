@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Clients.Interfaces
 {
     public interface IGetClientsUseCase
     {
-        public Task<ClientsDomain> GetAsync(Guid clientId);
+        public Task<ServiceUserDomain> GetAsync(Guid clientId);
     }
 }

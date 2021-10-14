@@ -15,9 +15,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Clients.Concrete
             _gateway = usersGateway;
         }
 
-        public async Task<ClientsDomain> ExecuteAsync(ClientsDomain clients)
+        public async Task<ServiceUserDomain> ExecuteAsync(ServiceUserDomain serviceUser)
         {
-            var clientEntity = clients.ToEntity();
+            var clientEntity = serviceUser.ToEntity();
             clientEntity = await _gateway.UpsertAsync(clientEntity).ConfigureAwait(false);
 
             if (clientEntity == null)
@@ -25,9 +25,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Clients.Concrete
                 return null;
             }
 
-            clients = clientEntity.ToDomain();
+            serviceUser = clientEntity.ToDomain();
 
-            return clients;
+            return serviceUser;
         }
     }
 }

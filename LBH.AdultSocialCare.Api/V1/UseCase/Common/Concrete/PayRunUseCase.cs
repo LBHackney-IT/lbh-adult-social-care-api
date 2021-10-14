@@ -93,7 +93,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             foreach (var invoice in heldInvoicePayments.SelectMany(payRun => payRun.Invoices))
             {
                 invoice.SupplierName = supplierList.FirstOrDefault(s => s.Id == invoice.SupplierId)?.SupplierName ?? "";
-                invoice.ServiceUserName = clientList.FirstOrDefault(s => s.ClientId == invoice.ServiceUserId)?.ClientName ?? "";
+                invoice.ServiceUserName = clientList.FirstOrDefault(s => s.Id == invoice.ServiceUserId)?.Name ?? "";
             }
 
             return new PagedHeldInvoiceResponse
@@ -132,7 +132,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             foreach (var invoice in payRunInvoices)
             {
                 invoice.SupplierName = supplierList.FirstOrDefault(s => s.Id == invoice.SupplierId)?.SupplierName ?? "";
-                invoice.ServiceUserName = clientList.FirstOrDefault(s => s.ClientId == invoice.ServiceUserId)?.ClientName ?? "";
+                invoice.ServiceUserName = clientList.FirstOrDefault(s => s.Id == invoice.ServiceUserId)?.Name ?? "";
             }
 
             return new PayRunDetailsResponse
