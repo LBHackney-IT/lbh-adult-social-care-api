@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
+using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete;
+using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Security.Concrete;
@@ -12,12 +14,12 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
     {
         public static void RegisterGateways(this IServiceCollection services)
         {
-            services.AddScoped<IApprovedPackagesGateway, ApprovedPackagesGateway>();
-            services.AddScoped<ICareChargesGateway, CareChargesGateway>();
             services.AddScoped<ICarePackageGateway, CarePackageGateway>();
             services.AddScoped<ICarePackageHistoryGateway, CarePackageHistoryGateway>();
             services.AddScoped<ICarePackageReclaimGateway, CarePackageReclaimGateway>();
             services.AddScoped<ICarePackageSettingsGateway, CarePackageSettingsGateway>();
+            services.AddScoped<IApprovedPackagesGateway, ApprovedPackagesGateway>();
+            services.AddScoped<ICareChargesGateway, CareChargesGateway>();
             services.AddScoped<IClientsGateway, ClientsGateway>();
             services.AddScoped<IFundedNursingCareGateway, FundedNursingCareGateway>();
             services.AddScoped<IPrimarySupportReasonGateway, PrimarySupportReasonGateway>();

@@ -4,6 +4,8 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {

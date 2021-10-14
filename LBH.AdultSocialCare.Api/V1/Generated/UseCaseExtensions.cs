@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using LBH.AdultSocialCare.Api.V1.UseCase;
+using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
@@ -13,32 +15,32 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
     {
         public static void RegisterUseCases(this IServiceCollection services)
         {
-            services.AddScoped<IDeleteClientsUseCase, DeleteClientsUseCase>();
-            services.AddScoped<IGetAllClientsUseCase, GetAllClientsUseCase>();
-            services.AddScoped<IGetClientsUseCase, GetClientsUseCase>();
-            services.AddScoped<IUpsertClientsUseCase, UpsertClientsUseCase>();
-            services.AddScoped<ICareChargeUseCase, CareChargeUseCase>();
             services.AddScoped<ICarePackageOptionsUseCase, CarePackageOptionsUseCase>();
             services.AddScoped<ICreateCarePackageReclaimUseCase, CreateCarePackageReclaimUseCase>();
             services.AddScoped<ICreateCarePackageUseCase, CreateCarePackageUseCase>();
-            services.AddScoped<ICreateSupplierUseCase, CreateSupplierUseCase>();
-            services.AddScoped<IGetAllPrimarySupportReasonsUseCase, GetAllPrimarySupportReasonsUseCase>();
-            services.AddScoped<IGetAllStatusUseCase, GetAllStatusUseCase>();
-            services.AddScoped<IGetAllSupplierUseCase, GetAllSupplierUseCase>();
-            services.AddScoped<IGetAllUsersUseCase, GetAllUsersUseCase>();
             services.AddScoped<IGetCareChargePackagesUseCase, GetCareChargePackagesUseCase>();
             services.AddScoped<IGetCarePackageBrokerageUseCase, GetCarePackageBrokerageUseCase>();
             services.AddScoped<IGetCarePackageReclaimUseCase, GetCarePackageReclaimUseCase>();
             services.AddScoped<IGetCarePackageSummaryUseCase, GetCarePackageSummaryUseCase>();
             services.AddScoped<IGetCarePackageUseCase, GetCarePackageUseCase>();
-            services.AddScoped<IGetFundedNursingCarePriceUseCase, GetFundedNursingCarePriceUseCase>();
-            services.AddScoped<IGetServiceUserUseCase, GetServiceUserUseCase>();
             services.AddScoped<IGetSinglePackageCareChargeUseCase, GetSinglePackageCareChargeUseCase>();
-            services.AddScoped<IPayRunUseCase, PayRunUseCase>();
             services.AddScoped<ISubmitCarePackageUseCase, SubmitCarePackageUseCase>();
             services.AddScoped<IUpdateCarePackageReclaimUseCase, UpdateCarePackageReclaimUseCase>();
             services.AddScoped<IUpdateCarePackageUseCase, UpdateCarePackageUseCase>();
             services.AddScoped<IUpsertCarePackageBrokerageUseCase, UpsertCarePackageBrokerageUseCase>();
+            services.AddScoped<IDeleteClientsUseCase, DeleteClientsUseCase>();
+            services.AddScoped<IGetAllClientsUseCase, GetAllClientsUseCase>();
+            services.AddScoped<IGetClientsUseCase, GetClientsUseCase>();
+            services.AddScoped<IUpsertClientsUseCase, UpsertClientsUseCase>();
+            services.AddScoped<ICareChargeUseCase, CareChargeUseCase>();
+            services.AddScoped<ICreateSupplierUseCase, CreateSupplierUseCase>();
+            services.AddScoped<IGetAllPrimarySupportReasonsUseCase, GetAllPrimarySupportReasonsUseCase>();
+            services.AddScoped<IGetAllStatusUseCase, GetAllStatusUseCase>();
+            services.AddScoped<IGetAllSupplierUseCase, GetAllSupplierUseCase>();
+            services.AddScoped<IGetAllUsersUseCase, GetAllUsersUseCase>();
+            services.AddScoped<IGetFundedNursingCarePriceUseCase, GetFundedNursingCarePriceUseCase>();
+            services.AddScoped<IGetServiceUserUseCase, GetServiceUserUseCase>();
+            services.AddScoped<IPayRunUseCase, PayRunUseCase>();
             services.AddScoped<IAuthUseCase, AuthUseCase>();
             services.AddScoped<IDeleteRoleUseCase, DeleteRoleUseCase>();
             services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();

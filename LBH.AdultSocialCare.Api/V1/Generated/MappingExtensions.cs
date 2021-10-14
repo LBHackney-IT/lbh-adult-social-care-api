@@ -3,14 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using HttpServices.Models.Requests;
+using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -22,36 +24,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static void Configure(IMapper mapper)
         {
             _mapper = mapper;
-        }
-
-        public static BrokerPackageItemResponse ToResponse(this BrokerPackageItemDomain input)
-        {
-            return _mapper.Map<BrokerPackageItemResponse>(input);
-        }
-
-        public static BrokerPackageItemDomain ToDomain(this BrokerPackageItemResponse input)
-        {
-            return _mapper.Map<BrokerPackageItemDomain>(input);
-        }
-
-        public static IEnumerable<BrokerPackageItemResponse> ToResponse(this IEnumerable<BrokerPackageItemDomain> input)
-        {
-            return _mapper.Map<IEnumerable<BrokerPackageItemResponse>>(input);
-        }
-
-        public static IEnumerable<BrokerPackageItemDomain> ToDomain(this IEnumerable<BrokerPackageItemResponse> input)
-        {
-            return _mapper.Map<IEnumerable<BrokerPackageItemDomain>>(input);
-        }
-
-        public static BrokerPackageViewResponse ToResponse(this BrokerPackageViewDomain input)
-        {
-            return _mapper.Map<BrokerPackageViewResponse>(input);
-        }
-
-        public static BrokerPackageViewDomain ToDomain(this BrokerPackageViewResponse input)
-        {
-            return _mapper.Map<BrokerPackageViewDomain>(input);
         }
 
         public static CarePackageBrokerageResponse ToResponse(this CarePackageBrokerageDomain input)
@@ -264,6 +236,36 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<CarePackageUpdateDomain>(input);
         }
 
+        public static BrokerPackageItemResponse ToResponse(this BrokerPackageItemDomain input)
+        {
+            return _mapper.Map<BrokerPackageItemResponse>(input);
+        }
+
+        public static BrokerPackageItemDomain ToDomain(this BrokerPackageItemResponse input)
+        {
+            return _mapper.Map<BrokerPackageItemDomain>(input);
+        }
+
+        public static IEnumerable<BrokerPackageItemResponse> ToResponse(this IEnumerable<BrokerPackageItemDomain> input)
+        {
+            return _mapper.Map<IEnumerable<BrokerPackageItemResponse>>(input);
+        }
+
+        public static IEnumerable<BrokerPackageItemDomain> ToDomain(this IEnumerable<BrokerPackageItemResponse> input)
+        {
+            return _mapper.Map<IEnumerable<BrokerPackageItemDomain>>(input);
+        }
+
+        public static BrokerPackageViewResponse ToResponse(this BrokerPackageViewDomain input)
+        {
+            return _mapper.Map<BrokerPackageViewResponse>(input);
+        }
+
+        public static BrokerPackageViewDomain ToDomain(this BrokerPackageViewResponse input)
+        {
+            return _mapper.Map<BrokerPackageViewDomain>(input);
+        }
+
         public static ClientsResponse ToResponse(this ClientsDomain input)
         {
             return _mapper.Map<ClientsResponse>(input);
@@ -302,16 +304,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<AppUserDomain> ToDomain(this IEnumerable<AppUserResponse> input)
         {
             return _mapper.Map<IEnumerable<AppUserDomain>>(input);
-        }
-
-        public static ServiceUserBasicDomain ToceUserBasicDomain(this Client input)
-        {
-            return _mapper.Map<ServiceUserBasicDomain>(input);
-        }
-
-        public static Client Tont(this ServiceUserBasicDomain input)
-        {
-            return _mapper.Map<Client>(input);
         }
 
         public static CarePackageBrokerageDomain ToDomain(this CarePackageBrokerageCreationRequest input)
@@ -432,6 +424,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static CarePackageSettings ToEntity(this CarePackageSettingsDomain input)
         {
             return _mapper.Map<CarePackageSettings>(input);
+        }
+
+        public static ServiceUserBasicDomain ToceUserBasicDomain(this Client input)
+        {
+            return _mapper.Map<ServiceUserBasicDomain>(input);
+        }
+
+        public static Client Tont(this ServiceUserBasicDomain input)
+        {
+            return _mapper.Map<Client>(input);
         }
     }
 }
