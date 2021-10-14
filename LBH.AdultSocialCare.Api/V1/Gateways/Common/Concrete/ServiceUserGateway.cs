@@ -22,9 +22,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             _databaseContext = databaseContext;
         }
 
-        public async Task<bool> CreateAsync(Client client)
+        public async Task<bool> CreateAsync(ServiceUser serviceUser)
         {
-            var entry = await _databaseContext.Clients.AddAsync(client);
+            var entry = await _databaseContext.ServiceUsers.AddAsync(serviceUser);
             try
             {
                 await _databaseContext.SaveChangesAsync();
@@ -38,14 +38,14 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
         public async Task<int> GetServiceUserCountAsync(int hackneyId)
         {
-            return await _databaseContext.Clients
+            return await _databaseContext.ServiceUsers
                 .Where(c => c.HackneyId.Equals(hackneyId))
                 .CountAsync();
         }
 
         public async Task<ClientsDomain> GetAsync(int hackneyId)
         {
-            var client = await _databaseContext.Clients
+            var client = await _databaseContext.ServiceUsers
                 .Where(c => c.HackneyId.Equals(hackneyId))
                 .SingleOrDefaultAsync();
 

@@ -30,7 +30,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
                 PackageType = PackageType.NursingCare,
                 PackageScheduling = PackageScheduling.Temporary,
                 Supplier = new Supplier(),
-                ServiceUser = new Client(),
+                ServiceUser = new ServiceUser(),
                 Settings = new CarePackageSettings()
             };
 

@@ -32,30 +32,30 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Clients
 
-        public static ClientsDomain ToDomain(this Client clientEntity)
+        public static ClientsDomain ToDomain(this ServiceUser serviceUserEntity)
         {
             return new ClientsDomain
             {
-                Id = clientEntity.Id,
-                FirstName = clientEntity.FirstName,
-                MiddleName = clientEntity.MiddleName,
-                LastName = clientEntity.LastName,
-                DateOfBirth = clientEntity.DateOfBirth,
-                HackneyId = clientEntity.HackneyId,
-                AddressLine1 = clientEntity.AddressLine1,
-                AddressLine2 = clientEntity.AddressLine2,
-                AddressLine3 = clientEntity.AddressLine3,
-                Town = clientEntity.Town,
-                County = clientEntity.County,
-                PostCode = clientEntity.PostCode,
-                CreatorId = clientEntity.CreatorId,
-                DateCreated = clientEntity.DateCreated,
-                UpdaterId = clientEntity.UpdaterId,
-                DateUpdated = clientEntity.DateUpdated
+                Id = serviceUserEntity.Id,
+                FirstName = serviceUserEntity.FirstName,
+                MiddleName = serviceUserEntity.MiddleName,
+                LastName = serviceUserEntity.LastName,
+                DateOfBirth = serviceUserEntity.DateOfBirth,
+                HackneyId = serviceUserEntity.HackneyId,
+                AddressLine1 = serviceUserEntity.AddressLine1,
+                AddressLine2 = serviceUserEntity.AddressLine2,
+                AddressLine3 = serviceUserEntity.AddressLine3,
+                Town = serviceUserEntity.Town,
+                County = serviceUserEntity.County,
+                PostCode = serviceUserEntity.PostCode,
+                CreatorId = serviceUserEntity.CreatorId,
+                DateCreated = serviceUserEntity.DateCreated,
+                UpdaterId = serviceUserEntity.UpdaterId,
+                DateUpdated = serviceUserEntity.DateUpdated
             };
         }
 
-        public static IEnumerable<ClientsDomain> ToDomain(this List<Client> clientEntities)
+        public static IEnumerable<ClientsDomain> ToDomain(this List<ServiceUser> clientEntities)
         {
             return _mapper.Map<IEnumerable<ClientsDomain>>(clientEntities);
         }

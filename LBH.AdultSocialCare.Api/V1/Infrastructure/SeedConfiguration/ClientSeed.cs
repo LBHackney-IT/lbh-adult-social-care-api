@@ -7,12 +7,12 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
-    public class ClientSeed : IEntityTypeConfiguration<Client>
+    public class ClientSeed : IEntityTypeConfiguration<ServiceUser>
     {
-        public void Configure(EntityTypeBuilder<Client> builder)
+        public void Configure(EntityTypeBuilder<ServiceUser> builder)
         {
             var dateTimeOffset = new DateTimeOffset(AppTimeConstants.CreateUpdateDefaultDateTime).ToOffset(TimeSpan.Zero);
-            builder.HasData(new Client
+            builder.HasData(new ServiceUser
             {
                 Id = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb80"),
                 FirstName = "Furkan",
@@ -27,7 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
-            }, new Client
+            }, new ServiceUser
             {
                 Id = new Guid("2f043f6f-09ed-42f0-ab30-c0409c05cb7e"),
                 FirstName = "Henry",
@@ -42,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
-            }, new Client
+            }, new ServiceUser
             {
                 Id = new Guid("91990f8a-b325-43eb-8482-0d1c7dcf8cd5"),
                 FirstName = "Allie",
@@ -57,7 +57,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
-            }, new Client
+            }, new ServiceUser
             {
                 Id = new Guid("6691fbfc-e398-41e0-8733-9ae98ebe2ba8"),
                 FirstName = "Constance",
@@ -72,7 +72,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
-            }, new Client
+            }, new ServiceUser
             {
                 Id = new Guid("a99f4b55-7c49-4bad-a338-86c6d79dfe36"),
                 FirstName = "Isabelle",
@@ -87,7 +87,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
-            }, new Client
+            }, new ServiceUser
             {
                 Id = new Guid("61e8b256-3bb6-42a2-9d24-38a44a3bd5f2"),
                 FirstName = "Harriet",
@@ -102,7 +102,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
-            }, new Client
+            }, new ServiceUser
             {
                 Id = new Guid("de846662-e8fe-4c47-bd0a-20113b71e02d"),
                 FirstName = "Willie",
@@ -117,7 +117,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
-            }, new Client
+            }, new ServiceUser
             {
                 Id = new Guid("0c6edb1d-799b-4ce3-98a8-e6fe271c4a8f"),
                 FirstName = "Mark",
@@ -132,7 +132,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
-            }, new Client
+            }, new ServiceUser
             {
                 Id = new Guid("9a84d6c3-e570-4f30-8bb2-80425d6f8e60"),
                 FirstName = "Colin",
@@ -147,7 +147,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
-            }, new Client
+            }, new ServiceUser
             {
                 Id = new Guid("14ffd252-a98b-4489-ab58-6db72ed317c6"),
                 FirstName = "Tim",
@@ -162,7 +162,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
-            }, new Client
+            }, new ServiceUser
             {
                 Id = new Guid("3c96cc5b-557e-42eb-957b-f9b0b7302ad7"),
                 FirstName = "Jake",
@@ -177,7 +177,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
-            }, new Client
+            }, new ServiceUser
             {
                 Id = new Guid("dde0741c-f9a9-4d42-b889-a1d17864d77e"),
                 FirstName = "Emma",

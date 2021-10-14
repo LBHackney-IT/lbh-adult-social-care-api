@@ -46,7 +46,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<CarePackageReclaim> CarePackageReclaims { get; set; }
         public DbSet<CarePackageSchedulingOption> CarePackageSchedulingOptions { get; set; }
 
-        public DbSet<Client> Clients { get; set; }
+        public DbSet<ServiceUser> ServiceUsers { get; set; }
         public DbSet<PackageStatusOption> PackageStatuses { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
         public DbSet<PrimarySupportReason> PrimarySupportReasons { get; set; }

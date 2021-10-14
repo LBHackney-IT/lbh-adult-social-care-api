@@ -6,9 +6,8 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common
 {
-    //TODO FK: change name to ServiceUser after code clean up
     [GenerateMappingFor(typeof(ServiceUserBasicDomain))]
-    public class Client : BaseEntity
+    public class ServiceUser : BaseEntity
     {
 
         /// <summary>

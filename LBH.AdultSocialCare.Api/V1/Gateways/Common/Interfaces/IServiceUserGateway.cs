@@ -10,7 +10,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
 {
     public interface IServiceUserGateway
     {
-        Task<bool> CreateAsync(Client client);
+        Task<bool> CreateAsync(ServiceUser serviceUser);
 
         Task<int> GetServiceUserCountAsync(int hackneyId);
 

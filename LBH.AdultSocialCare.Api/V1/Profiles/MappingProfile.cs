@@ -77,7 +77,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             CreateMap<ClientMinimalDomain, ClientMinimalResponse>();
             CreateMap<ClientsDomain, ClientsResponse>();
-            CreateMap<Client, ClientsDomain>();
+            CreateMap<ServiceUser, ClientsDomain>();
 
             #endregion Clients
 

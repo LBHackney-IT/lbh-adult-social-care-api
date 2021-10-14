@@ -23,7 +23,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
         public async Task<ProvisionalCareChargeAmountPlainDomain> GetUsingServiceUserIdAsync(Guid serviceUserId)
         {
             // Get client age
-            var clientBirthDate = await _dbContext.Clients
+            var clientBirthDate = await _dbContext.ServiceUsers
                 .Where(c => c.Id.Equals(serviceUserId))
                 .Select(c => c.DateOfBirth)
                 .SingleOrDefaultAsync().ConfigureAwait(false);

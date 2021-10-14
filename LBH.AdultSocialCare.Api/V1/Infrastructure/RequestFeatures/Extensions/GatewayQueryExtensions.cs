@@ -10,7 +10,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
 {
     public static class GatewayQueryExtensions
     {
-        public static IQueryable<Client> FilterByName(this IQueryable<Client> clientsQuery, string name) =>
+        public static IQueryable<ServiceUser> FilterByName(this IQueryable<ServiceUser> clientsQuery, string name) =>
             clientsQuery.Where(c => String.IsNullOrEmpty(name)
                                     || c.FirstName.ToLower().Contains(name.ToLower())
                                     || c.LastName.ToLower().Contains(name.ToLower()));

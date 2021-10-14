@@ -425,15 +425,5 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         {
             return _mapper.Map<CarePackageSettings>(input);
         }
-
-        public static ServiceUserBasicDomain ToceUserBasicDomain(this Client input)
-        {
-            return _mapper.Map<ServiceUserBasicDomain>(input);
-        }
-
-        public static Client Tont(this ServiceUserBasicDomain input)
-        {
-            return _mapper.Map<Client>(input);
-        }
     }
 }

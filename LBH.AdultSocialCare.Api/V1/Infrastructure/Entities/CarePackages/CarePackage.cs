@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages
@@ -38,7 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages
         public CarePackageSettings Settings { get; set; }
 
         [ForeignKey(nameof(ServiceUserId))]
-        public Client ServiceUser { get; set; }
+        public ServiceUser ServiceUser { get; set; }
 
         [ForeignKey(nameof(SupplierId))]
         public Supplier Supplier { get; set; }

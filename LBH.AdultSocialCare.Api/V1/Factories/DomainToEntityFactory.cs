@@ -28,9 +28,9 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
 
         #region Clients
 
-        public static Client ToEntity(this ClientsDomain clientsDomain)
+        public static ServiceUser ToEntity(this ClientsDomain clientsDomain)
         {
-            return new Client
+            return new ServiceUser
             {
                 Id = clientsDomain.Id,
                 FirstName = clientsDomain.FirstName,
