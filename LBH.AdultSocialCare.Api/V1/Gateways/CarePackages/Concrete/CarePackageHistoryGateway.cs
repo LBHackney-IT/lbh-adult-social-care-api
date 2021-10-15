@@ -1,6 +1,7 @@
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                 .ToListAsync().ConfigureAwait(false);
 
             return carePackageHistory;
+        }
+
+        public void Create(CarePackageHistory newCarePackageHistory)
+        {
+            _dbContext.CarePackageHistories.Add(newCarePackageHistory);
         }
     }
 }
