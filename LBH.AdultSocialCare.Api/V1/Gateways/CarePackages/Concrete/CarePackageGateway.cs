@@ -78,10 +78,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             };
         }
 
-        public async Task<CarePackage> GetPackageAsync(Guid packageId, PackageFields fields = PackageFields.All)
+        public async Task<CarePackage> GetPackageAsync(Guid packageId, PackageFields fields = PackageFields.None, bool trackChanges = false)
         {
             var query = BuildPackageQuery(
-                _dbContext.CarePackages.Where(p => p.Id == packageId), fields);
+                    _dbContext.CarePackages.Where(p => p.Id == packageId), fields)
+                .TrackChanges(trackChanges);
 
             return await query.FirstOrDefaultAsync();
         }
@@ -162,6 +163,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             if (fields.HasFlag(PackageFields.Histories)) query = query.Include(p => p.Histories);
             if (fields.HasFlag(PackageFields.ServiceUser)) query = query.Include(p => p.ServiceUser);
             if (fields.HasFlag(PackageFields.PrimarySupportReason)) query = query.Include(p => p.PrimarySupportReason);
+            if (fields.HasFlag(PackageFields.Broker)) query = query.Include(p => p.Broker);
+            if (fields.HasFlag(PackageFields.Approver)) query = query.Include(p => p.Approver);
 
             return query;
         }

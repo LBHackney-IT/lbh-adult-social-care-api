@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
             _dbManagerMock = new Mock<IDatabaseManager>();
 
             _gatewayMock
-                .Setup(mock => mock.GetPackageAsync(_package.Id, PackageFields.None))
+                .Setup(mock => mock.GetPackageAsync(_package.Id, PackageFields.None, true))
                 .ReturnsAsync(_package);
 
             _useCase = new SubmitCarePackageUseCase(_gatewayMock.Object, _dbManagerMock.Object);

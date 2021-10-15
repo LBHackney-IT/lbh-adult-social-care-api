@@ -7,6 +7,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
@@ -25,7 +26,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task<CarePackageSummaryDomain> ExecuteAsync(Guid packageId)
         {
             var package = await _carePackageGateway
-                .GetPackageAsync(packageId)
+                .GetPackageAsync(packageId, PackageFields.All)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
             var coreCost = package.Details

@@ -35,7 +35,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task ExecuteAsync(Guid packageId, CarePackageBrokerageDomain brokerageInfo)
         {
             var package = await _carePackageGateway
-                .GetPackageAsync(packageId, PackageFields.Details)
+                .GetPackageAsync(packageId, PackageFields.Details, true)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
             package.SupplierId = brokerageInfo.SupplierId;

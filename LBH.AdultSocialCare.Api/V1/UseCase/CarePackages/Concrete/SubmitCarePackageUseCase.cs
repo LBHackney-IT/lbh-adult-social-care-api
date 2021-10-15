@@ -28,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task ExecuteAsync(Guid packageId, CarePackageSubmissionDomain submissionInfo)
         {
             var package = await _carePackageGateway
-                .GetPackageAsync(packageId, PackageFields.None)
+                .GetPackageAsync(packageId, PackageFields.None, true)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
             // TODO: VK: Add validation for double submission

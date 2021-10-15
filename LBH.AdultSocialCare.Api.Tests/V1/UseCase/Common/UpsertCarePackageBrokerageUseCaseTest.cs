@@ -42,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
             _dbManagerMock = new Mock<IDatabaseManager>();
 
             _gatewayMock
-                .Setup(gateway => gateway.GetPackageAsync(_package.Id, PackageFields.Details))
+                .Setup(gateway => gateway.GetPackageAsync(_package.Id, PackageFields.Details, true))
                 .ReturnsAsync(_package);
 
             _useCase = new UpsertCarePackageBrokerageUseCase(_gatewayMock.Object, _dbManagerMock.Object, Mapper);
@@ -264,7 +264,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 
         private void VerifyDatabaseCalls()
         {
-            _gatewayMock.Verify(mock => mock.GetPackageAsync(_package.Id, It.IsAny<PackageFields>()), Times.Once);
+            _gatewayMock.Verify(mock => mock.GetPackageAsync(_package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()), Times.Once);
             _dbManagerMock.Verify(mock => mock.SaveAsync(It.IsAny<string>()), Times.Once);
         }
     }
