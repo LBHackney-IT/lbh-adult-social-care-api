@@ -1,15 +1,14 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -25,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task<CarePackageSummaryDomain> ExecuteAsync(Guid packageId)
         {
             var package = await _carePackageGateway
-                .GetPackageAsync(packageId)
+                .GetPackageAsync(packageId, PackageFields.All)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
             var coreCost = package.Details
@@ -90,6 +89,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     summary.HackneyReclaims.Fnc = summary.FundedNursingCare.Cost;
                     summary.HackneyReclaims.SubTotal += summary.FundedNursingCare.Cost;
                     break;
+
                 case ClaimCollector.Supplier:
                     summary.SupplierReclaims.Fnc = summary.FundedNursingCare.Cost;
                     summary.SupplierReclaims.SubTotal += summary.FundedNursingCare.Cost;
@@ -104,6 +104,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                         summary.HackneyReclaims.CareCharge += reclaim.Cost;
                         summary.HackneyReclaims.SubTotal += reclaim.Cost;
                         break;
+
                     case ClaimCollector.Supplier:
                         summary.SupplierReclaims.CareCharge += reclaim.Cost;
                         summary.SupplierReclaims.SubTotal += reclaim.Cost;

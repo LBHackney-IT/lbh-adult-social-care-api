@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Common.Exceptions.CustomExceptions;
 using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
@@ -11,6 +7,9 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
 {
@@ -28,12 +27,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         private readonly IGetCarePackageUseCase _getCarePackageUseCase;
         private readonly IGetCarePackageSummaryUseCase _getCarePackageSummaryUseCase;
         private readonly IAssignCarePlanUseCase _assignCarePlanUseCase;
+        private readonly IGetCarePackageHistoryUseCase _getCarePackageHistoryUseCase;
 
         public CarePackagesController(
             ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase,
             IUpdateCarePackageUseCase updateCarePackageUseCase, ISubmitCarePackageUseCase submitCarePackageUseCase,
             IGetCarePackageUseCase getCarePackageUseCase, IGetCarePackageSummaryUseCase getCarePackageSummaryUseCase,
-            IAssignCarePlanUseCase assignCarePlanUseCase)
+            IAssignCarePlanUseCase assignCarePlanUseCase, IGetCarePackageHistoryUseCase getCarePackageHistoryUseCase)
         {
             _createCarePackageUseCase = createCarePackageUseCase;
             _carePackageOptionsUseCase = carePackageOptionsUseCase;
@@ -42,6 +42,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             _getCarePackageUseCase = getCarePackageUseCase;
             _getCarePackageSummaryUseCase = getCarePackageSummaryUseCase;
             _assignCarePlanUseCase = assignCarePlanUseCase;
+            _getCarePackageHistoryUseCase = getCarePackageHistoryUseCase;
         }
 
         /// <summary>Creates a new care package.</summary>
@@ -73,7 +74,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// </summary>
         /// <param name="carePackageId">Unique identifier of a package.</param>
         /// <returns>Information about a single package with the given carePackageId.</returns>
-        [ProducesResponseType(typeof(ApiException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(CarePackageResponse), StatusCodes.Status200OK)]
         [HttpGet("{carePackageId}")]
         public async Task<ActionResult<CarePackageResponse>> GetCarePackageAsync(Guid carePackageId)
@@ -85,7 +86,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// <summary>Gets core settings for a care package.</summary>
         /// <param name="carePackageId">The care package identifier.</param>
         /// <returns>Core care package settings if success</returns>
-        [ProducesResponseType(typeof(ApiException), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(CarePackageCoreResponse), StatusCodes.Status200OK)]
         [HttpGet("{carePackageId}/core")]
         public async Task<ActionResult<CarePackageCoreResponse>> GetCarePackageCore(Guid carePackageId)
@@ -183,6 +184,18 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         {
             var res = await _getCarePackageUseCase.GetBrokerPackageViewListAsync(queryParameters);
             return Ok(res);
+        }
+
+        /// <summary>Returns the care package history.</summary>
+        /// <param name="carePackageId">The care package identifier.</param>
+        /// <returns>History of the care package if success</returns>
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(CarePackageHistoryViewResponse), StatusCodes.Status200OK)]
+        [HttpGet("{carePackageId}/history")]
+        public async Task<ActionResult<CarePackageResponse>> GetCarePackageHistoryAsync(Guid carePackageId)
+        {
+            var historyResponse = await _getCarePackageHistoryUseCase.ExecuteAsync(carePackageId);
+            return Ok(historyResponse);
         }
     }
 }
