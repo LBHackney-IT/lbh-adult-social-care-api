@@ -31,9 +31,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 CarePackageId = package.Id,
                 PackageType = package.PackageType.GetDisplayName(),
                 BrokeredBy = package.Broker?.Name,
-                AssignedOn = package.DateCreated,
+                AssignedOn = package.DateAssigned,
                 ApprovedBy = package.Approver?.Name,
-                ApprovedOn = package.DateUpdated,
+                ApprovedOn = package.DateApproved,
                 History = packageHistory.ToResponse()
             };
 

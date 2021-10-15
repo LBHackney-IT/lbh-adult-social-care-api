@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages
 {
@@ -30,7 +30,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages
         public Guid ServiceUserId { get; set; }
         public int? SupplierId { get; set; }
         public Guid? ApproverId { get; set; }
+        public DateTimeOffset? DateApproved { get; set; } // Date the package is approved
         public Guid? BrokerId { get; set; }
+        public DateTimeOffset? DateAssigned { get; set; } // Date package is assigned to broker
 
         public int PrimarySupportReasonId { get; set; }
         public PackageScheduling PackageScheduling { get; set; }
