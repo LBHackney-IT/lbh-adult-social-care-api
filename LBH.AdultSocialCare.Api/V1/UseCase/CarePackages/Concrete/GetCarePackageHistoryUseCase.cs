@@ -5,6 +5,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
@@ -34,7 +35,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 AssignedOn = package.DateAssigned,
                 ApprovedBy = package.Approver?.Name,
                 ApprovedOn = package.DateApproved,
-                History = packageHistory.ToResponse()
+                History = packageHistory.OrderByDescending(h => h.Id).ToResponse()
             };
 
             return historyResponse;
