@@ -136,16 +136,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CarePackageHistoryDomain>>(input);
         }
 
-        public static CarePackageHistoryViewResponse ToResponse(this CarePackageHistoryViewDomain input)
-        {
-            return _mapper.Map<CarePackageHistoryViewResponse>(input);
-        }
-
-        public static CarePackageHistoryViewDomain ToDomain(this CarePackageHistoryViewResponse input)
-        {
-            return _mapper.Map<CarePackageHistoryViewDomain>(input);
-        }
-
         public static CarePackageListItemResponse ToResponse(this CarePackageListItemDomain input)
         {
             return _mapper.Map<CarePackageListItemResponse>(input);

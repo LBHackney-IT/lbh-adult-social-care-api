@@ -1,15 +1,13 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
