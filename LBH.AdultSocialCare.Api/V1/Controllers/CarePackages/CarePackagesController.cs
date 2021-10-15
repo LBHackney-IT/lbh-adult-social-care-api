@@ -133,12 +133,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// <param name="carePackageId">An unique identifier of a package to be approved.</param>
         /// <param name="request">The care package update request object.</param>
         /// <returns>Ok when operation is successful.</returns>
-        [HttpPost("{carePackageId}/submit")]
         [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
+        [HttpPost("{carePackageId}/submit")]
         public async Task<ActionResult> SubmitForApproval(Guid carePackageId, CarePackageSubmissionRequest request)
         {
             await _submitCarePackageUseCase.ExecuteAsync(carePackageId, request.ToDomain());
@@ -151,12 +151,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// <response code="200">If operation have completed successfully</response>
         /// <response code="404">If service user with given HackneyId doesn't exists</response>
         /// <response code="500">If user has already an active package with given type assigned.</response>
-        [HttpPost("assign")]
         [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        public async Task<ActionResult> AssignCarePlan(CarePlanAssignmentRequest request)
+        [HttpPost("assign")]
+        public async Task<ActionResult> AssignCarePlan([FromForm] CarePlanAssignmentRequest request)
         {
             await _assignCarePlanUseCase.ExecuteAsync(request.ToDomain());
             return Ok();
@@ -165,10 +165,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// <summary>Returns a financial care package summary.</summary>
         /// <param name="carePackageId">An unique identifier of a package to get summary of.</param>
         /// <returns>A financial care package summary response.</returns>
-        [HttpGet("{carePackageId}/summary")]
         [ProducesResponseType(typeof(CarePackageSummaryResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
+        [HttpGet("{carePackageId}/summary")]
         public async Task<ActionResult<CarePackageSummaryResponse>> GetSummary(Guid carePackageId)
         {
             var result = await _getCarePackageSummaryUseCase.ExecuteAsync(carePackageId);

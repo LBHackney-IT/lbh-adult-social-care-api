@@ -12,6 +12,7 @@ using HttpServices.Models.Responses;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using Xunit;
 
@@ -155,7 +156,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
                 HackneyUserId = 1,
                 BrokerId = UserConstants.DefaultApiUserGuid,
                 PackageType = PackageType.ResidentialCare,
-                Notes = "Hello world"
+                Notes = "Hello world",
+                CarePlanFile = null
             };
 
             _fixture.OutgoingRestClient
@@ -168,7 +170,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
                     }
                 });
 
-            var response = await _fixture.RestClient.PostAsync<object>("api/v1/care-packages/assign", request);
+            var response = await _fixture.RestClient
+                .SubmitFormAsync<object>("api/v1/care-packages/assign", request);
 
             var serviceUser = _fixture.DatabaseContext.ServiceUsers.FirstOrDefault(u => u.HackneyId == 1);
             var package = _fixture.DatabaseContext.CarePackages.SingleOrDefault(p => p.ServiceUserId == serviceUser.Id);

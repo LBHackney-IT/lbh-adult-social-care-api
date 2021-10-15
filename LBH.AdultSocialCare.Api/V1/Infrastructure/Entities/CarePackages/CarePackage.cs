@@ -36,6 +36,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages
         public PackageScheduling PackageScheduling { get; set; }
         public CarePackageSettings Settings { get; set; }
 
+        public string SocialWorkerCarePlanFileUrl { get; set; }
+
         [ForeignKey(nameof(ServiceUserId))]
         public ServiceUser ServiceUser { get; set; }
 

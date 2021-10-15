@@ -9,7 +9,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -23,6 +23,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private readonly Mock<ICarePackageGateway> _carePackageGatewayMock;
         private readonly Mock<IDatabaseManager> _dbManagerMock;
         private readonly AssignCarePlanUseCase _useCase;
+        private readonly Mock<IFileStorage> _fileStorageMock;
 
         public AssignCarePlanUseCaseTests()
         {
@@ -37,8 +38,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             _carePackageGatewayMock = new Mock<ICarePackageGateway>();
             _dbManagerMock = new Mock<IDatabaseManager>();
+            _fileStorageMock = new Mock<IFileStorage>();
 
-            _useCase = new AssignCarePlanUseCase(getServiceUseUseCaseMock.Object, _carePackageGatewayMock.Object, _dbManagerMock.Object);
+            _useCase = new AssignCarePlanUseCase(getServiceUseUseCaseMock.Object, _carePackageGatewayMock.Object, _dbManagerMock.Object, _fileStorageMock.Object);
         }
 
         [Fact]
