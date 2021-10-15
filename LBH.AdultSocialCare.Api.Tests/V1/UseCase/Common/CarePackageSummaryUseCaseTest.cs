@@ -36,7 +36,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 
             var gateway = new Mock<ICarePackageGateway>();
             gateway
-                .Setup(m => m.GetPackageAsync(_package.Id, PackageFields.All))
+                .Setup(m => m.GetPackageAsync(_package.Id, PackageFields.All, false))
                 .ReturnsAsync(_package);
 
             _useCase = new GetCarePackageSummaryUseCase(gateway.Object);

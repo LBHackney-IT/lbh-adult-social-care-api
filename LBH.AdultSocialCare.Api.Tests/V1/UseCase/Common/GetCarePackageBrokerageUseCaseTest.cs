@@ -1,21 +1,17 @@
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Moq;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
@@ -38,7 +34,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 
             _gatewayMock = new Mock<ICarePackageGateway>();
             _gatewayMock
-                .Setup(mock => mock.GetPackageAsync(_package.Id, PackageFields.Details))
+                .Setup(mock => mock.GetPackageAsync(_package.Id, PackageFields.Details, false))
                 .ReturnsAsync(_package);
 
             _useCase = new GetCarePackageBrokerageUseCase(_gatewayMock.Object);

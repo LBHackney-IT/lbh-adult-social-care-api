@@ -14,7 +14,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
     {
         Task<BrokerPackageViewDomain> GetBrokerPackageViewListAsync(BrokerPackageViewQueryParameters queryParameters);
 
-        Task<CarePackage> GetPackageAsync(Guid packageId, PackageFields fields = PackageFields.All);
+        Task<CarePackage> GetPackageAsync(Guid packageId, PackageFields fields = PackageFields.None, bool trackChanges = false);
 
         Task<CarePackage> GetPackagePlainAsync(Guid packageId, bool trackChanges = false);
 
