@@ -29,5 +29,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
         Task<List<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset dateTo);
 
         Task<List<CarePackage>> GetByIdsAsync(IEnumerable<Guid> packageIds, PackageFields fields = PackageFields.All);
+
+        Task<int> GetServiceUserActivePackagesCount(Guid serviceUserId, PackageType packageType);
     }
 }

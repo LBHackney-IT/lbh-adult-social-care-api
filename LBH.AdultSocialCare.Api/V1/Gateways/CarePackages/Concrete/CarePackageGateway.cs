@@ -8,7 +8,6 @@ using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
@@ -151,6 +150,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                 _dbContext.CarePackages.Where(p => packageIds.Contains(p.Id)), fields);
 
             return await query.ToListAsync();
+        }
+
+        public async Task<int> GetServiceUserActivePackagesCount(Guid serviceUserId, PackageType packageType)
+        {
+            return await _dbContext.CarePackages
+                .Where(p => p.ServiceUserId == serviceUserId &&
+                            p.PackageType == packageType &&
+                            p.Status != PackageStatus.Cancelled &&
+                            p.Status != PackageStatus.Ended)
+                .CountAsync();
         }
 
         private static IQueryable<CarePackage> BuildPackageQuery(IQueryable<CarePackage> query, PackageFields fields)

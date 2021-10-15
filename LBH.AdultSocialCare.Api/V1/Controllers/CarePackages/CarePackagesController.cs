@@ -9,7 +9,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,11 +27,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         private readonly ISubmitCarePackageUseCase _submitCarePackageUseCase;
         private readonly IGetCarePackageUseCase _getCarePackageUseCase;
         private readonly IGetCarePackageSummaryUseCase _getCarePackageSummaryUseCase;
+        private readonly IAssignCarePlanUseCase _assignCarePlanUseCase;
 
         public CarePackagesController(
             ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase,
             IUpdateCarePackageUseCase updateCarePackageUseCase, ISubmitCarePackageUseCase submitCarePackageUseCase,
-            IGetCarePackageUseCase getCarePackageUseCase, IGetCarePackageSummaryUseCase getCarePackageSummaryUseCase)
+            IGetCarePackageUseCase getCarePackageUseCase, IGetCarePackageSummaryUseCase getCarePackageSummaryUseCase,
+            IAssignCarePlanUseCase assignCarePlanUseCase)
         {
             _createCarePackageUseCase = createCarePackageUseCase;
             _carePackageOptionsUseCase = carePackageOptionsUseCase;
@@ -40,6 +41,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             _submitCarePackageUseCase = submitCarePackageUseCase;
             _getCarePackageUseCase = getCarePackageUseCase;
             _getCarePackageSummaryUseCase = getCarePackageSummaryUseCase;
+            _assignCarePlanUseCase = assignCarePlanUseCase;
         }
 
         /// <summary>Creates a new care package.</summary>
@@ -139,6 +141,23 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         public async Task<ActionResult> SubmitForApproval(Guid carePackageId, CarePackageSubmissionRequest request)
         {
             await _submitCarePackageUseCase.ExecuteAsync(carePackageId, request.ToDomain());
+            return Ok();
+        }
+
+        /// <summary>Creates a new packages for a service user with HackneyId given and assigns it to a broker.</summary>
+        /// <param name="request">Care plan assignment information.</param>
+        /// <returns>Ok if operation is successful.</returns>
+        /// <response code="200">If operation have completed successfully</response>
+        /// <response code="404">If service user with given HackneyId doesn't exists</response>
+        /// <response code="500">If user has already an active package with given type assigned.</response>
+        [HttpPost("assign")]
+        [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> AssignCarePlan(CarePlanAssignmentRequest request)
+        {
+            await _assignCarePlanUseCase.ExecuteAsync(request.ToDomain());
             return Ok();
         }
 

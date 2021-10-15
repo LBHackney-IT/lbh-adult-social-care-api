@@ -1,14 +1,12 @@
 using Bogus;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using HttpServices.Models.Responses;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
@@ -145,10 +143,23 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
         public static List<CarePackageDetailDomain> CreateCarePackageDetailDomainList(int count, PackageDetailType type)
         {
             var result = CreateCarePackageDetails(count, type).ToDomain().ToList();
-
             result.ForEach(detail => detail.Id = null);
 
             return result;
+        }
+
+        public static ResidentResponse CreateResidentResponse()
+        {
+            return new Faker<ResidentResponse>()
+                .RuleFor(r => r.FirstName, f => f.Name.FirstName())
+                .RuleFor(r => r.LastName, f => f.Name.LastName())
+                .RuleFor(r => r.EmailAddress, f => f.Internet.Email())
+                .RuleFor(r => r.DateOfBirth, f => f.Date.Past(100))
+                .RuleFor(r => r.Address, f => new AddressResponse
+                {
+                    Address = f.Address.FullAddress(),
+                    Postcode = f.Address.ZipCode()
+                });
         }
     }
 }
