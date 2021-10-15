@@ -39,8 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 ServiceUserId = serviceUser.Id,
                 BrokerId = carePlanAssignment.BrokerId,
                 PackageType = carePlanAssignment.PackageType,
-                Status = PackageStatus.New,
-                PrimarySupportReasonId = 1
+                Status = PackageStatus.New
             };
 
             package.Histories.Add(new CarePackageHistory

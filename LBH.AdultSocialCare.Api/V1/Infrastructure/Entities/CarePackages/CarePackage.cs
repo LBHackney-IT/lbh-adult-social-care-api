@@ -32,7 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages
         public Guid? ApproverId { get; set; }
         public Guid? BrokerId { get; set; }
 
-        public int PrimarySupportReasonId { get; set; }
+        public int? PrimarySupportReasonId { get; set; }
         public PackageScheduling PackageScheduling { get; set; }
         public CarePackageSettings Settings { get; set; }
 
