@@ -4,7 +4,7 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 {
     public enum HistoryStatus
     {
-        [Display(Description = "Package Requested by")]
+        [Display(Description = "Package Created")]
         NewPackage = 1,
 
         [Display(Description = "Package Submitted for approval")]
