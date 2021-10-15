@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
@@ -49,6 +50,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 BrokerId = carePlanAssignment.BrokerId,
                 PackageType = carePlanAssignment.PackageType,
                 Status = PackageStatus.New,
+                DateAssigned = DateTimeOffset.Now,
                 SocialWorkerCarePlanFileUrl = carePlanFileUrl
             };
 
