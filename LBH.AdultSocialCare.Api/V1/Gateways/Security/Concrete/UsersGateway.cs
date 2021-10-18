@@ -66,7 +66,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Security.Concrete
                 .Select(r => r.Id)
                 .FirstOrDefaultAsync();
 
-            var result = await _databaseContext.Roles
+            return await _databaseContext.Roles
                 .Join(_databaseContext.UserRoles,
                     role => role.Id,
                     userRole => userRole.RoleId,
@@ -78,8 +78,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Security.Concrete
                 .Where(userInfo => userInfo.RoleId == roleId)
                 .Select(userInfo => new UsersMinimalDomain { Id = userInfo.Id, UserName = userInfo.Name })
                 .ToListAsync().ConfigureAwait(false);
-
-            return result;
         }
     }
 }
