@@ -2,7 +2,6 @@ using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
 {
-    //TODO FK: change name to ServiceUserResponse delete redundant fields after code clean up
     public class ServiceUserResponse
     {
         /// <summary>

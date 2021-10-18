@@ -31,6 +31,8 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IUpsertCarePackageBrokerageUseCase, UpsertCarePackageBrokerageUseCase>();
             services.AddScoped<IDeleteClientsUseCase, DeleteClientsUseCase>();
             services.AddScoped<IGetClientsUseCase, GetClientsUseCase>();
+            services.AddScoped<IGetServiceUserMasterSearchUseCase, GetServiceUserMasterSearchUseCase>();
+            services.AddScoped<IGetServiceUserSearchUseCase, GetServiceUserSearchUseCase>();
             services.AddScoped<IGetServiceUsersUseCase, GetServiceUsersUseCase>();
             services.AddScoped<IUpsertClientsUseCase, UpsertClientsUseCase>();
             services.AddScoped<ICareChargeUseCase, CareChargeUseCase>();
