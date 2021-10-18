@@ -35,7 +35,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             IGetCarePackageReclaimUseCase getCarePackageReclaimUseCase,
             IGetFundedNursingCarePriceUseCase getFundedNursingCarePriceUseCase,
             ICareChargeUseCase getCareChargeUseCase,
-            
+
             IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase)
         {
             _createCarePackageReclaimUseCase = createCarePackageReclaimUseCase;

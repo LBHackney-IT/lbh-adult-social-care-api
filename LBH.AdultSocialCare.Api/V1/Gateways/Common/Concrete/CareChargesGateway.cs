@@ -20,12 +20,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
     public class CareChargesGateway : ICareChargesGateway
     {
         private readonly DatabaseContext _dbContext;
-        private readonly ICarePackageGateway _carePackageGateway;
 
-        public CareChargesGateway(DatabaseContext dbContext, ICarePackageGateway carePackageGateway)
+        public CareChargesGateway(DatabaseContext dbContext)
         {
             _dbContext = dbContext;
-            _carePackageGateway = carePackageGateway;
         }
 
         public async Task<ProvisionalCareChargeAmountPlainDomain> GetUsingServiceUserIdAsync(Guid serviceUserId)

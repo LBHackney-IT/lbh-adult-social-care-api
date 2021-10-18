@@ -14,7 +14,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
         Task<CarePackageReclaimDomain> CreateAsync(CarePackageReclaim carePackageReclaim);
         Task<bool> UpdateAsync(CarePackageReclaimForUpdateDomain carePackageReclaimForUpdateDomain);
         Task<CarePackageReclaimDomain> GetAsync(Guid carePackageId, ReclaimType reclaimType);
-        
+
         Task<SinglePackageCareChargeDomain> GetSinglePackageCareCharge(Guid packageId);
     }
 }
