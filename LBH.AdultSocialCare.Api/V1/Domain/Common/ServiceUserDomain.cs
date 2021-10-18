@@ -5,7 +5,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
-    //TODO FK: change name to ServiceUserDomain after code clean up
     [GenerateMappingFor(typeof(ServiceUserResponse))]
     public class ServiceUserDomain
     {

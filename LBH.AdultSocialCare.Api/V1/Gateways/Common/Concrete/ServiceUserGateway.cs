@@ -79,5 +79,23 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             var result = await _databaseContext.ServiceUsers.Skip(offset).FirstOrDefaultAsync();
             return result?.ToDomain();
         }
+
+        public async Task<PagedList<ServiceUserDomain>> GetServiceUserInformation(ServiceUserQueryParameters queryParameters)
+        {
+            var serviceUsers = await _databaseContext.ServiceUsers
+                .FilterServiceUser(queryParameters.FirstName, queryParameters.LastName, queryParameters.PostCode,
+                    queryParameters.DateOfBirth, queryParameters.HackneyId)
+                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+                .Take(queryParameters.PageSize)
+                .AsNoTracking()
+                .ToListAsync();
+
+            var serviceUserCount = await _databaseContext.ServiceUsers
+                .FilterServiceUser(queryParameters.FirstName, queryParameters.LastName, queryParameters.PostCode,
+                    queryParameters.DateOfBirth, queryParameters.HackneyId)
+                .CountAsync();
+
+            return PagedList<ServiceUserDomain>.ToPagedList(serviceUsers.ToDomain(), serviceUserCount, queryParameters.PageNumber, queryParameters.PageSize);
+        }
     }
 }

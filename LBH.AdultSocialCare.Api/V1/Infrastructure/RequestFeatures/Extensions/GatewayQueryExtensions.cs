@@ -43,5 +43,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
                 (modifiedBy.Equals(null) || c.UpdaterId == modifiedBy) &&
                 (modifiedAt.Equals(null) || c.DateUpdated == modifiedAt) &&
                 (status != null ? c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge) == (status == "Existing") : c.Equals(c)));
+
+        public static IQueryable<ServiceUser> FilterServiceUser(this IQueryable<ServiceUser> serviceUsers, string firstName, string lastName,
+            string postCode, DateTime? dateOfBirth, int? hackneyId) =>
+            serviceUsers.Where(s =>
+                (firstName != null ? s.FirstName.ToLower().Contains(firstName.ToLower()) : s.Equals(s)) &&
+                (lastName != null ? s.LastName.ToLower().Contains(lastName.ToLower()) : s.Equals(s)) &&
+                (dateOfBirth.Equals(null) || s.DateOfBirth == dateOfBirth) &&
+                (postCode != null ? s.PostCode.ToLower().Contains(postCode.ToLower()) : s.Equals(s)) &&
+                (hackneyId.Equals(null) || s.HackneyId == hackneyId));
     }
 }
