@@ -34,9 +34,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages
         public Guid? BrokerId { get; set; }
         public DateTimeOffset? DateAssigned { get; set; } // Date package is assigned to broker
 
-        public int PrimarySupportReasonId { get; set; }
+        public int? PrimarySupportReasonId { get; set; }
         public PackageScheduling PackageScheduling { get; set; }
         public CarePackageSettings Settings { get; set; }
+
+        public string SocialWorkerCarePlanFileUrl { get; set; }
 
         [ForeignKey(nameof(ServiceUserId))]
         public ServiceUser ServiceUser { get; set; }

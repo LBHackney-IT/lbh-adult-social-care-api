@@ -13,7 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
         public Guid ServiceUserId { get; set; }
         public PackageType PackageType { get; set; }
         public PackageScheduling PackageScheduling { get; set; }
-        public int PrimarySupportReasonId { get; set; }
+        public int? PrimarySupportReasonId { get; set; }
         public string PrimarySupportReasonName { get; set; }
         public bool HasRespiteCare { get; set; }
         public bool HasDischargePackage { get; set; }

@@ -9,8 +9,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
     [GenerateMappingFor(typeof(CarePackageUpdateDomain))]
     public class CarePackageUpdateRequest
     {
+        [Required]
         [Range(1, int.MaxValue)]
-        public int PrimarySupportReasonId { get; set; }
+        public int? PrimarySupportReasonId { get; set; }
 
         [Required]
         public bool? HasRespiteCare { get; set; }

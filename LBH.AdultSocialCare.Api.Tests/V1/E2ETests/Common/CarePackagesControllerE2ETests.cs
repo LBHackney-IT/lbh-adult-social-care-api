@@ -3,17 +3,17 @@ using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using HttpServices.Models.Responses;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
+using Microsoft.AspNetCore.Http;
+using Moq;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
@@ -146,6 +146,49 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             historyEntry?.Should().NotBeNull();
             historyEntry?.Description.Should().Be(request.Notes);
             historyEntry?.Status.Should().Be(HistoryStatus.SubmittedForApproval);
+        }
+
+        [Fact]
+        public async Task ShouldAssignCarePlan()
+        {
+            var request = new CarePlanAssignmentRequest
+            {
+                HackneyUserId = 1,
+                BrokerId = UserConstants.DefaultApiUserGuid,
+                PackageType = PackageType.ResidentialCare,
+                Notes = "Hello world",
+                CarePlanFile = null
+            };
+
+            _fixture.OutgoingRestClient
+                .Setup(c => c.GetAsync<ServiceUserInformationResponse>($"residents?id={request.HackneyUserId}", It.IsAny<string>()))
+                .ReturnsAsync(new ServiceUserInformationResponse
+                {
+                    Residents = new List<ResidentResponse>
+                    {
+                        TestDataHelper.CreateResidentResponse()
+                    }
+                });
+
+            var response = await _fixture.RestClient
+                .SubmitFormAsync<object>("api/v1/care-packages/assign", request);
+
+            var serviceUser = _fixture.DatabaseContext.ServiceUsers.FirstOrDefault(u => u.HackneyId == 1);
+            var package = _fixture.DatabaseContext.CarePackages.SingleOrDefault(p => p.ServiceUserId == serviceUser.Id);
+            var historyItems = _fixture.DatabaseContext.CarePackageHistories.Where(h => h.CarePackageId == package.Id).ToList();
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            serviceUser.Should().NotBeNull();
+            package.Should().NotBeNull();
+
+            package.Status.Should().Be(PackageStatus.New);
+            package.BrokerId.Should().Be(request.BrokerId);
+            package.PackageType.Should().Be(request.PackageType);
+
+            historyItems.Count.Should().Be(1);
+            historyItems.First().Status.Should().Be(HistoryStatus.NewPackage);
+            historyItems.First().Description.Should().Be(request.Notes);
         }
 
         [Fact]

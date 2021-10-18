@@ -29,6 +29,7 @@ using LBH.AdultSocialCare.Api.Providers;
 using LBH.AdultSocialCare.Api.V1.Core.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
+using LBH.AdultSocialCare.Api.V1.Services.IO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 
@@ -95,6 +96,7 @@ namespace LBH.AdultSocialCare.Api
             services.ConfigureJWT(Configuration);
 
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
+            services.AddScoped<IFileStorage, FileStorage>();
 
             services.AddHttpContextAccessor();
 

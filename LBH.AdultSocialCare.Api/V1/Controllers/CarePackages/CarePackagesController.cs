@@ -26,13 +26,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         private readonly ISubmitCarePackageUseCase _submitCarePackageUseCase;
         private readonly IGetCarePackageUseCase _getCarePackageUseCase;
         private readonly IGetCarePackageSummaryUseCase _getCarePackageSummaryUseCase;
+        private readonly IAssignCarePlanUseCase _assignCarePlanUseCase;
         private readonly IGetCarePackageHistoryUseCase _getCarePackageHistoryUseCase;
 
         public CarePackagesController(
             ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase,
             IUpdateCarePackageUseCase updateCarePackageUseCase, ISubmitCarePackageUseCase submitCarePackageUseCase,
             IGetCarePackageUseCase getCarePackageUseCase, IGetCarePackageSummaryUseCase getCarePackageSummaryUseCase,
-            IGetCarePackageHistoryUseCase getCarePackageHistoryUseCase)
+            IAssignCarePlanUseCase assignCarePlanUseCase, IGetCarePackageHistoryUseCase getCarePackageHistoryUseCase)
         {
             _createCarePackageUseCase = createCarePackageUseCase;
             _carePackageOptionsUseCase = carePackageOptionsUseCase;
@@ -40,6 +41,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             _submitCarePackageUseCase = submitCarePackageUseCase;
             _getCarePackageUseCase = getCarePackageUseCase;
             _getCarePackageSummaryUseCase = getCarePackageSummaryUseCase;
+            _assignCarePlanUseCase = assignCarePlanUseCase;
             _getCarePackageHistoryUseCase = getCarePackageHistoryUseCase;
         }
 
@@ -131,25 +133,42 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// <param name="carePackageId">An unique identifier of a package to be approved.</param>
         /// <param name="request">The care package update request object.</param>
         /// <returns>Ok when operation is successful.</returns>
-        [HttpPost("{carePackageId}/submit")]
         [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
+        [HttpPost("{carePackageId}/submit")]
         public async Task<ActionResult> SubmitForApproval(Guid carePackageId, CarePackageSubmissionRequest request)
         {
             await _submitCarePackageUseCase.ExecuteAsync(carePackageId, request.ToDomain());
             return Ok();
         }
 
+        /// <summary>Creates a new packages for a service user with HackneyId given and assigns it to a broker.</summary>
+        /// <param name="request">Care plan assignment information.</param>
+        /// <returns>Ok if operation is successful.</returns>
+        /// <response code="200">If operation have completed successfully</response>
+        /// <response code="404">If service user with given HackneyId doesn't exists</response>
+        /// <response code="500">If user has already an active package with given type assigned.</response>
+        [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpPost("assign")]
+        public async Task<ActionResult> AssignCarePlan([FromForm] CarePlanAssignmentRequest request)
+        {
+            await _assignCarePlanUseCase.ExecuteAsync(request.ToDomain());
+            return Ok();
+        }
+
         /// <summary>Returns a financial care package summary.</summary>
         /// <param name="carePackageId">An unique identifier of a package to get summary of.</param>
         /// <returns>A financial care package summary response.</returns>
-        [HttpGet("{carePackageId}/summary")]
         [ProducesResponseType(typeof(CarePackageSummaryResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
+        [HttpGet("{carePackageId}/summary")]
         public async Task<ActionResult<CarePackageSummaryResponse>> GetSummary(Guid carePackageId)
         {
             var result = await _getCarePackageSummaryUseCase.ExecuteAsync(carePackageId);
