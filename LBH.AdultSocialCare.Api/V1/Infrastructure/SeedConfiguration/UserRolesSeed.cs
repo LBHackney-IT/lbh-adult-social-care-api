@@ -27,6 +27,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 {
                     RoleId = new Guid(RolesEnum.Broker.ToDescription()),
                     UserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                },
+                new AppUserRole
+                {
+                    RoleId = new Guid(RolesEnum.Approver.ToDescription()),
+                    UserId = new Guid("71687793-5abe-4b84-882b-b8584c31ec57")
                 });
         }
     }

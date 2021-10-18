@@ -28,7 +28,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         private readonly IGetCarePackageReclaimUseCase _getCarePackageReclaimUseCase;
         private readonly IGetFundedNursingCarePriceUseCase _getFundedNursingCarePriceUseCase;
         private readonly ICareChargeUseCase _getCareChargeUseCase;
-        private readonly IGetCareChargePackagesUseCase _getCareChargePackagesUseCase;
         private readonly IGetSinglePackageCareChargeUseCase _getSinglePackageCareChargeUseCase;
 
         public CarePackageReclaimController(ICreateCarePackageReclaimUseCase createCarePackageReclaimUseCase,
@@ -36,7 +35,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             IGetCarePackageReclaimUseCase getCarePackageReclaimUseCase,
             IGetFundedNursingCarePriceUseCase getFundedNursingCarePriceUseCase,
             ICareChargeUseCase getCareChargeUseCase,
-            IGetCareChargePackagesUseCase getCareChargePackagesUseCase,
+            
             IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase)
         {
             _createCarePackageReclaimUseCase = createCarePackageReclaimUseCase;
@@ -44,7 +43,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             _getCarePackageReclaimUseCase = getCarePackageReclaimUseCase;
             _getFundedNursingCarePriceUseCase = getFundedNursingCarePriceUseCase;
             _getCareChargeUseCase = getCareChargeUseCase;
-            _getCareChargePackagesUseCase = getCareChargePackagesUseCase;
             _getSinglePackageCareChargeUseCase = getSinglePackageCareChargeUseCase;
         }
 
@@ -159,22 +157,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         {
             var provisionalAmount = await _getCareChargeUseCase.GetUsingServiceUserIdAsync(serviceUserId);
             return Ok(provisionalAmount.Amount);
-        }
-
-        /// <summary>
-        /// Gets the paginated care package list with care charge information.
-        /// </summary>
-        /// <param name="parameters">Parameters to filter list of care packages.</param>
-        /// <returns>List of care packages with care charge status</returns>
-        [HttpGet("care-charges/packages")]
-        [ProducesResponseType(typeof(PagedResponse<CareChargePackagesResponse>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
-        public async Task<ActionResult<PagedResponse<CareChargePackagesResponse>>> GetCareChargePackages([FromQuery] CareChargePackagesParameters parameters)
-        {
-            var result = await _getCareChargePackagesUseCase.GetCareChargePackages(parameters).ConfigureAwait(false);
-            Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
-            return Ok(result);
         }
 
         /// <summary>
