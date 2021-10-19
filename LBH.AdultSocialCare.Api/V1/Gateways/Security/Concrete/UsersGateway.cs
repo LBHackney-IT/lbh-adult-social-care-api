@@ -7,8 +7,10 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Security.Concrete
@@ -55,6 +57,27 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Security.Concrete
             var user = await _databaseContext.Users
                 .FirstOrDefaultAsync(item => item.Id == userId).ConfigureAwait(false);
             return user?.ToDomain();
+        }
+
+        public async Task<IEnumerable<UsersMinimalDomain>> GetUsers(RolesEnum rolesType)
+        {
+            var roleId = await _databaseContext.Roles
+                .Where(r => r.Name.Equals(rolesType.ToString()))
+                .Select(r => r.Id)
+                .FirstOrDefaultAsync();
+
+            return await _databaseContext.Roles
+                .Join(_databaseContext.UserRoles,
+                    role => role.Id,
+                    userRole => userRole.RoleId,
+                    (role, userRole) => new { RoleId = role.Id, userRole.UserId })
+                .Join(_databaseContext.Users,
+                    userRole => userRole.UserId,
+                    user => user.Id,
+                    (userRole, user) => new { userRole.RoleId, user.Name, user.Id })
+                .Where(userInfo => userInfo.RoleId == roleId)
+                .Select(userInfo => new UsersMinimalDomain { Id = userInfo.Id, UserName = userInfo.Name })
+                .ToListAsync().ConfigureAwait(false);
         }
     }
 }
