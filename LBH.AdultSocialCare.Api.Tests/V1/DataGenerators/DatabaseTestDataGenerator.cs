@@ -2,7 +2,6 @@ using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +66,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
         public CarePackageReclaim CreateCarePackageReclaim(CarePackage package, ReclaimType type, ClaimCollector collector)
         {
             var reclaim = TestDataHelper.CreateCarePackageReclaim(package.Id, type, collector);
-            reclaim.SupplierId = _context.Suppliers.First().Id;
 
             _context.CarePackageReclaims.Add(reclaim);
             _context.SaveChanges();
