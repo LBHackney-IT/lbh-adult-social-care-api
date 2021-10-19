@@ -56,7 +56,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpPost("fnc")]
         public async Task<ActionResult<CarePackageReclaimResponse>> CreateFundedNursingCare([FromBody] FundedNursingCareCreationRequest fundedNursingCareCreationRequest)
         {
-            var fundedNursingCareResponse = await _createCarePackageReclaimUseCase.CreateCarePackageReclaim(fundedNursingCareCreationRequest.ToDomain());
+            var fundedNursingCareResponse = await _createCarePackageReclaimUseCase.CreateCarePackageReclaim(fundedNursingCareCreationRequest.ToDomain(), ReclaimType.Fnc);
             return Ok(fundedNursingCareResponse);
         }
 
@@ -70,7 +70,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpPost("care-charges")]
         public async Task<ActionResult<CarePackageReclaimResponse>> CreateCareChargeReclaim([FromBody] CareChargeReclaimCreationRequest careChargeReclaimCreationRequest)
         {
-            var carePackageReclaimResponse = await _createCarePackageReclaimUseCase.CreateCarePackageReclaim(careChargeReclaimCreationRequest.ToDomain());
+            var carePackageReclaimResponse = await _createCarePackageReclaimUseCase.CreateCarePackageReclaim(careChargeReclaimCreationRequest.ToDomain(), ReclaimType.CareCharge);
             return Ok(carePackageReclaimResponse);
         }
 

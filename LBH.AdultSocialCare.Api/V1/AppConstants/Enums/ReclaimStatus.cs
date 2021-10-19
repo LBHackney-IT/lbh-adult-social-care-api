@@ -13,7 +13,7 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
         [Display(Name = "Cancelled")]
         Cancelled = 3,
 
-        [Display(Name = "Future")]
-        Future = 4
+        [Display(Name = "Pending")]
+        Pending = 4
     }
 }
