@@ -24,8 +24,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages
 
         public ClaimCollector ClaimCollector { get; set; }
 
-        public int SupplierId { get; set; }
-
         public ReclaimStatus Status
         {
             get => CalculateStatus();
@@ -42,9 +40,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages
         public string ClaimReason { get; set; }
 
         public string AssessmentFileUrl { get; set; }
-
-        [ForeignKey(nameof(SupplierId))]
-        public Supplier Supplier { get; set; }
 
         [ForeignKey(nameof(CarePackageId))]
         public CarePackage Package { get; set; }

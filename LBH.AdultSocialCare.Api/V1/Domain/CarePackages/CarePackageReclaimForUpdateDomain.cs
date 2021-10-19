@@ -11,8 +11,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
 
         public ClaimCollector ClaimCollector { get; set; }
 
-        public int SupplierId { get; set; }
-
         public ReclaimStatus Status { get; set; }
 
         public ReclaimType Type { get; set; }

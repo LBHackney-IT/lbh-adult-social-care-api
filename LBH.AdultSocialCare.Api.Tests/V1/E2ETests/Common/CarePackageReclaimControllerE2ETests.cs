@@ -94,9 +94,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
                 Id = createdFncReclaim.Content.Id,
                 Cost = 300M,
                 ClaimCollector = createdFncReclaim.Content.ClaimCollector,
-                SupplierId = createdFncReclaim.Content.SupplierId,
-                Status = createdFncReclaim.Content.Status,
-                Type = createdFncReclaim.Content.Type,
                 StartDate = createdFncReclaim.Content.StartDate
             };
 
@@ -170,9 +167,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
                 CarePackageId = carePackageId,
                 Cost = 200M,
                 ClaimCollector = (ClaimCollector) 1,
-                SupplierId = 1,
-                Status = (ReclaimStatus) 1,
-                Type = (ReclaimType) 1,
                 StartDate = DateTimeOffset.Now.Date.AddDays(-1),
                 EndDate = null,
                 Description = "Test"
