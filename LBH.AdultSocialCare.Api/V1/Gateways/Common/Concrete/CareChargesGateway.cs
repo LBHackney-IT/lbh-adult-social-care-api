@@ -77,18 +77,20 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
         {
             return await _dbContext.CarePackages
                 .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate)
+                .Include(item => item.Settings)
                 .Include(item => item.ServiceUser)
                 .Include(item => item.Updater)
                 .Include(item => item.Reclaims)
                 .Select(c => new CareChargePackagesDomain
                 {
-                    Status = c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) ? "Existing" : "New",
+                    Status = c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional && c.Settings.IsS117Client && c.Settings.IsS117ClientConfirmed == false) ? "S117" : c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) ? "Existing" : "New",
                     ServiceUser = $"{c.ServiceUser.FirstName} {c.ServiceUser.LastName}",
                     DateOfBirth = c.ServiceUser.DateOfBirth,
                     Address = $"{c.ServiceUser.AddressLine1} {c.ServiceUser.AddressLine2} {c.ServiceUser.AddressLine3} {c.ServiceUser.County} {c.ServiceUser.Town} {c.ServiceUser.PostCode}",
                     HackneyId = c.ServiceUser.HackneyId,
                     PackageType = c.PackageType.GetDisplayName(),
                     PackageId = c.Id,
+                    IsS117Client = c.Settings.IsS117Client,
                     StartDate = c.DateCreated,
                     LastModified = c.DateUpdated,
                     ModifiedBy = c.Updater.Name
