@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
@@ -40,9 +40,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.CarePackages
             {
                 new object[] { ReclaimStatus.Cancelled, DateTimeOffset.Now.AddDays(100), ReclaimStatus.Cancelled },
                 new object[] { ReclaimStatus.Ended, DateTimeOffset.Now.AddDays(100), ReclaimStatus.Ended },
-                new object[] { ReclaimStatus.Future, DateTimeOffset.Now.AddDays(-50), ReclaimStatus.Active },
-                new object[] { ReclaimStatus.Active, DateTimeOffset.Now.AddDays(50), ReclaimStatus.Future },
-                new object[] { ReclaimStatus.Future, DateTimeOffset.Now.AddDays(50), ReclaimStatus.Future },
+                new object[] { ReclaimStatus.Pending, DateTimeOffset.Now.AddDays(-50), ReclaimStatus.Active },
+                new object[] { ReclaimStatus.Active, DateTimeOffset.Now.AddDays(50), ReclaimStatus.Pending },
+                new object[] { ReclaimStatus.Pending, DateTimeOffset.Now.AddDays(50), ReclaimStatus.Pending },
                 new object[] { ReclaimStatus.Active, DateTimeOffset.Now.AddDays(-50), ReclaimStatus.Active }
             };
     }
