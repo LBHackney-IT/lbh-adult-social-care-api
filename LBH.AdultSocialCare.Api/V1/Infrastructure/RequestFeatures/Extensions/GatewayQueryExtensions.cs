@@ -34,11 +34,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
             users.Where(u => (string.IsNullOrEmpty(searchTerm) || (EF.Functions.ILike(u.Name, $"%{searchTerm}%") || EF.Functions.ILike(u.Email, $"%{searchTerm}%"))));
 
         public static IQueryable<CarePackage> FilterCareChargeCarePackageList(this IQueryable<CarePackage> carePackages,
-            string status, Guid? modifiedBy, string orderByDate)
+            string status, Guid? modifiedBy, string orderByDate, bool? isS117ClientConfirmed)
         {
             var filteredList = carePackages.Where(c =>
                 (modifiedBy.Equals(null) || c.UpdaterId == modifiedBy) &&
-                (status != null ? c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) == (status == "Existing") : c.Equals(c)));
+                (!isS117ClientConfirmed.HasValue || c.Settings.IsS117ClientConfirmed == isS117ClientConfirmed) &&
+                (status != null ? c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) == (status == "Existing") : c.Equals(c))
+                );
 
             switch (orderByDate)
             {
