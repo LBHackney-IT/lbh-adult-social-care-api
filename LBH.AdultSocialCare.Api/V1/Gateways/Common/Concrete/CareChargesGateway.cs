@@ -78,7 +78,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
         {
             return await _dbContext.CarePackages
                 .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate)
-                .Where(c => c.Settings.IsS117ClientConfirmed == false && c.Settings.IsS117Client)
+                .Where(c => c.Settings.IsS117ClientConfirmed == false)
                 .Include(item => item.Settings)
                 .Include(item => item.ServiceUser)
                 .Include(item => item.Updater)

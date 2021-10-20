@@ -72,5 +72,19 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 
             return reclaim;
         }
+
+        public CarePackageSettings CreateCarePackageSettingsForS117Client(Guid carePackageId, bool s117Client)
+        {
+            var packageSettings = new CarePackageSettings
+            {
+                CarePackageId = carePackageId,
+                IsS117Client = s117Client
+            };
+
+            _context.CarePackageSettings.Add(packageSettings);
+            _context.SaveChanges();
+
+            return packageSettings;
+        }
     }
 }

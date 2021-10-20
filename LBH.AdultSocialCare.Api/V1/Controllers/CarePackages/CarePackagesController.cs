@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
 {
@@ -32,6 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         private readonly IEndCarePackageUseCase _endCarePackageUseCase;
         private readonly IApproveCarePackageUseCase _approveCarePackageUseCase;
         private readonly IDeclineCarePackageUseCase _declineCarePackageUseCase;
+        private readonly IConfirmS117ServiceUserUseCase _confirmS117ServiceUserUseCase;
 
         public CarePackagesController(
             ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase,
@@ -39,7 +41,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             IGetCarePackageUseCase getCarePackageUseCase, IGetCarePackageSummaryUseCase getCarePackageSummaryUseCase,
             IAssignCarePlanUseCase assignCarePlanUseCase, IGetCarePackageHistoryUseCase getCarePackageHistoryUseCase,
             ICancelCarePackageUseCase cancelCarePackageUseCase, IEndCarePackageUseCase endCarePackageUseCase,
-            IApproveCarePackageUseCase approveCarePackageUseCase, IDeclineCarePackageUseCase declineCarePackageUseCase)
+            IApproveCarePackageUseCase approveCarePackageUseCase, IDeclineCarePackageUseCase declineCarePackageUseCase,
+            IConfirmS117ServiceUserUseCase confirmS117ServiceUserUseCase)
         {
             _createCarePackageUseCase = createCarePackageUseCase;
             _carePackageOptionsUseCase = carePackageOptionsUseCase;
@@ -53,6 +56,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             _endCarePackageUseCase = endCarePackageUseCase;
             _approveCarePackageUseCase = approveCarePackageUseCase;
             _declineCarePackageUseCase = declineCarePackageUseCase;
+            _confirmS117ServiceUserUseCase = confirmS117ServiceUserUseCase;
         }
 
         /// <summary>Creates a new care package.</summary>
@@ -269,6 +273,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         public async Task<ActionResult> DeclinePackage(Guid carePackageId, CarePackageChangeStatusRequest request)
         {
             await _declineCarePackageUseCase.ExecuteAsync(carePackageId, request.Notes);
+            return Ok();
+        }
+
+        /// <summary>Confirm S117 Service User.</summary>
+        /// <param name="carePackageId">An unique identifier of a package.</param>
+        /// <returns>Ok when operation is successful.</returns>
+        [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpPut("{carePackageId}/confirm-s117")]
+        public async Task<ActionResult> ConfirmS117ServiceUser(Guid carePackageId)
+        {
+            await _confirmS117ServiceUserUseCase.ExecuteAsync(carePackageId);
             return Ok();
         }
     }
