@@ -43,7 +43,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             var carePackages = _fixture.DatabaseContext.CarePackages.ToList();
 
             Assert.Equal(HttpStatusCode.OK, response.Message.StatusCode);
-            Assert.Single(carePackages);
+            carePackages.Should().ContainSingle(p => p.Id == response.Content.Id);
             response.Content.Id.Should().NotBe(Guid.Empty);
             response.Content.PackageType.Should().Be((int) carePackageCreationRequest.PackageType);
             response.Content.Status.Should().Be((int) PackageStatus.New);
@@ -358,7 +358,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         public async Task ShouldConfirmS117ServiceUser()
         {
             var package = _generator.CreateCarePackage();
-            var packageSettings = _generator.CreateCarePackageSettingsForS117Client(package.Id,true);
+            var packageSettings = _generator.CreateCarePackageSettingsForS117Client(package.Id, true);
 
             var response = await _fixture.RestClient
                 .PutAsync<CarePackagePlainResponse>($"api/v1/care-packages/{package.Id}/confirm-s117");
@@ -377,7 +377,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
         public async Task ShouldRaiseAnErrorWhenS117ServiceUserSettingFalse()
         {
             var package = _generator.CreateCarePackage();
-            _generator.CreateCarePackageSettingsForS117Client(package.Id,false);
+            _generator.CreateCarePackageSettingsForS117Client(package.Id, false);
 
             var response = await _fixture.RestClient
                 .PutAsync<CarePackagePlainResponse>($"api/v1/care-packages/{package.Id}/confirm-s117");
