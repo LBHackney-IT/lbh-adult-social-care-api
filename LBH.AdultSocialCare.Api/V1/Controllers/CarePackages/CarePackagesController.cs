@@ -28,12 +28,18 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         private readonly IGetCarePackageSummaryUseCase _getCarePackageSummaryUseCase;
         private readonly IAssignCarePlanUseCase _assignCarePlanUseCase;
         private readonly IGetCarePackageHistoryUseCase _getCarePackageHistoryUseCase;
+        private readonly ICancelCarePackageUseCase _cancelCarePackageUseCase;
+        private readonly IEndCarePackageUseCase _endCarePackageUseCase;
+        private readonly IApproveCarePackageUseCase _approveCarePackageUseCase;
+        private readonly IDeclineCarePackageUseCase _declineCarePackageUseCase;
 
         public CarePackagesController(
             ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase,
             IUpdateCarePackageUseCase updateCarePackageUseCase, ISubmitCarePackageUseCase submitCarePackageUseCase,
             IGetCarePackageUseCase getCarePackageUseCase, IGetCarePackageSummaryUseCase getCarePackageSummaryUseCase,
-            IAssignCarePlanUseCase assignCarePlanUseCase, IGetCarePackageHistoryUseCase getCarePackageHistoryUseCase)
+            IAssignCarePlanUseCase assignCarePlanUseCase, IGetCarePackageHistoryUseCase getCarePackageHistoryUseCase,
+            ICancelCarePackageUseCase cancelCarePackageUseCase, IEndCarePackageUseCase endCarePackageUseCase,
+            IApproveCarePackageUseCase approveCarePackageUseCase, IDeclineCarePackageUseCase declineCarePackageUseCase)
         {
             _createCarePackageUseCase = createCarePackageUseCase;
             _carePackageOptionsUseCase = carePackageOptionsUseCase;
@@ -43,6 +49,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             _getCarePackageSummaryUseCase = getCarePackageSummaryUseCase;
             _assignCarePlanUseCase = assignCarePlanUseCase;
             _getCarePackageHistoryUseCase = getCarePackageHistoryUseCase;
+            _cancelCarePackageUseCase = cancelCarePackageUseCase;
+            _endCarePackageUseCase = endCarePackageUseCase;
+            _approveCarePackageUseCase = approveCarePackageUseCase;
+            _declineCarePackageUseCase = declineCarePackageUseCase;
         }
 
         /// <summary>Creates a new care package.</summary>
@@ -196,6 +206,70 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         {
             var historyResponse = await _getCarePackageHistoryUseCase.ExecuteAsync(carePackageId);
             return Ok(historyResponse);
+        }
+
+        /// <summary>Cancel care package.</summary>
+        /// <param name="carePackageId">An unique identifier of a package to be cancelled.</param>
+        /// <param name="request">The notes object for attaching status change.</param>
+        /// <returns>Ok when operation is successful.</returns>
+        [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpPost("{carePackageId}/cancel")]
+        public async Task<ActionResult> CancelPackage(Guid carePackageId, CarePackageChangeStatusRequest request)
+        {
+            await _cancelCarePackageUseCase.ExecuteAsync(carePackageId, request.Notes);
+            return Ok();
+        }
+
+        /// <summary>End care package.</summary>
+        /// <param name="carePackageId">An unique identifier of a package to be ended.</param>
+        /// <param name="request">The notes object for attaching status change.</param>
+        /// <returns>Ok when operation is successful.</returns>
+        [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpPost("{carePackageId}/end")]
+        public async Task<ActionResult> EndPackage(Guid carePackageId, CarePackageChangeStatusRequest request)
+        {
+            await _endCarePackageUseCase.ExecuteAsync(carePackageId, request.Notes);
+            return Ok();
+        }
+
+        /// <summary>Approve care package.</summary>
+        /// <param name="carePackageId">An unique identifier of a package to be approved.</param>
+        /// <param name="request">The notes object for attaching status change.</param>
+        /// <returns>Ok when operation is successful.</returns>
+        [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpPost("{carePackageId}/approve")]
+        public async Task<ActionResult> ApprovePackage(Guid carePackageId, CarePackageChangeStatusRequest request)
+        {
+            await _approveCarePackageUseCase.ExecuteAsync(carePackageId, request.Notes);
+            return Ok();
+        }
+
+        /// <summary>Decline care package.</summary>
+        /// <param name="carePackageId">An unique identifier of a package to be declined.</param>
+        /// <param name="request">The notes object for attaching status change.</param>
+        /// <returns>Ok when operation is successful.</returns>
+        [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpPost("{carePackageId}/decline")]
+        public async Task<ActionResult> DeclinePackage(Guid carePackageId, CarePackageChangeStatusRequest request)
+        {
+            await _declineCarePackageUseCase.ExecuteAsync(carePackageId, request.Notes);
+            return Ok();
         }
     }
 }
