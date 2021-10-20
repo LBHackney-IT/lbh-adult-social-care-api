@@ -69,21 +69,23 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
         private async Task<int> GetCareChargePackagesCount(CareChargePackagesParameters parameters)
         {
             return await _dbContext.CarePackages
-                .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate, parameters.IsS117ClientConfirmed)
+                .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate)
+                .Where(c => c.Settings.IsS117ClientConfirmed == false && c.Settings.IsS117Client)
                 .CountAsync();
         }
 
         private async Task<List<CareChargePackagesDomain>> GetCareChargePackagesList(CareChargePackagesParameters parameters)
         {
             return await _dbContext.CarePackages
-                .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate, parameters.IsS117ClientConfirmed)
+                .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate)
+                .Where(c => c.Settings.IsS117ClientConfirmed == false && c.Settings.IsS117Client)
                 .Include(item => item.Settings)
                 .Include(item => item.ServiceUser)
                 .Include(item => item.Updater)
                 .Include(item => item.Reclaims)
                 .Select(c => new CareChargePackagesDomain
                 {
-                    Status = c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional && c.Settings.IsS117Client && c.Settings.IsS117ClientConfirmed == false) ? "S117" : c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) ? "Existing" : "New",
+                    Status = c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) ? "Existing" : "New",
                     ServiceUser = $"{c.ServiceUser.FirstName} {c.ServiceUser.LastName}",
                     DateOfBirth = c.ServiceUser.DateOfBirth,
                     Address = $"{c.ServiceUser.AddressLine1} {c.ServiceUser.AddressLine2} {c.ServiceUser.AddressLine3} {c.ServiceUser.County} {c.ServiceUser.Town} {c.ServiceUser.PostCode}",

@@ -11,6 +11,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
         public int HackneyId { get; set; }
         public string PackageType { get; set; }
         public Guid PackageId { get; set; }
+        public bool IsS117Client { get; set; }
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset LastModified { get; set; }
         public string ModifiedBy { get; set; }
