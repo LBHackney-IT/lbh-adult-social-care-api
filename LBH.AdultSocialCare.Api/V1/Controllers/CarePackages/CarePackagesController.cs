@@ -97,9 +97,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// <param name="carePackageId">The care package identifier.</param>
         /// <returns>Core care package settings if success</returns>
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(CarePackageCoreResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CarePackageResponse), StatusCodes.Status200OK)]
         [HttpGet("{carePackageId}/core")]
-        public async Task<ActionResult<CarePackageCoreResponse>> GetCarePackageCore(Guid carePackageId)
+        public async Task<ActionResult<CarePackageResponse>> GetCarePackageCore(Guid carePackageId)
         {
             var res = await _getCarePackageUseCase.GetCarePackageCoreAsync(carePackageId);
             return Ok(res);
