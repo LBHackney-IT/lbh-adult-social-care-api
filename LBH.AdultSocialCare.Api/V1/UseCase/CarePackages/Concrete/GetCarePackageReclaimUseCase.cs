@@ -5,7 +5,6 @@ using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -20,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         public async Task<CarePackageReclaimResponse> GetCarePackageReclaim(Guid carePackageId, ReclaimType reclaimType)
         {
-            var res = await _carePackageReclaimGateway.GetAsync(carePackageId, reclaimType);
+            var res = await _carePackageReclaimGateway.GetSingleAsync(carePackageId, reclaimType);
             return res.ToResponse();
         }
     }

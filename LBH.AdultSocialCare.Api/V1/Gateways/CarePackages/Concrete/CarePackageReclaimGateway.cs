@@ -74,7 +74,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             }
         }
 
-        public async Task<CarePackageReclaimDomain> GetAsync(Guid carePackageId, ReclaimType reclaimType)
+        public async Task<CarePackageReclaim> GetAsync(Guid reclaimId)
+        {
+            return await _dbContext.CarePackageReclaims.FirstOrDefaultAsync(r => r.Id == reclaimId);
+        }
+
+        public async Task<CarePackageReclaimDomain> GetSingleAsync(Guid carePackageId, ReclaimType reclaimType)
         {
             var carePackageReclaim = await _dbContext.CarePackageReclaims
                 .Where(a => a.CarePackageId.Equals(carePackageId) &&

@@ -30,7 +30,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.CarePackages
             reclaim.StartDate = startDate;
             Context.SaveChanges();
 
-            _gateway.GetAsync(package.Id, ReclaimType.CareCharge);
+            _gateway.GetAsync(reclaim.Id);
 
             reclaim.Status.Should().Be(expectedStatus);
         }
