@@ -117,7 +117,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             var pageSize = 10;
 
             var url = new UrlFormatter()
-                .SetBaseUrl($"api/v1/care-packages/{package.Id}/reclaims/care-charges/packages")
+                .SetBaseUrl($"api/v1/care-charges")
                 .AddParameter("pageNumber", pageNumber)
                 .AddParameter("pageSize", pageSize)
                 .ToString();

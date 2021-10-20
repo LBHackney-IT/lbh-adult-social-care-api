@@ -25,6 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages
         public bool IsReEnablement { get; set; }
 
         public bool IsS117Client { get; set; }
+        public bool IsS117ClientConfirmed { get; set; }
 
         [ForeignKey(nameof(CarePackageId))]
         public CarePackage Package { get; set; }

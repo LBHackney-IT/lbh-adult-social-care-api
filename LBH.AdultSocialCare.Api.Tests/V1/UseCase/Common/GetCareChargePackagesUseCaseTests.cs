@@ -22,13 +22,13 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 {
     public class GetCareChargePackagesUseCaseTests : BaseTest
     {
-        private Mock<ICarePackageReclaimGateway> _mockGateway;
+        private Mock<ICareChargesGateway> _mockGateway;
         private GetCareChargePackagesUseCase _getCareChargePackagesUseCase;
         private Fixture _fixture;
 
         public GetCareChargePackagesUseCaseTests()
         {
-            _mockGateway = new Mock<ICarePackageReclaimGateway>();
+            _mockGateway = new Mock<ICareChargesGateway>();
             _getCareChargePackagesUseCase = new GetCareChargePackagesUseCase(_mockGateway.Object);
             _fixture = new Fixture();
         }
