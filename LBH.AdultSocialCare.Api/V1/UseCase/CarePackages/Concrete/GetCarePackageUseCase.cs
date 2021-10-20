@@ -37,10 +37,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             return package.ToDomain().ToResponse();
         }
 
-        public async Task<CarePackageCoreResponse> GetCarePackageCoreAsync(Guid carePackageId)
+        public async Task<CarePackageResponse> GetCarePackageCoreAsync(Guid carePackageId)
         {
-            var corePackage = await _carePackageGateway.GetCarePackageCoreAsync(carePackageId).EnsureExistsAsync($"Settings for care package with id {carePackageId} not found");
-            return corePackage.ToResponse();
+            var package = await _carePackageGateway
+                .GetPackageAsync(carePackageId, PackageFields.ServiceUser | PackageFields.Settings)
+                .EnsureExistsAsync($"Care package {carePackageId} not found");
+
+            return package.ToDomain().ToResponse();
         }
 
         public async Task<BrokerPackageViewResponse> GetBrokerPackageViewListAsync(BrokerPackageViewQueryParameters queryParameters)

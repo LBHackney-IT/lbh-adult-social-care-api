@@ -20,8 +20,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
 
         Task<IEnumerable<CarePackageListItemDomain>> GetAllPackagesAsync();
 
-        Task<CarePackageCoreDomain> GetCarePackageCoreAsync(Guid carePackageId);
-
         void Create(CarePackage newCarePackage);
 
         Task DeleteReclaimsForPackage(Guid packageId, ReclaimType reclaimType);

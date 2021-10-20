@@ -215,12 +215,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             var packageSettings = _generator.CreateCarePackageSettings(package.Id);
 
             var response = await _fixture.RestClient
-                .GetAsync<CarePackageCoreResponse>($"api/v1/care-packages/{package.Id}/core");
+                .GetAsync<CarePackageResponse>($"api/v1/care-packages/{package.Id}/core");
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            response.Content.CarePackageId.Should().Be(package.Id);
-            response.Content.Should().BeEquivalentTo(packageSettings, opt => opt.ExcludingMissingMembers().ExcludingNestedObjects());
+            response.Content.Id.Should().Be(package.Id);
+            response.Content.Settings.Should().BeEquivalentTo(packageSettings, opt => opt.ExcludingMissingMembers().ExcludingNestedObjects());
         }
 
         [Fact]
