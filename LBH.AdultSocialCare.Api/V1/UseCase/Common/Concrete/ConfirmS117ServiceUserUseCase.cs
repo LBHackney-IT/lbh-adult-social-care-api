@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways;
@@ -29,6 +30,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             var packageSettings = await _carePackageSettingsGateway
                 .GetPackageSettingsPlainAsync(packageId, true)
                 .EnsureExistsAsync($"Care package settings {packageId} not found");
+
+            if (!packageSettings.IsS117Client)
+            {
+                throw new ApiException("Service user must be S117 to confirm S117 Service User");
+            }
 
             packageSettings.IsS117ClientConfirmed = true;
 
