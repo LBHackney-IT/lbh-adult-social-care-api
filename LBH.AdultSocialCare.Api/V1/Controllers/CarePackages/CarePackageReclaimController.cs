@@ -77,12 +77,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
 
         /// <summary>Update single funded nursing care reclaim.</summary>
         /// <param name="fundedNursingCareUpdateRequest">The funded nursing care update request.</param>
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPut("fnc")]
-        public async Task<ActionResult<bool>> UpdateFundedNursingCare([FromBody] FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
+        public async Task<ActionResult> UpdateFundedNursingCare([FromBody] FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
         {
             await _updateCarePackageReclaimUseCase.UpdateAsync(fundedNursingCareUpdateRequest.ToDomain());
             return Ok();
@@ -90,7 +90,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
 
         /// <summary>Update single care charge reclaim.</summary>
         /// <param name="careChargeReclaimUpdateRequest">The care charge reclaim update request.</param>
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
@@ -108,7 +108,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// <response code="400">When requested reclaims belong to different care packages.</response>
         /// <response code="404">When one of requested reclaims isn't found.</response>
         /// <response code="422">When validation of requested reclaims failed.</response>
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<CarePackageReclaimResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
