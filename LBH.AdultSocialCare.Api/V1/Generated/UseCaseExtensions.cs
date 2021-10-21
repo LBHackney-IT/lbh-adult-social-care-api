@@ -29,6 +29,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetCarePackageReclaimUseCase, GetCarePackageReclaimUseCase>();
             services.AddScoped<IGetCarePackageSummaryUseCase, GetCarePackageSummaryUseCase>();
             services.AddScoped<IGetCarePackageUseCase, GetCarePackageUseCase>();
+            services.AddScoped<IGetServiceUserPackagesUseCase, GetServiceUserPackagesUseCase>();
             services.AddScoped<IGetSinglePackageCareChargeUseCase, GetSinglePackageCareChargeUseCase>();
             services.AddScoped<ISubmitCarePackageUseCase, SubmitCarePackageUseCase>();
             services.AddScoped<IUpdateCarePackageReclaimUseCase, UpdateCarePackageReclaimUseCase>();
