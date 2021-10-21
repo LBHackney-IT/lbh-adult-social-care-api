@@ -8,6 +8,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
 {
     public interface IGetAllUsersUseCase
     {
-        Task<IEnumerable<UsersMinimalResponse>> GetUsers(RolesEnum rolesEnum);
+        Task<IEnumerable<UsersMinimalResponse>> GetUsersWithRole(RolesEnum rolesEnum);
+        Task<IEnumerable<UsersMinimalResponse>> GetUsers();
     }
 }

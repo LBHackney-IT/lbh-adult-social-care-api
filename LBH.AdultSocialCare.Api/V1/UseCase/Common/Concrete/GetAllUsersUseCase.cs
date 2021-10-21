@@ -19,9 +19,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             _usersGateway = usersGateway;
         }
 
-        public async Task<IEnumerable<UsersMinimalResponse>> GetUsers(RolesEnum rolesEnum)
+        public async Task<IEnumerable<UsersMinimalResponse>> GetUsersWithRole(RolesEnum rolesEnum)
         {
-            var result = await _usersGateway.GetUsers(rolesEnum).ConfigureAwait(false);
+            var result = await _usersGateway.GetUsers(rolesEnum);
+            return result.ToResponse();
+        }
+
+        public async Task<IEnumerable<UsersMinimalResponse>> GetUsers()
+        {
+            var result = await _usersGateway.GetUsers();
             return result.ToResponse();
         }
     }
