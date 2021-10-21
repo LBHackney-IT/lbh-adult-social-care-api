@@ -153,6 +153,13 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                 .CountAsync();
         }
 
+        public async Task DeletePackage(Guid packageId)
+        {
+            var carePackage = await _dbContext.CarePackages
+                .Where(pr => pr.Id.Equals(packageId)).FirstOrDefaultAsync();
+            _dbContext.CarePackages.Remove(carePackage);
+        }
+
         private static IQueryable<CarePackage> BuildPackageQuery(IQueryable<CarePackage> query, PackageFields fields)
         {
             if (fields.HasFlag(PackageFields.Details)) query = query.Include(p => p.Details);
