@@ -18,17 +18,23 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
     {
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IServiceUserGateway _serviceUserGateway;
+        private readonly ICarePackageHistoryGateway _carePackageHistoryGateway;
 
-        public GetServiceUserPackagesUseCase(ICarePackageGateway carePackageGateway, IServiceUserGateway serviceUserGateway)
+        public GetServiceUserPackagesUseCase(ICarePackageGateway carePackageGateway, IServiceUserGateway serviceUserGateway, ICarePackageHistoryGateway carePackageHistoryGateway)
         {
             _carePackageGateway = carePackageGateway;
             _serviceUserGateway = serviceUserGateway;
+            _carePackageHistoryGateway = carePackageHistoryGateway;
         }
 
         public async Task<ServiceUserPackagesViewResponse> ExecuteAsync(Guid serviceUserId)
         {
             // Check service user exists
-            var serviceUser = await _serviceUserGateway.GetUsingIdAsync(serviceUserId).EnsureExistsAsync($"Service user with id {serviceUserId} not found");
+            var serviceUser = await _serviceUserGateway.GetByIdAsync(serviceUserId).EnsureExistsAsync($"Service user with id {serviceUserId} not found");
+            var packageRequestStatuses = new[]
+            {
+                PackageStatus.New, PackageStatus.InProgress, PackageStatus.NotApproved
+            };
 
             const PackageFields fields = PackageFields.Details | PackageFields.Reclaims;
             var userPackages = await _carePackageGateway.GetServiceUserPackagesAsync(serviceUserId, fields);
@@ -50,6 +56,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     DateAssigned = carePackage.DateAssigned,
                     GrossTotal = 0,
                     NetTotal = 0,
+                    Notes = new List<CarePackageHistoryResponse>(),
                     PackageItems = new List<CarePackageCostItemResponse>()
                 };
 
@@ -60,6 +67,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     .Where(d => d.Type == PackageDetailType.AdditionalNeed).ToList();
 
                 packageResponse.PackageItems = CollectPackageItems(carePackage, coreCost, additionalNeeds, carePackage.Reclaims.ToList());
+
+                // Get care package history if package request i.e new, in-progress, not-approved
+                if (packageRequestStatuses.Contains(carePackage.Status))
+                {
+                    var packageHistory = await _carePackageHistoryGateway.ListAsync(carePackage.Id);
+                    packageResponse.Notes = packageHistory.OrderByDescending(h => h.Id).ToResponse();
+                }
+
                 packagesResponse.Add(packageResponse);
             }
 
@@ -70,82 +85,78 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         private static IEnumerable<CarePackageCostItemResponse> CollectPackageItems(CarePackage package, CarePackageDetail coreCost, IReadOnlyCollection<CarePackageDetail> additionalNeeds, IReadOnlyCollection<CarePackageReclaim> reclaims)
         {
+            var carePackageCostItem = new List<CarePackageCostItemResponse>();
             // Add core cost
-            var carePackageCostItem = new List<CarePackageCostItemResponse>
+            if (coreCost != null)
             {
-                new CarePackageCostItemResponse
+                carePackageCostItem.Add(new CarePackageCostItemResponse
                 {
                     Id = package.Id,
                     Name = package.PackageType.GetDisplayName(),
                     Type = package.PackageType.GetDisplayName(),
                     CollectedBy = ClaimCollector.Hackney.GetDisplayName(),
-                    Status = DateTimeOffset.Now.IsInRange(coreCost.StartDate,
-                        coreCost.EndDate ?? DateTimeOffset.Now.AddYears(10))
-                        ? "Active"
-                        : "Ended",
+                    Status = package.Status.GetDisplayName(),
                     StartDate = coreCost.StartDate,
                     EndDate = coreCost.EndDate,
                     WeeklyCost = coreCost.Cost
-                }
-            };
+                });
+            }
 
-            // Add one off additional needs
-            var oneOffAdditionalNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.OneOff).ToList();
-            carePackageCostItem.AddRange(oneOffAdditionalNeeds.Select(need => new CarePackageCostItemResponse
+            // Add additional needs
+            if (additionalNeeds.Any())
             {
-                Id = need.Id,
-                Name = "Additional needs payment / one-off",
-                Type = "Additional Needs One Off",
-                CollectedBy = ClaimCollector.Hackney.GetDisplayName(),
-                Status = DateTimeOffset.Now.IsInRange(need.StartDate, need.EndDate ?? DateTimeOffset.Now.AddYears(10)) ? "Active" : "Ended",
-                StartDate = need.StartDate,
-                EndDate = need.EndDate,
-                WeeklyCost = need.Cost
-            }));
+                carePackageCostItem.AddRange(additionalNeeds.Select(need => new CarePackageCostItemResponse
+                {
+                    Id = need.Id,
+                    Name = GetAdditionalNeedName(need.CostPeriod),
+                    Type = "Additional Needs",
+                    CollectedBy = ClaimCollector.Hackney.GetDisplayName(),
+                    Status = package.Status.GetDisplayName(),
+                    StartDate = need.StartDate,
+                    EndDate = need.EndDate,
+                    WeeklyCost = need.Cost
+                }));
+            }
 
-            // Add weekly additional needs
-            var weeklyAdditionalNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.Weekly).ToList();
-            carePackageCostItem.AddRange(weeklyAdditionalNeeds.Select(need => new CarePackageCostItemResponse
+            // add reclaims
+            if (reclaims.Any())
             {
-                Id = need.Id,
-                Name = "Additional needs payment / wk",
-                Type = "Additional Needs Weekly",
-                CollectedBy = ClaimCollector.Hackney.GetDisplayName(),
-                Status = DateTimeOffset.Now.IsInRange(need.StartDate, need.EndDate ?? DateTimeOffset.Now.AddYears(10)) ? "Active" : "Ended",
-                StartDate = need.StartDate,
-                EndDate = need.EndDate,
-                WeeklyCost = need.Cost
-            }));
-
-            // add care charges
-            var careCharges = reclaims.Where(r => r.Type == ReclaimType.CareCharge).ToList();
-            carePackageCostItem.AddRange(careCharges.Select(careCharge => new CarePackageCostItemResponse
-            {
-                Id = careCharge.Id,
-                Name = careCharge.SubType.GetDisplayName(),
-                Type = "Package Reclaim - Care Charge",
-                CollectedBy = careCharge.ClaimCollector.GetDisplayName(),
-                Status = careCharge.Status.GetDisplayName(),
-                StartDate = careCharge.StartDate,
-                EndDate = careCharge.EndDate,
-                WeeklyCost = careCharge.Cost
-            }));
-
-            // Add fnc
-            var fncItems = reclaims.Where(r => r.Type == ReclaimType.Fnc).ToList();
-            carePackageCostItem.AddRange(fncItems.Select(careCharge => new CarePackageCostItemResponse
-            {
-                Id = careCharge.Id,
-                Name = careCharge.SubType.GetDisplayName(),
-                Type = "Package Reclaim - Funded Nursing Care",
-                CollectedBy = careCharge.ClaimCollector.GetDisplayName(),
-                Status = careCharge.Status.GetDisplayName(),
-                StartDate = careCharge.StartDate,
-                EndDate = careCharge.EndDate,
-                WeeklyCost = careCharge.Cost
-            }));
+                carePackageCostItem.AddRange(reclaims.Select(reclaim => new CarePackageCostItemResponse
+                {
+                    Id = reclaim.Id,
+                    Name = reclaim.SubType.GetDisplayName(),
+                    Type = GetCareChargeName(reclaim.Type),
+                    CollectedBy = reclaim.ClaimCollector.GetDisplayName(),
+                    Status = reclaim.Status.GetDisplayName(),
+                    StartDate = reclaim.StartDate,
+                    EndDate = reclaim.EndDate,
+                    WeeklyCost = reclaim.Cost
+                }));
+            }
 
             return carePackageCostItem;
+        }
+
+        private static string GetAdditionalNeedName(PaymentPeriod paymentPeriod)
+        {
+            return paymentPeriod switch
+            {
+                PaymentPeriod.OneOff => "Additional needs payment / one-off",
+                PaymentPeriod.Weekly => "Additional needs payment / wk",
+                PaymentPeriod.Hourly => "Additional needs payment / hr",
+                PaymentPeriod.Fixed => "Additional needs payment / fixed",
+                _ => "Additional needs payment"
+            };
+        }
+
+        private static string GetCareChargeName(ReclaimType type)
+        {
+            return type switch
+            {
+                ReclaimType.CareCharge => "Package Reclaim - Care Charge",
+                ReclaimType.Fnc => "Package Reclaim - Funded Nursing Care",
+                _ => "Package Reclaim"
+            };
         }
     }
 }

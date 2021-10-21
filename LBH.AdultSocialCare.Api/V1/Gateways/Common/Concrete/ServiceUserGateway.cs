@@ -53,7 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             return client.ToDomain();
         }
 
-        public async Task<ServiceUser> GetUsingIdAsync(Guid serviceUserId)
+        public async Task<ServiceUser> GetByIdAsync(Guid serviceUserId)
         {
             var serviceUser = await _databaseContext.ServiceUsers.Where(su => su.Id.Equals(serviceUserId))
                 .SingleOrDefaultAsync();
