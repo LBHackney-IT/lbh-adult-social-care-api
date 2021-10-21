@@ -79,5 +79,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Security.Concrete
                 .Select(userInfo => new UsersMinimalDomain { Id = userInfo.Id, UserName = userInfo.Name })
                 .ToListAsync().ConfigureAwait(false);
         }
+
+        public async Task<IEnumerable<UsersMinimalDomain>> GetUsers()
+        {
+            return await _databaseContext.Users
+                .Select(u => new UsersMinimalDomain
+                {
+                    Id = u.Id,
+                    UserName = u.Name
+                })
+                .ToListAsync();
+        }
     }
 }

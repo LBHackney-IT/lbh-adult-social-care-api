@@ -16,5 +16,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Security.Interfaces
 
         public Task<bool> DeleteAsync(Guid userId);
         Task<IEnumerable<UsersMinimalDomain>> GetUsers(RolesEnum rolesType);
+        Task<IEnumerable<UsersMinimalDomain>> GetUsers();
     }
 }

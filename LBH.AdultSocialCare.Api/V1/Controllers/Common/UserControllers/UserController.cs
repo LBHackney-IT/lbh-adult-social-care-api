@@ -70,7 +70,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.UserControllers
         [HttpGet("broker")]
         public async Task<ActionResult<UsersMinimalResponse>> GetBrokers()
         {
-            var result = await _getAllUsersUseCase.GetUsers(RolesEnum.Broker);
+            var result = await _getAllUsersUseCase.GetUsersWithRole(RolesEnum.Broker);
             return Ok(result);
         }
 
@@ -83,7 +83,20 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.UserControllers
         [HttpGet("approver")]
         public async Task<ActionResult<UsersMinimalResponse>> GetApprover()
         {
-            var result = await _getAllUsersUseCase.GetUsers(RolesEnum.Approver);
+            var result = await _getAllUsersUseCase.GetUsersWithRole(RolesEnum.Approver);
+            return Ok(result);
+        }
+
+        /// <summary>Return list of users.</summary>
+        /// <returns>The list of users response.</returns>
+        [ProducesResponseType(typeof(UsersMinimalResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet]
+        public async Task<ActionResult<UsersMinimalResponse>> GetUsers()
+        {
+            var result = await _getAllUsersUseCase.GetUsers();
             return Ok(result);
         }
     }
