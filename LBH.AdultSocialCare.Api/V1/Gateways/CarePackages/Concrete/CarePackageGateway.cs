@@ -138,7 +138,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             bool trackChanges = false)
         {
             var query = BuildPackageQuery(_dbContext.CarePackages.Where(p => p.ServiceUserId.Equals(serviceUserId)),
-                fields);
+                fields).TrackChanges(trackChanges);
 
             return await query.ToListAsync();
         }
