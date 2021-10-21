@@ -139,8 +139,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpPut("{carePackageId}")]
         public async Task<ActionResult<CarePackagePlainResponse>> UpdateCarePackage(Guid carePackageId, [FromBody] CarePackageUpdateRequest carePackageUpdateRequest)
         {
-            var residentialCarePackageResponse = await _updateCarePackageUseCase.UpdateAsync(carePackageId, carePackageUpdateRequest.ToDomain());
-            return Ok(residentialCarePackageResponse);
+            var updateResult = await _updateCarePackageUseCase.UpdateAsync(carePackageId, carePackageUpdateRequest.ToDomain());
+            return Ok(updateResult);
         }
 
         /// <summary>Submits a care package for approval.</summary>
