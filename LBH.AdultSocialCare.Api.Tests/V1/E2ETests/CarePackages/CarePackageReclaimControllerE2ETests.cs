@@ -15,7 +15,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
+namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
 {
     public class CarePackageReclaimControllerE2ETests : IClassFixture<MockWebApplicationFactory>
     {

@@ -1,23 +1,23 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
+using Moq;
 using Xunit;
 
-namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
+namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 {
     public class CreateCarePackageUseCaseTests : BaseTest
     {
