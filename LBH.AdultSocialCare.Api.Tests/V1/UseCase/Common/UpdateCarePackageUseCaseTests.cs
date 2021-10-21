@@ -51,22 +51,24 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
         }
 
         [Fact]
-        public async Task ShouldThrowExceptionIfPackageSettingsNotFound()
+        public async Task ShouldCreatePackageSettingsIfNotFound()
         {
             var carePackage = TestDataHelper.CreateCarePackage();
+            carePackage.Settings = TestDataHelper.CreateCarePackageSettings();
+            _dbManager.Setup(dm => dm.SaveAsync(It.IsAny<string>())).Returns(() => Task.FromResult(carePackage));
 
             _carePackageGateway.Setup(cp => cp.GetPackagePlainAsync(It.IsAny<Guid>(), It.IsAny<bool>())).ReturnsAsync(() => carePackage);
 
             var updateRequest = TestDataHelper.CarePackageUpdateRequest(carePackage,
-                TestDataHelper.CreateCarePackageSettings());
+                carePackage.Settings);
 
-            Func<Task> action = () => _useCase.UpdateAsync(carePackage.Id, updateRequest.ToDomain());
+            await _useCase.UpdateAsync(carePackage.Id, updateRequest.ToDomain());
 
-            await action.Should().ThrowAsync<ApiException>();
+            carePackage.Settings.Should().BeEquivalentTo(carePackage.Settings, opt => opt.ExcludingMissingMembers().ExcludingNestedObjects());
 
             _carePackageGateway.Verify(x => x.GetPackagePlainAsync(It.IsAny<Guid>(), It.IsAny<bool>()), Times.Once);
             _carePackageSettingsGateway.Verify(x => x.GetPackageSettingsPlainAsync(It.IsAny<Guid>(), It.IsAny<bool>()), Times.Once);
-            _dbManager.Verify(x => x.SaveAsync(It.IsAny<string>()), Times.Never);
+            _dbManager.Verify(x => x.SaveAsync(It.IsAny<string>()), Times.Once);
         }
     }
 }

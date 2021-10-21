@@ -12,6 +12,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 
@@ -35,8 +36,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task<CarePackagePlainResponse> UpdateAsync(Guid carePackageId, CarePackageUpdateDomain carePackageUpdateDomain)
         {
             var package = await _carePackageGateway.GetPackagePlainAsync(carePackageId, true).EnsureExistsAsync($"Care package with id {carePackageId} not found");
-            var packageSettings = await _carePackageSettings.GetPackageSettingsPlainAsync(carePackageId, true)
-                .EnsureExistsAsync($"Package settings for package with id {carePackageId} not found");
+            var packageSettings = await _carePackageSettings.GetPackageSettingsPlainAsync(carePackageId, true) ?? new CarePackageSettings
+            {
+                CarePackageId = package.Id,
+                HasRespiteCare = false,
+                HasDischargePackage = false,
+                HospitalAvoidance = false,
+                IsReEnablement = false,
+                IsS117Client = false,
+                IsS117ClientConfirmed = false
+            };
 
             var allowedPackageStatuses = new[] { PackageStatus.New, PackageStatus.InProgress };
 
@@ -56,6 +65,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             _mapper.Map(carePackageUpdateDomain, package);
             package.Status = PackageStatus.InProgress; // Change status of package to in-progress
             _mapper.Map(carePackageUpdateDomain, packageSettings);
+            package.Settings = packageSettings;
 
             // Save values
             await _dbManager.SaveAsync($"Failed to update care package with id {carePackageId}");

@@ -106,25 +106,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             }).ToListAsync();
         }
 
-        public async Task<CarePackageCoreDomain> GetCarePackageCoreAsync(Guid carePackageId)
-        {
-            return await _dbContext.CarePackageSettings.Where(ps => ps.CarePackageId.Equals(carePackageId))
-                .Select(ps => new CarePackageCoreDomain()
-                {
-                    CarePackageId = ps.CarePackageId,
-                    ServiceUserId = ps.Package.ServiceUserId,
-                    PackageType = ps.Package.PackageType,
-                    PackageScheduling = ps.Package.PackageScheduling,
-                    PrimarySupportReasonId = ps.Package.PrimarySupportReasonId,
-                    PrimarySupportReasonName = ps.Package.PrimarySupportReason.PrimarySupportReasonName,
-                    HasRespiteCare = ps.HasRespiteCare,
-                    HasDischargePackage = ps.HasDischargePackage,
-                    HospitalAvoidance = ps.HospitalAvoidance,
-                    IsReEnablement = ps.IsReEnablement,
-                    IsS117Client = ps.IsS117Client
-                }).SingleOrDefaultAsync();
-        }
-
         public void Create(CarePackage newCarePackage)
         {
             _dbContext.CarePackages.Add(newCarePackage);
@@ -149,6 +130,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
         {
             var query = BuildPackageQuery(
                 _dbContext.CarePackages.Where(p => packageIds.Contains(p.Id)), fields);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<List<CarePackage>> GetServiceUserPackagesAsync(Guid serviceUserId, PackageFields fields = PackageFields.None,
+            bool trackChanges = false)
+        {
+            var query = BuildPackageQuery(_dbContext.CarePackages.Where(p => p.ServiceUserId.Equals(serviceUserId)),
+                fields).TrackChanges(trackChanges);
 
             return await query.ToListAsync();
         }

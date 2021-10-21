@@ -22,7 +22,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
         public GeneratedMappingProfile()
         {
             CreateMap<CarePackageBrokerageDomain, CarePackageBrokerageResponse>().ReverseMap();
-            CreateMap<CarePackageCoreDomain, CarePackageCoreResponse>().ReverseMap();
             CreateMap<CarePackageDetailDomain, CarePackageDetail>().ReverseMap();
             CreateMap<CarePackageDetailDomain, CarePackageDetailResponse>().ReverseMap();
             CreateMap<CarePackageDomain, CarePackageResponse>().ReverseMap();

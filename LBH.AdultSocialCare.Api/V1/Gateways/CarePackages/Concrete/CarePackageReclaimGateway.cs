@@ -95,18 +95,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             return carePackageReclaim?.ToDomain();
         }
 
-        public async Task<PagedList<CareChargePackagesDomain>> GetCareChargePackages(CareChargePackagesParameters parameters)
-        {
-            var careChargePackagesCount = await GetCareChargePackagesCount(parameters);
-            var careChargePackagesList = await GetCareChargePackagesList(parameters);
-
-            var paginatedCareChargePackageList = careChargePackagesList
-                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-                .Take(parameters.PageSize);
-
-            return PagedList<CareChargePackagesDomain>.ToPagedList(paginatedCareChargePackageList, careChargePackagesCount, parameters.PageNumber, parameters.PageSize);
-        }
-
         public async Task<SinglePackageCareChargeDomain> GetSinglePackageCareCharge(Guid packageId)
         {
             return await _dbContext.CarePackages
@@ -124,38 +112,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                     Settings = c.Settings.ToDomain(),
                     CareCharges = c.Reclaims.Where(r => r.Type == ReclaimType.CareCharge).ToDomain()
                 }).SingleOrDefaultAsync();
-        }
-
-        private async Task<int> GetCareChargePackagesCount(CareChargePackagesParameters parameters)
-        {
-            return await _dbContext.CarePackages
-                .FilterCareChargeCarePackageList(parameters.Status, parameters.FirstName, parameters.LastName,
-                    parameters.DateOfBirth, parameters.PostCode, parameters.MosaicId, parameters.ModifiedAt, parameters.ModifiedBy)
-                .CountAsync();
-        }
-
-        private async Task<List<CareChargePackagesDomain>> GetCareChargePackagesList(CareChargePackagesParameters parameters)
-        {
-            return await _dbContext.CarePackages
-                .FilterCareChargeCarePackageList(parameters.Status, parameters.FirstName, parameters.LastName,
-                    parameters.DateOfBirth, parameters.PostCode, parameters.MosaicId, parameters.ModifiedAt, parameters.ModifiedBy)
-                .Include(item => item.ServiceUser)
-                .Include(item => item.Updater)
-                .Include(item => item.Reclaims)
-                .Select(c => new CareChargePackagesDomain()
-                {
-                    Status = c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge) ? "Existing" : "New",
-                    ServiceUser = $"{c.ServiceUser.FirstName} {c.ServiceUser.LastName}",
-                    DateOfBirth = c.ServiceUser.DateOfBirth,
-                    Address = $"{c.ServiceUser.AddressLine1} {c.ServiceUser.AddressLine2} {c.ServiceUser.AddressLine3} {c.ServiceUser.County} {c.ServiceUser.Town} {c.ServiceUser.PostCode}",
-                    HackneyId = c.ServiceUser.HackneyId,
-                    PackageType = c.PackageType.GetDisplayName(),
-                    PackageId = c.Id,
-                    StartDate = c.DateCreated,
-                    LastModified = c.DateUpdated,
-                    ModifiedBy = c.Updater.Name
-                })
-                .ToListAsync();
         }
     }
 }

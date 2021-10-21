@@ -6,8 +6,14 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 {
@@ -46,6 +52,52 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 .ConfigureAwait(false);
 
             return provisionalAmount?.ToDomain();
+        }
+
+        public async Task<PagedList<CareChargePackagesDomain>> GetCareChargePackages(CareChargePackagesParameters parameters)
+        {
+            var careChargePackagesCount = await GetCareChargePackagesCount(parameters);
+            var careChargePackagesList = await GetCareChargePackagesList(parameters);
+
+            var paginatedCareChargePackageList = careChargePackagesList
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize);
+
+            return PagedList<CareChargePackagesDomain>.ToPagedList(paginatedCareChargePackageList, careChargePackagesCount, parameters.PageNumber, parameters.PageSize);
+        }
+
+        private async Task<int> GetCareChargePackagesCount(CareChargePackagesParameters parameters)
+        {
+            return await _dbContext.CarePackages
+                .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate)
+                .Where(c => c.Settings.IsS117ClientConfirmed == false && c.Settings.IsS117Client)
+                .CountAsync();
+        }
+
+        private async Task<List<CareChargePackagesDomain>> GetCareChargePackagesList(CareChargePackagesParameters parameters)
+        {
+            return await _dbContext.CarePackages
+                .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate)
+                .Where(c => c.Settings.IsS117ClientConfirmed == false)
+                .Include(item => item.Settings)
+                .Include(item => item.ServiceUser)
+                .Include(item => item.Updater)
+                .Include(item => item.Reclaims)
+                .Select(c => new CareChargePackagesDomain
+                {
+                    Status = c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) ? "Existing" : "New",
+                    ServiceUser = $"{c.ServiceUser.FirstName} {c.ServiceUser.LastName}",
+                    DateOfBirth = c.ServiceUser.DateOfBirth,
+                    Address = $"{c.ServiceUser.AddressLine1} {c.ServiceUser.AddressLine2} {c.ServiceUser.AddressLine3} {c.ServiceUser.County} {c.ServiceUser.Town} {c.ServiceUser.PostCode}",
+                    HackneyId = c.ServiceUser.HackneyId,
+                    PackageType = c.PackageType.GetDisplayName(),
+                    PackageId = c.Id,
+                    IsS117Client = c.Settings.IsS117Client,
+                    StartDate = c.DateCreated,
+                    LastModified = c.DateUpdated,
+                    ModifiedBy = c.Updater.Name
+                })
+                .ToListAsync();
         }
     }
 }

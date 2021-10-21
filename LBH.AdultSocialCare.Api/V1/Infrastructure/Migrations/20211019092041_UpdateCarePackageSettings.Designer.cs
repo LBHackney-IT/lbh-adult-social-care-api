@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211019092041_UpdateCarePackageSettings")]
+    partial class UpdateCarePackageSettings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,7 +94,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasCheckConstraint("CK_CarePackages_PackageType", "\"PackageType\" IN (0, 2, 4)");
 
-                    b.HasCheckConstraint("CK_CarePackages_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8)");
+                    b.HasCheckConstraint("CK_CarePackages_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackageDetail", b =>
@@ -195,7 +197,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("CarePackageHistories");
 
-                    b.HasCheckConstraint("CK_CarePackageHistories_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)");
+                    b.HasCheckConstraint("CK_CarePackageHistories_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackageReclaim", b =>
@@ -243,6 +245,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<int>("SubType")
                         .HasColumnType("integer");
 
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
@@ -254,6 +259,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasIndex("CarePackageId");
 
                     b.HasIndex("CreatorId");
+
+                    b.HasIndex("SupplierId");
 
                     b.HasIndex("UpdaterId");
 
@@ -502,12 +509,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             Id = 7,
                             StatusDisplayName = "Cancelled",
                             StatusName = "Cancelled"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            StatusDisplayName = "Rejected",
-                            StatusName = "Rejected"
                         });
                 });
 
@@ -1444,6 +1445,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.Supplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

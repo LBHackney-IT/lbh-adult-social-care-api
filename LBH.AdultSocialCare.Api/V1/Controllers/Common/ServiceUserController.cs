@@ -1,13 +1,16 @@
 using Common.Exceptions.Models;
+using HttpServices.Models.Requests;
+using HttpServices.Models.Responses;
+using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
+using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
-using HttpServices.Models.Requests;
-using HttpServices.Models.Responses;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
-using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
@@ -21,13 +24,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         private readonly IGetServiceUserUseCase _getServiceUserUseCase;
         private readonly IGetServiceUserSearchUseCase _getServiceUserSearchUseCase;
         private readonly IGetServiceUserMasterSearchUseCase _getServiceUserMasterSearchUseCase;
+        private readonly IGetServiceUserPackagesUseCase _getServiceUserPackagesUseCase;
 
         public ServiceUserController(IGetServiceUserUseCase getServiceUserUseCase, IGetServiceUserSearchUseCase getServiceUserSearchUseCase,
-            IGetServiceUserMasterSearchUseCase getServiceUserMasterSearchUseCase)
+            IGetServiceUserMasterSearchUseCase getServiceUserMasterSearchUseCase, IGetServiceUserPackagesUseCase getServiceUserPackagesUseCase)
         {
             _getServiceUserUseCase = getServiceUserUseCase;
             _getServiceUserSearchUseCase = getServiceUserSearchUseCase;
             _getServiceUserMasterSearchUseCase = getServiceUserMasterSearchUseCase;
+            _getServiceUserPackagesUseCase = getServiceUserPackagesUseCase;
         }
 
         /// <summary>Return service user information.</summary>
@@ -69,6 +74,18 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         public async Task<ActionResult<ServiceUserInformationResponse>> SearchServiceUser([FromQuery] ServiceUserQueryRequest request)
         {
             var result = await _getServiceUserMasterSearchUseCase.GetServiceUsers(request);
+            return Ok(result);
+        }
+
+        /// <summary>Get all the packages for a service user</summary>
+        /// <param name="serviceUserId">The service user identifier.</param>
+        /// <returns>A list of packages the service users has if success</returns>
+        [ProducesResponseType(typeof(ServiceUserPackagesViewResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [HttpGet("{serviceUserId}/care-packages")]
+        public async Task<ActionResult<ServiceUserPackagesViewResponse>> GetServiceUserPackages(Guid serviceUserId)
+        {
+            var result = await _getServiceUserPackagesUseCase.ExecuteAsync(serviceUserId);
             return Ok(result);
         }
     }

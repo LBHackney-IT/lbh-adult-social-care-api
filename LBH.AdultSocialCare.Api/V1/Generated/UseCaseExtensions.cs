@@ -30,6 +30,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetCarePackageReclaimUseCase, GetCarePackageReclaimUseCase>();
             services.AddScoped<IGetCarePackageSummaryUseCase, GetCarePackageSummaryUseCase>();
             services.AddScoped<IGetCarePackageUseCase, GetCarePackageUseCase>();
+            services.AddScoped<IGetServiceUserPackagesUseCase, GetServiceUserPackagesUseCase>();
             services.AddScoped<IGetSinglePackageCareChargeUseCase, GetSinglePackageCareChargeUseCase>();
             services.AddScoped<ISubmitCarePackageUseCase, SubmitCarePackageUseCase>();
             services.AddScoped<IUpdateCarePackageReclaimUseCase, UpdateCarePackageReclaimUseCase>();
@@ -42,6 +43,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetServiceUsersUseCase, GetServiceUsersUseCase>();
             services.AddScoped<IUpsertClientsUseCase, UpsertClientsUseCase>();
             services.AddScoped<ICareChargeUseCase, CareChargeUseCase>();
+            services.AddScoped<IConfirmS117ServiceUserUseCase, ConfirmS117ServiceUserUseCase>();
             services.AddScoped<ICreateSupplierUseCase, CreateSupplierUseCase>();
             services.AddScoped<IGetAllPrimarySupportReasonsUseCase, GetAllPrimarySupportReasonsUseCase>();
             services.AddScoped<IGetAllStatusUseCase, GetAllStatusUseCase>();
