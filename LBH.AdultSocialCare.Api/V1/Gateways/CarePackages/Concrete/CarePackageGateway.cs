@@ -134,6 +134,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             return await query.ToListAsync();
         }
 
+        public async Task<List<CarePackage>> GetServiceUserPackagesAsync(Guid serviceUserId, PackageFields fields = PackageFields.None,
+            bool trackChanges = false)
+        {
+            var query = BuildPackageQuery(_dbContext.CarePackages.Where(p => p.ServiceUserId.Equals(serviceUserId)),
+                fields);
+
+            return await query.ToListAsync();
+        }
+
         public async Task<int> GetServiceUserActivePackagesCount(Guid serviceUserId, PackageType packageType)
         {
             return await _dbContext.CarePackages
