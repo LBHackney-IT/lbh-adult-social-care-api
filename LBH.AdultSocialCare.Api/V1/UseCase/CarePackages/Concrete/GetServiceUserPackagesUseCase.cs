@@ -10,25 +10,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
     public class GetServiceUserPackagesUseCase : IGetServiceUserPackagesUseCase
     {
         private readonly ICarePackageGateway _carePackageGateway;
+        private readonly IServiceUserGateway _serviceUserGateway;
 
-        public GetServiceUserPackagesUseCase(ICarePackageGateway carePackageGateway)
+        public GetServiceUserPackagesUseCase(ICarePackageGateway carePackageGateway, IServiceUserGateway serviceUserGateway)
         {
             _carePackageGateway = carePackageGateway;
+            _serviceUserGateway = serviceUserGateway;
         }
 
         public async Task<ServiceUserPackagesViewResponse> ExecuteAsync(Guid serviceUserId)
         {
-            const PackageFields fields = PackageFields.ServiceUser | PackageFields.Details | PackageFields.Reclaims;
+            // Check service user exists
+            var serviceUser = await _serviceUserGateway.GetUsingIdAsync(serviceUserId).EnsureExistsAsync($"Service user with id {serviceUserId} not found");
+
+            const PackageFields fields = PackageFields.Details | PackageFields.Reclaims;
             var userPackages = await _carePackageGateway.GetServiceUserPackagesAsync(serviceUserId, fields);
             var response = new ServiceUserPackagesViewResponse
             {
-                ServiceUser = userPackages.FirstOrDefault()?.ServiceUser.ToBasicDomain().ToResponse(),
+                ServiceUser = serviceUser.ToBasicDomain().ToResponse(),
                 Packages = new List<ServiceUserPackageViewItemResponse>()
             };
 
