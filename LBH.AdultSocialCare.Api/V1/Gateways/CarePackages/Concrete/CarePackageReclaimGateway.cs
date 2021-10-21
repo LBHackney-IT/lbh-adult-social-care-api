@@ -7,10 +7,8 @@ using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
@@ -52,17 +50,17 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             }
         }
 
-        public async Task<bool> UpdateAsync(CarePackageReclaimForUpdateDomain carePackageReclaimForUpdateDomain)
+        public async Task<bool> UpdateAsync(CarePackageReclaimUpdateDomain carePackageReclaimUpdateDomain)
         {
             var carePackageReclaim = await _dbContext.CarePackageReclaims
-                .FirstOrDefaultAsync(item => item.Id == carePackageReclaimForUpdateDomain.Id);
+                .FirstOrDefaultAsync(item => item.Id == carePackageReclaimUpdateDomain.Id);
 
             if (carePackageReclaim == null)
             {
-                throw new EntityNotFoundException($"Unable to locate care package reclaim {carePackageReclaimForUpdateDomain.Id}");
+                throw new EntityNotFoundException($"Unable to locate care package reclaim {carePackageReclaimUpdateDomain.Id}");
             }
 
-            _mapper.Map(carePackageReclaimForUpdateDomain, carePackageReclaim);
+            _mapper.Map(carePackageReclaimUpdateDomain, carePackageReclaim);
             try
             {
                 await _dbContext.SaveChangesAsync();
@@ -70,13 +68,21 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             }
             catch (Exception ex)
             {
-                throw new DbSaveFailedException($"Update for care package reclaim for {carePackageReclaimForUpdateDomain.Id} failed {ex.Message}");
+                throw new DbSaveFailedException($"Update for care package reclaim for {carePackageReclaimUpdateDomain.Id} failed {ex.Message}");
             }
         }
 
         public async Task<CarePackageReclaim> GetAsync(Guid reclaimId)
         {
-            return await _dbContext.CarePackageReclaims.FirstOrDefaultAsync(r => r.Id == reclaimId);
+            return await _dbContext.CarePackageReclaims
+                .FirstOrDefaultAsync(r => r.Id == reclaimId);
+        }
+
+        public async Task<List<CarePackageReclaim>> GetListAsync(IEnumerable<Guid> reclaimIds)
+        {
+            return await _dbContext.CarePackageReclaims
+                .Where(r => reclaimIds.Contains(r.Id))
+                .ToListAsync();
         }
 
         public async Task<CarePackageReclaimDomain> GetSingleAsync(Guid carePackageId, ReclaimType reclaimType)

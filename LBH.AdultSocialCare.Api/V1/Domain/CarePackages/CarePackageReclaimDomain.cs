@@ -6,6 +6,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
 {
     [GenerateMappingFor(typeof(CarePackageReclaimResponse))]
+    [GenerateListMappingFor(typeof(CarePackageReclaimResponse))]
     public class CarePackageReclaimDomain
     {
         public Guid Id { get; set; }

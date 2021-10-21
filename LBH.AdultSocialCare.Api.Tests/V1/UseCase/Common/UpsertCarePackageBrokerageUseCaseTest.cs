@@ -15,6 +15,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common

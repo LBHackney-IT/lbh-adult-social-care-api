@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using HttpServices.Helpers;
+using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
@@ -94,7 +96,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             };
 
             var response = await _fixture.RestClient
-                .PutAsync<bool>($"api/v1/care-packages/{request.CarePackageId}/reclaims/fnc", updateRequest);
+                .PutAsync<object>($"api/v1/care-packages/{request.CarePackageId}/reclaims/fnc", updateRequest);
 
             var carePackageReclaim = await _fixture.DatabaseContext.CarePackageReclaims
                 .FirstAsync(c => c.CarePackageId == package.Id);
@@ -102,6 +104,42 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
 
             carePackageReclaim.Cost.Should().Be(updateRequest.Cost);
+        }
+
+        [Fact]
+        public async Task ShouldBatchUpdateCareCharges()
+        {
+            var package = _generator.CreateCarePackage();
+            5.Times(_ => _generator.CreateCarePackageReclaim(package, ReclaimType.CareCharge, ClaimCollector.Supplier));
+
+            var request = new List<CareChargeReclaimUpdateRequest>();
+            3.Times(i =>
+            {
+                var reclaim = package.Reclaims.ElementAt(i);
+
+                request.Add(new CareChargeReclaimUpdateRequest
+                {
+                    Id = reclaim.Id,
+                    Cost = reclaim.Cost + 12.34m,
+                    SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks,
+                    ClaimCollector = ClaimCollector.Hackney
+                });
+            });
+
+            var response = await _fixture.RestClient
+                .PutAsync<IEnumerable<CarePackageReclaimResponse>>(
+                    $"api/v1/care-packages/{package.Id}/reclaims/care-charges/batch-update", request);
+
+            var reclaims = _fixture.DatabaseContext.CarePackageReclaims
+                .Where(r => r.CarePackageId == package.Id)
+                .ToList();
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            reclaims.Count.Should().Be(5 + 3);
+            reclaims
+                .Where(reclaim => request.Any(requestedReclaim => requestedReclaim.Id == reclaim.Id))
+                .Should().OnlyContain(r => r.Status == ReclaimStatus.Ended);
         }
 
         [Fact]

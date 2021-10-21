@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
@@ -81,7 +83,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
 
         /// <summary>Update single funded nursing care reclaim.</summary>
         /// <param name="fundedNursingCareUpdateRequest">The funded nursing care update request.</param>
-        /// <returns>The boolean response.</returns>
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
@@ -89,22 +90,40 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpPut("fnc")]
         public async Task<ActionResult<bool>> UpdateFundedNursingCare([FromBody] FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
         {
-            var result = await _updateCarePackageReclaimUseCase.UpdateCarePackageReclaim(fundedNursingCareUpdateRequest.ToDomain());
-            return Ok(result);
+            await _updateCarePackageReclaimUseCase.UpdateAsync(fundedNursingCareUpdateRequest.ToDomain());
+            return Ok();
         }
 
         /// <summary>Update single care charge reclaim.</summary>
         /// <param name="careChargeReclaimUpdateRequest">The care charge reclaim update request.</param>
-        /// <returns>The boolean response.</returns>
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPut("care-charges")]
-        public async Task<ActionResult<bool>> UpdateCareChargeReclaim([FromBody] CareChargeReclaimUpdateRequest careChargeReclaimUpdateRequest)
+        public async Task<ActionResult> UpdateCareChargeReclaim([FromBody] CareChargeReclaimUpdateRequest careChargeReclaimUpdateRequest)
         {
-            var result = await _updateCarePackageReclaimUseCase.UpdateCarePackageReclaim(careChargeReclaimUpdateRequest.ToDomain());
-            return Ok(result);
+            await _updateCarePackageReclaimUseCase.UpdateAsync(careChargeReclaimUpdateRequest.ToDomain());
+            return Ok();
+        }
+
+        /// <summary>Update single care charge reclaim.</summary>
+        /// <param name="requestedReclaims">List of care charge reclaims to be updated.</param>
+        /// <returns>List of updated care charge reclaims.</returns>
+        /// <response code="200">When operation is completed successfully.</response>
+        /// <response code="400">When requested reclaims belong to different care packages.</response>
+        /// <response code="404">When one of requested reclaims isn't found.</response>
+        /// <response code="422">When validation of requested reclaims failed.</response>
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        [HttpPut("care-charges/batch-update")] // TODO: VK: Temporary route, probably merge with single care charge update
+        public async Task<ActionResult<IEnumerable<CarePackageReclaimResponse>>> UpdateCareChargeReclaims(List<CareChargeReclaimUpdateRequest> requestedReclaims)
+        {
+            var result = await _updateCarePackageReclaimUseCase.UpdateListAsync(requestedReclaims.ToDomain().ToList());
+            return Ok(result.ToResponse());
         }
 
         /// <summary>Return single care charge reclaim.</summary>
