@@ -34,6 +34,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         private readonly IApproveCarePackageUseCase _approveCarePackageUseCase;
         private readonly IDeclineCarePackageUseCase _declineCarePackageUseCase;
         private readonly IConfirmS117ServiceUserUseCase _confirmS117ServiceUserUseCase;
+        private readonly IDeleteCarePackageUseCase _deleteCarePackageUseCase;
 
         public CarePackagesController(
             ICreateCarePackageUseCase createCarePackageUseCase, ICarePackageOptionsUseCase carePackageOptionsUseCase,
@@ -42,7 +43,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             IAssignCarePlanUseCase assignCarePlanUseCase, IGetCarePackageHistoryUseCase getCarePackageHistoryUseCase,
             ICancelCarePackageUseCase cancelCarePackageUseCase, IEndCarePackageUseCase endCarePackageUseCase,
             IApproveCarePackageUseCase approveCarePackageUseCase, IDeclineCarePackageUseCase declineCarePackageUseCase,
-            IConfirmS117ServiceUserUseCase confirmS117ServiceUserUseCase)
+            IConfirmS117ServiceUserUseCase confirmS117ServiceUserUseCase, IDeleteCarePackageUseCase deleteCarePackageUseCase)
         {
             _createCarePackageUseCase = createCarePackageUseCase;
             _carePackageOptionsUseCase = carePackageOptionsUseCase;
@@ -57,6 +58,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             _approveCarePackageUseCase = approveCarePackageUseCase;
             _declineCarePackageUseCase = declineCarePackageUseCase;
             _confirmS117ServiceUserUseCase = confirmS117ServiceUserUseCase;
+            _deleteCarePackageUseCase = deleteCarePackageUseCase;
         }
 
         /// <summary>Creates a new care package.</summary>
@@ -288,6 +290,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         public async Task<ActionResult> ConfirmS117ServiceUser(Guid carePackageId)
         {
             await _confirmS117ServiceUserUseCase.ExecuteAsync(carePackageId);
+            return Ok();
+        }
+
+        //TODO temp endpoint will be deleted
+        /// <summary>Delete Care Package.</summary>
+        /// <param name="carePackageId">An unique identifier of a package.</param>
+        [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpDelete("{carePackageId}")]
+        public async Task<ActionResult> DeletePackage(Guid carePackageId)
+        {
+            await _deleteCarePackageUseCase.ExecuteAsync(carePackageId);
             return Ok();
         }
     }
