@@ -33,6 +33,8 @@ functions:
         CONNECTION_STRING: Host=${ssm:/hasc-api/${self:provider.stage}/postgres-hostname};Port=${ssm:/hasc-api/${self:provider.stage}/postgres-port};Database=${ssm:/hasc-api/${self:provider.stage}/postgres-database};Username=${ssm:/hasc-api/${self:provider.stage}/postgres-username};Password=${ssm:/hasc-api/${self:provider.stage}/postgres-password}
         HASCHttpClients__TransactionsBaseUrl: ${ssm:/hasc-api/${self:provider.stage}/TRANSACTIONS-BASE-URL}
         HASCHttpClients__TransactionsApiKey: ${ssm:/hasc-api/${self:provider.stage}/TRANSACTIONS-API-KEY}
+        ResidentsAPI__BaseUrl: ${ssm:/hasc-api/${self:provider.stage}/RESIDENTS-BASE-URL}
+        ResidentsAPI__ApiKey: ${ssm:/hasc-api/${self:provider.stage}/RESIDENTS-API-KEY}
     events:
       - http:
           path: /{proxy+}
