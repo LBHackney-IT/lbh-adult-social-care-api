@@ -29,11 +29,18 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
         public async Task<CarePackageReclaimDomain> CreateAsync(CarePackageReclaim carePackageReclaim)
         {
             var carePackage = await _dbContext.CarePackages
+                .Include(cp => cp.Details)
                 .FirstOrDefaultAsync(item => item.Id == carePackageReclaim.CarePackageId);
 
             if (carePackage == null)
             {
                 throw new EntityNotFoundException($"Unable to locate care package for {carePackageReclaim.CarePackageId}");
+            }
+
+            if (carePackageReclaim.SubType == ReclaimSubType.CareChargeProvisional)
+            {
+                var coreCostDetail = carePackage.Details.FirstOrDefault(d => d.Type is PackageDetailType.CoreCost);
+                if (coreCostDetail != null) carePackageReclaim.StartDate = coreCostDetail.StartDate;
             }
 
             var entry = await _dbContext.CarePackageReclaims.AddAsync(carePackageReclaim);
