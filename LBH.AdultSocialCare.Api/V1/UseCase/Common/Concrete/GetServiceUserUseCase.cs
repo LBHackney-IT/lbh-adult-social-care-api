@@ -41,8 +41,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                         FirstName = item.FirstName,
                         LastName = item.LastName,
                         DateOfBirth = item.DateOfBirth,
-                        AddressLine1 = item.Address.Address,
-                        PostCode = item.Address.Postcode
+                        AddressLine1 = item.Address?.Address,
+                        PostCode = item.Address?.Postcode
                     };
 
                     await _serviceUserGateway.CreateAsync(newServiceUserDomain.ToEntity());
