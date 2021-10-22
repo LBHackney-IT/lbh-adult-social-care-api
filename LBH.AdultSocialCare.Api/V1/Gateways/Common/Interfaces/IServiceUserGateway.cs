@@ -15,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
 
         Task<ServiceUserDomain> GetAsync(int hackneyId);
 
-        Task<ServiceUser> GetUsingIdAsync(Guid serviceUserId);
+        Task<ServiceUser> GetByIdAsync(Guid serviceUserId);
 
         public Task<PagedList<ServiceUserDomain>> GetAllAsync(RequestParameters parameters, string serviceUserName);
 
