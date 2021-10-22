@@ -32,11 +32,11 @@ namespace HttpServices.Services.Concrete
         {
             var url = new UrlFormatter()
                 .SetBaseUrl("residents")
-                .AddParameter("id", request.HackneyId)
-                .AddParameter("firstName", request.FirstName)
-                .AddParameter("lastName", request.LastName)
+                .AddParameter("mosaic_id", request.HackneyId)
+                .AddParameter("first_name", request.FirstName)
+                .AddParameter("last_name", request.LastName)
                 .AddParameter("postCode", request.PostCode)
-                .AddParameter("dateOfBirth", request.DateOfBirth)
+                .AddParameter("date_of_birth", request.DateOfBirth)
                 .ToString();
 
             return await _restClient
