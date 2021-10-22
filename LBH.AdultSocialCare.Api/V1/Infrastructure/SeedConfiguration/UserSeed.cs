@@ -37,7 +37,19 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
             };
             passwordHasher.HashPassword(userTwo, "Admin*123");
 
-            builder.HasData(userOne, userTwo);
+            var userThree = new User
+            {
+                Id = new Guid("3c44e4e1-78b8-471f-9f08-5081a0a534e9"),
+                Name = "Burak Ozkan",
+                Email = "burak@gmail.com",
+                UserName = "burak@gmail.com",
+                PhoneNumber = "9046464646",
+                LockoutEnabled = false,
+                ConcurrencyStamp = "4d24dcde-08b2-4e04-b4f5-c475fab1a22d"
+            };
+            passwordHasher.HashPassword(userTwo, "Admin*123");
+
+            builder.HasData(userOne, userTwo, userThree);
         }
     }
 }
