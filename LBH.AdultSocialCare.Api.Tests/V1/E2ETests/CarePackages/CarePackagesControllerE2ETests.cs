@@ -161,7 +161,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             };
 
             _fixture.OutgoingRestClient
-                .Setup(c => c.GetAsync<ServiceUserInformationResponse>($"residents?id={request.HackneyUserId}", It.IsAny<string>()))
+                .Setup(c => c.GetAsync<ServiceUserInformationResponse>($"residents?mosaic_id={request.HackneyUserId}", It.IsAny<string>()))
                 .ReturnsAsync(new ServiceUserInformationResponse
                 {
                     Residents = new List<ResidentResponse>
