@@ -75,6 +75,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     packageResponse.Notes = packageHistory.OrderByDescending(h => h.Id).ToResponse();
                 }
 
+                var (grossTotal, netTotal) = CalculateTotals(coreCost, additionalNeeds, carePackage.Reclaims.ToList());
+                packageResponse.GrossTotal = grossTotal;
+                packageResponse.NetTotal = netTotal;
+
                 packagesResponse.Add(packageResponse);
             }
 
@@ -157,6 +161,40 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 ReclaimType.Fnc => "Package Reclaim - Funded Nursing Care",
                 _ => "Package Reclaim"
             };
+        }
+
+        private static (decimal, decimal) CalculateTotals(CarePackageDetail coreCost, IReadOnlyCollection<CarePackageDetail> additionalNeeds, IReadOnlyCollection<CarePackageReclaim> reclaims)
+        {
+            decimal grossTotal = 0;
+            decimal netTotal = 0;
+
+            // Add core cost
+            if (coreCost != null)
+            {
+                grossTotal += coreCost.Cost;
+                netTotal += coreCost.Cost;
+            }
+
+            // Add weekly additional needs only
+            var weeklyAdditionalNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.Weekly).ToList();
+            foreach (var need in weeklyAdditionalNeeds)
+            {
+                grossTotal += need.Cost;
+                netTotal += need.Cost;
+            }
+
+            // Add reclaims
+            foreach (var reclaim in reclaims)
+            {
+                grossTotal += reclaim.Cost;
+
+                if (reclaim.ClaimCollector.Equals(ClaimCollector.Hackney))
+                {
+                    netTotal += reclaim.Cost;
+                }
+            }
+
+            return (grossTotal, netTotal);
         }
     }
 }
