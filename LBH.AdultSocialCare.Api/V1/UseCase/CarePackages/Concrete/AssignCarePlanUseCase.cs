@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Common.Exceptions.CustomExceptions;
-using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Gateways;
@@ -19,15 +17,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
     {
         private readonly IGetServiceUserUseCase _getServiceUserUseCase;
         private readonly ICarePackageGateway _carePackageGateway;
+        private readonly IEnsureSingleActivePackageTypePerUserUseCase _ensureSingleActivePackageTypePerUserUseCase;
         private readonly IDatabaseManager _dbManager;
         private readonly IFileStorage _fileStorage;
 
         public AssignCarePlanUseCase(
             IGetServiceUserUseCase getServiceUserUseCase, ICarePackageGateway carePackageGateway,
+            IEnsureSingleActivePackageTypePerUserUseCase ensureSingleActivePackageTypePerUserUseCase,
             IDatabaseManager dbManager, IFileStorage fileStorage)
         {
             _getServiceUserUseCase = getServiceUserUseCase;
             _carePackageGateway = carePackageGateway;
+            _ensureSingleActivePackageTypePerUserUseCase = ensureSingleActivePackageTypePerUserUseCase;
             _dbManager = dbManager;
             _fileStorage = fileStorage;
         }
@@ -35,12 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task ExecuteAsync(CarePlanAssignmentDomain carePlanAssignment)
         {
             var serviceUser = await _getServiceUserUseCase.GetServiceUserInformation(carePlanAssignment.HackneyUserId);
-            var packagesCount = await _carePackageGateway.GetServiceUserActivePackagesCount(serviceUser.Id, carePlanAssignment.PackageType);
-
-            if (packagesCount > 0)
-            {
-                throw new ApiException($"User has an active {carePlanAssignment.PackageType.GetDisplayName()} already");
-            }
+            await _ensureSingleActivePackageTypePerUserUseCase.ExecuteAsync(serviceUser.Id, carePlanAssignment.PackageType);
 
             var carePlanFileUrl = await UploadCarePlan(carePlanAssignment.CarePlanFile);
 

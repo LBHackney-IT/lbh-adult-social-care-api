@@ -32,12 +32,12 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
         PackagePoIssued = 9,
 
         [Display(Name = "Care Package rejected by")]
-        RejectedId = 10,
+        Rejected = 10,
 
         [Display(Name = "Package Ended")]
-        BrokeredEndedId = 11,
+        BrokeredEnded = 11,
 
         [Display(Name = "Care Package cancelled by")]
-        CancelledId = 12
+        Cancelled = 12
     }
 }

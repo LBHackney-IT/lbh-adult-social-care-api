@@ -74,8 +74,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         [Fact]
         public async Task ShouldUpdateCarePackage()
         {
-            var carePackage = _fixture.Generator.CreateCarePackage();
-            var carePackageSettings = _fixture.Generator.CreateCarePackageSettings(carePackage.Id);
+            // using local fixture to isolate this test from data created by other tests
+            using var localFixture = new MockWebApplicationFactory();
+
+            var carePackage = localFixture.Generator.CreateCarePackage();
+            var carePackageSettings = localFixture.Generator.CreateCarePackageSettings(carePackage.Id);
 
             var updatedCarePackageSettings = new CarePackageSettings
             {
@@ -93,11 +96,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             var carePackageUpdateRequest =
                 TestDataHelper.CarePackageUpdateRequest(carePackage, updatedCarePackageSettings);
 
-            var response = await _fixture.RestClient
+            var response = await localFixture.RestClient
                 .PutAsync<CarePackagePlainResponse>($"api/v1/care-packages/{carePackage.Id}", carePackageUpdateRequest)
                 .ConfigureAwait(false);
 
-            var packageSettingsEntity = _fixture.DatabaseContext.CarePackageSettings.SingleOrDefault(ps => ps.CarePackageId.Equals(carePackage.Id));
+            var packageSettingsEntity = localFixture.DatabaseContext.CarePackageSettings.SingleOrDefault(ps => ps.CarePackageId.Equals(carePackage.Id));
 
             Assert.Equal(HttpStatusCode.OK, response.Message.StatusCode);
             response.Content.Id.Should().Be(carePackage.Id);
@@ -120,7 +123,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         [Fact]
         public async Task ShouldSubmitPackage()
         {
-            var package = _fixture.Generator.CreateCarePackage(type: PackageType.NursingCare);
+            var package = _fixture.Generator.CreateCarePackage(PackageType.NursingCare);
 
             var request = new CarePackageSubmissionRequest
             {
@@ -241,8 +244,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
-        [Fact]
-        public async Task ShouldApprovePackage()
+        [Theory]
+        [InlineData("end", PackageStatus.Ended, HistoryStatus.BrokeredEnded)]
+        [InlineData("cancel", PackageStatus.Cancelled, HistoryStatus.Cancelled)]
+        [InlineData("approve", PackageStatus.Approved, HistoryStatus.PackageApproved)]
+        [InlineData("decline", PackageStatus.Rejected, HistoryStatus.Rejected)]
+        public async Task ShouldEndPackage(string endpoint, PackageStatus packageStatus, HistoryStatus historyStatus)
         {
             var package = _generator.CreateCarePackage();
 
@@ -252,7 +259,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             };
 
             var response = await _fixture.RestClient
-                .PostAsync<CarePackagePlainResponse>($"api/v1/care-packages/{package.Id}/approve", request);
+                .PostAsync<CarePackagePlainResponse>($"api/v1/care-packages/{package.Id}/{endpoint}", request);
 
             package = _fixture.DatabaseContext.CarePackages
                 .FirstOrDefault(p => p.Id == package.Id);
@@ -262,95 +269,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
 
             package?.Should().NotBeNull();
-            package?.Status.Should().Be(PackageStatus.Approved);
+            package?.Status.Should().Be(packageStatus);
 
             carePackageHistory?.Should().NotBeNull();
             carePackageHistory?.Description.Should().Be(request.Notes);
-            carePackageHistory?.Status.Should().Be(HistoryStatus.PackageApproved);
-        }
-
-        [Fact]
-        public async Task ShouldCancelPackage()
-        {
-            var package = _generator.CreateCarePackage();
-
-            var request = new CarePackageChangeStatusRequest
-            {
-                Notes = "Test"
-            };
-
-            var response = await _fixture.RestClient
-                .PostAsync<CarePackagePlainResponse>($"api/v1/care-packages/{package.Id}/cancel", request);
-
-            package = _fixture.DatabaseContext.CarePackages
-                .FirstOrDefault(p => p.Id == package.Id);
-            var carePackageHistory = _fixture.DatabaseContext.CarePackageHistories
-                .FirstOrDefault(h => h.CarePackageId == package.Id);
-
-            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            package?.Should().NotBeNull();
-            package?.Status.Should().Be(PackageStatus.Cancelled);
-
-            carePackageHistory?.Should().NotBeNull();
-            carePackageHistory?.Description.Should().Be(request.Notes);
-            carePackageHistory?.Status.Should().Be(HistoryStatus.CancelledId);
-        }
-
-        [Fact]
-        public async Task ShouldEndPackage()
-        {
-            var package = _generator.CreateCarePackage();
-
-            var request = new CarePackageChangeStatusRequest
-            {
-                Notes = "Test"
-            };
-
-            var response = await _fixture.RestClient
-                .PostAsync<CarePackagePlainResponse>($"api/v1/care-packages/{package.Id}/end", request);
-
-            package = _fixture.DatabaseContext.CarePackages
-                .FirstOrDefault(p => p.Id == package.Id);
-            var carePackageHistory = _fixture.DatabaseContext.CarePackageHistories
-                .FirstOrDefault(h => h.CarePackageId == package.Id);
-
-            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            package?.Should().NotBeNull();
-            package?.Status.Should().Be(PackageStatus.Ended);
-
-            carePackageHistory?.Should().NotBeNull();
-            carePackageHistory?.Description.Should().Be(request.Notes);
-            carePackageHistory?.Status.Should().Be(HistoryStatus.BrokeredEndedId);
-        }
-
-        [Fact]
-        public async Task ShouldDeclinePackage()
-        {
-            var package = _generator.CreateCarePackage();
-
-            var request = new CarePackageChangeStatusRequest
-            {
-                Notes = "Test"
-            };
-
-            var response = await _fixture.RestClient
-                .PostAsync<CarePackagePlainResponse>($"api/v1/care-packages/{package.Id}/decline", request);
-
-            package = _fixture.DatabaseContext.CarePackages
-                .FirstOrDefault(p => p.Id == package.Id);
-            var carePackageHistory = _fixture.DatabaseContext.CarePackageHistories
-                .FirstOrDefault(h => h.CarePackageId == package.Id);
-
-            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            package?.Should().NotBeNull();
-            package?.Status.Should().Be(PackageStatus.Rejected);
-
-            carePackageHistory?.Should().NotBeNull();
-            carePackageHistory?.Description.Should().Be(request.Notes);
-            carePackageHistory?.Status.Should().Be(HistoryStatus.RejectedId);
+            carePackageHistory?.Status.Should().Be(historyStatus);
         }
 
         [Fact]
