@@ -21,7 +21,7 @@ namespace HttpServices.Services.Concrete
         {
             var url = new UrlFormatter()
                 .SetBaseUrl("residents")
-                .AddParameter("id", hackneyId)
+                .AddParameter("mosaic_id", hackneyId)
                 .ToString();
 
             return await _restClient
