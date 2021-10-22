@@ -183,16 +183,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 netTotal += need.Cost;
             }
 
-            // Add reclaims
-            foreach (var reclaim in reclaims)
-            {
-                grossTotal += reclaim.Cost;
-
-                if (reclaim.ClaimCollector.Equals(ClaimCollector.Hackney))
-                {
-                    netTotal += reclaim.Cost;
-                }
-            }
+            // Deduct reclaims collected by supplier from package net cost
+            netTotal = reclaims.Where(reclaim => reclaim.ClaimCollector.Equals(ClaimCollector.Supplier))
+                .Aggregate(netTotal, (current, reclaim) => current - reclaim.Cost);
 
             return (grossTotal, netTotal);
         }
