@@ -48,7 +48,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
         {
             var client = await _databaseContext.ServiceUsers
                 .Where(c => c.HackneyId.Equals(hackneyId))
-                .SingleOrDefaultAsync();
+                .FirstOrDefaultAsync();
 
             return client.ToDomain();
         }
