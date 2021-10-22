@@ -41,6 +41,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 .AddHttpClient<IResidentsService, ResidentsService>(client =>
                 {
                     client.BaseAddress = new Uri(configuration["ResidentsAPI:BaseUrl"]);
+                    client.DefaultRequestHeaders.Add("X-Api-Key", configuration["ResidentsAPI:ApiKey"]);
                 })
                 .ConfigureMessageHandlers();
         }
