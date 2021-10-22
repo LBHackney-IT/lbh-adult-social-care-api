@@ -161,5 +161,15 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                     Postcode = f.Address.ZipCode()
                 });
         }
+
+        public static ServiceUser CreateServiceUser()
+        {
+            return new Faker<ServiceUser>()
+                .RuleFor(u => u.FirstName, f => f.Name.FirstName())
+                .RuleFor(u => u.LastName, f => f.Name.LastName())
+                .RuleFor(u => u.AddressLine1, f => f.Address.FullAddress())
+                .RuleFor(u => u.DateOfBirth, f => f.Date.Past(60, DateTime.Now).AddYears(-60))
+                .RuleFor(u => u.HackneyId, f => f.Random.Int());
+        }
     }
 }

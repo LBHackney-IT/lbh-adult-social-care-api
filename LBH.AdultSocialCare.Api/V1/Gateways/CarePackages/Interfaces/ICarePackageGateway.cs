@@ -30,7 +30,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
 
         Task<List<CarePackage>> GetServiceUserPackagesAsync(Guid serviceUserId, PackageFields fields = PackageFields.None, bool trackChanges = false);
 
-        Task<int> GetServiceUserActivePackagesCount(Guid serviceUserId, PackageType packageType);
+        Task<int> GetServiceUserActivePackagesCount(Guid serviceUserId, PackageType packageType, Guid? excludePackageId = null);
 
         Task DeletePackage(Guid packageId);
     }

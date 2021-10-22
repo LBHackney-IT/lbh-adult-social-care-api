@@ -1,4 +1,3 @@
-using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
@@ -7,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 {
@@ -86,6 +86,16 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             _context.SaveChanges();
 
             return packageSettings;
+        }
+
+        public ServiceUser CreateServiceUser()
+        {
+            var serviceUser = TestDataHelper.CreateServiceUser();
+
+            _context.ServiceUsers.Add(serviceUser);
+            _context.SaveChanges();
+
+            return serviceUser;
         }
     }
 }

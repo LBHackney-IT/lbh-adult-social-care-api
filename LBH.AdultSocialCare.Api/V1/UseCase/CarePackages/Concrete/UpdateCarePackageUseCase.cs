@@ -8,13 +8,11 @@ using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -24,18 +22,23 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly IDatabaseManager _dbManager;
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly ICarePackageSettingsGateway _carePackageSettings;
+        private readonly IEnsureSingleActivePackageTypePerUserUseCase _ensureSingleActivePackageTypePerUserUseCase;
 
-        public UpdateCarePackageUseCase(IMapper mapper, IDatabaseManager dbManager, ICarePackageGateway carePackageGateway, ICarePackageSettingsGateway carePackageSettings)
+        public UpdateCarePackageUseCase(IMapper mapper, IDatabaseManager dbManager, ICarePackageGateway carePackageGateway,
+            ICarePackageSettingsGateway carePackageSettings, IEnsureSingleActivePackageTypePerUserUseCase ensureSingleActivePackageTypePerUserUseCase)
         {
             _mapper = mapper;
             _dbManager = dbManager;
             _carePackageGateway = carePackageGateway;
             _carePackageSettings = carePackageSettings;
+            _ensureSingleActivePackageTypePerUserUseCase = ensureSingleActivePackageTypePerUserUseCase;
         }
 
         public async Task<CarePackagePlainResponse> UpdateAsync(Guid carePackageId, CarePackageUpdateDomain carePackageUpdateDomain)
         {
             var package = await _carePackageGateway.GetPackagePlainAsync(carePackageId, true).EnsureExistsAsync($"Care package with id {carePackageId} not found");
+            await _ensureSingleActivePackageTypePerUserUseCase.ExecuteAsync(package.ServiceUserId, carePackageUpdateDomain.PackageType, package.Id);
+
             var packageSettings = await _carePackageSettings.GetPackageSettingsPlainAsync(carePackageId, true) ?? new CarePackageSettings
             {
                 CarePackageId = package.Id,

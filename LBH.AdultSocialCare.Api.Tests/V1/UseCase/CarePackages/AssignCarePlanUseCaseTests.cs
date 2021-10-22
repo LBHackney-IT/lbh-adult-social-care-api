@@ -23,7 +23,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private readonly Mock<ICarePackageGateway> _carePackageGatewayMock;
         private readonly Mock<IDatabaseManager> _dbManagerMock;
         private readonly AssignCarePlanUseCase _useCase;
-        private readonly Mock<IFileStorage> _fileStorageMock;
 
         public AssignCarePlanUseCaseTests()
         {
@@ -38,9 +37,14 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             _carePackageGatewayMock = new Mock<ICarePackageGateway>();
             _dbManagerMock = new Mock<IDatabaseManager>();
-            _fileStorageMock = new Mock<IFileStorage>();
 
-            _useCase = new AssignCarePlanUseCase(getServiceUseUseCaseMock.Object, _carePackageGatewayMock.Object, _dbManagerMock.Object, _fileStorageMock.Object);
+            var fileStorageMock = new Mock<IFileStorage>();
+            var ensureSingleActivePackageTypePerUserUseCase = new EnsureSingleActivePackageTypePerUserUseCase(_carePackageGatewayMock.Object);
+
+            _useCase = new AssignCarePlanUseCase(
+                getServiceUseUseCaseMock.Object, _carePackageGatewayMock.Object,
+                ensureSingleActivePackageTypePerUserUseCase,
+                _dbManagerMock.Object, fileStorageMock.Object);
         }
 
         [Fact]
@@ -49,7 +53,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             var newPackage = new CarePackage();
 
             _carePackageGatewayMock
-                .Setup(g => g.GetServiceUserActivePackagesCount(UserConstants.DefaultApiUserGuid, PackageType.NursingCare))
+                .Setup(g => g.GetServiceUserActivePackagesCount(UserConstants.DefaultApiUserGuid, PackageType.NursingCare, null))
                 .ReturnsAsync(0);
             _carePackageGatewayMock
                 .Setup(g => g.Create(It.IsAny<CarePackage>()))
@@ -81,7 +85,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         public void ShouldFailWhenUserHaveActivePackageOfSameType()
         {
             _carePackageGatewayMock
-                .Setup(g => g.GetServiceUserActivePackagesCount(UserConstants.DefaultApiUserGuid, PackageType.NursingCare))
+                .Setup(g => g.GetServiceUserActivePackagesCount(UserConstants.DefaultApiUserGuid, PackageType.NursingCare, null))
                 .ReturnsAsync(1);
 
             var assignment = new CarePlanAssignmentDomain

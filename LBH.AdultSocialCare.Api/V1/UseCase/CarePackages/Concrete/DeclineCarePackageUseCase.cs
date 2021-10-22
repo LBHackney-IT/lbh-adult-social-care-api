@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
@@ -33,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             package.Histories.Add(new CarePackageHistory
             {
-                Status = HistoryStatus.RejectedId,
+                Status = HistoryStatus.Rejected,
                 Description = notes
             });
 
