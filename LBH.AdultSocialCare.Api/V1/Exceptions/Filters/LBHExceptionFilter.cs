@@ -66,8 +66,10 @@ namespace LBH.AdultSocialCare.Api.V1.Exceptions.Filters
                     {
                         // Unhandled errors
 #if !DEBUG
-                        var msg = "An unhandled error occurred.";
-                        string stack = null;
+                        /*var msg = "An unhandled error occurred.";
+                        string stack = null;*/
+var msg = context.Exception.GetBaseException().Message;
+                        string stack = context.Exception.StackTrace;
                         LambdaLogger.Log($"Application threw error: {JsonConvert.SerializeObject(context.Exception)}");
                         
 #else
