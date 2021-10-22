@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace LBH.AdultSocialCare.Api.Tests.Extensions
+namespace LBH.AdultSocialCare.Api.V1.Extensions
 {
     // ReSharper disable once InconsistentNaming
     public static class ICollectionExtensions

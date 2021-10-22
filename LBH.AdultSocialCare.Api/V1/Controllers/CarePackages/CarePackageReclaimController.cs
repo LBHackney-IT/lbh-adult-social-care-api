@@ -1,18 +1,17 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
 {
@@ -29,14 +28,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         private readonly IGetFundedNursingCarePriceUseCase _getFundedNursingCarePriceUseCase;
         private readonly ICareChargeUseCase _getCareChargeUseCase;
         private readonly IGetSinglePackageCareChargeUseCase _getSinglePackageCareChargeUseCase;
+        private readonly IChangeCarePackageReclaimsStatusUseCase _changeCarePackageReclaimsStatusUseCase;
 
         public CarePackageReclaimController(ICreateCarePackageReclaimUseCase createCarePackageReclaimUseCase,
             IUpdateCarePackageReclaimUseCase updateCarePackageReclaimUseCase,
             IGetCarePackageReclaimUseCase getCarePackageReclaimUseCase,
             IGetFundedNursingCarePriceUseCase getFundedNursingCarePriceUseCase,
             ICareChargeUseCase getCareChargeUseCase,
-
-            IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase)
+            IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase,
+            IChangeCarePackageReclaimsStatusUseCase changeCarePackageReclaimsStatusUseCase)
         {
             _createCarePackageReclaimUseCase = createCarePackageReclaimUseCase;
             _updateCarePackageReclaimUseCase = updateCarePackageReclaimUseCase;
@@ -44,6 +44,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             _getFundedNursingCarePriceUseCase = getFundedNursingCarePriceUseCase;
             _getCareChargeUseCase = getCareChargeUseCase;
             _getSinglePackageCareChargeUseCase = getSinglePackageCareChargeUseCase;
+            _changeCarePackageReclaimsStatusUseCase = changeCarePackageReclaimsStatusUseCase;
         }
 
         /// <summary>Creates a new funded nursing care reclaim.</summary>
@@ -76,30 +77,47 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
 
         /// <summary>Update single funded nursing care reclaim.</summary>
         /// <param name="fundedNursingCareUpdateRequest">The funded nursing care update request.</param>
-        /// <returns>The boolean response.</returns>
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPut("fnc")]
-        public async Task<ActionResult<bool>> UpdateFundedNursingCare([FromBody] FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
+        public async Task<ActionResult> UpdateFundedNursingCare([FromBody] FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
         {
-            var result = await _updateCarePackageReclaimUseCase.UpdateCarePackageReclaim(fundedNursingCareUpdateRequest.ToDomain());
-            return Ok(result);
+            await _updateCarePackageReclaimUseCase.UpdateAsync(fundedNursingCareUpdateRequest.ToDomain());
+            return Ok();
         }
 
         /// <summary>Update single care charge reclaim.</summary>
         /// <param name="careChargeReclaimUpdateRequest">The care charge reclaim update request.</param>
-        /// <returns>The boolean response.</returns>
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPut("care-charges")]
-        public async Task<ActionResult<bool>> UpdateCareChargeReclaim([FromBody] CareChargeReclaimUpdateRequest careChargeReclaimUpdateRequest)
+        public async Task<ActionResult> UpdateCareChargeReclaim([FromBody] CareChargeReclaimUpdateRequest careChargeReclaimUpdateRequest)
         {
-            var result = await _updateCarePackageReclaimUseCase.UpdateCarePackageReclaim(careChargeReclaimUpdateRequest.ToDomain());
-            return Ok(result);
+            await _updateCarePackageReclaimUseCase.UpdateAsync(careChargeReclaimUpdateRequest.ToDomain());
+            return Ok();
+        }
+
+        /// <summary>Update single care charge reclaim.</summary>
+        /// <param name="requestedReclaims">List of care charge reclaims to be updated.</param>
+        /// <returns>List of updated care charge reclaims.</returns>
+        /// <response code="200">When operation is completed successfully.</response>
+        /// <response code="400">When requested reclaims belong to different care packages.</response>
+        /// <response code="404">When one of requested reclaims isn't found.</response>
+        /// <response code="422">When validation of requested reclaims failed.</response>
+        [ProducesResponseType(typeof(IEnumerable<CarePackageReclaimResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        [HttpPut("care-charges/batch-update")] // TODO: VK: Temporary route, probably merge with single care charge update
+        public async Task<ActionResult<IEnumerable<CarePackageReclaimResponse>>> UpdateCareChargeReclaims(List<CareChargeReclaimUpdateRequest> requestedReclaims)
+        {
+            var result = await _updateCarePackageReclaimUseCase.UpdateListAsync(requestedReclaims.ToDomain().ToList());
+            return Ok(result.ToResponse());
         }
 
         /// <summary>Return single care charge reclaim.</summary>
@@ -174,6 +192,38 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         {
             var singlePackageCareCharge = await _getSinglePackageCareChargeUseCase.GetSinglePackageCareCharge(carePackageId).ConfigureAwait(false);
             return Ok(singlePackageCareCharge);
+        }
+
+        /// <summary>
+        /// Cancels a reclaim with a given reclaimId
+        /// </summary>
+        /// <param name="reclaimId">The unique identifier of reclaim to cancel.</param>
+        /// <response code="200">When operation has been completed successfully.</response>
+        /// <response code="404">When reclaim with given id doesn't exists.</response>
+        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        [HttpPut("care-charges/{reclaimId}/cancel")]
+        public async Task<ActionResult<CarePackageReclaimResponse>> CancelReclaim(Guid reclaimId)
+        {
+            var reclaim = await _changeCarePackageReclaimsStatusUseCase.ExecuteAsync(reclaimId, ReclaimStatus.Cancelled);
+            return Ok(reclaim.ToResponse());
+        }
+
+        /// <summary>
+        /// Mark a reclaim with a given reclaimId as ended.
+        /// </summary>
+        /// <param name="reclaimId">The unique identifier of reclaim to end.</param>
+        /// <response code="200">When operation has been completed successfully.</response>
+        /// <response code="404">When reclaim with given id doesn't exists.</response>
+        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        [HttpPut("care-charges/{reclaimId}/end")]
+        public async Task<ActionResult<CarePackageReclaimResponse>> EndReclaim(Guid reclaimId)
+        {
+            var reclaim = await _changeCarePackageReclaimsStatusUseCase.ExecuteAsync(reclaimId, ReclaimStatus.Ended);
+            return Ok(reclaim.ToResponse());
         }
     }
 }

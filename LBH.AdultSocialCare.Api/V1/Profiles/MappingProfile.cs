@@ -103,10 +103,10 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             CreateMap<FundedNursingCareCreationRequest, CarePackageReclaimCreationDomain>();
             CreateMap<CareChargeReclaimCreationRequest, CarePackageReclaimCreationDomain>();
-            CreateMap<FundedNursingCareUpdateRequest, CarePackageReclaimForUpdateDomain>();
-            CreateMap<CareChargeReclaimUpdateRequest, CarePackageReclaimForUpdateDomain>();
-            CreateMap<CarePackageReclaim, CarePackageReclaimForUpdateDomain>();
-            CreateMap<CarePackageReclaimForUpdateDomain, CarePackageReclaim>();
+            CreateMap<FundedNursingCareUpdateRequest, CarePackageReclaimUpdateDomain>();
+            CreateMap<CareChargeReclaimUpdateRequest, CarePackageReclaimUpdateDomain>();
+            CreateMap<CarePackageReclaim, CarePackageReclaimUpdateDomain>();
+            CreateMap<CarePackageReclaimUpdateDomain, CarePackageReclaim>();
             CreateMap<CareChargePackagesDomain, CareChargePackagesResponse>();
             CreateMap<SinglePackageCareChargeDomain, SinglePackageCareChargeResponse>();
 

@@ -5,7 +5,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Xunit;
 
-namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.NursingCare
+namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
 {
     public class FundedNursingCarePriceGatewayTests : BaseInMemoryDatabaseTest
     {

@@ -8,15 +8,12 @@ using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
+namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
 {
     public class CarePackageBrokerageControllerE2ETests : IClassFixture<MockWebApplicationFactory>
     {

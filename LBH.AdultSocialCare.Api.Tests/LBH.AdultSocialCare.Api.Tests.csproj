@@ -40,6 +40,27 @@
 
   <ItemGroup>
     <Compile Remove="DataGenerator.cs" />
+    <Compile Remove="V1\E2ETests\Common\CarePackageBrokerageControllerE2ETests.cs" />
+    <Compile Remove="V1\E2ETests\Common\CarePackageReclaimControllerE2ETests.cs" />
+    <Compile Remove="V1\E2ETests\Common\CarePackagesControllerE2ETests.cs" />
+    <Compile Remove="V1\Gateways\Common\CarePackageGatewayTests.cs" />
+    <Compile Remove="V1\Helper\DatabaseEntityHelper.cs" />
+    <Compile Remove="V1\UseCase\Common\CarePackageSummaryUseCaseTest.cs" />
+    <Compile Remove="V1\UseCase\Common\CreateCarePackageUseCaseTests.cs" />
+    <Compile Remove="V1\UseCase\Common\GetCareChargePackagesUseCaseTests.cs" />
+    <Compile Remove="V1\UseCase\Common\GetCarePackageBrokerageUseCaseTest.cs" />
+    <Compile Remove="V1\UseCase\Common\GetSinglePackageCareChargeUseCaseTests.cs" />
+    <Compile Remove="V1\UseCase\Common\SubmitCarePackageUseCaseTest.cs" />
+    <Compile Remove="V1\UseCase\Common\UpdateCarePackageUseCaseTests.cs" />
+    <Compile Remove="V1\UseCase\Common\UpsertCarePackageBrokerageUseCaseTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="V1\Gateways\NursingCare" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="V1\Gateways\NursingCare" />
   </ItemGroup>
 
 </Project>

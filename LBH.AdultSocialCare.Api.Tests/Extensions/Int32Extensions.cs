@@ -13,11 +13,11 @@ namespace LBH.AdultSocialCare.Api.Tests.Extensions
             }
         }
 
-        public static void Times(this int count, Action func)
+        public static void Times(this int count, Action<int> func)
         {
             for (var i = 0; i < count; i++)
             {
-                func.Invoke();
+                func.Invoke(i);
             }
         }
     }

@@ -1,15 +1,12 @@
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
-using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Xunit;
 
-namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
+namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.CarePackages
 {
     public class CarePackageGatewayTests : BaseInMemoryDatabaseTest
     {

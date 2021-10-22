@@ -115,14 +115,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<CarePackageReclaimCreationDomain>(fundedNursingCareCreationRequest);
         }
 
-        public static CarePackageReclaimForUpdateDomain ToDomain(this CareChargeReclaimUpdateRequest carePackageReclaimUpdateRequest)
+        public static CarePackageReclaimUpdateDomain ToDomain(this CareChargeReclaimUpdateRequest carePackageReclaimUpdateRequest)
         {
-            return _mapper.Map<CarePackageReclaimForUpdateDomain>(carePackageReclaimUpdateRequest);
+            return _mapper.Map<CarePackageReclaimUpdateDomain>(carePackageReclaimUpdateRequest);
         }
 
-        public static CarePackageReclaimForUpdateDomain ToDomain(this FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
+        public static CarePackageReclaimUpdateDomain ToDomain(this FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
         {
-            return _mapper.Map<CarePackageReclaimForUpdateDomain>(fundedNursingCareUpdateRequest);
+            return _mapper.Map<CarePackageReclaimUpdateDomain>(fundedNursingCareUpdateRequest);
         }
 
         #endregion
