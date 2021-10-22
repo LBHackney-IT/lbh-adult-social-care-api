@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Common.Exceptions.CustomExceptions;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;

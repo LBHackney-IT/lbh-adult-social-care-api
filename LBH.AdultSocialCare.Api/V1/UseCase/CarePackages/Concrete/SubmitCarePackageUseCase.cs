@@ -9,6 +9,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -29,8 +30,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 .GetPackageAsync(packageId, PackageFields.None, true)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
-            // TODO: VK: Add validation for double submission
-
             ValidatePackage(package);
 
             package.ApproverId = submissionInfo.ApproverId;
@@ -50,6 +49,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             if (package.SupplierId is null)
             {
                 throw new ApiException("Supplier must be assigned to a package before submitting");
+            }
+
+            if (package.Status.NotIn(PackageStatus.New, PackageStatus.InProgress))
+            {
+                throw new ApiException("Package has been approved already");
             }
         }
     }
