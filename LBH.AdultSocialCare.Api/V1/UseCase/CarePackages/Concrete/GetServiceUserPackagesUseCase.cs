@@ -51,8 +51,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 var packageResponse = new ServiceUserPackageViewItemResponse
                 {
                     PackageId = carePackage.Id,
-                    PackageStatus = Enum.IsDefined(typeof(PackageStatus), carePackage.Status) ? carePackage.Status.GetDisplayName() : null,
-                    PackageType = Enum.IsDefined(typeof(PackageType), carePackage.PackageType) ? carePackage.PackageType.GetDisplayName() : null,
+                    PackageStatus = carePackage.Status.GetDisplayName(),
+                    PackageType = carePackage.PackageType.GetDisplayName(),
                     DateAssigned = carePackage.DateAssigned,
                     GrossTotal = 0,
                     NetTotal = 0,
@@ -96,10 +96,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 carePackageCostItem.Add(new CarePackageCostItemResponse
                 {
                     Id = package.Id,
-                    Name = Enum.IsDefined(typeof(PackageType), package.PackageType) ? package.PackageType.GetDisplayName() : null,
-                    Type = Enum.IsDefined(typeof(PackageType), package.PackageType) ? package.PackageType.GetDisplayName() : null,
+                    Name = package.PackageType.GetDisplayName(),
+                    Type = package.PackageType.GetDisplayName(),
                     CollectedBy = ClaimCollector.Hackney.GetDisplayName(),
-                    Status = Enum.IsDefined(typeof(PackageStatus), package.Status) ? package.Status.GetDisplayName() : null,
+                    Status = package.Status.GetDisplayName(),
                     StartDate = coreCost.StartDate,
                     EndDate = coreCost.EndDate,
                     WeeklyCost = coreCost.Cost
@@ -115,7 +115,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     Name = GetAdditionalNeedName(need.CostPeriod),
                     Type = "Additional Needs",
                     CollectedBy = ClaimCollector.Hackney.GetDisplayName(),
-                    Status = Enum.IsDefined(typeof(PackageStatus), package.Status) ? package.Status.GetDisplayName() : null,
+                    Status = package.Status.GetDisplayName(),
                     StartDate = need.StartDate,
                     EndDate = need.EndDate,
                     WeeklyCost = need.Cost
@@ -128,10 +128,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 carePackageCostItem.AddRange(reclaims.Select(reclaim => new CarePackageCostItemResponse
                 {
                     Id = reclaim.Id,
-                    Name = Enum.IsDefined(typeof(ReclaimSubType), reclaim.SubType) ? reclaim.SubType.GetDisplayName() : null,
+                    Name = Enum.IsDefined(typeof(ReclaimSubType), reclaim.SubType) ? reclaim.SubType.GetDisplayName() : GetCareChargeName(reclaim.Type),
                     Type = GetCareChargeName(reclaim.Type),
-                    CollectedBy = Enum.IsDefined(typeof(ClaimCollector), reclaim.ClaimCollector) ? reclaim.ClaimCollector.GetDisplayName() : null,
-                    Status = Enum.IsDefined(typeof(ReclaimStatus), reclaim.Status) ? reclaim.Status.GetDisplayName() : null,
+                    CollectedBy = reclaim.ClaimCollector.GetDisplayName(),
+                    Status = reclaim.Status.GetDisplayName(),
                     StartDate = reclaim.StartDate,
                     EndDate = reclaim.EndDate,
                     WeeklyCost = reclaim.Cost

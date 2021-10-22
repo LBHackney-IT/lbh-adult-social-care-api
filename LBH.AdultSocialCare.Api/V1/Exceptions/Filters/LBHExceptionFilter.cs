@@ -2,11 +2,8 @@ using Common.Exceptions.CustomExceptions;
 using Common.Exceptions.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
-using Amazon.Lambda.Core;
-using Newtonsoft.Json;
 
 namespace LBH.AdultSocialCare.Api.V1.Exceptions.Filters
 {
@@ -14,11 +11,8 @@ namespace LBH.AdultSocialCare.Api.V1.Exceptions.Filters
                     AttributeTargets.Method)] // Only use attribute on controller classes and action methods
     public class LBHExceptionFilter : ExceptionFilterAttribute
     {
-        private readonly ILogger _logger;
-
-        public LBHExceptionFilter(ILogger logger)
+        public LBHExceptionFilter()
         {
-            _logger = logger;
         }
 
         public override void OnException(ExceptionContext context)
@@ -66,12 +60,10 @@ namespace LBH.AdultSocialCare.Api.V1.Exceptions.Filters
                     {
                         // Unhandled errors
 #if !DEBUG
-                        /*var msg = "An unhandled error occurred.";
-                        string stack = null;*/
-var msg = context.Exception.GetBaseException().Message;
-                        string stack = context.Exception.StackTrace;
-                        LambdaLogger.Log($"Application threw error: {JsonConvert.SerializeObject(context.Exception)}");
-                        
+                        var msg = "An unhandled error occurred.";
+                        string stack = null;
+                        // LambdaLogger.Log($"Application threw error: {JsonConvert.SerializeObject(context.Exception)}");
+
 #else
                         var msg = context.Exception.GetBaseException().Message;
                         string stack = context.Exception.StackTrace;
