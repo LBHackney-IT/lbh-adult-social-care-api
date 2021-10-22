@@ -87,7 +87,6 @@ var msg = context.Exception.GetBaseException().Message;
 
             context.HttpContext.Response.ContentType = "application/problem+json";
             context.HttpContext.Response.StatusCode = statusCode;
-            // _logger.LogError($"Application threw error: {JsonConvert.SerializeObject(apiError)}");
 
             // always return a JSON result
             context.Result = new JsonResult(apiError);

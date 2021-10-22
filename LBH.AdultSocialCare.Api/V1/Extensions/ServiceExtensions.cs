@@ -91,11 +91,10 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 config.AddDebug();
                 config.AddEventSourceLogger();
 
-                /*if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
+                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
                 {
                     config.AddConsole();
-                }*/
-                config.AddConsole();
+                }
             });
         }
 
