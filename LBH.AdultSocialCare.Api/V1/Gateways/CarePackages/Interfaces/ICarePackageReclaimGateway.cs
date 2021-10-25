@@ -9,7 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
 {
     public interface ICarePackageReclaimGateway
     {
-        Task<CarePackageReclaimDomain> CreateAsync(CarePackageReclaim carePackageReclaim);
+        Task CreateAsync(CarePackageReclaim carePackageReclaim);
 
         Task<bool> UpdateAsync(CarePackageReclaimUpdateDomain carePackageReclaimUpdateDomain);
 
