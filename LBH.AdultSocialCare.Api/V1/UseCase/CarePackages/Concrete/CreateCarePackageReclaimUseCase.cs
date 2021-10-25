@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -39,6 +40,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             // Validate FNC
+            await ValidateFncAsync(reclaimCreationDomain, reclaimType, coreCostDetail);
+
+            var carePackageReclaim = reclaimCreationDomain.ToEntity();
+            carePackageReclaim.Type = reclaimType;
+
+            await _carePackageReclaimGateway.CreateAsync(carePackageReclaim);
+            await _dbManager.SaveAsync("Could not save care package reclaim to database");
+            return carePackageReclaim.ToDomain().ToResponse();
+        }
+
+        private async Task ValidateFncAsync(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType, CarePackageDetail coreCostDetail)
+        {
             if (reclaimType == ReclaimType.Fnc)
             {
                 // Check if FNC already added to package
@@ -65,13 +78,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     }
                 }
             }
-
-            var carePackageReclaim = reclaimCreationDomain.ToEntity();
-            carePackageReclaim.Type = reclaimType;
-
-            await _carePackageReclaimGateway.CreateAsync(carePackageReclaim);
-            await _dbManager.SaveAsync("Could not save care package reclaim to database");
-            return carePackageReclaim.ToDomain().ToResponse();
         }
     }
 }
