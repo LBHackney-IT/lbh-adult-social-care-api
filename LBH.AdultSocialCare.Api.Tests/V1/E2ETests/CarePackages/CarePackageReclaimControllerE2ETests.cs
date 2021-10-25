@@ -32,13 +32,14 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         public async Task ShouldCreateFundedNursingCareReclaimForExistingNursingCarePackage()
         {
             var package = _generator.CreateCarePackage(PackageType.NursingCare);
+            var packageDetails = _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
 
             var request = FundedNursingCareCreationRequest(package.Id);
 
             var response = await CreateFncReclaim(request);
 
             var carePackageReclaim = await _fixture.DatabaseContext.CarePackageReclaims
-                .FirstAsync(c => c.CarePackageId == package.Id);
+                .FirstOrDefaultAsync(c => c.CarePackageId == package.Id);
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -63,6 +64,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         public async Task ShouldReturnFundedNursingCareReclaim()
         {
             var package = _generator.CreateCarePackage(PackageType.NursingCare);
+            _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
 
             var request = FundedNursingCareCreationRequest(package.Id);
 
@@ -82,6 +84,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         public async Task ShouldUpdateFundedNursingCareReclaim()
         {
             var package = _generator.CreateCarePackage(PackageType.NursingCare);
+            _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
 
             var request = FundedNursingCareCreationRequest(package.Id);
 

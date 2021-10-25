@@ -40,7 +40,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             // Validate FNC
-            await ValidateFncAsync(reclaimCreationDomain, reclaimType, coreCostDetail);
+            await ValidateFncAsync(reclaimCreationDomain, reclaimType, coreCostDetail, carePackage);
 
             var carePackageReclaim = reclaimCreationDomain.ToEntity();
             carePackageReclaim.Type = reclaimType;
@@ -50,10 +50,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             return carePackageReclaim.ToDomain().ToResponse();
         }
 
-        private async Task ValidateFncAsync(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType, CarePackageDetail coreCostDetail)
+        private async Task ValidateFncAsync(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType, CarePackageDetail coreCostDetail, CarePackage carePackage)
         {
             if (reclaimType == ReclaimType.Fnc)
             {
+                // Ensure package type is nursing care
+                if (carePackage.PackageType != PackageType.NursingCare)
+                {
+                    throw new ApiException(
+                        $"FNC only allowed for nursing care package. Package with id {carePackage.Id} is invalid",
+                        HttpStatusCode.BadRequest);
+                }
+
                 // Check if FNC already added to package
                 var packageFnc = await _carePackageGateway.GetCarePackageReclaimsAsync(
                     reclaimCreationDomain.CarePackageId, ReclaimType.Fnc, reclaimCreationDomain.SubType, false);
