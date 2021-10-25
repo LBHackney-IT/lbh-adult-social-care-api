@@ -12,6 +12,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages
     [GenerateMappingFor(typeof(CarePackageDomain))]
     [GenerateMappingFor(typeof(CarePackagePlainDomain))]
     [GenerateListMappingFor(typeof(CarePackagePlainDomain))]
+    [GenerateListMappingFor(typeof(CarePackageApprovableListItemDomain))]
     public class CarePackage : BaseEntity
     {
         public CarePackage()

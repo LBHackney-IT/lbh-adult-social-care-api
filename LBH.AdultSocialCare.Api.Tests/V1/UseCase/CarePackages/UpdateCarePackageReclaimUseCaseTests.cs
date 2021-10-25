@@ -31,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             var carePackageGateway = new Mock<ICarePackageGateway>();
             _dbManager = new Mock<IDatabaseManager>();
 
-            _requestedIds = 3.ItemsOf(Guid.NewGuid).ToList();
+            _requestedIds = 3.ItemsOf(Guid.NewGuid);
 
             var packageId = Guid.NewGuid();
             _package = new CarePackage

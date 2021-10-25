@@ -7,6 +7,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
 {
@@ -31,6 +32,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
         Task<List<CarePackage>> GetServiceUserPackagesAsync(Guid serviceUserId, PackageFields fields = PackageFields.None, bool trackChanges = false);
 
         Task<int> GetServiceUserActivePackagesCount(Guid serviceUserId, PackageType packageType, Guid? excludePackageId = null);
+
+        Task<PagedList<CarePackageApprovableListItemDomain>> GetApprovablePackagesAsync(ApprovableCarePackagesQueryParameters parameters, PackageStatus[] statusesToInclude);
 
         Task DeletePackage(Guid packageId);
     }

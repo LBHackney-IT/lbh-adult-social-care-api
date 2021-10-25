@@ -30,6 +30,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
                                 && (fromDate == null || package.DateCreated >= fromDate)
                                 && (toDate == null || package.DateCreated <= toDate));
 
+        public static IQueryable<CarePackage> FilterApprovableCarePackages(this IQueryable<CarePackage> packages, Guid? serviceUserId, string serviceUserName, PackageStatus? packageStatus, PackageType? packageType, Guid? approverId, DateTimeOffset? fromDate, DateTimeOffset? toDate, PackageStatus[] statusesToInclude) =>
+            packages.Where(package => (serviceUserId == null || package.ServiceUserId.Equals(serviceUserId))
+                                      && (String.IsNullOrEmpty(serviceUserName)
+                                          || package.ServiceUser.FirstName.ToLower().Contains(serviceUserName.ToLower())
+                                          || package.ServiceUser.LastName.ToLower().Contains(serviceUserName.ToLower()))
+                                      && ((packageStatus == null && statusesToInclude.Contains(package.Status) || package.Status.Equals(packageStatus)))
+                                      && (packageType == null || package.Status.Equals(packageType))
+                                      && (approverId == null || package.ApproverId.Equals(approverId))
+                                      && (fromDate == null || package.DateCreated >= fromDate)
+                                      && (toDate == null || package.DateCreated <= toDate));
+
         public static IQueryable<User> FilterAppUsers(this IQueryable<User> users, string searchTerm = "") =>
             users.Where(u => (string.IsNullOrEmpty(searchTerm) || (EF.Functions.ILike(u.Name, $"%{searchTerm}%") || EF.Functions.ILike(u.Email, $"%{searchTerm}%"))));
 

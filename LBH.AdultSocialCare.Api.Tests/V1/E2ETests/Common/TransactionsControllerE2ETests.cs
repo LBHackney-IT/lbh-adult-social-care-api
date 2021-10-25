@@ -48,7 +48,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
 
         private List<CarePackage> CreatePackages(PackageType type)
         {
-            var packages = 5.ItemsOf(() => _fixture.Generator.CreateCarePackage(type)).ToList();
+            var packages = 5.ItemsOf(() => _fixture.Generator.CreateCarePackage(type));
 
             foreach (var package in packages)
             {
