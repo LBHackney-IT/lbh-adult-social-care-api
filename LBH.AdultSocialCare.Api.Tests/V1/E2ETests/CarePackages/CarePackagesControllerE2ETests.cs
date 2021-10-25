@@ -250,6 +250,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         public async Task ShouldReturnListOfApprovablePackages()
         {
             3.Times(_ => _generator.CreateCarePackage(PackageType.NursingCare, PackageStatus.InProgress));
+
             var notApprovedPackage = _generator.CreateCarePackage(PackageType.NursingCare, PackageStatus.NotApproved);
             var submittedPackage = _generator.CreateCarePackage(PackageType.NursingCare, PackageStatus.SubmittedForApproval);
 

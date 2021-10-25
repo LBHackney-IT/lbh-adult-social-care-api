@@ -19,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         public async Task<PagedList<CarePackageApprovableListItemDomain>> GetListAsync(ApprovableCarePackagesQueryParameters parameters)
         {
-            return await _gateway.GetApprovablePackagesAsync(parameters, new [] { PackageStatus.SubmittedForApproval, PackageStatus.NotApproved, PackageStatus.Approved });
+            return await _gateway.GetApprovablePackagesAsync(parameters, new[] { PackageStatus.SubmittedForApproval, PackageStatus.NotApproved, PackageStatus.Approved });
         }
     }
 }
