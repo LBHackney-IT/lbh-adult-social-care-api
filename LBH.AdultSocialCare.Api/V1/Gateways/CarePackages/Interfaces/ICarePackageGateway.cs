@@ -18,6 +18,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
 
         Task<CarePackage> GetPackagePlainAsync(Guid packageId, bool trackChanges = false);
 
+        Task<List<CarePackageReclaim>> GetCarePackageReclaimsAsync(Guid packageId, ReclaimType type,
+            ReclaimSubType? subType = null, bool trackChanges = false);
+
         Task<IEnumerable<CarePackageListItemDomain>> GetAllPackagesAsync();
 
         void Create(CarePackage newCarePackage);
