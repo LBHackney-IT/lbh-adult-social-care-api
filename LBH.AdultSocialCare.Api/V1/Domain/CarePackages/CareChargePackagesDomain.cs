@@ -6,6 +6,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
     {
         public string Status { get; set; }
         public string ServiceUser { get; set; }
+        public Guid ServiceUserId { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string Address { get; set; }
         public int HackneyId { get; set; }
