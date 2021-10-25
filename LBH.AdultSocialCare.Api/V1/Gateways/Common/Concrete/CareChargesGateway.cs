@@ -87,6 +87,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                 {
                     Status = c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) ? "Existing" : "New",
                     ServiceUser = $"{c.ServiceUser.FirstName} {c.ServiceUser.LastName}",
+                    ServiceUserId = c.ServiceUserId,
                     DateOfBirth = c.ServiceUser.DateOfBirth,
                     Address = $"{c.ServiceUser.AddressLine1} {c.ServiceUser.AddressLine2} {c.ServiceUser.AddressLine3} {c.ServiceUser.County} {c.ServiceUser.Town} {c.ServiceUser.PostCode}",
                     HackneyId = c.ServiceUser.HackneyId,
