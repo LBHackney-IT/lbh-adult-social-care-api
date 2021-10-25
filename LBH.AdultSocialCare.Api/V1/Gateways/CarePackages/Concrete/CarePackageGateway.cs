@@ -91,6 +91,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             return await _dbContext.CarePackages.Where(cp => cp.Id.Equals(packageId)).TrackChanges(trackChanges).SingleOrDefaultAsync();
         }
 
+        public async Task<List<CarePackageReclaim>> GetCarePackageReclaimsAsync(Guid packageId, ReclaimType type, ReclaimSubType? subType = null,
+            bool trackChanges = false)
+        {
+            return await _dbContext.CarePackageReclaims
+                .Where(pr => pr.CarePackageId.Equals(packageId) && pr.Type.Equals(type) &&
+                             (subType == null || pr.SubType.Equals(subType))).TrackChanges(trackChanges)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<CarePackageListItemDomain>> GetAllPackagesAsync()
         {
             return await _dbContext.CarePackages.Select(cp => new CarePackageListItemDomain
