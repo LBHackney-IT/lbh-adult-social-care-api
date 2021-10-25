@@ -1,3 +1,4 @@
+using System;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
@@ -8,6 +9,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
@@ -25,17 +27,36 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             _dbManager = dbManager;
         }
 
-        public async Task<CarePackageReclaimResponse> CreateCarePackageReclaim(CarePackageReclaimCreationDomain carePackageReclaimCreationDomain, ReclaimType reclaimType)
+        public async Task<CarePackageReclaimResponse> CreateCarePackageReclaim(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType)
         {
-            var carePackage = await _carePackageGateway.GetPackageAsync(carePackageReclaimCreationDomain.CarePackageId, PackageFields.Details).EnsureExistsAsync($"Care package with id {carePackageReclaimCreationDomain.CarePackageId} not found");
+            var carePackage = await _carePackageGateway.GetPackageAsync(reclaimCreationDomain.CarePackageId, PackageFields.Details).EnsureExistsAsync($"Care package with id {reclaimCreationDomain.CarePackageId} not found");
+            var coreCostDetail = carePackage.Details.FirstOrDefault(d => d.Type is PackageDetailType.CoreCost).EnsureExists($"Core cost for package with id {reclaimCreationDomain.CarePackageId} not found");
 
-            if (carePackageReclaimCreationDomain.SubType == ReclaimSubType.CareChargeProvisional)
+            if (reclaimCreationDomain.SubType == ReclaimSubType.CareChargeProvisional)
             {
-                var coreCostDetail = carePackage.Details.FirstOrDefault(d => d.Type is PackageDetailType.CoreCost);
-                if (coreCostDetail != null) carePackageReclaimCreationDomain.StartDate = coreCostDetail.StartDate;
+                if (coreCostDetail != null) reclaimCreationDomain.StartDate = coreCostDetail.StartDate;
             }
 
-            var carePackageReclaim = carePackageReclaimCreationDomain.ToEntity();
+            // Ensure FNC dates are valid
+            if (reclaimType == ReclaimType.Fnc)
+            {
+                if (!reclaimCreationDomain.StartDate.IsInRange(coreCostDetail.StartDate, coreCostDetail.EndDate ?? DateTimeOffset.Now.AddYears(10)))
+                {
+                    throw new ApiException($"FNC start date must be equal or greater than {coreCostDetail.StartDate}");
+                }
+
+                if (reclaimCreationDomain.EndDate != null)
+                {
+                    var fncEndDate = (DateTimeOffset) reclaimCreationDomain.EndDate;
+                    if (coreCostDetail.EndDate != null && !fncEndDate.IsInRange(coreCostDetail.StartDate, (DateTimeOffset) coreCostDetail.EndDate))
+                    {
+                        throw new ApiException(
+                            $"FNC end date is invalid. Must be in the range {coreCostDetail.StartDate} - {coreCostDetail.EndDate}");
+                    }
+                }
+            }
+
+            var carePackageReclaim = reclaimCreationDomain.ToEntity();
             carePackageReclaim.Type = reclaimType;
 
             await _carePackageReclaimGateway.CreateAsync(carePackageReclaim);
