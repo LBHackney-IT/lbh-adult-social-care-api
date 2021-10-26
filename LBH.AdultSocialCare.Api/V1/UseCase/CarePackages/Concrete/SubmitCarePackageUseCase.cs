@@ -38,7 +38,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             package.Histories.Add(new CarePackageHistory
             {
                 Status = HistoryStatus.SubmittedForApproval,
-                Description = submissionInfo.Notes
+                Description = HistoryStatus.SubmittedForApproval.GetDisplayName(),
+                RequestMoreInformation = submissionInfo.Notes
             });
 
             await _dbManager.SaveAsync();

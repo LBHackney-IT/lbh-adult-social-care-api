@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Common.Extensions;
 using FluentAssertions;
 using HttpServices.Models.Responses;
 using LBH.AdultSocialCare.Api.Tests.Extensions;
@@ -115,7 +116,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             {
                 updatedCarePackageSettings.HasRespiteCare,
                 updatedCarePackageSettings.HasDischargePackage,
-                IsImmediate = updatedCarePackageSettings.HospitalAvoidance,
+                updatedCarePackageSettings.HospitalAvoidance,
                 updatedCarePackageSettings.IsReEnablement,
                 updatedCarePackageSettings.IsS117Client
             };
@@ -149,7 +150,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             package?.ApproverId.Should().Be(request.ApproverId);
 
             historyEntry?.Should().NotBeNull();
-            historyEntry?.Description.Should().Be(request.Notes);
+            historyEntry?.RequestMoreInformation.Should().Be(request.Notes);
+            historyEntry?.Description.Should().Be(HistoryStatus.SubmittedForApproval.GetDisplayName());
             historyEntry?.Status.Should().Be(HistoryStatus.SubmittedForApproval);
         }
 
@@ -193,7 +195,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
 
             historyItems.Count.Should().Be(1);
             historyItems.First().Status.Should().Be(HistoryStatus.NewPackage);
-            historyItems.First().Description.Should().Be(request.Notes);
+            historyItems.First().Description.Should().Be(HistoryStatus.NewPackage.GetDisplayName());
+            historyItems.First().RequestMoreInformation.Should().Be(request.Notes);
         }
 
         [Fact]
@@ -291,7 +294,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             package?.Status.Should().Be(packageStatus);
 
             carePackageHistory?.Should().NotBeNull();
-            carePackageHistory?.Description.Should().Be(request.Notes);
+            carePackageHistory?.Description.Should().Be(historyStatus.GetDisplayName());
+            carePackageHistory?.RequestMoreInformation.Should().Be(request.Notes);
             carePackageHistory?.Status.Should().Be(historyStatus);
         }
 

@@ -30,9 +30,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
         public async Task<BrokerPackageViewDomain> GetBrokerPackageViewListAsync(
             BrokerPackageViewQueryParameters queryParameters)
         {
-            var packages = await _dbContext.CarePackages
+            var filteredPackageQuery = _dbContext.CarePackages
                 .FilterBrokerViewPackages(queryParameters.ServiceUserId, queryParameters.ServiceUserName,
-                    queryParameters.Status, queryParameters.BrokerId, queryParameters.FromDate, queryParameters.ToDate)
+                    queryParameters.Status, queryParameters.BrokerId, queryParameters.FromDate, queryParameters.ToDate);
+
+            var packages = await filteredPackageQuery
                 .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
                 .Take(queryParameters.PageSize)
                 .AsNoTracking()
@@ -51,16 +53,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                     DateAssigned = cp.DateCreated
                 }).ToListAsync();
 
-            var packageCount = await _dbContext.CarePackages
-                .FilterBrokerViewPackages(queryParameters.ServiceUserId, queryParameters.ServiceUserName,
-                    queryParameters.Status, queryParameters.BrokerId, queryParameters.FromDate, queryParameters.ToDate)
+            var packageCount = await filteredPackageQuery
                 .CountAsync();
 
             var pagedPackages = PagedList<BrokerPackageItemDomain>.ToPagedList(packages, packageCount, queryParameters.PageNumber, queryParameters.PageSize);
 
-            var statusCount = await _dbContext.CarePackages
-                .FilterBrokerViewPackages(queryParameters.ServiceUserId, queryParameters.ServiceUserName,
-                    queryParameters.Status, queryParameters.BrokerId, queryParameters.FromDate, queryParameters.ToDate)
+            var statusCount = await filteredPackageQuery
                 .Select(p => new { p.Id, p.Status })
                 .GroupBy(p => p.Status)
                 .Select(p => new CarePackageByStatusDomain

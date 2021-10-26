@@ -1,11 +1,9 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
-using System.Runtime.InteropServices;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
 {
@@ -57,9 +55,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
                 case "desc":
                     filteredList = filteredList.OrderByDescending(s => s.DateCreated);
                     break;
+
                 case "asc":
                     filteredList = filteredList.OrderBy(s => s.DateCreated);
                     break;
+
                 default:
                     filteredList = filteredList.OrderBy(s => s.DateCreated);
                     break;

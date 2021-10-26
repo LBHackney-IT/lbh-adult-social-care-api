@@ -4,22 +4,22 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 {
     public enum HistoryStatus
     {
-        [Display(Description = "Package Created")]
+        [Display(Name = "Package Created")]
         NewPackage = 1,
 
-        [Display(Description = "Package Submitted for approval")]
+        [Display(Name = "Package Submitted for approval")]
         SubmittedForApproval = 2,
 
-        [Display(Description = "Further information requested by")]
+        [Display(Name = "Further information requested by")]
         RequestMoreInformation = 3,
 
-        [Display(Description = "Care package Approved by")]
+        [Display(Name = "Care package Approved by")]
         PackageApproved = 4,
 
-        [Display(Description = "Care Package Brokered by")]
+        [Display(Name = "Care Package Brokered by")]
         PackageBrokered = 5,
 
-        [Display(Description = "Care Package Approved for Commercial by")]
+        [Display(Name = "Care Package Approved for Commercial by")]
         ApprovedForCommercial = 6,
 
         [Display(Name = "Clarifying Commercials requested by")]

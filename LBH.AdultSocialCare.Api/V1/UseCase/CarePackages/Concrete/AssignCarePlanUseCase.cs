@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Gateways;
@@ -53,7 +54,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             package.Histories.Add(new CarePackageHistory
             {
                 Status = HistoryStatus.NewPackage,
-                Description = carePlanAssignment.Notes
+                Description = HistoryStatus.NewPackage.GetDisplayName(),
+                RequestMoreInformation = carePlanAssignment.Notes
             });
 
             _carePackageGateway.Create(package);

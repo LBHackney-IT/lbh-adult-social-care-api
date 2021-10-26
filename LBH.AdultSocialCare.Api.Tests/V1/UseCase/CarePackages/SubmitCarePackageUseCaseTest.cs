@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
+using Common.Extensions;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
@@ -59,7 +60,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _package.ApproverId.Should().Be(submissionInfo.ApproverId);
 
             _package.Histories.Should().ContainSingle(h =>
-                h.Description == submissionInfo.Notes &&
+                h.RequestMoreInformation == submissionInfo.Notes &&
+                h.Description == HistoryStatus.SubmittedForApproval.GetDisplayName() &&
                 h.Status == HistoryStatus.SubmittedForApproval);
 
             _dbManagerMock.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
