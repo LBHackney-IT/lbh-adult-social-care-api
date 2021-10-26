@@ -89,19 +89,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         }
 
         /// <summary>Update single care charge reclaim.</summary>
-        /// <param name="careChargeReclaimUpdateRequest">The care charge reclaim update request.</param>
-        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
-        [HttpPut("care-charges")]
-        public async Task<ActionResult> UpdateCareChargeReclaim([FromBody] CareChargeReclaimUpdateRequest careChargeReclaimUpdateRequest)
-        {
-            await _updateCarePackageReclaimUseCase.UpdateAsync(careChargeReclaimUpdateRequest.ToDomain());
-            return Ok();
-        }
-
-        /// <summary>Update single care charge reclaim.</summary>
         /// <param name="requestedReclaims">List of care charge reclaims to be updated.</param>
         /// <returns>List of updated care charge reclaims.</returns>
         /// <response code="200">When operation is completed successfully.</response>
@@ -113,7 +100,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        [HttpPut("care-charges/batch-update")] // TODO: VK: Temporary route, probably merge with single care charge update
+        [HttpPut("care-charges")]
         public async Task<ActionResult<IEnumerable<CarePackageReclaimResponse>>> UpdateCareChargeReclaims(List<CareChargeReclaimUpdateRequest> requestedReclaims)
         {
             var result = await _updateCarePackageReclaimUseCase.UpdateListAsync(requestedReclaims.ToDomain().ToList());

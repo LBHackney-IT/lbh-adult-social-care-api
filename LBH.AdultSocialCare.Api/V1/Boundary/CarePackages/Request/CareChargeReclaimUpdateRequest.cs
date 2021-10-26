@@ -22,10 +22,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
         [Range(1, 2)]
         public ClaimCollector ClaimCollector { get; set; }
 
-        [Required]
-        [Range(1, 3)]
-        public ReclaimSubType SubType { get; set; }
-
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
 

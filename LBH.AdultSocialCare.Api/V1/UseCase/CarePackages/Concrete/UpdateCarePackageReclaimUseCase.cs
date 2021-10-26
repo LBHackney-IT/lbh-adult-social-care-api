@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using AutoMapper;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
@@ -22,14 +22,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly ICarePackageReclaimGateway _carePackageReclaimGateway;
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
+        private readonly IMapper _mapper;
 
         public UpdateCarePackageReclaimUseCase(
-            ICarePackageReclaimGateway carePackageReclaimGateway,
-            ICarePackageGateway carePackageGateway, IDatabaseManager dbManager)
+            ICarePackageReclaimGateway carePackageReclaimGateway, ICarePackageGateway carePackageGateway,
+            IDatabaseManager dbManager, IMapper mapper)
         {
             _carePackageReclaimGateway = carePackageReclaimGateway;
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
+            _mapper = mapper;
         }
 
         public async Task UpdateAsync(CarePackageReclaimUpdateDomain carePackageReclaimUpdateDomain)
@@ -44,24 +46,36 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             EnsureReclaimsExist(requestedReclaimIds, existingReclaims);
 
-            var packageId = GetPackageId(existingReclaims);
-            var package = await _carePackageGateway
-                .GetPackageAsync(packageId, PackageFields.None, true)
-                .EnsureExistsAsync($"Care package {packageId} not found");
+            var package = await GetPackage(existingReclaims);
+            var result = new List<CarePackageReclaim>();
 
-            var newReclaims = requestedReclaims.ToEntity().ToList();
-            foreach (var newReclaim in newReclaims)
+            foreach (var existingReclaim in existingReclaims)
             {
-                newReclaim.Type = existingReclaims.First(r => r.Id == newReclaim.Id).Type;
-                newReclaim.Id = Guid.Empty;
+                // For MVP scope always update provisional care charges and replace other types of care charges
+                var requestedReclaim = requestedReclaims.First(r => r.Id == existingReclaim.Id);
+
+                if (existingReclaim.SubType is ReclaimSubType.CareChargeProvisional)
+                {
+                    _mapper.Map(requestedReclaim, existingReclaim);
+                    result.Add(existingReclaim);
+                }
+                else
+                {
+                    existingReclaim.Status = ReclaimStatus.Ended;
+
+                    var newReclaim = requestedReclaim.ToEntity();
+
+                    newReclaim.Id = Guid.Empty;
+                    newReclaim.Type = existingReclaim.Type;
+                    newReclaim.SubType = existingReclaim.SubType;
+
+                    package.Reclaims.Add(newReclaim);
+                    result.Add(newReclaim);
+                }
             }
 
-            // End existing reclaims and replace them with new ones
-            existingReclaims.ForEach(r => r.Status = ReclaimStatus.Ended);
-            package.Reclaims.AddRange(newReclaims);
-
             await _dbManager.SaveAsync();
-            return newReclaims.ToDomain().ToList();
+            return result.ToDomain().ToList();
         }
 
         private static void EnsureReclaimsExist(IEnumerable<Guid> reclaimIds, IEnumerable<CarePackageReclaim> existingReclaims)
@@ -76,7 +90,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
         }
 
-        private static Guid GetPackageId(IEnumerable<CarePackageReclaim> existingReclaims)
+        private async Task<CarePackage> GetPackage(IEnumerable<CarePackageReclaim> existingReclaims)
         {
             var packageIds = existingReclaims
                 .Select(reclaim => reclaim.CarePackageId)
@@ -87,7 +101,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 throw new ApiException("Reclaims from different care packages cannot be mixed in single request", HttpStatusCode.BadRequest);
             }
 
-            return packageIds.First();
+            var packageId = packageIds.First();
+            return await _carePackageGateway
+                .GetPackageAsync(packageId, PackageFields.None, true)
+                .EnsureExistsAsync($"Care package {packageId} not found");
         }
     }
 }
