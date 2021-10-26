@@ -53,7 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     PackageId = carePackage.Id,
                     PackageStatus = carePackage.Status.GetDisplayName(),
                     PackageType = carePackage.PackageType.GetDisplayName(),
-                    IsS117Client = carePackage.Settings != null && carePackage.Settings.IsS117Client,
+                    IsS117Client = carePackage.Settings != null && carePackage.Settings.IsS117Client && !carePackage.Settings.IsS117ClientConfirmed,
                     DateAssigned = carePackage.DateAssigned,
                     GrossTotal = 0,
                     NetTotal = 0,
