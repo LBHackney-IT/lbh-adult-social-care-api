@@ -65,7 +65,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _useCase
                 .Invoking(useCase => useCase.ExecuteAsync(_package.Id))
                 .Should().Throw<ApiException>()
-                .Where(ex => ex.StatusCode == StatusCodes.Status404NotFound);
+                .Where(ex => ex.StatusCode == StatusCodes.Status204NoContent);
         }
 
         private void VerifyPackageDetails(CarePackageBrokerageDomain brokerageInfo)
