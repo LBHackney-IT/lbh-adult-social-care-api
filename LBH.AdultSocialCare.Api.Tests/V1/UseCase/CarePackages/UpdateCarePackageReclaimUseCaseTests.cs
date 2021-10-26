@@ -41,7 +41,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 {
                     Id = id,
                     Cost = 12.34m,
-                    CarePackageId = packageId
+                    CarePackageId = packageId,
+                    Type = ReclaimType.CareCharge,
+                    SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks
                 }).ToList()
             };
 
@@ -55,7 +57,30 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 .Setup(g => g.GetPackageAsync(_package.Id, PackageFields.None, true))
                 .ReturnsAsync(_package);
 
-            _useCase = new UpdateCarePackageReclaimUseCase(carePackageReclaimGateway.Object, carePackageGateway.Object, _dbManager.Object);
+            _useCase = new UpdateCarePackageReclaimUseCase(carePackageReclaimGateway.Object, carePackageGateway.Object, _dbManager.Object, Mapper);
+        }
+
+        [Fact]
+        public async Task ShouldUpdateProvisionalReclaims()
+        {
+            const decimal newCost = 34.56m;
+
+            foreach (var reclaim in _package.Reclaims)
+            {
+                reclaim.SubType = ReclaimSubType.CareChargeProvisional;
+            }
+
+            await _useCase.UpdateListAsync(_requestedIds.Select(id => new CarePackageReclaimUpdateDomain
+            {
+                Id = id,
+                Cost = newCost
+            }).ToList());
+
+            _package.Reclaims.Count.Should().Be(_requestedIds.Count);
+            _package.Reclaims.Should().OnlyContain(reclaim =>
+                _requestedIds.Contains(reclaim.Id) &&
+                reclaim.Cost == newCost &&
+                reclaim.SubType == ReclaimSubType.CareChargeProvisional);
         }
 
         [Fact]

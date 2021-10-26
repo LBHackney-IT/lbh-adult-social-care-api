@@ -110,7 +110,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         }
 
         [Fact]
-        public async Task ShouldBatchUpdateCareCharges()
+        public async Task ShouldUpdateCareCharges()
         {
             var package = _generator.CreateCarePackage();
             5.Times(_ => _generator.CreateCarePackageReclaim(package, ReclaimType.CareCharge, ClaimCollector.Supplier));
@@ -124,14 +124,13 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 {
                     Id = reclaim.Id,
                     Cost = reclaim.Cost + 12.34m,
-                    SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks,
                     ClaimCollector = ClaimCollector.Hackney
                 });
             });
 
             var response = await _fixture.RestClient
                 .PutAsync<IEnumerable<CarePackageReclaimResponse>>(
-                    $"api/v1/care-packages/{package.Id}/reclaims/care-charges/batch-update", request);
+                    $"api/v1/care-packages/{package.Id}/reclaims/care-charges", request);
 
             var reclaims = _fixture.DatabaseContext.CarePackageReclaims
                 .Where(r => r.CarePackageId == package.Id)

@@ -15,8 +15,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
 
         public ClaimCollector ClaimCollector { get; set; }
 
-        public ReclaimSubType SubType { get; set; }
-
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
 
