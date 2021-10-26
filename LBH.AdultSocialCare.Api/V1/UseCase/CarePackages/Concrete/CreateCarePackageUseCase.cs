@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -44,8 +46,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             {
                 new CarePackageHistory
                 {
-                    Description = "Created Package",
-                    RequestMoreInformation = "Created this package",
+                    Description = HistoryStatus.NewPackage.GetDisplayName(),
+                    RequestMoreInformation = "",
                     Status = HistoryStatus.NewPackage
                 }
             };

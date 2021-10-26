@@ -34,7 +34,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             package.Histories.Add(new CarePackageHistory
             {
                 Status = HistoryStatus.PackageApproved,
-                Description = notes
+                Description = HistoryStatus.PackageApproved.GetDisplayName(),
+                RequestMoreInformation = notes
             });
 
             await _dbManager.SaveAsync();

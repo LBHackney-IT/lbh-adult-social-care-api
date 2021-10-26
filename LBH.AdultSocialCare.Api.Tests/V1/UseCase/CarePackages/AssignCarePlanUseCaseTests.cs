@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Common.Exceptions.CustomExceptions;
+using Common.Extensions;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
@@ -76,7 +77,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             newPackage.Histories.Count.Should().Be(1);
             newPackage.Histories.First().Status.Should().Be(HistoryStatus.NewPackage);
-            newPackage.Histories.First().Description.Should().Be(assignment.Notes);
+            newPackage.Histories.First().Description.Should().Be(HistoryStatus.NewPackage.GetDisplayName());
+            newPackage.Histories.First().RequestMoreInformation.Should().Be(assignment.Notes);
 
             _dbManagerMock.Verify(mock => mock.SaveAsync(It.IsAny<string>()), Times.Once);
         }
