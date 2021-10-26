@@ -57,7 +57,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
             return filteredList;
         }
 
-        public static IQueryable<ServiceUser> FilterServiceUser(this IQueryable<ServiceUser> serviceUsers,IEnumerable<Guid> serviceUserIds, string firstName, string lastName,
+        public static IQueryable<ServiceUser> FilterServiceUser(this IQueryable<ServiceUser> serviceUsers, IEnumerable<Guid> serviceUserIds, string firstName, string lastName,
             string postCode, DateTime? dateOfBirth, int? hackneyId, bool hasPackages)
         {
             var filteredList = serviceUsers.Where(s =>
