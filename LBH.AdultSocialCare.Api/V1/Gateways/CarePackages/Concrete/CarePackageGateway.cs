@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Factories;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
 {
@@ -159,6 +160,30 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                             p.Status != PackageStatus.Ended &&
                             p.Id != excludePackageId)
                 .CountAsync();
+        }
+
+        public async Task<PagedList<CarePackageApprovableListItemDomain>> GetApprovablePackagesAsync(ApprovableCarePackagesQueryParameters parameters, PackageStatus[] statusesToInclude)
+        {
+            var query = _dbContext.CarePackages
+                .FilterApprovableCarePackages(
+                    parameters.ServiceUserId, parameters.ServiceUserName,
+                    parameters.PackageStatus, parameters.PackageType, parameters.ApproverId,
+                    parameters.FromDate, parameters.ToDate, statusesToInclude);
+
+            var packages = await query
+                .Include(cp => cp.ServiceUser)
+                .Include(cp => cp.Approver)
+                .GetPage(parameters.PageNumber, parameters.PageSize)
+                .AsNoTracking()
+                .ToListAsync();
+
+            var totalPackagesCount = await query.CountAsync();
+
+            var pagedList = PagedList<CarePackageApprovableListItemDomain>.ToPagedList(
+                packages.ToApprovableListItemDomain(), totalPackagesCount,
+                parameters.PageNumber, parameters.PageSize);
+
+            return pagedList;
         }
 
         public async Task DeletePackage(Guid packageId)

@@ -21,6 +21,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
     {
         public GeneratedMappingProfile()
         {
+            CreateMap<CarePackageApprovableListItemDomain, CarePackageApprovableListItemResponse>().ReverseMap();
             CreateMap<CarePackageBrokerageDomain, CarePackageBrokerageResponse>().ReverseMap();
             CreateMap<CarePackageDetailDomain, CarePackageDetail>().ReverseMap();
             CreateMap<CarePackageDetailDomain, CarePackageDetailResponse>().ReverseMap();
@@ -51,11 +52,13 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CarePlanAssignmentRequest, CarePlanAssignmentDomain>().ReverseMap();
             CreateMap<CarePackage, CarePackageDomain>().ReverseMap();
             CreateMap<CarePackage, CarePackagePlainDomain>().ReverseMap();
+            CreateMap<CarePackage, CarePackageApprovableListItemDomain>().ReverseMap();
             CreateMap<CarePackageDetail, CarePackageDetailRequest>().ReverseMap();
             CreateMap<CarePackageDetail, CarePackageDetailResponse>().ReverseMap();
             CreateMap<CarePackageReclaim, CarePackageReclaimDomain>().ReverseMap();
             CreateMap<CarePackageSettings, CarePackageSettingsDomain>().ReverseMap();
             CreateMap<ServiceUser, ServiceUserBasicDomain>().ReverseMap();
+            CreateMap<User, UsersMinimalDomain>().ReverseMap();
         }
     }
 }

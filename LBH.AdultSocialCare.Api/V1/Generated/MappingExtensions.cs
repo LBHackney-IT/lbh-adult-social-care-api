@@ -26,6 +26,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             _mapper = mapper;
         }
 
+        public static IEnumerable<CarePackageApprovableListItemResponse> ToResponse(this IEnumerable<CarePackageApprovableListItemDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageApprovableListItemResponse>>(input);
+        }
+
+        public static IEnumerable<CarePackageApprovableListItemDomain> ToDomain(this IEnumerable<CarePackageApprovableListItemResponse> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageApprovableListItemDomain>>(input);
+        }
+
         public static CarePackageBrokerageResponse ToResponse(this CarePackageBrokerageDomain input)
         {
             return _mapper.Map<CarePackageBrokerageResponse>(input);
@@ -426,6 +436,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CarePackage>>(input);
         }
 
+        public static IEnumerable<CarePackageApprovableListItemDomain> ToApprovableListItemDomain(this IEnumerable<CarePackage> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageApprovableListItemDomain>>(input);
+        }
+
+        public static IEnumerable<CarePackage> ToEntity(this IEnumerable<CarePackageApprovableListItemDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackage>>(input);
+        }
+
         public static IEnumerable<CarePackageDetailRequest> ToRequest(this IEnumerable<CarePackageDetail> input)
         {
             return _mapper.Map<IEnumerable<CarePackageDetailRequest>>(input);
@@ -484,6 +504,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static ServiceUser ToEntity(this ServiceUserBasicDomain input)
         {
             return _mapper.Map<ServiceUser>(input);
+        }
+
+        public static UsersMinimalDomain TosMinimalDomain(this User input)
+        {
+            return _mapper.Map<UsersMinimalDomain>(input);
+        }
+
+        public static User ToEntity(this UsersMinimalDomain input)
+        {
+            return _mapper.Map<User>(input);
         }
     }
 }
