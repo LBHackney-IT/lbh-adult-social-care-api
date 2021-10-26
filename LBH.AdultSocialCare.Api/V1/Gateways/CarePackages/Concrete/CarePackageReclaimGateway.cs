@@ -60,6 +60,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                 .FirstOrDefaultAsync(r => r.Id == reclaimId);
         }
 
+        public async Task<List<CarePackageReclaim>> GetListAsync(Guid packageId, ReclaimType? reclaimType, ReclaimSubType? reclaimSubType)
+        {
+            return await _dbContext.CarePackageReclaims
+                .Where(reclaim =>
+                    (reclaim.CarePackageId == packageId) &&
+                    (reclaimType == null || reclaim.Type == reclaimType) &&
+                    (reclaimSubType == null || reclaim.SubType == reclaimSubType))
+                .ToListAsync();
+        }
+
         public async Task<List<CarePackageReclaim>> GetListAsync(IEnumerable<Guid> reclaimIds)
         {
             return await _dbContext.CarePackageReclaims
