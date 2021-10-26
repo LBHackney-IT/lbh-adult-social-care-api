@@ -5,12 +5,14 @@ using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
 using HttpServices.Models.Responses;
+using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -244,12 +246,29 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
+        [Fact]
+        public async Task ShouldReturnListOfApprovablePackages()
+        {
+            3.Times(_ => _generator.CreateCarePackage(PackageType.NursingCare, PackageStatus.InProgress));
+
+            var notApprovedPackage = _generator.CreateCarePackage(PackageType.NursingCare, PackageStatus.NotApproved);
+            var submittedPackage = _generator.CreateCarePackage(PackageType.NursingCare, PackageStatus.SubmittedForApproval);
+
+            var response = await _fixture.RestClient
+                .GetAsync<PagedResponse<CarePackageApprovableListItemResponse>>("api/v1/care-packages/approvals");
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            response.Content.Data.Should().ContainSingle(p => p.Id == notApprovedPackage.Id);
+            response.Content.Data.Should().ContainSingle(p => p.Id == submittedPackage.Id);
+        }
+
         [Theory]
         [InlineData("end", PackageStatus.Ended, HistoryStatus.BrokeredEnded)]
         [InlineData("cancel", PackageStatus.Cancelled, HistoryStatus.Cancelled)]
         [InlineData("approve", PackageStatus.Approved, HistoryStatus.PackageApproved)]
         [InlineData("decline", PackageStatus.Rejected, HistoryStatus.Rejected)]
-        public async Task ShouldEndPackage(string endpoint, PackageStatus packageStatus, HistoryStatus historyStatus)
+        public async Task ShouldChangePackageStatus(string endpoint, PackageStatus packageStatus, HistoryStatus historyStatus)
         {
             var package = _generator.CreateCarePackage();
 

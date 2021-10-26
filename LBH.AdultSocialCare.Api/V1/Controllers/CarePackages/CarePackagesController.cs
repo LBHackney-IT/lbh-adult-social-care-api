@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
@@ -291,6 +292,25 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         {
             await _confirmS117ServiceUserUseCase.ExecuteAsync(carePackageId);
             return Ok();
+        }
+
+        /// <summary>
+        /// Returns a list of care packages eligible for approval
+        /// </summary>
+        /// <param name="queryParameters">Search parameters to filter packages by.</param>
+        /// <param name="useCase">A reference to a IGetApprovedPackagesUseCase instance</param>
+        /// <returns>Single page of care packages eligible for approval.</returns>
+        [ProducesResponseType(typeof(PagedResponse<CarePackageApprovableListItemResponse>), StatusCodes.Status200OK)]
+        [ProducesDefaultResponseType]
+        [HttpGet("approvals")]
+        public async Task<ActionResult<PagedResponse<CarePackageApprovableListItemResponse>>> GetApprovedPackages(
+            [FromQuery] ApprovableCarePackagesQueryParameters queryParameters,
+            [FromServices] IGetApprovableCarePackagesUseCase useCase)
+        {
+            var result = await useCase.GetListAsync(queryParameters);
+
+            Response.AddPaginationHeaders(result.PagingMetaData);
+            return Ok(result.ToPagedResponse(items => items.ToResponse()));
         }
 
         //TODO temp endpoint will be deleted
