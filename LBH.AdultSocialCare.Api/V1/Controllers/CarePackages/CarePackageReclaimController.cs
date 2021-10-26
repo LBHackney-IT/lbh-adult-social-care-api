@@ -24,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
     {
         private readonly ICreateCarePackageReclaimUseCase _createCarePackageReclaimUseCase;
         private readonly IUpdateCarePackageReclaimUseCase _updateCarePackageReclaimUseCase;
-        private readonly IGetCarePackageReclaimUseCase _getCarePackageReclaimUseCase;
+        private readonly IGetCarePackageReclaimsUseCase _getCarePackageReclaimsesUseCase;
         private readonly IGetFundedNursingCarePriceUseCase _getFundedNursingCarePriceUseCase;
         private readonly ICareChargeUseCase _getCareChargeUseCase;
         private readonly IGetSinglePackageCareChargeUseCase _getSinglePackageCareChargeUseCase;
@@ -32,7 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
 
         public CarePackageReclaimController(ICreateCarePackageReclaimUseCase createCarePackageReclaimUseCase,
             IUpdateCarePackageReclaimUseCase updateCarePackageReclaimUseCase,
-            IGetCarePackageReclaimUseCase getCarePackageReclaimUseCase,
+            IGetCarePackageReclaimsUseCase getCarePackageReclaimsesUseCase,
             IGetFundedNursingCarePriceUseCase getFundedNursingCarePriceUseCase,
             ICareChargeUseCase getCareChargeUseCase,
             IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase,
@@ -40,7 +40,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         {
             _createCarePackageReclaimUseCase = createCarePackageReclaimUseCase;
             _updateCarePackageReclaimUseCase = updateCarePackageReclaimUseCase;
-            _getCarePackageReclaimUseCase = getCarePackageReclaimUseCase;
+            _getCarePackageReclaimsesUseCase = getCarePackageReclaimsesUseCase;
             _getFundedNursingCarePriceUseCase = getFundedNursingCarePriceUseCase;
             _getCareChargeUseCase = getCareChargeUseCase;
             _getSinglePackageCareChargeUseCase = getSinglePackageCareChargeUseCase;
@@ -107,17 +107,18 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             return Ok(result.ToResponse());
         }
 
-        /// <summary>Return single care charge reclaim.</summary>
+        /// <summary>Return list of care charge reclaims for a package with optional filtering by care charge sub-type.</summary>
         /// <param name="carePackageId">The care package Id.</param>
-        /// <returns>The Care Package Claim response.</returns>
+        /// <param name="subType">One of care charge sub-types" Provisional, 1-12 weeks, 13+ weeks etc.</param>
+        /// <returns>A list of care charges for a package.</returns>
         [ProducesResponseType(typeof(CarePackageReclaimResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpGet("care-charges")]
-        public async Task<ActionResult<CarePackageReclaimResponse>> GetCareCharge(Guid carePackageId)
+        public async Task<ActionResult<CarePackageReclaimResponse>> GetCareCharges(Guid carePackageId, ReclaimSubType? subType)
         {
-            var result = await _getCarePackageReclaimUseCase.GetCarePackageReclaim(carePackageId, ReclaimType.CareCharge);
+            var result = await _getCarePackageReclaimsesUseCase.GetListAsync(carePackageId, ReclaimType.CareCharge, subType);
             return Ok(result);
         }
 
@@ -131,7 +132,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpGet("fnc")]
         public async Task<ActionResult<CarePackageReclaimResponse>> GetFundedNursingCare(Guid carePackageId)
         {
-            var result = await _getCarePackageReclaimUseCase.GetCarePackageReclaim(carePackageId, ReclaimType.Fnc);
+            var result = await _getCarePackageReclaimsesUseCase.GetCarePackageReclaim(carePackageId, ReclaimType.Fnc);
             return Ok(result);
         }
 

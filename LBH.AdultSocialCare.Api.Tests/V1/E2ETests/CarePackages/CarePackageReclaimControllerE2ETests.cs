@@ -165,6 +165,45 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         }
 
         [Fact]
+        public async Task ShouldReturnCarePackageCharges()
+        {
+            var package = _generator.CreateCarePackage();
+            5.Times(_ => _generator.CreateCarePackageReclaim(package, ReclaimType.CareCharge, ClaimCollector.Supplier));
+
+            var response = await _fixture.RestClient
+                .GetAsync<IEnumerable<CarePackageReclaimResponse>>($"api/v1/care-packages/{package.Id}/reclaims/care-charges");
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.Content.Count().Should().Be(5);
+        }
+
+        [Fact]
+        public async Task ShouldReturnCarePackageChargesOfGivenType()
+        {
+            var package = _generator.CreateCarePackage();
+            5.Times(_ => _generator.CreateCarePackageReclaim(package, ReclaimType.CareCharge, ClaimCollector.Supplier));
+
+            var reclaim = package.Reclaims.First();
+
+            lock (_fixture.DatabaseContext)
+            {
+                // DatabaseContext lifetime is scoped, so it's recreated after each request
+                // To ensure that context isn't changed during update lock it and attach entities
+                _fixture.DatabaseContext.Attach(reclaim);
+                reclaim.SubType = ReclaimSubType.CareChargeProvisional;
+
+                _fixture.DatabaseContext.SaveChanges();
+            }
+
+            var response = await _fixture.RestClient
+                .GetAsync<IEnumerable<CarePackageReclaimResponse>>($"api/v1/care-packages/{package.Id}/reclaims/care-charges?subType={ReclaimSubType.CareChargeProvisional}");
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.Content.Count().Should().Be(1);
+            response.Content.Should().ContainEquivalentOf(reclaim, opt => opt.ExcludingMissingMembers());
+        }
+
+        [Fact]
         public async Task ShouldReturnSinglePackageCareCharge()
         {
             var package = _generator.CreateCarePackage();
