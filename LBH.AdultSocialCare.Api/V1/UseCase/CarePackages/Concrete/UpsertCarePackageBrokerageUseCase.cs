@@ -71,6 +71,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             {
                 throw new ApiException($"End Date of {requestedDetail.Type.GetDisplayName()} should be within range package of package start - end dates");
             }
+
+            if (requestedDetail.Cost <= 0)
+            {
+                throw new ApiException(
+                    $"Cost of {requestedDetail.Type} {requestedDetail.CostPeriod} should be greater than 0");
+            }
         }
 
         private static CarePackageDetail AddCoreCost(CarePackage package, CarePackageBrokerageDomain brokerageInfo)
