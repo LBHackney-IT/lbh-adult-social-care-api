@@ -31,10 +31,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// Returns brokerage information for package with package Id given
         /// </summary>
         /// <param name="packageId">Unique identifier of the package to get brokerage for.</param>
+        /// <response code="200">If operation completed successfully.</response>
+        /// <response code="204">If package doesn't have any associated details.</response>
         /// <returns>Package brokerage information</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
         public async Task<ActionResult<CarePackageBrokerageResponse>> GetCarePackageBrokerageAsync(Guid packageId)
         {

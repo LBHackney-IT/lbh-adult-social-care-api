@@ -7,6 +7,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
@@ -28,7 +29,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             var coreCost = package.Details
                 .SingleOrDefault(d => d.Type is PackageDetailType.CoreCost)
-                .EnsureExists($"Brokerage information for package {packageId} doesn't exists");
+                .EnsureExists($"Brokerage information for package {packageId} doesn't exists", HttpStatusCode.NoContent);
 
             return new CarePackageBrokerageDomain
             {
