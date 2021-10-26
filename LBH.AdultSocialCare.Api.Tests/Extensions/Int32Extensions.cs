@@ -5,12 +5,16 @@ namespace LBH.AdultSocialCare.Api.Tests.Extensions
 {
     public static class Int32Extensions
     {
-        public static IEnumerable<T> ItemsOf<T>(this int count, Func<T> func)
+        public static List<T> ItemsOf<T>(this int count, Func<T> func)
         {
+            var result = new List<T>();
+
             for (var i = 0; i < count; i++)
             {
-                yield return func.Invoke();
+                result.Add(func.Invoke());
             }
+
+            return result;
         }
 
         public static void Times(this int count, Action<int> func)
