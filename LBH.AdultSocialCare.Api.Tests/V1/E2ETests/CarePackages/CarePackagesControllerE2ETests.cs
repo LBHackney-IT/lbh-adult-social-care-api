@@ -267,7 +267,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         [InlineData("end", PackageStatus.Ended, HistoryStatus.BrokeredEnded)]
         [InlineData("cancel", PackageStatus.Cancelled, HistoryStatus.Cancelled)]
         [InlineData("approve", PackageStatus.Approved, HistoryStatus.PackageApproved)]
-        [InlineData("decline", PackageStatus.Rejected, HistoryStatus.Rejected)]
+        [InlineData("decline", PackageStatus.NotApproved, HistoryStatus.Declined)]
         public async Task ShouldChangePackageStatus(string endpoint, PackageStatus packageStatus, HistoryStatus historyStatus)
         {
             var package = _generator.CreateCarePackage();

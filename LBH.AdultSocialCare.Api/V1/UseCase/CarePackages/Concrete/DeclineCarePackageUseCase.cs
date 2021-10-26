@@ -27,11 +27,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 .GetPackageAsync(packageId, PackageFields.None, true)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
-            package.Status = PackageStatus.Rejected;
+            package.Status = PackageStatus.NotApproved;
 
             package.Histories.Add(new CarePackageHistory
             {
-                Status = HistoryStatus.Rejected,
+                Status = HistoryStatus.Declined,
                 Description = notes
             });
 
