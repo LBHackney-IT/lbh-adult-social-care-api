@@ -36,7 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 PackageStatus.New, PackageStatus.InProgress, PackageStatus.NotApproved
             };
 
-            const PackageFields fields = PackageFields.Details | PackageFields.Reclaims;
+            const PackageFields fields = PackageFields.Details | PackageFields.Reclaims | PackageFields.Settings;
             var userPackages = await _carePackageGateway.GetServiceUserPackagesAsync(serviceUserId, fields);
             var response = new ServiceUserPackagesViewResponse
             {
@@ -53,6 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     PackageId = carePackage.Id,
                     PackageStatus = carePackage.Status.GetDisplayName(),
                     PackageType = carePackage.PackageType.GetDisplayName(),
+                    IsS117Client = carePackage.Settings != null && carePackage.Settings.IsS117Client,
                     DateAssigned = carePackage.DateAssigned,
                     GrossTotal = 0,
                     NetTotal = 0,
