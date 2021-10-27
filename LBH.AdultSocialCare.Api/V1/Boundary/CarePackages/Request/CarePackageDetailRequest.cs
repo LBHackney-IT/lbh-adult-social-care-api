@@ -20,6 +20,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
 
         [Required]
         [Column(TypeName = "decimal(13, 2)")]
+        [Range(0.01, Double.PositiveInfinity)]
         public decimal? Cost { get; set; }
 
         [Required]
