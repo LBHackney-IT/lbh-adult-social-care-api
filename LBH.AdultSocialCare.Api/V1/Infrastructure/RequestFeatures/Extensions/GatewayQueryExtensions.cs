@@ -26,8 +26,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
                                     || package.ServiceUser.LastName.ToLower().Contains(serviceUserName.ToLower()))
                                 && (status == null || package.Status.Equals(status))
                                 && (brokerId == null || package.BrokerId.Equals(brokerId))
-                                && (fromDate == null || package.DateCreated >= fromDate)
-                                && (toDate == null || package.DateCreated <= toDate));
+                                && (fromDate == null || package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost).StartDate >= fromDate)
+                                && (toDate == null || package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost).EndDate <= toDate));
 
         public static IQueryable<CarePackage> FilterApprovableCarePackages(this IQueryable<CarePackage> packages, Guid? serviceUserId, string serviceUserName, PackageStatus? packageStatus, PackageType? packageType, Guid? approverId, DateTimeOffset? fromDate, DateTimeOffset? toDate, PackageStatus[] statusesToInclude) =>
             packages.Where(package => (serviceUserId == null || package.ServiceUserId.Equals(serviceUserId))
