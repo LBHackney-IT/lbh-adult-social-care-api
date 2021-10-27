@@ -115,7 +115,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.Status, f => f.PickRandom<HistoryStatus>());
         }
 
-        public static CarePackageReclaim CreateCarePackageReclaim(Guid packageId, ReclaimType type, ClaimCollector collector)
+        public static CarePackageReclaim CreateCarePackageReclaim(Guid packageId, ClaimCollector collector, ReclaimType type, ReclaimSubType subType)
         {
             return new Faker<CarePackageReclaim>()
                 .RuleFor(r => r.CarePackageId, packageId)
@@ -124,7 +124,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(r => r.EndDate, f => f.Date.Future().Date)
                 .RuleFor(r => r.Description, f => f.Lorem.Paragraph())
                 .RuleFor(r => r.ClaimCollector, collector)
-                .RuleFor(r => r.Type, type);
+                .RuleFor(r => r.Type, type)
+                .RuleFor(r => r.SubType, subType);
         }
 
         public static List<CarePackageDetail> CreateCarePackageDetails(int count, PackageDetailType type)

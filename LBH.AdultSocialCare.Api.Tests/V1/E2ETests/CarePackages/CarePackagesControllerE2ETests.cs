@@ -235,8 +235,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         {
             var package = _generator.CreateCarePackage();
 
-            _generator.CreateCarePackageReclaim(package, ReclaimType.Fnc, ClaimCollector.Hackney);
-            _generator.CreateCarePackageReclaim(package, ReclaimType.CareCharge, ClaimCollector.Supplier);
+            _generator.CreateCarePackageReclaim(package, ClaimCollector.Hackney, ReclaimType.Fnc);
+            _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
 
             _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
             _generator.CreateCarePackageDetails(package, 5, PackageDetailType.AdditionalNeed);

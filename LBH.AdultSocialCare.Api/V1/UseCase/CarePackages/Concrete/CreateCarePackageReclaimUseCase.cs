@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
@@ -21,32 +22,46 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly ICarePackageReclaimGateway _carePackageReclaimGateway;
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
+        private readonly IMapper _mapper;
 
-        public CreateCarePackageReclaimUseCase(ICarePackageReclaimGateway carePackageReclaimGateway, ICarePackageGateway carePackageGateway, IDatabaseManager dbManager)
+        public CreateCarePackageReclaimUseCase(
+            ICarePackageReclaimGateway carePackageReclaimGateway, ICarePackageGateway carePackageGateway,
+            IDatabaseManager dbManager, IMapper mapper)
         {
             _carePackageReclaimGateway = carePackageReclaimGateway;
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
+            _mapper = mapper;
         }
 
         public async Task<CarePackageReclaimResponse> CreateCarePackageReclaim(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType)
         {
-            var carePackage = await _carePackageGateway.GetPackageAsync(reclaimCreationDomain.CarePackageId, PackageFields.Details).EnsureExistsAsync($"Care package with id {reclaimCreationDomain.CarePackageId} not found");
-            var coreCostDetail = carePackage.Details.FirstOrDefault(d => d.Type is PackageDetailType.CoreCost).EnsureExists($"Core cost for package with id {reclaimCreationDomain.CarePackageId} not found");
+            var carePackage = await _carePackageGateway
+                .GetPackageAsync(reclaimCreationDomain.CarePackageId, PackageFields.Details | PackageFields.Reclaims, true)
+                .EnsureExistsAsync($"Care package with id {reclaimCreationDomain.CarePackageId} not found");
 
-            if (reclaimCreationDomain.SubType == ReclaimSubType.CareChargeProvisional)
-            {
-                if (coreCostDetail != null) reclaimCreationDomain.StartDate = coreCostDetail.StartDate;
-            }
+            var coreCostDetail = carePackage.Details
+                .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost)
+                .EnsureExists($"Core cost for package with id {reclaimCreationDomain.CarePackageId} not found", HttpStatusCode.InternalServerError);
 
             // Validate FNC
             await ValidateFncAsync(reclaimCreationDomain, reclaimType, coreCostDetail, carePackage);
 
-            var carePackageReclaim = reclaimCreationDomain.ToEntity();
-            carePackageReclaim.Type = reclaimType;
+            if (reclaimCreationDomain.SubType == ReclaimSubType.CareChargeProvisional)
+            {
+                reclaimCreationDomain.StartDate = coreCostDetail.StartDate;
+            }
 
-            await _carePackageReclaimGateway.CreateAsync(carePackageReclaim);
-            await _dbManager.SaveAsync("Could not save care package reclaim to database");
+            var carePackageReclaim = await TryUpdateExistingReclaim(carePackage, reclaimCreationDomain);
+            if (carePackageReclaim is null)
+            {
+                carePackageReclaim = reclaimCreationDomain.ToEntity();
+                carePackageReclaim.Type = reclaimType;
+
+                carePackage.Reclaims.Add(carePackageReclaim);
+                await _dbManager.SaveAsync("Could not save care package reclaim to database");
+            }
+
             return carePackageReclaim.ToDomain().ToResponse();
         }
 
@@ -86,6 +101,25 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     }
                 }
             }
+        }
+
+        private async Task<CarePackageReclaim> TryUpdateExistingReclaim(CarePackage package, CarePackageReclaimCreationDomain requestedReclaim)
+        {
+            if (requestedReclaim.SubType is ReclaimSubType.CareChargeProvisional)
+            {
+                var existingReclaim = package.Reclaims
+                    .FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeProvisional);
+
+                if (existingReclaim != null)
+                {
+                    _mapper.Map(requestedReclaim, existingReclaim);
+
+                    await _dbManager.SaveAsync();
+                    return existingReclaim;
+                }
+            }
+
+            return null;
         }
     }
 }

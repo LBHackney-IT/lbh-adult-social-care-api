@@ -54,7 +54,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             {
                 _fixture.Generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
                 _fixture.Generator.CreateCarePackageDetails(package, 2, PackageDetailType.AdditionalNeed);
-                _fixture.Generator.CreateCarePackageReclaim(package, ReclaimType.CareCharge, ClaimCollector.Hackney);
+                _fixture.Generator.CreateCarePackageReclaim(package, ClaimCollector.Hackney, ReclaimType.CareCharge);
             }
 
             return packages;

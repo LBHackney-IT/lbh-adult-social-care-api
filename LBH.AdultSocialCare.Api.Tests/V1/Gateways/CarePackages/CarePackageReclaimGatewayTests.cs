@@ -24,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.CarePackages
         public void ShouldReturnCorrectStatus(ReclaimStatus currentStatus, DateTimeOffset startDate, ReclaimStatus expectedStatus)
         {
             var package = _generator.CreateCarePackage();
-            var reclaim = _generator.CreateCarePackageReclaim(package, ReclaimType.CareCharge, ClaimCollector.Supplier);
+            var reclaim = _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
 
             reclaim.Status = currentStatus;
             reclaim.StartDate = startDate;
