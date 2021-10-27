@@ -3,6 +3,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
@@ -47,8 +48,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
         {
             var filteredList = carePackages.Where(c =>
                 (modifiedBy.Equals(null) || c.UpdaterId == modifiedBy) &&
-                (status != null ? c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) == (status == "Existing") : c.Equals(c))
-                );
+                (status != null ? c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) == (status == "Existing") : c.Equals(c)));
 
             switch (orderByDate)
             {
@@ -68,13 +68,23 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
             return filteredList;
         }
 
-        public static IQueryable<ServiceUser> FilterServiceUser(this IQueryable<ServiceUser> serviceUsers, string firstName, string lastName,
-            string postCode, DateTime? dateOfBirth, int? hackneyId) =>
-            serviceUsers.Where(s =>
+        public static IQueryable<ServiceUser> FilterServiceUser(this IQueryable<ServiceUser> serviceUsers, IEnumerable<Guid> serviceUserIds, string firstName, string lastName,
+            string postCode, DateTime? dateOfBirth, int? hackneyId, bool hasPackages)
+        {
+            var filteredList = serviceUsers.Where(s =>
                 (firstName != null ? s.FirstName.ToLower().Contains(firstName.ToLower()) : s.Equals(s)) &&
                 (lastName != null ? s.LastName.ToLower().Contains(lastName.ToLower()) : s.Equals(s)) &&
                 (dateOfBirth.Equals(null) || s.DateOfBirth == dateOfBirth) &&
                 (postCode != null ? s.PostCode.ToLower().Contains(postCode.ToLower()) : s.Equals(s)) &&
                 (hackneyId.Equals(null) || s.HackneyId == hackneyId));
+
+            if (hasPackages)
+            {
+                filteredList = filteredList.Where(su => serviceUserIds.Contains(su.Id));
+            }
+
+            return filteredList;
+
+        }
     }
 }

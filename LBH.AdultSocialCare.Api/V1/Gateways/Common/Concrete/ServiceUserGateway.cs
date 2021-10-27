@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 {
@@ -87,20 +88,36 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
         public async Task<PagedList<ServiceUserDomain>> GetServiceUserInformation(ServiceUserQueryParameters queryParameters)
         {
+            var serviceUserIds = await _databaseContext.CarePackages
+                .Where(p => p.Status != PackageStatus.Cancelled &&
+                            p.Status != PackageStatus.Ended)
+                .Select(p => p.ServiceUserId)
+                .Distinct()
+                .ToListAsync();
+
             var serviceUsers = await _databaseContext.ServiceUsers
-                .FilterServiceUser(queryParameters.FirstName, queryParameters.LastName, queryParameters.PostCode,
-                    queryParameters.DateOfBirth, queryParameters.HackneyId)
+                .FilterServiceUser(serviceUserIds, queryParameters.FirstName, queryParameters.LastName, queryParameters.PostCode,
+                    queryParameters.DateOfBirth, queryParameters.HackneyId, queryParameters.HasPackages)
                 .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
                 .Take(queryParameters.PageSize)
                 .AsNoTracking()
                 .ToListAsync();
 
             var serviceUserCount = await _databaseContext.ServiceUsers
-                .FilterServiceUser(queryParameters.FirstName, queryParameters.LastName, queryParameters.PostCode,
-                    queryParameters.DateOfBirth, queryParameters.HackneyId)
+                .FilterServiceUser(serviceUserIds, queryParameters.FirstName, queryParameters.LastName, queryParameters.PostCode,
+                    queryParameters.DateOfBirth, queryParameters.HackneyId, queryParameters.HasPackages)
                 .CountAsync();
 
             return PagedList<ServiceUserDomain>.ToPagedList(serviceUsers.ToDomain(), serviceUserCount, queryParameters.PageNumber, queryParameters.PageSize);
+        }
+
+        private async Task<int> GetServiceUserPackagesCount(Guid serviceUserId)
+        {
+            return await _databaseContext.CarePackages
+                .Where(p => p.ServiceUserId == serviceUserId &&
+                            p.Status != PackageStatus.Cancelled &&
+                            p.Status != PackageStatus.Ended)
+                .CountAsync();
         }
     }
 }
