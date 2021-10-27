@@ -201,32 +201,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _dbManagerMock.Verify(mock => mock.SaveAsync(It.IsAny<string>()), Times.Never);
         }
 
-        [Theory]
-        [InlineData(-90)]
-        [InlineData(90)]
-        public void ShouldFailOnWrongStartDate(int startDateDaysDelta)
-        {
-            var packageStartDate = DateTimeOffset.Now.AddDays(-30);
-            var packageEndDate = DateTimeOffset.Now.AddDays(30);
-
-            var brokerageInfo = new CarePackageBrokerageDomain
-            {
-                CoreCost = 12.34m,
-                StartDate = packageStartDate,
-                EndDate = packageEndDate,
-                Details = TestDataHelper.CreateCarePackageDetailDomainList(1, PackageDetailType.AdditionalNeed)
-            };
-
-            brokerageInfo.Details.First().StartDate = packageStartDate.AddDays(startDateDaysDelta);
-
-            _useCase
-                .Invoking(useCase => useCase.ExecuteAsync(_package.Id, brokerageInfo))
-                .Should().Throw<ApiException>()
-                .Where(ex => ex.StatusCode == StatusCodes.Status500InternalServerError);
-
-            _dbManagerMock.Verify(mock => mock.SaveAsync(It.IsAny<string>()), Times.Never);
-        }
-
         private List<CarePackageDetailDomain> FillPackageDetails()
         {
             var packageDetails = TestDataHelper.CreateCarePackageDetailDomainList(3, PackageDetailType.AdditionalNeed);
