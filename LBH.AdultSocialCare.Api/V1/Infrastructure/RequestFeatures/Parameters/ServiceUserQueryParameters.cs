@@ -12,5 +12,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters
         public string LastName { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string PostCode { get; set; }
+        public bool HasPackages { get; set; }
     }
 }
