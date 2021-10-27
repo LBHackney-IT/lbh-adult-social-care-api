@@ -43,7 +43,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             foreach (var requestedDetail in brokerageInfo.Details)
             {
-                ValidateDetail(requestedDetail, coreCost);
+                ValidateDetail(requestedDetail);
 
                 if (requestedDetail.Id is null)
                 {
@@ -58,24 +58,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             await _databaseManager.SaveAsync();
         }
 
-        private static void ValidateDetail(CarePackageDetailDomain requestedDetail, CarePackageDetail coreCost)
+        private static void ValidateDetail(CarePackageDetailDomain requestedDetail)
         {
-            if (requestedDetail.StartDate.Date < coreCost.StartDate.Date ||
-                requestedDetail.StartDate.Date > coreCost.EndDate?.Date)
+            if (requestedDetail.StartDate.Date > requestedDetail.EndDate?.Date)
             {
-                throw new ApiException($"Start Date of {requestedDetail.Type.GetDisplayName()} should be within range package of package start - end dates");
-            }
-
-            if (requestedDetail.EndDate?.Date > coreCost.EndDate?.Date ||
-                requestedDetail.EndDate?.Date < coreCost.StartDate.Date)
-            {
-                throw new ApiException($"End Date of {requestedDetail.Type.GetDisplayName()} should be within range package of package start - end dates");
-            }
-
-            if (requestedDetail.Cost <= 0)
-            {
-                throw new ApiException(
-                    $"Cost of {requestedDetail.Type} {requestedDetail.CostPeriod} should be greater than 0");
+                throw new ApiException($"End Date of {requestedDetail.Type.GetDisplayName()} should be later than start date");
             }
         }
 
