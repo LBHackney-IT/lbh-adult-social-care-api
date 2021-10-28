@@ -13,22 +13,19 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
     public class CreateCarePackageReclaimUseCase : ICreateCarePackageReclaimUseCase
     {
-        private readonly ICarePackageReclaimGateway _carePackageReclaimGateway;
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
         private readonly IMapper _mapper;
 
-        public CreateCarePackageReclaimUseCase(
-            ICarePackageReclaimGateway carePackageReclaimGateway, ICarePackageGateway carePackageGateway,
-            IDatabaseManager dbManager, IMapper mapper)
+        public CreateCarePackageReclaimUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IMapper mapper)
         {
-            _carePackageReclaimGateway = carePackageReclaimGateway;
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
             _mapper = mapper;
@@ -108,7 +105,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             if (requestedReclaim.SubType is ReclaimSubType.CareChargeProvisional)
             {
                 var existingReclaim = package.Reclaims
-                    .FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeProvisional);
+                    .FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeProvisional &&
+                                         r.Status.In(ReclaimStatus.Active, ReclaimStatus.Pending));
 
                 if (existingReclaim != null)
                 {
