@@ -11,9 +11,5 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public string Address { get; set; }
 
         public int PackageTypeId { get; set; }
-
-        public bool IsSupplierInternal { get; set; }
-
-        public bool HasSupplierFrameworkContractedRates { get; set; }
     }
 }
