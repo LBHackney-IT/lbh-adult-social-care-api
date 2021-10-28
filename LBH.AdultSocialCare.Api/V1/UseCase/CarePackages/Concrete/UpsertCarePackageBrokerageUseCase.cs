@@ -38,13 +38,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             package.SupplierId = brokerageInfo.SupplierId;
 
-            var coreCost = AddCoreCost(package, brokerageInfo);
+            AddCoreCost(package, brokerageInfo);
             RemoveDetails(package, brokerageInfo.Details);
 
             foreach (var requestedDetail in brokerageInfo.Details)
             {
-                ValidateDetail(requestedDetail);
-
                 if (requestedDetail.Id is null)
                 {
                     AddDetail(package, requestedDetail);
@@ -58,15 +56,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             await _databaseManager.SaveAsync();
         }
 
-        private static void ValidateDetail(CarePackageDetailDomain requestedDetail)
-        {
-            if (requestedDetail.StartDate.Date > requestedDetail.EndDate?.Date)
-            {
-                throw new ApiException($"End Date of {requestedDetail.Type.GetDisplayName()} should be later than start date");
-            }
-        }
-
-        private static CarePackageDetail AddCoreCost(CarePackage package, CarePackageBrokerageDomain brokerageInfo)
+        private static void AddCoreCost(CarePackage package, CarePackageBrokerageDomain brokerageInfo)
         {
             var coreCostDetail = package.Details.FirstOrDefault(d => d.Type is PackageDetailType.CoreCost);
 
@@ -81,8 +71,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             coreCostDetail.CostPeriod = PaymentPeriod.Weekly;
             coreCostDetail.StartDate = brokerageInfo.StartDate;
             coreCostDetail.EndDate = brokerageInfo.EndDate;
-
-            return coreCostDetail;
         }
 
         private static void AddDetail(CarePackage package, CarePackageDetailDomain requestedDetail)
