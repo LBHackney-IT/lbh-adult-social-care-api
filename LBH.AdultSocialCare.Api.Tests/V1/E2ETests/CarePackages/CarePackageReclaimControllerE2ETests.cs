@@ -281,14 +281,20 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             var package = _generator.CreateCarePackage();
             var reclaim = _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
 
+            var endDate = DateTimeOffset.Now;
+
             var response = await _fixture.RestClient
-                .PutAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{package.Id}/reclaims/care-charges/{reclaim.Id}/end");
+                .PutAsync<CarePackageReclaimResponse>(
+                    $"api/v1/care-packages/{package.Id}/reclaims/care-charges/{reclaim.Id}/end",
+                    new CarePackageReclaimEndRequest { EndDate = endDate });
 
             reclaim = _fixture.DatabaseContext.CarePackageReclaims.First(r => r.Id == reclaim.Id);
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
             response.Content.Status.Should().Be(ReclaimStatus.Ended);
+
             reclaim.Status.Should().Be(ReclaimStatus.Ended);
+            reclaim.EndDate.Should().Be(endDate.Date);
         }
 
         private async Task<TestResponse<CarePackageReclaimResponse>> CreateFncReclaim(FundedNursingCareCreationRequest request)

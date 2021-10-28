@@ -62,6 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 else
                 {
                     existingReclaim.Status = ReclaimStatus.Ended;
+                    existingReclaim.EndDate = DateTimeOffset.Now.Date;
 
                     var newReclaim = requestedReclaim.ToEntity();
 
