@@ -24,27 +24,24 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
     {
         private readonly ICreateCarePackageReclaimUseCase _createCarePackageReclaimUseCase;
         private readonly IUpdateCarePackageReclaimUseCase _updateCarePackageReclaimUseCase;
-        private readonly IGetCarePackageReclaimsUseCase _getCarePackageReclaimsesUseCase;
+        private readonly IGetCarePackageReclaimsUseCase _getCarePackageReclaimsUseCase;
         private readonly IGetFundedNursingCarePriceUseCase _getFundedNursingCarePriceUseCase;
         private readonly ICareChargeUseCase _getCareChargeUseCase;
         private readonly IGetSinglePackageCareChargeUseCase _getSinglePackageCareChargeUseCase;
-        private readonly IChangeCarePackageReclaimsStatusUseCase _changeCarePackageReclaimsStatusUseCase;
 
         public CarePackageReclaimController(ICreateCarePackageReclaimUseCase createCarePackageReclaimUseCase,
             IUpdateCarePackageReclaimUseCase updateCarePackageReclaimUseCase,
-            IGetCarePackageReclaimsUseCase getCarePackageReclaimsesUseCase,
+            IGetCarePackageReclaimsUseCase getCarePackageReclaimsUseCase,
             IGetFundedNursingCarePriceUseCase getFundedNursingCarePriceUseCase,
             ICareChargeUseCase getCareChargeUseCase,
-            IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase,
-            IChangeCarePackageReclaimsStatusUseCase changeCarePackageReclaimsStatusUseCase)
+            IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase)
         {
             _createCarePackageReclaimUseCase = createCarePackageReclaimUseCase;
             _updateCarePackageReclaimUseCase = updateCarePackageReclaimUseCase;
-            _getCarePackageReclaimsesUseCase = getCarePackageReclaimsesUseCase;
+            _getCarePackageReclaimsUseCase = getCarePackageReclaimsUseCase;
             _getFundedNursingCarePriceUseCase = getFundedNursingCarePriceUseCase;
             _getCareChargeUseCase = getCareChargeUseCase;
             _getSinglePackageCareChargeUseCase = getSinglePackageCareChargeUseCase;
-            _changeCarePackageReclaimsStatusUseCase = changeCarePackageReclaimsStatusUseCase;
         }
 
         /// <summary>Creates a new funded nursing care reclaim.</summary>
@@ -118,7 +115,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpGet("care-charges")]
         public async Task<ActionResult<CarePackageReclaimResponse>> GetCareCharges(Guid carePackageId, ReclaimSubType? subType)
         {
-            var result = await _getCarePackageReclaimsesUseCase.GetListAsync(carePackageId, ReclaimType.CareCharge, subType);
+            var result = await _getCarePackageReclaimsUseCase.GetListAsync(carePackageId, ReclaimType.CareCharge, subType);
             return Ok(result);
         }
 
@@ -132,7 +129,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpGet("fnc")]
         public async Task<ActionResult<CarePackageReclaimResponse>> GetFundedNursingCare(Guid carePackageId)
         {
-            var result = await _getCarePackageReclaimsesUseCase.GetCarePackageReclaim(carePackageId, ReclaimType.Fnc);
+            var result = await _getCarePackageReclaimsUseCase.GetCarePackageReclaim(carePackageId, ReclaimType.Fnc);
             return Ok(result);
         }
 
@@ -186,15 +183,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// Cancels a reclaim with a given reclaimId
         /// </summary>
         /// <param name="reclaimId">The unique identifier of reclaim to cancel.</param>
+        /// <param name="useCase">A reference to the ICancelCarePackageReclaimsUseCase instance.</param>
         /// <response code="200">When operation has been completed successfully.</response>
         /// <response code="404">When reclaim with given id doesn't exists.</response>
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [HttpPut("care-charges/{reclaimId}/cancel")]
-        public async Task<ActionResult<CarePackageReclaimResponse>> CancelReclaim(Guid reclaimId)
+        public async Task<ActionResult<CarePackageReclaimResponse>> CancelReclaim(
+            Guid reclaimId, [FromServices] ICancelCarePackageReclaimsUseCase useCase)
         {
-            var reclaim = await _changeCarePackageReclaimsStatusUseCase.ExecuteAsync(reclaimId, ReclaimStatus.Cancelled);
+            var reclaim = await useCase.ExecuteAsync(reclaimId);
             return Ok(reclaim.ToResponse());
         }
 
@@ -202,15 +201,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// Mark a reclaim with a given reclaimId as ended.
         /// </summary>
         /// <param name="reclaimId">The unique identifier of reclaim to end.</param>
+        /// <param name="request">Extra options for ending the request.</param>
+        /// <param name="useCase">A reference to the IEndCarePackageReclaimUseCase instance</param>
         /// <response code="200">When operation has been completed successfully.</response>
         /// <response code="404">When reclaim with given id doesn't exists.</response>
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [HttpPut("care-charges/{reclaimId}/end")]
-        public async Task<ActionResult<CarePackageReclaimResponse>> EndReclaim(Guid reclaimId)
+        public async Task<ActionResult<CarePackageReclaimResponse>> EndReclaim(
+            Guid reclaimId, CarePackageReclaimEndRequest request,
+            [FromServices] IEndCarePackageReclaimUseCase useCase)
         {
-            var reclaim = await _changeCarePackageReclaimsStatusUseCase.ExecuteAsync(reclaimId, ReclaimStatus.Ended);
+            var reclaim = await useCase.ExecuteAsync(reclaimId, request);
             return Ok(reclaim.ToResponse());
         }
     }
