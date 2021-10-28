@@ -1,16 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Validations;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
 {
     [GenerateMappingFor(typeof(CarePackageDetailDomain))]
-    public class CarePackageDetailRequest
+    public class CarePackageDetailRequest : IValidatableObject
     {
         [GuidNotEmpty]
         public Guid? Id { get; set; }
@@ -30,5 +30,25 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
         public DateTimeOffset? StartDate { get; set; }
 
         public DateTimeOffset? EndDate { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if ((Type is PackageDetailType.AdditionalNeed) && (CostPeriod is PaymentPeriod.OneOff))
+            {
+                if (EndDate is null)
+                {
+                    yield return new ValidationResult(
+                        "End Date is required for One-Off Additional Need",
+                        new[] { nameof(EndDate) });
+                }
+            }
+
+            if (StartDate?.Date > EndDate?.Date)
+            {
+                yield return new ValidationResult(
+                    "End Date should be later than start date",
+                    new[] { nameof(StartDate), nameof(EndDate) });
+            }
+        }
     }
 }
