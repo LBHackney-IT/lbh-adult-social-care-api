@@ -24,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
 
         public int? SupplierId { get; set; }
 
-        public List<CarePackageDetailRequest> Details { get; set; }
+        public List<CarePackageDetailRequest> Details { get; set; } = new List<CarePackageDetailRequest>();
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
