@@ -286,7 +286,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             var response = await _fixture.RestClient
                 .PutAsync<CarePackageReclaimResponse>(
                     $"api/v1/care-packages/{package.Id}/reclaims/care-charges/{reclaim.Id}/end",
-                    new CarePackageReclaimEndRequest { EndDate = DateTimeOffset.Now });
+                    new CarePackageReclaimEndRequest { EndDate = endDate });
 
             reclaim = _fixture.DatabaseContext.CarePackageReclaims.First(r => r.Id == reclaim.Id);
 
