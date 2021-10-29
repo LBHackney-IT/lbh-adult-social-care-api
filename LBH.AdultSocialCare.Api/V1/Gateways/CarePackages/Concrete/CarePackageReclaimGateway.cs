@@ -62,6 +62,14 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
 
         public async Task<List<CarePackageReclaim>> GetListAsync(Guid packageId, ReclaimType? reclaimType, ReclaimSubType? reclaimSubType)
         {
+            var carePackage = await _dbContext.CarePackages
+                .FirstOrDefaultAsync(item => item.Id.Equals(packageId));
+
+            if (carePackage is null)
+            {
+                throw new EntityNotFoundException($"Unable to locate care package {packageId}");
+            }
+
             return await _dbContext.CarePackageReclaims
                 .Where(reclaim =>
                     (reclaim.CarePackageId == packageId) &&
@@ -89,6 +97,14 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
 
         public async Task<SinglePackageCareChargeDomain> GetSinglePackageCareCharge(Guid packageId)
         {
+            var carePackage = await _dbContext.CarePackages
+                .FirstOrDefaultAsync(item => item.Id.Equals(packageId));
+
+            if (carePackage is null)
+            {
+                throw new EntityNotFoundException($"Unable to locate care package {packageId}");
+            }
+
             return await _dbContext.CarePackages
                 .Where(c => c.Id.Equals(packageId))
                 .Include(item => item.ServiceUser)
