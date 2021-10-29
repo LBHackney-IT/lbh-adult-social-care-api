@@ -31,9 +31,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         public async Task<IEnumerable<CarePackageReclaimDomain>> GetListAsync(Guid carePackageId, ReclaimType? reclaimType, ReclaimSubType? reclaimSubType)
         {
-            await _carePackageGateway.GetPackageAsync(carePackageId)
-                .EnsureExistsAsync($"Care package {carePackageId} not found");
-
             var result = await _carePackageReclaimGateway.GetListAsync(carePackageId, reclaimType, reclaimSubType);
             return result.ToDomain();
         }
