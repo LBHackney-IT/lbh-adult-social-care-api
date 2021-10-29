@@ -8,6 +8,7 @@ using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
@@ -51,6 +52,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             foreach (var existingReclaim in existingReclaims)
             {
+                if (existingReclaim.Status.In(ReclaimStatus.Cancelled, ReclaimStatus.Ended))
+                {
+                    throw new ApiException($"Unable to edit reclaim in status {existingReclaim.Status}");
+                }
+
                 // For MVP scope always update provisional care charges and replace other types of care charges
                 var requestedReclaim = requestedReclaims.First(r => r.Id == existingReclaim.Id);
 
