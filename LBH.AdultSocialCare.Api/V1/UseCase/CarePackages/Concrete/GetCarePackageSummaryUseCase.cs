@@ -39,6 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var summary = new CarePackageSummaryDomain
             {
                 PackageType = package.PackageType.GetDisplayName(),
+                Status = package.Status,
                 PrimarySupportReason = package.PrimarySupportReason?.PrimarySupportReasonName,
                 SchedulingPeriod = $"{package.PackageScheduling.GetDisplayName()} {package.PackageScheduling.ToDescription()}",
 

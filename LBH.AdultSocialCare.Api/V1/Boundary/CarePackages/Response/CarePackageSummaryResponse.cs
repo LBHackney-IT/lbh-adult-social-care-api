@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 
@@ -11,6 +12,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
         public DateTimeOffset? EndDate { get; set; }
 
         public string PackageType { get; set; }
+        public PackageStatus Status { get; set; }
         public string PrimarySupportReason { get; set; }
         public string SchedulingPeriod { get; set; }
 
