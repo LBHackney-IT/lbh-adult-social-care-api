@@ -15,6 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
 
         public Guid Id { get; set; }
         public PackageType PackageType { get; set; }
+        public PackageStatus Status { get; set; }
 
         public DateTimeOffset? DateAssigned { get; set; }
     }
