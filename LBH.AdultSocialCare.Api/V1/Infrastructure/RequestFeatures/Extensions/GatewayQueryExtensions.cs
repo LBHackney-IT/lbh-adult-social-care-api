@@ -35,10 +35,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
                                           || package.ServiceUser.FirstName.ToLower().Contains(serviceUserName.ToLower())
                                           || package.ServiceUser.LastName.ToLower().Contains(serviceUserName.ToLower()))
                                       && ((packageStatus == null && statusesToInclude.Contains(package.Status) || package.Status.Equals(packageStatus)))
-                                      && (packageType == null || package.Status.Equals(packageType))
+                                      && (packageType == null || package.PackageType.Equals(packageType))
                                       && (approverId == null || package.ApproverId.Equals(approverId))
-                                      && (fromDate == null || package.DateCreated >= fromDate)
-                                      && (toDate == null || package.DateCreated <= toDate));
+                                      && (fromDate == null || package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost).StartDate >= fromDate)
+                                      && (toDate == null || package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost).EndDate <= toDate)); // TODO: VK: Review end date (can be empty)
 
         public static IQueryable<User> FilterAppUsers(this IQueryable<User> users, string searchTerm = "") =>
             users.Where(u => (string.IsNullOrEmpty(searchTerm) || (EF.Functions.ILike(u.Name, $"%{searchTerm}%") || EF.Functions.ILike(u.Email, $"%{searchTerm}%"))));
