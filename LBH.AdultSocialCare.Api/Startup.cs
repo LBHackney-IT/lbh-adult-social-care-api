@@ -196,7 +196,7 @@ namespace LBH.AdultSocialCare.Api
 
             app.UseCors(options => options.WithOrigins("http://localhost:3000", "https://d1ewp85mz183f9.cloudfront.net",
                     "https://social-care-care-packages-staging.hackney.gov.uk", "https://d2s6rc0vyqw6a1.cloudfront.net",
-                    "https://social-care-care-packages.hackney.gov.uk", "https://social-care-care-packages-staging.hackney.gov.uk:80")
+                    "https://social-care-care-packages.hackney.gov.uk")
                 .AllowAnyMethod()
                 .AllowAnyHeader());
             app.UseCorrelation();
