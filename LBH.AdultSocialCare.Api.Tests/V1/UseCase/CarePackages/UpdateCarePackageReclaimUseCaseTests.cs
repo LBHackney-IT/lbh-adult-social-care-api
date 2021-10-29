@@ -117,5 +117,20 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
         }
+
+        [Fact]
+        public void ShouldFailOnCancelledReclaim()
+        {
+            _package.Reclaims.First().Status = ReclaimStatus.Cancelled;
+
+            var request = _requestedIds.Select(id => new CarePackageReclaimUpdateDomain { Id = id }).ToList();
+
+            _useCase
+                .Invoking(useCase => useCase.UpdateListAsync(request))
+                .Should().Throw<ApiException>()
+                .Where(ex => ex.StatusCode == StatusCodes.Status500InternalServerError);
+
+            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
+        }
     }
 }
