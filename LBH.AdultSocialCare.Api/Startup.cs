@@ -180,7 +180,7 @@ namespace LBH.AdultSocialCare.Api
                 var databaseContext = appScope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
                 // Uncomment next line to delete and recreate DB
-                databaseContext.Database.EnsureDeleted();
+                // databaseContext.Database.EnsureDeleted();
 
                 if (!databaseContext.Database.ProviderName.Equals("Microsoft.EntityFrameworkCore.InMemory") &&
                     !databaseContext.Database.ProviderName.Equals("Microsoft.EntityFrameworkCore.Sqlite")) // disable migrations for test in-memory databases
