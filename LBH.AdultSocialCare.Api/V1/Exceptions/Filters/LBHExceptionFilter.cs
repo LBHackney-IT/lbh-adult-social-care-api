@@ -11,6 +11,10 @@ namespace LBH.AdultSocialCare.Api.V1.Exceptions.Filters
                     AttributeTargets.Method)] // Only use attribute on controller classes and action methods
     public class LBHExceptionFilter : ExceptionFilterAttribute
     {
+        public LBHExceptionFilter()
+        {
+        }
+
         public override void OnException(ExceptionContext context)
         {
             Debugger.Break();
@@ -58,13 +62,14 @@ namespace LBH.AdultSocialCare.Api.V1.Exceptions.Filters
 #if !DEBUG
                         var msg = "An unhandled error occurred.";
                         string stack = null;
+                        // LambdaLogger.Log($"Application threw error: {JsonConvert.SerializeObject(context.Exception)}");
+
 #else
                         var msg = context.Exception.GetBaseException().Message;
                         string stack = context.Exception.StackTrace;
 #endif
 
                         apiError = new ApiError(msg) { Detail = stack };
-
                         statusCode = 500;
 
                         // handle logging here

@@ -1,96 +1,16 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.HomeCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.NursingCare;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.ResidentialCare;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
 {
     public static class GatewayQueryExtensions
     {
-        public static IQueryable<HomeCarePackage> FilterHomeCareList(this IQueryable<HomeCarePackage> homeCarePackages, int? statusId, string clientName) =>
-            homeCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)));
-
-        public static IQueryable<ResidentialCarePackage> FilterResidentialCareList(this IQueryable<ResidentialCarePackage> residentialCarePackages, int? statusId, string clientName) =>
-            residentialCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)));
-
-        public static IQueryable<NursingCarePackage> FilterNursingCareList(this IQueryable<NursingCarePackage> nursingCarePackages, int? statusId, string clientName) =>
-            nursingCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)));
-
-        public static IQueryable<DayCarePackage> FilterDayCareList(this IQueryable<DayCarePackage> dayCarePackages, int? statusId, string clientName) =>
-            dayCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)));
-
-        public static IQueryable<ResidentialCarePackage> FilterApprovedResidentialCareList(this IQueryable<ResidentialCarePackage> residentialCarePackages, int? statusId, int? hackneyId, string clientName,
-            Guid? socialWorkerId) =>
-            residentialCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (hackneyId != null ? h.Client.HackneyId.ToString().Contains(hackneyId.ToString()) : h.Equals(h)) &&
-                (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)) &&
-                (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId));
-
-        public static IQueryable<HomeCarePackage> FilterApprovedHomeCareList(this IQueryable<HomeCarePackage> homeCarePackages, int? statusId, int? hackneyId, string clientName,
-            Guid? socialWorkerId) =>
-            homeCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (hackneyId.Equals(null) || h.Client.HackneyId == hackneyId) &&
-                (clientName != null ? $"{h.Client.FirstName} {h.Client.LastName}".ToLower().Contains(clientName.ToLower()) : h.Equals(h)) &&
-                (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId));
-
-        public static IQueryable<DayCarePackage> FilterApprovedDayCareList(this IQueryable<DayCarePackage> dayCarePackages, int? statusId, int? hackneyId,
-            Guid? socialWorkerId) =>
-            dayCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (hackneyId.Equals(null) || h.Client.HackneyId == hackneyId) &&
-                (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId));
-
-        public static IQueryable<NursingCarePackage> FilterApprovedNursingCareList(this IQueryable<NursingCarePackage> nursingCarePackages, int? statusId, int? hackneyId, string clientName,
-            Guid? socialWorkerId) =>
-            nursingCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (hackneyId != null ? h.Client.HackneyId.ToString().Contains(hackneyId.ToString()) : h.Equals(h)) &&
-                (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)) &&
-                (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId));
-
-        public static IQueryable<ResidentialCarePackage> FilterBrokeredResidentialCareList(this IQueryable<ResidentialCarePackage> residentialCarePackages, int? statusId, int? hackneyId, string clientName,
-            Guid? socialWorkerId, int? stageId) =>
-            residentialCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (hackneyId.Equals(null) || h.Client.HackneyId == hackneyId) &&
-                (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId) &&
-                (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)) &&
-                (stageId.Equals(null) || h.StageId == stageId));
-
-        public static IQueryable<HomeCarePackage> FilterBrokeredHomeCareList(this IQueryable<HomeCarePackage> homeCarePackages, int? statusId, int? hackneyId, string clientName,
-            Guid? socialWorkerId, int? stageId) =>
-            homeCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (hackneyId.Equals(null) || h.Client.HackneyId == hackneyId) &&
-                (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId) &&
-                (clientName != null ? $"{h.Client.FirstName} {h.Client.LastName}".ToLower().Contains(clientName.ToLower()) : h.Equals(h)) &&
-                (stageId.Equals(null) || h.StageId == stageId));
-
-        public static IQueryable<NursingCarePackage> FilterBrokeredNursingCareList(this IQueryable<NursingCarePackage> nursingCarePackages, int? statusId, int? hackneyId, string clientName,
-            Guid? socialWorkerId, int? stageId) =>
-            nursingCarePackages.Where(h =>
-                (statusId.Equals(null) || h.StatusId == statusId) &&
-                (hackneyId.Equals(null) || h.Client.HackneyId == hackneyId) &&
-                (socialWorkerId.Equals(null) || h.CreatorId == socialWorkerId) &&
-                (clientName != null ? h.Client.FirstName.ToLower().Contains(clientName.ToLower()) : h.Equals(h)) &&
-                (stageId.Equals(null) || h.StageId == stageId));
-
-        public static IQueryable<Client> FilterByName(this IQueryable<Client> clientsQuery, string name) =>
+        public static IQueryable<ServiceUser> FilterByName(this IQueryable<ServiceUser> clientsQuery, string name) =>
             clientsQuery.Where(c => String.IsNullOrEmpty(name)
                                     || c.FirstName.ToLower().Contains(name.ToLower())
                                     || c.LastName.ToLower().Contains(name.ToLower()));
@@ -106,22 +26,65 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
                                     || package.ServiceUser.LastName.ToLower().Contains(serviceUserName.ToLower()))
                                 && (status == null || package.Status.Equals(status))
                                 && (brokerId == null || package.BrokerId.Equals(brokerId))
-                                && (fromDate == null || package.DateCreated >= fromDate)
-                                && (toDate == null || package.DateCreated <= toDate));
+                                && (fromDate == null || package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost).StartDate >= fromDate)
+                                && (toDate == null || package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost).EndDate <= toDate));
+
+        public static IQueryable<CarePackage> FilterApprovableCarePackages(this IQueryable<CarePackage> packages, Guid? serviceUserId, string serviceUserName, PackageStatus? packageStatus, PackageType? packageType, Guid? approverId, DateTimeOffset? fromDate, DateTimeOffset? toDate, PackageStatus[] statusesToInclude) =>
+            packages.Where(package => (serviceUserId == null || package.ServiceUserId.Equals(serviceUserId))
+                                      && (String.IsNullOrEmpty(serviceUserName)
+                                          || package.ServiceUser.FirstName.ToLower().Contains(serviceUserName.ToLower())
+                                          || package.ServiceUser.LastName.ToLower().Contains(serviceUserName.ToLower()))
+                                      && ((packageStatus == null && statusesToInclude.Contains(package.Status) || package.Status.Equals(packageStatus)))
+                                      && (packageType == null || package.PackageType.Equals(packageType))
+                                      && (approverId == null || package.ApproverId.Equals(approverId))
+                                      && (fromDate == null || package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost).StartDate >= fromDate)
+                                      && (toDate == null || package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost).EndDate <= toDate)); // TODO: VK: Review end date (can be empty)
 
         public static IQueryable<User> FilterAppUsers(this IQueryable<User> users, string searchTerm = "") =>
             users.Where(u => (string.IsNullOrEmpty(searchTerm) || (EF.Functions.ILike(u.Name, $"%{searchTerm}%") || EF.Functions.ILike(u.Email, $"%{searchTerm}%"))));
 
-        public static IQueryable<CarePackage> FilterCareChargeCarePackageList(this IQueryable<CarePackage> carePackages, string status, string firstName, string lastName,
-            DateTime? dateOfBirth, string postCode, int? mosaicId, DateTimeOffset? modifiedAt, Guid? modifiedBy) =>
-            carePackages.Where(c =>
-                (firstName != null ? c.ServiceUser.FirstName.ToLower().Contains(firstName.ToLower()) : c.Equals(c)) &&
-                (lastName != null ? c.ServiceUser.LastName.ToLower().Contains(lastName.ToLower()) : c.Equals(c)) &&
-                (dateOfBirth.Equals(null) || c.ServiceUser.DateOfBirth == dateOfBirth) &&
-                (postCode != null ? c.ServiceUser.PostCode.ToLower().Contains(postCode.ToLower()) : c.Equals(c)) &&
-                (mosaicId.Equals(null) || c.ServiceUser.HackneyId == mosaicId) &&
+        public static IQueryable<CarePackage> FilterCareChargeCarePackageList(this IQueryable<CarePackage> carePackages,
+            string status, Guid? modifiedBy, string orderByDate)
+        {
+            var filteredList = carePackages.Where(c =>
                 (modifiedBy.Equals(null) || c.UpdaterId == modifiedBy) &&
-                (modifiedAt.Equals(null) || c.DateUpdated == modifiedAt) &&
-                (status != null ? c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge) == (status == "Existing") : c.Equals(c)));
+                (status != null ? c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) == (status == "Existing") : c.Equals(c)));
+
+            switch (orderByDate)
+            {
+                case "desc":
+                    filteredList = filteredList.OrderByDescending(s => s.DateCreated);
+                    break;
+
+                case "asc":
+                    filteredList = filteredList.OrderBy(s => s.DateCreated);
+                    break;
+
+                default:
+                    filteredList = filteredList.OrderBy(s => s.DateCreated);
+                    break;
+            }
+
+            return filteredList;
+        }
+
+        public static IQueryable<ServiceUser> FilterServiceUser(this IQueryable<ServiceUser> serviceUsers, IEnumerable<Guid> serviceUserIds, string firstName, string lastName,
+            string postCode, DateTime? dateOfBirth, int? hackneyId, bool hasPackages)
+        {
+            var filteredList = serviceUsers.Where(s =>
+                (firstName != null ? s.FirstName.ToLower().Contains(firstName.ToLower()) : s.Equals(s)) &&
+                (lastName != null ? s.LastName.ToLower().Contains(lastName.ToLower()) : s.Equals(s)) &&
+                (dateOfBirth.Equals(null) || s.DateOfBirth == dateOfBirth) &&
+                (postCode != null ? s.PostCode.ToLower().Contains(postCode.ToLower()) : s.Equals(s)) &&
+                (hackneyId.Equals(null) || s.HackneyId == hackneyId));
+
+            if (hasPackages)
+            {
+                filteredList = filteredList.Where(su => serviceUserIds.Contains(su.Id));
+            }
+
+            return filteredList;
+
+        }
     }
 }

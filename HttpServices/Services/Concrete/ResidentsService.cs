@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using HttpServices.Helpers;
+using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
 
@@ -20,7 +21,22 @@ namespace HttpServices.Services.Concrete
         {
             var url = new UrlFormatter()
                 .SetBaseUrl("residents")
-                .AddParameter("id", hackneyId)
+                .AddParameter("mosaic_id", hackneyId)
+                .ToString();
+
+            return await _restClient
+                .GetAsync<ServiceUserInformationResponse>(url, "Could not retrieve service user information");
+        }
+
+        public async Task<ServiceUserInformationResponse> SearchServiceUserInformationAsync(ServiceUserQueryRequest request)
+        {
+            var url = new UrlFormatter()
+                .SetBaseUrl("residents")
+                .AddParameter("mosaic_id", request.HackneyId)
+                .AddParameter("first_name", request.FirstName)
+                .AddParameter("last_name", request.LastName)
+                .AddParameter("postCode", request.PostCode)
+                .AddParameter("date_of_birth", request.DateOfBirth)
                 .ToString();
 
             return await _restClient

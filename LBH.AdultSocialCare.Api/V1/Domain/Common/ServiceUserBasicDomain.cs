@@ -9,6 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
     [GenerateMappingFor(typeof(ServiceUserBasicResponse))]
     public class ServiceUserBasicDomain
     {
+        public Guid Id { get; set; }
         public int HackneyId { get; set; }
 
         public string FirstName { get; set; }

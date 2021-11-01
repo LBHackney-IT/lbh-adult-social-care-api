@@ -4,14 +4,16 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CareCharge;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.Helpers;
-using LBH.AdultSocialCare.Api.V1.Domain.Common.Invoicing;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 {
@@ -24,24 +26,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<PackageCareCharge>> GetCareChargesAsync(IEnumerable<Guid> packageIds)
-        {
-            var careCharges = await _dbContext.PackageCareCharges
-                .Where(cc => packageIds.Contains(cc.PackageId))
-                .Include(cc => cc.CareChargeElements)
-                .ThenInclude(ce => ce.ClaimCollector)
-                .Include(cc => cc.CareChargeElements)
-                .ThenInclude(ce => ce.CareChargeType)
-                .ToListAsync()
-                .ConfigureAwait(false);
-
-            return careCharges;
-        }
-
         public async Task<ProvisionalCareChargeAmountPlainDomain> GetUsingServiceUserIdAsync(Guid serviceUserId)
         {
             // Get client age
-            var clientBirthDate = await _dbContext.Clients
+            var clientBirthDate = await _dbContext.ServiceUsers
                 .Where(c => c.Id.Equals(serviceUserId))
                 .Select(c => c.DateOfBirth)
                 .SingleOrDefaultAsync().ConfigureAwait(false);
@@ -66,110 +54,51 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             return provisionalAmount?.ToDomain();
         }
 
-        public async Task<bool> UpdateCareChargeElementStatusAsync(Guid packageCareChargeId, Guid careElementId, int newElementStatusId, DateTimeOffset? newEndDate)
+        public async Task<PagedList<CareChargePackagesDomain>> GetCareChargePackages(CareChargePackagesParameters parameters)
         {
-            // Get care charge element
-            var element = await GetCareChargeElementAsync(packageCareChargeId, careElementId).ConfigureAwait(false);
+            var careChargePackagesCount = await GetCareChargePackagesCount(parameters);
+            var careChargePackagesList = await GetCareChargePackagesList(parameters);
 
-            if (element == null)
-            {
-                throw new ApiException($"Care charge element with Id {careElementId} not found");
-            }
+            var paginatedCareChargePackageList = careChargePackagesList
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize);
 
-            // Update element and save
-            element.StatusId = newElementStatusId;
-
-            if (newEndDate == null || newEndDate > element.StartDate)
-            {
-                element.EndDate = newEndDate;
-            }
-
-            try
-            {
-                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw new DbSaveFailedException($"Failed to update care element status {ex.InnerException?.Message}",
-                    ex);
-            }
+            return PagedList<CareChargePackagesDomain>.ToPagedList(paginatedCareChargePackageList, careChargePackagesCount, parameters.PageNumber, parameters.PageSize);
         }
 
-        public async Task<CareChargeElementPlainDomain> CheckCareChargeElementExistsAsync(Guid packageCareChargeId,
-            Guid careElementId)
+        private async Task<int> GetCareChargePackagesCount(CareChargePackagesParameters parameters)
         {
-            var element = await _dbContext.CareChargeElements
-                .Where(ce => ce.Id.Equals(careElementId) && ce.CareChargeId.Equals(packageCareChargeId))
-                .AsNoTracking()
-                .SingleOrDefaultAsync().ConfigureAwait(false);
-
-            if (element == null)
-            {
-                throw new ApiException($"Care charge element with Id {careElementId} not found");
-            }
-
-            return element.ToPlainDomain();
+            return await _dbContext.CarePackages
+                .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate)
+                .Where(c => c.Settings.IsS117ClientConfirmed == false)
+                .CountAsync();
         }
 
-        private async Task<CareChargeElement> GetCareChargeElementAsync(Guid packageCareChargeId, Guid careElementId)
+        private async Task<List<CareChargePackagesDomain>> GetCareChargePackagesList(CareChargePackagesParameters parameters)
         {
-            var element = await _dbContext.CareChargeElements
-                .Where(ce => ce.Id.Equals(careElementId) && ce.CareChargeId.Equals(packageCareChargeId))
-                .SingleOrDefaultAsync().ConfigureAwait(false);
-            return element;
-        }
-
-        public async Task<IEnumerable<CareChargeElementPlainDomain>> CreateCareChargeElementsAsync(IEnumerable<CareChargeElementPlainDomain> elementDomains)
-        {
-            var newElements = new List<CareChargeElement>();
-
-            await using var transaction = await _dbContext.Database.BeginTransactionAsync().ConfigureAwait(false);
-            try
-            {
-                foreach (var domain in elementDomains)
+            return await _dbContext.CarePackages
+                .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate)
+                .Where(c => c.Settings.IsS117ClientConfirmed == false)
+                .Include(item => item.Settings)
+                .Include(item => item.ServiceUser)
+                .Include(item => item.Updater)
+                .Include(item => item.Reclaims)
+                .Select(c => new CareChargePackagesDomain
                 {
-                    var element = domain.ToEntity();
-                    newElements.Add(element);
-
-                    _dbContext.CareChargeElements.Add(element);
-                }
-
-                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
-                await transaction.CommitAsync().ConfigureAwait(false);
-
-                return newElements.ToPlainDomain();
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync().ConfigureAwait(false);
-                throw new DbSaveFailedException("Saving care charge element failed", ex);
-            }
-        }
-
-        public async Task<CareChargeElementPlainDomain> CreateCareChargeElementAsync(CareChargeElement careChargeElement)
-        {
-            try
-            {
-                await _dbContext.CareChargeElements.AddAsync(careChargeElement).ConfigureAwait(false);
-                await _dbContext.SaveChangesAsync().ConfigureAwait(false);
-                return careChargeElement.ToPlainDomain();
-            }
-            catch (Exception ex)
-            {
-                throw new DbSaveFailedException("Saving care charge element failed", ex);
-            }
-        }
-
-        public async Task RefreshCareChargeElementsPaidUpToDate(IEnumerable<CareChargeElement> elements, DateTimeOffset paidUpTo)
-        {
-            foreach (var element in elements)
-            {
-                element.PreviousPaidUpTo = element.PaidUpTo;
-                element.PaidUpTo = Dates.Min(paidUpTo, element.PaidUpTo);
-            }
-
-            await _dbContext.SaveChangesAsync().ConfigureAwait(false);
+                    Status = c.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) ? "Existing" : "New",
+                    ServiceUser = $"{c.ServiceUser.FirstName} {c.ServiceUser.LastName}",
+                    ServiceUserId = c.ServiceUserId,
+                    DateOfBirth = c.ServiceUser.DateOfBirth,
+                    Address = $"{c.ServiceUser.AddressLine1} {c.ServiceUser.AddressLine2} {c.ServiceUser.AddressLine3} {c.ServiceUser.County} {c.ServiceUser.Town} {c.ServiceUser.PostCode}",
+                    HackneyId = c.ServiceUser.HackneyId,
+                    PackageType = c.PackageType.GetDisplayName(),
+                    PackageId = c.Id,
+                    IsS117Client = c.Settings.IsS117Client,
+                    StartDate = c.DateCreated,
+                    LastModified = c.DateUpdated,
+                    ModifiedBy = c.Updater.Name
+                })
+                .ToListAsync();
         }
     }
 }

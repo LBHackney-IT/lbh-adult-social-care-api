@@ -4,6 +4,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
 {
@@ -26,6 +27,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 {
                     RoleId = new Guid(RolesEnum.Broker.ToDescription()),
                     UserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
+                },
+                new AppUserRole
+                {
+                    RoleId = new Guid(RolesEnum.Approver.ToDescription()),
+                    UserId = new Guid("3c44e4e1-78b8-471f-9f08-5081a0a534e9")
                 });
         }
     }

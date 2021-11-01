@@ -25,5 +25,8 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 
         [Display(Name = "Cancelled")]
         Cancelled = 7,
+
+        [Display(Name = "Rejected")]
+        Rejected = 8,
     }
 }

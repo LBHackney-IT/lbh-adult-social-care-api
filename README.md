@@ -1,177 +1,201 @@
-# LBH Base API
+[![LBHackney-IT](https://circleci.com/gh/LBHackney-IT/lbh-adult-social-care-api.svg?style=svg)](https://circleci.com/gh/LBHackney-IT/lbh-adult-social-care-api)
 
-Base API is a boilerplate code for being reused for new APIs for LBH
+# Social Care Finance System API
 
-## Stack
+The Social Care Service API provides [service API](http://playbook.hackney.gov.uk/API-Playbook/platform_api_vs_service_api#a-service-apis) capabilities for the [Social Care Finance Frontend](https://github.com/LBHackney-IT/lbh-adult-social-care-frontend) which is part of the Social Care system (see [Social Care System Architecture](https://github.com/LBHackney-IT/social-care-architecture/tree/main) for more details).
 
-- .NET Core as a web framework.
-- nUnit as a test framework.
+![C4 Component Diagram](docs/component-diagram.svg)
 
-## Dependencies
 
-- Universal Housing Simulator
+## Table of contents
 
-## Contributing
+  - [Getting started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Dockerised dependencies](#dockerised-dependencies)
+    - [Installation](#installation)
+  - [Usage](#usage)
+    - [Running the application](#running-the-application)
+      - [Using dotnet run](#using-dotnet-run)
+      - [Using docker](#using-docker)
+    - [Running the tests](#running-the-tests)
+      - [Using the terminal](#using-the-terminal)
+      - [Using an IDE](#using-an-ide)
+  - [Documentation](#documentation)
+    - [Architecture](#architecture)
+    - [API design](#api-design)
+    - [Databases](#databases)
+      - [PostgreSQL (RDS PostgreSQL in AWS)](#postgresql-rds-postgresql-in-aws)
+    - [Deployment](#deployment)
+    - [Infrastructure](#infrastructure)
+    - [Related repositories](#related-repositories)
+  - [Active contributors](#active-contributors)
+  - [License](#license)
 
-### Setup
+## Getting started
 
-1. Install [Docker][docker-download].
-2. Install [AWS CLI][AWS-CLI].
-3. Clone this repository.
-4. Rename the initial template.
-5. Open it in your IDE.
+### Prerequisites
 
-### Renaming
+- [Docker](https://www.docker.com/products/docker-desktop)
+- [.NET Core 3.1](https://dotnet.microsoft.com/download)
 
-The renaming of `base-api` into `SomethingElseApi` can be done by running a Renamer powershell script. To do so:
-1. Open the powershell and navigate to this directory's root.
-2. Run the script using the following command:
-```
-.\Renamer.ps1 -apiName My_Api
-```
+### Dockerised dependencies
 
-If your ***script execution policy*** prevents you from running the script, you can temporarily ***bypass*** that with:
-```
-powershell -noprofile -ExecutionPolicy Bypass -file .\Renamer.ps1 -apiName My_Api
-```
+- PostgreSQL 12
 
-Or you can change your execution policy, prior to running the script, permanently with _(this disables security so, be cautious)_:
-```
-Set-ExecutionPolicy Unrestricted
-```
+### Installation
 
-After the renaming is done, the ***script will ask you if you want to delete it as well***, as it's useless now - It's your choice.
+1. Clone this repository
 
-#### On OSX
-
-Use Docker to run this script on Macs:
-```
-docker run -it -v `pwd`:/app mcr.microsoft.com/powershell
-```
-
-### Development
-
-To serve the application, run it using your IDE of choice, we use Visual Studio CE and JetBrains Rider on Mac.
-
-**Note**
-When running locally the appropriate database conneciton details are still needed.
-##### Postgres
-For Postgres an approprate `CONNECTION_STRING` environment variable is needed,
-and if you want to use a local Postgres instance then that will of course need to be installed and running.
-##### DynamoDb
-To use a local instance of DynamoDb, this will need to be installed. This is most easily done using [Docker](https://www.docker.com/products/docker-desktop).
-Run the following command, specifying the local path where you want the container's shared volume to be stored.
-```
-docker run --name dynamodb-local -p 8000:8000 -v <PUT YOUR LOCAL PATH HERE>:/data/ amazon/dynamodb-local -jar DynamoDBLocal.jar -sharedDb -dbPath /data
-```
-
-If you would like to see what is in your local DynamoDb instance using a simple gui, then [this admin tool](https://github.com/aaronshaf/dynamodb-admin) can do that.
-
-The application can also be served locally using docker:
-1.  Add you security credentials to AWS CLI.
 ```sh
-$ aws configure
+$ git clone git@github.com:LBHackney-IT/social-care-case-viewer-api.git
 ```
-2. Log into AWS ECR.
+
+## Usage
+
+### Running the application
+
+There are two ways of running the application: using dotnet or using docker.
+
+#### Using dotnet run
+Using the dotnet command will not automatically connect the API to any local database instances.
+
+To serve the API locally with dotnet,
+run `dotnet run` from within the [SocialCareFinanceSystemApi](./LBH.AdultSocialCare.Api) project directory, i.e:
+
 ```sh
-$ aws ecr get-login --no-include-email
+$ cd SocialCareCaseViewerApi && dotnet run
 ```
-3. Build and serve the application. It will be available in the port 3000.
+
+**The application will be served at http://localhost:5000**.
+
+#### Using docker
+
+Run the API locally with connected local dev databases using this command:
+
 ```sh
-$ make build && make serve
+$ make serve
 ```
+**The application will be served at http://localhost:3000**.
 
-### Release process
+N.B: This would only spin up the Application, Postgres locally in docker.
+It doesn't include setup for spinning up other APIs that this service connects to in Staging or in Production.
 
-We use a pull request workflow, where changes are made on a branch and approved by one or more other maintainers before the developer can merge into `master` branch.
 
-![Circle CI Workflow Example](docs/circle_ci_workflow.png)
+### Running the tests
 
-Then we have an automated six step deployment process, which runs in CircleCI.
+There are two ways of running the tests: using the terminal and using an IDE.
 
-1. Automated tests (nUnit) are run to ensure the release is of good quality.
-2. The application is deployed to development automatically, where we check our latest changes work well.
-3. We manually confirm a staging deployment in the CircleCI workflow once we're happy with our changes in development.
-4. The application is deployed to staging.
-5. We manually confirm a production deployment in the CircleCI workflow once we're happy with our changes in staging.
-6. The application is deployed to production.
+#### Using the terminal
 
-Our staging and production environments are hosted by AWS. We would deploy to production per each feature/config merged into  `master`  branch.
-
-### Creating A PR
-
-To help with making changes to code easier to understand when being reviewed, we've added a PR template.
-When a new PR is created on a repo that uses this API template, the PR template will automatically fill in the `Open a pull request` description textbox.
-The PR author can edit and change the PR description using the template as a guide.
-
-## Static Code Analysis
-
-### Using [FxCop Analysers](https://www.nuget.org/packages/Microsoft.CodeAnalysis.FxCopAnalyzers)
-
-FxCop runs code analysis when the Solution is built.
-
-Both the API and Test projects have been set up to **treat all warnings from the code analysis as errors** and therefore, fail the build.
-
-However, we can select which errors to suppress by setting the severity of the responsible rule to none, e.g `dotnet_analyzer_diagnostic.<Category-or-RuleId>.severity = none`, within the `.editorconfig` file.
-Documentation on how to do this can be found [here](https://docs.microsoft.com/en-us/visualstudio/code-quality/use-roslyn-analyzers?view=vs-2019).
-
-## Testing
-
-### Run the tests
+To run all tests, use:
 
 ```sh
 $ make test
 ```
 
-To run database tests locally (e.g. via Visual Studio) and you are using Postgres the `CONNECTION_STRING` environment variable will need to be populated with:
+To run some tests i.e. single or a group, run the test databases in the background:
 
-`Host=localhost;Database=testdb;Username=postgres;Password=mypassword"`
-
-Note: The Host name needs to be the name of the stub database docker-compose service, in order to run tests via Docker.
-
-If changes to the database schema are made then the docker image for the database will have to be removed and recreated. The restart-db make command will do this for you.
-
-### Agreed Testing Approach
-- Use nUnit, FluentAssertions and Moq
-- Always follow a TDD approach
-- Tests should be independent of each other
-- Gateway tests should interact with a real test instance of the database
-- Test coverage should never go down
-- All use cases should be covered by E2E tests
-- Optimise when test run speed starts to hinder development
-- Unit tests and E2E tests should run in CI
-- Test database schemas should match up with production database schema
-- Have integration tests which test from the PostgreSQL database to API Gateway
-
-## Data Migrations
-
-## Add migrations
-Open package manager console and run the following command replacing `<MIGRATION NAME>` with a fitting name
-```
-Add-Migration <MIGRATION NAME> -OutputDir "V1/Infrastructure/Migrations"
+```sh
+$ make start-test-dbs
 ```
 
-### A good data migration
-- Record failure logs
-- Automated
-- Reliable
-- As close to real time as possible
-- Observable monitoring in place
-- Should not affect any existing databases
+And then you can filter through tests, using the `--filter` argument of the
+`dotnet test` command:
 
-## Contacts
+```sh
+# E.g. for a specific test, use the test method name
+$ dotnet test --filter ShouldReturnPackageSchedulingOptionsList
+# E.g. for a file, use the test class name
+$ dotnet test --filter CarePackagesControllerE2ETests
+```
 
-### Active Maintainers
+If your docker test postgres database is out of sync with the schema on your current branch run
 
-- **Selwyn Preston**, Lead Developer at London Borough of Hackney (selwyn.preston@hackney.gov.uk)
-- **Mirela Georgieva**, Lead Developer at London Borough of Hackney (mirela.georgieva@hackney.gov.uk)
-- **Matt Keyworth**, Lead Developer at London Borough of Hackney (matthew.keyworth@hackney.gov.uk)
+```sh
+$ make restart-test-pg-db
+```
 
-### Other Contacts
+See [Microsoft's documentation on running selective unit tests](https://docs.microsoft.com/en-us/dotnet/core/testing/selective-unit-tests?pivots=mstest) for more information.
 
-- **Rashmi Shetty**, Product Owner at London Borough of Hackney (rashmi.shetty@hackney.gov.uk)
+#### Using an IDE
 
-[docker-download]: https://www.docker.com/products/docker-desktop
-[universal-housing-simulator]: https://github.com/LBHackney-IT/lbh-universal-housing-simulator
-[made-tech]: https://madetech.com/
-[AWS-CLI]: https://aws.amazon.com/cli/
+Run the test databases in the background, using:
+
+```sh
+$ make start-test-dbs
+```
+
+This will allow you to run the tests as normal in your IDE.
+
+## Documentation
+
+### Architecture
+
+As this service API is a part of the Social Care System, higher level documentation lives in a separate repository called [Social Care System Architecture](https://github.com/LBHackney-IT/social-care-architecture/).
+
+To find out more about the process and tooling for our diagrams, see [Process documentation in Social Care System Architecture](https://github.com/LBHackney-IT/social-care-architecture/blob/main/process.md).
+
+### API design
+
+We use [SwaggerHub](https://swagger.io/tools/swaggerhub/) to document the API design, of which we have one version:
+
+- [Self-hosted](https://zqf7j796y5.execute-api.eu-west-2.amazonaws.com/staging/swagger/index.html) - for actual endpoint design which is auto-generated using comments
+
+### Databases
+
+The service API has one database (as seen in the [C4 component diagram](./docs/component-diagram.svg)):
+
+#### [PostgreSQL](https://www.postgresql.org) (RDS PostgreSQL in AWS)
+
+This database stores:
+
+1. Care package information. E.g: Core package weekly price, service user's packages, reclaims, etc.
+2. Invoice information. E.g: Invoice and billing for packages, payrun request, export for CEDAR, etc.
+
+### Deployment
+
+We have two environments:
+
+- Staging (**Mosaic-Staging** AWS account)
+- Production (**Mosaic-Production** AWS account)
+
+and two deployment branches:
+
+- `master` which deploys to Staging and Production
+- `develop` which deploys to Staging
+
+This means pull request merges into `master` and `development` both trigger a deployment to Staging, but only `master` can trigger a deployment for Production.
+
+To deploy to Production, we first ensure that changes are verified in Staging and then we merge `development` into `master`.
+
+We use CircleCI to handle deployment, see [CircleCI config](./.circleci/config.yml).
+
+### Infrastructure
+
+For deploying the Lambdas and related resources, we used the [Serverless framework](https://www.serverless.com) (see [serverless.yml](./LBH.AdultSocialCare.Api/serverless.yml)).
+
+For managing the database in Staging, we use [Terraform](https://www.terraform.io) that is defined within `/terraform/staging` in this repository.
+
+For managing the database and other resources in Production, we use Terraform that is defined within the [Infrastructure repository](https://github.com/LBHackney-IT/infrastructure/blob/master/projects/mosaic).
+
+### Related repositories
+
+| Name | Purpose |
+|-|-|
+| [LBH Social Care Finance Frontend](https://github.com/LBHackney-IT/lbh-adult-social-care-frontend) | Provides the UI/UX of the Social Care Finance System. |
+| [Residents Social Care Platform API](https://github.com/LBHackney-IT/residents-social-care-platform-api) | Provides [platform API](http://playbook.hackney.gov.uk/API-Playbook/platform_api_vs_service_api#b-platform-apis) capabilities by providing historic social care data from Mosaic to the Social Care System. |
+| [Infrastructure](https://github.com/LBHackney-IT/infrastructure) | Provides a single place for AWS infrastructure defined using [Terraform](https://www.terraform.io) as [infrastructure as code](https://en.wikipedia.org/wiki/Infrastructure_as_code) as part of Hackney's new AWS account strategy. NB: Due to its recent introduction, the Social Care System has infrastructure across multiple places. |
+| [API Playbook](http://playbook.hackney.gov.uk/API-Playbook/) | Provides guidance to the standards of APIs within Hackney. |
+
+## Active contributors
+
+- **Tuomo Karki**, Lead Developer at Hackney (tuomo.karki@hackney.gov.uk)
+- **Neil Kidd**, Lead Software Engineer at Made Tech (neil.kidd@hackney.gov.uk)
+- **Burak Ozkan**, Tech Lead at Nudge Digital (burak.ozkan@nudgedigitals.co.uk)
+- **Duncan Okeno**, Software Developer at Nudge Digital (duncan.okeno@nudgedigital.co.uk)
+- **Furkan Kayar**, Software Developer at Nudge (furkan.kayar@nudgedigital.co.uk)
+- **Vladimir Kapenkin**, Senior Software Developer at Nudge (vladimir.kapenkin@nudgedigital.co.uk)
+
+## License
+
+[MIT License](LICENSE)

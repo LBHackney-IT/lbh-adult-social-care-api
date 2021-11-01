@@ -26,13 +26,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
     {
         private readonly ITransactionsService _transactionsService;
         private readonly IPayRunUseCase _payRunUseCase;
-        private readonly IResetPackagePaidUpToDateUseCase _resetPackagePaidUpToDateUseCase;
 
-        public TransactionsController(ITransactionsService transactionsService, IPayRunUseCase payRunUseCase, IResetPackagePaidUpToDateUseCase resetPackagePaidUpToDateUseCase)
+        public TransactionsController(ITransactionsService transactionsService, IPayRunUseCase payRunUseCase)
         {
             _transactionsService = transactionsService;
             _payRunUseCase = payRunUseCase;
-            _resetPackagePaidUpToDateUseCase = resetPackagePaidUpToDateUseCase;
         }
 
         [HttpGet("departments/payment-departments")]
@@ -325,19 +323,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions
         {
             var result = await _transactionsService.GetAllUniquePayRunStatusesUseCase().ConfigureAwait(false);
             return Ok(result);
-        }
-
-        [HttpPost("pay-runs/invoice-date-reset")]
-        [ProducesDefaultResponseType]
-        [AllowAnonymous]
-        public async Task<ActionResult<GenericSuccessResponse>> ResetPackagePaidUpToDate([FromBody] List<InvoiceForResetDomain> invoiceForResetDomains)
-        {
-            var result = await _resetPackagePaidUpToDateUseCase.ExecuteAsync(invoiceForResetDomains).ConfigureAwait(false);
-            return Ok(new GenericSuccessResponse
-            {
-                IsSuccess = result,
-                Message = "Success"
-            });
         }
     }
 }

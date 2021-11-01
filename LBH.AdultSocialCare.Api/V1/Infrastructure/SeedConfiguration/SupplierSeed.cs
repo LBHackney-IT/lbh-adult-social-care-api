@@ -1,5 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -17,9 +17,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 PackageTypeId = 1,
                 SupplierName = "Abbeleigh House",
                 Address = "Abbeleigh House",
-                IsSupplierInternal = true,
-                HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -29,9 +26,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 SupplierName = "Abbey Care Complex",
                 Address = "Abbey Care Complex",
                 PackageTypeId = 1,
-                IsSupplierInternal = true,
-                HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -41,9 +35,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 SupplierName = "Acacia Lodge",
                 Address = "Acacia Lodge [Cedar Site 0]",
                 PackageTypeId = 1,
-                IsSupplierInternal = true,
-                HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -53,9 +44,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 SupplierName = "Hc-One Limited",
                 Address = "Hc-One Limited",
                 PackageTypeId = 1,
-                IsSupplierInternal = true,
-                HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -65,9 +53,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 SupplierName = "Acorn Lodge",
                 Address = "Acorn Lodge",
                 PackageTypeId = 1,
-                IsSupplierInternal = true,
-                HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -77,9 +62,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 SupplierName = "Albany Nursing Home",
                 Address = "Albany Nursing Home",
                 PackageTypeId = 1,
-                IsSupplierInternal = true,
-                HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -89,9 +71,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 SupplierName = "Manor Farm Care Home",
                 Address = "Manor Farm Care Home",
                 PackageTypeId = 1,
-                IsSupplierInternal = true,
-                HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -101,9 +80,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 SupplierName = "Four Seasons Health Care",
                 Address = "Four Seasons Health Care [Cedar Site 8] Lingfield Point",
                 PackageTypeId = 1,
-                IsSupplierInternal = true,
-                HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -113,9 +89,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 SupplierName = "The Hornchurch Care Home",
                 Address = "The Hornchurch Care Home",
                 PackageTypeId = 1,
-                IsSupplierInternal = true,
-                HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -125,9 +98,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 SupplierName = "Bupa Care Homes",
                 Address = "Bupa Care Homes [Cedar Site 10] Wynne Road",
                 PackageTypeId = 1,
-                IsSupplierInternal = true,
-                HasSupplierFrameworkContractedRates = true,
-                FundedNursingCareCollector = null,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset

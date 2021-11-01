@@ -1,11 +1,12 @@
-using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Api.V1.Extensions;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 {
@@ -16,23 +17,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
         public DatabaseTestDataGenerator(DatabaseContext context)
         {
             _context = context;
-
-            NursingCare = new NursingCareGenerator(context);
-            ResidentialCare = new ResidentialCareGenerator(context);
-            CareCharge = new CareChargeGenerator(context);
         }
-
-        #region Legacy
-
-        public NursingCareGenerator NursingCare { get; }
-        public ResidentialCareGenerator ResidentialCare { get; }
-        public CareChargeGenerator CareCharge { get; }
-
-        #endregion Legacy
 
         public CarePackage CreateCarePackage(PackageType type = PackageType.ResidentialCare, PackageStatus status = PackageStatus.New)
         {
-            var serviceUser = _context.Clients.FirstOrDefault();
+            var serviceUser = _context.ServiceUsers.FirstOrDefault();
 
             var carePackage = TestDataHelper.CreateCarePackage(
                 serviceUserId: serviceUser?.Id,
@@ -75,15 +64,40 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             return packageSettings;
         }
 
-        public CarePackageReclaim CreateCarePackageReclaim(CarePackage package, ReclaimType type, ClaimCollector collector)
+        public CarePackageReclaim CreateCarePackageReclaim(
+            CarePackage package, ClaimCollector collector,
+            ReclaimType type, ReclaimSubType subType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks)
         {
-            var reclaim = TestDataHelper.CreateCarePackageReclaim(package.Id, type, collector);
-            reclaim.SupplierId = _context.Suppliers.First().Id;
+            var reclaim = TestDataHelper.CreateCarePackageReclaim(package.Id, collector, type, subType);
 
             _context.CarePackageReclaims.Add(reclaim);
             _context.SaveChanges();
 
             return reclaim;
+        }
+
+        public CarePackageSettings CreateCarePackageSettingsForS117Client(Guid carePackageId, bool s117Client)
+        {
+            var packageSettings = new CarePackageSettings
+            {
+                CarePackageId = carePackageId,
+                IsS117Client = s117Client
+            };
+
+            _context.CarePackageSettings.Add(packageSettings);
+            _context.SaveChanges();
+
+            return packageSettings;
+        }
+
+        public ServiceUser CreateServiceUser()
+        {
+            var serviceUser = TestDataHelper.CreateServiceUser();
+
+            _context.ServiceUsers.Add(serviceUser);
+            _context.SaveChanges();
+
+            return serviceUser;
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
@@ -10,6 +11,7 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 {
@@ -24,25 +26,27 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             _serviceUserGateway = serviceUserGateway;
         }
 
-        public async Task<ClientsResponse> GetServiceUserInformation(int hackneyId)
+        public async Task<ServiceUserResponse> GetServiceUserInformation(int hackneyId)
         {
             var serviceUserCount = await _serviceUserGateway.GetServiceUserCountAsync(hackneyId);
 
             if (serviceUserCount is 0)
             {
-                var serviceUserResponse = await _residentsService.GetServiceUserInformationAsync(hackneyId)
-                    .EnsureExistsAsync($"service user with hackney Id : {hackneyId} not found");
+                var serviceUserResponse = await _residentsService.GetServiceUserInformationAsync(hackneyId);
+
+                if (serviceUserResponse is null)
+                    throw new ApiException($"service user with hackney Id : {hackneyId} not found");
 
                 foreach (var item in serviceUserResponse.Residents)
                 {
-                    var newServiceUserDomain = new ClientsDomain()
+                    var newServiceUserDomain = new ServiceUserDomain()
                     {
                         HackneyId = hackneyId,
                         FirstName = item.FirstName,
                         LastName = item.LastName,
                         DateOfBirth = item.DateOfBirth,
-                        AddressLine1 = item.Address.Address,
-                        PostCode = item.Address.Postcode
+                        AddressLine1 = item.Address?.Address,
+                        PostCode = item.Address?.Postcode
                     };
 
                     await _serviceUserGateway.CreateAsync(newServiceUserDomain.ToEntity());

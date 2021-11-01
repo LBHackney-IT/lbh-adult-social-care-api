@@ -12,12 +12,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
 
         public int PackageTypeId { get; set; }
 
-        public PackageResponse Package { get; set; }
-
-        public bool IsSupplierInternal { get; set; }
-
-        public bool HasSupplierFrameworkContractedRates { get; set; }
-
         public Guid CreatorId { get; set; }
 
         public Guid? UpdaterId { get; set; }

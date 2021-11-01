@@ -8,6 +8,7 @@ using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Xunit;
 
@@ -47,13 +48,13 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
 
         private List<CarePackage> CreatePackages(PackageType type)
         {
-            var packages = 5.ItemsOf(() => _fixture.Generator.CreateCarePackage(type)).ToList();
+            var packages = 5.ItemsOf(() => _fixture.Generator.CreateCarePackage(type));
 
             foreach (var package in packages)
             {
                 _fixture.Generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
                 _fixture.Generator.CreateCarePackageDetails(package, 2, PackageDetailType.AdditionalNeed);
-                _fixture.Generator.CreateCarePackageReclaim(package, ReclaimType.CareCharge, ClaimCollector.Hackney);
+                _fixture.Generator.CreateCarePackageReclaim(package, ClaimCollector.Hackney, ReclaimType.CareCharge);
             }
 
             return packages;

@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Exceptions.Models;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.UserControllers
 {
@@ -22,15 +25,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.UserControllers
     {
         private readonly IRegisterUserUseCase _registerUserUseCase;
         private readonly IGetUsersUseCase _getUsersUseCase;
-        private readonly IDeleteUsersUseCase _deleteUsersUseCase;
+        private readonly IGetAllUsersUseCase _getAllUsersUseCase;
 
         public UserController(IRegisterUserUseCase registerUserUseCase,
             IGetUsersUseCase getUsersUseCase,
-            IDeleteUsersUseCase deleteUsersUseCase)
+            IGetAllUsersUseCase getAllUsersUseCase)
         {
             _registerUserUseCase = registerUserUseCase;
             _getUsersUseCase = getUsersUseCase;
-            _deleteUsersUseCase = deleteUsersUseCase;
+            _getAllUsersUseCase = getAllUsersUseCase;
         }
 
         /// <summary>Creates the specified users request.</summary>
@@ -48,32 +51,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.UserControllers
             return Ok(res);
         }
 
-        /// <summary>Gets the specified user identifier.</summary>
-        /// <param name="userId">The user identifier.</param>
-        /// <returns>The User Response model</returns>
-        [ProducesResponseType(typeof(AppUserResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
-        [HttpGet]
-        [Route("{userId}")]
-        public async Task<ActionResult<AppUserResponse>> Get(Guid userId)
-        {
-            var res = await _getUsersUseCase.GetAsync(userId).ConfigureAwait(false);
-            return Ok(res);
-        }
-
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        [ProducesDefaultResponseType]
-        [HttpDelete]
-        [Route("{userId}")]
-        public async Task<ActionResult<bool>> Delete(Guid userId)
-        {
-            return await _deleteUsersUseCase.DeleteAsync(userId).ConfigureAwait(false);
-        }
-
         [ProducesResponseType(typeof(PagedResponse<AppUserResponse>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [HttpGet]
@@ -82,6 +59,45 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.UserControllers
         {
             var res = await _getUsersUseCase.GetUsersWithRoles(request.Roles?.ToList(), queryParams).ConfigureAwait(false);
             return Ok(res);
+        }
+
+        /// <summary>Return list of user with broker role.</summary>
+        /// <returns>The list of broker users response.</returns>
+        [ProducesResponseType(typeof(UsersMinimalResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet("broker")]
+        public async Task<ActionResult<UsersMinimalResponse>> GetBrokers()
+        {
+            var result = await _getAllUsersUseCase.GetUsersWithRole(RolesEnum.Broker);
+            return Ok(result);
+        }
+
+        /// <summary>Return list of user with broker role.</summary>
+        /// <returns>The list of broker users response.</returns>
+        [ProducesResponseType(typeof(UsersMinimalResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet("approver")]
+        public async Task<ActionResult<UsersMinimalResponse>> GetApprover()
+        {
+            var result = await _getAllUsersUseCase.GetUsersWithRole(RolesEnum.Approver);
+            return Ok(result);
+        }
+
+        /// <summary>Return list of users.</summary>
+        /// <returns>The list of users response.</returns>
+        [ProducesResponseType(typeof(UsersMinimalResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet]
+        public async Task<ActionResult<UsersMinimalResponse>> GetUsers()
+        {
+            var result = await _getAllUsersUseCase.GetUsers();
+            return Ok(result);
         }
     }
 }

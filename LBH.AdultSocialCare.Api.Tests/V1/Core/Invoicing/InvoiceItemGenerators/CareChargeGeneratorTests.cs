@@ -4,7 +4,7 @@ using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.AppConstants;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
@@ -21,13 +21,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
         [Fact]
         public void ShouldConsiderOnlyActiveElements()
         {
-            var elementStatuses = Enum.GetValues(typeof(ReclaimStatus));
-            var package = CreatePackage(elementStatuses.Length);
+            var package = CreatePackage(4);
 
-            for (var i = 0; i < elementStatuses.Length; i++)
-            {
-                package.Reclaims.ElementAt(i).Status = (ReclaimStatus) i;
-            }
+            package.Reclaims.ElementAt(0).Status = ReclaimStatus.Ended;
+            package.Reclaims.ElementAt(1).Status = ReclaimStatus.Cancelled;
+            package.Reclaims.ElementAt(2).StartDate = DateTimeOffset.Now.AddDays(1000);
 
             var invoiceItems = _generator.Run(package, DateTimeOffset.Now.AddDays(-30), DateTimeOffset.Now.AddDays(30)).ToList();
             var activeElement = package.Reclaims.First(el => el.Status is ReclaimStatus.Active);

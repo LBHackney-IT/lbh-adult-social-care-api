@@ -4,22 +4,22 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 {
     public enum HistoryStatus
     {
-        [Display(Description = "Package Requested by")]
+        [Display(Name = "Package Created")]
         NewPackage = 1,
 
-        [Display(Description = "Package Submitted for approval")]
+        [Display(Name = "Package Submitted for approval")]
         SubmittedForApproval = 2,
 
-        [Display(Description = "Further information requested by")]
+        [Display(Name = "Further information requested by")]
         RequestMoreInformation = 3,
 
-        [Display(Description = "Care package Approved by")]
+        [Display(Name = "Care package Approved by")]
         PackageApproved = 4,
 
-        [Display(Description = "Care Package Brokered by")]
+        [Display(Name = "Care Package Brokered by")]
         PackageBrokered = 5,
 
-        [Display(Description = "Care Package Approved for Commercial by")]
+        [Display(Name = "Care Package Approved for Commercial by")]
         ApprovedForCommercial = 6,
 
         [Display(Name = "Clarifying Commercials requested by")]
@@ -31,10 +31,13 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
         [Display(Name = "PO Issued by")]
         PackagePoIssued = 9,
 
-        [Display(Name = "Care Package rejected by")]
-        BrokeredDealRejectedId = 10,
+        [Display(Name = "Care Package declined by")]
+        Declined = 10,
 
         [Display(Name = "Package Ended")]
-        BrokeredEndedId = 11
+        BrokeredEnded = 11,
+
+        [Display(Name = "Care Package cancelled by")]
+        Cancelled = 12
     }
 }

@@ -1,15 +1,15 @@
 using Bogus;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.ResidentialCare.Request;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using HttpServices.Models.Responses;
+using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
+using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
 {
@@ -115,7 +115,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.Status, f => f.PickRandom<HistoryStatus>());
         }
 
-        public static CarePackageReclaim CreateCarePackageReclaim(Guid packageId, ReclaimType type, ClaimCollector collector)
+        public static CarePackageReclaim CreateCarePackageReclaim(Guid packageId, ClaimCollector collector, ReclaimType type, ReclaimSubType subType)
         {
             return new Faker<CarePackageReclaim>()
                 .RuleFor(r => r.CarePackageId, packageId)
@@ -124,7 +124,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(r => r.EndDate, f => f.Date.Future().Date)
                 .RuleFor(r => r.Description, f => f.Lorem.Paragraph())
                 .RuleFor(r => r.ClaimCollector, collector)
-                .RuleFor(r => r.Type, type);
+                .RuleFor(r => r.Type, type)
+                .RuleFor(r => r.SubType, subType);
         }
 
         public static List<CarePackageDetail> CreateCarePackageDetails(int count, PackageDetailType type)
@@ -143,10 +144,33 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
         public static List<CarePackageDetailDomain> CreateCarePackageDetailDomainList(int count, PackageDetailType type)
         {
             var result = CreateCarePackageDetails(count, type).ToDomain().ToList();
-
             result.ForEach(detail => detail.Id = null);
 
             return result;
+        }
+
+        public static ResidentResponse CreateResidentResponse()
+        {
+            return new Faker<ResidentResponse>()
+                .RuleFor(r => r.FirstName, f => f.Name.FirstName())
+                .RuleFor(r => r.LastName, f => f.Name.LastName())
+                .RuleFor(r => r.EmailAddress, f => f.Internet.Email())
+                .RuleFor(r => r.DateOfBirth, f => f.Date.Past(100))
+                .RuleFor(r => r.Address, f => new AddressResponse
+                {
+                    Address = f.Address.FullAddress(),
+                    Postcode = f.Address.ZipCode()
+                });
+        }
+
+        public static ServiceUser CreateServiceUser()
+        {
+            return new Faker<ServiceUser>()
+                .RuleFor(u => u.FirstName, f => f.Name.FirstName())
+                .RuleFor(u => u.LastName, f => f.Name.LastName())
+                .RuleFor(u => u.AddressLine1, f => f.Address.FullAddress())
+                .RuleFor(u => u.DateOfBirth, f => f.Date.Past(60, DateTime.Now).AddYears(-60))
+                .RuleFor(u => u.HackneyId, f => f.Random.Int());
         }
     }
 }

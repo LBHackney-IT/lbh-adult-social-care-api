@@ -14,6 +14,8 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
+using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -40,6 +42,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 .AddHttpClient<IResidentsService, ResidentsService>(client =>
                 {
                     client.BaseAddress = new Uri(configuration["ResidentsAPI:BaseUrl"]);
+                    client.DefaultRequestHeaders.Add("X-Api-Key", configuration["ResidentsAPI:ApiKey"]);
                 })
                 .ConfigureMessageHandlers();
         }
@@ -76,6 +79,9 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
         {
             // We rebuild the logging stack so as to ensure the console logger is not used in production.
             // See here: https://weblog.west-wind.com/posts/2018/Dec/31/Dont-let-ASPNET-Core-Default-Console-Logging-Slow-your-App-down
+            services.AddSingleton<ILogger>(provider =>
+                provider.GetRequiredService<ILogger<LBHExceptionFilter>>());
+
             services.AddLogging(config =>
             {
                 // Clear out default configuration
