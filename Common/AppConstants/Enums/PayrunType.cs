@@ -2,7 +2,7 @@ using System.ComponentModel;
 
 namespace Common.AppConstants.Enums
 {
-    public enum PayRunTypeEnum : int
+    public enum PayrunType
     {
         [Description("Residential Recurring")]
         ResidentialRecurring = 1,

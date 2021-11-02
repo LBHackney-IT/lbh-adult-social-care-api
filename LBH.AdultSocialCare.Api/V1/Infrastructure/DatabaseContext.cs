@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 {
@@ -55,6 +56,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<ProvisionalCareChargeAmount> ProvisionalCareChargeAmounts { get; set; }
 
         public DbSet<CarePackageHistory> CarePackageHistories { get; set; }
+
+        public DbSet<Payrun> Payruns { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoiceItem> InvoiceItems { get; set; }
+        public DbSet<PayrunInvoice> PayrunInvoices { get; set; }
 
         #region CustomFunctions
 
@@ -112,6 +118,21 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 .HasName("comparedates");
 
             #endregion DB Functions
+
+            modelBuilder.Entity<Invoice>()
+                .HasIndex(i => i.Number)
+                .IsUnique();
+
+            modelBuilder.Entity<PayrunInvoice>()
+                .HasKey(pi => new { pi.PayrunId, pi.InvoiceId });
+            modelBuilder.Entity<PayrunInvoice>()
+                .HasOne(pi => pi.Payrun)
+                .WithMany(p => p.PayrunInvoices)
+                .HasForeignKey(pi => pi.PayrunId);
+            modelBuilder.Entity<PayrunInvoice>()
+                .HasOne(pi => pi.Invoice)
+                .WithMany(i => i.PayrunInvoices)
+                .HasForeignKey(pi => pi.InvoiceId);
 
             #endregion Entity Config
 

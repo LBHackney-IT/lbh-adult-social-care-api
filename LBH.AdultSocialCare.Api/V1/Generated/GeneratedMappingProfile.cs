@@ -14,6 +14,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {

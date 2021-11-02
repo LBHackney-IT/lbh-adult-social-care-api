@@ -6,6 +6,7 @@ using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using Xunit;
+using PriceEffect = LBH.AdultSocialCare.Api.V1.AppConstants.PriceEffect;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
 {

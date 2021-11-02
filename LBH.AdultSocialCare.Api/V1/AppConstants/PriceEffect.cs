@@ -1,6 +1,6 @@
 namespace LBH.AdultSocialCare.Api.V1.AppConstants
 {
-    // TODO: VK: Unify with InvoiceItemPriceEffectEnum
+    // TODO: VK: Replace with PriceEffect enum
     public static class PriceEffect
     {
         public const string Add = "Add";

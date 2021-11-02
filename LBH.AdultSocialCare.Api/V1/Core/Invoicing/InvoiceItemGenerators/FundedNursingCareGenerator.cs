@@ -11,6 +11,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using PriceEffect = LBH.AdultSocialCare.Api.V1.AppConstants.PriceEffect;
 
 namespace LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators
 {
