@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20211102144456_initialPaymentsSchema")]
+    [Migration("20211102160222_initialPaymentsSchema")]
     partial class initialPaymentsSchema
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1275,6 +1275,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid>("ServiceUserId")
                         .HasColumnType("uuid");
 
@@ -1284,7 +1293,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<decimal>("TotalCost")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid?>("UpdaterId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("UpdaterId");
 
                     b.ToTable("Invoices");
                 });
@@ -1294,6 +1310,15 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
+
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("InvoiceId")
                         .HasColumnType("uuid");
@@ -1313,12 +1338,19 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<decimal>("TotalCost")
                         .HasColumnType("numeric");
 
+                    b.Property<Guid?>("UpdaterId")
+                        .HasColumnType("uuid");
+
                     b.Property<decimal>("WeeklyCost")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatorId");
+
                     b.HasIndex("InvoiceId");
+
+                    b.HasIndex("UpdaterId");
 
                     b.ToTable("InvoiceItems");
 
@@ -1333,14 +1365,23 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<DateTimeOffset>("EndDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("Held")
-                        .HasColumnType("boolean");
+                    b.Property<decimal?>("Held")
+                        .HasColumnType("numeric");
 
-                    b.Property<bool>("Paid")
-                        .HasColumnType("boolean");
+                    b.Property<decimal?>("Paid")
+                        .HasColumnType("numeric");
 
                     b.Property<DateTimeOffset>("PaidUpToDate")
                         .HasColumnType("timestamp with time zone");
@@ -1354,7 +1395,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("UpdaterId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("UpdaterId");
 
                     b.ToTable("Payruns");
 
@@ -1371,12 +1419,28 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("InvoiceId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("CreatorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("DateCreated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("DateUpdated")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("InvoiceStatus")
                         .HasColumnType("integer");
 
+                    b.Property<Guid?>("UpdaterId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("PayrunId", "InvoiceId");
 
+                    b.HasIndex("CreatorId");
+
                     b.HasIndex("InvoiceId");
+
+                    b.HasIndex("UpdaterId");
 
                     b.ToTable("PayrunInvoices");
 
@@ -1633,17 +1697,59 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasForeignKey("UpdaterId");
                 });
 
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.Invoice", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
+                        .WithMany()
+                        .HasForeignKey("UpdaterId");
+                });
+
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.InvoiceItem", b =>
                 {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.Invoice", "Invoice")
                         .WithMany("Items")
                         .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
+                        .WithMany()
+                        .HasForeignKey("UpdaterId");
+                });
+
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.Payrun", b =>
+                {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
+                        .WithMany()
+                        .HasForeignKey("UpdaterId");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.PayrunInvoice", b =>
                 {
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.Invoice", "Invoice")
                         .WithMany("PayrunInvoices")
                         .HasForeignKey("InvoiceId")
@@ -1655,6 +1761,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasForeignKey("PayrunId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
+                        .WithMany()
+                        .HasForeignKey("UpdaterId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
