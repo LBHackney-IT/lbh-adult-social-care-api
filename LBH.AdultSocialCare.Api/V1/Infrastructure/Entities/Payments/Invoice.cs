@@ -1,0 +1,21 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
+{
+    public class Invoice
+    {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid Id { get; set; }
+
+        public int SupplierId { get; set; }
+        public Guid ServiceUserId { get; set; }
+
+        public decimal TotalCost { get; set; }
+
+        public virtual ICollection<InvoiceItem> Items { get; set; }
+        public virtual ICollection<PayrunInvoice> PayrunInvoices { get; set; }
+    }
+}

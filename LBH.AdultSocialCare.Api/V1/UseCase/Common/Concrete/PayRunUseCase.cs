@@ -34,17 +34,17 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 
         public async Task<Guid?> CreateNewPayRunUseCase(string payRunType, PayRunForCreationRequest payRunForCreationRequest)
         {
-            if (!PayRunTypeEnum.ResidentialRecurring.EnumIsDefined(payRunType) && !PayRunSubTypeEnum.DirectPaymentsReleaseHolds.EnumIsDefined(payRunType))
+            if (!PayrunType.ResidentialRecurring.EnumIsDefined(payRunType) && !PayRunSubTypeEnum.DirectPaymentsReleaseHolds.EnumIsDefined(payRunType))
             {
                 throw new EntityNotFoundException("The pay run type is not valid. Please check and try again");
             }
 
             return payRunType switch
             {
-                nameof(PayRunTypeEnum.ResidentialRecurring) => await CreateResidentialRecurringPayRun(payRunForCreationRequest).ConfigureAwait(false),
-                nameof(PayRunTypeEnum.DirectPayments) => await _transactionsService.CreateDirectPaymentsPayRun(payRunForCreationRequest)
+                nameof(PayrunType.ResidentialRecurring) => await CreateResidentialRecurringPayRun(payRunForCreationRequest).ConfigureAwait(false),
+                nameof(PayrunType.DirectPayments) => await _transactionsService.CreateDirectPaymentsPayRun(payRunForCreationRequest)
                     .ConfigureAwait(false),
-                nameof(PayRunTypeEnum.HomeCare) => await _transactionsService.CreateHomeCarePayRun(payRunForCreationRequest)
+                nameof(PayrunType.HomeCare) => await _transactionsService.CreateHomeCarePayRun(payRunForCreationRequest)
                     .ConfigureAwait(false),
                 nameof(PayRunSubTypeEnum.ResidentialReleaseHolds) => await _transactionsService.CreateResidentialReleaseHoldsPayRun(payRunForCreationRequest)
                     .ConfigureAwait(false),
