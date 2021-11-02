@@ -1282,6 +1282,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Number")
+                        .HasColumnType("text");
+
                     b.Property<Guid>("ServiceUserId")
                         .HasColumnType("uuid");
 
@@ -1297,6 +1300,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
+
+                    b.HasIndex("Number")
+                        .IsUnique();
 
                     b.HasIndex("UpdaterId");
 

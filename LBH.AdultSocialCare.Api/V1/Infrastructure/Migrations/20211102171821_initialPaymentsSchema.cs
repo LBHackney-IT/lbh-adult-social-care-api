@@ -16,6 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     DateUpdated = table.Column<DateTimeOffset>(nullable: false),
                     CreatorId = table.Column<Guid>(nullable: false),
                     UpdaterId = table.Column<Guid>(nullable: true),
+                    Number = table.Column<string>(nullable: true),
                     SupplierId = table.Column<int>(nullable: false),
                     ServiceUserId = table.Column<Guid>(nullable: false),
                     TotalCost = table.Column<decimal>(nullable: false)
@@ -176,6 +177,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "IX_Invoices_CreatorId",
                 table: "Invoices",
                 column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Invoices_Number",
+                table: "Invoices",
+                column: "Number",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Invoices_UpdaterId",

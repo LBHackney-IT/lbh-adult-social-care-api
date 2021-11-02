@@ -11,6 +11,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
+        public string Number { get; set; }
+
         public int SupplierId { get; set; }
         public Guid ServiceUserId { get; set; }
 

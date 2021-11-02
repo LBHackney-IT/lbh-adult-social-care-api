@@ -119,6 +119,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
             #endregion DB Functions
 
+            modelBuilder.Entity<Invoice>()
+                .HasIndex(i => i.Number)
+                .IsUnique();
+
             modelBuilder.Entity<PayrunInvoice>()
                 .HasKey(pi => new { pi.PayrunId, pi.InvoiceId });
             modelBuilder.Entity<PayrunInvoice>()
