@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common
             _fixture = fixture;
         }
 
-        [Fact]
+        [Fact(Skip = "Process changing")]
         public async Task ShouldCreatePayRun()
         {
             var nursingCarePackages = CreatePackages(PackageType.NursingCare);

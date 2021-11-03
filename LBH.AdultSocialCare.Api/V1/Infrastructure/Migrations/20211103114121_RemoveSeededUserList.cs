@@ -7,6 +7,33 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.UpdateData(
+                table: "AspNetUsers",
+                keyColumn: "Id",
+                keyValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
+                columns: new[] { "Email", "Name", "UserName" },
+                values: new object[] { "test@gmail.com", "Test User", "test@gmail.com" });
+
+
+            migrationBuilder.Sql(@"UPDATE ""Suppliers""  SET ""CreatorId"" = 'aee45700-af9b-4ab5-bb43-535adbdcfb84';
+UPDATE ""Suppliers""  SET ""UpdaterId""='aee45700-af9b-4ab5-bb43-535adbdcfb84' WHERE ""UpdaterId"" IS NOT NULL;
+DELETE FROM ""AspNetUserRoles"";
+DELETE FROM ""AspNetUserTokens"";
+DELETE FROM ""ServiceUsers"";
+DELETE FROM ""AspNetUserClaims"";
+DELETE FROM ""CarePackages"";
+DELETE FROM ""PayrunInvoices"";
+DELETE FROM ""InvoiceItems"";
+DELETE FROM ""PayrunInvoices"";
+DELETE FROM ""InvoiceItems"";
+DELETE FROM ""CarePackageDetails"";
+DELETE FROM ""Payruns"";
+DELETE FROM ""CarePackageHistories"";
+DELETE FROM ""CarePackageReclaims"";
+DELETE FROM ""Invoices"";
+DELETE FROM ""CarePackageSettings"";
+DELETE FROM ""AspNetUserLogins"";");
+
             migrationBuilder.DeleteData(
                 table: "AspNetUserRoles",
                 keyColumns: new[] { "UserId", "RoleId" },
@@ -92,14 +119,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 keyColumn: "Id",
                 keyValue: new Guid("3c44e4e1-78b8-471f-9f08-5081a0a534e9"));
 
-            migrationBuilder.UpdateData(
-                table: "AspNetUsers",
-                keyColumn: "Id",
-                keyValue: new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
-                columns: new[] { "Email", "Name", "UserName" },
-                values: new object[] { "test@gmail.com", "Test User", "test@gmail.com" });
         }
 
+#pragma warning disable CA1814
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(
@@ -152,4 +174,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 values: new object[] { new Guid("3c44e4e1-78b8-471f-9f08-5081a0a534e9"), new Guid("d7cb6746-1211-4cc2-9244-f4faaef25089"), null, null });
         }
     }
+#pragma warning restore CA1814
 }
