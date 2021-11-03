@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
@@ -26,5 +28,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             ThrowOpsErrorUsecase.Execute();
         }
 
+        [HttpGet]
+        [Route("log")]
+        public void Log([FromServices] ILogger<HealthCheckController> logger)
+        {
+            // TODO: VK: Remove
+            logger.LogTrace("Trace");
+            logger.LogInformation("Information");
+            logger.LogWarning("Warning");
+            logger.LogCritical("Critical");
+
+            throw new InvalidOperationException("Test exception");
+        }
     }
 }
