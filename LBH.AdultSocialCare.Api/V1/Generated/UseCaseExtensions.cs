@@ -6,6 +6,8 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 
@@ -56,6 +58,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetFundedNursingCarePriceUseCase, GetFundedNursingCarePriceUseCase>();
             services.AddScoped<IGetServiceUserUseCase, GetServiceUserUseCase>();
             services.AddScoped<IPayRunUseCase, PayRunUseCase>();
+            services.AddScoped<IGetPayRunDetailsUseCase, GetPayRunDetailsUseCase>();
             services.AddScoped<IAuthUseCase, AuthUseCase>();
             services.AddScoped<IDeleteRoleUseCase, DeleteRoleUseCase>();
             services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();
