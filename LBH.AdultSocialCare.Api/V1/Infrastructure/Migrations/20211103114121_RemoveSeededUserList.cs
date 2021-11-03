@@ -100,6 +100,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 values: new object[] { "test@gmail.com", "Test User", "test@gmail.com" });
         }
 
+#pragma warning disable CA1814
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(
@@ -152,4 +153,5 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 values: new object[] { new Guid("3c44e4e1-78b8-471f-9f08-5081a0a534e9"), new Guid("d7cb6746-1211-4cc2-9244-f4faaef25089"), null, null });
         }
     }
+#pragma warning restore CA1814
 }
