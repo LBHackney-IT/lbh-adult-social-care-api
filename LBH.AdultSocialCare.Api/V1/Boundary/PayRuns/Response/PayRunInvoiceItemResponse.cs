@@ -5,7 +5,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response
 {
     public class PayRunInvoiceItemResponse
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } // Invoice item id
+        public string Name { get; set; }
         public DateTimeOffset FromDate { get; set; }
         public DateTimeOffset ToDate { get; set; }
         public decimal Cost { get; set; }

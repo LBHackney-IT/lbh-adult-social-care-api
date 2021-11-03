@@ -1,5 +1,5 @@
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using System;
-using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response
 {
@@ -9,6 +9,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response
         public DateTimeOffset DateCreated { get; set; }
         public DateTimeOffset DateFrom { get; set; }
         public DateTimeOffset DateTo { get; set; }
-        public IEnumerable<PayRunInvoiceResponse> PayRunItems { get; set; }
+        public PagedResponse<PayRunInvoiceResponse> PayRunItems { get; set; }
     }
 }
