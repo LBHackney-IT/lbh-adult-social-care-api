@@ -1,30 +1,26 @@
 using HttpServices.Services.Concrete;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
-using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
 {
-
     public static class ServiceExtensions
     {
-
         public static void ConfigureTransactionsApiClient(this IServiceCollection services, IConfiguration configuration)
         {
             services

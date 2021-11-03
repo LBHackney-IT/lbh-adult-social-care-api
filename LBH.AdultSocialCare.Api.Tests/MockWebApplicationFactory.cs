@@ -1,5 +1,6 @@
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
+using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
@@ -16,8 +18,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
-using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
-using Microsoft.Extensions.Configuration;
 
 namespace LBH.AdultSocialCare.Api.Tests
 {

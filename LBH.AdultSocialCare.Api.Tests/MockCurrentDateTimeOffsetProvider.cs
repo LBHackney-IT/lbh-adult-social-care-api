@@ -1,5 +1,5 @@
-using System;
 using LBH.AdultSocialCare.Api.Helpers;
+using System;
 
 namespace LBH.AdultSocialCare.Api.Tests
 {

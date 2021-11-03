@@ -3,16 +3,13 @@ using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
-using Microsoft.AspNetCore.Authorization;
+using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using InvoiceResponse = HttpServices.Models.Responses.InvoiceResponse;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.HttpServices.Transactions

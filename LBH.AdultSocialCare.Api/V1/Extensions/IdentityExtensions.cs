@@ -1,7 +1,5 @@
-using System;
 using System.Security.Claims;
 using System.Security.Principal;
-using LBH.AdultSocialCare.Api.V1.AppConstants;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
 {

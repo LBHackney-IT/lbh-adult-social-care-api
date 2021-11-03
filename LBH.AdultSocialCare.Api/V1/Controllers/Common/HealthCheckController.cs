@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {

@@ -1,7 +1,7 @@
-using System;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Security.Concrete
 {

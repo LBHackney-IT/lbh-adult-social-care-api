@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete;
+using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.CarePackages

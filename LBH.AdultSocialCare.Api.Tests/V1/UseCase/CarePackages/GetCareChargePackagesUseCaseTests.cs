@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using AutoFixture;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
@@ -10,6 +9,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
 using Moq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages

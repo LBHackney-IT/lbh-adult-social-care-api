@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using HttpServices.Models.Features;
+using System.Collections.Generic;
 
 namespace HttpServices.Models.Responses
 {

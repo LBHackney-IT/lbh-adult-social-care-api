@@ -1,6 +1,6 @@
-using System;
 using HttpServices.Services.Contracts;
 using Moq;
+using System;
 
 namespace LBH.AdultSocialCare.Api.Tests.Extensions
 {

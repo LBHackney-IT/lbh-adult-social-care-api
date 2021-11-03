@@ -1,10 +1,10 @@
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Common.Extensions;
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using Microsoft.AspNetCore.Mvc;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {

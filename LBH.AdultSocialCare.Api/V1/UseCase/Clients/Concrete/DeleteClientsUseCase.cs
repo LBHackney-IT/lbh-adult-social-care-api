@@ -1,7 +1,7 @@
-using System;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Clients.Concrete
 {

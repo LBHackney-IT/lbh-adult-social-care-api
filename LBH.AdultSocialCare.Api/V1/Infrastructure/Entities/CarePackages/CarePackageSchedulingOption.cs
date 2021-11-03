@@ -1,5 +1,5 @@
-using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages
 {

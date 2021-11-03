@@ -1,7 +1,7 @@
+using HttpServices.Models.Features;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using HttpServices.Models.Features;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
 {

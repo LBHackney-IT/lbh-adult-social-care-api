@@ -1,6 +1,6 @@
-using System;
 using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
+using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
 {

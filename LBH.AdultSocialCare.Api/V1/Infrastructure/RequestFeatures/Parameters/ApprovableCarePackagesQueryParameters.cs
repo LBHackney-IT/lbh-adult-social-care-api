@@ -1,5 +1,5 @@
-using System;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters
 {

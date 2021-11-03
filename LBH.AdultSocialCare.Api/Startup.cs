@@ -1,16 +1,25 @@
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
+using HttpServices.Services.Concrete;
+using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.Providers;
 using LBH.AdultSocialCare.Api.V1;
+using LBH.AdultSocialCare.Api.V1.Core.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Services.Auth;
+using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Api.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,15 +32,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using HttpServices.Services.Concrete;
-using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Api.Providers;
-using LBH.AdultSocialCare.Api.V1.Core.Invoicing;
-using LBH.AdultSocialCare.Api.V1.Gateways;
-using LBH.AdultSocialCare.Api.V1.Services.Auth;
-using LBH.AdultSocialCare.Api.V1.Services.IO;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace LBH.AdultSocialCare.Api
 {

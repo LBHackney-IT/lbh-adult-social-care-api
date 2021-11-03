@@ -1,8 +1,8 @@
-using System;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using Moq;
+using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common

@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using AutoFixture;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
@@ -7,6 +5,8 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
 using Moq;
+using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages

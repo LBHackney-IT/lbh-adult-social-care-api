@@ -1,4 +1,5 @@
 using Common.Exceptions.CustomExceptions;
+using HttpServices.Helpers;
 using HttpServices.Models.Features.RequestFeatures;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
@@ -8,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using HttpServices.Helpers;
 
 namespace HttpServices.Services.Concrete
 {

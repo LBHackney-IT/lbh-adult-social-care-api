@@ -1,6 +1,6 @@
-using System;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
 {

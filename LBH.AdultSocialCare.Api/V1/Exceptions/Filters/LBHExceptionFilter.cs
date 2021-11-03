@@ -2,9 +2,9 @@ using Common.Exceptions.CustomExceptions;
 using Common.Exceptions.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
-using Microsoft.Extensions.Logging;
 
 namespace LBH.AdultSocialCare.Api.V1.Exceptions.Filters
 {

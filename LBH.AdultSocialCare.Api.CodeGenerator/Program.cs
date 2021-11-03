@@ -1,9 +1,9 @@
+using LBH.AdultSocialCare.Api.CodeGenerator.Generators;
+using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using LBH.AdultSocialCare.Api.CodeGenerator.Generators;
-using Microsoft.CodeAnalysis.CSharp;
 
 namespace LBH.AdultSocialCare.Api.CodeGenerator
 {

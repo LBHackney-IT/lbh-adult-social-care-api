@@ -1,7 +1,7 @@
-using System.IO;
-using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using System.IO;
+using System.Text;
 
 namespace LBH.AdultSocialCare.Api.CodeGenerator.Helpers
 {

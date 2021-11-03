@@ -1,11 +1,11 @@
+using Common.Extensions;
+using HttpServices.Services.Contracts;
+using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Common.Extensions;
-using HttpServices.Services.Contracts;
-using Newtonsoft.Json;
 
 namespace HttpServices.Services.Concrete
 {

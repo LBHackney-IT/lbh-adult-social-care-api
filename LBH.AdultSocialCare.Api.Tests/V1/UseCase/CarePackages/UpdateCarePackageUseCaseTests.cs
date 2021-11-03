@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
@@ -9,6 +7,8 @@ using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
 using Microsoft.AspNetCore.Http;
 using Moq;
+using System;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages

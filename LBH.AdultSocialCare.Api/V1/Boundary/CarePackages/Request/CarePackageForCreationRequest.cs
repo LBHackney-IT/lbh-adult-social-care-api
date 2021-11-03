@@ -1,7 +1,7 @@
-using System;
-using System.ComponentModel.DataAnnotations;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Validations;
+using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
 {

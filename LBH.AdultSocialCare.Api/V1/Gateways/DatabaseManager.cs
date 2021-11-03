@@ -1,8 +1,8 @@
-using System;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Threading.Tasks;
-using Common.Exceptions.CustomExceptions;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways
 {
