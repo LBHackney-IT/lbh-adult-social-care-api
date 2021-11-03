@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 
         public CarePackage CreateCarePackage(PackageType type = PackageType.ResidentialCare, PackageStatus status = PackageStatus.New)
         {
-            var serviceUser = _context.ServiceUsers.FirstOrDefault();
+            var serviceUser = CreateServiceUser();
 
             var carePackage = TestDataHelper.CreateCarePackage(
                 serviceUserId: serviceUser?.Id,
