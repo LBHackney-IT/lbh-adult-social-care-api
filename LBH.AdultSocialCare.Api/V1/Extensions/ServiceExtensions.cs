@@ -80,7 +80,9 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 // Clear out default configuration
                 config.ClearProviders();
 
-                config.AddConfiguration(configuration.GetSection("Logging"));
+                var loggingConfig = configuration.GetSection("Logging");
+
+                config.AddConfiguration(loggingConfig);
                 config.AddEventSourceLogger();
 
                 if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
@@ -90,7 +92,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 }
                 else
                 {
-                    config.AddLambdaLogger(new LambdaLoggerOptions { IncludeException = true });
+                    config.AddLambdaLogger(new LambdaLoggerOptions(loggingConfig));
                 }
             });
         }
