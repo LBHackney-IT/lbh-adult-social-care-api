@@ -5,6 +5,8 @@ using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete;
+using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Security.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.Security.Interfaces;
 
@@ -26,6 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IServiceUserGateway, ServiceUserGateway>();
             services.AddScoped<IStatusGateway, StatusGateway>();
             services.AddScoped<ISupplierGateway, SupplierGateway>();
+            services.AddScoped<IPayRunGateway, PayRunGateway>();
             services.AddScoped<IRolesGateway, RolesGateway>();
             services.AddScoped<IUsersGateway, UsersGateway>();
         }
