@@ -18,8 +18,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             {
                 PayRunId = payrunId,
                 DateCreated = DateTimeOffset.Now,
-                DateFrom = DateTimeOffset.Now.AddDays(-14),
-                DateTo = DateTimeOffset.Now,
+                StartDate = DateTimeOffset.Now.AddDays(-14),
+                EndDate = DateTimeOffset.Now,
                 PayRunItems = new PagedResponse<PayRunInvoiceResponse>
                 {
                     PagingMetaData =
