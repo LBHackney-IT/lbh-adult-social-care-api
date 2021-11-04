@@ -36,8 +36,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         public async Task<PagedList<PayRunListDomain>> GetPayRunList(PayRunListParameters parameters)
         {
             var payRunList = await _dbContext.Payruns
-                .FilterPayRunList(parameters.PayRunId, parameters.PayRunTypeId,
-                    parameters.PayRunStatusId, parameters.DateFrom, parameters.DateTo)
+                .FilterPayRunList(parameters.PayRunId, parameters.PayRunType,
+                    parameters.PayRunStatus, parameters.DateFrom, parameters.DateTo)
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize)
                 .Select(pr => new PayRunListDomain
@@ -55,8 +55,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 }).ToListAsync().ConfigureAwait(false);
 
             var payRunCount = await _dbContext.Payruns
-                .FilterPayRunList(parameters.PayRunId, parameters.PayRunTypeId,
-                    parameters.PayRunStatusId, parameters.DateFrom, parameters.DateTo)
+                .FilterPayRunList(parameters.PayRunId, parameters.PayRunType,
+                    parameters.PayRunStatus, parameters.DateFrom, parameters.DateTo)
                 .CountAsync().ConfigureAwait(false);
 
             return PagedList<PayRunListDomain>.ToPagedList(payRunList, payRunCount, parameters.PageNumber, parameters.PageSize);
