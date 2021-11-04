@@ -21,9 +21,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<PayRunDetailsViewResponse>> GetPayRunDetails([FromServices] IGetPayRunDetailsUseCase useCase, Guid id)
+        public async Task<ActionResult<PayRunDetailsViewResponse>> GetPayRunDetails([FromServices] IGetPayRunDetailsUseCase useCase, [FromQuery] PayRunDetailsQueryParameters parameters, Guid id)
         {
-            var res = await useCase.ExecuteAsync(id);
+            var res = await useCase.ExecuteAsync(id, parameters);
             return Ok(res);
         }
 
