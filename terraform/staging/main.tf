@@ -60,3 +60,9 @@ module "postgres_db_staging" {
     publicly_accessible = false
     project_name = "adult social care api"
 }
+
+resource "aws_sqs_queue" "terraform_queue" {
+  name                        = "lbh-adult-social-care-payruns"
+  visibility_timeout_seconds  = 60
+  max_message_size            = 2048
+}
