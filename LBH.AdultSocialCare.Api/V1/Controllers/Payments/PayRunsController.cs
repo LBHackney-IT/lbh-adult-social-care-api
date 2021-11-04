@@ -11,7 +11,10 @@ using Newtonsoft.Json;
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
 {
     [Route("api/v1/payruns")]
+    [Produces("application/json")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
     public class PayRunsController : ControllerBase
     {
         private readonly IGetPayRunListUseCase _getPayRunListUseCase;

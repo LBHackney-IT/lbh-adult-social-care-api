@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common.AppConstants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
 {
@@ -97,5 +98,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
                                       && (parameters.InvoiceStatus == null || invoice.InvoiceStatus.Equals(parameters.InvoiceStatus))
                                       && (parameters.FromDate == null || invoice.Invoice.DateCreated >= parameters.FromDate)
                                       && (parameters.ToDate == null || invoice.Invoice.DateCreated < parameters.ToDate));
+
+        public static IQueryable<Payrun> FilterPayRunList(this IQueryable<Payrun> payRuns, Guid? payRunId,
+            PayrunType? payrunType, PayrunStatus? payrunStatus, DateTimeOffset? dateFrom,
+            DateTimeOffset? dateTo) =>
+            payRuns.Where(e => (
+                    (payRunId == null || e.Id.Equals(payRunId))
+                    && (payrunType == null || e.Type.Equals(payrunType))
+                    && (payrunStatus == null || e.Status.Equals(payrunStatus))
+                    && (dateFrom == null || e.DateCreated >= dateFrom)
+                    && (dateTo == null || e.DateCreated <= dateTo)
+                ));
     }
 }
