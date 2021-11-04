@@ -32,6 +32,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using LBH.AdultSocialCare.Api.V1.Services.Queuing;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -95,12 +96,13 @@ namespace LBH.AdultSocialCare.Api
             services.ConfigureIdentityService();
             services.ConfigureJWT(Configuration);
 
+            services.AddScoped<IDatabaseManager, DatabaseManager>();
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
             services.AddScoped<IFileStorage, FileStorage>();
+            services.AddScoped<IQueueService, AmazonSimpleQueueService>();
 
             services.AddHttpContextAccessor();
 
-            services.AddScoped<IDatabaseManager, DatabaseManager>();
             services.RegisterGateways();
             services.RegisterUseCases();
 

@@ -1,15 +1,15 @@
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Services.Queuing;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
     [Route("api/v1/healthcheck")]
     [ApiController]
     [Produces("application/json")]
-    public class HealthCheckController : BaseController
+    public class HealthCheckController : ControllerBase
     {
         [HttpGet]
         [Route("ping")]
@@ -28,17 +28,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             ThrowOpsErrorUsecase.Execute();
         }
 
-        [HttpGet]
-        [Route("log")]
-        public void Log([FromServices] ILogger<HealthCheckController> logger)
+        [HttpGet("queue")]
+        public async Task<ActionResult> Log([FromQuery] string message, [FromServices] IQueueService queue)
         {
-            // TODO: VK: Remove
-            logger.LogTrace("Trace");
-            logger.LogInformation("Information");
-            logger.LogWarning("Warning");
-            logger.LogCritical("Critical");
-
-            throw new InvalidOperationException("Test exception");
+            await queue.Send(message);
+            return Ok();
         }
     }
 }
