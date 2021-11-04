@@ -1,6 +1,8 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -84,7 +86,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
             }
 
             return filteredList;
-
         }
+
+        public static IQueryable<PayrunInvoice> FilterPayRunInvoices(this IQueryable<PayrunInvoice> invoices, PayRunDetailsQueryParameters parameters) =>
+            invoices.Where(invoice => (parameters.PackageType == null || invoice.Invoice.Package.PackageType.Equals(parameters.PackageType))
+                                      && (string.IsNullOrEmpty(parameters.SearchTerm)
+                                          || invoice.Invoice.ServiceUser.FirstName.ToLower().Contains(parameters.SearchTerm.ToLower())
+                                          || invoice.Invoice.ServiceUser.LastName.ToLower().Contains(parameters.SearchTerm.ToLower())
+                                          || invoice.Invoice.Supplier.SupplierName.ToLower().Contains(parameters.SearchTerm.ToLower()))
+                                      && (parameters.InvoiceStatus == null || invoice.InvoiceStatus.Equals(parameters.InvoiceStatus))
+                                      && (parameters.FromDate == null || invoice.Invoice.DateCreated >= parameters.FromDate)
+                                      && (parameters.ToDate == null || invoice.Invoice.DateCreated < parameters.ToDate));
     }
 }
