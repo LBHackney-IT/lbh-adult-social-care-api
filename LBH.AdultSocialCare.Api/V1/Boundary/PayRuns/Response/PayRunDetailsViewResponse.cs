@@ -7,8 +7,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response
     {
         public Guid PayRunId { get; set; }
         public DateTimeOffset DateCreated { get; set; }
-        public DateTimeOffset DateFrom { get; set; }
-        public DateTimeOffset DateTo { get; set; }
+        public DateTimeOffset StartDate { get; set; }
+        public DateTimeOffset EndDate { get; set; }
         public PagedResponse<PayRunInvoiceResponse> PayRunItems { get; set; }
     }
 }

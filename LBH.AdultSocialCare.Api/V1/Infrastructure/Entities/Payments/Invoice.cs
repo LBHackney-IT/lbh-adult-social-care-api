@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,19 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
         public Guid Id { get; set; }
 
         public string Number { get; set; }
-
         public int SupplierId { get; set; }
         public Guid ServiceUserId { get; set; }
-
         public decimal TotalCost { get; set; }
+        public Guid PackageId { get; set; }
+
+        [ForeignKey(nameof(PackageId))]
+        public CarePackage Package { get; set; }
+
+        [ForeignKey(nameof(ServiceUserId))]
+        public ServiceUser ServiceUser { get; set; }
+
+        [ForeignKey(nameof(SupplierId))]
+        public Supplier Supplier { get; set; }
 
         public virtual ICollection<InvoiceItem> Items { get; set; }
         public virtual ICollection<PayrunInvoice> PayrunInvoices { get; set; }
