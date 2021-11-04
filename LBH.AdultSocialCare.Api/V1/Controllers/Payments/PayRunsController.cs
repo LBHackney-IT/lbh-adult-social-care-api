@@ -11,7 +11,10 @@ using Newtonsoft.Json;
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
 {
     [Route("api/v1/payruns")]
+    [Produces("application/json")]
     [ApiController]
+    [ApiExplorerSettings(GroupName = "v1")]
+    [ApiVersion("1.0")]
     public class PayRunsController : ControllerBase
     {
         private readonly IGetPayRunListUseCase _getPayRunListUseCase;
@@ -21,9 +24,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<PayRunDetailsViewResponse>> GetPayRunDetails([FromServices] IGetPayRunDetailsUseCase useCase, Guid id)
+        public async Task<ActionResult<PayRunDetailsViewResponse>> GetPayRunDetails([FromServices] IGetPayRunDetailsUseCase useCase, [FromQuery] PayRunDetailsQueryParameters parameters, Guid id)
         {
-            var res = await useCase.ExecuteAsync(id);
+            var res = await useCase.ExecuteAsync(id, parameters);
             return Ok(res);
         }
 

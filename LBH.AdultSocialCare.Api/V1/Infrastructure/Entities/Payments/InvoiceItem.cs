@@ -10,6 +10,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+        public string Name { get; set; }
 
         public Guid InvoiceId { get; set; }
         public Guid PackageId { get; set; }
@@ -17,9 +18,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
         public decimal WeeklyCost { get; set; }
         public decimal TotalCost { get; set; }
 
-        public int Quantity { get; set; }
+        public decimal Quantity { get; set; }
 
-        public InvoiceStatus Status { get; set; }
+        public DateTimeOffset FromDate { get; set; }
+        public DateTimeOffset ToDate { get; set; }
+
+        public ClaimCollector ClaimCollector { get; set; }
         public PriceEffect PriceEffect { get; set; }
 
         [ForeignKey(nameof(InvoiceId))]

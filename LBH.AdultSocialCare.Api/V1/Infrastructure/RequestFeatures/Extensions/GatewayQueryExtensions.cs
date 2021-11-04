@@ -1,10 +1,13 @@
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common.AppConstants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
 {
@@ -84,7 +87,27 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
             }
 
             return filteredList;
-
         }
+
+        public static IQueryable<PayrunInvoice> FilterPayRunInvoices(this IQueryable<PayrunInvoice> invoices, PayRunDetailsQueryParameters parameters) =>
+            invoices.Where(invoice => (parameters.PackageType == null || invoice.Invoice.Package.PackageType.Equals(parameters.PackageType))
+                                      && (string.IsNullOrEmpty(parameters.SearchTerm)
+                                          || invoice.Invoice.ServiceUser.FirstName.ToLower().Contains(parameters.SearchTerm.ToLower())
+                                          || invoice.Invoice.ServiceUser.LastName.ToLower().Contains(parameters.SearchTerm.ToLower())
+                                          || invoice.Invoice.Supplier.SupplierName.ToLower().Contains(parameters.SearchTerm.ToLower()))
+                                      && (parameters.InvoiceStatus == null || invoice.InvoiceStatus.Equals(parameters.InvoiceStatus))
+                                      && (parameters.FromDate == null || invoice.Invoice.DateCreated >= parameters.FromDate)
+                                      && (parameters.ToDate == null || invoice.Invoice.DateCreated < parameters.ToDate));
+
+        public static IQueryable<Payrun> FilterPayRunList(this IQueryable<Payrun> payRuns, Guid? payRunId,
+            PayrunType? payrunType, PayrunStatus? payrunStatus, DateTimeOffset? dateFrom,
+            DateTimeOffset? dateTo) =>
+            payRuns.Where(e => (
+                    (payRunId == null || e.Id.Equals(payRunId))
+                    && (payrunType == null || e.Type.Equals(payrunType))
+                    && (payrunStatus == null || e.Status.Equals(payrunStatus))
+                    && (dateFrom == null || e.DateCreated >= dateFrom)
+                    && (dateTo == null || e.DateCreated <= dateTo)
+                ));
     }
 }

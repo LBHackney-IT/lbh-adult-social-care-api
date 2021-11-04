@@ -3,6 +3,7 @@ using HttpServices.Models.Features;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -12,14 +13,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 {
     public class GetPayRunDetailsUseCase : IGetPayRunDetailsUseCase
     {
-        public async Task<PayRunDetailsViewResponse> ExecuteAsync(Guid payrunId)
+        public async Task<PayRunDetailsViewResponse> ExecuteAsync(Guid payrunId, PayRunDetailsQueryParameters parameters)
         {
             var result = new PayRunDetailsViewResponse
             {
                 PayRunId = payrunId,
                 DateCreated = DateTimeOffset.Now,
-                DateFrom = DateTimeOffset.Now.AddDays(-14),
-                DateTo = DateTimeOffset.Now,
+                StartDate = DateTimeOffset.Now.AddDays(-14),
+                EndDate = DateTimeOffset.Now,
                 PayRunItems = new PagedResponse<PayRunInvoiceResponse>
                 {
                     PagingMetaData =
