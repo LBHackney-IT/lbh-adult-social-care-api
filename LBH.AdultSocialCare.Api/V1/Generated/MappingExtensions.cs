@@ -5,6 +5,7 @@ using System.Linq;
 using HttpServices.Models.Requests;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
@@ -326,6 +327,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static ServiceUserDomain ToDomain(this ServiceUserResponse input)
         {
             return _mapper.Map<ServiceUserDomain>(input);
+        }
+
+        public static IEnumerable<PayRunListResponse> ToResponse(this IEnumerable<PayRunListDomain> input)
+        {
+            return _mapper.Map<IEnumerable<PayRunListResponse>>(input);
+        }
+
+        public static IEnumerable<PayRunListDomain> ToDomain(this IEnumerable<PayRunListResponse> input)
+        {
+            return _mapper.Map<IEnumerable<PayRunListDomain>>(input);
         }
 
         public static AppUserResponse ToResponse(this AppUserDomain input)

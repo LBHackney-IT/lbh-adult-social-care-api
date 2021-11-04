@@ -7,6 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.Domain.Payments;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 {
@@ -26,6 +31,35 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .TrackChanges(trackChanges);
 
             return await query.SingleOrDefaultAsync();
+        }
+
+        public async Task<PagedList<PayRunListDomain>> GetPayRunList(PayRunListParameters parameters)
+        {
+            var payRunList = await _dbContext.Payruns
+                .FilterPayRunList(parameters.PayRunId, parameters.PayRunTypeId,
+                    parameters.PayRunStatusId, parameters.DateFrom, parameters.DateTo)
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .Select(pr => new PayRunListDomain
+                {
+                    PayRunId = pr.Id,
+                    PayRunTypeId = (int) pr.Type,
+                    PayRunTypeName = pr.Type.ToDescription(),
+                    PayRunStatusId = (int) pr.Status,
+                    PayRunStatusName = pr.Status.GetDisplayName(),
+                    TotalAmountPaid = pr.Paid,
+                    TotalAmountHeld = pr.Held,
+                    DateFrom = pr.StartDate,
+                    DateTo = pr.EndDate,
+                    DateCreated = pr.DateCreated
+                }).ToListAsync().ConfigureAwait(false);
+
+            var payRunCount = await _dbContext.Payruns
+                .FilterPayRunList(parameters.PayRunId, parameters.PayRunTypeId,
+                    parameters.PayRunStatusId, parameters.DateFrom, parameters.DateTo)
+                .CountAsync().ConfigureAwait(false);
+
+            return PagedList<PayRunListDomain>.ToPagedList(payRunList, payRunCount, parameters.PageNumber, parameters.PageSize);
         }
 
         private static IQueryable<Payrun> BuildPayRunQuery(IQueryable<Payrun> query, PayRunFields fields)
