@@ -91,6 +91,17 @@ commands:
           command: |
             cd ./LBH.AdultSocialCare.Api/
             sls deploy --stage <<parameters.stage>> --account <<parameters.aws-account>> --conceal
+      - run:
+          name: Build Payruns lambda
+          command: |
+            cd ./LBH.AdultSocialCare.Functions.Payruns/
+            chmod +x ./build.sh
+            ./build.sh
+      - run:
+          name: Deploy Payruns lambda
+          command: |
+            cd ./LBH.AdultSocialCare.Functions.Payruns/
+            sls deploy --stage <<parameters.stage>> --account <<parameters.aws-account>> --conceal
 
 jobs:
   check-code-formatting:

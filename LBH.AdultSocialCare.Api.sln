@@ -38,6 +38,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LBH.Adult.Social.Care.Functions.Payruns", "LBH.Adult.Social.Care.Functions.Payruns\LBH.Adult.Social.Care.Functions.Payruns.csproj", "{6D595672-C663-4A56-9CB8-93E5B48DD36C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,10 @@ Global
 		{D139A455-35A4-403C-B015-7F317631C8DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D139A455-35A4-403C-B015-7F317631C8DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D139A455-35A4-403C-B015-7F317631C8DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D595672-C663-4A56-9CB8-93E5B48DD36C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D595672-C663-4A56-9CB8-93E5B48DD36C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D595672-C663-4A56-9CB8-93E5B48DD36C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D595672-C663-4A56-9CB8-93E5B48DD36C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -67,7 +67,12 @@ resource "aws_sqs_queue" "payruns_queue" {
   max_message_size            = 2048
 }
 
-resource "aws_sqs_queue_policy" "payruns_queue_lambda_policy" {
+resource "aws_lambda_event_source_mapping" "payruns_queue_to_lambda_mapping" {
+  event_source_arn = aws_sqs_queue.payruns_queue.arn
+  function_name    = "arn:aws:lambda:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:lbh-adult-social-care-functions-payruns-staging"
+}
+
+resource "aws_sqs_queue_policy" "payruns_queue_to_lambda_policy" {
   queue_url = aws_sqs_queue.payruns_queue.id
 
   policy = jsonencode({

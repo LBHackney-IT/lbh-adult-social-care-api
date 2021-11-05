@@ -18,6 +18,17 @@ services:
 #      - AWS_SECRET_ACCESS_KEY=local
     links:
       - dev-database
+
+  functions-payruns:
+    image: functions-payruns
+    build:
+      context: LBH.AdultSocialCare.Functions.Payruns/
+      dockerfile: ./Dockerfile
+    environment:
+      - CONNECTION_STRING=Host=dev-database;Port=5432;Database=testdb;Username=postgres;Password=mypassword
+    links:
+      - dev-database
+
   dev-database:
     env_file:
       - database.env
