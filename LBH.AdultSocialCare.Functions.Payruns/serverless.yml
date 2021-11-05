@@ -62,6 +62,17 @@ resources:
         Action: "lambda:ListFunctions"
         FunctionName: ${self:service}-${self:provider.stage}
         Principal: "sqs.amazonaws.com"
+    sqsLambdaMapping:
+      Type: AWS::Lambda::EventSourceMapping
+      Properties:
+        EventSourceArn:
+          Fn::Join:
+            - ':'
+            - - 'arn:aws:sqs'
+              - Ref: 'AWS::Region'
+              - Ref: 'AWS::AccountId'
+              - 'lbh-adult-social-care-payruns'
+        FunctionName: ${self:service}-${self:provider.stage}
     lambdaExecutionRole:
       Type: AWS::IAM::Role
       Properties:
