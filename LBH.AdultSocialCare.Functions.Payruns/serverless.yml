@@ -122,7 +122,7 @@ resources:
                     - "lambda:CreateEventSourceMapping"
                     - "lambda:ListEventSourceMappings"
                     - "lambda:ListFunctions"
-                - Principal:
+                  Principal:
                     Service:
                       - sqs.amazonaws.com
                   Resource: ${self:service}
