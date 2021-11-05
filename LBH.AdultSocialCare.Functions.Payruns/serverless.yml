@@ -1,4 +1,4 @@
-service: lbh-adult-social-care-lambdas-payruns
+service: lbh-adult-social-care-functions-payruns
 provider:
   name: aws
   runtime: dotnetcore3.1
