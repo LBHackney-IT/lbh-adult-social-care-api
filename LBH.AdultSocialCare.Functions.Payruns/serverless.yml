@@ -25,7 +25,7 @@ package:
   artifact: ./bin/release/netcoreapp3.1/lbh-adult-social-care-functions-payruns.zip
 
 functions:
-  LBH.AdultSocialCare.Functions.Payruns:
+  AdultSocialCarePayruns:
     name: ${self:service}-${self:provider.stage}
     handler: LBH.AdultSocialCare.Functions.Payruns::LBH.AdultSocialCare.Functions.Payruns.LambdaEntryPoint::Handler
     role: lambdaExecutionRole
@@ -112,14 +112,20 @@ resources:
 custom:
   vpc:
     development:
+      securityGroupIds:
+        - sg-
       subnetIds:
-        - subnet-0deabb5d8fb9c3446
-        - subnet-000b89c249f12a8ad
+        - subnet-0d4086ab96db46047
+        - subnet-0f5eeab6b619d5e1a
     staging:
+      securityGroupIds:
+        - sg-0630857460fcc6b3e
       subnetIds:
-        - subnet-06d3de1bd9181b0d7
-        - subnet-0ed7d7713d1127656
+        - subnet-0d4086ab96db46047
+        - subnet-0f5eeab6b619d5e1a
     production:
+      securityGroupIds:
+        - sg-02ffd48e7f2c805f8
       subnetIds:
-        - subnet-01d3657f97a243261
-        - subnet-0b7b8fea07efabf34
+        - subnet-0c39cd286eeaff2b2
+        - subnet-04c42d0aafb3738ad
