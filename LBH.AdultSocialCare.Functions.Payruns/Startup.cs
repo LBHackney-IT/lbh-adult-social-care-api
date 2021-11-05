@@ -1,4 +1,4 @@
-namespace LBH.Adult.Social.Care.Functions.Payruns
+namespace LBH.AdultSocialCare.Functions.Payruns
 {
     public class Startup
     {

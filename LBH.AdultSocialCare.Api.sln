@@ -38,7 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LBH.Adult.Social.Care.Functions.Payruns", "LBH.Adult.Social.Care.Functions.Payruns\LBH.Adult.Social.Care.Functions.Payruns.csproj", "{6D595672-C663-4A56-9CB8-93E5B48DD36C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LBH.AdultSocialCare.Functions.Payruns", "LBH.AdultSocialCare.Functions.Payruns\LBH.AdultSocialCare.Functions.Payruns.csproj", "{6D595672-C663-4A56-9CB8-93E5B48DD36C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
