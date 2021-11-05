@@ -22,7 +22,7 @@ provider:
 
 package:
 # TODO: Rename zipfile in build.sh and build.cmd to match this
-  artifact: ./bin/release/netcoreapp3.1/lbh-adult-social-care-lambdas-payruns.zip
+  artifact: ./bin/release/netcoreapp3.1/lbh-adult-social-care-functions-payruns.zip
 
 functions:
   LBH.AdultSocialCare.Functions.Payruns:
