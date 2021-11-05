@@ -49,25 +49,19 @@ resources:
       Properties:
         Action: "lambda:CreateEventSourceMapping"
         FunctionName: ${self:service}-${self:provider.stage}
-        Principal:
-          Service:
-            - sqs.amazonaws.com
+        Principal: "sqs.amazonaws.com"
     sqsListMappingsPermission:
       Type: AWS::Lambda::Permission
       Properties:
         Action: "lambda:ListEventSourceMappings"
         FunctionName: ${self:service}-${self:provider.stage}
-        Principal:
-          Service:
-            - sqs.amazonaws.com
+        Principal: "sqs.amazonaws.com"
     sqsListFunctionsPermission:
       Type: AWS::Lambda::Permission
       Properties:
         Action: "lambda:ListFunctions"
         FunctionName: ${self:service}-${self:provider.stage}
-        Principal:
-          Service:
-            - sqs.amazonaws.com
+        Principal: "sqs.amazonaws.com"
     lambdaExecutionRole:
       Type: AWS::IAM::Role
       Properties:
