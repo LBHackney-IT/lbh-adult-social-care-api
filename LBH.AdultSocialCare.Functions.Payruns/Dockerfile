@@ -6,15 +6,15 @@ ENV LBHPACKAGESTOKEN=$LBHPACKAGESTOKEN
 WORKDIR /app
 
 # Copy csproj and nuget config and restore as distinct layers
-COPY ./LBH.Adult.Social.Care.Lambdas.Payruns/LBH.Adult.Social.Care.Lambdas.Payruns.csproj ./
+COPY ./LBH.AdultSocialCare.Functions.Payruns/LBH.AdultSocialCare.Functions.Payruns.csproj ./
 COPY /NuGet.Config /root/.nuget/NuGet/NuGet.Config
 
-RUN dotnet restore ./LBH.Adult.Social.Care.Lambdas.Payruns.csproj
+RUN dotnet restore ./LBH.AdultSocialCare.Functions.Payruns.csproj
 
 # Copy everything else and build
-COPY ./LBH.Adult.Social.Care.Lambdas.Payruns ./
+COPY ./LBH.AdultSocialCare.Functions.Payruns ./
 RUN dotnet build -c Release -o out
 RUN dotnet publish -c Release -o out
 
 EXPOSE ${PORT:-3000}
-CMD ASPNETCORE_URLS=http://+:${PORT:-3000} dotnet ./out/LBH.Adult.Social.Care.Lambdas.Payruns.dll
+CMD ASPNETCORE_URLS=http://+:${PORT:-3000} dotnet ./out/LBH.AdultSocialCare.Functions.Payruns.dll

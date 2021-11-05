@@ -25,9 +25,9 @@ package:
   artifact: ./bin/release/netcoreapp3.1/lbh-adult-social-care-lambdas-payruns.zip
 
 functions:
-  LBH.Adult.Social.Care.Lambdas.Payruns:
+  LBH.AdultSocialCare.Functions.Payruns:
     name: ${self:service}-${self:provider.stage}
-    handler: LBH.Adult.Social.Care.Lambdas.Payruns::LBH.Adult.Social.Care.Lambdas.Payruns.LambdaEntryPoint::Handler
+    handler: LBH.AdultSocialCare.Functions.Payruns::LBH.AdultSocialCare.Functions.Payruns.LambdaEntryPoint::Handler
     role: lambdaExecutionRole
     environment:
 # TODO: Create ssm variables for this API's postgres mirror then rename lbh-adult-social-care-lambdas-payruns below to match api name
