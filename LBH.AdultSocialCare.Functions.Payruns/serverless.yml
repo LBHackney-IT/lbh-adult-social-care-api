@@ -131,6 +131,7 @@ resources:
                   Action:
                     - "sqs:GetQueueUrl"
                     - "sqs:ReceiveMessage"
+                    - "sqs:DeleteMessage"
                   Resource:
                     - Fn::Join:
                         - ':'
