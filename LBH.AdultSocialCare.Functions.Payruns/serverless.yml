@@ -35,7 +35,7 @@ functions:
       # CONNECTION_STRING: Host=${ssm:/lbh-adult-social-care-lambdas-payruns/${self:provider.stage}/postgres-hostname};Port=${ssm:/lbh-adult-social-care-lambdas-payruns/${self:provider.stage}/postgres-port};Database=lbh-adult-social-care-lambdas-payruns-mirror;Username=${ssm:/lbh-adult-social-care-lambdas-payruns/${self:provider.stage}/postgres-username};Password=${ssm:/lbh-adult-social-care-lambdas-payruns/${self:provider.stage}/postgres-password}
     events:
       - sqs:
-        - arn:
+        arn:
           Fn::Join:
             - ':'
             - - 'arn:aws:sqs'
