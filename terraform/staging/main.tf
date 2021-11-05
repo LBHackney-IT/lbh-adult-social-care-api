@@ -86,7 +86,7 @@ resource "aws_sqs_queue_policy" "payruns_queue_to_lambda_policy" {
           "sqs:GetQueueAttributes",
           "sqs:ReceiveMessage",
           "sqs:GetQueueUrl"
-        ]
+        ],
         "Resource": aws_sqs_queue.payruns_queue.arn,
       },
       {
@@ -100,7 +100,7 @@ resource "aws_sqs_queue_policy" "payruns_queue_to_lambda_policy" {
           "lambda:CreateEventSourceMapping",
           "lambda:ListEventSourceMappings",
           "lambda:ListFunctions"
-        ]
+        ],
         "Resource": aws_sqs_queue.payruns_queue.arn,
       }
     ]
