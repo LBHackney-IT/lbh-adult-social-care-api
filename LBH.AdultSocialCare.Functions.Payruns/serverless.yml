@@ -93,6 +93,9 @@ resources:
                 - Effect: Allow
                   Action:
                     - "lambda:InvokeFunction"
+                    - "lambda:CreateEventSourceMapping",
+                    - "lambda:ListEventSourceMappings",
+                    - "lambda:ListFunctions"
                   Resource: "*"
           - PolicyName: sqsOperations
             PolicyDocument:

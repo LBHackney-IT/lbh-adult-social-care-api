@@ -88,20 +88,6 @@ resource "aws_sqs_queue_policy" "payruns_queue_to_lambda_policy" {
           "sqs:GetQueueUrl"
         ],
         "Resource": aws_sqs_queue.payruns_queue.arn,
-      },
-      {
-        "Effect": "Allow",
-        "Principal": {
-          "AWS": [
-            aws_sqs_queue.payruns_queue.arn
-          ]
-        },
-        "Action": [
-          "lambda:CreateEventSourceMapping",
-          "lambda:ListEventSourceMappings",
-          "lambda:ListFunctions"
-        ],
-        "Resource": "lambda.amazonaws.com",
       }
     ]
   })
