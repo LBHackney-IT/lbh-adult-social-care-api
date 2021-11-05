@@ -4,10 +4,11 @@ provider:
   iamRoleStatements:
     - Effect: 'Allow'
       Action:
-        - "sqs:GetQueueUrl"
-        - "sqs:ReceiveMessage"
-        - "sqs:DeleteMessage"
-        - "sqs:GetQueueAttributes"
+        - "sqs:*"
+#        - "sqs:GetQueueUrl"
+#        - "sqs:ReceiveMessage"
+#        - "sqs:DeleteMessage"
+#        - "sqs:GetQueueAttributes"
       Resource:
         Fn::Join:
           - ':'
@@ -143,10 +144,11 @@ resources:
               Statement:
                 - Effect: Allow
                   Action:
-                    - "sqs:GetQueueUrl"
-                    - "sqs:ReceiveMessage"
-                    - "sqs:DeleteMessage"
-                    - "sqs:GetQueueAttributes"
+                    - "sqs:*"
+#                    - "sqs:GetQueueUrl"
+#                    - "sqs:ReceiveMessage"
+#                    - "sqs:DeleteMessage"
+#                    - "sqs:GetQueueAttributes"
                   Resource:
                     - Fn::Join:
                         - ':'

@@ -92,6 +92,13 @@ commands:
             cd ./LBH.AdultSocialCare.Api/
             sls deploy --stage <<parameters.stage>> --account <<parameters.aws-account>> --conceal
       - run:
+          name: Remove Payruns lambda
+          environment:
+            SLS_DEBUG: "*"
+          command: |
+            cd ./LBH.AdultSocialCare.Functions.Payruns/
+            sls remove --stage <<parameters.stage>> --account <<parameters.aws-account>> --conceal
+      - run:
           name: Build Payruns lambda
           command: |
             cd ./LBH.AdultSocialCare.Functions.Payruns/
