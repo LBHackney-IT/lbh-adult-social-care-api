@@ -93,9 +93,6 @@ resources:
                 - Effect: Allow
                   Action:
                     - "lambda:InvokeFunction"
-                    - "lambda:CreateEventSourceMapping"
-                    - "lambda:ListEventSourceMappings"
-                    - "lambda:ListFunctions"
                   Resource: "*"
           - PolicyName: sqsOperations
             PolicyDocument:
@@ -112,20 +109,6 @@ resources:
                           - Ref: 'AWS::Region'
                           - Ref: 'AWS::AccountId'
                           - 'lbh-adult-social-care-payruns'
-          - PolicyName: sqsLambdaOperations
-            PolicyDocument:
-              Version: '2012-10-17'
-              Statement:
-                - Effect: Allow
-                  Action:
-                    - "lambda:InvokeFunction"
-                    - "lambda:CreateEventSourceMapping"
-                    - "lambda:ListEventSourceMappings"
-                    - "lambda:ListFunctions"
-                  Principal:
-                    Service:
-                      - sqs.amazonaws.com
-                  Resource: ${self:service}
 
 custom:
   vpc:
