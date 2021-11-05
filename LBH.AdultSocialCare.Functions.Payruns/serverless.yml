@@ -44,14 +44,26 @@ functions:
               - 'lbh-adult-social-care-payruns'
 resources:
   Resources:
-    lambdaPermissions:
+    sqsCreateMappingPermission:
       Type: AWS::Lambda::Permission
       Properties:
-        Action:
-          - "lambda:InvokeFunction"
-          - "lambda:CreateEventSourceMapping"
-          - "lambda:ListEventSourceMappings"
-          - "lambda:ListFunctions"
+        Action: "lambda:CreateEventSourceMapping"
+        FunctionName: ${self:service}-${self:provider.stage}
+        Principal:
+          Service:
+            - sqs.amazonaws.com
+    sqsListMappingsPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        Action: "lambda:ListEventSourceMappings"
+        FunctionName: ${self:service}-${self:provider.stage}
+        Principal:
+          Service:
+            - sqs.amazonaws.com
+    sqsListFunctionsPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        Action: "lambda:ListFunctions"
         FunctionName: ${self:service}-${self:provider.stage}
         Principal:
           Service:
