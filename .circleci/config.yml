@@ -99,6 +99,8 @@ commands:
             ./build.sh
       - run:
           name: Deploy Payruns lambda
+          environment:
+            SLS_DEBUG=*
           command: |
             cd ./LBH.AdultSocialCare.Functions.Payruns/
             sls deploy --stage <<parameters.stage>> --account <<parameters.aws-account>> --conceal
