@@ -4,11 +4,10 @@ provider:
   iamRoleStatements:
     - Effect: 'Allow'
       Action:
-        - "sqs:*"
-#        - "sqs:GetQueueUrl"
-#        - "sqs:ReceiveMessage"
-#        - "sqs:DeleteMessage"
-#        - "sqs:GetQueueAttributes"
+        - "sqs:GetQueueUrl"
+        - "sqs:ReceiveMessage"
+        - "sqs:DeleteMessage"
+        - "sqs:GetQueueAttributes"
       Resource:
         Fn::Join:
           - ':'
@@ -102,6 +101,7 @@ resources:
                   - lambda.amazonaws.com
               Action: sts:AssumeRole
         ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole
           - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
           - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
         Policies:
@@ -144,11 +144,10 @@ resources:
               Statement:
                 - Effect: Allow
                   Action:
-                    - "sqs:*"
-#                    - "sqs:GetQueueUrl"
-#                    - "sqs:ReceiveMessage"
-#                    - "sqs:DeleteMessage"
-#                    - "sqs:GetQueueAttributes"
+                    - "sqs:GetQueueUrl"
+                    - "sqs:ReceiveMessage"
+                    - "sqs:DeleteMessage"
+                    - "sqs:GetQueueAttributes"
                   Resource:
                     - Fn::Join:
                         - ':'
