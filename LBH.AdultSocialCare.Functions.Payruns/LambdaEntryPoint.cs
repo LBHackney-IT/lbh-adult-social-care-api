@@ -1,4 +1,5 @@
 using System;
+using Amazon.Lambda.Core;
 using Amazon.Lambda.SQSEvents;
 
 namespace LBH.AdultSocialCare.Functions.Payruns
@@ -11,6 +12,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns
         }
 
 #pragma warning disable CA1822
+        [LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
         public string Handler(SQSEvent sqsEvent)
         {
             foreach (var record in sqsEvent.Records)
