@@ -28,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             ThrowOpsErrorUsecase.Execute();
         }
 
-        [HttpGet("queue")]
+        [HttpPost("queue")]
         public async Task<ActionResult> Log([FromQuery] string message, [FromServices] IQueueService queue)
         {
             await queue.Send(message);

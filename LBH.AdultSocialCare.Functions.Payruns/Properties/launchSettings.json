@@ -11,9 +11,7 @@
   "profiles": {
     "base_api": {
       "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "api/v1/healthcheck/ping",
-      "applicationUrl": "http://localhost:5000",
+      "applicationUrl": "http://localhost:8000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DynamoDb_LocalMode": "true",
