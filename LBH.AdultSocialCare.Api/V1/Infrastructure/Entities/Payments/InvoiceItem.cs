@@ -8,8 +8,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
 {
     public class InvoiceItem : BaseEntity
     {
+        public InvoiceItem()
+        {
+            IsReclaim = false;
+        }
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
+
         public string Name { get; set; }
 
         public Guid InvoiceId { get; set; }
@@ -22,6 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
 
         public DateTimeOffset FromDate { get; set; }
         public DateTimeOffset ToDate { get; set; }
+        public bool? IsReclaim { get; set; }
 
         public ClaimCollector ClaimCollector { get; set; }
         public PriceEffect PriceEffect { get; set; }

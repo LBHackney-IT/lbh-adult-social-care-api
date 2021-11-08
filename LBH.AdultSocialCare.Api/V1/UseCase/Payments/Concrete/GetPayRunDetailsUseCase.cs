@@ -24,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 PayRunItems = new PagedResponse<PayRunInvoiceResponse>
                 {
                     PagingMetaData =
-                        new PagingMetaData { CurrentPage = 1, TotalPages = 1, PageSize = 1, TotalCount = 1 },
+                        new PagingMetaData { CurrentPage = 1, TotalPages = 1, PageSize = 3, TotalCount = 3 },
                     Data = new List<PayRunInvoiceResponse>()
                     {
                         new PayRunInvoiceResponse
@@ -33,16 +33,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                             InvoiceId = Guid.NewGuid(),
                             CarePackageId = Guid.NewGuid(),
                             ServiceUserId = Guid.NewGuid(),
-                            ServiceUserName = "Emma Stone",
+                            ServiceUserName = "James Stephens",
                             SupplierId = 12,
-                            SupplierName = "Derek Drinkwater",
+                            SupplierName = "Barchester Healthcare Homes Ltd",
                             InvoiceNumber = "INV 10",
                             PackageTypeId = (int) PackageType.ResidentialCare,
                             PackageType = PackageType.ResidentialCare.GetDisplayName(),
-                            GrossTotal = 500,
-                            NetTotal = 300,
+                            GrossTotal = 800,
+                            NetTotal = 600,
                             InvoiceStatus = InvoiceStatus.Accepted,
-                            AssignedBrokerName = "Herman Ferdinand",
+                            AssignedBrokerName = "Derek Ofoborh",
                             InvoiceItems = new List<PayRunInvoiceItemResponse>()
                             {
                                 new PayRunInvoiceItemResponse
@@ -56,6 +56,212 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                                     Quantity = 2,
                                     Period = "2 weeks",
                                     TotalCost = 500,
+                                    IsReclaim = false,
+                                    ClaimCollector = ClaimCollector.Hackney,
+                                    ClaimCollectorName = ClaimCollector.Hackney.GetDisplayName()
+                                },
+                                new PayRunInvoiceItemResponse
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Name = "Funded Nursing Care (net)",
+                                    FromDate = DateTimeOffset.Now.AddDays(-14),
+                                    ToDate = DateTimeOffset.Now,
+                                    Cost = 50,
+                                    Days = 14,
+                                    Quantity = 2,
+                                    Period = "2 weeks",
+                                    TotalCost = 100,
+                                    IsReclaim = true,
+                                    ClaimCollector = ClaimCollector.Supplier,
+                                    ClaimCollectorName = ClaimCollector.Supplier.GetDisplayName()
+                                },
+                                new PayRunInvoiceItemResponse
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Name = "Care Charges",
+                                    FromDate = DateTimeOffset.Now.AddDays(-14),
+                                    ToDate = DateTimeOffset.Now,
+                                    Cost = 50,
+                                    Days = 14,
+                                    Quantity = 2,
+                                    Period = "2 weeks",
+                                    TotalCost = 100,
+                                    IsReclaim = true,
+                                    ClaimCollector = ClaimCollector.Supplier,
+                                    ClaimCollectorName = ClaimCollector.Supplier.GetDisplayName()
+                                },
+                                new PayRunInvoiceItemResponse
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Name = "Additional Weekly cost",
+                                    FromDate = DateTimeOffset.Now.AddDays(-14),
+                                    ToDate = DateTimeOffset.Now,
+                                    Cost = 50,
+                                    Days = 14,
+                                    Quantity = 2,
+                                    Period = "2 weeks",
+                                    TotalCost = 100,
+                                    IsReclaim = false,
+                                    ClaimCollector = ClaimCollector.Hackney,
+                                    ClaimCollectorName = ClaimCollector.Hackney.GetDisplayName()
+                                }
+                            }
+                        },
+                        new PayRunInvoiceResponse
+                        {
+                            Id = Guid.NewGuid(),
+                            InvoiceId = Guid.NewGuid(),
+                            CarePackageId = Guid.NewGuid(),
+                            ServiceUserId = Guid.NewGuid(),
+                            ServiceUserName = "Luke Sully",
+                            SupplierId = 12,
+                            SupplierName = "Barchester Healthcare Homes Ltd",
+                            InvoiceNumber = "INV 11",
+                            PackageTypeId = (int) PackageType.ResidentialCare,
+                            PackageType = PackageType.ResidentialCare.GetDisplayName(),
+                            GrossTotal = 800,
+                            NetTotal = 600,
+                            InvoiceStatus = InvoiceStatus.Held,
+                            AssignedBrokerName = "Derek Ofoborh",
+                            InvoiceItems = new List<PayRunInvoiceItemResponse>()
+                            {
+                                new PayRunInvoiceItemResponse
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Name = "Residential Care Core",
+                                    FromDate = DateTimeOffset.Now.AddDays(-14),
+                                    ToDate = DateTimeOffset.Now,
+                                    Cost = 250,
+                                    Days = 14,
+                                    Quantity = 2,
+                                    Period = "2 weeks",
+                                    TotalCost = 500,
+                                    IsReclaim = false,
+                                    ClaimCollector = ClaimCollector.Hackney,
+                                    ClaimCollectorName = ClaimCollector.Hackney.GetDisplayName()
+                                },
+                                new PayRunInvoiceItemResponse
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Name = "Funded Nursing Care (net)",
+                                    FromDate = DateTimeOffset.Now.AddDays(-14),
+                                    ToDate = DateTimeOffset.Now,
+                                    Cost = 50,
+                                    Days = 14,
+                                    Quantity = 2,
+                                    Period = "2 weeks",
+                                    TotalCost = 100,
+                                    IsReclaim = true,
+                                    ClaimCollector = ClaimCollector.Supplier,
+                                    ClaimCollectorName = ClaimCollector.Supplier.GetDisplayName()
+                                },
+                                new PayRunInvoiceItemResponse
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Name = "Care Charges",
+                                    FromDate = DateTimeOffset.Now.AddDays(-14),
+                                    ToDate = DateTimeOffset.Now,
+                                    Cost = 50,
+                                    Days = 14,
+                                    Quantity = 2,
+                                    Period = "2 weeks",
+                                    TotalCost = 100,
+                                    IsReclaim = true,
+                                    ClaimCollector = ClaimCollector.Supplier,
+                                    ClaimCollectorName = ClaimCollector.Supplier.GetDisplayName()
+                                },
+                                new PayRunInvoiceItemResponse
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Name = "Additional Weekly cost",
+                                    FromDate = DateTimeOffset.Now.AddDays(-14),
+                                    ToDate = DateTimeOffset.Now,
+                                    Cost = 50,
+                                    Days = 14,
+                                    Quantity = 2,
+                                    Period = "2 weeks",
+                                    TotalCost = 100,
+                                    IsReclaim = false,
+                                    ClaimCollector = ClaimCollector.Hackney,
+                                    ClaimCollectorName = ClaimCollector.Hackney.GetDisplayName()
+                                }
+                            }
+                        },
+                        new PayRunInvoiceResponse
+                        {
+                            Id = Guid.NewGuid(),
+                            InvoiceId = Guid.NewGuid(),
+                            CarePackageId = Guid.NewGuid(),
+                            ServiceUserId = Guid.NewGuid(),
+                            ServiceUserName = "Martin Ayeni",
+                            SupplierId = 12,
+                            SupplierName = "Barchester Healthcare Homes Ltd",
+                            InvoiceNumber = "INV 11",
+                            PackageTypeId = (int) PackageType.ResidentialCare,
+                            PackageType = PackageType.ResidentialCare.GetDisplayName(),
+                            GrossTotal = 800,
+                            NetTotal = 600,
+                            InvoiceStatus = InvoiceStatus.Rejected,
+                            AssignedBrokerName = "Derek Ofoborh",
+                            InvoiceItems = new List<PayRunInvoiceItemResponse>()
+                            {
+                                new PayRunInvoiceItemResponse
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Name = "Residential Care Core",
+                                    FromDate = DateTimeOffset.Now.AddDays(-14),
+                                    ToDate = DateTimeOffset.Now,
+                                    Cost = 250,
+                                    Days = 14,
+                                    Quantity = 2,
+                                    Period = "2 weeks",
+                                    TotalCost = 500,
+                                    IsReclaim = false,
+                                    ClaimCollector = ClaimCollector.Hackney,
+                                    ClaimCollectorName = ClaimCollector.Hackney.GetDisplayName()
+                                },
+                                new PayRunInvoiceItemResponse
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Name = "Funded Nursing Care (net)",
+                                    FromDate = DateTimeOffset.Now.AddDays(-14),
+                                    ToDate = DateTimeOffset.Now,
+                                    Cost = 50,
+                                    Days = 14,
+                                    Quantity = 2,
+                                    Period = "2 weeks",
+                                    TotalCost = 100,
+                                    IsReclaim = true,
+                                    ClaimCollector = ClaimCollector.Supplier,
+                                    ClaimCollectorName = ClaimCollector.Supplier.GetDisplayName()
+                                },
+                                new PayRunInvoiceItemResponse
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Name = "Care Charges",
+                                    FromDate = DateTimeOffset.Now.AddDays(-14),
+                                    ToDate = DateTimeOffset.Now,
+                                    Cost = 50,
+                                    Days = 14,
+                                    Quantity = 2,
+                                    Period = "2 weeks",
+                                    TotalCost = 100,
+                                    IsReclaim = true,
+                                    ClaimCollector = ClaimCollector.Supplier,
+                                    ClaimCollectorName = ClaimCollector.Supplier.GetDisplayName()
+                                },
+                                new PayRunInvoiceItemResponse
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Name = "Additional Weekly cost",
+                                    FromDate = DateTimeOffset.Now.AddDays(-14),
+                                    ToDate = DateTimeOffset.Now,
+                                    Cost = 50,
+                                    Days = 14,
+                                    Quantity = 2,
+                                    Period = "2 weeks",
+                                    TotalCost = 100,
+                                    IsReclaim = false,
                                     ClaimCollector = ClaimCollector.Hackney,
                                     ClaimCollectorName = ClaimCollector.Hackney.GetDisplayName()
                                 }
