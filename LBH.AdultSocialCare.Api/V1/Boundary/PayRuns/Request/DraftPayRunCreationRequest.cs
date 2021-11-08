@@ -16,7 +16,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Request
     public class DraftPayRunCreationRequest
     {
         [Required]
-        [Range(1, 3)]
         public PayrunType Type { get; set; }
 
         [Required]
