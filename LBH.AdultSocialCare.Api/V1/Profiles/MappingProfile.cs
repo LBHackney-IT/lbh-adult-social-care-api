@@ -8,9 +8,11 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {
@@ -108,6 +110,12 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CarePackageReclaimUpdateDomain, CarePackageReclaim>();
             CreateMap<CareChargePackagesDomain, CareChargePackagesResponse>();
             CreateMap<SinglePackageCareChargeDomain, SinglePackageCareChargeResponse>();
+
+            #endregion
+
+            #region PayRun
+
+            CreateMap<Payrun, DraftPayRunCreationDomain>().ReverseMap();
 
             #endregion
         }
