@@ -11,6 +11,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
@@ -329,6 +330,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ServiceUserDomain>(input);
         }
 
+        public static Payrun ToEntity(this DraftPayRunCreationDomain input)
+        {
+            return _mapper.Map<Payrun>(input);
+        }
+
+        public static DraftPayRunCreationDomain ToRunCreationDomain(this Payrun input)
+        {
+            return _mapper.Map<DraftPayRunCreationDomain>(input);
+        }
+
         public static IEnumerable<PayRunListResponse> ToResponse(this IEnumerable<PayRunListDomain> input)
         {
             return _mapper.Map<IEnumerable<PayRunListResponse>>(input);
@@ -417,6 +428,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static CarePlanAssignmentRequest ToRequest(this CarePlanAssignmentDomain input)
         {
             return _mapper.Map<CarePlanAssignmentRequest>(input);
+        }
+
+        public static DraftPayRunCreationDomain ToDomain(this DraftPayRunCreationRequest input)
+        {
+            return _mapper.Map<DraftPayRunCreationDomain>(input);
+        }
+
+        public static DraftPayRunCreationRequest ToRequest(this DraftPayRunCreationDomain input)
+        {
+            return _mapper.Map<DraftPayRunCreationRequest>(input);
         }
 
         public static CarePackageDomain ToDomain(this CarePackage input)
