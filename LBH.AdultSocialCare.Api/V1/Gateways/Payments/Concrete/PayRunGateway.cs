@@ -81,7 +81,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         {
             return await _dbContext.Payruns.Where(pr =>
                     pr.Type.Equals(payRunType) &&
-                    pr.Status.Equals((int) PayrunStatus.Draft))
+                    pr.Status == PayrunStatus.Draft)
                 .CountAsync();
         }
 

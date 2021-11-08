@@ -9,13 +9,12 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
 {
-    [GenerateMappingFor(typeof(Payrun))]
     public class DraftPayRunCreationDomain
     {
         public PayrunType Type { get; set; }
         public PayrunStatus Status { get; set; }
         public DateTimeOffset PaidUpToDate { get; set; }
         public DateTimeOffset StartDate { get; set; }
-        public DateTimeOffset EndDate { get; set; }
+        public DateTimeOffset EndDate => PaidUpToDate;
     }
 }

@@ -330,16 +330,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ServiceUserDomain>(input);
         }
 
-        public static Payrun ToEntity(this DraftPayRunCreationDomain input)
-        {
-            return _mapper.Map<Payrun>(input);
-        }
-
-        public static DraftPayRunCreationDomain ToRunCreationDomain(this Payrun input)
-        {
-            return _mapper.Map<DraftPayRunCreationDomain>(input);
-        }
-
         public static IEnumerable<PayRunListResponse> ToResponse(this IEnumerable<PayRunListDomain> input)
         {
             return _mapper.Map<IEnumerable<PayRunListResponse>>(input);
