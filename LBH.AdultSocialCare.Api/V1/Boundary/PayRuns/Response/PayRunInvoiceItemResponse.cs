@@ -14,6 +14,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response
         public decimal Quantity { get; set; }
         public string Period { get; set; } // 1 week 5 days
         public decimal TotalCost { get; set; }
+        public bool IsReclaim { get; set; }
         public ClaimCollector ClaimCollector { get; set; }
         public string ClaimCollectorName { get; set; }
     }

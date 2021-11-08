@@ -130,6 +130,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 .WithMany(i => i.PayrunInvoices)
                 .HasForeignKey(pi => pi.InvoiceId);
 
+            modelBuilder.Entity<InvoiceItem>(entity =>
+            {
+                entity.Property(e => e.IsReclaim)
+                    .IsRequired()
+                    .HasDefaultValueSql("false");
+            });
+
             #endregion Entity Config
 
             AddEnumConstrains(modelBuilder);

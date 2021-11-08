@@ -28,6 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
             package.Status = PackageStatus.Approved;
+            package.DateApproved = DateTimeOffset.UtcNow;
 
             package.Histories.Add(new CarePackageHistory
             {

@@ -51,6 +51,8 @@
       <Compile Remove="V1\Infrastructure\Migrations\20211006172739_AutoSeedEnums.Designer.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20211006175844_IdentityTablesNavigation.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20211006175844_IdentityTablesNavigation.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211108104056_AddIsReclaimOnInvoiceItem.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211108104056_AddIsReclaimOnInvoiceItem.Designer.cs" />
     </ItemGroup>
 
   <ItemGroup>
