@@ -305,6 +305,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             var result = new PayRunDetailsViewResponse
             {
                 PayRunId = payrun.Id,
+                PayRunNumber = payrun.Id.ToString().Substring(0, 6),
                 DateCreated = payrun.DateCreated,
                 StartDate = payrun.StartDate,
                 EndDate = payrun.EndDate
