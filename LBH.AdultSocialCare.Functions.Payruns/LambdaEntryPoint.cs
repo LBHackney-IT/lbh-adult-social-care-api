@@ -11,7 +11,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns
             // TODO: VK: Configure dependencies
         }
 
-#pragma warning disable CA1822
         [LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
         public string Handler(SQSEvent sqsEvent)
         {
@@ -24,5 +23,4 @@ namespace LBH.AdultSocialCare.Functions.Payruns
             return "Hello world";
         }
     }
-#pragma warning restore CA1822
 }

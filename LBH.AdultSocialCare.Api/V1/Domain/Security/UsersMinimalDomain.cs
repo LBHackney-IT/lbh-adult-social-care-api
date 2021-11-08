@@ -7,5 +7,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Security
         public Guid Id { get; set; }
 
         public string UserName { get; set; }
+        public string Name { get; set; }
     }
 }

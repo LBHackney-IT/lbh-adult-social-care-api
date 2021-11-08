@@ -1,6 +1,7 @@
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Services.Queuing;
 
@@ -28,10 +29,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             ThrowOpsErrorUsecase.Execute();
         }
 
-        [HttpGet("queue")]
-        public async Task<ActionResult> Log([FromQuery] string message, [FromServices] IQueueService queue)
+        [HttpPost("queue")]
+        public async Task<ActionResult> Log(object request, [FromServices] IQueueService queue)
         {
-            await queue.Send(message);
+            await queue.Send(request);
             return Ok();
         }
     }
