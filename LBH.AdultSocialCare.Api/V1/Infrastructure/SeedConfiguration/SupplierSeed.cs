@@ -14,7 +14,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
             builder.HasData(new Supplier
             {
                 Id = 1,
-                PackageTypeId = 1,
                 SupplierName = "Abbeleigh House",
                 Address = "Abbeleigh House",
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
@@ -25,7 +24,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 2,
                 SupplierName = "Abbey Care Complex",
                 Address = "Abbey Care Complex",
-                PackageTypeId = 1,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -34,7 +32,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 3,
                 SupplierName = "Acacia Lodge",
                 Address = "Acacia Lodge [Cedar Site 0]",
-                PackageTypeId = 1,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -43,7 +40,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 4,
                 SupplierName = "Hc-One Limited",
                 Address = "Hc-One Limited",
-                PackageTypeId = 1,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -52,7 +48,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 5,
                 SupplierName = "Acorn Lodge",
                 Address = "Acorn Lodge",
-                PackageTypeId = 1,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -61,7 +56,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 6,
                 SupplierName = "Albany Nursing Home",
                 Address = "Albany Nursing Home",
-                PackageTypeId = 1,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -70,7 +64,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 7,
                 SupplierName = "Manor Farm Care Home",
                 Address = "Manor Farm Care Home",
-                PackageTypeId = 1,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -79,7 +72,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 8,
                 SupplierName = "Four Seasons Health Care",
                 Address = "Four Seasons Health Care [Cedar Site 8] Lingfield Point",
-                PackageTypeId = 1,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -88,7 +80,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 9,
                 SupplierName = "The Hornchurch Care Home",
                 Address = "The Hornchurch Care Home",
-                PackageTypeId = 1,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset
@@ -97,7 +88,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.SeedConfiguration
                 Id = 10,
                 SupplierName = "Bupa Care Homes",
                 Address = "Bupa Care Homes [Cedar Site 10] Wynne Road",
-                PackageTypeId = 1,
                 CreatorId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84"),
                 DateCreated = dateTimeOffset,
                 DateUpdated = dateTimeOffset

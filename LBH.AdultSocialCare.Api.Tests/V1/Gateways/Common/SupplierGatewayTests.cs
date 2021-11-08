@@ -22,8 +22,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
         {
             _gateway = new SupplierGateway(Context, Mapper);
             _supplierFaker = new Faker<Supplier>()
-                .RuleFor(s => s.SupplierName, f => f.Company.CompanyName())
-                .RuleFor(s => s.PackageTypeId, f => (int) PackageType.ResidentialCare);
+                .RuleFor(s => s.SupplierName, f => f.Company.CompanyName());
         }
 
         [Fact]
@@ -37,7 +36,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
             var supplierDomain = supplier.ToDomain();
 
             supplierDomain.SupplierName = String.Concat(supplier.SupplierName.Reverse());
-            supplierDomain.PackageTypeId = (int) PackageType.NursingCare;
 
             var updatedSupplier = await _gateway.UpdateAsync(supplierDomain).ConfigureAwait(false);
 
