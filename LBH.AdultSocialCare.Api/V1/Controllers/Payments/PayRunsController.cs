@@ -3,7 +3,10 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Request;
+using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -18,9 +21,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
     public class PayRunsController : ControllerBase
     {
         private readonly IGetPayRunListUseCase _getPayRunListUseCase;
-        public PayRunsController(IGetPayRunListUseCase getPayRunListUseCase)
+        private readonly ICreateDraftPayRunUseCase _createDraftPayRunUseCase;
+        public PayRunsController(IGetPayRunListUseCase getPayRunListUseCase, ICreateDraftPayRunUseCase createDraftPayRunUseCase)
         {
             _getPayRunListUseCase = getPayRunListUseCase;
+            _createDraftPayRunUseCase = createDraftPayRunUseCase;
         }
 
         [HttpGet("{id}")]
@@ -44,6 +49,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
             var result = await _getPayRunListUseCase.GetPayRunList(parameters).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
             return Ok(result);
+        }
+
+        /// <summary>Create a new pay run with draft status.</summary>
+        /// <param name="request">The pay run creation request object.</param>
+        /// <returns>Ok when operation is successful.</returns>
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpPost]
+        public async Task<ActionResult> CreateDraftPayRun(DraftPayRunCreationRequest request)
+        {
+            await _createDraftPayRunUseCase.CreateDraftPayRun(request.ToDomain());
+            return Ok();
         }
     }
 }

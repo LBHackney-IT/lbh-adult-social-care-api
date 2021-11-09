@@ -11,6 +11,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
@@ -54,6 +55,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CarePackageSubmissionRequest, CarePackageSubmissionDomain>().ReverseMap();
             CreateMap<CarePackageUpdateRequest, CarePackageUpdateDomain>().ReverseMap();
             CreateMap<CarePlanAssignmentRequest, CarePlanAssignmentDomain>().ReverseMap();
+            CreateMap<DraftPayRunCreationRequest, DraftPayRunCreationDomain>().ReverseMap();
             CreateMap<CarePackage, CarePackageDomain>().ReverseMap();
             CreateMap<CarePackage, CarePackagePlainDomain>().ReverseMap();
             CreateMap<CarePackage, CarePackageApprovableListItemDomain>().ReverseMap();
