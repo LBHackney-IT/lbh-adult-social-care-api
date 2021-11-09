@@ -1,20 +1,20 @@
 service: lbh-adult-social-care-functions-payruns
 provider:
   name: aws
-  iamRoleStatements:
-    - Effect: 'Allow'
-      Action:
-        - "sqs:GetQueueUrl"
-        - "sqs:ReceiveMessage"
-        - "sqs:DeleteMessage"
-        - "sqs:GetQueueAttributes"
-      Resource:
-        Fn::Join:
-          - ':'
-          - - 'arn:aws:sqs'
-            - Ref: 'AWS::Region'
-            - Ref: 'AWS::AccountId'
-            - 'lbh-adult-social-care-payruns'
+#  iamRoleStatements:
+#    - Effect: 'Allow'
+#      Action:
+#        - "sqs:GetQueueUrl"
+#        - "sqs:ReceiveMessage"
+#        - "sqs:DeleteMessage"
+#        - "sqs:GetQueueAttributes"
+#      Resource:
+#        Fn::Join:
+#          - ':'
+#          - - 'arn:aws:sqs'
+#            - Ref: 'AWS::Region'
+#            - Ref: 'AWS::AccountId'
+#            - 'lbh-adult-social-care-payruns'
   runtime: dotnetcore3.1
   memorySize: 2048
   tracing:
