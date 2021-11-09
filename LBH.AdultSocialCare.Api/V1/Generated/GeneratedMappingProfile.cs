@@ -47,6 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<BrokerPackageViewDomain, BrokerPackageViewResponse>().ReverseMap();
             CreateMap<ServiceUserBasicDomain, ServiceUserBasicResponse>().ReverseMap();
             CreateMap<ServiceUserDomain, ServiceUserResponse>().ReverseMap();
+            CreateMap<DepartmentFlatDomain, DepartmentFlatResponse>().ReverseMap();
             CreateMap<HeldInvoiceCreationDomain, HeldInvoice>().ReverseMap();
             CreateMap<HeldInvoiceFlatDomain, HeldInvoiceFlatResponse>().ReverseMap();
             CreateMap<PayRunListDomain, PayRunListResponse>().ReverseMap();
@@ -68,6 +69,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CarePackageSettings, CarePackageSettingsDomain>().ReverseMap();
             CreateMap<ServiceUser, ServiceUserBasicDomain>().ReverseMap();
             CreateMap<User, UsersMinimalDomain>().ReverseMap();
+            CreateMap<Department, DepartmentFlatDomain>().ReverseMap();
             CreateMap<HeldInvoice, HeldInvoiceFlatDomain>().ReverseMap();
         }
     }
