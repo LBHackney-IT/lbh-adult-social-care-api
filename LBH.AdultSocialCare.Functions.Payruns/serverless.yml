@@ -99,7 +99,7 @@ resources:
                   - lambda.amazonaws.com
               Action: sts:AssumeRole
         ManagedPolicyArns:
-          - arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole
+#          - arn:aws:iam::aws:policy/service-role/AWSLambdaSQSQueueExecutionRole
           - arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
           - arn:aws:iam::aws:policy/AWSXRayDaemonWriteAccess
         Policies:
