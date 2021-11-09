@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.AppConstants.Enums;
+using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
@@ -52,14 +54,45 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     DateFrom = pr.StartDate,
                     DateTo = pr.EndDate,
                     DateCreated = pr.DateCreated
-                }).ToListAsync().ConfigureAwait(false);
+                }).ToListAsync();
 
             var payRunCount = await _dbContext.Payruns
                 .FilterPayRunList(parameters.PayRunId, parameters.PayRunType,
                     parameters.PayRunStatus, parameters.DateFrom, parameters.DateTo)
-                .CountAsync().ConfigureAwait(false);
+                .CountAsync();
 
             return PagedList<PayRunListDomain>.ToPagedList(payRunList, payRunCount, parameters.PageNumber, parameters.PageSize);
+        }
+
+        public async Task CreateDraftPayRun(Payrun payRun)
+        {
+            await _dbContext.Payruns.AddAsync(payRun);
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new DbSaveFailedException("Could not create pay run");
+            }
+        }
+
+        public async Task<int> GetDraftPayRunCount(PayrunType payRunType)
+        {
+            return await _dbContext.Payruns.Where(pr =>
+                    pr.Type.Equals(payRunType) &&
+                    pr.Status == PayrunStatus.Draft)
+                .CountAsync();
+        }
+
+        public async Task<DateTimeOffset> GetDateOfLastPayRun(PayrunType payRunType)
+        {
+            var lastPayRun = await _dbContext.Payruns.Where(pr =>
+                    pr.Type.Equals(payRunType))
+                .OrderByDescending(pr => pr.PaidUpToDate)
+                .FirstOrDefaultAsync();
+
+            return lastPayRun?.PaidUpToDate ?? DateTimeOffset.Now.AddDays(-28);
         }
 
         private static IQueryable<Payrun> BuildPayRunQuery(IQueryable<Payrun> query, PayRunFields fields)
