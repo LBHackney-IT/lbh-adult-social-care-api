@@ -24,5 +24,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
         public DateTimeOffset EndDate { get; set; }
 
         public virtual ICollection<PayrunInvoice> PayrunInvoices { get; set; }
+        public virtual ICollection<PayrunHistory> Histories { get; set; }
     }
 }
