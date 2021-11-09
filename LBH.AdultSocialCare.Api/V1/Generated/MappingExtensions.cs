@@ -340,6 +340,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<DepartmentFlatDomain>(input);
         }
 
+        public static IEnumerable<DepartmentFlatResponse> ToResponse(this IEnumerable<DepartmentFlatDomain> input)
+        {
+            return _mapper.Map<IEnumerable<DepartmentFlatResponse>>(input);
+        }
+
+        public static IEnumerable<DepartmentFlatDomain> ToDomain(this IEnumerable<DepartmentFlatResponse> input)
+        {
+            return _mapper.Map<IEnumerable<DepartmentFlatDomain>>(input);
+        }
+
         public static HeldInvoice ToEntity(this HeldInvoiceCreationDomain input)
         {
             return _mapper.Map<HeldInvoice>(input);
@@ -588,6 +598,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static Department ToEntity(this DepartmentFlatDomain input)
         {
             return _mapper.Map<Department>(input);
+        }
+
+        public static IEnumerable<DepartmentFlatDomain> ToFlatDomain(this IEnumerable<Department> input)
+        {
+            return _mapper.Map<IEnumerable<DepartmentFlatDomain>>(input);
+        }
+
+        public static IEnumerable<Department> ToEntity(this IEnumerable<DepartmentFlatDomain> input)
+        {
+            return _mapper.Map<IEnumerable<Department>>(input);
         }
 
         public static HeldInvoiceFlatDomain ToFlatDomain(this HeldInvoice input)

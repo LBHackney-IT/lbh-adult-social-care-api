@@ -6,6 +6,7 @@ using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
 {
     [GenerateMappingFor(typeof(DepartmentFlatDomain))]
+    [GenerateListMappingFor(typeof(DepartmentFlatDomain))]
     public class Department
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity), Key]
