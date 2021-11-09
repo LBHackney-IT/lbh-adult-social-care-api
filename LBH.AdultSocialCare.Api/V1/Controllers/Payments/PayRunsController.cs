@@ -28,6 +28,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
             _createDraftPayRunUseCase = createDraftPayRunUseCase;
         }
 
+        /// <summary>
+        /// Gets single pay run details.
+        /// </summary>
+        /// <param name="useCase">Use case to get details.</param>
+        /// <param name="parameters">Parameters to filter data.</param>
+        /// <param name="id">Pay run Id.</param>
+        /// <returns>Pay run and paginated list of invoices in the pay run</returns>
+        [ProducesResponseType(typeof(PayRunDetailsViewResponse), StatusCodes.Status200OK)]
         [HttpGet("{id}")]
         public async Task<ActionResult<PayRunDetailsViewResponse>> GetPayRunDetails([FromServices] IGetPayRunDetailsUseCase useCase, [FromQuery] PayRunDetailsQueryParameters parameters, Guid id)
         {

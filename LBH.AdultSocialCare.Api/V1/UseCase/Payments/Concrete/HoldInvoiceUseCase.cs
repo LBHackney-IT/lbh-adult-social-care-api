@@ -1,6 +1,4 @@
-using System;
-using System.Linq;
-using System.Net;
+using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
@@ -10,8 +8,10 @@ using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
+using System;
+using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
-using Common.Exceptions.CustomExceptions;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 {
@@ -30,12 +30,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             _payRunGateway = payRunGateway;
         }
 
-        public async Task<HeldInvoiceFlatResponse> ExecuteAsync(Guid payRunId, HeldInvoiceCreationDomain heldInvoiceCreationDomain)
+        public async Task<HeldInvoiceFlatResponse> ExecuteAsync(Guid payRunId, Guid invoiceId, HeldInvoiceCreationDomain heldInvoiceCreationDomain)
         {
+            heldInvoiceCreationDomain.PayRunInvoiceId = invoiceId;
+
             var payRun = await _payRunGateway.GetPayRunAsync(payRunId)
                 .EnsureExistsAsync($"Pay run with id {payRunId} not found");
 
-            var validPayRunStatuses = new [] {PayrunStatus.ReadyForReview, PayrunStatus.WaitingForApproval};
+            var validPayRunStatuses = new[] { PayrunStatus.ReadyForReview, PayrunStatus.WaitingForApproval };
 
             if (!validPayRunStatuses.Contains(payRun.Status))
             {

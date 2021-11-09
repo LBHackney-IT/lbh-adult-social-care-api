@@ -7,6 +7,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces
 {
     public interface IHoldInvoiceUseCase
     {
-        Task<HeldInvoiceFlatResponse> ExecuteAsync(Guid payRunId, HeldInvoiceCreationDomain heldInvoiceCreationDomain);
+        Task<HeldInvoiceFlatResponse> ExecuteAsync(Guid payRunId, Guid invoiceId, HeldInvoiceCreationDomain heldInvoiceCreationDomain);
     }
 }
