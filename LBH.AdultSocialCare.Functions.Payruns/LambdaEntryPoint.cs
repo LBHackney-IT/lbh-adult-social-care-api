@@ -37,7 +37,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns
         [LambdaSerializer(typeof(JsonSerializer))]
         public async Task HandleEvent(SQSEvent sqsEvent)
         {
-            _logger.LogInformation("Handler call");
+            _logger.LogInformation("Handler call {@SqsEvent}", sqsEvent);
 
             foreach (var record in sqsEvent.Records)
             {
