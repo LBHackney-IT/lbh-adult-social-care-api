@@ -340,6 +340,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<HeldInvoiceCreationDomain>(input);
         }
 
+        public static HeldInvoiceFlatResponse ToResponse(this HeldInvoiceFlatDomain input)
+        {
+            return _mapper.Map<HeldInvoiceFlatResponse>(input);
+        }
+
+        public static HeldInvoiceFlatDomain ToDomain(this HeldInvoiceFlatResponse input)
+        {
+            return _mapper.Map<HeldInvoiceFlatDomain>(input);
+        }
+
         public static IEnumerable<PayRunListResponse> ToResponse(this IEnumerable<PayRunListDomain> input)
         {
             return _mapper.Map<IEnumerable<PayRunListResponse>>(input);
@@ -558,6 +568,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static User ToEntity(this UsersMinimalDomain input)
         {
             return _mapper.Map<User>(input);
+        }
+
+        public static HeldInvoiceFlatDomain ToFlatDomain(this HeldInvoice input)
+        {
+            return _mapper.Map<HeldInvoiceFlatDomain>(input);
+        }
+
+        public static HeldInvoice ToEntity(this HeldInvoiceFlatDomain input)
+        {
+            return _mapper.Map<HeldInvoice>(input);
         }
     }
 }

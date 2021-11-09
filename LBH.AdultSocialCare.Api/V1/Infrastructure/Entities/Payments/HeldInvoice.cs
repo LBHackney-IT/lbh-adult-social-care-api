@@ -1,3 +1,5 @@
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -5,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
 {
+    [GenerateMappingFor(typeof(HeldInvoiceFlatDomain))]
     public class HeldInvoice : BaseEntity
     {
         [Key]
