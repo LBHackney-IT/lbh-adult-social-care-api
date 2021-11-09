@@ -6,6 +6,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
 {
     public class PayRunInvoiceDomain
     {
+        public Guid Id { get; set; }
         public Guid InvoiceId { get; set; }
         public Guid CarePackageId { get; set; }
         public Guid ServiceUserId { get; set; }

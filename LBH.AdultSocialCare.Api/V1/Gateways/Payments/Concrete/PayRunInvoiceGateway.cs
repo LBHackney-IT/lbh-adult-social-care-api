@@ -48,6 +48,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 
             var payRunInvoices = await query.Select(payRunInvoice => new PayRunInvoiceDomain
             {
+                Id = payRunInvoice.Id,
                 InvoiceId = payRunInvoice.InvoiceId,
                 CarePackageId = payRunInvoice.Invoice.PackageId,
                 ServiceUserId = payRunInvoice.Invoice.ServiceUserId,

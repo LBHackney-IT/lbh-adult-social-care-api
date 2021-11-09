@@ -6,6 +6,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
 {
     public class PayRunInvoiceResponse
     {
+        public Guid Id { get; set; }
         public Guid InvoiceId { get; set; }
         public Guid CarePackageId { get; set; }
         public Guid ServiceUserId { get; set; }

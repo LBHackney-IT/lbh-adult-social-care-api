@@ -60,6 +60,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                     {
                         new PayRunInvoiceResponse
                         {
+                            Id = Guid.NewGuid(),
                             InvoiceId = Guid.NewGuid(),
                             CarePackageId = Guid.NewGuid(),
                             ServiceUserId = Guid.NewGuid(),
@@ -139,6 +140,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                         },
                         new PayRunInvoiceResponse
                         {
+                            Id = Guid.NewGuid(),
                             InvoiceId = Guid.NewGuid(),
                             CarePackageId = Guid.NewGuid(),
                             ServiceUserId = Guid.NewGuid(),
@@ -218,6 +220,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                         },
                         new PayRunInvoiceResponse
                         {
+                            Id = Guid.NewGuid(),
                             InvoiceId = Guid.NewGuid(),
                             CarePackageId = Guid.NewGuid(),
                             ServiceUserId = Guid.NewGuid(),
@@ -319,6 +322,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 var (grossTotal, netTotal) = CalculateTotals(invoice.InvoiceItems);
                 var invoiceRes = new PayRunInvoiceResponse
                 {
+                    Id = invoice.Id,
                     InvoiceId = invoice.InvoiceId,
                     CarePackageId = invoice.CarePackageId,
                     ServiceUserId = invoice.ServiceUserId,
