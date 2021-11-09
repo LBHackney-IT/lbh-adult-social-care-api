@@ -9,6 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Enums
         Creator = 1,
         Updater = 2,
         PayrunInvoices = 4,
-        All = Creator | Updater | PayrunInvoices
+        PayrunHistories = 8,
+        All = Creator | Updater | PayrunInvoices | PayrunHistories
     }
 }

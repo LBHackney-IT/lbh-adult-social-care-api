@@ -10,8 +10,8 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
         [Display(Name = "In progress")]
         InProgress = 2,
 
-        [Display(Name = "Ready For Review")]
-        ReadyForReview = 3,
+        [Display(Name = "Ready for review")]
+        WaitingForReview = 3,
 
         [Display(Name = "Waiting for Approval")]
         WaitingForApproval = 4,
@@ -19,13 +19,13 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
         [Display(Name = "Approved")]
         Approved = 5,
 
-        [Display(Name = "Rejected")]
-        Rejected = 6,
-
         [Display(Name = "Paid")]
-        Paid = 7,
+        Paid = 6,
 
-        [Display(Name = "Paid With Holds")]
-        PaidWithHolds = 8,
+        [Display(Name = "Paid with hold")]
+        PaidWithHold = 7,
+
+        [Display(Name = "Archived")]
+        Archived = 8
     }
 }
