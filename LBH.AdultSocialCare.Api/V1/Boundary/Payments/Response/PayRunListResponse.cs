@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response
+namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
 {
     public class PayRunListResponse
     {

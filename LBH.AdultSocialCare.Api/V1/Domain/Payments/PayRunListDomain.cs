@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.Attributes;
-using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
 {

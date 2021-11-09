@@ -48,6 +48,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 
             var payRunInvoices = await query.Select(payRunInvoice => new PayRunInvoiceDomain
             {
+                Id = payRunInvoice.Id,
                 InvoiceId = payRunInvoice.InvoiceId,
                 CarePackageId = payRunInvoice.Invoice.PackageId,
                 ServiceUserId = payRunInvoice.Invoice.ServiceUserId,
@@ -77,6 +78,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             var invoiceCount = await query.CountAsync();
             return PagedList<PayRunInvoiceDomain>.ToPagedList(payRunInvoices, invoiceCount, parameters.PageNumber,
                 parameters.PageSize);
+        }
+
+        public async Task<PayrunInvoice> GetPayRunInvoiceAsync(Guid payRunInvoiceId, PayRunInvoiceFields fields = PayRunInvoiceFields.None,
+            bool trackChanges = false)
+        {
+            var query = _dbContext.PayrunInvoices.Where(p => p.Id.Equals(payRunInvoiceId))
+                .TrackChanges(trackChanges);
+
+            return await BuildPayRunInvoiceQuery(query, fields).SingleOrDefaultAsync();
         }
 
         private static IQueryable<PayrunInvoice> BuildPayRunInvoiceQuery(IQueryable<PayrunInvoice> query, PayRunInvoiceFields fields)

@@ -58,9 +58,12 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetFundedNursingCarePriceUseCase, GetFundedNursingCarePriceUseCase>();
             services.AddScoped<IGetServiceUserUseCase, GetServiceUserUseCase>();
             services.AddScoped<IPayRunUseCase, PayRunUseCase>();
+            services.AddScoped<IChangePayRunInvoiceStatusUseCase, ChangePayRunInvoiceStatusUseCase>();
             services.AddScoped<ICreateDraftPayRunUseCase, CreateDraftPayRunUseCase>();
+            services.AddScoped<IGetDepartmentUseCase, GetDepartmentUseCase>();
             services.AddScoped<IGetPayRunDetailsUseCase, GetPayRunDetailsUseCase>();
             services.AddScoped<IGetPayRunListUseCase, GetPayRunListUseCase>();
+            services.AddScoped<IHoldInvoiceUseCase, HoldInvoiceUseCase>();
             services.AddScoped<IAuthUseCase, AuthUseCase>();
             services.AddScoped<IDeleteRoleUseCase, DeleteRoleUseCase>();
             services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();

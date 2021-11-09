@@ -11,8 +11,8 @@ using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
@@ -330,6 +330,46 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ServiceUserDomain>(input);
         }
 
+        public static DepartmentFlatResponse ToResponse(this DepartmentFlatDomain input)
+        {
+            return _mapper.Map<DepartmentFlatResponse>(input);
+        }
+
+        public static DepartmentFlatDomain ToDomain(this DepartmentFlatResponse input)
+        {
+            return _mapper.Map<DepartmentFlatDomain>(input);
+        }
+
+        public static IEnumerable<DepartmentFlatResponse> ToResponse(this IEnumerable<DepartmentFlatDomain> input)
+        {
+            return _mapper.Map<IEnumerable<DepartmentFlatResponse>>(input);
+        }
+
+        public static IEnumerable<DepartmentFlatDomain> ToDomain(this IEnumerable<DepartmentFlatResponse> input)
+        {
+            return _mapper.Map<IEnumerable<DepartmentFlatDomain>>(input);
+        }
+
+        public static HeldInvoice ToEntity(this HeldInvoiceCreationDomain input)
+        {
+            return _mapper.Map<HeldInvoice>(input);
+        }
+
+        public static HeldInvoiceCreationDomain ToCreationDomain(this HeldInvoice input)
+        {
+            return _mapper.Map<HeldInvoiceCreationDomain>(input);
+        }
+
+        public static HeldInvoiceFlatResponse ToResponse(this HeldInvoiceFlatDomain input)
+        {
+            return _mapper.Map<HeldInvoiceFlatResponse>(input);
+        }
+
+        public static HeldInvoiceFlatDomain ToDomain(this HeldInvoiceFlatResponse input)
+        {
+            return _mapper.Map<HeldInvoiceFlatDomain>(input);
+        }
+
         public static IEnumerable<PayRunListResponse> ToResponse(this IEnumerable<PayRunListDomain> input)
         {
             return _mapper.Map<IEnumerable<PayRunListResponse>>(input);
@@ -428,6 +468,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static DraftPayRunCreationRequest ToRequest(this DraftPayRunCreationDomain input)
         {
             return _mapper.Map<DraftPayRunCreationRequest>(input);
+        }
+
+        public static HeldInvoiceCreationDomain ToDomain(this HeldInvoiceCreationRequest input)
+        {
+            return _mapper.Map<HeldInvoiceCreationDomain>(input);
+        }
+
+        public static HeldInvoiceCreationRequest ToRequest(this HeldInvoiceCreationDomain input)
+        {
+            return _mapper.Map<HeldInvoiceCreationRequest>(input);
         }
 
         public static CarePackageDomain ToDomain(this CarePackage input)
@@ -538,6 +588,36 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static User ToEntity(this UsersMinimalDomain input)
         {
             return _mapper.Map<User>(input);
+        }
+
+        public static DepartmentFlatDomain ToFlatDomain(this Department input)
+        {
+            return _mapper.Map<DepartmentFlatDomain>(input);
+        }
+
+        public static Department ToEntity(this DepartmentFlatDomain input)
+        {
+            return _mapper.Map<Department>(input);
+        }
+
+        public static IEnumerable<DepartmentFlatDomain> ToFlatDomain(this IEnumerable<Department> input)
+        {
+            return _mapper.Map<IEnumerable<DepartmentFlatDomain>>(input);
+        }
+
+        public static IEnumerable<Department> ToEntity(this IEnumerable<DepartmentFlatDomain> input)
+        {
+            return _mapper.Map<IEnumerable<Department>>(input);
+        }
+
+        public static HeldInvoiceFlatDomain ToFlatDomain(this HeldInvoice input)
+        {
+            return _mapper.Map<HeldInvoiceFlatDomain>(input);
+        }
+
+        public static HeldInvoice ToEntity(this HeldInvoiceFlatDomain input)
+        {
+            return _mapper.Map<HeldInvoice>(input);
         }
     }
 }

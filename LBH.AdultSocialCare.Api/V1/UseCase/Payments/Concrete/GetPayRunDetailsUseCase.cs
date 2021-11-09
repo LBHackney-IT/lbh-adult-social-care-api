@@ -2,7 +2,6 @@ using Common.Extensions;
 using HttpServices.Models.Features;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
@@ -12,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
@@ -60,6 +60,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                     {
                         new PayRunInvoiceResponse
                         {
+                            Id = Guid.NewGuid(),
                             InvoiceId = Guid.NewGuid(),
                             CarePackageId = Guid.NewGuid(),
                             ServiceUserId = Guid.NewGuid(),
@@ -139,6 +140,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                         },
                         new PayRunInvoiceResponse
                         {
+                            Id = Guid.NewGuid(),
                             InvoiceId = Guid.NewGuid(),
                             CarePackageId = Guid.NewGuid(),
                             ServiceUserId = Guid.NewGuid(),
@@ -218,6 +220,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                         },
                         new PayRunInvoiceResponse
                         {
+                            Id = Guid.NewGuid(),
                             InvoiceId = Guid.NewGuid(),
                             CarePackageId = Guid.NewGuid(),
                             ServiceUserId = Guid.NewGuid(),
@@ -319,6 +322,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 var (grossTotal, netTotal) = CalculateTotals(invoice.InvoiceItems);
                 var invoiceRes = new PayRunInvoiceResponse
                 {
+                    Id = invoice.Id,
                     InvoiceId = invoice.InvoiceId,
                     CarePackageId = invoice.CarePackageId,
                     ServiceUserId = invoice.ServiceUserId,

@@ -1,7 +1,7 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces
 {
