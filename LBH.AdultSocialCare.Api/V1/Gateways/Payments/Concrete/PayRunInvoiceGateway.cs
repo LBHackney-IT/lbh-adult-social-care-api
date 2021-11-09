@@ -79,6 +79,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 parameters.PageSize);
         }
 
+        public async Task<PayrunInvoice> GetPayRunInvoiceAsync(Guid payRunInvoiceId, PayRunInvoiceFields fields = PayRunInvoiceFields.None,
+            bool trackChanges = false)
+        {
+            var query = _dbContext.PayrunInvoices.Where(p => p.Id.Equals(payRunInvoiceId))
+                .TrackChanges(trackChanges);
+
+            return await BuildPayRunInvoiceQuery(query, fields).SingleOrDefaultAsync();
+        }
+
         private static IQueryable<PayrunInvoice> BuildPayRunInvoiceQuery(IQueryable<PayrunInvoice> query, PayRunInvoiceFields fields)
         {
             if (fields.HasFlag(PayRunInvoiceFields.Creator)) query = query.Include(p => p.Creator);
