@@ -99,11 +99,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
                                       && (parameters.FromDate == null || invoice.Invoice.DateCreated >= parameters.FromDate)
                                       && (parameters.ToDate == null || invoice.Invoice.DateCreated < parameters.ToDate));
 
-        public static IQueryable<Payrun> FilterPayRunList(this IQueryable<Payrun> payRuns, Guid? payRunId,
+        public static IQueryable<Payrun> FilterPayRunList(this IQueryable<Payrun> payRuns, string payRunId,
             PayrunType? payrunType, PayrunStatus? payrunStatus, DateTimeOffset? dateFrom,
             DateTimeOffset? dateTo) =>
             payRuns.Where(e => (
-                    (payRunId == null || e.Id.Equals(payRunId))
+                    (payRunId == null || e.Id.ToString().ToLower().Contains(payRunId.ToLower()))
                     && (payrunType == null || e.Type.Equals(payrunType))
                     && (payrunStatus == null || e.Status.Equals(payrunStatus))
                     && (dateFrom == null || e.DateCreated >= dateFrom)

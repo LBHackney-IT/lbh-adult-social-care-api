@@ -45,6 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .Select(pr => new PayRunListDomain
                 {
                     PayRunId = pr.Id,
+                    PayRunNumber = pr.Id.ToString().Substring(0, 6), //Todo FK: temp solution 
                     PayRunTypeId = (int) pr.Type,
                     PayRunTypeName = pr.Type.ToDescription(),
                     PayRunStatusId = (int) pr.Status,

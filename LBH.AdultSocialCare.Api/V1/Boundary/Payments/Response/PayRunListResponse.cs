@@ -5,6 +5,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
     public class PayRunListResponse
     {
         public Guid PayRunId { get; set; }
+        public string PayRunNumber { get; set; }
         public int PayRunTypeId { get; set; }
         public string PayRunTypeName { get; set; }
         public int PayRunStatusId { get; set; }
