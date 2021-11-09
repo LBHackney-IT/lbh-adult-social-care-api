@@ -52,5 +52,56 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
             var res = await useCase.ExecuteAsync(id, invoiceId, newStatus);
             return Ok(res);
         }
+
+        /// <summary>Approve pay run.</summary>
+        /// <param name="useCase">Approve pay run status use case.</param>
+        /// <param name="id">An unique identifier of a pay run to be approved.</param>
+        /// <param name="request">The notes object for attaching status change.</param>
+        /// <returns>Ok when operation is successful.</returns>
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpPost("{id}/approve")]
+        public async Task<ActionResult> ApprovePayRun([FromServices] IApprovePayRunUseCase useCase, Guid id, PayRunChangeStatusRequest request)
+        {
+            await useCase.ExecuteAsync(id, request.Notes);
+            return Ok();
+        }
+
+        /// <summary>Archive pay run.</summary>
+        /// <param name="useCase">Archive pay run status use case.</param>
+        /// <param name="id">An unique identifier of a pay run to be archived.</param>
+        /// <param name="request">The notes object for attaching status change.</param>
+        /// <returns>Ok when operation is successful.</returns>
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpPost("{id}/archive")]
+        public async Task<ActionResult> ArchivePayRun([FromServices] IArchivePayRunUseCase useCase, Guid id, PayRunChangeStatusRequest request)
+        {
+            await useCase.ExecuteAsync(id, request.Notes);
+            return Ok();
+        }
+
+        /// <summary>Submit pay run.</summary>
+        /// <param name="useCase">Submit pay run status use case.</param>
+        /// <param name="id">An unique identifier of a pay run to be submitted.</param>
+        /// <param name="request">The notes object for attaching status change.</param>
+        /// <returns>Ok when operation is successful.</returns>
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpPost("{id}/submit")]
+        public async Task<ActionResult> SubmitPayRun([FromServices] ISubmitPayRunUseCase useCase, Guid id, PayRunChangeStatusRequest request)
+        {
+            await useCase.ExecuteAsync(id, request.Notes);
+            return Ok();
+        }
     }
 }
