@@ -60,6 +60,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
         public DbSet<PayrunInvoice> PayrunInvoices { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<HeldInvoice> HeldInvoices { get; set; }
 
         #region CustomFunctions
 
@@ -103,6 +105,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
             // Seed care package lookups
             modelBuilder.ApplyConfiguration(new CarePackageSchedulingOptionsSeed());
 
+            // Payment departments
+            modelBuilder.ApplyConfiguration(new DepartmentSeed());
+
             #endregion Database Seeds
 
             #region Entity Config
@@ -119,22 +124,26 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
                 .HasIndex(i => i.Number)
                 .IsUnique();
 
-            modelBuilder.Entity<PayrunInvoice>()
-                .HasKey(pi => new { pi.PayrunId, pi.InvoiceId });
-            modelBuilder.Entity<PayrunInvoice>()
-                .HasOne(pi => pi.Payrun)
-                .WithMany(p => p.PayrunInvoices)
-                .HasForeignKey(pi => pi.PayrunId);
-            modelBuilder.Entity<PayrunInvoice>()
-                .HasOne(pi => pi.Invoice)
-                .WithMany(i => i.PayrunInvoices)
-                .HasForeignKey(pi => pi.InvoiceId);
-
             modelBuilder.Entity<InvoiceItem>(entity =>
             {
                 entity.Property(e => e.IsReclaim)
                     .IsRequired()
                     .HasDefaultValueSql("false");
+            });
+
+            modelBuilder.Entity<PayrunInvoice>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.HasIndex(e => new { e.PayrunId, e.InvoiceId }).IsUnique();
+
+                entity.HasOne(pi => pi.Payrun)
+                    .WithMany(p => p.PayrunInvoices)
+                    .HasForeignKey(pi => pi.PayrunId);
+
+                entity.HasOne(pi => pi.Invoice)
+                    .WithMany(i => i.PayrunInvoices)
+                    .HasForeignKey(pi => pi.InvoiceId);
             });
 
             #endregion Entity Config
