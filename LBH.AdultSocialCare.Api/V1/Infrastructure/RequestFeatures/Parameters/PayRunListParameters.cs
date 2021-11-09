@@ -9,7 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters
 {
     public class PayRunListParameters : RequestParameters
     {
-        public Guid? PayRunId { get; set; }
+        public string PayRunId { get; set; }
         public PayrunType? PayRunType { get; set; }
         public PayrunStatus? PayRunStatus { get; set; }
         public DateTimeOffset? DateFrom { get; set; }
