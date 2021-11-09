@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Common.Exceptions.Models;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
 {
@@ -25,10 +27,29 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         /// <param name="invoiceId">Pay run invoice id</param>
         /// <returns>Held invoice object</returns>
         [ProducesResponseType(typeof(HeldInvoiceFlatResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [HttpPost("{id}/invoices/{invoiceId}/hold")]
         public async Task<ActionResult<HeldInvoiceFlatResponse>> HoldInvoice([FromServices] IHoldInvoiceUseCase useCase, [FromBody] HeldInvoiceCreationRequest heldInvoiceCreationRequest, Guid id, Guid invoiceId)
         {
             var res = await useCase.ExecuteAsync(id, invoiceId, heldInvoiceCreationRequest.ToDomain());
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// Changes the pay run invoice status.
+        /// </summary>
+        /// <param name="useCase">Change pay run invoice status use case.</param>
+        /// <param name="id">Pay run id.</param>
+        /// <param name="invoiceId">Pay run invoice id.</param>
+        /// <param name="newStatus">The new status to be set.</param>
+        /// <returns>True if success</returns>
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [HttpPut("{id}/invoices/{invoiceId}/status/{newStatus}")]
+        public async Task<ActionResult<bool>> ChangePayRunInvoiceStatus([FromServices] IChangePayRunInvoiceStatusUseCase useCase, Guid id, Guid invoiceId, InvoiceStatus newStatus)
+        {
+            var res = await useCase.ExecuteAsync(id, invoiceId, newStatus);
             return Ok(res);
         }
     }
