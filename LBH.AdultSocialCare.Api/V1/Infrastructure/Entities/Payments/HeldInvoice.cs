@@ -1,10 +1,11 @@
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
 {
-    public class HeldInvoice
+    public class HeldInvoice : BaseEntity
     {
         [Key]
         public Guid Id { get; set; }
