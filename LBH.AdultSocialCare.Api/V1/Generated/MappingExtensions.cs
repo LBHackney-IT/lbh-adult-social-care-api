@@ -11,8 +11,8 @@ using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Request;
-using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
@@ -330,6 +330,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<ServiceUserDomain>(input);
         }
 
+        public static HeldInvoice ToEntity(this HeldInvoiceCreationDomain input)
+        {
+            return _mapper.Map<HeldInvoice>(input);
+        }
+
+        public static HeldInvoiceCreationDomain ToCreationDomain(this HeldInvoice input)
+        {
+            return _mapper.Map<HeldInvoiceCreationDomain>(input);
+        }
+
         public static IEnumerable<PayRunListResponse> ToResponse(this IEnumerable<PayRunListDomain> input)
         {
             return _mapper.Map<IEnumerable<PayRunListResponse>>(input);
@@ -428,6 +438,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static DraftPayRunCreationRequest ToRequest(this DraftPayRunCreationDomain input)
         {
             return _mapper.Map<DraftPayRunCreationRequest>(input);
+        }
+
+        public static HeldInvoiceCreationDomain ToDomain(this HeldInvoiceCreationRequest input)
+        {
+            return _mapper.Map<HeldInvoiceCreationDomain>(input);
+        }
+
+        public static HeldInvoiceCreationRequest ToRequest(this HeldInvoiceCreationDomain input)
+        {
+            return _mapper.Map<HeldInvoiceCreationRequest>(input);
         }
 
         public static CarePackageDomain ToDomain(this CarePackage input)

@@ -1,11 +1,11 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Request;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using Microsoft.AspNetCore.Http;

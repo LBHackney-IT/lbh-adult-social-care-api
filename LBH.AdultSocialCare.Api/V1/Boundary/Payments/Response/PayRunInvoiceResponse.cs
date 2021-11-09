@@ -1,8 +1,8 @@
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using System;
 using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response
+namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
 {
     public class PayRunInvoiceResponse
     {
