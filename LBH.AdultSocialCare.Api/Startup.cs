@@ -32,22 +32,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using LBH.AdultSocialCare.Api.V1.Services.Queuing;
+using Amazon;
+using Amazon.Extensions.NETCore.Setup;
 
 namespace LBH.AdultSocialCare.Api
 {
 
     public class Startup
     {
-
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
             Configuration = configuration;
+            CurrentEnvironment = environment;
 
             AWSSDKHandler.RegisterXRayForAllServices();
         }
 
         public IConfiguration Configuration { get; }
+        private IHostEnvironment CurrentEnvironment { get; }
 
         private static List<ApiVersionDescription> _apiVersions { get; set; }
         private const string ApiName = "Adult Social Care API";
@@ -89,7 +91,7 @@ namespace LBH.AdultSocialCare.Api
             // Add auto mapper
             services.AddAutoMapper(typeof(Startup));
 
-            services.ConfigureLogging(Configuration);
+            services.ConfigureLogging(CurrentEnvironment, Configuration);
 
             services.ConfigureDbContext(Configuration);
             services.AddAuthentication();
@@ -99,7 +101,9 @@ namespace LBH.AdultSocialCare.Api
             services.AddScoped<IDatabaseManager, DatabaseManager>();
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
             services.AddScoped<IFileStorage, FileStorage>();
-            services.AddScoped<IQueueService, AmazonSimpleQueueService>();
+
+            services.AddDefaultAWSOptions(new AWSOptions { Region = RegionEndpoint.GetBySystemName(Configuration["AWS:Region"]) });
+            services.AddAmazonSqs(CurrentEnvironment, Configuration);
 
             services.AddHttpContextAccessor();
 

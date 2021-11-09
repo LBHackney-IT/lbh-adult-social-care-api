@@ -16,6 +16,9 @@ using System.Net.Http;
 using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
+using Amazon.SQS;
+using LBH.AdultSocialCare.Api.Configuration;
+using LBH.AdultSocialCare.Api.V1.Services.Queuing;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
 {
@@ -71,7 +74,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 => opt.UseNpgsql(connectionString, b => b.MigrationsAssembly(assemblyName)));
         }
 
-        public static void ConfigureLogging(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureLogging(this IServiceCollection services, IHostEnvironment environment, IConfiguration configuration)
         {
             // We rebuild the logging stack so as to ensure the console logger is not used in production.
             // See here: https://weblog.west-wind.com/posts/2018/Dec/31/Dont-let-ASPNET-Core-Default-Console-Logging-Slow-your-App-down
@@ -85,7 +88,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 config.AddConfiguration(loggingConfig);
                 config.AddEventSourceLogger();
 
-                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
+                if (environment.IsDevelopment())
                 {
                     config.AddDebug();
                     config.AddConsole();
@@ -125,6 +128,22 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                             : TimeSpan.FromMinutes(10)
                     };
                 });
+        }
+
+        public static void AddAmazonSqs(this IServiceCollection services, IHostEnvironment environment, IConfiguration configuration)
+        {
+            services.Configure<PayrunsQueueOptions>(configuration.GetSection(PayrunsQueueOptions.SectionName));
+            services.AddScoped<IQueueService, AmazonSqsService>();
+
+            if (environment.IsDevelopment())
+            {
+                services.AddScoped<IAmazonSQS, AmazonSqsEmulator>();
+                services.AddHttpClient<IAmazonSQS, AmazonSqsEmulator>(client => client.BaseAddress = new Uri(configuration["PayrunsQueue:DevelopmentUrl"]));
+            }
+            else
+            {
+                services.AddAWSService<IAmazonSQS>();
+            }
         }
 
         private static IHttpClientBuilder ConfigureMessageHandlers(this IHttpClientBuilder builder)
