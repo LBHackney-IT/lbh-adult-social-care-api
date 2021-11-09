@@ -32,7 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 
             var validPayRunStatuses = new[]
             {
-                PayrunStatus.ReadyForReview, PayrunStatus.WaitingForApproval
+                PayrunStatus.WaitingForReview, PayrunStatus.WaitingForApproval
             };
 
             if (!validPayRunStatuses.Contains(payRun.Status))

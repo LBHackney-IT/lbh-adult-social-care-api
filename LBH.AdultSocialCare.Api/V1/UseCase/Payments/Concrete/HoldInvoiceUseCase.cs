@@ -37,7 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             var payRun = await _payRunGateway.GetPayRunAsync(payRunId)
                 .EnsureExistsAsync($"Pay run with id {payRunId} not found");
 
-            var validPayRunStatuses = new[] { PayrunStatus.ReadyForReview, PayrunStatus.WaitingForApproval };
+            var validPayRunStatuses = new[] { PayrunStatus.WaitingForReview, PayrunStatus.WaitingForApproval };
 
             if (!validPayRunStatuses.Contains(payRun.Status))
             {
