@@ -15,5 +15,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
         public bool HospitalAvoidance { get; set; }
         public bool IsReEnablement { get; set; }
         public bool IsS117Client { get; set; }
+        public bool IsS117ClientConfirmed { get; set; }
     }
 }
