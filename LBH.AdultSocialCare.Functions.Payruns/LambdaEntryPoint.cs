@@ -26,7 +26,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns
         public LambdaEntryPoint(IServiceProvider services)
         {
             _logger = services.GetService<ILogger<LambdaEntryPoint>>();
-            _logger.LogInformation("Constructor call");
 
             var serviceScopeFactory = (IServiceScopeFactory) services.GetService(typeof(IServiceScopeFactory));
             var serviceScope = serviceScopeFactory.CreateScope();
@@ -37,7 +36,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns
         [LambdaSerializer(typeof(JsonSerializer))]
         public async Task HandleEvent(SQSEvent sqsEvent)
         {
-            _logger.LogInformation("Handler call {@SqsEvent}", sqsEvent);
+            _logger.LogInformation("Handler call {@SqsEvent}", sqsEvent.Records);
 
             foreach (var record in sqsEvent.Records)
             {
