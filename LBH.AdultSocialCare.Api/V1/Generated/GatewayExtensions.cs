@@ -28,6 +28,8 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IServiceUserGateway, ServiceUserGateway>();
             services.AddScoped<IStatusGateway, StatusGateway>();
             services.AddScoped<ISupplierGateway, SupplierGateway>();
+            services.AddScoped<IDepartmentGateway, DepartmentGateway>();
+            services.AddScoped<IHeldInvoiceGateway, HeldInvoiceGateway>();
             services.AddScoped<IPayRunGateway, PayRunGateway>();
             services.AddScoped<IPayRunInvoiceGateway, PayRunInvoiceGateway>();
             services.AddScoped<IRolesGateway, RolesGateway>();

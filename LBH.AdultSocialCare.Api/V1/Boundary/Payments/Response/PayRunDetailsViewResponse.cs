@@ -1,7 +1,7 @@
-using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using System;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 
-namespace LBH.AdultSocialCare.Api.V1.Boundary.PayRuns.Response
+namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
 {
     public class PayRunDetailsViewResponse
     {
