@@ -36,6 +36,7 @@ functions:
         ResidentsAPI__BaseUrl: ${ssm:/hasc-api/${self:provider.stage}/RESIDENTS-BASE-URL}
         ResidentsAPI__ApiKey: ${ssm:/hasc-api/${self:provider.stage}/RESIDENTS-API-KEY}
         PayrunsQueue__Url: ${ssm:/hasc-api/${self:provider.stage}/PAYRUNS-QUEUE-URL}
+        AWS__Region: ${self:provider.region}
     events:
       - http:
           path: /{proxy+}
