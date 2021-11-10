@@ -11,6 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Helpers;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -69,6 +71,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     .Where(d => d.Type == PackageDetailType.AdditionalNeed).ToList();
 
                 packageResponse.PackageItems = CollectPackageItems(carePackage, coreCost, additionalNeeds, carePackage.Reclaims.ToList());
+
+                var preferences = FilterPreferences.PackageItemStatus();
+
+                packageResponse.PackageItems = packageResponse.PackageItems.OrderBy(
+                    item => preferences.IndexOf(item.Status));
 
                 // Get care package history if package request i.e new, in-progress, not-approved
                 if (packageRequestStatuses.Contains(carePackage.Status))
