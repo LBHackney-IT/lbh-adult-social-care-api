@@ -40,7 +40,7 @@ functions:
               - Ref: 'AWS::Region'
               - Ref: 'AWS::AccountId'
               - Fn::Join:
-                  - ''
+                  - '-'
                   - - 'lbh-adult-social-care-payruns'
                     - ${self:provider.stage}
 resources:
@@ -73,7 +73,7 @@ resources:
               - Ref: 'AWS::Region'
               - Ref: 'AWS::AccountId'
               - Fn::Join:
-                - ''
+                - '-'
                 - - 'lbh-adult-social-care-payruns'
                   - ${self:provider.stage}
         FunctionName: ${self:service}-${self:provider.stage}
