@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
@@ -87,6 +88,43 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .TrackChanges(trackChanges);
 
             return await BuildPayRunInvoiceQuery(query, fields).SingleOrDefaultAsync();
+        }
+
+        public async Task<decimal> GetPayRunInvoicedTotalAsync(Guid payRunId)
+        {
+            var result = await _dbContext.PayrunInvoices.Where(pi => pi.PayrunId == payRunId).TrackChanges(false)
+                .SumAsync(pi => pi.Invoice.TotalCost);
+            return decimal.Round(result, 2);
+        }
+
+        public async Task<int> GetSupplierCountInPayRunAsync(Guid payRunId)
+        {
+            var result = await _dbContext.PayrunInvoices.Where(pi => pi.PayrunId == payRunId).TrackChanges(false)
+                .Select(pi => pi.Invoice.SupplierId).Distinct().CountAsync();
+            return result;
+        }
+
+        public async Task<int> GetServiceUserCountInPayRunAsync(Guid payRunId)
+        {
+            var result = await _dbContext.PayrunInvoices.Where(pi => pi.PayrunId == payRunId).TrackChanges(false)
+                .Select(pi => pi.Invoice.ServiceUserId).Distinct().CountAsync();
+            return result;
+        }
+
+        public async Task<int> GetPayRunHeldInvoiceCountAsync(Guid payRunId)
+        {
+            var result = await _dbContext.PayrunInvoices
+                .Where(pi => pi.PayrunId == payRunId && pi.InvoiceStatus == InvoiceStatus.Held).TrackChanges(false)
+                .CountAsync();
+            return result;
+        }
+
+        public async Task<decimal> GetPayRunHeldInvoiceTotalAsync(Guid payRunId)
+        {
+            var result = await _dbContext.PayrunInvoices
+                .Where(pi => pi.PayrunId == payRunId && pi.InvoiceStatus == InvoiceStatus.Held).TrackChanges(false)
+                .SumAsync(pi => pi.Invoice.TotalCost);
+            return decimal.Round(result, 2);
         }
 
         private static IQueryable<PayrunInvoice> BuildPayRunInvoiceQuery(IQueryable<PayrunInvoice> query, PayRunInvoiceFields fields)
