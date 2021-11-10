@@ -1,4 +1,3 @@
-using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
@@ -38,10 +37,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 };
             }
 
+            var insights = await _payRunInvoiceGateway.GetPayRunInsightsAsync(payRunId);
             var previousPayRun = await _payRunGateway.GetPreviousPayRunAsync(payRun.Type);
 
             // Get pay run invoiced totals
-            var thisPayRunTotal = await _payRunInvoiceGateway.GetPayRunInvoicedTotalAsync(payRunId);
             var previousPayRunTotal = 0M;
 
             if (previousPayRun != null)
@@ -52,12 +51,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             var result = new PayRunInsightsResponse
             {
                 PayRunId = payRun.Id,
-                TotalInvoiceAmount = thisPayRunTotal,
-                TotalDifferenceFromLastCycle = thisPayRunTotal - previousPayRunTotal,
-                SupplierCount = await _payRunInvoiceGateway.GetSupplierCountInPayRunAsync(payRunId),
-                ServiceUserCount = await _payRunInvoiceGateway.GetServiceUserCountInPayRunAsync(payRunId),
-                HoldsCount = await _payRunInvoiceGateway.GetPayRunHeldInvoiceCountAsync(payRunId),
-                TotalHeldAmount = await _payRunInvoiceGateway.GetPayRunHeldInvoiceTotalAsync(payRunId)
+                TotalInvoiceAmount = insights.TotalInvoiceAmount,
+                TotalDifferenceFromLastCycle = insights.TotalInvoiceAmount - previousPayRunTotal,
+                SupplierCount = insights.SupplierCount,
+                ServiceUserCount = insights.ServiceUserCount,
+                HoldsCount = insights.HoldsCount,
+                TotalHeldAmount = insights.TotalHeldAmount
             };
 
             return result;

@@ -9,6 +9,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -38,6 +39,24 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             var invoiceCount = await query.CountAsync();
             return PagedList<PayrunInvoice>.ToPagedList(payRunInvoices, invoiceCount, parameters.PageNumber,
                 parameters.PageSize);
+        }
+
+        public async Task<PayRunInsightsDomain> GetPayRunInsightsAsync(Guid payRunId)
+        {
+            var invoices = await _dbContext.PayrunInvoices.Where(p => p.PayrunId == payRunId).Include(pi => pi.Invoice)
+                .ToListAsync();
+
+            var result = new PayRunInsightsDomain
+            {
+                TotalInvoiceAmount = invoices.Sum(i => i.Invoice.TotalCost),
+                SupplierCount = invoices.Select(i => i.Invoice.SupplierId).Distinct().Count(),
+                ServiceUserCount = invoices.Select(i => i.Invoice.ServiceUserId).Distinct().Count(),
+                HoldsCount = invoices.Count(i => i.InvoiceStatus == InvoiceStatus.Held),
+                TotalHeldAmount = invoices.Where(i => i.InvoiceStatus == InvoiceStatus.Held)
+                    .Sum(i => i.Invoice.TotalCost)
+            };
+
+            return result;
         }
 
         public async Task<PagedList<PayRunInvoiceDomain>> GetPayRunInvoicesSummaryAsync(Guid payRunId,
@@ -93,36 +112,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         public async Task<decimal> GetPayRunInvoicedTotalAsync(Guid payRunId)
         {
             var result = await _dbContext.PayrunInvoices.Where(pi => pi.PayrunId == payRunId).TrackChanges(false)
-                .SumAsync(pi => pi.Invoice.TotalCost);
-            return decimal.Round(result, 2);
-        }
-
-        public async Task<int> GetSupplierCountInPayRunAsync(Guid payRunId)
-        {
-            var result = await _dbContext.PayrunInvoices.Where(pi => pi.PayrunId == payRunId).TrackChanges(false)
-                .Select(pi => pi.Invoice.SupplierId).Distinct().CountAsync();
-            return result;
-        }
-
-        public async Task<int> GetServiceUserCountInPayRunAsync(Guid payRunId)
-        {
-            var result = await _dbContext.PayrunInvoices.Where(pi => pi.PayrunId == payRunId).TrackChanges(false)
-                .Select(pi => pi.Invoice.ServiceUserId).Distinct().CountAsync();
-            return result;
-        }
-
-        public async Task<int> GetPayRunHeldInvoiceCountAsync(Guid payRunId)
-        {
-            var result = await _dbContext.PayrunInvoices
-                .Where(pi => pi.PayrunId == payRunId && pi.InvoiceStatus == InvoiceStatus.Held).TrackChanges(false)
-                .CountAsync();
-            return result;
-        }
-
-        public async Task<decimal> GetPayRunHeldInvoiceTotalAsync(Guid payRunId)
-        {
-            var result = await _dbContext.PayrunInvoices
-                .Where(pi => pi.PayrunId == payRunId && pi.InvoiceStatus == InvoiceStatus.Held).TrackChanges(false)
                 .SumAsync(pi => pi.Invoice.TotalCost);
             return decimal.Round(result, 2);
         }
