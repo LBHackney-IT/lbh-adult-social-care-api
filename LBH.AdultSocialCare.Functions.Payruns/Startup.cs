@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Amazon.Lambda.SQSEvents;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Functions.Payruns.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.Serialization.Json;
 using Amazon.Lambda.SQSEvents;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Functions.Payruns.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
