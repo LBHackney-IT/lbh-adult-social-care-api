@@ -2,23 +2,25 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
-using Amazon.Lambda.Serialization.Json;
 using Amazon.Lambda.SQSEvents;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Functions.Payruns.Infrastructure;
-using Microsoft.EntityFrameworkCore;
+using LBH.AdultSocialCare.Functions.Payruns.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using JsonSerializer = Amazon.Lambda.Serialization.Json.JsonSerializer;
 
 namespace LBH.AdultSocialCare.Functions.Payruns
 {
     public class LambdaEntryPoint
     {
         private readonly ILogger<LambdaEntryPoint> _logger;
-        private readonly DatabaseContext _database;
+        private readonly FakeInvoiceGenerator _generator;
 
         // AWS entry point
+        // ReSharper disable once UnusedMember.Global
         public LambdaEntryPoint() : this(InitServices())
         {
         }
@@ -31,24 +33,26 @@ namespace LBH.AdultSocialCare.Functions.Payruns
             var serviceScopeFactory = (IServiceScopeFactory) services.GetService(typeof(IServiceScopeFactory));
             var serviceScope = serviceScopeFactory.CreateScope();
 
-            _database = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
+            var database = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
+            var httpContextAccessor = services.GetService<IHttpContextAccessor>();
+
+            _generator = new FakeInvoiceGenerator(database, httpContextAccessor);
         }
 
         [LambdaSerializer(typeof(JsonSerializer))]
         public async Task HandleEvent(SQSEvent sqsEvent)
         {
-            _logger.LogInformation("Handler call {@SqsEvent}", sqsEvent.Records);
+            _logger.LogInformation("Received SQS event {SqsEvent}", JsonConvert.SerializeObject(sqsEvent, Formatting.Indented));
 
-            foreach (var record in sqsEvent.Records)
+            try
             {
-                _logger.LogInformation("{record.EventSource} Body = {record.Body}", record.EventSource, record.Body);
+                await _generator.GenerateInvoices();
             }
-
-            var supplier = await _database.Suppliers.FirstOrDefaultAsync();
-
-            _logger.LogWarning("supplier is {SupplierName}", supplier.SupplierName);
-
-            await Task.CompletedTask;
+            catch (Exception ex)
+            {
+                _logger.LogError("Unhandled exception {Exception}", ex);
+                throw;
+            }
         }
 
         private static IServiceProvider InitServices()

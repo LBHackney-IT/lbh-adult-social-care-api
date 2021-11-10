@@ -29,10 +29,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+            services.AddLogging(ConfigureLogging);
+
             services.AddDbContext<DatabaseContext>(
                 opt => opt.UseNpgsql(_configuration.GetConnectionString("Default")));
-
-            services.AddLogging(ConfigureLogging);
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)

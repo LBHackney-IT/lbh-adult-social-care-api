@@ -9,6 +9,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.Payments
 {
     public class Payrun : BaseEntity
     {
+        public Payrun()
+        {
+            PayrunInvoices = new List<PayrunInvoice>();
+        }
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
