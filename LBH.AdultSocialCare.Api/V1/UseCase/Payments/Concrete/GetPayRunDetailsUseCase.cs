@@ -72,6 +72,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                             PackageType = PackageType.ResidentialCare.GetDisplayName(),
                             GrossTotal = 800,
                             NetTotal = 600,
+                            SupplierReclaimsTotal = 200,
+                            HackneyReclaimsTotal = 0,
                             InvoiceStatus = InvoiceStatus.Accepted,
                             AssignedBrokerName = "Derek Ofoborh",
                             InvoiceItems = new List<PayRunInvoiceItemResponse>()
@@ -152,6 +154,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                             PackageType = PackageType.ResidentialCare.GetDisplayName(),
                             GrossTotal = 800,
                             NetTotal = 600,
+                            SupplierReclaimsTotal = 200,
+                            HackneyReclaimsTotal = 0,
                             InvoiceStatus = InvoiceStatus.Held,
                             AssignedBrokerName = "Derek Ofoborh",
                             InvoiceItems = new List<PayRunInvoiceItemResponse>()
@@ -232,6 +236,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                             PackageType = PackageType.ResidentialCare.GetDisplayName(),
                             GrossTotal = 800,
                             NetTotal = 600,
+                            SupplierReclaimsTotal = 200,
+                            HackneyReclaimsTotal = 0,
                             InvoiceStatus = InvoiceStatus.Rejected,
                             AssignedBrokerName = "Derek Ofoborh",
                             InvoiceItems = new List<PayRunInvoiceItemResponse>()
@@ -319,7 +325,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 
             foreach (var invoice in payRunInvoices)
             {
-                var (grossTotal, netTotal) = CalculateTotals(invoice.InvoiceItems);
+                var (grossTotal, netTotal, supplierReclaimsTotal, hackneyReclaimsTotal) = CalculateTotals(invoice.InvoiceItems);
                 var invoiceRes = new PayRunInvoiceResponse
                 {
                     Id = invoice.Id,
@@ -332,8 +338,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                     InvoiceNumber = invoice.InvoiceNumber,
                     PackageTypeId = (int) invoice.PackageType,
                     PackageType = invoice.PackageType.GetDisplayName(),
-                    GrossTotal = grossTotal,
-                    NetTotal = netTotal,
+                    GrossTotal = decimal.Round(grossTotal, 2),
+                    NetTotal = decimal.Round(netTotal, 2),
+                    SupplierReclaimsTotal = decimal.Round(supplierReclaimsTotal, 2),
+                    HackneyReclaimsTotal = decimal.Round(hackneyReclaimsTotal),
                     InvoiceStatus = invoice.InvoiceStatus,
                     AssignedBrokerName = invoice.AssignedBrokerName,
                     InvoiceItems = invoice.InvoiceItems.Select(ii => new PayRunInvoiceItemResponse
@@ -364,10 +372,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             return result;
         }
 
-        private static (decimal, decimal) CalculateTotals(IEnumerable<PayRunInvoiceItemDomain> invoiceItems)
+        private static (decimal, decimal, decimal, decimal) CalculateTotals(IEnumerable<PayRunInvoiceItemDomain> invoiceItems)
         {
             var grossTotal = 0M;
             var netTotal = 0M;
+            var supplierReclaimsTotal = 0M;
+            var hackneyReclaimsTotal = 0M;
 
             foreach (var invoiceItem in invoiceItems)
             {
@@ -380,10 +390,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 if (invoiceItem.IsReclaim && invoiceItem.ClaimCollector == ClaimCollector.Supplier && invoiceItem.PriceEffect == PriceEffect.Subtract)
                 {
                     netTotal -= invoiceItem.TotalCost;
+                    supplierReclaimsTotal += invoiceItem.TotalCost;
+                }
+
+                if (invoiceItem.IsReclaim && invoiceItem.ClaimCollector == ClaimCollector.Hackney)
+                {
+                    hackneyReclaimsTotal += invoiceItem.TotalCost;
                 }
             }
 
-            return (grossTotal, netTotal);
+            return (grossTotal, netTotal, supplierReclaimsTotal, hackneyReclaimsTotal);
         }
     }
 }

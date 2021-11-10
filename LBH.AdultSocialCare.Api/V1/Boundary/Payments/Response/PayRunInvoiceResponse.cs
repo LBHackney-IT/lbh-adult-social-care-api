@@ -18,6 +18,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
         public string PackageType { get; set; }
         public decimal GrossTotal { get; set; }
         public decimal NetTotal { get; set; }
+        public decimal SupplierReclaimsTotal { get; set; }
+        public decimal HackneyReclaimsTotal { get; set; }
         public InvoiceStatus InvoiceStatus { get; set; }
         public string AssignedBrokerName { get; set; }
         public IEnumerable<PayRunInvoiceItemResponse> InvoiceItems { get; set; }
