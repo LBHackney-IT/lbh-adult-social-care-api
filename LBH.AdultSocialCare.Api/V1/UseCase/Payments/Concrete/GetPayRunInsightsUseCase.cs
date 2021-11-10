@@ -20,8 +20,23 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 
         public async Task<PayRunInsightsResponse> GetAsync(Guid payRunId)
         {
-            var payRun = await _payRunGateway.GetPayRunAsync(payRunId)
-                .EnsureExistsAsync($"Pay run with id {payRunId} not found");
+            var payRun = await _payRunGateway.GetPayRunAsync(payRunId);
+            // .EnsureExistsAsync($"Pay run with id {payRunId} not found");
+
+            // Return dummy data if pay run not found
+            if (payRun == null)
+            {
+                return new PayRunInsightsResponse
+                {
+                    PayRunId = payRunId,
+                    TotalInvoiceAmount = 42.82M,
+                    TotalDifferenceFromLastCycle = 897M,
+                    SupplierCount = 100,
+                    ServiceUserCount = 1000,
+                    HoldsCount = 48,
+                    TotalHeldAmount = 32223M
+                };
+            }
 
             var previousPayRun = await _payRunGateway.GetPreviousPayRunAsync(payRun.Type);
 
