@@ -70,7 +70,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 PackageId = package.Id,
                 ServiceUserId = package.ServiceUserId,
                 SupplierId = package.SupplierId.GetValueOrDefault(),
-                Number = $"INV-{invoiceIndex++}",
+                Number = $"INV {invoiceIndex++}",
                 TotalCost = 1000,
                 Items = new List<InvoiceItem>
                 {
