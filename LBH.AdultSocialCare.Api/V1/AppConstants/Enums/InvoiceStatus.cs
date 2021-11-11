@@ -18,7 +18,5 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
 
         [Display(Name = "Accepted")]
         Accepted = 5
-
-        // TODO TBD
     }
 }

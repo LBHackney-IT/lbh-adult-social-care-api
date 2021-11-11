@@ -2,14 +2,12 @@ using Common.Extensions;
 using HttpServices.Models.Features;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
@@ -57,7 +55,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 
             foreach (var invoice in payRunInvoices)
             {
-                var (grossTotal, netTotal) = CalculateTotals(invoice.InvoiceItems);
+                var (grossTotal, netTotal, supplierReclaimsTotal, hackneyReclaimsTotal) = CalculateTotals(invoice.InvoiceItems);
                 var invoiceRes = new PayRunInvoiceResponse
                 {
                     Id = invoice.Id,
@@ -70,8 +68,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                     InvoiceNumber = invoice.InvoiceNumber,
                     PackageTypeId = (int) invoice.PackageType,
                     PackageType = invoice.PackageType.GetDisplayName(),
-                    GrossTotal = grossTotal,
-                    NetTotal = netTotal,
+                    GrossTotal = decimal.Round(grossTotal, 2),
+                    NetTotal = decimal.Round(netTotal, 2),
+                    SupplierReclaimsTotal = decimal.Round(supplierReclaimsTotal, 2),
+                    HackneyReclaimsTotal = decimal.Round(hackneyReclaimsTotal),
                     InvoiceStatus = invoice.InvoiceStatus,
                     AssignedBrokerName = invoice.AssignedBrokerName,
                     InvoiceItems = invoice.InvoiceItems.ToResponse()
@@ -88,10 +88,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             return result;
         }
 
-        private static (decimal, decimal) CalculateTotals(IEnumerable<PayRunInvoiceItemDomain> invoiceItems)
+        private static (decimal, decimal, decimal, decimal) CalculateTotals(IEnumerable<PayRunInvoiceItemDomain> invoiceItems)
         {
             var grossTotal = 0M;
             var netTotal = 0M;
+            var supplierReclaimsTotal = 0M;
+            var hackneyReclaimsTotal = 0M;
 
             foreach (var invoiceItem in invoiceItems)
             {
@@ -104,10 +106,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 if (invoiceItem.IsReclaim && invoiceItem.ClaimCollector == ClaimCollector.Supplier && invoiceItem.PriceEffect == PriceEffect.Subtract)
                 {
                     netTotal -= invoiceItem.TotalCost;
+                    supplierReclaimsTotal += invoiceItem.TotalCost;
+                }
+
+                if (invoiceItem.IsReclaim && invoiceItem.ClaimCollector == ClaimCollector.Hackney)
+                {
+                    hackneyReclaimsTotal += invoiceItem.TotalCost;
                 }
             }
 
-            return (grossTotal, netTotal);
+            return (grossTotal, netTotal, supplierReclaimsTotal, hackneyReclaimsTotal);
         }
     }
 }

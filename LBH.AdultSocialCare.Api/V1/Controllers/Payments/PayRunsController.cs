@@ -1,15 +1,15 @@
-using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
+using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
 {
@@ -22,6 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
     {
         private readonly IGetPayRunListUseCase _getPayRunListUseCase;
         private readonly ICreateDraftPayRunUseCase _createDraftPayRunUseCase;
+
         public PayRunsController(IGetPayRunListUseCase getPayRunListUseCase, ICreateDraftPayRunUseCase createDraftPayRunUseCase)
         {
             _getPayRunListUseCase = getPayRunListUseCase;
@@ -72,6 +73,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         {
             await _createDraftPayRunUseCase.CreateDraftPayRun(request.ToDomain());
             return Ok();
+        }
+
+        /// <summary>
+        /// Gets single pay run insights.
+        /// </summary>
+        /// <param name="useCase">Use case to get insights.</param>
+        /// <param name="id">Pay run id.</param>
+        /// <returns>Insights response object if successful</returns>
+        [ProducesResponseType(typeof(PayRunInsightsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [HttpGet("{id}/insights")]
+        public async Task<ActionResult<PayRunInsightsResponse>> GetPayRunInsights([FromServices] IGetPayRunInsightsUseCase useCase, Guid id)
+        {
+            var res = await useCase.GetAsync(id);
+            return Ok(res);
         }
     }
 }
