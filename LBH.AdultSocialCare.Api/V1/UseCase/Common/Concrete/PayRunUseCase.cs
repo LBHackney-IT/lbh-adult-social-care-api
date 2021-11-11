@@ -44,8 +44,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
                 nameof(PayrunType.ResidentialRecurring) => await CreateResidentialRecurringPayRun(payRunForCreationRequest).ConfigureAwait(false),
                 nameof(PayrunType.DirectPayments) => await _transactionsService.CreateDirectPaymentsPayRun(payRunForCreationRequest)
                     .ConfigureAwait(false),
-                nameof(PayrunType.HomeCare) => await _transactionsService.CreateHomeCarePayRun(payRunForCreationRequest)
-                    .ConfigureAwait(false),
                 nameof(PayRunSubTypeEnum.ResidentialReleaseHolds) => await _transactionsService.CreateResidentialReleaseHoldsPayRun(payRunForCreationRequest)
                     .ConfigureAwait(false),
                 nameof(PayRunSubTypeEnum.DirectPaymentsReleaseHolds) => await

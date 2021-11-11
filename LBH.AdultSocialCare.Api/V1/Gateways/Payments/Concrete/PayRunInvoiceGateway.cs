@@ -116,6 +116,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             return decimal.Round(result, 2);
         }
 
+        public async Task<int> GetReleasedInvoiceCountAsync()
+        {
+            return await _dbContext.PayrunInvoices.Where(pi => pi.InvoiceStatus == InvoiceStatus.Released)
+                .CountAsync();
+        }
+
         private static IQueryable<PayrunInvoice> BuildPayRunInvoiceQuery(IQueryable<PayrunInvoice> query, PayRunInvoiceFields fields)
         {
             if (fields.HasFlag(PayRunInvoiceFields.Creator)) query = query.Include(p => p.Creator);

@@ -89,5 +89,18 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
             var res = await useCase.GetAsync(id);
             return Ok(res);
         }
+
+        /// <summary>
+        /// Gets released invoice count.
+        /// </summary>
+        /// <param name="useCase">Use case to fetch released invoice count.</param>
+        /// <returns>Total number or released invoices if success</returns>
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [HttpGet("released-invoice-count")]
+        public async Task<ActionResult<int>> GetReleasedInvoiceCount([FromServices] IGetReleasedInvoiceCountUseCase useCase)
+        {
+            var res = await useCase.GetAsync();
+            return Ok(res);
+        }
     }
 }
