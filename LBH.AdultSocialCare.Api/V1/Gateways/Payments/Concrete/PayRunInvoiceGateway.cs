@@ -118,8 +118,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 
         public async Task<int> GetReleasedInvoiceCountAsync()
         {
-            return await _dbContext.PayrunInvoices.Where(pi => pi.InvoiceStatus == InvoiceStatus.Released)
-                .CountAsync();
+            // return await _dbContext.PayrunInvoices.Where(pi => pi.InvoiceStatus == InvoiceStatus.Released).CountAsync();
+            return await _dbContext.PayrunInvoices.Where(pi => pi.InvoiceStatus == InvoiceStatus.Held && pi.Payrun.Status != PayrunStatus.Archived).CountAsync();
         }
 
         private static IQueryable<PayrunInvoice> BuildPayRunInvoiceQuery(IQueryable<PayrunInvoice> query, PayRunInvoiceFields fields)
