@@ -48,7 +48,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 
                 foreach (var package in packages)
                 {
-                    var invoice = CreateInvoice(package, invoicesCount++);
+                    var invoice = CreateInvoice(package, ++invoicesCount);
 
                     var payrunInvoice = new PayrunInvoice
                     {
