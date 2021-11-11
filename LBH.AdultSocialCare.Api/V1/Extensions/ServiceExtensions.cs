@@ -138,7 +138,11 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             if (environment.IsDevelopment())
             {
                 services.AddScoped<IAmazonSQS, AmazonSqsEmulator>();
-                services.AddHttpClient<IAmazonSQS, AmazonSqsEmulator>(client => client.BaseAddress = new Uri(configuration["PayrunsQueue:DevelopmentUrl"]));
+                services.AddHttpClient<IAmazonSQS, AmazonSqsEmulator>(client =>
+                {
+                    client.BaseAddress = new Uri(configuration["PayrunsQueue:DevelopmentUrl"]);
+                    client.Timeout = TimeSpan.FromDays(1); // For debugging purposes
+                });
             }
             else
             {
