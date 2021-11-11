@@ -57,11 +57,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                         InvoiceStatus = InvoiceStatus.Draft
                     };
 
-                    payrun.Status = PayrunStatus.WaitingForReview;
                     payrun.PayrunInvoices.Add(payrunInvoice);
-
-                    await _database.SaveChangesAsync();
                 }
+
+                payrun.Status = PayrunStatus.WaitingForReview;
+                await _database.SaveChangesAsync();
             }
         }
 
