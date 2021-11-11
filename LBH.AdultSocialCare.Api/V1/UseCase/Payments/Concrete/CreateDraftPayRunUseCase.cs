@@ -38,7 +38,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 
             if (recurringPayRunTypes.Contains(draftPayRunCreationDomain.Type))
             {
-                draftPayRunCreationDomain.StartDate = await _payRunGateway.GetEndDateOfLastPayRun(draftPayRunCreationDomain.Type);
+                var endOfLastPayRun = await _payRunGateway.GetEndDateOfLastPayRun(draftPayRunCreationDomain.Type);
+                draftPayRunCreationDomain.StartDate = endOfLastPayRun.Date.AddDays(1);
             }
             else
             {
