@@ -37,6 +37,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 
         public async Task<PagedList<PayRunListDomain>> GetPayRunList(PayRunListParameters parameters)
         {
+            var types = Enum.GetValues(typeof(PayrunType)).OfType<PayrunType>().Select(x => (int) x).ToArray();
+            var statuses = Enum.GetValues(typeof(PayrunStatus)).OfType<PayrunStatus>().Select(x => (int) x).ToArray();
             var payRunList = await _dbContext.Payruns
                 .FilterPayRunList(parameters.PayRunId, parameters.PayRunType,
                     parameters.PayRunStatus, parameters.DateFrom, parameters.DateTo)
@@ -47,9 +49,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     PayRunId = pr.Id,
                     PayRunNumber = pr.Id.ToString().Substring(0, 6), //Todo FK: temp solution
                     PayRunTypeId = (int) pr.Type,
-                    PayRunTypeName = pr.Type.ToDescription(),
+                    PayRunTypeName = types.Contains((int) pr.Type) ? pr.Type.ToDescription() : string.Empty,
                     PayRunStatusId = (int) pr.Status,
-                    PayRunStatusName = pr.Status.GetDisplayName(),
+                    PayRunStatusName = statuses.Contains((int) pr.Status) ? pr.Status.GetDisplayName() : string.Empty,
                     TotalAmountPaid = pr.Paid,
                     TotalAmountHeld = pr.Held,
                     DateFrom = pr.StartDate,
