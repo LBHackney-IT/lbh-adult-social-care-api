@@ -1,19 +1,19 @@
-using LBH.AdultSocialCare.Api.V1.Extensions;
-using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
-using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Common.AppConstants.Enums;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
+using LBH.AdultSocialCare.Api.V1.Extensions;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
+using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 {
@@ -45,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .Select(pr => new PayRunListDomain
                 {
                     PayRunId = pr.Id,
-                    PayRunNumber = pr.Id.ToString().Substring(0, 6), //Todo FK: temp solution 
+                    PayRunNumber = pr.Id.ToString().Substring(0, 6), //Todo FK: temp solution
                     PayRunTypeId = (int) pr.Type,
                     PayRunTypeName = pr.Type.ToDescription(),
                     PayRunStatusId = (int) pr.Status,
@@ -94,6 +94,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .FirstOrDefaultAsync();
 
             return lastPayRun?.PaidUpToDate ?? DateTimeOffset.Now.AddDays(-28);
+        }
+
+        public async Task<Payrun> GetPreviousPayRunAsync(PayrunType payRunType)
+        {
+            var previousPayRun = await _dbContext.Payruns.Where(pr => pr.Type.Equals(payRunType)).TrackChanges(false)
+                .OrderByDescending(pr => pr.DateCreated)
+                .Skip(1)
+                .FirstOrDefaultAsync();
+            return previousPayRun;
         }
 
         private static IQueryable<Payrun> BuildPayRunQuery(IQueryable<Payrun> query, PayRunFields fields)
