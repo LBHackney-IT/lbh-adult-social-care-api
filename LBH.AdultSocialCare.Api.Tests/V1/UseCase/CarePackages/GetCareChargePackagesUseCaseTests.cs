@@ -31,7 +31,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         public async Task ShouldReturnCareChargePackages()
         {
             // Arrange
-            var stubbedEntities = _fixture.Create<PagedList<CareChargePackagesDomain>>();
+            var stubbedEntities = _fixture.Build<PagedList<CareChargePackagesDomain>>()
+                // .OmitAutoProperties()
+                .Without(p => p.Capacity)
+                .Create();
             var requestParam = new CareChargePackagesParameters() { PageSize = 10, PageNumber = 1 };
 
 
