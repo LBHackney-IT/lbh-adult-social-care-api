@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.SQSEvents;
@@ -32,10 +33,15 @@ namespace LBH.AdultSocialCare.Functions.Payruns
 
             var serviceScopeFactory = (IServiceScopeFactory) services.GetService(typeof(IServiceScopeFactory));
             var serviceScope = serviceScopeFactory.CreateScope();
-
             var database = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
+
+            var identity = new ClaimsIdentity();
             var httpContextAccessor = services.GetService<IHttpContextAccessor>();
 
+            httpContextAccessor.HttpContext = new DefaultHttpContext();
+            httpContextAccessor.HttpContext.User = new ClaimsPrincipal(identity);
+
+            //TODO: VK: clean up
             _logger.LogWarning("Accessor: {@Accessor}", httpContextAccessor);
             _logger.LogWarning("Context: {@Context}", httpContextAccessor.HttpContext);
             _logger.LogWarning("User: {@User}", httpContextAccessor.HttpContext.User);
