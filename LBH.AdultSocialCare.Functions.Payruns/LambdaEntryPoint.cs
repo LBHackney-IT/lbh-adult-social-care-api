@@ -36,6 +36,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns
             var database = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
             var httpContextAccessor = services.GetService<IHttpContextAccessor>();
 
+            _logger.LogWarning("Accessor: {@Accessor}", httpContextAccessor);
+            _logger.LogWarning("Context: {@Context}", httpContextAccessor.HttpContext);
+            _logger.LogWarning("User: {@User}", httpContextAccessor.HttpContext.User);
+            _logger.LogWarning("Identity: {@Identity}", httpContextAccessor.HttpContext.User.Identity);
+
             _generator = new FakeInvoiceGenerator(database, httpContextAccessor);
         }
 
