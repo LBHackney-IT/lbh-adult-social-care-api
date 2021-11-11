@@ -19,7 +19,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
 
         Task<int> GetDraftPayRunCount(PayrunType payRunType);
 
-        Task<DateTimeOffset> GetDateOfLastPayRun(PayrunType payRunType);
+        Task<bool> CheckExistsUnApprovedPayRunAsync(PayrunType payRunType);
+
+        Task<DateTimeOffset> GetEndDateOfLastPayRun(PayrunType payRunType);
 
         Task<Payrun> GetPreviousPayRunAsync(PayrunType payRunType);
     }

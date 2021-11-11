@@ -88,7 +88,14 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .CountAsync();
         }
 
-        public async Task<DateTimeOffset> GetDateOfLastPayRun(PayrunType payRunType)
+        public async Task<bool> CheckExistsUnApprovedPayRunAsync(PayrunType payRunType)
+        {
+            var approvedPayRunStatuses = new[] { PayrunStatus.Approved, PayrunStatus.Paid, PayrunStatus.PaidWithHold };
+            return await _dbContext.Payruns
+                .Where(pr => pr.Type == payRunType && !approvedPayRunStatuses.Contains(pr.Status)).AnyAsync();
+        }
+
+        public async Task<DateTimeOffset> GetEndDateOfLastPayRun(PayrunType payRunType)
         {
             var lastPayRun = await _dbContext.Payruns.Where(pr =>
                     pr.Type.Equals(payRunType))
