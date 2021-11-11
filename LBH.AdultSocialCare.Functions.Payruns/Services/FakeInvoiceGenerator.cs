@@ -32,8 +32,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 .Where(p => p.Status == PayrunStatus.Draft)
                 .ToListAsync();
 
-            var invoiceIndex = 1;
-
             foreach (var payrun in draftPayruns)
             {
                 // TODO: VK: Don't have a logged-in user in lambda, so impersonate it as a payrun creator
@@ -48,7 +46,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 
                 foreach (var package in packages)
                 {
-                    var invoice = CreateInvoice(package, ref invoiceIndex);
+                    var invoice = CreateInvoice(package);
 
                     var payrunInvoice = new PayrunInvoice
                     {
@@ -65,14 +63,14 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             }
         }
 
-        private Invoice CreateInvoice(CarePackage package, ref int invoiceIndex)
+        private Invoice CreateInvoice(CarePackage package)
         {
             var invoice = new Invoice
             {
                 PackageId = package.Id,
                 ServiceUserId = package.ServiceUserId,
                 SupplierId = package.SupplierId.GetValueOrDefault(),
-                Number = $"INV {invoiceIndex++}",
+                Number = $"INV {DateTime.Now.AddYears(-2020).AddMonths(-10).AddDays(-10).AddHours(-15)}",
                 TotalCost = 0.0m,
                 Items = new List<InvoiceItem>()
             };
