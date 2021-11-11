@@ -1,4 +1,6 @@
 using System;
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
@@ -10,12 +12,25 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
         public DateTimeOffset FromDate { get; set; }
         public DateTimeOffset ToDate { get; set; }
         public decimal Cost { get; set; }
-        public int Days { get; set; }
         public decimal Quantity { get; set; }
-        public string Period { get; set; } // 1 week 5 days
         public decimal TotalCost { get; set; }
         public bool IsReclaim { get; set; }
         public ClaimCollector ClaimCollector { get; set; }
-        public string ClaimCollectorName { get; set; }
+
+        public string ClaimCollectorName => ClaimCollector.GetDisplayName();
+        public int Days => (ToDate - FromDate).Days;
+
+        public string Period
+        {
+            get
+            {
+                var weeks = Math.Floor(Dates.WeeksBetween(FromDate, ToDate));
+                var daysRemainder = Days - weeks * 7;
+
+                return weeks == 0
+                    ? $"{Days} days"
+                    : $"{weeks} {(weeks == 1 ? "week" : "weeks")}{(daysRemainder > 0 ? $" {daysRemainder} days" : "")}";
+            }
+        }
     }
 }

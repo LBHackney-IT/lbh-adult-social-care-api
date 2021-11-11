@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Amazon.Lambda.SQSEvents;
+using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Functions.Payruns.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,10 +29,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+            services.AddLogging(ConfigureLogging);
+
             services.AddDbContext<DatabaseContext>(
                 opt => opt.UseNpgsql(_configuration.GetConnectionString("Default")));
-
-            services.AddLogging(ConfigureLogging);
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)

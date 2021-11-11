@@ -8,7 +8,9 @@ using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Services.Queuing;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
@@ -16,10 +18,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
     public class CreateDraftPayRunUseCase : ICreateDraftPayRunUseCase
     {
         private readonly IPayRunGateway _payRunGateway;
+        private readonly IQueueService _payrunsQueue;
 
-        public CreateDraftPayRunUseCase(IPayRunGateway payRunGateway)
+        public CreateDraftPayRunUseCase(IPayRunGateway payRunGateway, IQueueService payrunsQueue)
         {
             _payRunGateway = payRunGateway;
+            _payrunsQueue = payrunsQueue;
         }
 
         public async Task CreateDraftPayRun(DraftPayRunCreationDomain draftPayRunCreationDomain)
@@ -33,7 +37,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             draftPayRunCreationDomain.Status = PayrunStatus.Draft;
             draftPayRunCreationDomain.StartDate = await _payRunGateway.GetDateOfLastPayRun(draftPayRunCreationDomain.Type);
 
-            await _payRunGateway.CreateDraftPayRun(draftPayRunCreationDomain.ToEntity());
+            var payrun = draftPayRunCreationDomain.ToEntity();
+
+            await _payRunGateway.CreateDraftPayRun(payrun);
+            await _payrunsQueue.Send(payrun.Id);
         }
 
         private static void ValidateDraftPayRun(DraftPayRunCreationDomain draftPayRunCreationDomain)
