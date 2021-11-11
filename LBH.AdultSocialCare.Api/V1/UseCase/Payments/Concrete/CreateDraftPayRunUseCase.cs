@@ -46,6 +46,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 draftPayRunCreationDomain.StartDate = draftPayRunCreationDomain.PaidFromDate.GetValueOrDefault();
             }
 
+            ValidatePayRunDates(draftPayRunCreationDomain.StartDate, draftPayRunCreationDomain.EndDate);
+
             var payrun = draftPayRunCreationDomain.ToEntity();
 
             await _payRunGateway.CreateDraftPayRun(payrun);
@@ -54,13 +56,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 
         private static void ValidateDraftPayRun(DraftPayRunCreationDomain creationDomain)
         {
-            if (creationDomain.PaidUpToDate.Date > DateTimeOffset.Now.Date)
-            {
-                throw new ApiException(
-                    $"Pay run date is invalid. Pay run date should be equal or earlier than today",
-                    HttpStatusCode.BadRequest);
-            }
-
             // If released holds pay run, paid from date should be provided
             var releaseHoldPayRunTypes =
                 new[] { PayrunType.DirectPaymentsReleasedHolds, PayrunType.ResidentialReleasedHolds };
@@ -68,6 +63,23 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             {
                 throw new ApiException(
                     $"For a released holds pay run, date from must be provided",
+                    HttpStatusCode.UnprocessableEntity);
+            }
+        }
+
+        private static void ValidatePayRunDates(DateTimeOffset startDate, DateTimeOffset endDate)
+        {
+            if (startDate > endDate)
+            {
+                throw new ApiException(
+                    $"Pay run dates invalid. Start date cannot be greater that end date",
+                    HttpStatusCode.UnprocessableEntity);
+            }
+
+            if (startDate == endDate)
+            {
+                throw new ApiException(
+                    $"Pay run dates invalid. Pay run cannot start and end on the same day",
                     HttpStatusCode.UnprocessableEntity);
             }
         }
