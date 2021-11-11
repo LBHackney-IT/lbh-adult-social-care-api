@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Bogus;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Functions.Payruns.Enums;
 using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.CarePackages;
@@ -16,6 +17,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
     {
         private readonly DatabaseContext _database;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly Random _random = new Random();
 
         public FakeInvoiceGenerator(DatabaseContext database, IHttpContextAccessor httpContextAccessor)
         {
@@ -63,63 +65,64 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             }
         }
 
-        private static Invoice CreateInvoice(CarePackage package, ref int invoiceIndex)
+        private Invoice CreateInvoice(CarePackage package, ref int invoiceIndex)
         {
-            return new Invoice
+            var invoice = new Invoice
             {
                 PackageId = package.Id,
                 ServiceUserId = package.ServiceUserId,
                 SupplierId = package.SupplierId.GetValueOrDefault(),
                 Number = $"INV {invoiceIndex++}",
-                TotalCost = 1000,
-                Items = new List<InvoiceItem>
-                {
-                    new InvoiceItem
-                    {
-                        Name = "Residential Care Core",
-                        FromDate = DateTimeOffset.Now.AddDays(-14),
-                        ToDate = DateTimeOffset.Now,
-                        WeeklyCost = 250,
-                        Quantity = 2,
-                        TotalCost = 500,
-                        IsReclaim = false,
-                        ClaimCollector = ClaimCollector.Hackney
-                    },
-                    new InvoiceItem
-                    {
-                        Name = "Funded Nursing Care (net)",
-                        FromDate = DateTimeOffset.Now.AddDays(-14),
-                        ToDate = DateTimeOffset.Now,
-                        WeeklyCost = 100,
-                        Quantity = 2,
-                        TotalCost = 100,
-                        IsReclaim = true,
-                        ClaimCollector = ClaimCollector.Supplier
-                    },
-                    new InvoiceItem
-                    {
-                        Name = "Care Charges",
-                        FromDate = DateTimeOffset.Now.AddDays(-14),
-                        ToDate = DateTimeOffset.Now,
-                        WeeklyCost = 100,
-                        Quantity = 2,
-                        TotalCost = 200,
-                        IsReclaim = true,
-                        ClaimCollector = ClaimCollector.Supplier
-                    },
-                    new InvoiceItem
-                    {
-                        Name = "Additional Weekly cost",
-                        FromDate = DateTimeOffset.Now.AddDays(-14),
-                        ToDate = DateTimeOffset.Now,
-                        WeeklyCost = 100,
-                        Quantity = 2,
-                        TotalCost = 200,
-                        IsReclaim = false,
-                        ClaimCollector = ClaimCollector.Hackney
-                    }
-                }
+                TotalCost = 0.0m,
+                Items = new List<InvoiceItem>()
             };
+
+            invoice.Items.Add(GenerateInvoiceItem(
+                package.PackageType is PackageType.ResidentialCare
+                    ? "Residential Care Core"
+                    : "Nursing Care Core"));
+
+            if (package.PackageType is PackageType.NursingCare && _random.NextDouble() > 0.5)
+            {
+                var fnc = GenerateInvoiceItem("Funded Nursing Care");
+                fnc.Name += fnc.ClaimCollector is ClaimCollector.Hackney ? " (gross)" : " (net)";
+
+                invoice.Items.Add(fnc);
+            }
+
+            var additionalWeeklyNeedsCount = _random.Next(3, 10);
+            for (var i = 0; i < additionalWeeklyNeedsCount; i++)
+            {
+                invoice.Items.Add(GenerateInvoiceItem("Additional Weekly cost"));
+            }
+
+            var careChargesCount = _random.Next(3, 10);
+            for (var i = 0; i < careChargesCount; i++)
+            {
+                invoice.Items.Add(GenerateInvoiceItem("Care Charges"));
+            }
+
+            return invoice;
+        }
+
+        private static InvoiceItem GenerateInvoiceItem(string name)
+        {
+            var item = new Faker<InvoiceItem>()
+                .RuleFor(i => i.Name, name)
+                .RuleFor(i => i.WeeklyCost, f => f.Finance.Amount(10.0m, 500.0m))
+                .RuleFor(i => i.ToDate, DateTimeOffset.Now)
+                .RuleFor(i => i.FromDate, f => f.Date.Recent(45))
+                .RuleFor(i => i.ClaimCollector, f => f.PickRandom<ClaimCollector>())
+                .RuleFor(i => i.IsReclaim, name == "Funded Nursing Care" || name == "Care Charges")
+                .Generate();
+
+            item.Quantity = Math.Round((item.ToDate - item.FromDate).Days / 7M, 2);
+            item.TotalCost = Math.Round(item.Quantity * item.WeeklyCost, 2);
+            item.PriceEffect = item.IsReclaim.GetValueOrDefault() && item.ClaimCollector is ClaimCollector.Supplier
+                ? PriceEffect.Subtract
+                : PriceEffect.Add;
+
+            return item;
         }
     }
 }
