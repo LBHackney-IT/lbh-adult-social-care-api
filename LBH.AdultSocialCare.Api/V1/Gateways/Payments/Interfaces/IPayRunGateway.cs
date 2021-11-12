@@ -5,7 +5,9 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
 {
@@ -20,6 +22,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
         Task<int> GetDraftPayRunCount(PayrunType payRunType);
 
         Task<bool> CheckExistsUnApprovedPayRunAsync(PayrunType payRunType);
+
+        Task<IEnumerable<Payrun>> GetPayRunsByTypeAndStatusAsync(PayrunType[] types, PayrunStatus[] statuses);
 
         Task<DateTimeOffset> GetEndDateOfLastPayRun(PayrunType payRunType);
 

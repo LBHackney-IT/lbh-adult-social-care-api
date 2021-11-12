@@ -11,6 +11,8 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Common.Extensions;
+using Common.Models;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 {
@@ -28,13 +30,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
         public async Task CreateDraftPayRun(DraftPayRunCreationDomain draftPayRunCreationDomain)
         {
             var recurringPayRunTypes = new[] { PayrunType.DirectPayments, PayrunType.ResidentialRecurring };
-            ValidateDraftPayRun(draftPayRunCreationDomain);
-
-            var unApprovedPayRunExists = await _payRunGateway.CheckExistsUnApprovedPayRunAsync(draftPayRunCreationDomain.Type);
-            if (unApprovedPayRunExists)
-                throw new ApiException($"Operation not allowed. There exists a pay run of the same type that is not approved", HttpStatusCode.PreconditionFailed);
-
-            draftPayRunCreationDomain.Status = PayrunStatus.Draft;
+            var unApprovedPayRunStatuses = new[] { PayrunStatus.Draft, PayrunStatus.InProgress, PayrunStatus.WaitingForReview, PayrunStatus.WaitingForApproval };
+            var releaseHoldPayRunTypes =
+                new[] { PayrunType.DirectPaymentsReleasedHolds, PayrunType.ResidentialReleasedHolds };
+            ValidateDraftPayRun(draftPayRunCreationDomain, releaseHoldPayRunTypes);
 
             if (recurringPayRunTypes.Contains(draftPayRunCreationDomain.Type))
             {
@@ -46,6 +45,33 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 draftPayRunCreationDomain.StartDate = draftPayRunCreationDomain.PaidFromDate.GetValueOrDefault();
             }
 
+            if (recurringPayRunTypes.Contains(draftPayRunCreationDomain.Type))
+            {
+                var unApprovedPayRunExists = await _payRunGateway.CheckExistsUnApprovedPayRunAsync(draftPayRunCreationDomain.Type);
+                if (unApprovedPayRunExists)
+                    throw new ApiException($"Operation not allowed. There exists a pay run of the same type that is not approved", HttpStatusCode.PreconditionFailed);
+            }
+
+            if (releaseHoldPayRunTypes.Contains(draftPayRunCreationDomain.Type))
+            {
+                var adHocDraftPayRuns =
+                    await _payRunGateway.GetPayRunsByTypeAndStatusAsync(releaseHoldPayRunTypes, unApprovedPayRunStatuses);
+
+                foreach (var payRun in adHocDraftPayRuns)
+                {
+                    var firstPeriod = new DateRange(payRun.StartDate.Date, payRun.EndDate.Date);
+                    var secondPeriod = new DateRange(draftPayRunCreationDomain.StartDate.Date, draftPayRunCreationDomain.EndDate.Date);
+                    if (firstPeriod.OverlapsWithInclusive(secondPeriod))
+                    {
+                        throw new ApiException(
+                            "Create operation failed. Not allowed to create adHoc pay run with date overlap if another is still not approved", HttpStatusCode.PreconditionFailed);
+                    }
+                }
+            }
+
+            draftPayRunCreationDomain.Status = PayrunStatus.Draft;
+
+
             ValidatePayRunDates(draftPayRunCreationDomain.StartDate, draftPayRunCreationDomain.EndDate);
 
             var payrun = draftPayRunCreationDomain.ToEntity();
@@ -54,11 +80,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             await _payrunsQueue.Send(payrun.Id);
         }
 
-        private static void ValidateDraftPayRun(DraftPayRunCreationDomain creationDomain)
+        private static void ValidateDraftPayRun(DraftPayRunCreationDomain creationDomain, PayrunType[] releaseHoldPayRunTypes)
         {
             // If released holds pay run, paid from date should be provided
-            var releaseHoldPayRunTypes =
-                new[] { PayrunType.DirectPaymentsReleasedHolds, PayrunType.ResidentialReleasedHolds };
             if (releaseHoldPayRunTypes.Contains(creationDomain.Type) && creationDomain.PaidFromDate == null)
             {
                 throw new ApiException(
