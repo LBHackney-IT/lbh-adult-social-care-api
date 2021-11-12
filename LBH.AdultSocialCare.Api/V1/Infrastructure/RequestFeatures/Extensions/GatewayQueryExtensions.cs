@@ -90,12 +90,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
         }
 
         public static IQueryable<PayrunInvoice> FilterPayRunInvoices(this IQueryable<PayrunInvoice> invoices, PayRunDetailsQueryParameters parameters) =>
-            invoices.Where(invoice => (parameters.PackageType == null || invoice.Invoice.Package.PackageType.Equals(parameters.PackageType))
+            invoices.Where(invoice => (parameters.PackageType == null || invoice.Invoice.Package.PackageType == parameters.PackageType)
                                       && (string.IsNullOrEmpty(parameters.SearchTerm)
                                           || invoice.Invoice.ServiceUser.FirstName.ToLower().Contains(parameters.SearchTerm.ToLower())
                                           || invoice.Invoice.ServiceUser.LastName.ToLower().Contains(parameters.SearchTerm.ToLower())
                                           || invoice.Invoice.Supplier.SupplierName.ToLower().Contains(parameters.SearchTerm.ToLower()))
-                                      && (parameters.InvoiceStatus == null || invoice.InvoiceStatus.Equals(parameters.InvoiceStatus))
+                                      && (parameters.InvoiceStatus == null || invoice.InvoiceStatus == parameters.InvoiceStatus)
                                       && (parameters.FromDate == null || invoice.Invoice.DateCreated >= parameters.FromDate)
                                       && (parameters.ToDate == null || invoice.Invoice.DateCreated < parameters.ToDate));
 
