@@ -90,13 +90,13 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 invoice.Items.Add(fnc);
             }
 
-            var additionalWeeklyNeedsCount = _random.Next(3, 10);
+            var additionalWeeklyNeedsCount = _random.Next(1, 5);
             for (var i = 0; i < additionalWeeklyNeedsCount; i++)
             {
                 invoice.Items.Add(GenerateInvoiceItem("Additional Weekly cost"));
             }
 
-            var careChargesCount = _random.Next(3, 10);
+            var careChargesCount = _random.Next(1, 5);
             for (var i = 0; i < careChargesCount; i++)
             {
                 invoice.Items.Add(GenerateInvoiceItem("Care Charges"));
@@ -110,8 +110,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             var item = new Faker<InvoiceItem>()
                 .RuleFor(i => i.Name, name)
                 .RuleFor(i => i.WeeklyCost, f => f.Finance.Amount(10.0m, 500.0m))
-                .RuleFor(i => i.ToDate, DateTimeOffset.Now)
-                .RuleFor(i => i.FromDate, f => f.Date.Recent(45))
+                .RuleFor(i => i.ToDate, f => f.Date.Recent(14))
+                .RuleFor(i => i.FromDate, f => f.Date.Recent(45, DateTime.Now).AddDays(-15))
                 .RuleFor(i => i.ClaimCollector, f => f.PickRandom<ClaimCollector>())
                 .RuleFor(i => i.IsReclaim, name == "Funded Nursing Care" || name == "Care Charges")
                 .Generate();
