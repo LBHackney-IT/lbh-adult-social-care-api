@@ -10,7 +10,10 @@ namespace Common.AppConstants.Enums
         [Description("Direct Payments")]
         DirectPayments = 2,
 
-        [Description("Home Care")]
-        HomeCare = 3
+        [Description("Residential Released Holds")]
+        ResidentialReleasedHolds = 3,
+
+        [Description("Direct Payments Released Holds")]
+        DirectPaymentsReleasedHolds = 4,
     }
 }

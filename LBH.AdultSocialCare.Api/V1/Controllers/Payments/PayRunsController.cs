@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
+using Common.AppConstants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
 {
@@ -87,6 +88,34 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         public async Task<ActionResult<PayRunInsightsResponse>> GetPayRunInsights([FromServices] IGetPayRunInsightsUseCase useCase, Guid id)
         {
             var res = await useCase.GetAsync(id);
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// Gets released invoice count.
+        /// </summary>
+        /// <param name="useCase">Use case to fetch released invoice count.</param>
+        /// <returns>Total number or released invoices if success</returns>
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [HttpGet("released-invoice-count")]
+        public async Task<ActionResult<int>> GetReleasedInvoiceCount([FromServices] IGetReleasedInvoiceCountUseCase useCase)
+        {
+            var res = await useCase.GetAsync();
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// Gets previous pay run end date.
+        /// </summary>
+        /// <param name="useCase">Use case to get previous pay run end date.</param>
+        /// <param name="type">Pay run type.</param>
+        /// <returns>End date of last pay run if success</returns>
+        [ProducesResponseType(typeof(DateTimeOffset), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet("{type}/previous-pay-run-end-date")]
+        public async Task<ActionResult<DateTimeOffset>> GetPreviousPayRunEndDate([FromServices] IGetEndDateOfLastPayRunUseCase useCase, PayrunType type)
+        {
+            var res = await useCase.GetAsync(type);
             return Ok(res);
         }
     }

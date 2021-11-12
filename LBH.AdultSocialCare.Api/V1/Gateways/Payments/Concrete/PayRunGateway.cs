@@ -12,6 +12,7 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -88,7 +89,21 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .CountAsync();
         }
 
-        public async Task<DateTimeOffset> GetDateOfLastPayRun(PayrunType payRunType)
+        public async Task<bool> CheckExistsUnApprovedPayRunAsync(PayrunType payRunType)
+        {
+            var approvedPayRunStatuses = new[] { PayrunStatus.Approved, PayrunStatus.Paid, PayrunStatus.PaidWithHold };
+            return await _dbContext.Payruns
+                .Where(pr => pr.Type == payRunType && !approvedPayRunStatuses.Contains(pr.Status)).AnyAsync();
+        }
+
+        public async Task<IEnumerable<Payrun>> GetPayRunsByTypeAndStatusAsync(PayrunType[] types, PayrunStatus[] statuses)
+        {
+            return await _dbContext.Payruns.Where(p => types.Contains(p.Type) && statuses.Contains(p.Status))
+                .TrackChanges(false)
+                .ToListAsync();
+        }
+
+        public async Task<DateTimeOffset> GetEndDateOfLastPayRun(PayrunType payRunType)
         {
             var lastPayRun = await _dbContext.Payruns.Where(pr =>
                     pr.Type.Equals(payRunType))

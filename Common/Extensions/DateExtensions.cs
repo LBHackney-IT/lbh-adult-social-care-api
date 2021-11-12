@@ -1,5 +1,7 @@
 using Common.Extensions.Concrete;
 using System;
+using System.Linq;
+using Common.Models;
 
 namespace Common.Extensions
 {
@@ -39,6 +41,16 @@ namespace Common.Extensions
                 age--;
 
             return age;
+        }
+
+        public static bool OverlapsWith(this DateRange firstPeriod, DateRange secondPeriod)
+        {
+            return new[] { firstPeriod.StartDate, secondPeriod.StartDate }.Max() < new[] { firstPeriod.EndDate, secondPeriod.EndDate }.Min();
+        }
+
+        public static bool OverlapsWithInclusive(this DateRange firstPeriod, DateRange secondPeriod)
+        {
+            return (firstPeriod.StartDate <= secondPeriod.EndDate) && firstPeriod.EndDate >= secondPeriod.StartDate;
         }
     }
 }

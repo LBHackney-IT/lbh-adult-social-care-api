@@ -12,7 +12,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Request
         [Required]
         public PayrunType Type { get; set; }
 
+        public DateTimeOffset? PaidFromDate { get; set; }
+
         [Required]
-        public DateTimeOffset PaidUpToDate { get; set; }
+        public DateTimeOffset? PaidUpToDate { get; set; }
     }
 }

@@ -8,7 +8,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
     public class HeldInvoiceCreationDomain
     {
         public Guid PayRunInvoiceId { get; set; }
-        public Guid ActionRequiredFromId { get; set; }
+        public int ActionRequiredFromId { get; set; }
         public string ReasonForHolding { get; set; }
     }
 }
