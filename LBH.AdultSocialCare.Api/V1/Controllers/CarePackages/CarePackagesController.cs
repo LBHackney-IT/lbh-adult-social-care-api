@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
+using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
 {
@@ -326,6 +328,20 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         {
             await _deleteCarePackageUseCase.ExecuteAsync(carePackageId);
             return Ok();
+        }
+
+        /// <summary>
+        /// Gets care package payment history.
+        /// </summary>
+        /// <param name="useCase">Use case to get payment history.</param>
+        /// <param name="carePackageId">The care package id.</param>
+        /// <returns>Paged list of package past payments if success</returns>
+        [ProducesResponseType(typeof(PackagePaymentViewResponse), StatusCodes.Status200OK)]
+        [HttpGet("{carePackageId:guid}/payment-history")]
+        public async Task<ActionResult<PackagePaymentViewResponse>> GetCarePackagePaymentHistory([FromServices] IGetPackagePaymentHistoryUseCase useCase, Guid carePackageId)
+        {
+            var res = await useCase.GetAsync(carePackageId);
+            return Ok(res);
         }
     }
 }
