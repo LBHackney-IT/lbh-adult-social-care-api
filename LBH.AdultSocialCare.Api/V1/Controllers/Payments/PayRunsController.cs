@@ -123,14 +123,13 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         /// Gets care package payment history.
         /// </summary>
         /// <param name="useCase">Use case to get payment history.</param>
-        /// <param name="payRunId">The pay run Id.</param>
         /// <param name="carePackageId">The care package id.</param>
         /// <returns>Paged list of package past payments if success</returns>
         [ProducesResponseType(typeof(PackagePaymentViewResponse), StatusCodes.Status200OK)]
-        [HttpGet("{payRunId}/care-package/{carePackageId}")]
-        public async Task<ActionResult<PackagePaymentViewResponse>> GetCarePackagePaymentHistory([FromServices] IGetPackagePaymentHistoryUseCase useCase, Guid payRunId, Guid carePackageId)
+        [HttpGet("care-packages/{carePackageId}/payment-history")]
+        public async Task<ActionResult<PackagePaymentViewResponse>> GetCarePackagePaymentHistory([FromServices] IGetPackagePaymentHistoryUseCase useCase, Guid carePackageId)
         {
-            var res = await useCase.GetAsync(payRunId, carePackageId);
+            var res = await useCase.GetAsync(carePackageId);
             return Ok(res);
         }
     }

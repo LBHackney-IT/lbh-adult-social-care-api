@@ -11,10 +11,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 {
     public class GetPackagePaymentHistoryUseCase : IGetPackagePaymentHistoryUseCase
     {
-        public async Task<PackagePaymentViewResponse> GetAsync(Guid payRunId, Guid packageId)
+        public async Task<PackagePaymentViewResponse> GetAsync(Guid packageId)
         {
             var result = new PackagePaymentViewResponse
             {
+                PackageId = packageId,
                 ServiceUserName = "James Stephens",
                 SupplierId = 1234567899,
                 SupplierName = "Barchester Healthcare Homes Ltd",

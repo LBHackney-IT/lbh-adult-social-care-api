@@ -1,11 +1,13 @@
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using System;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
 {
     public class PackagePaymentViewResponse
     {
+        public Guid PackageId { get; set; }
         public string ServiceUserName { get; set; }
         public int SupplierId { get; set; }
         public string SupplierName { get; set; }

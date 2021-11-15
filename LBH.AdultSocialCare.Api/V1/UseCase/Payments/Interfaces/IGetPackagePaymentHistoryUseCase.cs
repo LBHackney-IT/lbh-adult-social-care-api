@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces
 {
     public interface IGetPackagePaymentHistoryUseCase
     {
-        Task<PackagePaymentViewResponse> GetAsync(Guid payRunId, Guid packageId);
+        Task<PackagePaymentViewResponse> GetAsync(Guid packageId);
     }
 }
