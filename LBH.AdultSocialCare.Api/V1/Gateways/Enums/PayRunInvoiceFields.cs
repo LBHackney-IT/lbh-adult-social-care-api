@@ -10,6 +10,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Enums
         Updater = 2,
         Payrun = 4,
         Invoice = 8,
-        All = Creator | Updater | Payrun | Invoice
+        InvoiceItems = 16,
+        Package = 32,
+        Supplier = 64,
+        ServiceUser = 128,
+        All = Creator | Updater | Payrun | Invoice | InvoiceItems | Package | Supplier | ServiceUser
     }
 }

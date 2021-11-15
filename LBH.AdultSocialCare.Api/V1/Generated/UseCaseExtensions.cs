@@ -67,6 +67,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetPackagePaymentHistoryUseCase, GetPackagePaymentHistoryUseCase>();
             services.AddScoped<IGetPayRunDetailsUseCase, GetPayRunDetailsUseCase>();
             services.AddScoped<IGetPayRunInsightsUseCase, GetPayRunInsightsUseCase>();
+            services.AddScoped<IGetPayRunInvoiceUseCase, GetPayRunInvoiceUseCase>();
             services.AddScoped<IGetPayRunListUseCase, GetPayRunListUseCase>();
             services.AddScoped<IGetReleasedInvoiceCountUseCase, GetReleasedInvoiceCountUseCase>();
             services.AddScoped<IHoldInvoiceUseCase, HoldInvoiceUseCase>();

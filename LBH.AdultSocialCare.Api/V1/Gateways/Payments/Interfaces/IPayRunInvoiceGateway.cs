@@ -16,6 +16,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
 
         Task<PagedList<PayRunInvoiceDomain>> GetPayRunInvoicesSummaryAsync(Guid payRunId, PayRunDetailsQueryParameters parameters);
 
+        Task<PayRunInvoiceDomain> GetPayRunInvoiceDetailAsync(Guid payRunId, Guid invoiceId, bool trackChanges = false);
+
         Task<PayrunInvoice> GetPayRunInvoiceAsync(Guid payRunInvoiceId, PayRunInvoiceFields fields = PayRunInvoiceFields.None, bool trackChanges = false);
 
         Task<decimal> GetPayRunInvoicedTotalAsync(Guid payRunId);
