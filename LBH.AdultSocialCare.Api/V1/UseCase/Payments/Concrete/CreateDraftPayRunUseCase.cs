@@ -1,9 +1,10 @@
 using Common.AppConstants.Enums;
 using Common.Exceptions.CustomExceptions;
+using Common.Extensions;
+using Common.Models;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Services.Queuing;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
@@ -11,8 +12,6 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Common.Extensions;
-using Common.Models;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 {
@@ -70,7 +69,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             }
 
             draftPayRunCreationDomain.Status = PayrunStatus.Draft;
-
 
             ValidatePayRunDates(draftPayRunCreationDomain.StartDate, draftPayRunCreationDomain.EndDate);
 
