@@ -79,6 +79,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     package.Reclaims.Add(newReclaim);
                     result.Add(newReclaim);
                 }
+
+                package.Histories.Add(new CarePackageHistory
+                {
+                    Description = $"{existingReclaim.Type.GetDisplayName()} {existingReclaim.SubType.GetDisplayName()} Updated",
+                });
             }
 
             await _dbManager.SaveAsync();

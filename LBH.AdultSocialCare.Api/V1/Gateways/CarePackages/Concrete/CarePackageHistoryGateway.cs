@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
 {
@@ -38,9 +39,17 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             return carePackageHistory;
         }
 
-        public void Create(CarePackageHistory newCarePackageHistory)
+        public async Task Create(CarePackageHistory newCarePackageHistory)
         {
-            _dbContext.CarePackageHistories.Add(newCarePackageHistory);
+            await _dbContext.CarePackageHistories.AddAsync(newCarePackageHistory);
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new DbSaveFailedException($"Could not save care package history to database {ex.Message}");
+            }
         }
     }
 }

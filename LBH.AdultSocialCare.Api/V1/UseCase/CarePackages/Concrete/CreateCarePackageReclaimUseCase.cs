@@ -60,6 +60,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 carePackage.Reclaims.Add(newReclaim);
             }
 
+            carePackage.Histories.Add(new CarePackageHistory
+            {
+                Description = $"{newReclaim.Type.GetDisplayName()} Created",
+            });
+
             await _dbManager.SaveAsync("Could not save care package reclaim to database");
             return newReclaim.ToDomain().ToResponse();
         }
