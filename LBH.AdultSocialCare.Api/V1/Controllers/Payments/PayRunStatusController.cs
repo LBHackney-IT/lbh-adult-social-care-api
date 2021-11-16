@@ -70,20 +70,37 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
             return Ok();
         }
 
-        /// <summary>Archive pay run.</summary>
-        /// <param name="useCase">Archive pay run status use case.</param>
-        /// <param name="id">An unique identifier of a pay run to be archived.</param>
-        /// <param name="request">The notes object for attaching status change.</param>
+        /// <summary>Reject pay run.</summary>
+        /// <param name="useCase">Reject pay run use case.</param>
+        /// <param name="id">Pay run Id.</param>
         /// <returns>Ok when operation is successful.</returns>
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpPut("{id:guid}/reject")]
+        public async Task<ActionResult> ArchivePayRun([FromServices] IArchivePayRunUseCase useCase, Guid id)
+        {
+            await useCase.RejectAsync(id);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Deletes the pay run.
+        /// </summary>
+        /// <param name="useCase">Delete pay run use case.</param>
+        /// <param name="id">Pay run id.</param>
+        /// <param name="request">Request object with notes on why the pay run is being deleted.</param>
+        /// <returns>Ok when delete operation is successful</returns>
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        [HttpPost("{id}/archive")]
-        public async Task<ActionResult> ArchivePayRun([FromServices] IArchivePayRunUseCase useCase, Guid id, PayRunChangeStatusRequest request)
+        [HttpPut("{id:guid}/delete")]
+        public async Task<ActionResult> DeletePayRun([FromServices] IArchivePayRunUseCase useCase, Guid id, PayRunChangeStatusRequest request)
         {
-            await useCase.ExecuteAsync(id, request.Notes);
+            await useCase.DeleteAsync(id, request.Notes);
             return Ok();
         }
 
@@ -97,7 +114,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
-        [HttpPost("{id}/submit")]
+        [HttpPost("{id:guid}/submit")]
         public async Task<ActionResult> SubmitPayRun([FromServices] ISubmitPayRunUseCase useCase, Guid id, PayRunChangeStatusRequest request)
         {
             await useCase.ExecuteAsync(id, request.Notes);

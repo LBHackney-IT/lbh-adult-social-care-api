@@ -25,7 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             _dbManager = dbManager;
         }
 
-        public async Task ExecuteAsync(Guid payRunId, string notes)
+        public async Task RejectAsync(Guid payRunId)
         {
             var payRun = await _payRunGateway
                 .GetPayRunAsync(payRunId, PayRunFields.None, true)
@@ -39,16 +39,40 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 
             payRun.Status = PayrunStatus.Archived;
 
-            var histories = new List<PayrunHistory>
+            var history = new PayrunHistory
             {
-                new PayrunHistory
-                {
-                    Status = payRun.Status,
-                    Notes = notes
-                }
+                Status = payRun.Status,
+                Notes = "Pay run rejected"
             };
 
-            payRun.Histories = histories;
+            // payRun.Histories = histories;
+            payRun.Histories.Add(history);
+
+            await _dbManager.SaveAsync();
+        }
+
+        public async Task DeleteAsync(Guid payRunId, string notes)
+        {
+            var payRun = await _payRunGateway
+                .GetPayRunAsync(payRunId, PayRunFields.None, true)
+                .EnsureExistsAsync($"Pay Run {payRunId} not found");
+            var validPayRunStatuses = new[]
+            {
+                PayrunStatus.Draft, PayrunStatus.WaitingForApproval, PayrunStatus.WaitingForReview
+            };
+            if (!validPayRunStatuses.Contains(payRun.Status))
+            {
+                throw new ApiException("Not allowed. Pay run status should be draft, waiting for approval, or waiting for review to delete",
+                    HttpStatusCode.BadRequest);
+            }
+
+            payRun.Status = PayrunStatus.Archived;
+
+            var history = new PayrunHistory { Status = payRun.Status, Notes = $"Pay run deleted with note: {notes}" };
+
+            payRun.Histories.Add(history);
+
+            // TODO: RESET paidUpToDate on cost elements that were in this pay run, Delete pay run invoices if not released holds and pay run items
 
             await _dbManager.SaveAsync();
         }
