@@ -25,7 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             _dbManager = dbManager;
         }
 
-        public async Task RejectAsync(Guid payRunId)
+        public async Task RejectAsync(Guid payRunId, string notes)
         {
             var payRun = await _payRunGateway
                 .GetPayRunAsync(payRunId, PayRunFields.None, true)
@@ -42,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             var history = new PayrunHistory
             {
                 Status = payRun.Status,
-                Notes = "Pay run rejected"
+                Notes = $"Pay run declined with note: {notes}"
             };
 
             // payRun.Histories = histories;

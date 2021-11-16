@@ -73,15 +73,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         /// <summary>Reject pay run.</summary>
         /// <param name="useCase">Reject pay run use case.</param>
         /// <param name="id">Pay run Id.</param>
+        /// <param name="request">Request object with notes on why the pay run is being declined.</param>
         /// <returns>Ok when operation is successful.</returns>
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPut("{id:guid}/reject")]
-        public async Task<ActionResult> ArchivePayRun([FromServices] IArchivePayRunUseCase useCase, Guid id)
+        public async Task<ActionResult> ArchivePayRun([FromServices] IArchivePayRunUseCase useCase, Guid id, PayRunChangeStatusRequest request)
         {
-            await useCase.RejectAsync(id);
+            await useCase.RejectAsync(id, request.Notes);
             return Ok();
         }
 
