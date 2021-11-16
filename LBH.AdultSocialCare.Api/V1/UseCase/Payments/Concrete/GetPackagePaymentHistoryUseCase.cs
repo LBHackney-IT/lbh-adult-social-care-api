@@ -2,6 +2,7 @@ using HttpServices.Models.Features;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 {
     public class GetPackagePaymentHistoryUseCase : IGetPackagePaymentHistoryUseCase
     {
-        public async Task<PackagePaymentViewResponse> GetAsync(Guid packageId)
+        public async Task<PackagePaymentViewResponse> GetAsync(Guid packageId, RequestParameters parameters)
         {
             var result = new PackagePaymentViewResponse
             {
