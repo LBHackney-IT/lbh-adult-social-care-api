@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.Helpers;
-using LBH.AdultSocialCare.Functions.Payruns.Enums;
-using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.CarePackages;
-using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.Payments;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Entities.Payments;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 {

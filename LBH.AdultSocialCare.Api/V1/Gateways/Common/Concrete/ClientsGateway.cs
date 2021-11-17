@@ -1,12 +1,12 @@
 using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Data.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete

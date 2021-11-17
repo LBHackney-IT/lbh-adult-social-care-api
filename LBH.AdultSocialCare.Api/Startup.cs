@@ -9,7 +9,6 @@ using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
 using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Api.Versioning;
@@ -33,6 +32,7 @@ using System.Linq;
 using System.Reflection;
 using Amazon;
 using Amazon.Extensions.NETCore.Setup;
+using LBH.AdultSocialCare.Data;
 
 namespace LBH.AdultSocialCare.Api
 {

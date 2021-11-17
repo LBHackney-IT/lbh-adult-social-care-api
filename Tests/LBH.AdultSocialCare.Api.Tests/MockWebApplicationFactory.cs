@@ -1,7 +1,6 @@
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -18,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
+using LBH.AdultSocialCare.Data;
 
 namespace LBH.AdultSocialCare.Api.Tests
 {

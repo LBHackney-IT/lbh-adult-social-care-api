@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete

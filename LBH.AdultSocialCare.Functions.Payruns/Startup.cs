@@ -4,7 +4,7 @@ using System.IO;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Amazon.Lambda.SQSEvents;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
 using LBH.AdultSocialCare.Functions.Payruns.Services;
 using Microsoft.AspNetCore.Builder;

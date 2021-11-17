@@ -1,11 +1,11 @@
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Data;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 {

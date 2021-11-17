@@ -1,12 +1,12 @@
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Gateways.Security.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.Common;
 using LBH.AdultSocialCare.Data.Extensions;

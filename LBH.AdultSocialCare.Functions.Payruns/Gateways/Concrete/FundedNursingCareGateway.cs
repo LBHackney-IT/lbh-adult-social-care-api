@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Data;
+using LBH.AdultSocialCare.Data.Entities.Common;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
-using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.Common;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
 {

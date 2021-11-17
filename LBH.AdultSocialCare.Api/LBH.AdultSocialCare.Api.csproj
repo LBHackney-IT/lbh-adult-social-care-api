@@ -119,8 +119,6 @@
   <ItemGroup>
     <Folder Include="Attributes" />
     <Folder Include="V1\Generated" />
-    <Folder Include="V1\Infrastructure\Migrations" />
-    <Folder Include="V1\Infrastructure\SeedConfiguration" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="$(SKIP_CODE_GENERATION)!=1">

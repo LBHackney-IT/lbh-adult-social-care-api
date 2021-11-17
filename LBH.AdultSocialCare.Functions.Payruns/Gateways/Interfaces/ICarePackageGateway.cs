@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces
 {

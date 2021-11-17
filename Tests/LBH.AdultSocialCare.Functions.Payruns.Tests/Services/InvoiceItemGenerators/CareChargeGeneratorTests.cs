@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using FluentAssertions;
-using LBH.AdultSocialCare.Functions.Payruns.Enums;
-using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators;
 using Xunit;
 

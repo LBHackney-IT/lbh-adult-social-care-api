@@ -1,5 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Data.Entities.Payments;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete

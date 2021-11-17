@@ -1,12 +1,12 @@
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
 using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;
 using System.Security.Claims;
+using LBH.AdultSocialCare.Data;
 
 namespace LBH.AdultSocialCare.Api.Tests
 {

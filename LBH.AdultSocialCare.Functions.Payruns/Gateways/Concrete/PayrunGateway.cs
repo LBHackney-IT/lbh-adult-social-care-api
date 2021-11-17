@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Functions.Payruns.Enums;
+using LBH.AdultSocialCare.Data;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.Payments;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
-using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.Payments;
 using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete

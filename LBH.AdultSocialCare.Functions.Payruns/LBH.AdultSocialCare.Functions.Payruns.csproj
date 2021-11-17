@@ -42,10 +42,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extensions" />
+    <ProjectReference Include="..\LBH.AdultSocialCare.Data\LBH.AdultSocialCare.Data.csproj" />
   </ItemGroup>
 
 </Project>

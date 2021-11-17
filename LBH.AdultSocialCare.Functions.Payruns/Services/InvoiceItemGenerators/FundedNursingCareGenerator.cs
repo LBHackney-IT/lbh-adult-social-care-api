@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.Helpers;
-using LBH.AdultSocialCare.Functions.Payruns.Enums;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Entities.Common;
+using LBH.AdultSocialCare.Data.Entities.Payments;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
-using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.CarePackages;
-using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.Common;
-using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.Payments;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 {
