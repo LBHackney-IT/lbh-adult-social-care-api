@@ -35,7 +35,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LBH.AdultSocialCare.Api\LBH.AdultSocialCare.Api.csproj" />
+    <ProjectReference Include="..\..\LBH.AdultSocialCare.Api\LBH.AdultSocialCare.Api.csproj" />
+    <ProjectReference Include="..\LBH.AdultSocialCare.TestFramework\LBH.AdultSocialCare.TestFramework.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -56,6 +57,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="V1\Core\Invoicing\InvoiceItemGenerators" />
     <Folder Include="V1\Gateways\NursingCare" />
   </ItemGroup>
 

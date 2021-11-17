@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Helpers;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
 {
@@ -52,6 +53,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                     BrokerName = cp.Broker.Name,
                     DateAssigned = cp.DateCreated
                 }).ToListAsync();
+
+            var preferences = FilterPreferences.BrokerListStatus();
+            packages = packages.OrderBy(x => preferences.IndexOf(x.PackageStatus)).ThenBy(x => x.DateAssigned).ToList();
 
             var packageCount = await filteredPackageQuery
                 .CountAsync();

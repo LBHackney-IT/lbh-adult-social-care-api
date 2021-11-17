@@ -1,13 +1,12 @@
-using FluentAssertions;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Core.Invoicing.InvoiceItemGenerators;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using System;
 using System.Linq;
+using FluentAssertions;
+using LBH.AdultSocialCare.Functions.Payruns.Enums;
+using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.CarePackages;
+using LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators;
 using Xunit;
-using PriceEffect = LBH.AdultSocialCare.Api.V1.AppConstants.PriceEffect;
 
-namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
+namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenerators
 {
     public class CareChargeGeneratorTests
     {
@@ -31,7 +30,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
             var activeElement = package.Reclaims.First(el => el.Status is ReclaimStatus.Active);
 
             invoiceItems.Count.Should().Be(1);
-            invoiceItems.First().PricePerUnit.Should().Be(activeElement.Cost);
+            invoiceItems.First().WeeklyCost.Should().Be(activeElement.Cost);
         }
 
         [Fact]
@@ -50,8 +49,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
             var invoiceItems = _generator.Run(package, DateTimeOffset.Now.AddDays(-30), DateTimeOffset.Now.AddDays(30)).ToList();
 
             invoiceItems.Count.Should().Be(package.Reclaims.Count - 2);
-            invoiceItems.Should().NotContain(el => el.PricePerUnit == pastReclaim.Cost);
-            invoiceItems.Should().NotContain(el => el.PricePerUnit == futureReclaim.Cost);
+            invoiceItems.Should().NotContain(el => el.WeeklyCost == pastReclaim.Cost);
+            invoiceItems.Should().NotContain(el => el.WeeklyCost == futureReclaim.Cost);
         }
 
         [Fact]
@@ -67,7 +66,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Core.Invoicing.InvoiceItemGenerators
         [Theory]
         [InlineData(ClaimCollector.Hackney, PriceEffect.None)]
         [InlineData(ClaimCollector.Supplier, PriceEffect.Subtract)]
-        public void ShouldSetCorrectPriceEffectWhenCollectedByHackney(ClaimCollector collector, string priceEffect)
+        public void ShouldSetCorrectPriceEffectWhenCollectedByHackney(ClaimCollector collector, PriceEffect priceEffect)
         {
             var package = CreatePackage(1);
 
