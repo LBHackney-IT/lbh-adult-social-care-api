@@ -1,4 +1,5 @@
 using Common.AppConstants.Enums;
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
@@ -7,7 +8,6 @@ using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
 {
@@ -28,5 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
         Task<DateTimeOffset> GetEndDateOfLastPayRun(PayrunType payRunType);
 
         Task<Payrun> GetPreviousPayRunAsync(PayrunType payRunType);
+
+        Task<Payrun> GetPackageLatestPayRunAsync(Guid packageId, PayrunType[] payrunTypes, PayrunStatus[] payRunStatuses, InvoiceStatus[] invoiceStatuses);
     }
 }

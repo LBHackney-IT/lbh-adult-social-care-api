@@ -1,3 +1,4 @@
+using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
@@ -10,7 +11,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
 {
     public interface IPayRunInvoiceGateway
     {
-        Task<PagedList<PayrunInvoice>> GetPayRunInvoicesAsync(Guid payRunId, PayRunDetailsQueryParameters parameters, PayRunInvoiceFields fields = PayRunInvoiceFields.None, bool trackChanges = false);
+        Task<PagedList<PayrunInvoice>> GetPayRunInvoicesAsync(Guid payRunId, RequestParameters parameters, InvoiceStatus[] statuses, PayRunInvoiceFields fields = PayRunInvoiceFields.None, bool trackChanges = false);
+
+        Task<PagedList<PayrunInvoice>> GetPackageInvoicesAsync(Guid packageId, RequestParameters parameters, PayrunStatus[] payRunStatuses, InvoiceStatus[] invoiceStatuses, PayRunInvoiceFields fields = PayRunInvoiceFields.None, bool trackChanges = false);
 
         Task<PayRunInsightsDomain> GetPayRunInsightsAsync(Guid payRunId);
 
