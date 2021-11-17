@@ -11,7 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Reflection;
 using System.Security.Authentication;
 using System.Text;
 using Amazon.SQS;
@@ -54,13 +53,11 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             string connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ??
                                       configuration.GetConnectionString("DatabaseConnectionString");
 
-            string assemblyName = Assembly.GetCallingAssembly().GetName().Name;
-
             /*services.AddDbContext<DatabaseContext>(
                 opt => opt.UseNpgsql(connectionString, b => b.MigrationsAssembly(assemblyName)).AddXRayInterceptor(true));*/
 
             services.AddDbContext<DatabaseContext>(opt
-                => opt.UseNpgsql(connectionString, b => b.MigrationsAssembly(assemblyName)));
+                => opt.UseNpgsql(connectionString, b => b.MigrationsAssembly("LBH.AdultSocialCare.Data")));
         }
 
         public static void ConfigureLogging(this IServiceCollection services, IHostEnvironment environment, IConfiguration configuration)
