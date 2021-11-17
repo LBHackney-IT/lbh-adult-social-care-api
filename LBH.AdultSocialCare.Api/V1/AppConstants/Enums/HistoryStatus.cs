@@ -10,7 +10,7 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
         [Display(Name = "Package Submitted for approval")]
         SubmittedForApproval = 2,
 
-        [Display(Name = "Further information requested by")]
+        [Display(Name = "Further information requested")]
         RequestMoreInformation = 3,
 
         [Display(Name = "Care package Approved by")]
@@ -19,25 +19,25 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
         [Display(Name = "Care Package Brokered by")]
         PackageBrokered = 5,
 
-        [Display(Name = "Care Package Approved for Commercial by")]
+        [Display(Name = "Care Package Approved for Commercial")]
         ApprovedForCommercial = 6,
 
-        [Display(Name = "Clarifying Commercials requested by")]
+        [Display(Name = "Clarifying Commercials requested")]
         ClarifyingCommercials = 7,
 
-        [Display(Name = "Care Package Approved for Brokerage by")]
+        [Display(Name = "Care Package Approved for Brokerage")]
         ApprovedForBrokerage = 8,
 
-        [Display(Name = "PO Issued by")]
+        [Display(Name = "PO Issued")]
         PackagePoIssued = 9,
 
-        [Display(Name = "Care Package declined by")]
+        [Display(Name = "Care Package declined")]
         Declined = 10,
 
         [Display(Name = "Package Ended")]
         BrokeredEnded = 11,
 
-        [Display(Name = "Care Package cancelled by")]
+        [Display(Name = "Care Package cancelled")]
         Cancelled = 12
     }
 }

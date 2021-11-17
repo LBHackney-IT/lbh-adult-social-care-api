@@ -22,17 +22,19 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _reclaim = new CarePackageReclaim
             {
                 Id = new Guid(),
-                Status = ReclaimStatus.Active
+                Status = ReclaimStatus.Active,
+                Type = ReclaimType.CareCharge
             };
 
             _dbManager = new Mock<IDatabaseManager>();
+            var historyGateway = new Mock<ICarePackageHistoryGateway>();
             var gateway = new Mock<ICarePackageReclaimGateway>();
 
             gateway
                 .Setup(g => g.GetAsync(_reclaim.Id))
                 .ReturnsAsync(_reclaim);
 
-            _useCase = new CancelCarePackageReclaimsUseCase(gateway.Object, _dbManager.Object);
+            _useCase = new CancelCarePackageReclaimsUseCase(gateway.Object, _dbManager.Object, historyGateway.Object);
         }
 
         [Fact]
