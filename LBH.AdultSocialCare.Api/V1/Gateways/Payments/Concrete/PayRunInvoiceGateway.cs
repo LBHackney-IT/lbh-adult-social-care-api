@@ -45,13 +45,16 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             var invoices = await _dbContext.PayrunInvoices.Where(p => p.PayrunId == payRunId).Include(pi => pi.Invoice)
                 .ToListAsync();
 
+            var heldInvoiceStatuses =
+                new[] { InvoiceStatus.Held, InvoiceStatus.Released, InvoiceStatus.ReleaseAccepted };
+
             var result = new PayRunInsightsDomain
             {
                 TotalInvoiceAmount = invoices.Sum(i => i.Invoice.TotalCost),
                 SupplierCount = invoices.Select(i => i.Invoice.SupplierId).Distinct().Count(),
                 ServiceUserCount = invoices.Select(i => i.Invoice.ServiceUserId).Distinct().Count(),
-                HoldsCount = invoices.Count(i => i.InvoiceStatus == InvoiceStatus.Held),
-                TotalHeldAmount = invoices.Where(i => i.InvoiceStatus == InvoiceStatus.Held)
+                HoldsCount = invoices.Count(i => heldInvoiceStatuses.Contains(i.InvoiceStatus)),
+                TotalHeldAmount = invoices.Where(i => heldInvoiceStatuses.Contains(i.InvoiceStatus))
                     .Sum(i => i.Invoice.TotalCost)
             };
 
@@ -151,8 +154,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 
         public async Task<int> GetReleasedInvoiceCountAsync()
         {
-            // return await _dbContext.PayrunInvoices.Where(pi => pi.InvoiceStatus == InvoiceStatus.Released).CountAsync();
-            return await _dbContext.PayrunInvoices.Where(pi => pi.InvoiceStatus == InvoiceStatus.Held && pi.Payrun.Status != PayrunStatus.Archived).CountAsync();
+            return await _dbContext.PayrunInvoices.Where(pi => pi.InvoiceStatus == InvoiceStatus.Released && pi.Payrun.Status != PayrunStatus.Archived).CountAsync();
         }
 
         private static IQueryable<PayrunInvoice> BuildPayRunInvoiceQuery(IQueryable<PayrunInvoice> query, PayRunInvoiceFields fields)
