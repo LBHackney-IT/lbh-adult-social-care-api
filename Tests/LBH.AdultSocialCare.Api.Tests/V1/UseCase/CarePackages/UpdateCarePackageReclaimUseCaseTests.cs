@@ -37,11 +37,21 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _package = new CarePackage
             {
                 Id = packageId,
+                Details = new List<CarePackageDetail>
+                {
+                    new CarePackageDetail
+                    {
+                        Cost = 34.12m,
+                        Type = PackageDetailType.CoreCost,
+                        StartDate = DateTimeOffset.Now.AddDays(-10)
+                    }
+                },
                 Reclaims = _requestedIds.Select(id => new CarePackageReclaim
                 {
                     Id = id,
                     Cost = 12.34m,
                     CarePackageId = packageId,
+                    StartDate = DateTimeOffset.Now,
                     Type = ReclaimType.CareCharge,
                     SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks
                 }).ToList()
@@ -49,12 +59,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             carePackageReclaimGateway
                 .Setup(g => g.GetListAsync(It.IsAny<IEnumerable<Guid>>()))
-                .ReturnsAsync(new List<CarePackageReclaim>());
-            carePackageReclaimGateway
-                .Setup(g => g.GetListAsync(_requestedIds))
-                .ReturnsAsync(_package.Reclaims.ToList);
+                .ReturnsAsync(((IEnumerable<Guid> ids) => _package.Reclaims.Where(r => ids.Contains(r.Id)).ToList()));
             carePackageGateway
-                .Setup(g => g.GetPackageAsync(_package.Id, PackageFields.None, true))
+                .Setup(g => g.GetPackageAsync(_package.Id, PackageFields.Details, true))
                 .ReturnsAsync(_package);
 
             _useCase = new UpdateCarePackageReclaimUseCase(carePackageReclaimGateway.Object, carePackageGateway.Object, _dbManager.Object, Mapper);
@@ -65,22 +72,30 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         {
             const decimal newCost = 34.56m;
 
-            foreach (var reclaim in _package.Reclaims)
-            {
-                reclaim.SubType = ReclaimSubType.CareChargeProvisional;
-            }
+            var provisionalReclaim = _package.Reclaims.First();
+            provisionalReclaim.SubType = ReclaimSubType.CareChargeProvisional;
 
-            await _useCase.UpdateListAsync(_requestedIds.Select(id => new CarePackageReclaimUpdateDomain
+            await _useCase.UpdateListAsync(new[]
             {
-                Id = id,
-                Cost = newCost
-            }).ToList());
+                new CarePackageReclaimUpdateDomain
+                {
+                    Id = provisionalReclaim.Id,
+                    Cost = newCost
+                }
+            });
 
-            _package.Reclaims.Count.Should().Be(_requestedIds.Count);
-            _package.Reclaims.Should().OnlyContain(reclaim =>
-                _requestedIds.Contains(reclaim.Id) &&
+            _package.Reclaims.Count.Should().Be(_package.Reclaims.Count, "No new reclaims should be created when updating provisional one");
+
+            _package.Reclaims.Should().ContainSingle(reclaim =>
                 reclaim.Cost == newCost &&
-                reclaim.SubType == ReclaimSubType.CareChargeProvisional);
+                reclaim.SubType == ReclaimSubType.CareChargeProvisional &&
+                reclaim.StartDate == _package.Details.First().StartDate, "Provisional reclaim start date should be equal to package start date");
+
+            _package.Reclaims
+                .Where(reclaim => reclaim.SubType != ReclaimSubType.CareChargeProvisional)
+                .Should().OnlyContain(reclaim =>
+                    reclaim.Cost != newCost &&
+                    reclaim.StartDate != _package.Details.First().StartDate, "Non-provisional reclaims shouldn't be updated");
         }
 
         [Fact]
