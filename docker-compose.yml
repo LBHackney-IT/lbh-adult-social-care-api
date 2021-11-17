@@ -62,7 +62,7 @@ services:
     image: functions-payruns-test
     build:
       context: .
-      dockerfile: Tests/LBH.AdultSocialCare.Payruns.Functions.Tests/Dockerfile
+      dockerfile: Tests/LBH.AdultSocialCare.Functions.Payruns.Tests/Dockerfile
 
   test-database:
     image: test-database
