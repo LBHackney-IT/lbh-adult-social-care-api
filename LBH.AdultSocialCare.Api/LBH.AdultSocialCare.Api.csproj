@@ -29,6 +29,7 @@
       <None Remove="terraform\**" />
       <None Remove="V1\UseCase\DayCareApproveBrokeredUseCase\**" />
       <None Remove="V1\UseCase\DayCareApprovePackageUseCase\**" />
+      <Compile Remove="Helpers\Dates.cs" />
     </ItemGroup>
     <ItemGroup>
       <Compile Remove="V1\Infrastructure\Migrations\20210514130701_TestMigration.cs" />

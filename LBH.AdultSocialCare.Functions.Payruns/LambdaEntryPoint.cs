@@ -1,12 +1,9 @@
 using System;
 using System.IO;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.SQSEvents;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
 using LBH.AdultSocialCare.Functions.Payruns.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -18,7 +15,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns
     public class LambdaEntryPoint
     {
         private readonly ILogger<LambdaEntryPoint> _logger;
-        private readonly FakeInvoiceGenerator _generator;
+        private readonly PayrunGenerator _payrunGenerator;
 
         // AWS entry point
         // ReSharper disable once UnusedMember.Global
@@ -33,21 +30,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns
 
             var serviceScopeFactory = (IServiceScopeFactory) services.GetService(typeof(IServiceScopeFactory));
             var serviceScope = serviceScopeFactory.CreateScope();
-            var database = serviceScope.ServiceProvider.GetRequiredService<DatabaseContext>();
 
-            var identity = new ClaimsIdentity();
-            var httpContextAccessor = services.GetService<IHttpContextAccessor>();
-
-            httpContextAccessor.HttpContext = new DefaultHttpContext();
-            httpContextAccessor.HttpContext.User = new ClaimsPrincipal(identity);
-
-            //TODO: VK: clean up
-            _logger.LogWarning("Accessor: {@Accessor}", httpContextAccessor);
-            _logger.LogWarning("Context: {@Context}", httpContextAccessor.HttpContext);
-            _logger.LogWarning("User: {@User}", httpContextAccessor.HttpContext.User);
-            _logger.LogWarning("Identity: {@Identity}", httpContextAccessor.HttpContext.User.Identity);
-
-            _generator = new FakeInvoiceGenerator(database, httpContextAccessor);
+            _payrunGenerator = serviceScope.ServiceProvider.GetRequiredService<PayrunGenerator>();
         }
 
         [LambdaSerializer(typeof(JsonSerializer))]
@@ -57,7 +41,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns
 
             try
             {
-                await _generator.GenerateInvoices();
+                await _payrunGenerator.GenerateAsync();
             }
             catch (Exception ex)
             {

@@ -40,7 +40,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
 
         public DbSet<CarePackage> CarePackages { get; set; }
         public DbSet<CarePackageSettings> CarePackageSettings { get; set; }
-
         public DbSet<CarePackageDetail> CarePackageDetails { get; set; }
         public DbSet<CarePackageReclaim> CarePackageReclaims { get; set; }
 
@@ -56,6 +55,8 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure
         public DbSet<PayrunInvoice> PayrunInvoices { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<HeldInvoice> HeldInvoices { get; set; }
+
+        public DbSet<FundedNursingCarePrice> FundedNursingCarePrices { get; set; }
 
         #region CustomFunctions
 
