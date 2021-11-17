@@ -203,7 +203,10 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
                 codeBuilder.AppendLine($"using {@using};");
             }
 
-            var usings = NamespaceResolver.FindNamespaces(syntaxForrest, "Boundary", "Domain", "Infrastructure.Entities");
+            var usings = NamespaceResolver.FindNamespaces(syntaxForrest,
+                "LBH.AdultSocialCare.Api.V1.Boundary",
+                "LBH.AdultSocialCare.Api.V1.Domain",
+                "LBH.AdultSocialCare.Data.Entities");
 
             foreach (var @using in usings)
             {

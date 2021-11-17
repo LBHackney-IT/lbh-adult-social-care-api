@@ -1,9 +1,9 @@
 using LBH.AdultSocialCare.Api.CodeGenerator.Generators;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using Microsoft.CodeAnalysis;
 
 namespace LBH.AdultSocialCare.Api.CodeGenerator
 {
@@ -11,12 +11,16 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator
     {
         static void Main(string[] args)
         {
-            var path = args[0];
+            var targetPath = args[0];           // where *.Generated files will be created
+            var sourcePaths = args.Skip(1);     // where mappable entities are located
+            var syntaxForrest = new List<SyntaxTree>();
 
-            var syntaxForrest = Directory
-                .EnumerateFiles(path, "*.cs", SearchOption.AllDirectories)
-                .Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(file)))
-                .ToImmutableList();
+            foreach (var path in sourcePaths)
+            {
+                syntaxForrest.AddRange(Directory
+                    .EnumerateFiles(path, "*.cs", SearchOption.AllDirectories)
+                    .Select(file => CSharpSyntaxTree.ParseText(File.ReadAllText(file))));
+            }
 
             var generators = new List<IGenerator>
             {
@@ -27,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator
 
             foreach (var generator in generators)
             {
-                generator.Run(path, syntaxForrest);
+                generator.Run(targetPath, syntaxForrest);
             }
         }
     }

@@ -13,9 +13,9 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Helpers
                 .Select(tree => tree.GetRoot()              // 1. select all namespaces
                     .DescendantNodes()
                     .OfType<NamespaceDeclarationSyntax>()
-                    .First().Name.ToFullString())
+                    .FirstOrDefault()?.Name.ToFullString())
                 .Where(@namespace => targetNamespaces       // 2. filter out target namespaces only
-                    .Any(targetNamespace => @namespace.StartsWith($"LBH.AdultSocialCare.Api.V1.{targetNamespace}")))
+                    .Any(targetNamespace => @namespace != null && @namespace.StartsWith(targetNamespace)))
                 .Select(@namespace => @namespace.Trim())
                 .Distinct().ToList();
         }

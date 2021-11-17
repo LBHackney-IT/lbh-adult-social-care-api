@@ -11,7 +11,6 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
     public abstract class BaseServiceRegistrationGenerator : IGenerator
     {
         protected abstract string SourceNamespace { get; }
-        protected abstract string ShortNamespace { get; }
         protected abstract string ClassNamePostfix { get; }
         protected abstract string GeneratedFileName { get; }
 
@@ -23,6 +22,8 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
             WriteClassHeader(codeBuilder);
 
             var useCaseSyntaxForrest = syntaxForrest
+                .Where(tree => tree.GetRoot()
+                    .DescendantNodes().OfType<NamespaceDeclarationSyntax>().Any())
                 .Where(tree => tree.GetRoot()
                     .DescendantNodes().OfType<NamespaceDeclarationSyntax>()
                     .First().Name.ToString().Contains(SourceNamespace));
@@ -53,7 +54,7 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
         {
             codeBuilder.AppendLine("using Microsoft.Extensions.DependencyInjection;");
 
-            var usings = NamespaceResolver.FindNamespaces(syntaxForrest, ShortNamespace);
+            var usings = NamespaceResolver.FindNamespaces(syntaxForrest, SourceNamespace);
 
             foreach (var @using in usings)
             {
