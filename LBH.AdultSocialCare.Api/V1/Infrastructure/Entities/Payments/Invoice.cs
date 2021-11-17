@@ -13,10 +13,14 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
         public Guid Id { get; set; }
 
         public string Number { get; set; }
+
         public int SupplierId { get; set; }
         public Guid ServiceUserId { get; set; }
-        public decimal TotalCost { get; set; }
         public Guid PackageId { get; set; }
+
+        public decimal TotalCost { get; set; }
+        public decimal GrossTotal { get; set; }
+        public decimal NetTotal { get; set; }
 
         [ForeignKey(nameof(PackageId))]
         public CarePackage Package { get; set; }
