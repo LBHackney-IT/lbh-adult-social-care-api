@@ -1,5 +1,4 @@
 using AutoMapper;
-using HttpServices.Models.Requests;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
@@ -66,11 +65,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
 
             CreateMap<InvoiceDomain, InvoiceResponse>();
             CreateMap<InvoiceItemDomain, InvoiceItemResponse>();
-            CreateMap<InvoiceForCreationRequest, InvoiceResponse>();
-            CreateMap<InvoiceItemForCreationRequest, InvoiceItemResponse>();
-
-            CreateMap<InvoiceResponse, InvoiceForCreationRequest>();
-            CreateMap<InvoiceItemResponse, InvoiceItemForCreationRequest>();
 
             #endregion Invoice
 

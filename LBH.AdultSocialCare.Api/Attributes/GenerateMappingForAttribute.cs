@@ -1,13 +1,13 @@
 using System;
 
-namespace Common.Attributes
+namespace LBH.AdultSocialCare.Api.Attributes
 {
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-    public class GenerateListMappingForAttribute : Attribute
+    public class GenerateMappingForAttribute : Attribute
     {
         private Type[] _mappingTargets;
 
-        public GenerateListMappingForAttribute(params Type[] mappingTargets)
+        public GenerateMappingForAttribute(params Type[] mappingTargets)
         {
             _mappingTargets = mappingTargets;
         }

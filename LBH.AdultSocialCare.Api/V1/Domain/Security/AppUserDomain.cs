@@ -1,6 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using System;
-using Common.Attributes;
+using LBH.AdultSocialCare.Api.Attributes;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Security
 {

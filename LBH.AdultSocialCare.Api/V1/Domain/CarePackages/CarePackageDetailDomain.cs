@@ -1,6 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using System;
-using Common.Attributes;
+using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 

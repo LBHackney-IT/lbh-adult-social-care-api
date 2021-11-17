@@ -1,5 +1,4 @@
 using System;
-using Common.AppConstants.Enums;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Data.RequestFeatures.Parameters

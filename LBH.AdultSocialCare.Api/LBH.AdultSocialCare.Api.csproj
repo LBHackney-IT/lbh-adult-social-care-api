@@ -30,7 +30,6 @@
       <None Remove="V1\UseCase\DayCareApproveBrokeredUseCase\**" />
       <None Remove="V1\UseCase\DayCareApprovePackageUseCase\**" />
       <Compile Remove="Helpers\Dates.cs" />
-      <Compile Remove="Attributes\GenerateListMappingForAttribute.cs" />
       <Compile Remove="V1\Extensions\IdentityExtensions.cs" />
       <Compile Remove="V1\AppConstants\PriceEffect.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20211109113250_HeldInvoiceModels.cs" />
@@ -117,7 +116,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Attributes" />
     <Folder Include="V1\Generated" />
   </ItemGroup>
 

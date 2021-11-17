@@ -1,6 +1,6 @@
 using System.ComponentModel;
 
-namespace Common.AppConstants.Enums
+namespace LBH.AdultSocialCare.Data.Constants.Enums
 {
     public enum PayrunType
     {

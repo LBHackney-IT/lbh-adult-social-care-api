@@ -1,7 +1,7 @@
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using System;
 using System.Collections.Generic;
-using Common.Attributes;
+using LBH.AdultSocialCare.Api.Attributes;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
 {

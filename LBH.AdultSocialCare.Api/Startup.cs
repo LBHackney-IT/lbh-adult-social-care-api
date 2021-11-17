@@ -111,7 +111,6 @@ namespace LBH.AdultSocialCare.Api
 
             // Configure API clients
             services.AddTransient<IRestClient, JsonRestClient>();
-            services.ConfigureTransactionsApiClient(Configuration);
             services.ConfigureResidentApiClient(Configuration);
         }
 
