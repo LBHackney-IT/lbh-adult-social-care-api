@@ -1,3 +1,4 @@
+using Common.AppConstants.Enums;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
@@ -17,11 +18,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
     {
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IPayRunInvoiceGateway _payRunInvoiceGateway;
+        private readonly IPayRunGateway _payRunGateway;
 
-        public GetPackagePaymentHistoryUseCase(ICarePackageGateway carePackageGateway, IPayRunInvoiceGateway payRunInvoiceGateway)
+        public GetPackagePaymentHistoryUseCase(ICarePackageGateway carePackageGateway, IPayRunInvoiceGateway payRunInvoiceGateway, IPayRunGateway payRunGateway)
         {
             _carePackageGateway = carePackageGateway;
             _payRunInvoiceGateway = payRunInvoiceGateway;
+            _payRunGateway = payRunGateway;
         }
 
         public async Task<PackagePaymentViewResponse> GetAsync(Guid packageId, RequestParameters parameters)
@@ -32,6 +35,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 
             var invoiceStatuses = new[] { InvoiceStatus.Accepted };
             var payRunStatuses = new[] { PayrunStatus.Approved, PayrunStatus.Paid, PayrunStatus.PaidWithHold };
+            var payRunTypes = new[]
+            {
+                PayrunType.ResidentialRecurring, PayrunType.DirectPayments, PayrunType.ResidentialReleasedHolds,
+                PayrunType.DirectPaymentsReleasedHolds
+            };
+
+            var packageLatestPayRun =
+                await _payRunGateway.GetPackageLatestPayRunAsync(packageId, payRunTypes, payRunStatuses, invoiceStatuses);
 
             var payRunInvoices = await _payRunInvoiceGateway.GetPackageInvoicesAsync(packageId, parameters, payRunStatuses,
                 invoiceStatuses, PayRunInvoiceFields.Invoice | PayRunInvoiceFields.Payrun, false);
@@ -53,7 +64,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             {
                 PackageId = package.Id,
                 TotalPaid = payRunInvoices.Sum(pi => pi.Invoice.GrossTotal),
-                DateTo = DateTime.Today
+                DateTo = packageLatestPayRun != null ? packageLatestPayRun.EndDate.Date : DateTime.Today
             };
 
             return new PackagePaymentViewResponse
