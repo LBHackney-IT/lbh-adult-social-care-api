@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common.AppConstants.Enums;
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.Helpers;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
 {
@@ -22,15 +24,20 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions
             clientsQuery.Where(s => String.IsNullOrEmpty(name)
                                     || s.SupplierName.ToLower().Contains(name.ToLower()));
 
-        public static IQueryable<CarePackage> FilterBrokerViewPackages(this IQueryable<CarePackage> packages, Guid? serviceUserId, string serviceUserName, PackageStatus? status, Guid? brokerId, DateTimeOffset? fromDate, DateTimeOffset? toDate) =>
-            packages.Where(package => (serviceUserId == null || package.ServiceUserId.Equals(serviceUserId))
-                                && (String.IsNullOrEmpty(serviceUserName)
-                                    || package.ServiceUser.FirstName.ToLower().Contains(serviceUserName.ToLower())
-                                    || package.ServiceUser.LastName.ToLower().Contains(serviceUserName.ToLower()))
-                                && (status == null || package.Status.Equals(status))
-                                && (brokerId == null || package.BrokerId.Equals(brokerId))
-                                && (fromDate == null || package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost).StartDate >= fromDate)
-                                && (toDate == null || package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost).EndDate <= toDate));
+        public static IQueryable<CarePackage> FilterBrokerViewPackages(this IQueryable<CarePackage> packages, Guid? serviceUserId, string serviceUserName, PackageStatus? status, Guid? brokerId, DateTimeOffset? fromDate, DateTimeOffset? toDate)
+        {
+            var searchTerms = serviceUserName?.Split(' ').ToList();
+            string searchTermFirst = searchTerms?.First();
+            string searchTermSecond = searchTerms != null && searchTerms.Count > 1 ? searchTerms[1] : null;
+
+            return packages.Where(package => (serviceUserId == null || package.ServiceUserId.Equals(serviceUserId))
+                                             && (String.IsNullOrEmpty(searchTermFirst) || package.ServiceUser.FirstName.ToLower().Contains(searchTermFirst.ToLower()))
+                                             && (searchTermSecond != null ? package.ServiceUser.LastName.ToLower().Contains(searchTermSecond.ToLower()) : package.Equals(package))
+                                             && (status == null || package.Status.Equals(status))
+                                             && (brokerId == null || package.BrokerId.Equals(brokerId))
+                                             && (fromDate == null || package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost).StartDate >= fromDate)
+                                             && (toDate == null || package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost).EndDate <= toDate));
+        }
 
         public static IQueryable<CarePackage> FilterApprovableCarePackages(this IQueryable<CarePackage> packages, Guid? serviceUserId, string serviceUserName, PackageStatus? packageStatus, PackageType? packageType, Guid? approverId, DateTimeOffset? fromDate, DateTimeOffset? toDate, PackageStatus[] statusesToInclude) =>
             packages.Where(package => (serviceUserId == null || package.ServiceUserId.Equals(serviceUserId))
