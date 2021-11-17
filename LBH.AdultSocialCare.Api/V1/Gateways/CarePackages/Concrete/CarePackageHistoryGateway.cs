@@ -39,17 +39,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             return carePackageHistory;
         }
 
-        public async Task Create(CarePackageHistory newCarePackageHistory)
+        public void Create(CarePackageHistory newCarePackageHistory)
         {
-            await _dbContext.CarePackageHistories.AddAsync(newCarePackageHistory);
-            try
-            {
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new DbSaveFailedException($"Could not save care package history to database {ex.Message}");
-            }
+            _dbContext.CarePackageHistories.Add(newCarePackageHistory);
         }
     }
 }

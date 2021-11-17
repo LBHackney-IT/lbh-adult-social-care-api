@@ -33,15 +33,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             reclaim.Status = ReclaimStatus.Cancelled;
 
-            await _dbManager.SaveAsync();
-
             var history = new CarePackageHistory
             {
                 CarePackageId = reclaim.CarePackageId,
                 Description = $"{reclaim.Type.GetDisplayName()} {ReclaimStatus.Cancelled}",
             };
 
-            await _carePackageHistoryGateway.Create(history);
+            _carePackageHistoryGateway.Create(history);
+            await _dbManager.SaveAsync();
 
             return reclaim.ToDomain();
         }

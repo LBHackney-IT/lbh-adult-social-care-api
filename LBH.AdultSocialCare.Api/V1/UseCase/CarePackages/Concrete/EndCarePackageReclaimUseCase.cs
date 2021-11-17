@@ -34,15 +34,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             reclaim.Status = ReclaimStatus.Ended;
             reclaim.EndDate = request.EndDate?.Date;
 
-            await _dbManager.SaveAsync();
-
             var history = new CarePackageHistory
             {
                 CarePackageId = reclaim.CarePackageId,
                 Description = $"{reclaim.Type.GetDisplayName()} {ReclaimStatus.Ended}",
             };
 
-            await _carePackageHistoryGateway.Create(history);
+            _carePackageHistoryGateway.Create(history);
+
+            await _dbManager.SaveAsync();
 
             return reclaim.ToDomain();
         }

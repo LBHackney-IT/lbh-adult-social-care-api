@@ -10,6 +10,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
     {
         Task<IEnumerable<CarePackageHistoryDomain>> ListAsync(Guid carePackageId);
 
-        Task Create(CarePackageHistory newCarePackageHistory);
+        void Create(CarePackageHistory newCarePackageHistory);
     }
 }
