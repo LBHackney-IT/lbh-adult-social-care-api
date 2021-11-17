@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Amazon.Lambda.SQSEvents;
 using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Functions.Payruns.Infrastructure;
+using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
+using LBH.AdultSocialCare.Functions.Payruns.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -32,12 +34,23 @@ namespace LBH.AdultSocialCare.Functions.Payruns
             services.AddHttpContextAccessor();
             services.AddLogging(ConfigureLogging);
 
+            services.AddScoped<PayrunGenerator>();
+
+            // add gateways
+            services.Scan(scan => scan
+                .FromCallingAssembly()
+                .AddClasses(classes => classes.AssignableTo<IGateway>())
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
+
             services.AddDbContext<DatabaseContext>(
-                opt => opt.UseNpgsql(_configuration.GetConnectionString("Default")));
+                opt => opt.UseNpgsql(_configuration.GetConnectionString("Default"), b => b.MaxBatchSize(100)));
         }
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            ConfigureHttpContext(app);
+
             if (env.IsDevelopment())
             {
                 app.Run(async context => await HandleRequest(context, app.ApplicationServices));
@@ -61,6 +74,15 @@ namespace LBH.AdultSocialCare.Functions.Payruns
             {
                 logging.AddLambdaLogger(new LambdaLoggerOptions(loggingConfig));
             }
+        }
+
+        private static void ConfigureHttpContext(IApplicationBuilder app)
+        {
+            var identity = new ClaimsIdentity();
+            var httpContextAccessor = app.ApplicationServices.GetService<IHttpContextAccessor>();
+
+            httpContextAccessor.HttpContext = new DefaultHttpContext();
+            httpContextAccessor.HttpContext.User = new ClaimsPrincipal(identity);
         }
 
         private static async Task HandleRequest(HttpContext context, IServiceProvider services)
