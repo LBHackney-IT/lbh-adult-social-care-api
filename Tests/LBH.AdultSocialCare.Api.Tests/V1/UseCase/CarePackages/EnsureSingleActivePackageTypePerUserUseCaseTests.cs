@@ -1,11 +1,11 @@
 using Common.Exceptions.CustomExceptions;
 using FluentAssertions;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using System;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages

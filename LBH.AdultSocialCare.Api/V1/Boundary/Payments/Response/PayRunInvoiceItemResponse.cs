@@ -1,7 +1,7 @@
 using System;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.Helpers;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
 {

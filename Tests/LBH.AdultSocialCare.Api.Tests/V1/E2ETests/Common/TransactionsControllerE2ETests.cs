@@ -2,12 +2,12 @@ using FluentAssertions;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using LBH.AdultSocialCare.Api.Tests.Extensions;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Common

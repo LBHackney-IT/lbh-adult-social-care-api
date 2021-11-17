@@ -15,9 +15,9 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Entities.Common;
+using LBH.AdultSocialCare.Data.Entities.Payments;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
 {
@@ -25,53 +25,53 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
     {
         public GeneratedMappingProfile()
         {
+            CreateMap<CarePackageApprovableListItemDomain, CarePackage>().ReverseMap();
             CreateMap<CarePackageApprovableListItemDomain, CarePackageApprovableListItemResponse>().ReverseMap();
             CreateMap<CarePackageBrokerageDomain, CarePackageBrokerageResponse>().ReverseMap();
             CreateMap<CarePackageDetailDomain, CarePackageDetail>().ReverseMap();
             CreateMap<CarePackageDetailDomain, CarePackageDetailResponse>().ReverseMap();
+            CreateMap<CarePackageDomain, CarePackage>().ReverseMap();
             CreateMap<CarePackageDomain, CarePackageResponse>().ReverseMap();
             CreateMap<CarePackageForCreationDomain, CarePackage>().ReverseMap();
             CreateMap<CarePackageForCreationDomain, CarePackageSettings>().ReverseMap();
             CreateMap<CarePackageHistoryDomain, CarePackageHistoryResponse>().ReverseMap();
             CreateMap<CarePackageListItemDomain, CarePackageListItemResponse>().ReverseMap();
+            CreateMap<CarePackagePlainDomain, CarePackage>().ReverseMap();
             CreateMap<CarePackagePlainDomain, CarePackagePlainResponse>().ReverseMap();
             CreateMap<CarePackageReclaimCreationDomain, CarePackageReclaim>().ReverseMap();
+            CreateMap<CarePackageReclaimDomain, CarePackageReclaim>().ReverseMap();
             CreateMap<CarePackageReclaimDomain, CarePackageReclaimResponse>().ReverseMap();
             CreateMap<CarePackageReclaimUpdateDomain, CarePackageReclaim>().ReverseMap();
+            CreateMap<CarePackageSettingsDomain, CarePackageSettings>().ReverseMap();
             CreateMap<CarePackageSettingsDomain, CarePackageSettingsResponse>().ReverseMap();
             CreateMap<CarePackageSummaryDomain, CarePackageSummaryResponse>().ReverseMap();
             CreateMap<CarePackageSummaryReclaimsDomain, CarePackageSummaryReclaimsResponse>().ReverseMap();
-            CreateMap<CarePackageUpdateDomain, CarePackageSettings>().ReverseMap();
             CreateMap<CarePackageUpdateDomain, CarePackage>().ReverseMap();
+            CreateMap<CarePackageUpdateDomain, CarePackageSettings>().ReverseMap();
             CreateMap<BrokerPackageItemDomain, BrokerPackageItemResponse>().ReverseMap();
             CreateMap<BrokerPackageViewDomain, BrokerPackageViewResponse>().ReverseMap();
+            CreateMap<ServiceUserBasicDomain, ServiceUser>().ReverseMap();
             CreateMap<ServiceUserBasicDomain, ServiceUserBasicResponse>().ReverseMap();
             CreateMap<ServiceUserDomain, ServiceUserResponse>().ReverseMap();
+            CreateMap<DepartmentFlatDomain, Department>().ReverseMap();
             CreateMap<DepartmentFlatDomain, DepartmentFlatResponse>().ReverseMap();
             CreateMap<HeldInvoiceCreationDomain, HeldInvoice>().ReverseMap();
+            CreateMap<HeldInvoiceFlatDomain, HeldInvoice>().ReverseMap();
             CreateMap<HeldInvoiceFlatDomain, HeldInvoiceFlatResponse>().ReverseMap();
             CreateMap<PayRunInvoiceItemDomain, PayRunInvoiceItemResponse>().ReverseMap();
             CreateMap<PayRunListDomain, PayRunListResponse>().ReverseMap();
             CreateMap<AppUserDomain, AppUserResponse>().ReverseMap();
+            CreateMap<UsersMinimalDomain, User>().ReverseMap();
             CreateMap<CareChargeReclaimUpdateRequest, CarePackageReclaimUpdateDomain>().ReverseMap();
             CreateMap<CarePackageBrokerageCreationRequest, CarePackageBrokerageDomain>().ReverseMap();
             CreateMap<CarePackageDetailRequest, CarePackageDetailDomain>().ReverseMap();
+            CreateMap<CarePackageDetailRequest, CarePackageDetail>().ReverseMap();
             CreateMap<CarePackageSubmissionRequest, CarePackageSubmissionDomain>().ReverseMap();
             CreateMap<CarePackageUpdateRequest, CarePackageUpdateDomain>().ReverseMap();
             CreateMap<CarePlanAssignmentRequest, CarePlanAssignmentDomain>().ReverseMap();
+            CreateMap<CarePackageDetailResponse, CarePackageDetail>().ReverseMap();
             CreateMap<DraftPayRunCreationRequest, DraftPayRunCreationDomain>().ReverseMap();
             CreateMap<HeldInvoiceCreationRequest, HeldInvoiceCreationDomain>().ReverseMap();
-            CreateMap<CarePackage, CarePackageDomain>().ReverseMap();
-            CreateMap<CarePackage, CarePackagePlainDomain>().ReverseMap();
-            CreateMap<CarePackage, CarePackageApprovableListItemDomain>().ReverseMap();
-            CreateMap<CarePackageDetail, CarePackageDetailRequest>().ReverseMap();
-            CreateMap<CarePackageDetail, CarePackageDetailResponse>().ReverseMap();
-            CreateMap<CarePackageReclaim, CarePackageReclaimDomain>().ReverseMap();
-            CreateMap<CarePackageSettings, CarePackageSettingsDomain>().ReverseMap();
-            CreateMap<ServiceUser, ServiceUserBasicDomain>().ReverseMap();
-            CreateMap<User, UsersMinimalDomain>().ReverseMap();
-            CreateMap<Department, DepartmentFlatDomain>().ReverseMap();
-            CreateMap<HeldInvoice, HeldInvoiceFlatDomain>().ReverseMap();
         }
     }
 }

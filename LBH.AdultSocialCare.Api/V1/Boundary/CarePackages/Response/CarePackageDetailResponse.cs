@@ -1,8 +1,11 @@
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using System;
+using Common.Attributes;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
 {
+    [GenerateListMappingFor(typeof(CarePackageDetail))]
     public class CarePackageDetailResponse
     {
         public Guid Id { get; set; }

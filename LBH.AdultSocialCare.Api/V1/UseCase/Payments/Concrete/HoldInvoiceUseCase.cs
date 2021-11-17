@@ -1,6 +1,5 @@
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -12,6 +11,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 {

@@ -1,7 +1,10 @@
 using System;
+using Common.Attributes;
+using LBH.AdultSocialCare.Data.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Security
 {
+    [GenerateMappingFor(typeof(User))]
     public class UsersMinimalDomain
     {
         public Guid Id { get; set; }

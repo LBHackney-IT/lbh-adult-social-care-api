@@ -30,6 +30,26 @@
       <None Remove="V1\UseCase\DayCareApproveBrokeredUseCase\**" />
       <None Remove="V1\UseCase\DayCareApprovePackageUseCase\**" />
       <Compile Remove="Helpers\Dates.cs" />
+      <Compile Remove="Attributes\GenerateListMappingForAttribute.cs" />
+      <Compile Remove="V1\Extensions\IdentityExtensions.cs" />
+      <Compile Remove="V1\AppConstants\PriceEffect.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211109113250_HeldInvoiceModels.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211109113250_HeldInvoiceModels.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211109115506_AddBaseEntityOnHeldInvoice.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211109115506_AddBaseEntityOnHeldInvoice.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211109143254_PayRunHistoryModel.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211109143254_PayRunHistoryModel.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211117080956_addedInvoiceGrossAndNetTotals.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211117080956_addedInvoiceGrossAndNetTotals.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\CarePackageSchedulingOptionsSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\DepartmentSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\FundedNursingCarePriceSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\PackageStatusSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\PrimarySupportReasonSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\ProvisionalCareChargeAmountSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\RolesSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\SupplierSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\UserRolesSeed.cs" />
     </ItemGroup>
     <ItemGroup>
       <Compile Remove="V1\Infrastructure\Migrations\20210514130701_TestMigration.cs" />
@@ -87,6 +107,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HttpServices\HttpServices.csproj" />
+    <ProjectReference Include="..\LBH.AdultSocialCare.Data\LBH.AdultSocialCare.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -96,11 +117,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Attributes" />
     <Folder Include="V1\Generated" />
+    <Folder Include="V1\Infrastructure\Migrations" />
+    <Folder Include="V1\Infrastructure\SeedConfiguration" />
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="$(SKIP_CODE_GENERATION)!=1">
-      <Exec Command="..\LBH.AdultSocialCare.Api.CodeGenerator\bin\$(ConfigurationName)\netcoreapp3.1\LBH.AdultSocialCare.Api.CodeGenerator.exe $(ProjectDir)\V1\" />
+      <Exec Command="..\LBH.AdultSocialCare.Api.CodeGenerator\bin\$(ConfigurationName)\netcoreapp3.1\LBH.AdultSocialCare.Api.CodeGenerator.exe $(ProjectDir)\V1\ $(ProjectDir)\V1\ $(SolutionDir)\LBH.AdultSocialCare.Data\" />
   </Target>
 
 </Project>

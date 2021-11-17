@@ -18,9 +18,9 @@ namespace LBH.AdultSocialCare.Api.V1
 
         public async Task InvokeAsync(HttpContext context)
         {
-            if (context.Request.Headers[Constants.CorrelationId].Count == 0)
+            if (context.Request.Headers[CorrelationConstants.CorrelationId].Count == 0)
             {
-                context.Request.Headers[Constants.CorrelationId] = Guid.NewGuid().ToString();
+                context.Request.Headers[CorrelationConstants.CorrelationId] = Guid.NewGuid().ToString();
             }
 
             if (_next != null)

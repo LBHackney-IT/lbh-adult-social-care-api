@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Functions.Payruns.Extensions;
+using Common.Extensions;
 using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.Common;
 using LBH.AdultSocialCare.Functions.Payruns.Infrastructure.Entities.Payments;

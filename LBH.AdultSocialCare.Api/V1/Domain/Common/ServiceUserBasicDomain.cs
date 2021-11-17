@@ -1,11 +1,13 @@
 using Common.Extensions;
-using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using System;
+using Common.Attributes;
+using LBH.AdultSocialCare.Data.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
     // separate entity to keep non-sensitive data
+    [GenerateMappingFor(typeof(ServiceUser))]
     [GenerateMappingFor(typeof(ServiceUserBasicResponse))]
     public class ServiceUserBasicDomain
     {

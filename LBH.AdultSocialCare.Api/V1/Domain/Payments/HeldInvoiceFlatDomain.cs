@@ -1,9 +1,11 @@
-using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using System;
+using Common.Attributes;
+using LBH.AdultSocialCare.Data.Entities.Payments;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
 {
+    [GenerateMappingFor(typeof(HeldInvoice))]
     [GenerateMappingFor(typeof(HeldInvoiceFlatResponse))]
     public class HeldInvoiceFlatDomain
     {

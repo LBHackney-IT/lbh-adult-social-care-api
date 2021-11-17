@@ -1,13 +1,10 @@
 using Common.Exceptions.CustomExceptions;
-using Common.Extensions;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.Tests.V1.Constants;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
@@ -15,6 +12,9 @@ using Microsoft.AspNetCore.Http;
 using Moq;
 using System;
 using System.Linq;
+using Common.Extensions;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages

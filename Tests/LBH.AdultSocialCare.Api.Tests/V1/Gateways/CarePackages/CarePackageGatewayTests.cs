@@ -1,7 +1,7 @@
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Xunit;

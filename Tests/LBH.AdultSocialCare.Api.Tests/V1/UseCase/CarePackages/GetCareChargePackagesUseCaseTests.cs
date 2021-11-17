@@ -3,13 +3,13 @@ using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
 using Moq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Data.Extensions;
+using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages

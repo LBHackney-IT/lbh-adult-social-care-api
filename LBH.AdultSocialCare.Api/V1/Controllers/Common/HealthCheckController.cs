@@ -1,7 +1,6 @@
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Services.Queuing;
 

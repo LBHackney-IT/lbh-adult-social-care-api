@@ -1,9 +1,9 @@
 using FluentAssertions;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Boundary.Requests

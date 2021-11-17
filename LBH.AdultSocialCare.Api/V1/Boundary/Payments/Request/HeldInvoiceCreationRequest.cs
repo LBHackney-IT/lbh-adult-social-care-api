@@ -1,6 +1,6 @@
-using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using System.ComponentModel.DataAnnotations;
+using Common.Attributes;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Request
 {

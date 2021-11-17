@@ -1,8 +1,8 @@
 using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Data.Entities.Common;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
