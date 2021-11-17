@@ -23,11 +23,26 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             _dbContext = dbContext;
         }
 
-        public async Task<PagedList<PayrunInvoice>> GetPayRunInvoicesAsync(Guid payRunId, PayRunDetailsQueryParameters parameters, PayRunInvoiceFields fields = PayRunInvoiceFields.None,
+        public async Task<PagedList<PayrunInvoice>> GetPayRunInvoicesAsync(Guid payRunId, RequestParameters parameters, InvoiceStatus[] statuses, PayRunInvoiceFields fields = PayRunInvoiceFields.None,
             bool trackChanges = false)
         {
-            var query = _dbContext.PayrunInvoices.Where(p => p.PayrunId == payRunId)
-                .FilterPayRunInvoices(parameters)
+            var query = _dbContext.PayrunInvoices.Where(p => p.PayrunId == payRunId && statuses.Contains(p.InvoiceStatus))
+                .TrackChanges(trackChanges);
+
+            var payRunInvoices = await BuildPayRunInvoiceQuery(query, fields)
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .ToListAsync();
+
+            var invoiceCount = await query.CountAsync();
+            return PagedList<PayrunInvoice>.ToPagedList(payRunInvoices, invoiceCount, parameters.PageNumber,
+                parameters.PageSize);
+        }
+
+        public async Task<PagedList<PayrunInvoice>> GetPackageInvoicesAsync(Guid packageId, RequestParameters parameters, PayrunStatus[] payRunStatuses, InvoiceStatus[] invoiceStatuses,
+            PayRunInvoiceFields fields = PayRunInvoiceFields.None, bool trackChanges = false)
+        {
+            var query = _dbContext.PayrunInvoices.Where(p => p.Invoice.PackageId == packageId && payRunStatuses.Contains(p.Payrun.Status) && invoiceStatuses.Contains(p.InvoiceStatus))
                 .TrackChanges(trackChanges);
 
             var payRunInvoices = await BuildPayRunInvoiceQuery(query, fields)
