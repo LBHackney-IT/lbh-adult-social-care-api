@@ -122,11 +122,17 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: build
+          name: build API
           command: docker-compose build base-api-test
       - run:
-          name: Run tests
+          name: Run API tests
           command: docker-compose run base-api-test
+      - run:
+          name: build payruns function
+          command: docker-compose build functions-payruns-test
+      - run:
+          name: Run payruns tests
+          command: docker-compose run functions-payruns-test
   assume-role-development:
     executor: docker-python
     steps:

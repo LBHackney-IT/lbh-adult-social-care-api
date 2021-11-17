@@ -29,7 +29,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     Name = $"Additional {additionalNeed.CostPeriod.GetDisplayName()} Cost",
                     Quantity = actualWeeks,
                     WeeklyCost = additionalNeed.Cost,           // TODO: VK: Consider making WeeklyCost nullable for one-offs
-                    TotalCost =  additionalNeed.CostPeriod is PaymentPeriod.OneOff
+                    TotalCost = additionalNeed.CostPeriod is PaymentPeriod.OneOff
                         ? additionalNeed.Cost
                         : additionalNeed.Cost * actualWeeks,
                     FromDate = actualStartDate,

@@ -40,7 +40,7 @@ services:
     image: base-api-test
     build:
       context: .
-      dockerfile: LBH.AdultSocialCare.Api.Tests/Dockerfile
+      dockerfile: Tests/LBH.AdultSocialCare.Api.Tests/Dockerfile
     environment:
       - DB_HOST=test-database
       - DB_PORT=5432
@@ -57,6 +57,12 @@ services:
       - test-database
 # TODO: If using DynamoDb remove the line above and uncomment the line below.
 #      - dynamodb-database
+
+  functions-payruns-test:
+    image: functions-payruns-test
+    build:
+      context: .
+      dockerfile: Tests/LBH.AdultSocialCare.Payruns.Functions.Tests/Dockerfile
 
   test-database:
     image: test-database
