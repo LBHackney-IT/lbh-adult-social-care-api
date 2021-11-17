@@ -62,7 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
                 if (existingReclaim.SubType is ReclaimSubType.CareChargeProvisional)
                 {
-                    _mapper.Map(requestedReclaim, existingReclaim);
+                    UpdateProvisionalReclaim(requestedReclaim, existingReclaim, package);
                     result.Add(existingReclaim);
                 }
                 else
@@ -70,13 +70,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     existingReclaim.Status = ReclaimStatus.Ended;
                     existingReclaim.EndDate = DateTimeOffset.Now.Date;
 
-                    var newReclaim = requestedReclaim.ToEntity();
-
-                    newReclaim.Id = Guid.Empty;
-                    newReclaim.Type = existingReclaim.Type;
-                    newReclaim.SubType = existingReclaim.SubType;
-
-                    package.Reclaims.Add(newReclaim);
+                    var newReclaim = CreateNewReclaim(requestedReclaim, existingReclaim, package);
                     result.Add(newReclaim);
                 }
             }
@@ -110,8 +104,32 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             var packageId = packageIds.First();
             return await _carePackageGateway
-                .GetPackageAsync(packageId, PackageFields.None, true)
+                .GetPackageAsync(packageId, PackageFields.Details, true)
                 .EnsureExistsAsync($"Care package {packageId} not found");
+        }
+
+        private void UpdateProvisionalReclaim(CarePackageReclaimUpdateDomain requestedReclaim, CarePackageReclaim existingReclaim, CarePackage package)
+        {
+            _mapper.Map(requestedReclaim, existingReclaim);
+
+            // empty start date may come from package builder
+            var coreCost = package.Details.FirstOrDefault(d => d.Type is PackageDetailType.CoreCost);
+            if (coreCost != null)
+            {
+                existingReclaim.StartDate = coreCost.StartDate;
+            }
+        }
+
+        private static CarePackageReclaim CreateNewReclaim(CarePackageReclaimUpdateDomain requestedReclaim, CarePackageReclaim existingReclaim, CarePackage package)
+        {
+            var newReclaim = requestedReclaim.ToEntity();
+
+            newReclaim.Id = Guid.Empty;
+            newReclaim.Type = existingReclaim.Type;
+            newReclaim.SubType = existingReclaim.SubType;
+
+            package.Reclaims.Add(newReclaim);
+            return newReclaim;
         }
     }
 }
