@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Request
 {
     public class PayRunChangeStatusRequest
     {
-        public string Notes { get; set; }
+        [Required] public string Notes { get; set; }
     }
 }

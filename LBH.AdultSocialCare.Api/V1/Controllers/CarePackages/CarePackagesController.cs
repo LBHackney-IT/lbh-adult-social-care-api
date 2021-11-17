@@ -2,11 +2,13 @@ using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -326,6 +328,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         {
             await _deleteCarePackageUseCase.ExecuteAsync(carePackageId);
             return Ok();
+        }
+
+        /// <summary>
+        /// Gets care package payment history.
+        /// </summary>
+        /// <param name="useCase">Use case to get payment history.</param>
+        /// <param name="carePackageId">The care package id.</param>
+        /// <param name="parameters">Request pagination parameters</param>
+        /// <returns>Paged list of package past payments if success</returns>
+        [ProducesResponseType(typeof(PackagePaymentViewResponse), StatusCodes.Status200OK)]
+        [HttpGet("{carePackageId:guid}/payment-history")]
+        public async Task<ActionResult<PackagePaymentViewResponse>> GetCarePackagePaymentHistory([FromServices] IGetPackagePaymentHistoryUseCase useCase, Guid carePackageId, [FromQuery] RequestParameters parameters)
+        {
+            var res = await useCase.GetAsync(carePackageId, parameters);
+            return Ok(res);
         }
     }
 }

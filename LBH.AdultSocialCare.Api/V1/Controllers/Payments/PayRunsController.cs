@@ -1,3 +1,4 @@
+using Common.AppConstants.Enums;
 using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Request;
@@ -10,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
-using Common.AppConstants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
 {
@@ -120,16 +120,18 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         }
 
         /// <summary>
-        /// Gets care package payment history.
+        /// Gets details of a single invoice in pay run.
         /// </summary>
-        /// <param name="useCase">Use case to get payment history.</param>
-        /// <param name="carePackageId">The care package id.</param>
-        /// <returns>Paged list of package past payments if success</returns>
-        [ProducesResponseType(typeof(PackagePaymentViewResponse), StatusCodes.Status200OK)]
-        [HttpGet("care-packages/{carePackageId}/payment-history")]
-        public async Task<ActionResult<PackagePaymentViewResponse>> GetCarePackagePaymentHistory([FromServices] IGetPackagePaymentHistoryUseCase useCase, Guid carePackageId)
+        /// <param name="useCase">Use case to get single pay run invoice details.</param>
+        /// <param name="payRunId">Pay run Id.</param>
+        /// <param name="invoiceId">Invoice Id</param>
+        /// <returns>Details of a single invoice in pay run if success</returns>
+        [ProducesResponseType(typeof(PayRunInvoiceDetailViewResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [HttpGet("{payRunId:guid}/invoices/{invoiceId:guid}")]
+        public async Task<ActionResult<PayRunInvoiceDetailViewResponse>> GetPayRunInvoiceDetails([FromServices] IGetPayRunInvoiceUseCase useCase, Guid payRunId, Guid invoiceId)
         {
-            var res = await useCase.GetAsync(carePackageId);
+            var res = await useCase.GetDetailsAsync(payRunId, invoiceId);
             return Ok(res);
         }
     }

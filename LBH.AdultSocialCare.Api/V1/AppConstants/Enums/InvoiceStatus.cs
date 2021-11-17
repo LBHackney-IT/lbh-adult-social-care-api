@@ -17,6 +17,9 @@ namespace LBH.AdultSocialCare.Api.V1.AppConstants.Enums
         Rejected = 4,
 
         [Display(Name = "Accepted")]
-        Accepted = 5
+        Accepted = 5,
+
+        [Display(Name = "ReleaseAccepted")]
+        ReleaseAccepted = 6,
     }
 }

@@ -10,6 +10,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments
 {
     public class Payrun : BaseEntity
     {
+        public Payrun()
+        {
+            Histories = new HashSet<PayrunHistory>();
+        }
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 

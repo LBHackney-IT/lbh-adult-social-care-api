@@ -71,7 +71,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                     GrossTotal = decimal.Round(grossTotal, 2),
                     NetTotal = decimal.Round(netTotal, 2),
                     SupplierReclaimsTotal = decimal.Round(supplierReclaimsTotal, 2),
-                    HackneyReclaimsTotal = decimal.Round(hackneyReclaimsTotal),
+                    HackneyReclaimsTotal = decimal.Round(hackneyReclaimsTotal, 2),
                     InvoiceStatus = invoice.InvoiceStatus,
                     AssignedBrokerName = invoice.AssignedBrokerName,
                     InvoiceItems = invoice.InvoiceItems.ToResponse()
