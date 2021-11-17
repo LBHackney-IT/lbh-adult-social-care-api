@@ -5,7 +5,6 @@ using HttpServices.Services.Concrete;
 using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Api.Providers;
 using LBH.AdultSocialCare.Api.V1;
-using LBH.AdultSocialCare.Api.V1.Core.Invoicing;
 using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
@@ -114,8 +113,6 @@ namespace LBH.AdultSocialCare.Api
             services.AddTransient<IRestClient, JsonRestClient>();
             services.ConfigureTransactionsApiClient(Configuration);
             services.ConfigureResidentApiClient(Configuration);
-
-            services.AddTransient<InvoiceGenerator>();
         }
 
         private static void ConfigureSwagger(IServiceCollection services) => services.AddSwaggerGen(c =>
