@@ -20,5 +20,19 @@ namespace LBH.AdultSocialCare.Api.Helpers
                 ReclaimStatus.Ended.GetDisplayName()
             };
         }
+
+        public static List<string> BrokerListStatus()
+        {
+            return new List<String>
+            {
+                PackageStatus.New.GetDisplayName(),
+                PackageStatus.InProgress.GetDisplayName(),
+                PackageStatus.SubmittedForApproval.GetDisplayName(),
+                PackageStatus.NotApproved.GetDisplayName(),
+                PackageStatus.Cancelled.GetDisplayName(),
+                PackageStatus.Ended.GetDisplayName(),
+                PackageStatus.Approved.GetDisplayName(),
+            };
+        }
     }
 }
