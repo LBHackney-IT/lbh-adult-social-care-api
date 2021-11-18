@@ -35,8 +35,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                 .FilterBrokerViewPackages(queryParameters.ServiceUserId, queryParameters.ServiceUserName,
                     queryParameters.Status, queryParameters.BrokerId, queryParameters.FromDate, queryParameters.ToDate);
 
-            var preferences = FilterPreferences.BrokerListStatus();
-
             var packages = await filteredPackageQuery
                 .AsNoTracking()
                 .Select(cp => new BrokerPackageItemDomain
@@ -55,11 +53,14 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                 })
                 .ToListAsync();
 
+            var preferences = FilterPreferences.BrokerListStatus();
             packages = packages
-                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
-                .Take(queryParameters.PageSize)
                 .OrderBy(x => preferences.IndexOf(x.PackageStatus)).ThenBy(x => x.DateAssigned)
                 .ToList();
+
+            packages = packages
+                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+                .Take(queryParameters.PageSize).ToList();
 
             var packageCount = await filteredPackageQuery
                 .CountAsync();
