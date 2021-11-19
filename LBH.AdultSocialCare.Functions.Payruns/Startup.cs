@@ -79,7 +79,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns
         private static void ConfigureHttpContext(IApplicationBuilder app)
         {
             var identity = new ClaimsIdentity();
-            var httpContextAccessor = app.ApplicationServices.GetService<IHttpContextAccessor>();
+            var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
 
             httpContextAccessor.HttpContext = new DefaultHttpContext();
             httpContextAccessor.HttpContext.User = new ClaimsPrincipal(identity);
