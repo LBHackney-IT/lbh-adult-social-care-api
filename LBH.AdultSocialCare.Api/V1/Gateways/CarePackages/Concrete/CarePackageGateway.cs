@@ -36,8 +36,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                     queryParameters.Status, queryParameters.BrokerId, queryParameters.FromDate, queryParameters.ToDate);
 
             var packages = await filteredPackageQuery
-                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
-                .Take(queryParameters.PageSize)
                 .AsNoTracking()
                 .Select(cp => new BrokerPackageItemDomain
                 {
@@ -52,10 +50,17 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                     PackageStatus = cp.Status.GetDisplayName(),
                     BrokerName = cp.Broker.Name,
                     DateAssigned = cp.DateCreated
-                }).ToListAsync();
+                })
+                .ToListAsync();
 
             var preferences = FilterPreferences.BrokerListStatus();
-            packages = packages.OrderBy(x => preferences.IndexOf(x.PackageStatus)).ThenBy(x => x.DateAssigned).ToList();
+            packages = packages
+                .OrderBy(x => preferences.IndexOf(x.PackageStatus)).ThenBy(x => x.DateAssigned)
+                .ToList();
+
+            packages = packages
+                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+                .Take(queryParameters.PageSize).ToList();
 
             var packageCount = await filteredPackageQuery
                 .CountAsync();

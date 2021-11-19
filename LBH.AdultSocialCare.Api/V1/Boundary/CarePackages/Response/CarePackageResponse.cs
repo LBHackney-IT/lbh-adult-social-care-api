@@ -9,6 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
         public Guid Id { get; set; }
         public PackageType PackageType { get; set; }
         public PackageScheduling PackageScheduling { get; set; }
+        public PackageStatus Status { get; set; }
         public int PrimarySupportReasonId { get; set; }
 
         public ServiceUserBasicResponse ServiceUser { get; set; }
