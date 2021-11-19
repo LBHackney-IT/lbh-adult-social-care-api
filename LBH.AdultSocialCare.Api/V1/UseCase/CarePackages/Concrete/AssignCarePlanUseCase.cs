@@ -69,8 +69,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 using (var stream = new MemoryStream())
                 {
                     carePlanFile.CopyTo(stream);
-                    var bytes = stream.ToArray();
 
+                    var bytes = stream.ToArray();
+                    var content = Convert.ToBase64String(bytes);
+
+                    // TODO: Replace with document management API call, pass content
                     return await _fileStorage.SaveFileAsync(bytes);
                 }
             }

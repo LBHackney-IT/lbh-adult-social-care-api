@@ -12,7 +12,9 @@ namespace LBH.AdultSocialCare.Data.Entities.Payments
         public Payrun()
         {
             Histories = new HashSet<PayrunHistory>();
+            PayrunInvoices = new HashSet<PayrunInvoice>();
         }
+
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
