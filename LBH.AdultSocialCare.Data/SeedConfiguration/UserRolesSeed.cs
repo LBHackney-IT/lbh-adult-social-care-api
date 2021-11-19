@@ -14,7 +14,7 @@ namespace LBH.AdultSocialCare.Data.SeedConfiguration
             builder.HasData(
                 new AppUserRole()
                 {
-                    RoleId = new Guid(RolesEnum.SuperAdministrator.ToDescription()),
+                    RoleId = new Guid(RolesEnum.SuperUser.ToDescription()),
                     UserId = new Guid("aee45700-af9b-4ab5-bb43-535adbdcfb84")
                 });
         }

@@ -22,32 +22,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.UserControllers
     [ApiVersion("1.0")]
     public class UserController : BaseController
     {
-        private readonly IRegisterUserUseCase _registerUserUseCase;
         private readonly IGetUsersUseCase _getUsersUseCase;
         private readonly IGetAllUsersUseCase _getAllUsersUseCase;
 
-        public UserController(IRegisterUserUseCase registerUserUseCase,
-            IGetUsersUseCase getUsersUseCase,
+        public UserController(IGetUsersUseCase getUsersUseCase,
             IGetAllUsersUseCase getAllUsersUseCase)
         {
-            _registerUserUseCase = registerUserUseCase;
             _getUsersUseCase = getUsersUseCase;
             _getAllUsersUseCase = getAllUsersUseCase;
-        }
-
-        /// <summary>Creates the specified users request.</summary>
-        /// <param name="usersRequest">The users request.</param>
-        /// <returns>The created User Response model</returns>
-        [ProducesResponseType(typeof(AppUserResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-        [ProducesDefaultResponseType]
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<ActionResult<AppUserResponse>> RegisterUser([FromBody] UserForRegistrationRequest usersRequest)
-        {
-            var userForRegistrationDomain = usersRequest.ToDomain();
-            var res = await _registerUserUseCase.RegisterUserAsync(userForRegistrationDomain).ConfigureAwait(false);
-            return Ok(res);
         }
 
         [ProducesResponseType(typeof(PagedResponse<AppUserResponse>), StatusCodes.Status200OK)]
@@ -82,7 +64,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.UserControllers
         [HttpGet("approver")]
         public async Task<ActionResult<UsersMinimalResponse>> GetApprover()
         {
-            var result = await _getAllUsersUseCase.GetUsersWithRole(RolesEnum.Approver);
+            var result = await _getAllUsersUseCase.GetUsersWithRole(RolesEnum.BrokerageApprover);
             return Ok(result);
         }
 

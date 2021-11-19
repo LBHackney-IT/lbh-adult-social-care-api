@@ -116,7 +116,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.UserControllers
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [HttpPost("assign-roles")]
-        [AuthorizeRoles(RolesEnum.SuperAdministrator)]
+        [AuthorizeRoles(RolesEnum.SuperUser)]
         public async Task<IActionResult> AssignRolesToUser([FromBody] AssignRolesToUserRequest assignRolesToUserRequest)
         {
             var res = await _authUseCase.AssignRolesToUserUseCase(assignRolesToUserRequest.ToDomain()).ConfigureAwait(false);
