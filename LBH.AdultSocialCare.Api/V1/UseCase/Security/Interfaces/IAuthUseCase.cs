@@ -11,7 +11,5 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces
         Task<TokenResponse> GoogleAuthenticateWithObjectUseCase(HackneyTokenDomain hackneyTokenDomain);
 
         Task<TokenResponse> GoogleAuthenticateUseCase(string hackneyToken);
-
-        Task<TokenResponse> LoginWithUsernameAndPasswordUseCase(string userName, string password);
     }
 }

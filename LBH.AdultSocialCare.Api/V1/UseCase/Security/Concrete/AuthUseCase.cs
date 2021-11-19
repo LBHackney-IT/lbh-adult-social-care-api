@@ -74,23 +74,5 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Security.Concrete
 
             return res;
         }
-
-        public async Task<TokenResponse> LoginWithUsernameAndPasswordUseCase(string userName, string password)
-        {
-            if (!await _authManager.ValidateUser(userName, password).ConfigureAwait(false))
-            {
-                throw new ApiException("Authentication failed. Wrong user name or password.", (int) HttpStatusCode.Unauthorized);
-            }
-
-            var user = _authManager.GetUser();
-            var res = new TokenResponse
-            {
-                UserId = user.Id,
-                Name = user.Name,
-                Token = await _authManager.CreateToken().ConfigureAwait(false)
-            };
-
-            return res;
-        }
     }
 }

@@ -32,28 +32,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.UserControllers
         }
 
         /// <summary>
-        /// Authenticates the user with username and password.
-        /// </summary>
-        /// <param name="user">The user request object</param>
-        /// <returns>A token if authentication is successful</returns>
-        /// <response code="200">Returns token</response>
-        /// <response code="404">User not found</response>
-        /// <response code="422">If the request object is invalid</response>
-        /// <response code="500">Internal Server Error</response>
-        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
-        [HttpPost("login")]
-        public async Task<ActionResult<TokenResponse>> Authenticate([FromBody] UserForAuthenticationRequest user)
-        {
-            var res = await _authUseCase.LoginWithUsernameAndPasswordUseCase(user.UserName, user.Password)
-                .ConfigureAwait(false);
-
-            return Ok(res);
-        }
-
-        /// <summary>
         /// Get claims in token
         /// </summary>
         /// <returns>Token type and name</returns>
