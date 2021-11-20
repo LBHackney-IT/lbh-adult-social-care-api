@@ -365,19 +365,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("RoleId1")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("UserId1")
-                        .HasColumnType("uuid");
-
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
-
-                    b.HasIndex("RoleId1");
-
-                    b.HasIndex("UserId1");
 
                     b.ToTable("AspNetUserRoles");
 
@@ -1536,25 +1526,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.AppUserRole", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.Role", "Role")
                         .WithMany("UserRoles")
-                        .HasForeignKey("RoleId1");
-
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "User")
                         .WithMany("UserRoles")
-                        .HasForeignKey("UserId1");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.ServiceUser", b =>
