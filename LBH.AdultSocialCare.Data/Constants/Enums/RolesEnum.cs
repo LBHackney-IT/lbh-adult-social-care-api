@@ -23,6 +23,10 @@ namespace LBH.AdultSocialCare.Data.Constants.Enums
 
         [Description("80f1ea68-9335-4efe-b247-7aa58cc45af0")]
         [Display(Name = "Finance Approver")]
-        FinanceApprover = 5
+        FinanceApprover = 5,
+
+        [Description("7b955348-e506-4c93-abc4-64d27d559f41")]
+        [Display(Name = "Care Charge Manager")]
+        CareChargeManager = 6
     }
 }
