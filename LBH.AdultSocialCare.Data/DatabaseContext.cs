@@ -218,9 +218,12 @@ namespace LBH.AdultSocialCare.Data
 
                 foreach (var property in properties)
                 {
-                    if (property.ClrType.IsEnum)
+                    var nullableSubType = Nullable.GetUnderlyingType(property.ClrType);
+                    var propertyType = nullableSubType ?? property.ClrType;
+
+                    if (propertyType.IsEnum)
                     {
-                        var enumValues = Enum.GetValues(property.ClrType).Cast<int>();
+                        var enumValues = Enum.GetValues(propertyType).Cast<int>();
                         var enumValuesString = String.Join(", ", enumValues);
 
                         // TODO: VK: Review nullable enum fields and remove this
