@@ -1,11 +1,9 @@
 using System;
 using System.IO;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.SQSEvents;
 using LBH.AdultSocialCare.Functions.Payruns.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -14,48 +12,33 @@ using JsonSerializer = Amazon.Lambda.Serialization.Json.JsonSerializer;
 
 namespace LBH.AdultSocialCare.Functions.Payruns
 {
+#pragma warning disable CA1052
     public class LambdaEntryPoint
     {
-        private readonly ILogger<LambdaEntryPoint> _logger;
-        private readonly PayrunGenerator _payrunGenerator;
-
-        // AWS entry point
-        // ReSharper disable once UnusedMember.Global
-        public LambdaEntryPoint() : this(InitServices())
-        {
-
-        }
-
-        // Local runner / unit tests entry point
-        public LambdaEntryPoint(IServiceProvider services)
-        {
-            var identity = new ClaimsIdentity();
-            var httpContextAccessor = services.GetRequiredService<IHttpContextAccessor>();
-
-            httpContextAccessor.HttpContext = new DefaultHttpContext();
-            httpContextAccessor.HttpContext.User = new ClaimsPrincipal(identity);
-
-            _logger = services.GetService<ILogger<LambdaEntryPoint>>();
-
-            var serviceScopeFactory = (IServiceScopeFactory) services.GetService(typeof(IServiceScopeFactory));
-            var serviceScope = serviceScopeFactory.CreateScope();
-
-            _payrunGenerator = serviceScope.ServiceProvider.GetRequiredService<PayrunGenerator>();
-        }
-
         [LambdaSerializer(typeof(JsonSerializer))]
-        public async Task HandleEvent(SQSEvent sqsEvent)
+        public static async Task HandleEvent(SQSEvent sqsEvent)
         {
-            _logger.LogInformation("Received SQS event {SqsEvent}", JsonConvert.SerializeObject(sqsEvent, Formatting.Indented));
+            // Lambda constructor is called just one time so create services on each request
+            // to ensure that scoped services lifetime (especially DBContext) is short
+            var services = InitServices();
+            var serviceScopeFactory = (IServiceScopeFactory) services.GetService(typeof(IServiceScopeFactory));
 
-            try
+            using (var serviceScope = serviceScopeFactory.CreateScope())
             {
-                await _payrunGenerator.GenerateAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError("Unhandled exception {Exception}", ex);
-                throw;
+                var logger = services.GetRequiredService<ILogger<LambdaEntryPoint>>();
+                var payrunGenerator = serviceScope.ServiceProvider.GetRequiredService<PayrunGenerator>();
+
+                logger.LogInformation("Received SQS event {SqsEvent}", JsonConvert.SerializeObject(sqsEvent, Formatting.Indented));
+
+                try
+                {
+                    await payrunGenerator.GenerateAsync();
+                }
+                catch (Exception ex)
+                {
+                    logger.LogError("Unhandled exception {Exception}", ex);
+                    throw;
+                }
             }
         }
 
@@ -73,7 +56,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns
             var startup = new Startup(config, new AwsHostEnvironment());
             startup.ConfigureServices(services);
 
-            return services.BuildServiceProvider();
+            var serviceProvider = services.BuildServiceProvider();
+            Startup.ConfigureHttpContext(serviceProvider);
+
+            return serviceProvider;
         }
     }
+#pragma warning restore CA1052
 }

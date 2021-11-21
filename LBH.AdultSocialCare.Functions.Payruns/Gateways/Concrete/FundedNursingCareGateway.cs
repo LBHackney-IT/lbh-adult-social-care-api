@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Data.Entities.Common;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
 {
@@ -15,8 +16,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
 
         public async Task<IList<FundedNursingCarePrice>> GetFundedNursingCarePricesAsync()
         {
-            // TODO: VK: Implement
-            return await Task.FromResult(new List<FundedNursingCarePrice>());
+            return await DbContext.FundedNursingCarePrices.ToListAsync();
         }
     }
 }

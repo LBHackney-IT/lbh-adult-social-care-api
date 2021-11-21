@@ -22,15 +22,15 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
         private readonly InvoiceGenerator _invoiceGenerator;
 
         public PayrunGenerator(
-            IHttpContextAccessor httpContextAccessor, ICarePackageGateway carePackageGateway,
-            IFundedNursingCareGateway fncGateway, IPayrunGateway payrunGateway, IInvoiceGateway invoiceGateway, ILogger<PayrunGenerator> logger)
+            InvoiceGenerator invoiceGenerator, IHttpContextAccessor httpContextAccessor,
+            ICarePackageGateway carePackageGateway, IPayrunGateway payrunGateway, ILogger<PayrunGenerator> logger)
         {
             _httpContextAccessor = httpContextAccessor;
             _carePackageGateway = carePackageGateway;
             _payrunGateway = payrunGateway;
             _logger = logger;
 
-            _invoiceGenerator = new InvoiceGenerator(invoiceGateway, fncGateway);
+            _invoiceGenerator = invoiceGenerator;
         }
 
         public async Task GenerateAsync()

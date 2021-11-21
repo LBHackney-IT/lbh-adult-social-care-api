@@ -35,6 +35,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns
             services.AddLogging(ConfigureLogging);
 
             services.AddScoped<PayrunGenerator>();
+            services.AddScoped<InvoiceGenerator>();
 
             // add gateways
             services.Scan(scan => scan
@@ -49,12 +50,21 @@ namespace LBH.AdultSocialCare.Functions.Payruns
 
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            ConfigureHttpContext(app);
+            ConfigureHttpContext(app.ApplicationServices);
 
             if (env.IsDevelopment())
             {
-                app.Run(async context => await HandleRequest(context, app.ApplicationServices));
+                app.Run(async context => await HandleRequest(context));
             }
+        }
+
+        public static void ConfigureHttpContext(IServiceProvider services)
+        {
+            var identity = new ClaimsIdentity();
+            var httpContextAccessor = services.GetRequiredService<IHttpContextAccessor>();
+
+            httpContextAccessor.HttpContext = new DefaultHttpContext();
+            httpContextAccessor.HttpContext.User = new ClaimsPrincipal(identity);
         }
 
         private void ConfigureLogging(ILoggingBuilder logging)
@@ -76,16 +86,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns
             }
         }
 
-        private static void ConfigureHttpContext(IApplicationBuilder app)
-        {
-            var identity = new ClaimsIdentity();
-            var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
-
-            httpContextAccessor.HttpContext = new DefaultHttpContext();
-            httpContextAccessor.HttpContext.User = new ClaimsPrincipal(identity);
-        }
-
-        private static async Task HandleRequest(HttpContext context, IServiceProvider services)
+        private static async Task HandleRequest(HttpContext context)
         {
             using var streamReader = new StreamReader(context.Request.Body);
 
@@ -101,7 +102,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns
                 }
             };
 
-            await new LambdaEntryPoint(services).HandleEvent(sqsEvent);
+            await LambdaEntryPoint.HandleEvent(sqsEvent);
         }
     }
 }

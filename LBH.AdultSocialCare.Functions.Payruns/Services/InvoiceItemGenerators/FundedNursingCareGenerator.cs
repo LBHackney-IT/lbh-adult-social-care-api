@@ -33,8 +33,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 
             foreach (var price in _fncPrices)
             {
-                var actualEndDate = Dates.Min(price.ActiveTo, invoiceEndDate);
-                var actualWeeks = Dates.WeeksBetween(actualEndDate, actualStartDate);
+                var actualEndDate = Dates.Min(price.ActiveTo, invoiceEndDate, fundedNursingCare.EndDate);
+                var actualWeeks = Dates.WeeksBetween(actualStartDate, actualEndDate);
 
                 if (actualWeeks <= 0) continue;
 

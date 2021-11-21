@@ -34,7 +34,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     TotalCost = careCharge.Cost * itemRange.Weeks,
                     FromDate = itemRange.StartDate,
                     ToDate = itemRange.EndDate,
-                    CarePackageDetailId = careCharge.Id,
+                    CarePackageReclaimId = careCharge.Id,
                     ClaimCollector = careCharge.ClaimCollector,
                     PriceEffect = careCharge.ClaimCollector switch
                     {
