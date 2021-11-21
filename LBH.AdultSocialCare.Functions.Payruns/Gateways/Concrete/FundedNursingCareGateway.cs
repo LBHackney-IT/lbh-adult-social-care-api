@@ -15,6 +15,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
 
         public async Task<IList<FundedNursingCarePrice>> GetFundedNursingCarePricesAsync()
         {
+            // TODO: VK: Implement
             return await Task.FromResult(new List<FundedNursingCarePrice>());
         }
     }

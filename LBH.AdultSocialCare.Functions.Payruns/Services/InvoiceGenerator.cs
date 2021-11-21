@@ -12,15 +12,15 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 {
     public class InvoiceGenerator
     {
-        private readonly ICarePackageGateway _carePackageGateway;
+        private readonly IInvoiceGateway _invoiceGateway;
         private readonly IFundedNursingCareGateway _fundedNursingCareGateway;
 
         private Dictionary<PackageType, List<BaseInvoiceItemsGenerator>> _generators;
 
         public InvoiceGenerator(
-            ICarePackageGateway carePackageGateway, IFundedNursingCareGateway fundedNursingCareGateway)
+            IInvoiceGateway invoiceGateway, IFundedNursingCareGateway fundedNursingCareGateway)
         {
-            _carePackageGateway = carePackageGateway;
+            _invoiceGateway = invoiceGateway;
             _fundedNursingCareGateway = fundedNursingCareGateway;
         }
 
@@ -29,32 +29,31 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             await InitializeGeneratorsAsync();
 
             var invoices = new List<Invoice>();
-            var invoicesCount = await _carePackageGateway.GetInvoicesCountAsync(); // TODO: VK: Review invoice numbering
+            var packageIds = packages
+                .Select(package => package.Id)
+                .ToList();
+
+            var invoicesCount = await _invoiceGateway.GetInvoicesCountAsync();
+            var oldInvoices = await _invoiceGateway.GetInvoicesByPackageIds(packageIds);
 
             foreach (var package in packages)
             {
-                var coreCost = package.Details.First(d => d.Type is PackageDetailType.CoreCost);
-
-                // TODO: VK: Review and remove
-                var invoiceStartDate = /* package.PaidUpTo ?? */ coreCost.StartDate;
-                var daysCount = (invoiceEndDate.Date - invoiceStartDate.Date).Days;
-
-                if (daysCount <= 0) continue;
-
-                invoices.Add(GenerateInvoice(invoiceEndDate, invoiceStartDate, package, ref invoicesCount));
+                var packageInvoices = oldInvoices.GetValueOrDefault(package.Id);
+                invoices.Add(
+                    GenerateInvoice(package, packageInvoices, invoiceEndDate, ref invoicesCount));
             }
 
             return invoices;
         }
 
-        private Invoice GenerateInvoice(DateTimeOffset invoiceEndDate, DateTimeOffset invoiceStartDate, CarePackage package, ref int invoiceNumber)
+        private Invoice GenerateInvoice(CarePackage package, IList<Invoice> packageInvoices, DateTimeOffset invoiceEndDate, ref int invoiceNumber)
         {
             var invoiceItems = new List<InvoiceItem>();
             var generators = _generators[package.PackageType];
 
             foreach (var generator in generators)
             {
-                invoiceItems.AddRange(generator.Run(package, invoiceStartDate, invoiceEndDate));
+                invoiceItems.AddRange(generator.Run(package, packageInvoices, invoiceEndDate));
             }
 
             return new Invoice
@@ -94,7 +93,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             _generators = new Dictionary<PackageType, List<BaseInvoiceItemsGenerator>>
             {
                 {
-                    PackageType.ResidentialCare, new List<BaseInvoiceItemsGenerator>
+                    PackageType.NursingCare, new List<BaseInvoiceItemsGenerator>
                     {
                         new CoreCostGenerator(),
                         new AdditionalNeedsCostGenerator(),
@@ -103,7 +102,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                     }
                 },
                 {
-                    PackageType.NursingCare, new List<BaseInvoiceItemsGenerator>
+                    PackageType.ResidentialCare, new List<BaseInvoiceItemsGenerator>
                     {
                         new CoreCostGenerator(),
                         new AdditionalNeedsCostGenerator(),

@@ -1,9 +1,11 @@
 using System;
 using System.IO;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Amazon.Lambda.SQSEvents;
 using LBH.AdultSocialCare.Functions.Payruns.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -21,11 +23,18 @@ namespace LBH.AdultSocialCare.Functions.Payruns
         // ReSharper disable once UnusedMember.Global
         public LambdaEntryPoint() : this(InitServices())
         {
+
         }
 
         // Local runner / unit tests entry point
         public LambdaEntryPoint(IServiceProvider services)
         {
+            var identity = new ClaimsIdentity();
+            var httpContextAccessor = services.GetRequiredService<IHttpContextAccessor>();
+
+            httpContextAccessor.HttpContext = new DefaultHttpContext();
+            httpContextAccessor.HttpContext.User = new ClaimsPrincipal(identity);
+
             _logger = services.GetService<ILogger<LambdaEntryPoint>>();
 
             var serviceScopeFactory = (IServiceScopeFactory) services.GetService(typeof(IServiceScopeFactory));

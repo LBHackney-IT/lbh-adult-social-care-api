@@ -21,7 +21,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             _fundedNursingCareGateway = fundedNursingCareGateway;
         }
 
-        public override IEnumerable<InvoiceItem> Run(CarePackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
+        public override IEnumerable<InvoiceItem> Run(CarePackage package, IList<Invoice> packageInvoices, DateTimeOffset invoiceEndDate)
         {
             var invoiceItems = new List<InvoiceItem>();
             var fundedNursingCare = package.Reclaims
@@ -29,11 +29,12 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 
             if (fundedNursingCare is null) return invoiceItems;
 
+            var actualStartDate = GetActualStartDate(fundedNursingCare, packageInvoices, invoiceEndDate);
+
             foreach (var price in _fncPrices)
             {
-                var actualStartDate = Dates.Max(price.ActiveFrom, invoiceStartDate);
                 var actualEndDate = Dates.Min(price.ActiveTo, invoiceEndDate);
-                var actualWeeks = ((actualEndDate.Date - actualStartDate.Date).Days) / 7M;
+                var actualWeeks = Dates.WeeksBetween(actualEndDate, actualStartDate);
 
                 if (actualWeeks <= 0) continue;
 
@@ -45,6 +46,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     TotalCost = actualWeeks * price.PricePerWeek,
                     FromDate = actualStartDate,
                     ToDate = actualEndDate,
+                    CarePackageReclaimId = fundedNursingCare.Id,
                     ClaimCollector = fundedNursingCare.ClaimCollector,
                     PriceEffect = fundedNursingCare.ClaimCollector switch
                     {
@@ -53,6 +55,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                         _ => throw new InvalidOperationException("Unknown claim collector")
                     }
                 });
+
+                actualStartDate = actualEndDate.AddDays(1);
             }
 
             return invoiceItems;
