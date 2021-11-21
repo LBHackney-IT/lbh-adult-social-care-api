@@ -73,16 +73,30 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 
         private static (decimal Gross, decimal Net) CalculateTotals(List<InvoiceItem> invoiceItems)
         {
-            var gross = invoiceItems
-                .Where(item => item.ClaimCollector is null)
-                .Sum(item => item.TotalCost);
+            var gross = 0.0m;
+            var supplierReclaims = 0.0m;
 
-            var supplierReclaims = invoiceItems
-                .Where(item => item.ClaimCollector is ClaimCollector.Supplier)
-                .Sum(item => item.TotalCost);
+            foreach (var item in invoiceItems)
+            {
+                switch (item.ClaimCollector)
+                {
+                    // Supplier reclaims deducted from gross giving a net price
+                    case ClaimCollector.Supplier:
+                        supplierReclaims += item.TotalCost;
+                        break;
+
+                    // Hackney reclaims do not affect totals
+                    case ClaimCollector.Hackney:
+                        break;
+
+                    // Non-reclaim items compose gross price
+                    case null:
+                        gross += item.TotalCost;
+                        break;
+                }
+            }
 
             var net = gross - supplierReclaims;
-
             return (gross, net);
         }
 

@@ -6,7 +6,6 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.Payments;
@@ -77,14 +76,22 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 
         private static (decimal, decimal) CalculateTotals(IEnumerable<PayRunInvoiceItemDomain> invoiceItems)
         {
-            var supplierReclaimsTotal = invoiceItems
-                .Where(item => item.ClaimCollector is ClaimCollector.Supplier)
-                .Sum(item => item.TotalCost);
+            var supplierReclaimsTotal = 0.0m;
+            var hackneyReclaimsTotal = 0.0m;
 
-            var hackneyReclaimsTotal = invoiceItems
-                .Where(item => item.ClaimCollector is ClaimCollector.Hackney)
-                .Sum(item => item.TotalCost);
+            foreach (var item in invoiceItems)
+            {
+                switch (item.ClaimCollector)
+                {
+                    case ClaimCollector.Supplier:
+                        supplierReclaimsTotal += item.TotalCost;
+                        break;
 
+                    case ClaimCollector.Hackney:
+                        hackneyReclaimsTotal += item.TotalCost;
+                        break;
+                }
+            }
 
             return (supplierReclaimsTotal, hackneyReclaimsTotal);
         }
