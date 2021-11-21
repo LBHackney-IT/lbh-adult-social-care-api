@@ -32,9 +32,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     FromDate = itemRange.StartDate,
                     ToDate = itemRange.EndDate,
                     CarePackageDetailId = coreCost.Id,
-                    ClaimCollector = ClaimCollector.Hackney, // TODO: VK: Make ClaimCollector nullable
-                    PriceEffect = PriceEffect.Add,           // TODO: VK: Review
-                    IsReclaim = false                        // TODO: VK: Remove
+                    ClaimCollector = ClaimCollector.Hackney,
+                    PriceEffect = PriceEffect.Add               // TODO: VK: Review
                 }
             };
         }

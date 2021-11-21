@@ -9,11 +9,6 @@ namespace LBH.AdultSocialCare.Data.Entities.Payments
 {
     public class InvoiceItem : BaseEntity
     {
-        public InvoiceItem()
-        {
-            IsReclaim = false;
-        }
-
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
@@ -30,9 +25,8 @@ namespace LBH.AdultSocialCare.Data.Entities.Payments
 
         public DateTimeOffset FromDate { get; set; }
         public DateTimeOffset ToDate { get; set; }
-        public bool? IsReclaim { get; set; }
 
-        public ClaimCollector ClaimCollector { get; set; }
+        public ClaimCollector? ClaimCollector { get; set; }
         public PriceEffect PriceEffect { get; set; }
 
         [ForeignKey(nameof(InvoiceId))]

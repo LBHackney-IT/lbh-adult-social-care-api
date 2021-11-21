@@ -41,8 +41,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                         ClaimCollector.Hackney => PriceEffect.None,
                         ClaimCollector.Supplier => PriceEffect.Subtract,
                         _ => throw new InvalidOperationException("Unknown claim collector")
-                    },
-                    IsReclaim = true
+                    }
                 });
             }
 

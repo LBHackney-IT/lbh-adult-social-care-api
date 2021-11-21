@@ -6,6 +6,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.Payments;
@@ -47,7 +48,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 EndDate = payrun.EndDate,
             };
 
-            var (grossTotal, netTotal, supplierReclaimsTotal, hackneyReclaimsTotal) = CalculateTotals(payRunInvoice.InvoiceItems);
+            var (supplierReclaimsTotal, hackneyReclaimsTotal) = CalculateTotals(payRunInvoice.InvoiceItems);
             var invoiceRes = new PayRunInvoiceResponse
             {
                 Id = payRunInvoice.Id,
@@ -60,8 +61,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 InvoiceNumber = payRunInvoice.InvoiceNumber,
                 PackageTypeId = (int) payRunInvoice.PackageType,
                 PackageType = payRunInvoice.PackageType.GetDisplayName(),
-                GrossTotal = decimal.Round(grossTotal, 2),
-                NetTotal = decimal.Round(netTotal, 2),
+                GrossTotal = payRunInvoice.GrossTotal,
+                NetTotal = payRunInvoice.NetTotal,
                 SupplierReclaimsTotal = decimal.Round(supplierReclaimsTotal, 2),
                 HackneyReclaimsTotal = decimal.Round(hackneyReclaimsTotal, 2),
                 InvoiceStatus = payRunInvoice.InvoiceStatus,
@@ -74,34 +75,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             return result;
         }
 
-        private static (decimal, decimal, decimal, decimal) CalculateTotals(IEnumerable<PayRunInvoiceItemDomain> invoiceItems)
+        private static (decimal, decimal) CalculateTotals(IEnumerable<PayRunInvoiceItemDomain> invoiceItems)
         {
-            var grossTotal = 0M;
-            var netTotal = 0M;
-            var supplierReclaimsTotal = 0M;
-            var hackneyReclaimsTotal = 0M;
+            var supplierReclaimsTotal = invoiceItems
+                .Where(item => item.ClaimCollector is ClaimCollector.Supplier)
+                .Sum(item => item.TotalCost);
 
-            foreach (var invoiceItem in invoiceItems)
-            {
-                switch (invoiceItem.IsReclaim)
-                {
-                    case false when invoiceItem.PriceEffect == PriceEffect.Add:
-                        grossTotal += invoiceItem.TotalCost;
-                        netTotal += invoiceItem.TotalCost;
-                        break;
+            var hackneyReclaimsTotal = invoiceItems
+                .Where(item => item.ClaimCollector is ClaimCollector.Hackney)
+                .Sum(item => item.TotalCost);
 
-                    case true when invoiceItem.ClaimCollector == ClaimCollector.Supplier && invoiceItem.PriceEffect == PriceEffect.Subtract:
-                        netTotal -= invoiceItem.TotalCost;
-                        supplierReclaimsTotal += invoiceItem.TotalCost;
-                        break;
 
-                    case true when invoiceItem.ClaimCollector == ClaimCollector.Hackney:
-                        hackneyReclaimsTotal += invoiceItem.TotalCost;
-                        break;
-                }
-            }
-
-            return (grossTotal, netTotal, supplierReclaimsTotal, hackneyReclaimsTotal);
+            return (supplierReclaimsTotal, hackneyReclaimsTotal);
         }
     }
 }

@@ -56,36 +56,34 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 invoiceItems.AddRange(generator.Run(package, packageInvoices, invoiceEndDate));
             }
 
+            var totals = CalculateTotals(invoiceItems);
+
             return new Invoice
             {
                 SupplierId = package.SupplierId.GetValueOrDefault(),
                 ServiceUserId = package.ServiceUserId,
                 PackageId = package.Id,
                 Items = invoiceItems,
-                TotalCost = CalculateTotalCost(invoiceItems),
+                GrossTotal = totals.Gross,
+                NetTotal = totals.Net,
+                TotalCost = totals.Net,             // TODO: VK: Review, remove
                 Number = $"INV {++invoiceNumber}"
             };
         }
 
-        private static decimal CalculateTotalCost(List<InvoiceItem> invoiceItems)
+        private static (decimal Gross, decimal Net) CalculateTotals(List<InvoiceItem> invoiceItems)
         {
-            var totalCost = 0.0m;
+            var gross = invoiceItems
+                .Where(item => item.ClaimCollector is null)
+                .Sum(item => item.TotalCost);
 
-            foreach (var invoiceItem in invoiceItems)
-            {
-                switch (invoiceItem.PriceEffect)
-                {
-                    case PriceEffect.Add:
-                        totalCost += invoiceItem.TotalCost;
-                        break;
+            var supplierReclaims = invoiceItems
+                .Where(item => item.ClaimCollector is ClaimCollector.Supplier)
+                .Sum(item => item.TotalCost);
 
-                    case PriceEffect.Subtract:
-                        totalCost -= invoiceItem.TotalCost;
-                        break;
-                }
-            }
+            var net = gross - supplierReclaims;
 
-            return totalCost;
+            return (gross, net);
         }
 
         private async Task InitializeGeneratorsAsync()

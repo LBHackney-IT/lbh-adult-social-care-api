@@ -106,7 +106,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     Cost = ii.WeeklyCost,
                     Quantity = ii.Quantity,
                     TotalCost = ii.TotalCost,
-                    IsReclaim = ii.IsReclaim ?? false,
                     ClaimCollector = ii.ClaimCollector,
                     PriceEffect = ii.PriceEffect
                 })
@@ -143,7 +142,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                         Cost = ii.WeeklyCost,
                         Quantity = ii.Quantity,
                         TotalCost = ii.TotalCost,
-                        IsReclaim = ii.IsReclaim ?? false,
                         ClaimCollector = ii.ClaimCollector,
                         PriceEffect = ii.PriceEffect
                     })

@@ -124,13 +124,6 @@ namespace LBH.AdultSocialCare.Data
                 .HasIndex(i => i.Number)
                 .IsUnique();
 
-            modelBuilder.Entity<InvoiceItem>(entity =>
-            {
-                entity.Property(e => e.IsReclaim)
-                    .IsRequired()
-                    .HasDefaultValueSql("false");
-            });
-
             modelBuilder.Entity<PayrunInvoice>(entity =>
             {
                 entity.HasKey(e => e.Id);

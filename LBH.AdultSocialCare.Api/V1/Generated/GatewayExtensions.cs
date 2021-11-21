@@ -1,6 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using LBH.AdultSocialCare.Api.V1.Gateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete;
