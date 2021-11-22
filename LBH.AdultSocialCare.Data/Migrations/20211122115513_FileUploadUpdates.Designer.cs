@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20211122001243_FileUploadUpdates")]
+    [Migration("20211122115513_FileUploadUpdates")]
     partial class FileUploadUpdates
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

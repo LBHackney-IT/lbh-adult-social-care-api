@@ -77,6 +77,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     existingReclaim.Status = ReclaimStatus.Ended;
                     existingReclaim.EndDate = DateTimeOffset.Now.Date;
 
+                    if (requestedReclaim.AssessmentFileId == Guid.Empty)
+                    {
+                        var documentResponse = await _fileStorage.SaveFileAsync(requestedReclaim.AssessmentFile);
+                        requestedReclaim.AssessmentFileId = new Guid(documentResponse.FileId);
+                    }
+
                     var newReclaim = CreateNewReclaim(requestedReclaim, existingReclaim, package);
                     result.Add(newReclaim);
                 }

@@ -40,7 +40,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var serviceUser = await _getServiceUserUseCase.GetServiceUserInformation(carePlanAssignment.HackneyUserId);
             await _ensureSingleActivePackageTypePerUserUseCase.ExecuteAsync(serviceUser.Id, carePlanAssignment.PackageType);
 
-            var documentResponse = await _fileStorage.SaveFileAsync(carePlanAssignment.CarePlanFile);
+            var documentResponse = new DocumentResponse();
+
+            if (carePlanAssignment.CarePlanFileId == Guid.Empty)
+            {
+                documentResponse = await _fileStorage.SaveFileAsync(carePlanAssignment.CarePlanFile);
+            }
 
             var package = new CarePackage
             {
