@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace LBH.AdultSocialCare.Data.Entities.Interfaces
 {

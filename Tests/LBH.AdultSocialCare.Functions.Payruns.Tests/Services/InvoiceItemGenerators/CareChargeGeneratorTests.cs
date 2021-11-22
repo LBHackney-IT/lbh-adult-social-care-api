@@ -36,7 +36,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
             invoiceItems.First().WeeklyCost.Should().Be(activeElement.Cost);
         }
 
-        [Fact (Skip = "Review")]
+        [Fact(Skip = "Review")]
         public void ShouldConsiderReclaimDateRange()
         {
             var package = CreatePackage(5);
