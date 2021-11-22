@@ -38,6 +38,24 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         }
 
         /// <summary>
+        /// Releases a single held invoice.
+        /// </summary>
+        /// <param name="useCase">Use case to change pay run invoice status.</param>
+        /// <param name="payRunId">Pay run id.</param>
+        /// <param name="payRunInvoiceId">Pay run invoice id.</param>
+        /// <returns>True to indicate status change if success</returns>
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [HttpPost("{payRunId}/invoices/{payRunInvoiceId}/release")]
+        [AuthorizeRoles(RolesEnum.Finance)]
+        public async Task<ActionResult<HeldInvoiceFlatResponse>> ReleaseHeldInvoice([FromServices] IChangePayRunInvoiceStatusUseCase useCase, Guid payRunId, Guid payRunInvoiceId)
+        {
+            var res = await useCase.ReleaseInvoiceAsync(payRunId, payRunInvoiceId);
+            return Ok(res);
+        }
+
+        /// <summary>
         /// Changes the pay run invoice status.
         /// </summary>
         /// <param name="useCase">Change pay run invoice status use case.</param>
