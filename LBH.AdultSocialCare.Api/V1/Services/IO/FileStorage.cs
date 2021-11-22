@@ -33,10 +33,10 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
             var documentClaimRequest = new DocumentClaimRequest()
             {
                 ServiceAreaCreatedBy = "hasc-finance-api",
-                UserCreatedBy = "furkan",
-                ApiCreatedBy = "furkan",
-                ValidUntil = DateTime.Now.AddDays(+365),
-                RetentionExpiresAt = DateTime.Now.AddDays(+365)
+                UserCreatedBy = "hasc-finance-api",
+                ApiCreatedBy = "hasc-finance-api",
+                ValidUntil = DateTime.Now.AddYears(+10),
+                RetentionExpiresAt = DateTime.Now.AddYears(+10)
             };
 
             var claimResponse = await _documentClaimClient.CreateClaim(documentClaimRequest);
