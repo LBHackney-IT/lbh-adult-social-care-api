@@ -54,8 +54,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 PackageType = carePlanAssignment.PackageType,
                 Status = PackageStatus.New,
                 DateAssigned = DateTimeOffset.Now,
-                SocialWorkerCarePlanFileId = new Guid(documentResponse.FileId),
-                SocialWorkerCarePlanFileName = carePlanAssignment.CarePlanFile.FileName
+                SocialWorkerCarePlanFileId = documentResponse?.FileId ?? Guid.Empty,
+                SocialWorkerCarePlanFileName = carePlanAssignment.CarePlanFile?.FileName
             };
 
             package.Histories.Add(new CarePackageHistory

@@ -63,7 +63,8 @@ namespace LBH.AdultSocialCare.Api.Tests
                     new Dictionary<string, string>
                     {
                         ["HASCHttpClients:TransactionsBaseUrl"] = "http://127.0.0.1",
-                        ["ResidentsAPI:BaseUrl"] = "http://127.0.0.1"
+                        ["ResidentsAPI:BaseUrl"] = "http://127.0.0.1",
+                        ["DocumentAPI:BaseUrl"] = "http://127.0.0.1"
                     });
             });
             return base.CreateServer(builder);

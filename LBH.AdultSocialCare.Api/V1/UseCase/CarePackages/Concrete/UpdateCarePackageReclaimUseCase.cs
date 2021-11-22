@@ -80,7 +80,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     if (requestedReclaim.AssessmentFileId == Guid.Empty)
                     {
                         var documentResponse = await _fileStorage.SaveFileAsync(requestedReclaim.AssessmentFile);
-                        requestedReclaim.AssessmentFileId = new Guid(documentResponse.FileId);
+                        requestedReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
                     }
 
                     var newReclaim = CreateNewReclaim(requestedReclaim, existingReclaim, package);
