@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Data.Constants.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
 {
@@ -28,5 +29,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
 
         public string Description { get; set; }
         public string ClaimReason { get; set; }
+        public IFormFile AssessmentFile { get; set; }
     }
 }
