@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Extensions;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
@@ -71,6 +73,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpGet("master-search")]
+        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
         public async Task<ActionResult<ServiceUserInformationResponse>> SearchServiceUser([FromQuery] ServiceUserQueryRequest request)
         {
             var result = await _getServiceUserMasterSearchUseCase.GetServiceUsers(request);

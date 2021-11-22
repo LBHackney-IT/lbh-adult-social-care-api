@@ -1,11 +1,15 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Identity;
 
 namespace LBH.AdultSocialCare.Data.Entities.Common
 {
     public class AppUserRole : IdentityUserRole<Guid>
     {
-        public virtual Role Role { get; set; }
-        public virtual User User { get; set; }
+        [ForeignKey(nameof(RoleId))]
+        public Role Role { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public User User { get; set; }
     }
 }
