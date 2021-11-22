@@ -13,12 +13,15 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
 {
     public class FileStorage : IFileStorage
     {
-        private readonly IRestClient _restClient;
+        private readonly IDocumentClaimClient _documentClaimClient;
+        private readonly IDocumentPostClient _documentPostClient;
+        private readonly IDocumentGetClient _documentGetClient;
 
-        public FileStorage(HttpClient httpClient, IRestClient restClient)
+        public FileStorage(IDocumentClaimClient documentClaimClient, IDocumentPostClient documentPostClient, IDocumentGetClient documentGetClient)
         {
-            _restClient = restClient;
-            restClient.Init(httpClient);
+            _documentClaimClient = documentClaimClient;
+            _documentPostClient = documentPostClient;
+            _documentGetClient = documentGetClient;
         }
 
         public async Task<DocumentResponse> SaveFileAsync(IFormFile carePlanFile)
@@ -36,21 +39,18 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
                 RetentionExpiresAt = DateTime.Now.AddDays(+365)
             };
 
-            var claimResponse = await _restClient
-                .PostAsync<DocumentClaimResponse>("claims", documentClaimRequest, "Failed to create document claim");
+            var claimResponse = await _documentClaimClient.CreateClaim(documentClaimRequest);
 
             var documentUploadRequest = new DocumentUploadRequest() {base64Document = fileContent};
 
-            await _restClient
-                .PostAsync<string>($"documents/{claimResponse.Document.Id}", documentUploadRequest, "Failed to create document");
+            await _documentPostClient.CreateDocument(new Guid(claimResponse.Document.Id), documentUploadRequest);
 
             return new DocumentResponse { FileId = claimResponse.Document.Id };
         }
 
         public async Task<string> GetFile(Guid documentId)
         {
-            return await _restClient
-                .GetAsync<string>($"documents/{documentId}", "Failed to retrieve document");
+            return await _documentGetClient.GetDocument(documentId);
         }
 
         private static string ConvertCarePlan(IFormFile carePlanFile)

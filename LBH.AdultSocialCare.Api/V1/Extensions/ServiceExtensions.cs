@@ -141,10 +141,26 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
         public static void ConfigureDocumentApiClient(this IServiceCollection services, IConfiguration configuration)
         {
             services
-                .AddHttpClient<IFileStorage, FileStorage>(client =>
+                .AddHttpClient<IDocumentClaimClient, DocumentClaimClient>(client =>
                 {
                     client.BaseAddress = new Uri(configuration["DocumentAPI:BaseUrl"]);
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(configuration["DocumentAPI:BearerToken"]);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(configuration["DocumentAPI:ClaimBearerToken"]);
+                })
+                .ConfigureMessageHandlers();
+
+            services
+                .AddHttpClient<IDocumentPostClient, DocumentPostClient>(client =>
+                {
+                    client.BaseAddress = new Uri(configuration["DocumentAPI:BaseUrl"]);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(configuration["DocumentAPI:PostBearerToken"]);
+                })
+                .ConfigureMessageHandlers();
+
+            services
+                .AddHttpClient<IDocumentGetClient, DocumentGetClient>(client =>
+                {
+                    client.BaseAddress = new Uri(configuration["DocumentAPI:BaseUrl"]);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(configuration["DocumentAPI:GetBearerToken"]);
                 })
                 .ConfigureMessageHandlers();
         }
