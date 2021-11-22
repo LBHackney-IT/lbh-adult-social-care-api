@@ -139,6 +139,28 @@ namespace LBH.AdultSocialCare.Data
                     .HasForeignKey(pi => pi.InvoiceId);
             });
 
+            //PS: Second time adding the identity config below. Resist the temptation to remove. Serves a purpose
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.HasMany(role => role.UserRoles).WithOne(e => e.Role).
+                    HasForeignKey(userRole => userRole.RoleId).IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasMany(user => user.UserRoles).WithOne(e => e.User).
+                    HasForeignKey(userRole => userRole.UserId).IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.UserRoles)
+                .WithOne(e => e.User)
+                .HasForeignKey(e => e.UserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
             #endregion Entity Config
 
             AddEnumConstrains(modelBuilder);

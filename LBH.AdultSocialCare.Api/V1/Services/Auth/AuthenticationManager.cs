@@ -181,7 +181,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
 
                         if (result.Succeeded)
                         {
-                            var defaultRoles = new List<string> { RolesEnum.User.GetDisplayName() };
+                            var defaultRoles = new List<string> { RolesEnum.Broker.GetDisplayName() };
                             var newUserRoles = new List<string>();
                             foreach (var userRole in defaultRoles)
                             {
