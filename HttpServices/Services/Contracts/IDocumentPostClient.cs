@@ -6,7 +6,7 @@ using HttpServices.Models.Requests;
 
 namespace HttpServices.Services.Contracts
 {
-    public interface IDocumentPostClient    
+    public interface IDocumentPostClient
     {
         Task<string> CreateDocument(Guid documentId, DocumentUploadRequest request);
     }

@@ -7,7 +7,7 @@ using HttpServices.Models.Responses;
 
 namespace HttpServices.Services.Contracts
 {
-    public interface IDocumentClaimClient 
+    public interface IDocumentClaimClient
     {
         Task<DocumentClaimResponse> CreateClaim(DocumentClaimRequest request);
     }

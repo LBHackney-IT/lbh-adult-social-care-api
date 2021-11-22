@@ -41,7 +41,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
 
             var claimResponse = await _documentClaimClient.CreateClaim(documentClaimRequest);
 
-            var documentUploadRequest = new DocumentUploadRequest() {base64Document = fileContent};
+            var documentUploadRequest = new DocumentUploadRequest() { base64Document = fileContent };
 
             await _documentPostClient.CreateDocument(new Guid(claimResponse.Document.Id), documentUploadRequest);
 

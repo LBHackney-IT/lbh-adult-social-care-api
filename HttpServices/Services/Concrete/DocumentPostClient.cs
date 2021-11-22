@@ -10,7 +10,7 @@ namespace HttpServices.Services.Concrete
 {
     public class DocumentPostClient : IDocumentPostClient
     {
-        private readonly HttpClient _httpClient;        
+        private readonly HttpClient _httpClient;
         private readonly IRestClient _restClient;
 
         public DocumentPostClient(HttpClient httpClient, IRestClient restClient)
@@ -22,7 +22,7 @@ namespace HttpServices.Services.Concrete
 
         public async Task<string> CreateDocument(Guid documentId, DocumentUploadRequest request)
         {
-           return await _restClient.PostAsync<string>($"documents/{documentId}", request, "Failed to create document");
+            return await _restClient.PostAsync<string>($"documents/{documentId}", request, "Failed to create document");
         }
     }
 }
