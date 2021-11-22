@@ -64,7 +64,10 @@ namespace LBH.AdultSocialCare.Api.Tests
                     {
                         ["HASCHttpClients:TransactionsBaseUrl"] = "http://127.0.0.1",
                         ["ResidentsAPI:BaseUrl"] = "http://127.0.0.1",
-                        ["DocumentAPI:BaseUrl"] = "http://127.0.0.1"
+                        ["DocumentAPI:BaseUrl"] = "http://127.0.0.1",
+                        ["DocumentAPI:ClaimBearerToken"] = "17456",
+                        ["DocumentAPI:PostBearerToken"] = "18811938",
+                        ["DocumentAPI:GetBearerToken"] = "10711453",
                     });
             });
             return base.CreateServer(builder);
