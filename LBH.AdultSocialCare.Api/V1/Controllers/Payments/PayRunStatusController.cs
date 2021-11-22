@@ -24,16 +24,16 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         /// </summary>
         /// <param name="useCase">Hold invoice use case.</param>
         /// <param name="heldInvoiceCreationRequest">Held invoice creation request</param>
-        /// <param name="id">Pay run id</param>
-        /// <param name="invoiceId">Pay run invoice id</param>
+        /// <param name="payRunId">Pay run id</param>
+        /// <param name="payRunInvoiceId">Pay run invoice id</param>
         /// <returns>Held invoice object</returns>
         [ProducesResponseType(typeof(HeldInvoiceFlatResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
-        [HttpPost("{id}/invoices/{invoiceId}/hold")]
+        [HttpPost("{payRunId:guid}/invoices/{payRunInvoiceId:guid}/hold")]
         [AuthorizeRoles(RolesEnum.Finance)]
-        public async Task<ActionResult<HeldInvoiceFlatResponse>> HoldInvoice([FromServices] IHoldInvoiceUseCase useCase, [FromBody] HeldInvoiceCreationRequest heldInvoiceCreationRequest, Guid id, Guid invoiceId)
+        public async Task<ActionResult<HeldInvoiceFlatResponse>> HoldInvoice([FromServices] IHoldInvoiceUseCase useCase, [FromBody] HeldInvoiceCreationRequest heldInvoiceCreationRequest, Guid payRunId, Guid payRunInvoiceId)
         {
-            var res = await useCase.ExecuteAsync(id, invoiceId, heldInvoiceCreationRequest.ToDomain());
+            var res = await useCase.ExecuteAsync(payRunId, payRunInvoiceId, heldInvoiceCreationRequest.ToDomain());
             return Ok(res);
         }
 
@@ -47,7 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
-        [HttpPost("{payRunId}/invoices/{payRunInvoiceId}/release")]
+        [HttpPost("{payRunId:guid}/invoices/{payRunInvoiceId:guid}/release")]
         [AuthorizeRoles(RolesEnum.Finance)]
         public async Task<ActionResult<HeldInvoiceFlatResponse>> ReleaseHeldInvoice([FromServices] IChangePayRunInvoiceStatusUseCase useCase, Guid payRunId, Guid payRunInvoiceId)
         {

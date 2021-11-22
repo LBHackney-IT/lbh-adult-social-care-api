@@ -1,16 +1,12 @@
 using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
-using LBH.AdultSocialCare.Api.V1.Extensions;
-using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.UserControllers
 {
@@ -29,26 +25,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.UserControllers
         {
             _authManager = authManager;
             _authUseCase = authUseCase;
-        }
-
-        /// <summary>
-        /// Get claims in token
-        /// </summary>
-        /// <returns>Token type and name</returns>
-        /// <response code="200">Returns claims</response>
-        /// <response code="403">If user is not authenticated or authorized</response>
-        /// <response code="500">Internal Server Error</response>
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
-        [HttpGet("claims")]
-        [Authorize]
-        public IActionResult Privacy()
-        {
-            var claims = User.Claims
-                .Select(c => new { c.Type, c.Value })
-                .ToList();
-            return Ok(claims);
         }
 
         /// <summary>
@@ -73,31 +49,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common.UserControllers
         {
             var res = await _authUseCase.GoogleAuthenticateUseCase(userForAuthenticationRequest.HackneyToken)
                 .ConfigureAwait(false);
-
-            return Ok(res);
-        }
-
-
-        /// <summary>
-        /// Assigns roles to a user.
-        /// </summary>
-        /// <param name="assignRolesToUserRequest">The assign roles to user request object.</param>
-        /// <returns>True if roles are added successfully</returns>
-        /// <response code="200">Returns token</response>
-        /// <response code="401">Unauthorized</response>
-        /// <response code="404">User not found</response>
-        /// <response code="422">If the request object is invalid</response>
-        /// <response code="500">Internal Server Error</response>
-        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
-        [HttpPost("assign-roles")]
-        [AuthorizeRoles(RolesEnum.SuperUser)]
-        public async Task<IActionResult> AssignRolesToUser([FromBody] AssignRolesToUserRequest assignRolesToUserRequest)
-        {
-            var res = await _authUseCase.AssignRolesToUserUseCase(assignRolesToUserRequest.ToDomain()).ConfigureAwait(false);
 
             return Ok(res);
         }

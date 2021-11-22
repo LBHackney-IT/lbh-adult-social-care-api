@@ -1,17 +1,16 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
-using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.Security.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Services.Auth;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Extensions;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Security.Concrete
 {
@@ -26,14 +25,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Security.Concrete
             _authManager = authManager;
             _userRolesGateway = userRolesGateway;
             _dbManager = dbManager;
-        }
-
-        public async Task<bool> AssignRolesToUserUseCase(AssignRolesToUserDomain assignRolesToUserDomain)
-        {
-            var res = await _authManager
-                .AssignRolesToUser(assignRolesToUserDomain.UserId, assignRolesToUserDomain.Roles).ConfigureAwait(false);
-
-            return res;
         }
 
         public async Task<TokenResponse> GoogleAuthenticateUseCase(string hackneyToken)
@@ -90,16 +81,20 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Security.Concrete
                     case "saml-socialcarefinance-brokerage":
                         rolesList.Add(RolesEnum.Broker);
                         break;
+
                     case "saml-socialcarefinance-approvers":
                         rolesList.Add(RolesEnum.BrokerageApprover);
                         break;
+
                     case "saml-socialcarefinance-care-charge":
                     case "saml-socialcarefinance-carecharges":
                         rolesList.Add(RolesEnum.CareChargeManager);
                         break;
+
                     case "saml-socialcarefinance-finance":
                         rolesList.Add(RolesEnum.Finance);
                         break;
+
                     case "saml-socialcarefinance-finance-approver":
                         rolesList.Add(RolesEnum.FinanceApprover);
                         break;
