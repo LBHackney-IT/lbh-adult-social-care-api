@@ -29,6 +29,8 @@ namespace LBH.AdultSocialCare.Data.Entities.Payments
         public ClaimCollector? ClaimCollector { get; set; }
         public PriceEffect PriceEffect { get; set; }
 
+        public long SourceVersion { get; set; }
+
         [ForeignKey(nameof(InvoiceId))]
         public Invoice Invoice { get; set; }
 
