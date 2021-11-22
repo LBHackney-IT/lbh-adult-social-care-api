@@ -11,10 +11,12 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Text;
 using Amazon.SQS;
 using LBH.AdultSocialCare.Api.Configuration;
+using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Api.V1.Services.Queuing;
 using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Data.Entities.Common;
@@ -134,6 +136,17 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             {
                 services.AddAWSService<IAmazonSQS>();
             }
+        }
+
+        public static void ConfigureDocumentApiClient(this IServiceCollection services, IConfiguration configuration)
+        {
+            services
+                .AddHttpClient<IFileStorage, FileStorage>(client =>
+                {
+                    client.BaseAddress = new Uri(configuration["DocumentAPI:BaseUrl"]);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(configuration["DocumentAPI:BearerToken"]);
+                })
+                .ConfigureMessageHandlers();
         }
 
         private static IHttpClientBuilder ConfigureMessageHandlers(this IHttpClientBuilder builder)
