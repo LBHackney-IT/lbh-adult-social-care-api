@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211120093946_AddCareChargeManagerRole")]
+    partial class AddCareChargeManagerRole
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,10 +60,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("ServiceUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SocialWorkerCarePlanFileId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("SocialWorkerCarePlanFileName")
+                    b.Property<string>("SocialWorkerCarePlanFileUrl")
                         .HasColumnType("text");
 
                     b.Property<int>("Status")
@@ -207,10 +206,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AssessmentFileId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("AssessmentFileName")
+                    b.Property<string>("AssessmentFileUrl")
                         .HasColumnType("text");
 
                     b.Property<Guid>("CarePackageId")

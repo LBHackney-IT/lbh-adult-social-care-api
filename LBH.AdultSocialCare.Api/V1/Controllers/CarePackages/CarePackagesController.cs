@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
@@ -72,6 +73,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<CarePackagePlainResponse>> CreateCarePackage([FromBody] CarePackageForCreationRequest carePackageForCreationRequest)
         {
             var residentialCarePackageResponse = await _createCarePackageUseCase.CreateAsync(carePackageForCreationRequest.ToDomain());
@@ -142,6 +144,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPut("{carePackageId}")]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<CarePackagePlainResponse>> UpdateCarePackage(Guid carePackageId, [FromBody] CarePackageUpdateRequest carePackageUpdateRequest)
         {
             var updateResult = await _updateCarePackageUseCase.UpdateAsync(carePackageId, carePackageUpdateRequest.ToDomain());
@@ -158,6 +161,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("{carePackageId}/submit")]
+        [AuthorizeRoles(RolesEnum.BrokerageApprover)]
         public async Task<ActionResult> SubmitForApproval(Guid carePackageId, CarePackageSubmissionRequest request)
         {
             await _submitCarePackageUseCase.ExecuteAsync(carePackageId, request.ToDomain());
@@ -175,6 +179,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("assign")]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult> AssignCarePlan([FromForm] CarePlanAssignmentRequest request)
         {
             await _assignCarePlanUseCase.ExecuteAsync(request.ToDomain());
@@ -227,6 +232,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("{carePackageId}/cancel")]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult> CancelPackage(Guid carePackageId, CarePackageChangeStatusRequest request)
         {
             await _cancelCarePackageUseCase.ExecuteAsync(carePackageId, request.Notes);
@@ -243,6 +249,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("{carePackageId}/end")]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult> EndPackage(Guid carePackageId, CarePackageChangeStatusRequest request)
         {
             await _endCarePackageUseCase.ExecuteAsync(carePackageId, request.Notes);
@@ -259,6 +266,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("{carePackageId}/approve")]
+        [AuthorizeRoles(RolesEnum.BrokerageApprover)]
         public async Task<ActionResult> ApprovePackage(Guid carePackageId, CarePackageChangeStatusRequest request)
         {
             await _approveCarePackageUseCase.ExecuteAsync(carePackageId, request.Notes);
@@ -275,6 +283,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("{carePackageId}/decline")]
+        [AuthorizeRoles(RolesEnum.BrokerageApprover)]
         public async Task<ActionResult> DeclinePackage(Guid carePackageId, CarePackageChangeStatusRequest request)
         {
             await _declineCarePackageUseCase.ExecuteAsync(carePackageId, request.Notes);
@@ -290,6 +299,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPut("{carePackageId}/confirm-s117")]
+        [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult> ConfirmS117ServiceUser(Guid carePackageId)
         {
             await _confirmS117ServiceUserUseCase.ExecuteAsync(carePackageId);
@@ -305,6 +315,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(PagedResponse<CarePackageApprovableListItemResponse>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [HttpGet("approvals")]
+        [AuthorizeRoles(RolesEnum.BrokerageApprover)]
         public async Task<ActionResult<PagedResponse<CarePackageApprovableListItemResponse>>> GetApprovedPackages(
             [FromQuery] ApprovableCarePackagesQueryParameters queryParameters,
             [FromServices] IGetApprovableCarePackagesUseCase useCase)
@@ -324,6 +335,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpDelete("{carePackageId}")]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult> DeletePackage(Guid carePackageId)
         {
             await _deleteCarePackageUseCase.ExecuteAsync(carePackageId);
