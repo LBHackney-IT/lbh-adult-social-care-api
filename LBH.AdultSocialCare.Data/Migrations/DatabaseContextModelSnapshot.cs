@@ -19,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "3.1.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackage", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackage", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -95,7 +95,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasCheckConstraint("CK_CarePackages_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8)");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageDetail", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackageDetail", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -154,7 +154,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasCheckConstraint("CK_CarePackageDetails_Type", "\"Type\" IN (0, 1, 2)");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageHistory", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackageHistory", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -198,7 +198,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasCheckConstraint("CK_CarePackageHistories_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageReclaim", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackageReclaim", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -268,7 +268,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasCheckConstraint("CK_CarePackageReclaims_Type", "\"Type\" IN (0, 1, 2)");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageSchedulingOption", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackageSchedulingOption", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("integer");
@@ -306,7 +306,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageSettings", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackageSettings", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -357,7 +357,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("CarePackageSettings");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.AppUserRole", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.AppUserRole", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
@@ -389,7 +389,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.FundedNursingCarePrice", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.FundedNursingCarePrice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -433,7 +433,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.PackageStatusOption", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.PackageStatusOption", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -501,7 +501,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.PrimarySupportReason", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.PrimarySupportReason", b =>
                 {
                     b.Property<int>("PrimarySupportReasonId")
                         .ValueGeneratedOnAdd()
@@ -563,7 +563,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.ProvisionalCareChargeAmount", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.ProvisionalCareChargeAmount", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -644,7 +644,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.Role", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.Role", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -736,7 +736,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.ServiceUser", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.ServiceUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -807,7 +807,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("ServiceUsers");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.Supplier", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.Supplier", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -945,7 +945,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.User", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1029,74 +1029,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.Department", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Departments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Brokerage"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Finance"
-                        });
-                });
-
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.HeldInvoice", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("ActionRequiredFromId")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("CreatorId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTimeOffset>("DateCreated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTimeOffset>("DateUpdated")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("PayRunInvoiceId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("ReasonForHolding")
-                        .HasColumnType("text");
-
-                    b.Property<Guid?>("UpdaterId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ActionRequiredFromId");
-
-                    b.HasIndex("CreatorId");
-
-                    b.HasIndex("PayRunInvoiceId");
-
-                    b.HasIndex("UpdaterId");
-
-                    b.ToTable("HeldInvoices");
-                });
-
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.Invoice", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.Invoice", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1110,12 +1043,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.Property<DateTimeOffset>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("GrossTotal")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("NetTotal")
-                        .HasColumnType("numeric");
 
                     b.Property<string>("Number")
                         .HasColumnType("text");
@@ -1153,19 +1080,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("Invoices");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.InvoiceItem", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.InvoiceItem", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CarePackageDetailId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CarePackageReclaimId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int?>("ClaimCollector")
+                    b.Property<int>("ClaimCollector")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("CreatorId")
@@ -1183,8 +1104,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("InvoiceId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool?>("IsReclaim")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValueSql("false");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("PackageId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("PriceEffect")
                         .HasColumnType("integer");
@@ -1206,10 +1136,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarePackageDetailId");
-
-                    b.HasIndex("CarePackageReclaimId");
-
                     b.HasIndex("CreatorId");
 
                     b.HasIndex("InvoiceId");
@@ -1218,12 +1144,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("InvoiceItems");
 
-                    b.HasCheckConstraint("CK_InvoiceItems_ClaimCollector", "\"ClaimCollector\" IN (1, 2)");
+                    b.HasCheckConstraint("CK_InvoiceItems_ClaimCollector", "\"ClaimCollector\" IN (0, 1, 2)");
 
                     b.HasCheckConstraint("CK_InvoiceItems_PriceEffect", "\"PriceEffect\" IN (0, 1, 2, 3)");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.Payrun", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.Payrun", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -1272,10 +1198,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasCheckConstraint("CK_Payruns_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8)");
 
-                    b.HasCheckConstraint("CK_Payruns_Type", "\"Type\" IN (0, 1, 2, 3, 4)");
+                    b.HasCheckConstraint("CK_Payruns_Type", "\"Type\" IN (0, 1, 2, 3)");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.PayrunHistory", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.PayrunHistory", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -1316,10 +1242,12 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasCheckConstraint("CK_PayrunHistory_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8)");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.PayrunInvoice", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.PayrunInvoice", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("PayrunId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("InvoiceId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CreatorId")
@@ -1331,19 +1259,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("InvoiceId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("InvoiceStatus")
                         .HasColumnType("integer");
-
-                    b.Property<Guid>("PayrunId")
-                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("Id");
+                    b.HasKey("PayrunId", "InvoiceId");
 
                     b.HasIndex("CreatorId");
 
@@ -1351,12 +1273,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasIndex("UpdaterId");
 
-                    b.HasIndex("PayrunId", "InvoiceId")
-                        .IsUnique();
-
                     b.ToTable("PayrunInvoices");
 
-                    b.HasCheckConstraint("CK_PayrunInvoices_InvoiceStatus", "\"InvoiceStatus\" IN (0, 1, 2, 3, 4, 5, 6)");
+                    b.HasCheckConstraint("CK_PayrunInvoices_InvoiceStatus", "\"InvoiceStatus\" IN (0, 1, 2, 3, 4, 5)");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -1445,313 +1364,280 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackage", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackage", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Approver")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Approver")
                         .WithMany()
                         .HasForeignKey("ApproverId");
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Broker")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Broker")
                         .WithMany()
                         .HasForeignKey("BrokerId");
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.PrimarySupportReason", "PrimarySupportReason")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.PrimarySupportReason", "PrimarySupportReason")
                         .WithMany()
                         .HasForeignKey("PrimarySupportReasonId");
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.ServiceUser", "ServiceUser")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.ServiceUser", "ServiceUser")
                         .WithMany()
                         .HasForeignKey("ServiceUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.Supplier", "Supplier")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.Supplier", "Supplier")
                         .WithMany()
                         .HasForeignKey("SupplierId");
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Updater")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageDetail", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackageDetail", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackage", "Package")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackage", "Package")
                         .WithMany("Details")
                         .HasForeignKey("CarePackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Updater")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageHistory", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackageHistory", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackage", "CarePackage")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackage", "CarePackage")
                         .WithMany("Histories")
                         .HasForeignKey("CarePackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Updater")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageReclaim", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackageReclaim", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackage", "Package")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackage", "Package")
                         .WithMany("Reclaims")
                         .HasForeignKey("CarePackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Updater")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageSettings", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackageSettings", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackage", "Package")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackage", "Package")
                         .WithOne("Settings")
-                        .HasForeignKey("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageSettings", "CarePackageId")
+                        .HasForeignKey("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackageSettings", "CarePackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Updater")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.AppUserRole", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.AppUserRole", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.Role", null)
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.Role", "Role")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId1");
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", null)
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "User")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId1");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.ServiceUser", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.ServiceUser", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.PrimarySupportReason", "PrimarySupportReason")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.PrimarySupportReason", "PrimarySupportReason")
                         .WithMany()
                         .HasForeignKey("PrimarySupportReasonId");
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Updater")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.Supplier", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.Supplier", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Updater")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.HeldInvoice", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.Invoice", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Payments.Department", "ActionDepartment")
-                        .WithMany()
-                        .HasForeignKey("ActionRequiredFromId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Payments.PayrunInvoice", "PayrunInvoice")
-                        .WithMany()
-                        .HasForeignKey("PayRunInvoiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Updater")
-                        .WithMany()
-                        .HasForeignKey("UpdaterId");
-                });
-
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.Invoice", b =>
-                {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
-                        .WithMany()
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackage", "Package")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages.CarePackage", "Package")
                         .WithMany()
                         .HasForeignKey("PackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.ServiceUser", "ServiceUser")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.ServiceUser", "ServiceUser")
                         .WithMany()
                         .HasForeignKey("ServiceUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.Supplier", "Supplier")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.Supplier", "Supplier")
                         .WithMany()
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Updater")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.InvoiceItem", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.InvoiceItem", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageDetail", "CarePackageDetail")
-                        .WithMany()
-                        .HasForeignKey("CarePackageDetailId");
-
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageReclaim", "CarePackageReclaim")
-                        .WithMany()
-                        .HasForeignKey("CarePackageReclaimId");
-
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Payments.Invoice", "Invoice")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.Invoice", "Invoice")
                         .WithMany("Items")
                         .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Updater")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.Payrun", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.Payrun", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Updater")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.PayrunHistory", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.PayrunHistory", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Payments.Payrun", "Payrun")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.Payrun", "Payrun")
                         .WithMany("Histories")
                         .HasForeignKey("PayRunId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Updater")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
                 });
 
-            modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.PayrunInvoice", b =>
+            modelBuilder.Entity("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.PayrunInvoice", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Payments.Invoice", "Invoice")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.Invoice", "Invoice")
                         .WithMany("PayrunInvoices")
                         .HasForeignKey("InvoiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Payments.Payrun", "Payrun")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Payments.Payrun", "Payrun")
                         .WithMany("PayrunInvoices")
                         .HasForeignKey("PayrunId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Updater")
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", "Updater")
                         .WithMany()
                         .HasForeignKey("UpdaterId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.Role", null)
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1760,7 +1646,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", null)
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1769,7 +1655,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", null)
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1778,7 +1664,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", null)
+                    b.HasOne("LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
