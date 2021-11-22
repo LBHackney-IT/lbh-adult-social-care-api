@@ -3,10 +3,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.Common;
+using LBH.AdultSocialCare.Data.Entities.Interfaces;
 
 namespace LBH.AdultSocialCare.Data.Entities.CarePackages
 {
-    public class CarePackageDetail : BaseEntity
+    public class CarePackageDetail : BaseEntity, IPackageItem
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }

@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using System.IO;
@@ -14,7 +16,7 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Helpers
 
             // sometimes unchanged files still have modification from git POV, avoid this
             // for some reason line endings in file sometimes switch to CRLF
-            if (formattedCode.TrimEnd('\r', '\n') != previousVersion.TrimEnd('\r', '\n'))
+            if (String.Compare(formattedCode, previousVersion, CultureInfo.CurrentCulture, CompareOptions.IgnoreSymbols) != 0)
             {
                 File.WriteAllText(path, formattedCode, Encoding.ASCII);
             }
