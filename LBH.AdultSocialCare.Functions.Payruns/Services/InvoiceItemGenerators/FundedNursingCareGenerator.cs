@@ -48,6 +48,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     ToDate = actualEndDate,
                     CarePackageReclaimId = fundedNursingCare.Id,
                     ClaimCollector = fundedNursingCare.ClaimCollector,
+                    SourceVersion = fundedNursingCare.Version,
                     PriceEffect = fundedNursingCare.ClaimCollector switch
                     {
                         ClaimCollector.Hackney => PriceEffect.None,

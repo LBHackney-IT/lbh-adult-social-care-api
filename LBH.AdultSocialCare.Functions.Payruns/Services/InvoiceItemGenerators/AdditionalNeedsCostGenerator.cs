@@ -31,6 +31,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     FromDate = itemRange.StartDate,
                     ToDate = itemRange.EndDate,
                     CarePackageDetailId = additionalNeed.Id,
+                    SourceVersion = additionalNeed.Version,
                     PriceEffect = PriceEffect.Add              // TODO: VK: Review
                 };
 

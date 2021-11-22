@@ -36,6 +36,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     ToDate = itemRange.EndDate,
                     CarePackageReclaimId = careCharge.Id,
                     ClaimCollector = careCharge.ClaimCollector,
+                    SourceVersion = careCharge.Version,
                     PriceEffect = careCharge.ClaimCollector switch
                     {
                         ClaimCollector.Hackney => PriceEffect.None,
