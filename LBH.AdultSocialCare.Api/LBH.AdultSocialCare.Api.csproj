@@ -120,7 +120,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="$(SKIP_CODE_GENERATION)!=1">
-      <Exec Command="..\LBH.AdultSocialCare.Api.CodeGenerator\bin\$(ConfigurationName)\netcoreapp3.1\LBH.AdultSocialCare.Api.CodeGenerator.exe $(ProjectDir)\V1\ $(ProjectDir)\V1\ $(ProjectDir)..\LBH.AdultSocialCare.Data\" />
+    <Exec Command="..\LBH.AdultSocialCare.Api.CodeGenerator\bin\$(ConfigurationName)\netcoreapp3.1\LBH.AdultSocialCare.Api.CodeGenerator.exe $(ProjectDir)\V1\ $(ProjectDir)\V1\ $(ProjectDir)..\LBH.AdultSocialCare.Data\" />
   </Target>
 
 </Project>

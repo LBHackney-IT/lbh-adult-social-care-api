@@ -18,7 +18,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
 
         public async Task<IList<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset startDate, DateTimeOffset endDate)
         {
-            // TODO: VK: Review bounds
             return await DbContext.CarePackages
                 .AsNoTracking()
                 .Where(package =>
