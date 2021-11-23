@@ -16,6 +16,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private readonly CarePackageReclaim _reclaim;
         private readonly Mock<IDatabaseManager> _dbManager;
         private readonly CancelCarePackageReclaimsUseCase _useCase;
+        private readonly Mock<ICarePackageGateway> _carePackageGateway;
 
         public CancelCarePackageReclaimsUseCaseTests()
         {
@@ -29,12 +30,13 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _dbManager = new Mock<IDatabaseManager>();
             var historyGateway = new Mock<ICarePackageHistoryGateway>();
             var gateway = new Mock<ICarePackageReclaimGateway>();
+            _carePackageGateway = new Mock<ICarePackageGateway>();
 
             gateway
                 .Setup(g => g.GetAsync(_reclaim.Id))
                 .ReturnsAsync(_reclaim);
 
-            _useCase = new CancelCarePackageReclaimsUseCase(gateway.Object, _dbManager.Object, historyGateway.Object);
+            _useCase = new CancelCarePackageReclaimsUseCase(gateway.Object, _dbManager.Object, historyGateway.Object, _carePackageGateway.Object);
         }
 
         [Fact]

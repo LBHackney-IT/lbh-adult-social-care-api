@@ -49,7 +49,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         }
 
         [Fact]
-        public void ShouldCreateNewPackage()
+        public async void ShouldCreateNewPackage()
         {
             var newPackage = new CarePackage();
 
@@ -68,7 +68,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 Notes = "Hello world"
             };
 
-            _useCase.ExecuteAsync(assignment);
+            await _useCase.ExecuteAsync(assignment);
 
             newPackage.BrokerId.Should().Be(assignment.BrokerId);
             newPackage.PackageType.Should().Be(assignment.PackageType);

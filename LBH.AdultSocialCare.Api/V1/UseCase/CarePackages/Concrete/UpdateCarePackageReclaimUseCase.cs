@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -49,6 +50,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             var package = await GetPackage(existingReclaims);
             var result = new List<CarePackageReclaim>();
+
+            // Check overlap between existing and requested care charges
+            ValidateUpdateCareCharges(existingReclaims, package);
 
             foreach (var existingReclaim in existingReclaims)
             {
@@ -135,6 +139,49 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             package.Reclaims.Add(newReclaim);
             return newReclaim;
+        }
+
+        private static void ValidateUpdateCareCharges(List<CarePackageReclaim> existingReclaims, CarePackage carePackage)
+        {
+            var existingProvisionalCareCharge = GetCarePackageReclaim(existingReclaims, carePackage, ReclaimSubType.CareChargeProvisional);
+            var secondCareChargeSubType = GetCarePackageReclaim(existingReclaims, carePackage, CareChargeSubTypes.GetCareChargeSubTypeOrder(ReclaimSubType.CareChargeProvisional));
+
+            if (existingProvisionalCareCharge != null)
+            {
+                if (secondCareChargeSubType != null)
+                {
+                    if (existingProvisionalCareCharge.EndDate != secondCareChargeSubType.StartDate.AddDays(-1))
+                    {
+                        throw new ApiException(
+                            $"{secondCareChargeSubType.SubType} start date is invalid. Date for {secondCareChargeSubType.SubType} should be consecutive with previous care charge type",
+                            HttpStatusCode.BadRequest);
+                    }
+                }
+            }
+
+            if (secondCareChargeSubType != null)
+            {
+                var thirdCareChargeSubType = GetCarePackageReclaim(existingReclaims, carePackage,
+                    CareChargeSubTypes.GetCareChargeSubTypeOrder(secondCareChargeSubType.SubType));
+                
+                if (thirdCareChargeSubType != null)
+                {
+                    if (secondCareChargeSubType.EndDate != thirdCareChargeSubType.StartDate.AddDays(-1))
+                    {
+                        throw new ApiException(
+                            $"{thirdCareChargeSubType.SubType} start date is invalid. Date for {thirdCareChargeSubType.SubType} should be consecutive with previous care charge type",
+                            HttpStatusCode.BadRequest);
+                    }
+                }
+            }
+        }
+
+        private static CarePackageReclaim GetCarePackageReclaim(List<CarePackageReclaim> carePackageReclaim, CarePackage carePackage,
+            ReclaimSubType reclaimSubType)
+        {
+            var existingCareCharge = carePackageReclaim.FirstOrDefault(r => r.SubType == reclaimSubType) ?? carePackage.Reclaims.FirstOrDefault(r => r.SubType == reclaimSubType);
+
+            return existingCareCharge;
         }
     }
 }
