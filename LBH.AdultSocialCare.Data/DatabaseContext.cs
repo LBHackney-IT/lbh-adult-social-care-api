@@ -139,6 +139,16 @@ namespace LBH.AdultSocialCare.Data
                     .HasForeignKey(pi => pi.InvoiceId);
             });
 
+            modelBuilder.Entity<CarePackageDetail>()
+                .HasMany<InvoiceItem>()
+                .WithOne(i => i.CarePackageDetail)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CarePackageReclaim>()
+                .HasMany<InvoiceItem>()
+                .WithOne(i => i.CarePackageReclaim)
+                .OnDelete(DeleteBehavior.Cascade);
+
             //PS: Second time adding the identity config below. Resist the temptation to remove. Serves a purpose
             modelBuilder.Entity<Role>(entity =>
             {

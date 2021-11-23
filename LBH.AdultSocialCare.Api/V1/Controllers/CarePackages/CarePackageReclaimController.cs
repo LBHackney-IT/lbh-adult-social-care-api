@@ -54,7 +54,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("fnc")]
         [AuthorizeRoles(RolesEnum.Broker)]
-        public async Task<ActionResult<CarePackageReclaimResponse>> CreateFundedNursingCare([FromBody] FundedNursingCareCreationRequest fundedNursingCareCreationRequest)
+        public async Task<ActionResult<CarePackageReclaimResponse>> CreateFundedNursingCare([FromForm] FundedNursingCareCreationRequest fundedNursingCareCreationRequest)
         {
             var fundedNursingCareResponse = await _createCarePackageReclaimUseCase.CreateCarePackageReclaim(fundedNursingCareCreationRequest.ToDomain(), ReclaimType.Fnc);
             return Ok(fundedNursingCareResponse);
@@ -69,7 +69,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("care-charges")]
         [AuthorizeRoles(RolesEnum.CareChargeManager)]
-        public async Task<ActionResult<CarePackageReclaimResponse>> CreateCareChargeReclaim([FromBody] CareChargeReclaimCreationRequest careChargeReclaimCreationRequest)
+        public async Task<ActionResult<CarePackageReclaimResponse>> CreateCareChargeReclaim([FromForm] CareChargeReclaimCreationRequest careChargeReclaimCreationRequest)
         {
             var carePackageReclaimResponse = await _createCarePackageReclaimUseCase.CreateCarePackageReclaim(careChargeReclaimCreationRequest.ToDomain(), ReclaimType.CareCharge);
             return Ok(carePackageReclaimResponse);
@@ -83,7 +83,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPut("fnc")]
         [AuthorizeRoles(RolesEnum.Broker)]
-        public async Task<ActionResult> UpdateFundedNursingCare([FromBody] FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
+        public async Task<ActionResult> UpdateFundedNursingCare([FromForm] FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
         {
             await _updateCarePackageReclaimUseCase.UpdateAsync(fundedNursingCareUpdateRequest.ToDomain());
             return Ok();
