@@ -59,14 +59,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         private static void ValidateCareCharge(CarePackageReclaim carePackageReclaim, CarePackage carePackage)
         {
-            var existingReclaims = carePackage.Reclaims
+            var existingReclaims = carePackage?.Reclaims
                 .Where(r => r.Status.In(ReclaimStatus.Active, ReclaimStatus.Pending));
 
             // Check existing CareChargeWithoutPropertyThirteenPlusWeeks when cancel CareChargeWithoutPropertyOneToTwelveWeeks type
             if (carePackageReclaim.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks)
             {
                 var existingCareChargeWithoutPropertyThirteenPlusWeeks =
-                    existingReclaims.FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks);
+                    existingReclaims?.FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks);
 
                 if (existingCareChargeWithoutPropertyThirteenPlusWeeks != null)
                 {

@@ -20,11 +20,16 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
         public CancelCarePackageReclaimsUseCaseTests()
         {
+            using var localFixture = new MockWebApplicationFactory();
+
+            var carePackage = localFixture.Generator.CreateCarePackage();
+
             _reclaim = new CarePackageReclaim
             {
                 Id = new Guid(),
                 Status = ReclaimStatus.Active,
-                Type = ReclaimType.CareCharge
+                Type = ReclaimType.CareCharge,
+                CarePackageId = carePackage.Id
             };
 
             _dbManager = new Mock<IDatabaseManager>();
