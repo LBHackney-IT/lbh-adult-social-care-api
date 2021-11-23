@@ -112,6 +112,7 @@ namespace LBH.AdultSocialCare.Api
             // Configure API clients
             services.AddTransient<IRestClient, JsonRestClient>();
             services.ConfigureResidentApiClient(Configuration);
+            services.ConfigureDocumentApiClient(Configuration);
         }
 
         private static void ConfigureSwagger(IServiceCollection services) => services.AddSwaggerGen(c =>

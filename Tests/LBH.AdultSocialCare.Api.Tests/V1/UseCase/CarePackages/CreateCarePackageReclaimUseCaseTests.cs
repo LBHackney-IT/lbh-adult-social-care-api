@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
+using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using Xunit;
@@ -19,6 +20,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private readonly Mock<IDatabaseManager> _dbManager;
         private readonly CreateCarePackageReclaimUseCase _useCase;
         private readonly CarePackage _package;
+        private readonly Mock<IFileStorage> _fileStorage;
 
         public CreateCarePackageReclaimUseCaseTests()
         {
@@ -47,13 +49,14 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             };
 
             _dbManager = new Mock<IDatabaseManager>();
+            _fileStorage = new Mock<IFileStorage>();
 
             var gateway = new Mock<ICarePackageGateway>();
             gateway
                 .Setup(g => g.GetPackageAsync(_package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
                 .ReturnsAsync(_package);
 
-            _useCase = new CreateCarePackageReclaimUseCase(gateway.Object, _dbManager.Object, Mapper);
+            _useCase = new CreateCarePackageReclaimUseCase(gateway.Object, _dbManager.Object, Mapper, _fileStorage.Object);
         }
 
         [Fact]

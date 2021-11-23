@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211122115513_FileUploadUpdates")]
+    partial class FileUploadUpdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -371,9 +373,19 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("RoleId1")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("UserId1")
+                        .HasColumnType("uuid");
+
                     b.HasKey("UserId", "RoleId");
 
                     b.HasIndex("RoleId");
+
+                    b.HasIndex("RoleId1");
+
+                    b.HasIndex("UserId1");
 
                     b.ToTable("AspNetUserRoles");
 
@@ -671,43 +683,64 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         {
                             Id = new Guid("7335e791-1d08-437a-974e-809944d29bc6"),
                             ConcurrencyStamp = "1",
-                            Name = "Super User",
-                            NormalizedName = "SUPER USER"
+                            Name = "Super Administrator",
+                            NormalizedName = "SUPER ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("66e830f6-ea42-44ad-beed-bbede0ff69df"),
+                            ConcurrencyStamp = "2",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = new Guid("4defe6f2-09cf-43f2-8c1f-f4cad04a582d"),
+                            ConcurrencyStamp = "3",
+                            Name = "Social Worker",
+                            NormalizedName = "SOCIAL WORKER"
                         },
                         new
                         {
                             Id = new Guid("97c46919-fd10-47f1-bcb9-fa6b513c4c83"),
-                            ConcurrencyStamp = "2",
-                            Name = "Brokerage",
-                            NormalizedName = "BROKERAGE"
+                            ConcurrencyStamp = "4",
+                            Name = "Broker",
+                            NormalizedName = "BROKER"
                         },
                         new
                         {
                             Id = new Guid("d7cb6746-1211-4cc2-9244-f4faaef25089"),
-                            ConcurrencyStamp = "3",
-                            Name = "Brokerage Approver",
-                            NormalizedName = "BROKERAGE APPROVER"
+                            ConcurrencyStamp = "5",
+                            Name = "Approver",
+                            NormalizedName = "APPROVER"
                         },
                         new
                         {
                             Id = new Guid("74b93ac7-1778-485d-a482-d76893f31aff"),
-                            ConcurrencyStamp = "4",
+                            ConcurrencyStamp = "6",
                             Name = "Finance",
                             NormalizedName = "FINANCE"
                         },
                         new
                         {
                             Id = new Guid("80f1ea68-9335-4efe-b247-7aa58cc45af0"),
-                            ConcurrencyStamp = "5",
-                            Name = "Finance Approver",
-                            NormalizedName = "FINANCE APPROVER"
+                            ConcurrencyStamp = "7",
+                            Name = "User",
+                            NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = new Guid("7b955348-e506-4c93-abc4-64d27d559f41"),
-                            ConcurrencyStamp = "6",
-                            Name = "Care Charge Manager",
-                            NormalizedName = "CARE CHARGE MANAGER"
+                            Id = new Guid("1e958e66-b2a3-4e9d-9806-c5ca8bafda5d"),
+                            ConcurrencyStamp = "8",
+                            Name = "Broker Manager",
+                            NormalizedName = "BROKER MANAGER"
+                        },
+                        new
+                        {
+                            Id = new Guid("1f0bea0c-9f9a-4ef1-b911-83e2113dd503"),
+                            ConcurrencyStamp = "9",
+                            Name = "Broker Assistant",
+                            NormalizedName = "BROKER ASSISTANT"
                         });
                 });
 
@@ -1134,13 +1167,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CarePackageDetailId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("CarePackageReclaimId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int?>("ClaimCollector")
+                    b.Property<int>("ClaimCollector")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("CreatorId")
@@ -1158,8 +1185,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("InvoiceId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool?>("IsReclaim")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValueSql("false");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
+
+                    b.Property<Guid>("PackageId")
+                        .HasColumnType("uuid");
 
                     b.Property<int>("PriceEffect")
                         .HasColumnType("integer");
@@ -1181,10 +1217,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CarePackageDetailId");
-
-                    b.HasIndex("CarePackageReclaimId");
-
                     b.HasIndex("CreatorId");
 
                     b.HasIndex("InvoiceId");
@@ -1193,7 +1225,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("InvoiceItems");
 
-                    b.HasCheckConstraint("CK_InvoiceItems_ClaimCollector", "\"ClaimCollector\" IN (1, 2)");
+                    b.HasCheckConstraint("CK_InvoiceItems_ClaimCollector", "\"ClaimCollector\" IN (0, 1, 2)");
 
                     b.HasCheckConstraint("CK_InvoiceItems_PriceEffect", "\"PriceEffect\" IN (0, 1, 2, 3)");
                 });
@@ -1533,17 +1565,25 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.AppUserRole", b =>
                 {
+                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.Role", "Role")
                         .WithMany("UserRoles")
-                        .HasForeignKey("RoleId")
+                        .HasForeignKey("RoleId1");
+
+                    b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "User")
                         .WithMany("UserRoles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Common.ServiceUser", b =>
@@ -1634,14 +1674,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.InvoiceItem", b =>
                 {
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageDetail", "CarePackageDetail")
-                        .WithMany()
-                        .HasForeignKey("CarePackageDetailId");
-
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageReclaim", "CarePackageReclaim")
-                        .WithMany()
-                        .HasForeignKey("CarePackageReclaimId");
-
                     b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")

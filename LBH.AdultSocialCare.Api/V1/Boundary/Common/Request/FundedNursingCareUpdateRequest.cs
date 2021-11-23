@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Data.Constants.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
 {
@@ -23,6 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
         public DateTimeOffset? EndDate { get; set; }
 
         public string Description { get; set; }
-        public string AssessmentFileUrl { get; set; }
+        public IFormFile AssessmentFile { get; set; }
+        public Guid AssessmentFileId { get; set; }
     }
 }

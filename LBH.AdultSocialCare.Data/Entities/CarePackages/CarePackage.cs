@@ -33,7 +33,8 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
         public PackageScheduling PackageScheduling { get; set; }
         public CarePackageSettings Settings { get; set; }
 
-        public string SocialWorkerCarePlanFileUrl { get; set; }
+        public Guid? SocialWorkerCarePlanFileId { get; set; }
+        public string SocialWorkerCarePlanFileName { get; set; }
 
         [ForeignKey(nameof(ServiceUserId))]
         public ServiceUser ServiceUser { get; set; }
