@@ -163,7 +163,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             {
                 var thirdCareChargeSubType = GetCarePackageReclaim(existingReclaims, carePackage,
                     CareChargeSubTypes.GetCareChargeSubTypeOrder(secondCareChargeSubType.SubType));
-                
+
                 if (thirdCareChargeSubType != null)
                 {
                     if (secondCareChargeSubType.EndDate != thirdCareChargeSubType.StartDate.AddDays(-1))
