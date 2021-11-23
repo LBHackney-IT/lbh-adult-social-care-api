@@ -22,5 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
         public string Notes { get; set; }
 
         public IFormFile CarePlanFile { get; set; }
+
+        public Guid CarePlanFileId { get; set; }
     }
 }

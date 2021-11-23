@@ -9,6 +9,8 @@
       <Compile Remove="Migrations\20211120084657_AddCareChargeManagerRole.Designer.cs" />
       <Compile Remove="Migrations\20211120101535_AddCareChargeManagerRoles.cs" />
       <Compile Remove="Migrations\20211120101535_AddCareChargeManagerRoles.Designer.cs" />
+      <Compile Remove="Migrations\20211123090604_CarePackageReclaimAddAssessmentFileTest.cs" />
+      <Compile Remove="Migrations\20211123090604_CarePackageReclaimAddAssessmentFileTest.Designer.cs" />
     </ItemGroup>
 
     <ItemGroup>

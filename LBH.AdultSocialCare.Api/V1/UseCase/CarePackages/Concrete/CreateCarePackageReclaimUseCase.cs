@@ -9,12 +9,16 @@ using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using HttpServices.Models.Responses;
 using LBH.AdultSocialCare.Api.V1.Extensions;
+using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -23,12 +27,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
         private readonly IMapper _mapper;
+        private readonly IFileStorage _fileStorage;
 
-        public CreateCarePackageReclaimUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IMapper mapper)
+        public CreateCarePackageReclaimUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IMapper mapper, IFileStorage fileStorage)
         {
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
             _mapper = mapper;
+            _fileStorage = fileStorage;
         }
 
         public async Task<CarePackageReclaimResponse> CreateCarePackageReclaim(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType)
@@ -56,6 +62,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             {
                 newReclaim = reclaimCreationDomain.ToEntity();
                 newReclaim.Type = reclaimType;
+
+                if (reclaimCreationDomain.AssessmentFileId == Guid.Empty)
+                {
+                    var documentResponse = await _fileStorage.SaveFileAsync(reclaimCreationDomain.AssessmentFile);
+                    newReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
+                    newReclaim.AssessmentFileName = reclaimCreationDomain.AssessmentFile?.FileName;
+                }
 
                 carePackage.Reclaims.Add(newReclaim);
             }

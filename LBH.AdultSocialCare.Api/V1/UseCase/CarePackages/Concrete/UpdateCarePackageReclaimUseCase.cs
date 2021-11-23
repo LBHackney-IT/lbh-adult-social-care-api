@@ -9,12 +9,16 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using HttpServices.Models.Responses;
 using LBH.AdultSocialCare.Api.V1.Extensions;
+using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -24,15 +28,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
         private readonly IMapper _mapper;
+        private readonly IFileStorage _fileStorage;
 
         public UpdateCarePackageReclaimUseCase(
             ICarePackageReclaimGateway carePackageReclaimGateway, ICarePackageGateway carePackageGateway,
-            IDatabaseManager dbManager, IMapper mapper)
+            IDatabaseManager dbManager, IMapper mapper,
+            IFileStorage fileStorage)
         {
             _carePackageReclaimGateway = carePackageReclaimGateway;
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
             _mapper = mapper;
+            _fileStorage = fileStorage;
         }
 
         public async Task UpdateAsync(CarePackageReclaimUpdateDomain carePackageReclaimUpdateDomain)
@@ -69,6 +76,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 {
                     existingReclaim.Status = ReclaimStatus.Ended;
                     existingReclaim.EndDate = DateTimeOffset.Now.Date;
+
+                    if (requestedReclaim.AssessmentFileId == Guid.Empty)
+                    {
+                        var documentResponse = await _fileStorage.SaveFileAsync(requestedReclaim.AssessmentFile);
+                        requestedReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
+                    }
 
                     var newReclaim = CreateNewReclaim(requestedReclaim, existingReclaim, package);
                     result.Add(newReclaim);

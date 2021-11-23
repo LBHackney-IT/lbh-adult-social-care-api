@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using HttpServices.Models.Responses;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
@@ -39,7 +40,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var serviceUser = await _getServiceUserUseCase.GetServiceUserInformation(carePlanAssignment.HackneyUserId);
             await _ensureSingleActivePackageTypePerUserUseCase.ExecuteAsync(serviceUser.Id, carePlanAssignment.PackageType);
 
-            var carePlanFileUrl = await UploadCarePlan(carePlanAssignment.CarePlanFile);
+            var documentResponse = new DocumentResponse();
+
+            if (carePlanAssignment.CarePlanFileId == Guid.Empty)
+            {
+                documentResponse = await _fileStorage.SaveFileAsync(carePlanAssignment.CarePlanFile);
+            }
 
             var package = new CarePackage
             {
@@ -48,7 +54,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 PackageType = carePlanAssignment.PackageType,
                 Status = PackageStatus.New,
                 DateAssigned = DateTimeOffset.Now,
-                SocialWorkerCarePlanFileUrl = carePlanFileUrl
+                SocialWorkerCarePlanFileId = documentResponse?.FileId ?? Guid.Empty,
+                SocialWorkerCarePlanFileName = carePlanAssignment.CarePlanFile?.FileName
             };
 
             package.Histories.Add(new CarePackageHistory
@@ -60,27 +67,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             _carePackageGateway.Create(package);
             await _dbManager.SaveAsync();
-        }
-
-        private async Task<string> UploadCarePlan(IFormFile carePlanFile)
-        {
-            if (carePlanFile != null)
-            {
-                using (var stream = new MemoryStream())
-                {
-                    carePlanFile.CopyTo(stream);
-
-                    var bytes = stream.ToArray();
-                    var content = Convert.ToBase64String(bytes);
-
-                    // TODO: Replace with document management API call, pass content
-                    return await _fileStorage.SaveFileAsync(bytes);
-                }
-            }
-            else
-            {
-                return null;
-            }
         }
     }
 }

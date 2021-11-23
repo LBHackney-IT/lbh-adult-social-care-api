@@ -35,6 +35,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 AssignedOn = package.DateAssigned,
                 ApprovedBy = package.Approver?.Name,
                 ApprovedOn = package.DateApproved,
+                SocialWorkerCarePlanFileId = package.SocialWorkerCarePlanFileId,
+                SocialWorkerCarePlanFileName = package.SocialWorkerCarePlanFileName,
                 History = packageHistory.OrderByDescending(h => h.Id).ToResponse()
             };
 
