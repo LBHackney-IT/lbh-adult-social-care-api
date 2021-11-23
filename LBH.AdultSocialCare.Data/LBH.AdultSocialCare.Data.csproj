@@ -5,6 +5,15 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Migrations\20211120084657_AddCareChargeManagerRole.cs" />
+      <Compile Remove="Migrations\20211120084657_AddCareChargeManagerRole.Designer.cs" />
+      <Compile Remove="Migrations\20211120101535_AddCareChargeManagerRoles.cs" />
+      <Compile Remove="Migrations\20211120101535_AddCareChargeManagerRoles.Designer.cs" />
+      <Compile Remove="Migrations\20211123090604_CarePackageReclaimAddAssessmentFileTest.cs" />
+      <Compile Remove="Migrations\20211123090604_CarePackageReclaimAddAssessmentFileTest.Designer.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.16" />
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.3" />

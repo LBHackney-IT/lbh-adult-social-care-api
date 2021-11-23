@@ -37,6 +37,10 @@ functions:
         ResidentsAPI__ApiKey: ${ssm:/hasc-api/${self:provider.stage}/RESIDENTS-API-KEY}
         PayrunsQueue__Url: ${ssm:/hasc-api/${self:provider.stage}/PAYRUNS-QUEUE-URL}
         AWS__Region: ${self:provider.region}
+        DocumentAPI__BaseUrl: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTS-BASE-URL}
+        DocumentAPI__ClaimBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTAPI-POST-CLAIM-TOKEN}
+        DocumentAPI__PostBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTAPI-POST-DOCUMENT-TOKEN}
+        DocumentAPI__GetBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTSAPI-GET-DOCUMENT-TOKEN}
     events:
       - http:
           path: /{proxy+}

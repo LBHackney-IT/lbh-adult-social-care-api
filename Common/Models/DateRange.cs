@@ -1,16 +1,19 @@
 using System;
+using LBH.AdultSocialCare.Api.Helpers;
 
 namespace Common.Models
 {
     public class DateRange
     {
-        public DateRange(DateTime startDate, DateTime endDate)
+        public DateRange(DateTimeOffset startDate, DateTimeOffset endDate)
         {
             StartDate = startDate < endDate ? startDate : endDate;
             EndDate = startDate < endDate ? endDate : startDate;
         }
 
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTimeOffset StartDate { get; }
+        public DateTimeOffset EndDate { get; }
+
+        public decimal Weeks => Dates.WeeksBetween(StartDate, EndDate);
     }
 }

@@ -36,6 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
 
         public string ClaimReason { get; set; }
 
-        public string AssessmentFileUrl { get; set; }
+        public Guid AssessmentFileId { get; set; }
+        public string AssessmentFileName { get; set; }
     }
 }

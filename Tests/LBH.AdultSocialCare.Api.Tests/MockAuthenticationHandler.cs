@@ -5,6 +5,8 @@ using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Common.Extensions;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.Tests
 {
@@ -20,7 +22,15 @@ namespace LBH.AdultSocialCare.Api.Tests
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            var claims = new[] { new Claim(ClaimTypes.Name, "Test user") };
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.Name, "Test user"),
+                new Claim(ClaimTypes.Role, RolesEnum.Broker.GetDisplayName()),
+                new Claim(ClaimTypes.Role, RolesEnum.BrokerageApprover.GetDisplayName()),
+                new Claim(ClaimTypes.Role, RolesEnum.CareChargeManager.GetDisplayName()),
+                new Claim(ClaimTypes.Role, RolesEnum.Finance.GetDisplayName()),
+                new Claim(ClaimTypes.Role, RolesEnum.FinanceApprover.GetDisplayName())
+            };
             var identity = new ClaimsIdentity(claims, "Test");
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, "Test");

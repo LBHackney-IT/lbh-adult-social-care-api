@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
@@ -20,9 +19,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         {
             // TODO: VK: Add some [Lookup] attribute to avoid accessing any enum for security reason
             // TODO: VK: Consider [OptionName] attribute to keep separated strings for lookups and some other strings
+            // TODO: VK: optimize, look just for enums in Data assembly, add output caching
 
-            var lookup = Assembly.GetExecutingAssembly().GetTypes()
-                .FirstOrDefault(type => type.IsEnum && type.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
+            var lookup = AppDomain.CurrentDomain
+                .GetAssemblies()
+                .Select(assembly => assembly
+                    .GetTypes()
+                    .FirstOrDefault(type => type.IsEnum && type.Name.Equals(name, StringComparison.OrdinalIgnoreCase)))
+                .FirstOrDefault(type => type != null);
 
             if (lookup is null) return NotFound();
 

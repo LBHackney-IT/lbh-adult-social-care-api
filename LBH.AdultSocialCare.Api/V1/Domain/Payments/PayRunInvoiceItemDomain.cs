@@ -15,8 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
         public decimal Cost { get; set; }
         public decimal Quantity { get; set; }
         public decimal TotalCost { get; set; }
-        public bool IsReclaim { get; set; }
-        public ClaimCollector ClaimCollector { get; set; }
+        public ClaimCollector? ClaimCollector { get; set; }
         public PriceEffect PriceEffect { get; set; }
     }
 }

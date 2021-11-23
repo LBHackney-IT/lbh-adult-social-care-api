@@ -44,7 +44,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
 
             carePackageReclaim.Should().BeEquivalentTo(request, opt => opt
-                .Excluding(reclaim => reclaim.EndDate));
+                .Excluding(reclaim => reclaim.EndDate)
+                .Excluding(reclaim => reclaim.AssessmentFile));
             carePackageReclaim.EndDate.Should().BeNull();
         }
 
@@ -76,7 +77,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
 
             response.Content.Should().BeEquivalentTo(request, opt => opt
-                .Excluding(reclaim => reclaim.EndDate));
+                .Excluding(reclaim => reclaim.EndDate)
+                .Excluding(reclaim => reclaim.AssessmentFile));
             response.Content.EndDate.Should().BeNull();
         }
 

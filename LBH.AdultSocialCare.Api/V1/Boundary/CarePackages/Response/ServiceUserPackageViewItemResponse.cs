@@ -13,6 +13,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
         public DateTimeOffset? DateAssigned { get; set; }
         public decimal GrossTotal { get; set; }
         public decimal NetTotal { get; set; }
+        public Guid? SocialWorkerCarePlanFileId { get; set; }
+        public string SocialWorkerCarePlanFileName { get; set; }
         public IEnumerable<CarePackageHistoryResponse> Notes { get; set; }
         public IEnumerable<CarePackageCostItemResponse> PackageItems { get; set; }
     }

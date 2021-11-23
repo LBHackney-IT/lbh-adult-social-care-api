@@ -10,7 +10,5 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces
         Task<IList<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset startDate, DateTimeOffset endDate);
 
         Task<IList<CarePackage>> GetListAsync(IList<Guid> ids);
-
-        Task<int> GetInvoicesCountAsync(); // TODO: VK: Remove
     }
 }

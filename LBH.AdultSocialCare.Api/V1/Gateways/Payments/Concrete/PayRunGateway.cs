@@ -42,8 +42,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             var payRunList = await _dbContext.Payruns
                 .FilterPayRunList(parameters.PayRunId, parameters.PayRunType,
                     parameters.PayRunStatus, parameters.DateFrom, parameters.DateTo)
-                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-                .Take(parameters.PageSize)
                 .Select(pr => new PayRunListDomain
                 {
                     PayRunId = pr.Id,
@@ -57,7 +55,13 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     DateFrom = pr.StartDate,
                     DateTo = pr.EndDate,
                     DateCreated = pr.DateCreated
-                }).ToListAsync();
+                })
+                .OrderBy(p => p.PayRunStatusId).ThenBy(p => p.DateCreated)
+                .ToListAsync();
+
+            payRunList = payRunList
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize).ToList();
 
             var payRunCount = await _dbContext.Payruns
                 .FilterPayRunList(parameters.PayRunId, parameters.PayRunType,

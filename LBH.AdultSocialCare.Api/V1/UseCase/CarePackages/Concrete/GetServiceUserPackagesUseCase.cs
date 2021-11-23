@@ -59,6 +59,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     DateAssigned = carePackage.DateAssigned,
                     GrossTotal = 0,
                     NetTotal = 0,
+                    SocialWorkerCarePlanFileId = carePackage.SocialWorkerCarePlanFileId,
+                    SocialWorkerCarePlanFileName = carePackage.SocialWorkerCarePlanFileName,
                     Notes = new List<CarePackageHistoryResponse>(),
                     PackageItems = new List<CarePackageCostItemResponse>()
                 };

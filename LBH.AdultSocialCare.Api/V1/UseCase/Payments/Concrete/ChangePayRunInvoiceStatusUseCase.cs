@@ -58,5 +58,26 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             throw new ApiException($"Status change for pay run invoice with id {payRunInvoiceId} not allowed",
                     HttpStatusCode.BadRequest);
         }
+
+        public async Task<bool> ReleaseInvoiceAsync(Guid payRunId, Guid payRunInvoiceId)
+        {
+            await _payRunGateway.GetPayRunAsync(payRunId)
+                .EnsureExistsAsync($"Pay run with id {payRunId} not found");
+
+            var payRunInvoice =
+                await _payRunInvoiceGateway.GetPayRunInvoiceAsync(payRunInvoiceId, PayRunInvoiceFields.None, true)
+                    .EnsureExistsAsync($"Pay run invoice with id {payRunInvoiceId} not found");
+
+            if (payRunInvoice.InvoiceStatus != InvoiceStatus.Held)
+            {
+                throw new ApiException($"Status change not allowed. Invoice must be held to be released",
+                    HttpStatusCode.BadRequest);
+            }
+
+            // Update status and save
+            payRunInvoice.InvoiceStatus = InvoiceStatus.Released;
+            await _dbManager.SaveAsync($"Failed to change status for pay run invoice with id {payRunInvoiceId}");
+            return true;
+        }
     }
 }
