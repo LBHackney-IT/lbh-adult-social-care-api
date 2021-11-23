@@ -41,6 +41,11 @@ namespace LBH.AdultSocialCare.Api.Tests
             return await SubmitRequest<TContent>(url, payload, HttpMethod.Post, CreateMultipartContent);
         }
 
+        public async Task<TestResponse<TContent>> UpdateFormAsync<TContent>(string url, object payload)
+        {
+            return await SubmitRequest<TContent>(url, payload, HttpMethod.Put, CreateMultipartContent);
+        }
+
         private async Task<TestResponse<TContent>> SubmitRequest<TContent>(string url, object payload, HttpMethod method, Func<object, HttpContent> createContentFunc)
         {
             using var httpRequestMessage = new HttpRequestMessage
