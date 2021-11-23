@@ -36,7 +36,7 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
         public string Description { get; set; }
         public string ClaimReason { get; set; }
 
-        public Guid AssessmentFileId { get; set; }
+        public Guid? AssessmentFileId { get; set; }
         public string AssessmentFileName { get; set; }
 
         [ForeignKey(nameof(CarePackageId))]
