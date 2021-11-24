@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -24,12 +25,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 
         public override IEnumerable<InvoiceItem> CreateNormalItem(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
         {
-            var invoiceItems = new List<InvoiceItem>();
             var fundedNursingCare = package.Reclaims
                 .FirstOrDefault(r => r.Type is ReclaimType.Fnc &&
                                      r.Status is ReclaimStatus.Active);
 
-            if (fundedNursingCare is null) return invoiceItems;
+            if (fundedNursingCare is null) yield break;
 
             var actualStartDate = GetActualStartDate(fundedNursingCare, packageInvoices, invoiceEndDate);
 
@@ -40,7 +40,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 
                 if (actualWeeks <= 0) continue;
 
-                invoiceItems.Add(new InvoiceItem
+                yield return new InvoiceItem
                 {
                     Name = "Funded Nursing Care",
                     Quantity = actualWeeks,
@@ -57,17 +57,39 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                         ClaimCollector.Supplier => PriceEffect.Subtract,
                         _ => throw new InvalidOperationException("Unknown claim collector")
                     }
-                });
+                };
 
                 actualStartDate = actualEndDate.AddDays(1);
             }
-
-            return invoiceItems;
         }
 
         public override IEnumerable<InvoiceItem> CreateRefundItem(CarePackage package, IList<InvoiceDomain> packageInvoices)
         {
-            return new List<InvoiceItem>();
+            var fundedNursingCare = package.Reclaims
+                .FirstOrDefault(r => r.Type is ReclaimType.Fnc &&
+                                     r.Status is ReclaimStatus.Active);
+
+            if (fundedNursingCare is null) yield break;
+
+            var refund = RefundCalculator.Calculate(fundedNursingCare, packageInvoices, PaymentPeriod.Weekly);
+
+            if (refund.RefundAmount == 0.0m) yield break;
+
+            yield return new InvoiceItem
+            {
+                Name = $"Care Charge {fundedNursingCare.SubType.GetDisplayName()} (refund)",
+                Quantity = refund.Quantity,
+                WeeklyCost = fundedNursingCare.Cost,
+                TotalCost = refund.RefundAmount,
+                FromDate = refund.StartDate,
+                ToDate = refund.EndDate,
+                CarePackageReclaimId = fundedNursingCare.Id,
+                SourceVersion = fundedNursingCare.Version,
+                NetCostsCompensated = refund.NetCostsCompensated,
+                PriceEffect = refund.RefundAmount > 0
+                    ? PriceEffect.Add
+                    : PriceEffect.Subtract
+            };
         }
 
         public override async Task Initialize()
