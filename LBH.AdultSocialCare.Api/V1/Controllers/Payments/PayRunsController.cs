@@ -2,16 +2,16 @@ using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Extensions;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
 {
@@ -25,7 +25,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         private readonly IGetPayRunListUseCase _getPayRunListUseCase;
         private readonly ICreateDraftPayRunUseCase _createDraftPayRunUseCase;
 
-        public PayRunsController(IGetPayRunListUseCase getPayRunListUseCase, ICreateDraftPayRunUseCase createDraftPayRunUseCase)
+        public PayRunsController(IGetPayRunListUseCase getPayRunListUseCase,
+            ICreateDraftPayRunUseCase createDraftPayRunUseCase)
         {
             _getPayRunListUseCase = getPayRunListUseCase;
             _createDraftPayRunUseCase = createDraftPayRunUseCase;
@@ -41,9 +42,27 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(PayRunDetailsViewResponse), StatusCodes.Status200OK)]
         [HttpGet("{id}")]
         [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
-        public async Task<ActionResult<PayRunDetailsViewResponse>> GetPayRunDetails([FromServices] IGetPayRunDetailsUseCase useCase, [FromQuery] PayRunDetailsQueryParameters parameters, Guid id)
+        public async Task<ActionResult<PayRunDetailsViewResponse>> GetPayRunDetails(
+            [FromServices] IGetPayRunDetailsUseCase useCase, [FromQuery] PayRunDetailsQueryParameters parameters,
+            Guid id)
         {
             var res = await useCase.ExecuteAsync(id, parameters);
+            return Ok(res);
+        }
+
+        /// <summary>
+        /// Gets list of held invoices.
+        /// </summary>
+        /// <param name="useCase">Use case to get held invoices.</param>
+        /// <param name="parameters">Parameters to filter invoice list.</param>
+        /// <returns>List of held invoices if success</returns>
+        [ProducesResponseType(typeof(PagedResponse<HeldInvoiceItemResponse>), StatusCodes.Status200OK)]
+        [HttpGet("held-invoices")]
+        [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
+        public async Task<ActionResult<PagedResponse<HeldInvoiceItemResponse>>> GetHeldInvoices(
+            [FromServices] IGetHeldInvoicesUseCase useCase, [FromQuery] PayRunDetailsQueryParameters parameters)
+        {
+            var res = await useCase.ExecuteAsync(parameters);
             return Ok(res);
         }
 
@@ -57,7 +76,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
-        public async Task<ActionResult<PagedResponse<PayRunListResponse>>> GetPayRunList([FromQuery] PayRunListParameters parameters)
+        public async Task<ActionResult<PagedResponse<PayRunListResponse>>> GetPayRunList(
+            [FromQuery] PayRunListParameters parameters)
         {
             var result = await _getPayRunListUseCase.GetPayRunList(parameters).ConfigureAwait(false);
             Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(result.PagingMetaData));
@@ -90,7 +110,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [HttpGet("{id}/insights")]
         [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
-        public async Task<ActionResult<PayRunInsightsResponse>> GetPayRunInsights([FromServices] IGetPayRunInsightsUseCase useCase, Guid id)
+        public async Task<ActionResult<PayRunInsightsResponse>> GetPayRunInsights(
+            [FromServices] IGetPayRunInsightsUseCase useCase, Guid id)
         {
             var res = await useCase.GetAsync(id);
             return Ok(res);
@@ -104,7 +125,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [HttpGet("released-invoice-count")]
         [AuthorizeRoles(RolesEnum.Finance)]
-        public async Task<ActionResult<int>> GetReleasedInvoiceCount([FromServices] IGetReleasedInvoiceCountUseCase useCase)
+        public async Task<ActionResult<int>> GetReleasedInvoiceCount(
+            [FromServices] IGetReleasedInvoiceCountUseCase useCase)
         {
             var res = await useCase.GetAsync();
             return Ok(res);
@@ -120,7 +142,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpGet("{type}/previous-pay-run-end-date")]
         [AuthorizeRoles(RolesEnum.Finance)]
-        public async Task<ActionResult<DateTimeOffset>> GetPreviousPayRunEndDate([FromServices] IGetEndDateOfLastPayRunUseCase useCase, PayrunType type)
+        public async Task<ActionResult<DateTimeOffset>> GetPreviousPayRunEndDate(
+            [FromServices] IGetEndDateOfLastPayRunUseCase useCase, PayrunType type)
         {
             var res = await useCase.GetAsync(type);
             return Ok(res);
@@ -137,7 +160,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [HttpGet("{payRunId:guid}/invoices/{invoiceId:guid}")]
         [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
-        public async Task<ActionResult<PayRunInvoiceDetailViewResponse>> GetPayRunInvoiceDetails([FromServices] IGetPayRunInvoiceUseCase useCase, Guid payRunId, Guid invoiceId)
+        public async Task<ActionResult<PayRunInvoiceDetailViewResponse>> GetPayRunInvoiceDetails(
+            [FromServices] IGetPayRunInvoiceUseCase useCase, Guid payRunId, Guid invoiceId)
         {
             var res = await useCase.GetDetailsAsync(payRunId, invoiceId);
             return Ok(res);
