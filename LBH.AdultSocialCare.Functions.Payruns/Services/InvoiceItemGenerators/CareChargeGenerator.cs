@@ -60,26 +60,12 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 
             foreach (var careCharge in careCharges)
             {
+                // Calculate just dates / quantity, real amount is calculated separately
                 var refund = RefundCalculator.Calculate(careCharge, packageInvoices, PaymentPeriod.Weekly);
 
-                var existingInvoiceItems = packageInvoices
-                    .SelectMany(invoice => invoice.Items)
-                    .Where(careCharge.IsReferenced)
-                    .ToList();
+                CalculateRefundAmount(careCharge, refund, packageInvoices, out var netCostsCompensated);
 
-                // total amount deducted from supplier for a given period
-                var deductedNetCost = existingInvoiceItems
-                    .Where(item => item.ClaimCollector is ClaimCollector.Supplier)
-                    .Sum(item => item.TotalCost);
-
-                // total amount of refunds to/from supplier for a given period
-                var refundedCost = existingInvoiceItems
-                    .Where(item => item.ClaimCollector is null)
-                    .Sum(item => item.TotalCost);
-
-                refund.RefundAmount = deductedNetCost - refundedCost - refund.CurrentCost;
-
-                if (refund.RefundAmount == 0) continue;
+                if (refund.RefundAmount == 0.0m) continue;
 
                 yield return new InvoiceItem
                 {
@@ -91,13 +77,54 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     ToDate = refund.EndDate,
                     CarePackageReclaimId = careCharge.Id,
                     SourceVersion = careCharge.Version,
-                    PriceEffect = careCharge.ClaimCollector switch
-                    {
-                        ClaimCollector.Hackney => PriceEffect.None,
-                        ClaimCollector.Supplier => PriceEffect.Subtract,
-                        _ => throw new InvalidOperationException("Unknown claim collector")
-                    }
+                    NetCostsCompensated = netCostsCompensated,
+                    PriceEffect = refund.RefundAmount > 0
+                        ? PriceEffect.Add
+                        : PriceEffect.Subtract
                 };
+            }
+        }
+
+        private static void CalculateRefundAmount(CarePackageReclaim careCharge, RefundInfo refund, IList<InvoiceDomain> packageInvoices, out bool netCostsCompensated)
+        {
+            // when switching from Net to Gross we must refund everything from supplier
+            // and ignore upcoming Hackney's reclaims. After switching back to Net
+            // we must generate refunds starting from previous compensation point.
+            var existingInvoiceItems = packageInvoices
+                .SelectMany(invoice => invoice.Items)
+                .Where(careCharge.IsReferenced)
+                .OrderByDescending(item => item.SourceVersion) // take just new items
+                .TakeWhile(item => !item.NetCostsCompensated) // after previous compensation checkpoint
+                .ToList();
+
+            // total amount deducted from supplier for a given period
+            var deductedNetCost = existingInvoiceItems
+                .Where(item => item.ClaimCollector is ClaimCollector.Supplier)
+                .Sum(item => item.TotalCost);
+
+            // total amount of refunds to/from supplier for a given period
+            var refundedCost = existingInvoiceItems
+                .Where(item => item.ClaimCollector is null)
+                .Sum(item => item.TotalCost);
+
+            netCostsCompensated = false;
+
+            switch (careCharge.ClaimCollector)
+            {
+                case ClaimCollector.Supplier:
+                    // previously deducted costs + (overpaid - underpaid) - current cost
+                    refund.RefundAmount = deductedNetCost - refundedCost - refund.CurrentCost;
+                    break;
+
+                case ClaimCollector.Hackney when !existingInvoiceItems.First().NetCostsCompensated:
+                    // we're switching from Net to Gross - refund everything from supplier and create a compensation checkpoint
+                    refund.RefundAmount = refundedCost - deductedNetCost;
+                    netCostsCompensated = true;
+                    break;
+
+                case ClaimCollector.Hackney:
+                    refund.RefundAmount = 0.0m;
+                    break; // we've compensated all Net costs already and still in Gross mode - no need to refund anything
             }
         }
     }

@@ -26,7 +26,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
         {
             var invoiceItems = new List<InvoiceItem>();
             var fundedNursingCare = package.Reclaims
-                .FirstOrDefault(r => r.Type is ReclaimType.Fnc);
+                .FirstOrDefault(r => r.Type is ReclaimType.Fnc &&
+                                     r.Status is ReclaimStatus.Active);
 
             if (fundedNursingCare is null) return invoiceItems;
 
