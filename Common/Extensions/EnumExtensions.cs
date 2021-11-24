@@ -10,15 +10,14 @@ namespace Common.Extensions
         public static string ToDescription(this Enum enumeration)
         {
             var attribute = GetText<DescriptionAttribute>(enumeration);
-
-            return attribute.Description;
+            return attribute != null ? attribute.Description : string.Empty;
         }
 
         public static string GetDisplayName(this Enum enumeration)
         {
             var attribute = GetText<DisplayAttribute>(enumeration);
 
-            return attribute.GetName();
+            return attribute != null ? attribute.GetName() : string.Empty;
         }
 
         public static T GetText<T>(Enum enumeration) where T : Attribute
@@ -27,8 +26,12 @@ namespace Common.Extensions
 
             var memberInfo = type.GetMember(enumeration.ToString());
 
+            /*// throw exception
             if (!memberInfo.Any())
-                throw new ArgumentException($"No public members for the argument '{enumeration}'.");
+                throw new ArgumentException($"No public members for the argument '{enumeration}'.");*/
+
+            if (!memberInfo.Any())
+                return null;
 
             var attributes = memberInfo[0].GetCustomAttributes(typeof(T), false);
 
