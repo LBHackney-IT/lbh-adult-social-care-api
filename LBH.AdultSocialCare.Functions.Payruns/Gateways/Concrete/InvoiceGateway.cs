@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.Payments;
+using LBH.AdultSocialCare.Functions.Payruns.Domain;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +18,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
         {
         }
 
-        public async Task<Dictionary<Guid, List<Invoice>>> GetInvoicesByPackageIds(IList<Guid> packageIds)
+        public async Task<Dictionary<Guid, List<InvoiceDomain>>> GetInvoicesByPackageIds(IList<Guid> packageIds)
         {
             var invoices = await DbContext.PayrunInvoices
                 .Include(payrunInvoice => payrunInvoice.Invoice)
@@ -27,7 +27,13 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
                 .Where(payrunInvoice => packageIds.Contains(payrunInvoice.Invoice.PackageId) &&
                                         (payrunInvoice.InvoiceStatus == InvoiceStatus.Accepted ||
                                          payrunInvoice.InvoiceStatus == InvoiceStatus.Held))
-                .Select(payrunInvoice => payrunInvoice.Invoice)
+                .Select(payrunInvoice => new InvoiceDomain
+                {
+                    Status = payrunInvoice.InvoiceStatus,
+                    EndDate = payrunInvoice.Payrun.EndDate,
+                    PackageId = payrunInvoice.Invoice.PackageId,
+                    Items = payrunInvoice.Invoice.Items.ToList()
+                })
                 .ToListAsync();
 
             return invoices

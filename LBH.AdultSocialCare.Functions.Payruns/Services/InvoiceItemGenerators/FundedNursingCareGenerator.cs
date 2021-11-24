@@ -7,6 +7,7 @@ using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Common;
 using LBH.AdultSocialCare.Data.Entities.Payments;
+using LBH.AdultSocialCare.Functions.Payruns.Domain;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
@@ -21,7 +22,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             _fundedNursingCareGateway = fundedNursingCareGateway;
         }
 
-        public override IEnumerable<InvoiceItem> Run(CarePackage package, IList<Invoice> packageInvoices, DateTimeOffset invoiceEndDate)
+        public override IEnumerable<InvoiceItem> CreateNormalItem(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
         {
             var invoiceItems = new List<InvoiceItem>();
             var fundedNursingCare = package.Reclaims
@@ -61,6 +62,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             }
 
             return invoiceItems;
+        }
+
+        public override IEnumerable<InvoiceItem> CreateRefundItem(CarePackage package, IList<InvoiceDomain> packageInvoices)
+        {
+            return new List<InvoiceItem>();
         }
 
         public override async Task Initialize()
