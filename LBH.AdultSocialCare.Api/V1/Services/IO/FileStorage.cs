@@ -62,7 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
                     carePlanFile.CopyTo(stream);
 
                     var bytes = stream.ToArray();
-                    return $"data:image/png;base64,{Convert.ToBase64String(bytes)}";
+                    return $"data:{carePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}";
                 }
             }
 
