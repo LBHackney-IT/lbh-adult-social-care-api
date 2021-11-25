@@ -62,7 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             var packagePayment = new PackageTotalPaymentResponse
             {
                 PackageId = package.Id,
-                TotalPaid = payRunInvoices.Sum(pi => pi.Invoice.GrossTotal),
+                TotalPaid = decimal.Round(payRunInvoices.Sum(pi => pi.Invoice.GrossTotal), 2),
                 DateTo = packageLatestPayRun != null ? packageLatestPayRun.EndDate.Date : DateTime.Today
             };
 

@@ -124,13 +124,6 @@ namespace LBH.AdultSocialCare.Data
                 .HasIndex(i => i.Number)
                 .IsUnique();
 
-            modelBuilder.Entity<InvoiceItem>(entity =>
-            {
-                entity.Property(e => e.IsReclaim)
-                    .IsRequired()
-                    .HasDefaultValueSql("false");
-            });
-
             modelBuilder.Entity<PayrunInvoice>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -145,6 +138,16 @@ namespace LBH.AdultSocialCare.Data
                     .WithMany(i => i.PayrunInvoices)
                     .HasForeignKey(pi => pi.InvoiceId);
             });
+
+            modelBuilder.Entity<CarePackageDetail>()
+                .HasMany<InvoiceItem>()
+                .WithOne(i => i.CarePackageDetail)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CarePackageReclaim>()
+                .HasMany<InvoiceItem>()
+                .WithOne(i => i.CarePackageReclaim)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //PS: Second time adding the identity config below. Resist the temptation to remove. Serves a purpose
             modelBuilder.Entity<Role>(entity =>
@@ -247,9 +250,12 @@ namespace LBH.AdultSocialCare.Data
 
                 foreach (var property in properties)
                 {
-                    if (property.ClrType.IsEnum)
+                    var nullableSubType = Nullable.GetUnderlyingType(property.ClrType);
+                    var propertyType = nullableSubType ?? property.ClrType;
+
+                    if (propertyType.IsEnum)
                     {
-                        var enumValues = Enum.GetValues(property.ClrType).Cast<int>();
+                        var enumValues = Enum.GetValues(propertyType).Cast<int>();
                         var enumValuesString = String.Join(", ", enumValues);
 
                         // TODO: VK: Review nullable enum fields and remove this

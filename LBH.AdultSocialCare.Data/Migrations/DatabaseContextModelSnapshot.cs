@@ -58,7 +58,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("ServiceUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SocialWorkerCarePlanFileId")
+                    b.Property<Guid?>("SocialWorkerCarePlanFileId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("SocialWorkerCarePlanFileName")
@@ -207,7 +207,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AssessmentFileId")
+                    b.Property<Guid?>("AssessmentFileId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("AssessmentFileName")
@@ -1087,10 +1087,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("GrossTotal")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
                     b.Property<decimal>("NetTotal")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
                     b.Property<string>("Number")
                         .HasColumnType("text");
@@ -1105,7 +1105,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<decimal>("TotalCost")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
@@ -1134,7 +1134,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("ClaimCollector")
+                    b.Property<Guid?>("CarePackageDetailId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("CarePackageReclaimId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int?>("ClaimCollector")
                         .HasColumnType("integer");
 
                     b.Property<Guid>("CreatorId")
@@ -1152,37 +1158,32 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("InvoiceId")
                         .HasColumnType("uuid");
 
-                    b.Property<bool?>("IsReclaim")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValueSql("false");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
-
-                    b.Property<Guid>("PackageId")
-                        .HasColumnType("uuid");
 
                     b.Property<int>("PriceEffect")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("Quantity")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(7, 2)");
 
                     b.Property<DateTimeOffset>("ToDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("TotalCost")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("WeeklyCost")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarePackageDetailId");
+
+                    b.HasIndex("CarePackageReclaimId");
 
                     b.HasIndex("CreatorId");
 
@@ -1192,7 +1193,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("InvoiceItems");
 
-                    b.HasCheckConstraint("CK_InvoiceItems_ClaimCollector", "\"ClaimCollector\" IN (0, 1, 2)");
+                    b.HasCheckConstraint("CK_InvoiceItems_ClaimCollector", "\"ClaimCollector\" IN (1, 2)");
 
                     b.HasCheckConstraint("CK_InvoiceItems_PriceEffect", "\"PriceEffect\" IN (0, 1, 2, 3)");
                 });
@@ -1216,10 +1217,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal?>("Held")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
                     b.Property<decimal?>("Paid")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
                     b.Property<DateTimeOffset>("PaidUpToDate")
                         .HasColumnType("timestamp with time zone");
@@ -1633,6 +1634,16 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.InvoiceItem", b =>
                 {
+                    b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageDetail", "CarePackageDetail")
+                        .WithMany()
+                        .HasForeignKey("CarePackageDetailId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageReclaim", "CarePackageReclaim")
+                        .WithMany()
+                        .HasForeignKey("CarePackageReclaimId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")

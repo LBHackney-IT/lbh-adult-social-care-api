@@ -6,6 +6,8 @@ using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.Payments;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Services
 {
@@ -16,22 +18,24 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IPayrunGateway _payrunGateway;
+        private readonly ILogger<PayrunGenerator> _logger;
         private readonly InvoiceGenerator _invoiceGenerator;
 
         public PayrunGenerator(
-            IHttpContextAccessor httpContextAccessor, ICarePackageGateway carePackageGateway,
-            IFundedNursingCareGateway fncGateway, IPayrunGateway payrunGateway)
+            InvoiceGenerator invoiceGenerator, IHttpContextAccessor httpContextAccessor,
+            ICarePackageGateway carePackageGateway, IPayrunGateway payrunGateway, ILogger<PayrunGenerator> logger)
         {
             _httpContextAccessor = httpContextAccessor;
             _carePackageGateway = carePackageGateway;
             _payrunGateway = payrunGateway;
+            _logger = logger;
 
-            _invoiceGenerator = new InvoiceGenerator(_carePackageGateway, fncGateway);
+            _invoiceGenerator = invoiceGenerator;
         }
 
         public async Task GenerateAsync()
         {
-            // TODO: VK: Handle payrun types
+            // TODO: VK: Handle payrun ID from SQS, add reprocessing for hang-up draft / in-progress payruns
             var draftPayruns = await _payrunGateway.GetDraftPayrunsAsync();
 
             foreach (var payrun in draftPayruns)
@@ -48,6 +52,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                     var packages = await _carePackageGateway.GetListAsync(batchIds);
 
                     var invoices = await _invoiceGenerator.GenerateAsync(packages, payrun.EndDate);
+
+                    _logger.LogDebug("Generated invoices: {Invoices}", JsonConvert.SerializeObject(invoices, Formatting.Indented));
 
                     foreach (var invoice in invoices)
                     {

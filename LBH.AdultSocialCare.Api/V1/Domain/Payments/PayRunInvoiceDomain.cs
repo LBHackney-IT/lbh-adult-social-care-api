@@ -16,6 +16,8 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
         public string InvoiceNumber { get; set; }
         public PackageType PackageType { get; set; }
         public InvoiceStatus InvoiceStatus { get; set; }
+        public decimal NetTotal { get; set; }
+        public decimal GrossTotal { get; set; }
         public string AssignedBrokerName { get; set; }
         public IEnumerable<PayRunInvoiceItemDomain> InvoiceItems { get; set; }
     }

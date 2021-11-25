@@ -17,6 +17,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Common;
+using LBH.AdultSocialCare.Data.Entities.Interfaces;
 using LBH.AdultSocialCare.Data.Entities.Payments;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
@@ -460,6 +461,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<HeldInvoiceCreationDomain>(input);
         }
 
+        public static IEnumerable<HeldInvoiceDetailsResponse> ToResponse(this IEnumerable<HeldInvoiceDetailsDomain> input)
+        {
+            return _mapper.Map<IEnumerable<HeldInvoiceDetailsResponse>>(input);
+        }
+
+        public static IEnumerable<HeldInvoiceDetailsDomain> ToDomain(this IEnumerable<HeldInvoiceDetailsResponse> input)
+        {
+            return _mapper.Map<IEnumerable<HeldInvoiceDetailsDomain>>(input);
+        }
+
         public static HeldInvoice ToEntity(this HeldInvoiceFlatDomain input)
         {
             return _mapper.Map<HeldInvoice>(input);
@@ -478,16 +489,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static HeldInvoiceFlatDomain ToDomain(this HeldInvoiceFlatResponse input)
         {
             return _mapper.Map<HeldInvoiceFlatDomain>(input);
-        }
-
-        public static IEnumerable<PayRunInvoiceItemResponse> ToResponse(this IEnumerable<PayRunInvoiceItemDomain> input)
-        {
-            return _mapper.Map<IEnumerable<PayRunInvoiceItemResponse>>(input);
-        }
-
-        public static IEnumerable<PayRunInvoiceItemDomain> ToDomain(this IEnumerable<PayRunInvoiceItemResponse> input)
-        {
-            return _mapper.Map<IEnumerable<PayRunInvoiceItemDomain>>(input);
         }
 
         public static IEnumerable<PayRunListResponse> ToResponse(this IEnumerable<PayRunListDomain> input)

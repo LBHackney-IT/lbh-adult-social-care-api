@@ -17,6 +17,7 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Common;
+using LBH.AdultSocialCare.Data.Entities.Interfaces;
 using LBH.AdultSocialCare.Data.Entities.Payments;
 
 namespace LBH.AdultSocialCare.Api.V1.Profiles
@@ -56,9 +57,9 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DepartmentFlatDomain, Department>().ReverseMap();
             CreateMap<DepartmentFlatDomain, DepartmentFlatResponse>().ReverseMap();
             CreateMap<HeldInvoiceCreationDomain, HeldInvoice>().ReverseMap();
+            CreateMap<HeldInvoiceDetailsDomain, HeldInvoiceDetailsResponse>().ReverseMap();
             CreateMap<HeldInvoiceFlatDomain, HeldInvoice>().ReverseMap();
             CreateMap<HeldInvoiceFlatDomain, HeldInvoiceFlatResponse>().ReverseMap();
-            CreateMap<PayRunInvoiceItemDomain, PayRunInvoiceItemResponse>().ReverseMap();
             CreateMap<PayRunListDomain, PayRunListResponse>().ReverseMap();
             CreateMap<AppUserDomain, AppUserResponse>().ReverseMap();
             CreateMap<UsersMinimalDomain, User>().ReverseMap();

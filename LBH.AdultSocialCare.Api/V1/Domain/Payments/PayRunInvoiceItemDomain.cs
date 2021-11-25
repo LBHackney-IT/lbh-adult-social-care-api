@@ -5,7 +5,6 @@ using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
 {
-    [GenerateListMappingFor(typeof(PayRunInvoiceItemResponse))]
     public class PayRunInvoiceItemDomain
     {
         public Guid Id { get; set; } // Invoice item id
@@ -15,8 +14,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
         public decimal Cost { get; set; }
         public decimal Quantity { get; set; }
         public decimal TotalCost { get; set; }
-        public bool IsReclaim { get; set; }
-        public ClaimCollector ClaimCollector { get; set; }
+        public ClaimCollector? ClaimCollector { get; set; }
         public PriceEffect PriceEffect { get; set; }
     }
 }

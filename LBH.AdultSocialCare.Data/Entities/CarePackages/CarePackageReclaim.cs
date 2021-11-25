@@ -3,10 +3,11 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.Common;
+using LBH.AdultSocialCare.Data.Entities.Interfaces;
 
 namespace LBH.AdultSocialCare.Data.Entities.CarePackages
 {
-    public class CarePackageReclaim : BaseEntity
+    public class CarePackageReclaim : BaseEntity, IPackageItem
     {
         private ReclaimStatus _status;
 
@@ -35,7 +36,7 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
         public string Description { get; set; }
         public string ClaimReason { get; set; }
 
-        public Guid AssessmentFileId { get; set; }
+        public Guid? AssessmentFileId { get; set; }
         public string AssessmentFileName { get; set; }
 
         [ForeignKey(nameof(CarePackageId))]
@@ -46,6 +47,11 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
             if (_status is ReclaimStatus.Cancelled || _status is ReclaimStatus.Ended)
             {
                 return _status;
+            }
+
+            if (EndDate != null && DateTimeOffset.Now.Date >= EndDate.Value.Date)
+            {
+                return ReclaimStatus.Ended;
             }
 
             return DateTimeOffset.Now.Date >= StartDate.Date

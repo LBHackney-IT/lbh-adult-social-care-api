@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Common.Extensions;
-using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Payments;
@@ -11,7 +10,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 {
     public class CareChargeGenerator : BaseInvoiceItemsGenerator
     {
-        public override IEnumerable<InvoiceItem> Run(CarePackage package, DateTimeOffset invoiceStartDate, DateTimeOffset invoiceEndDate)
+        public override IEnumerable<InvoiceItem> Run(CarePackage package, IList<Invoice> packageInvoices, DateTimeOffset invoiceEndDate)
         {
             var invoiceItems = new List<InvoiceItem>();
 
@@ -24,28 +23,25 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             {
                 if (careCharge.Status != ReclaimStatus.Active) continue;
 
-                var actualStartDate = Dates.Max(careCharge.StartDate, invoiceStartDate);
-                var actualEndDate = Dates.Min(careCharge.EndDate, invoiceEndDate);
-                var actualWeeks = (actualEndDate.Date - actualStartDate.Date).Days / 7M;
-
-                if (actualWeeks <= 0) continue;
+                var itemRange = GetInvoiceItemDateRange(careCharge, packageInvoices, invoiceEndDate);
+                if (itemRange.Weeks <= 0) continue;
 
                 invoiceItems.Add(new InvoiceItem
                 {
                     Name = $"Care Charge {careCharge.SubType.GetDisplayName()}",
-                    Quantity = actualWeeks,
+                    Quantity = itemRange.Weeks,
                     WeeklyCost = careCharge.Cost,
-                    TotalCost = careCharge.Cost * actualWeeks,
-                    FromDate = actualStartDate,
-                    ToDate = actualEndDate,
+                    TotalCost = careCharge.Cost * itemRange.Weeks,
+                    FromDate = itemRange.StartDate,
+                    ToDate = itemRange.EndDate,
+                    CarePackageReclaimId = careCharge.Id,
                     ClaimCollector = careCharge.ClaimCollector,
                     PriceEffect = careCharge.ClaimCollector switch
                     {
                         ClaimCollector.Hackney => PriceEffect.None,
                         ClaimCollector.Supplier => PriceEffect.Subtract,
                         _ => throw new InvalidOperationException("Unknown claim collector")
-                    },
-                    IsReclaim = true
+                    }
                 });
             }
 

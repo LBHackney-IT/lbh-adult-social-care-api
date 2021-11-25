@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "base_api": {
+    "payruns": {
       "commandName": "Project",
       "applicationUrl": "http://localhost:8000",
       "environmentVariables": {

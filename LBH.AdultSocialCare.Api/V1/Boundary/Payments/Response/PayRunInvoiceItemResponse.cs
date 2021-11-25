@@ -12,23 +12,23 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
         public DateTimeOffset FromDate { get; set; }
         public DateTimeOffset ToDate { get; set; }
         public decimal Cost { get; set; }
-        public decimal Quantity { get; set; }
+        public int Quantity { get; set; }
         public decimal TotalCost { get; set; }
-        public bool IsReclaim { get; set; }
-        public ClaimCollector ClaimCollector { get; set; }
+        public ClaimCollector? ClaimCollector { get; set; }
 
-        public string ClaimCollectorName => ClaimCollector.GetDisplayName();
-        public int Days => (ToDate - FromDate).Days;
+        public string ClaimCollectorName => ClaimCollector == null ? string.Empty : ClaimCollector.GetDisplayName();
+
+        public bool IsReclaim => ClaimCollector != null; // TODO: Remove on FE
 
         public string Period
         {
             get
             {
                 var weeks = Math.Floor(Dates.WeeksBetween(FromDate, ToDate));
-                var daysRemainder = Days - weeks * 7;
+                var daysRemainder = Quantity - weeks * 7;
 
                 return weeks == 0
-                    ? $"{Days} days"
+                    ? $"{Quantity} days"
                     : $"{weeks} {(weeks == 1 ? "week" : "weeks")}{(daysRemainder > 0 ? $" {daysRemainder} days" : "")}";
             }
         }
