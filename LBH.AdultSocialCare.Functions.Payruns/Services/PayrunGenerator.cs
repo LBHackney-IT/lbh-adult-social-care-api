@@ -66,7 +66,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             }
         }
 
-        private async Task<int> GenerateInvoices(IList<Guid> packageIds, Payrun payrun, Func<IList<CarePackage>, Task<IList<Invoice>>> generationFunc)
+        private async Task GenerateInvoices(IList<Guid> packageIds, Payrun payrun, Func<IList<CarePackage>, Task<IList<Invoice>>> generationFunc)
         {
             var iterations = Math.Ceiling((double) packageIds.Count / PackageBatchSize);
 
@@ -81,6 +81,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 
                 foreach (var invoice in invoices)
                 {
+                    if (!invoice.Items.Any()) continue;
+
                     var payrunInvoice = new PayrunInvoice
                     {
                         Payrun = payrun,
@@ -91,8 +93,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                     payrun.PayrunInvoices.Add(payrunInvoice);
                 }
             }
-
-            return payrun.PayrunInvoices.Count;
         }
 
         private void ImpersonateCurrentUser(Payrun payrun)
