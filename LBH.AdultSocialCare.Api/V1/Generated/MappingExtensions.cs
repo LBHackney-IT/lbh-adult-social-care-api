@@ -481,16 +481,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<HeldInvoiceFlatDomain>(input);
         }
 
-        public static IEnumerable<PayRunInvoiceItemResponse> ToResponse(this IEnumerable<PayRunInvoiceItemDomain> input)
-        {
-            return _mapper.Map<IEnumerable<PayRunInvoiceItemResponse>>(input);
-        }
-
-        public static IEnumerable<PayRunInvoiceItemDomain> ToDomain(this IEnumerable<PayRunInvoiceItemResponse> input)
-        {
-            return _mapper.Map<IEnumerable<PayRunInvoiceItemDomain>>(input);
-        }
-
         public static IEnumerable<PayRunListResponse> ToResponse(this IEnumerable<PayRunListDomain> input)
         {
             return _mapper.Map<IEnumerable<PayRunListResponse>>(input);
