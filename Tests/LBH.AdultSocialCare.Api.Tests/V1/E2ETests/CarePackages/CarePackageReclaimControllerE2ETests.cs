@@ -175,7 +175,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             reclaims.Should().ContainSingle(r => r.Cost == request.Cost);
         }
 
-        [Fact(Skip ="For unblock FE")]
+        [Fact(Skip = "For unblock FE")]
         public async Task ShouldUpdateCareCharges()
         {
             var package = _generator.CreateCarePackage();
