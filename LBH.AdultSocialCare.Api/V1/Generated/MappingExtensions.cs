@@ -531,6 +531,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<UsersMinimalDomain>(input);
         }
 
+        public static CareChargeReclaimFileDomain ToDomain(this CareChargeReclaimFileRequest input)
+        {
+            return _mapper.Map<CareChargeReclaimFileDomain>(input);
+        }
+
+        public static CareChargeReclaimFileRequest ToRequest(this CareChargeReclaimFileDomain input)
+        {
+            return _mapper.Map<CareChargeReclaimFileRequest>(input);
+        }
+
         public static IEnumerable<CarePackageReclaimUpdateDomain> ToDomain(this IEnumerable<CareChargeReclaimUpdateRequest> input)
         {
             return _mapper.Map<IEnumerable<CarePackageReclaimUpdateDomain>>(input);

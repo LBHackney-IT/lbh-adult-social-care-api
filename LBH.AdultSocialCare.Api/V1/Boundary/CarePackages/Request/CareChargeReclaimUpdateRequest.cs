@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
 {
