@@ -6,6 +6,8 @@ using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
 using System.Collections.Generic;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -106,5 +108,10 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion CareCharges
+
+        public static IEnumerable<PayRunInvoiceItemResponse> ToResponse(this IEnumerable<PayRunInvoiceItemDomain> input)
+        {
+            return _mapper.Map<IEnumerable<PayRunInvoiceItemResponse>>(input);
+        }
     }
 }
