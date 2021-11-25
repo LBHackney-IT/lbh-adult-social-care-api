@@ -96,7 +96,8 @@ namespace LBH.AdultSocialCare.Data.Extensions
         public static IQueryable<PayrunInvoice> FilterPayRunInvoices(this IQueryable<PayrunInvoice> invoices, PayRunDetailsQueryParameters parameters) =>
             invoices.Where(invoice => (parameters.PackageType == null || invoice.Invoice.Package.PackageType == parameters.PackageType)
                                       && (string.IsNullOrEmpty(parameters.SearchTerm)
-                                          || EF.Functions.ILike($"{invoice.Invoice.ServiceUser.FirstName} {invoice.Invoice.ServiceUser.LastName}", $"%{parameters.SearchTerm}%")
+                                          || (invoice.Invoice.ServiceUser.FirstName.ToLower() + " " +
+                                              invoice.Invoice.ServiceUser.LastName.ToLower()).Contains(parameters.SearchTerm.ToLower())
                                           || invoice.InvoiceId.ToString().Contains(parameters.SearchTerm.ToLower())
                                           || invoice.Invoice.Supplier.SupplierName.ToLower().Contains(parameters.SearchTerm.ToLower()))
                                       && (parameters.InvoiceStatus == null || invoice.InvoiceStatus == parameters.InvoiceStatus)
