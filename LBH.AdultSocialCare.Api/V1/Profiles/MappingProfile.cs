@@ -106,6 +106,8 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CarePackageReclaimUpdateDomain, CarePackageReclaim>();
             CreateMap<CareChargePackagesDomain, CareChargePackagesResponse>();
             CreateMap<SinglePackageCareChargeDomain, SinglePackageCareChargeResponse>();
+            CreateMap<CareChargeReclaimBulkUpdateRequest, CareChargeReclaimBulkUpdateDomain>();
+            CreateMap<CareChargeReclaimUpdateRequest, CarePackageReclaimUpdateDomain>();
 
             #endregion
 

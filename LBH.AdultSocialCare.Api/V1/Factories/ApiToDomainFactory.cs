@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
@@ -123,6 +124,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static CarePackageReclaimUpdateDomain ToDomain(this FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
         {
             return _mapper.Map<CarePackageReclaimUpdateDomain>(fundedNursingCareUpdateRequest);
+        }
+
+        public static CareChargeReclaimBulkUpdateDomain ToDomain(this CareChargeReclaimBulkUpdateRequest careChargeReclaimBulkUpdateRequest)
+        {
+            return _mapper.Map<CareChargeReclaimBulkUpdateDomain>(careChargeReclaimBulkUpdateRequest);
+        }
+
+        public static List<CarePackageReclaimUpdateDomain> ToDomain(this List<CareChargeReclaimUpdateRequest> input)
+        {
+            return _mapper.Map<List<CarePackageReclaimUpdateDomain>>(input);
         }
 
         #endregion

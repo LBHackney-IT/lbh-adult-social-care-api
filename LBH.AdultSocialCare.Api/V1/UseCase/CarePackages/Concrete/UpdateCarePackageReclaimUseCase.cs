@@ -47,9 +47,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             await _carePackageReclaimGateway.UpdateAsync(carePackageReclaimUpdateDomain);
         }
 
-        public async Task<IList<CarePackageReclaimDomain>> UpdateListAsync(CareChargeReclaimFileDomain requestedReclaimFileDomain, IList<CarePackageReclaimUpdateDomain> requestedReclaims)
+        public async Task<IList<CarePackageReclaimDomain>> UpdateListAsync(CareChargeReclaimBulkUpdateDomain reclaimBulkUpdateDomain)
         {
-            var requestedReclaimIds = requestedReclaims.Select(r => r.Id).ToList();
+            var requestedReclaimIds = reclaimBulkUpdateDomain.Reclaims.Select(r => r.Id).ToList();
             var existingReclaims = await _carePackageReclaimGateway.GetListAsync(requestedReclaimIds);
 
             EnsureReclaimsExist(requestedReclaimIds, existingReclaims);
@@ -65,7 +65,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
 
                 // For MVP scope always update provisional care charges and replace other types of care charges
-                var requestedReclaim = requestedReclaims.First(r => r.Id == existingReclaim.Id);
+                var requestedReclaim = reclaimBulkUpdateDomain.Reclaims.First(r => r.Id == existingReclaim.Id);
 
                 if (existingReclaim.SubType is ReclaimSubType.CareChargeProvisional)
                 {
@@ -77,9 +77,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     existingReclaim.Status = ReclaimStatus.Ended;
                     existingReclaim.EndDate = DateTimeOffset.Now.Date;
 
-                    if (requestedReclaimFileDomain?.AssessmentFileId == Guid.Empty)
+                    if (reclaimBulkUpdateDomain?.AssessmentFileId == Guid.Empty)
                     {
-                        var documentResponse = await _fileStorage.SaveFileAsync(requestedReclaimFileDomain.AssessmentFile);
+                        var documentResponse = await _fileStorage.SaveFileAsync(reclaimBulkUpdateDomain.AssessmentFile);
                         requestedReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
                         requestedReclaim.AssessmentFileName = documentResponse?.FileName;
                     }

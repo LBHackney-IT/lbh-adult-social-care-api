@@ -183,11 +183,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
 
             var request = new CareChargeReclaimBulkUpdateRequest()
             {
-                FileRequest = new CareChargeReclaimFileRequest()
-                {
-                    AssessmentFile = null,
-                    AssessmentFileId = Guid.NewGuid()
-                },
+                AssessmentFile = null,
+                AssessmentFileId = Guid.NewGuid(),
                 Reclaims = new List<CareChargeReclaimUpdateRequest>()
             };
 

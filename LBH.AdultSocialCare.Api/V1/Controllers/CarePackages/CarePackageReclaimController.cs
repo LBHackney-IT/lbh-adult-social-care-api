@@ -105,7 +105,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult<IEnumerable<CarePackageReclaimResponse>>> UpdateCareChargeReclaims([FromForm] CareChargeReclaimBulkUpdateRequest requestedReclaims)
         {
-            var result = await _updateCarePackageReclaimUseCase.UpdateListAsync(requestedReclaims.FileRequest.ToDomain(), requestedReclaims.Reclaims.ToDomain().ToList());
+            var result = await _updateCarePackageReclaimUseCase.UpdateListAsync(requestedReclaims.ToDomain());
             return Ok(result.ToResponse());
         }
 
