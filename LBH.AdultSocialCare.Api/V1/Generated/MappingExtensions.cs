@@ -461,6 +461,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<HeldInvoiceCreationDomain>(input);
         }
 
+        public static IEnumerable<HeldInvoiceDetailsResponse> ToResponse(this IEnumerable<HeldInvoiceDetailsDomain> input)
+        {
+            return _mapper.Map<IEnumerable<HeldInvoiceDetailsResponse>>(input);
+        }
+
+        public static IEnumerable<HeldInvoiceDetailsDomain> ToDomain(this IEnumerable<HeldInvoiceDetailsResponse> input)
+        {
+            return _mapper.Map<IEnumerable<HeldInvoiceDetailsDomain>>(input);
+        }
+
         public static HeldInvoice ToEntity(this HeldInvoiceFlatDomain input)
         {
             return _mapper.Map<HeldInvoice>(input);

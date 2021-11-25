@@ -1,11 +1,12 @@
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
-using System;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.Payments;
 using LBH.AdultSocialCare.Data.Extensions;
 using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
+using System;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
 {
@@ -18,6 +19,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
         Task<PayRunInsightsDomain> GetPayRunInsightsAsync(Guid payRunId);
 
         Task<PagedList<PayRunInvoiceDomain>> GetPayRunInvoicesSummaryAsync(Guid payRunId, PayRunDetailsQueryParameters parameters);
+
+        Task<PagedList<HeldInvoiceDetailsDomain>> GetHeldInvoicesAsync(PayRunDetailsQueryParameters parameters);
 
         Task<PayRunInvoiceDomain> GetPayRunInvoiceDetailAsync(Guid payRunId, Guid invoiceId, bool trackChanges = false);
 

@@ -1,7 +1,10 @@
 using System;
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
 {
+    [GenerateListMappingFor(typeof(HeldInvoiceDetailsResponse))]
     public class HeldInvoiceDetailsDomain
     {
         public Guid PayRunId { get; set; }

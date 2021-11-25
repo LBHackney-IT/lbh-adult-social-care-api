@@ -57,6 +57,7 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<DepartmentFlatDomain, Department>().ReverseMap();
             CreateMap<DepartmentFlatDomain, DepartmentFlatResponse>().ReverseMap();
             CreateMap<HeldInvoiceCreationDomain, HeldInvoice>().ReverseMap();
+            CreateMap<HeldInvoiceDetailsDomain, HeldInvoiceDetailsResponse>().ReverseMap();
             CreateMap<HeldInvoiceFlatDomain, HeldInvoice>().ReverseMap();
             CreateMap<HeldInvoiceFlatDomain, HeldInvoiceFlatResponse>().ReverseMap();
             CreateMap<PayRunListDomain, PayRunListResponse>().ReverseMap();
