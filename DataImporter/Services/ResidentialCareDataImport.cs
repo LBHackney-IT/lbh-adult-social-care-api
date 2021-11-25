@@ -26,7 +26,17 @@ namespace DataImporter.Services
                     if (worksheet.Cells[$"A{i}"].Value == null)
                         continue;
 
-
+                    string hackneyID = worksheet.Cells[$"A{i}"].Value.ToString();
+                    string serviceTypeGroup = worksheet.Cells[$"G{i}"].Value.ToString();
+                    string elementType = worksheet.Cells[$"I{i}"].Value.ToString();
+                    string costPer = worksheet.Cells[$"L{i}"].Value.ToString();
+                    string quantity = worksheet.Cells[$"N{i}"].Value.ToString();
+                    string unitOfMeasure = worksheet.Cells[$"N{i}"].Value.ToString();
+                    string startDate = worksheet.Cells[$"W{i}"].Value.ToString();
+                    string endDate = worksheet.Cells[$"X{i}"].Value.ToString();
+                    string budgetCode = worksheet.Cells[$"Y{i}"].Value.ToString();
+                    string supplierId = worksheet.Cells[$"AA{i}"].Value.ToString();
+                    string supplierSite = worksheet.Cells[$"AB{i}"].Value.ToString();
                 }
 
                 _databaseContext.SaveChanges();
