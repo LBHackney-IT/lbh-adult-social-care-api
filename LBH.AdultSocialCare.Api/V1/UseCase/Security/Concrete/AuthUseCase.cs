@@ -20,7 +20,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Security.Concrete
         private readonly IUserRolesGateway _userRolesGateway;
         private readonly IDatabaseManager _dbManager;
 
-        public AuthUseCase(IAuthenticationManager authManager, IUserRolesGateway userRolesGateway, IDatabaseManager dbManager)
+        public AuthUseCase(IAuthenticationManager authManager, IUserRolesGateway userRolesGateway,
+            IDatabaseManager dbManager)
         {
             _authManager = authManager;
             _userRolesGateway = userRolesGateway;
@@ -48,8 +49,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Security.Concrete
 
             // Get active roles and determine ones to add or remove
             var activeUserRoles = await _userRolesGateway.GetUserRolesAsync(user.Id, true);
-            var rolesToAdd = currentRolesList.Select(r => r.GetDisplayName());
-            var rolesToRemove = activeUserRoles.Where(activeUserRole => !currentRoleIds.Contains(activeUserRole.RoleId)).ToList();
+            var activeUserRoleIds = activeUserRoles.Select(ur => ur.RoleId).ToList();
+            var rolesToAdd = currentRolesList.Where(r => !activeUserRoleIds.Contains(r.GetId()))
+                .Select(r => r.GetDisplayName());
+            var rolesToRemove = activeUserRoles.Where(activeUserRole => !currentRoleIds.Contains(activeUserRole.RoleId))
+                .ToList();
 
             // Remove roles
             _userRolesGateway.RemoveUserRoles(rolesToRemove);

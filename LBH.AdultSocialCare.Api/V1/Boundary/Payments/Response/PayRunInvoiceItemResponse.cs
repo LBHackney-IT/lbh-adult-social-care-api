@@ -16,7 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
         public decimal TotalCost { get; set; }
         public ClaimCollector? ClaimCollector { get; set; }
 
-        public string ClaimCollectorName => ClaimCollector.GetDisplayName();
+        public string ClaimCollectorName => ClaimCollector == null ? string.Empty : ClaimCollector.GetDisplayName();
 
         public bool IsReclaim => ClaimCollector != null; // TODO: Remove on FE
 

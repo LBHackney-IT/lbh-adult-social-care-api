@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Data.Constants.Enums;
@@ -61,7 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Security.Concrete
         public async Task<IEnumerable<UsersMinimalDomain>> GetUsers(RolesEnum rolesType)
         {
             var roleId = await _databaseContext.Roles
-                .Where(r => r.Name.Equals(rolesType.ToString()))
+                .Where(r => r.Name.Equals(rolesType.GetDisplayName()))
                 .Select(r => r.Id)
                 .FirstOrDefaultAsync();
 
