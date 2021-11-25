@@ -13,21 +13,21 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 {
     public class GetHeldInvoicesUseCase : IGetHeldInvoicesUseCase
     {
-        public async Task<PagedResponse<HeldInvoiceItemResponse>> ExecuteAsync(PayRunDetailsQueryParameters parameters)
+        public async Task<PagedResponse<HeldInvoiceDetailsResponse>> ExecuteAsync(PayRunDetailsQueryParameters parameters)
         {
-            var result = new PagedResponse<HeldInvoiceItemResponse>
+            var result = new PagedResponse<HeldInvoiceDetailsResponse>
             {
                 PagingMetaData = new PagingMetaData { CurrentPage = 1, TotalPages = 1, PageSize = 2, TotalCount = 2 },
-                Data = new List<HeldInvoiceItemResponse>()
+                Data = new List<HeldInvoiceDetailsResponse>()
                 {
-                    new HeldInvoiceItemResponse
+                    new HeldInvoiceDetailsResponse
                     {
                         PayRunId = Guid.NewGuid(),
                         PayRunNumber = Guid.NewGuid().ToString()[..6],
                         DateCreated = DateTimeOffset.Now,
                         StartDate = DateTimeOffset.Now,
                         EndDate = DateTimeOffset.Now.AddDays(-5),
-                        Invoice = new PayRunInvoiceResponse
+                        PayRunInvoice = new PayRunInvoiceResponse
                         {
                             Id = Guid.NewGuid(),
                             InvoiceId = Guid.NewGuid(),
@@ -83,14 +83,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                             }
                         }
                     },
-                    new HeldInvoiceItemResponse
+                    new HeldInvoiceDetailsResponse
                     {
                         PayRunId = Guid.NewGuid(),
                         PayRunNumber = Guid.NewGuid().ToString()[..6],
                         DateCreated = DateTimeOffset.Now,
                         StartDate = DateTimeOffset.Now,
                         EndDate = DateTimeOffset.Now.AddDays(-5),
-                        Invoice = new PayRunInvoiceResponse
+                        PayRunInvoice = new PayRunInvoiceResponse
                         {
                             Id = Guid.NewGuid(),
                             InvoiceId = Guid.NewGuid(),

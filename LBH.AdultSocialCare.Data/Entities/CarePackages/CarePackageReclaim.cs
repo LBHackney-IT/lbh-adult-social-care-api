@@ -49,6 +49,11 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
                 return _status;
             }
 
+            if (EndDate != null && DateTimeOffset.Now.Date >= EndDate.Value.Date)
+            {
+                return ReclaimStatus.Ended;
+            }
+
             return DateTimeOffset.Now.Date >= StartDate.Date
                 ? ReclaimStatus.Active // Ended status should be set manually, so no check for the end date here
                 : ReclaimStatus.Pending;

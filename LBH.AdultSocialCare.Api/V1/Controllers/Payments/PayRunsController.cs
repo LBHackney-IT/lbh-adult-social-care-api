@@ -56,10 +56,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         /// <param name="useCase">Use case to get held invoices.</param>
         /// <param name="parameters">Parameters to filter invoice list.</param>
         /// <returns>List of held invoices if success</returns>
-        [ProducesResponseType(typeof(PagedResponse<HeldInvoiceItemResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(PagedResponse<HeldInvoiceDetailsResponse>), StatusCodes.Status200OK)]
         [HttpGet("held-invoices")]
         [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
-        public async Task<ActionResult<PagedResponse<HeldInvoiceItemResponse>>> GetHeldInvoices(
+        public async Task<ActionResult<PagedResponse<HeldInvoiceDetailsResponse>>> GetHeldInvoices(
             [FromServices] IGetHeldInvoicesUseCase useCase, [FromQuery] PayRunDetailsQueryParameters parameters)
         {
             var res = await useCase.ExecuteAsync(parameters);
