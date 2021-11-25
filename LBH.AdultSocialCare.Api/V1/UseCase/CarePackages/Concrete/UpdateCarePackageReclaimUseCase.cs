@@ -47,7 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             await _carePackageReclaimGateway.UpdateAsync(carePackageReclaimUpdateDomain);
         }
 
-        public async Task<IList<CarePackageReclaimDomain>> UpdateListAsync(IList<CarePackageReclaimUpdateDomain> requestedReclaims)
+        public async Task<IList<CarePackageReclaimDomain>> UpdateListAsync(CareChargeReclaimFileDomain requestedReclaimFileDomain, IList<CarePackageReclaimUpdateDomain> requestedReclaims)
         {
             var requestedReclaimIds = requestedReclaims.Select(r => r.Id).ToList();
             var existingReclaims = await _carePackageReclaimGateway.GetListAsync(requestedReclaimIds);
@@ -77,10 +77,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     existingReclaim.Status = ReclaimStatus.Ended;
                     existingReclaim.EndDate = DateTimeOffset.Now.Date;
 
-                    if (requestedReclaim.AssessmentFileId == Guid.Empty)
+                    if (requestedReclaimFileDomain?.AssessmentFileId == Guid.Empty)
                     {
-                        var documentResponse = await _fileStorage.SaveFileAsync(requestedReclaim.AssessmentFile);
+                        var documentResponse = await _fileStorage.SaveFileAsync(requestedReclaimFileDomain.AssessmentFile);
                         requestedReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
+                        requestedReclaim.AssessmentFileName = documentResponse?.FileName;
                     }
 
                     var newReclaim = CreateNewReclaim(requestedReclaim, existingReclaim, package);

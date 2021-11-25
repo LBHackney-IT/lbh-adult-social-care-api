@@ -78,7 +78,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             var provisionalReclaim = _package.Reclaims.First();
             provisionalReclaim.SubType = ReclaimSubType.CareChargeProvisional;
 
-            await _useCase.UpdateListAsync(new[]
+            await _useCase.UpdateListAsync(null, new[]
             {
                 new CarePackageReclaimUpdateDomain
                 {
@@ -106,7 +106,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         {
             const decimal newCost = 34.56m;
 
-            await _useCase.UpdateListAsync(_requestedIds.Select(id => new CarePackageReclaimUpdateDomain
+            await _useCase.UpdateListAsync(null, _requestedIds.Select(id => new CarePackageReclaimUpdateDomain
             {
                 Id = id,
                 Cost = newCost
@@ -126,7 +126,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         public void ShouldFailOnMissingReclaim()
         {
             _useCase
-                .Invoking(useCase => useCase.UpdateListAsync(2.ItemsOf(() => new CarePackageReclaimUpdateDomain
+                .Invoking(useCase => useCase.UpdateListAsync(null, 2.ItemsOf(() => new CarePackageReclaimUpdateDomain
                 {
                     Id = Guid.NewGuid()
                 }).ToList()))
@@ -144,7 +144,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             var request = _requestedIds.Select(id => new CarePackageReclaimUpdateDomain { Id = id }).ToList();
 
             _useCase
-                .Invoking(useCase => useCase.UpdateListAsync(request))
+                .Invoking(useCase => useCase.UpdateListAsync(null, request))
                 .Should().Throw<ApiException>()
                 .Where(ex => ex.StatusCode == StatusCodes.Status500InternalServerError);
 
