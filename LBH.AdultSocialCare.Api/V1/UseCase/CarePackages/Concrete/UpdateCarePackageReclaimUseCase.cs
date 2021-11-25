@@ -70,6 +70,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 if (existingReclaim.SubType is ReclaimSubType.CareChargeProvisional)
                 {
                     UpdateProvisionalReclaim(requestedReclaim, existingReclaim, package);
+
+                    if (reclaimBulkUpdateDomain?.AssessmentFileId == Guid.Empty)
+                    {
+                        var documentResponse = await _fileStorage.SaveFileAsync(reclaimBulkUpdateDomain.AssessmentFile);
+                        existingReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
+                        existingReclaim.AssessmentFileName = documentResponse?.FileName;
+                    }
                     result.Add(existingReclaim);
                 }
                 else
