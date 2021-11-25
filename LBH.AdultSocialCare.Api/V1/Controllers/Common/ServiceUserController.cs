@@ -73,7 +73,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpGet("master-search")]
-        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
+        // [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
         public async Task<ActionResult<ServiceUserInformationResponse>> SearchServiceUser([FromQuery] ServiceUserQueryRequest request)
         {
             var result = await _getServiceUserMasterSearchUseCase.GetServiceUsers(request);
