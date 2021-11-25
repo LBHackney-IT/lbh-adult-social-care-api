@@ -95,6 +95,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 SupplierName = payRunInvoice.Invoice.Supplier.SupplierName,
                 InvoiceNumber = payRunInvoice.Invoice.Number,
                 PackageType = payRunInvoice.Invoice.Package.PackageType,
+                NetTotal = payRunInvoice.Invoice.NetTotal,
+                GrossTotal = payRunInvoice.Invoice.GrossTotal,
                 InvoiceStatus = payRunInvoice.InvoiceStatus,
                 AssignedBrokerName = payRunInvoice.Invoice.Package.Broker.Name,
                 InvoiceItems = payRunInvoice.Invoice.Items.Select(ii => new PayRunInvoiceItemDomain
