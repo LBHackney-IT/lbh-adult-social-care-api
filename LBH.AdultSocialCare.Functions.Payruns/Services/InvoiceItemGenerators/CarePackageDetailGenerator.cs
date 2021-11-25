@@ -40,7 +40,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
         {
             foreach (var detail in package.Details)
             {
-                var refund = RefundCalculator.Calculate(detail, packageInvoices, detail.CostPeriod);
+                var refund = RefundCalculator.Calculate(
+                    detail, packageInvoices,
+                    (start, end, quantity) => detail.CostPeriod is PaymentPeriod.OneOff
+                        ? detail.Cost
+                        : detail.Cost * quantity);
 
                 if (refund.RefundAmount == 0) continue;
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using LBH.AdultSocialCare.Api.Helpers;
@@ -12,7 +13,9 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 {
     public static class RefundCalculator
     {
-        public static RefundInfo Calculate(IPackageItem packageItem, IList<InvoiceDomain> packageInvoices, PaymentPeriod paymentPeriod)
+        public static RefundInfo Calculate(
+            IPackageItem packageItem, IList<InvoiceDomain> packageInvoices,
+            Func<DateTimeOffset, DateTimeOffset, decimal, decimal> calculateCurrentCost)
         {
             var existingInvoiceItems = packageInvoices
                 .SelectMany(invoice => invoice.Items)
@@ -38,9 +41,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                     StartDate = refundStartDate,
                     EndDate = refundEndDate,
                     Quantity = quantity,
-                    CurrentCost = paymentPeriod is PaymentPeriod.OneOff
-                        ? packageItem.Cost
-                        : packageItem.Cost * quantity
+                    CurrentCost = calculateCurrentCost(refundStartDate, refundEndDate, quantity)
                 };
 
                 switch (packageItem)
@@ -94,7 +95,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                     refund.RefundAmount = deductedNetCost - refundedCost - refund.CurrentCost;
                     break;
 
-                case ClaimCollector.Hackney when !existingInvoiceItems.First().NetCostsCompensated:
+                case ClaimCollector.Hackney when !existingInvoiceItems.Any(item => item.NetCostsCompensated):
                     // we're switching from Net to Gross - refund everything from supplier and create a compensation checkpoint
                     refund.RefundAmount = refundedCost - deductedNetCost;
                     refund.NetCostsCompensated = true;

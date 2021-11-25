@@ -59,7 +59,9 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 
             foreach (var careCharge in careCharges)
             {
-                var refund = RefundCalculator.Calculate(careCharge, packageInvoices, PaymentPeriod.Weekly);
+                var refund = RefundCalculator.Calculate(
+                    careCharge, packageInvoices,
+                    (start, end, quantity) => careCharge.Cost * quantity);
 
                 if (refund.RefundAmount == 0.0m) continue;
 

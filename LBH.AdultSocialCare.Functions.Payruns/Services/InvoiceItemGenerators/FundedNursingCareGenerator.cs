@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Extensions;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -71,15 +70,17 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 
             if (fundedNursingCare is null) yield break;
 
-            var refund = RefundCalculator.Calculate(fundedNursingCare, packageInvoices, PaymentPeriod.Weekly);
+            var refund = RefundCalculator.Calculate(
+                fundedNursingCare, packageInvoices,
+                (start, end, quantity) => CalculateFncPriceForPeriod(start, end, fundedNursingCare));
 
             if (refund.RefundAmount == 0.0m) yield break;
 
             yield return new InvoiceItem
             {
-                Name = $"Care Charge {fundedNursingCare.SubType.GetDisplayName()} (refund)",
+                Name = "Funded Nursing Care (refund)",
                 Quantity = refund.Quantity,
-                WeeklyCost = fundedNursingCare.Cost,
+                WeeklyCost = 0.0m,              // generate refund per FNC period if we'll need real weekly FNC cost here
                 TotalCost = refund.RefundAmount,
                 FromDate = refund.StartDate,
                 ToDate = refund.EndDate,
@@ -90,6 +91,25 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     ? PriceEffect.Add
                     : PriceEffect.Subtract
             };
+        }
+
+        private decimal CalculateFncPriceForPeriod(DateTimeOffset start, DateTimeOffset end, CarePackageReclaim fundedNursingCare)
+        {
+            var totalCost = 0.0m;
+            var rangeStartDate = start;
+
+            foreach (var price in _fncPrices)
+            {
+                var rangeEndDate = Dates.Min(price.ActiveTo, end, fundedNursingCare.EndDate);
+                var weeks = Dates.WeeksBetween(rangeStartDate, rangeEndDate);
+
+                if (weeks <= 0) continue;
+
+                totalCost += (price.PricePerWeek * weeks);
+                rangeStartDate = rangeEndDate.AddDays(1);
+            }
+
+            return totalCost;
         }
 
         public override async Task Initialize()

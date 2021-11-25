@@ -25,7 +25,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             _fundedNursingCareGateway = fundedNursingCareGateway;
         }
 
-        public async Task<IList<Invoice>> GenerateAsync(IList<CarePackage> packages, DateTimeOffset invoiceEndDate)
+        public async Task<IList<Invoice>> GenerateAsync(IList<CarePackage> packages, DateTimeOffset invoiceEndDate, InvoiceTypes invoiceTypes)
         {
             await InitializeGeneratorsAsync();
 
@@ -40,22 +40,33 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             foreach (var package in packages)
             {
                 var packageInvoices = oldInvoices.GetValueOrDefault(package.Id) ?? new List<InvoiceDomain>();
-                invoices.Add(
-                    GenerateInvoice(package, packageInvoices, invoiceEndDate, ref invoicesCount));
+
+                invoices.Add(GenerateInvoice(
+                    package, packageInvoices,
+                    invoiceEndDate, invoiceTypes, ref invoicesCount));
             }
 
             return invoices;
         }
 
-        private Invoice GenerateInvoice(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate, ref int invoiceNumber)
+        private Invoice GenerateInvoice(
+            CarePackage package, IList<InvoiceDomain> packageInvoices,
+            DateTimeOffset invoiceEndDate, InvoiceTypes invoiceTypes, ref int invoiceNumber)
         {
             var invoiceItems = new List<InvoiceItem>();
             var generators = _generators[package.PackageType];
 
             foreach (var generator in generators)
             {
-                invoiceItems.AddRange(generator.CreateRefundItem(package, packageInvoices));
-                invoiceItems.AddRange(generator.CreateNormalItem(package, packageInvoices, invoiceEndDate));
+                if (invoiceTypes.HasFlag(InvoiceTypes.Normal))
+                {
+                    invoiceItems.AddRange(generator.CreateNormalItem(package, packageInvoices, invoiceEndDate));
+                }
+
+                if (invoiceTypes.HasFlag(InvoiceTypes.Refund))
+                {
+                    invoiceItems.AddRange(generator.CreateRefundItem(package, packageInvoices));
+                }
             }
 
             var totals = CalculateTotals(invoiceItems);
