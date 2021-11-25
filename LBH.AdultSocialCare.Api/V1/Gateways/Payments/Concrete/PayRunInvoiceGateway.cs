@@ -124,6 +124,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         public async Task<PagedList<HeldInvoiceDetailsDomain>> GetHeldInvoicesAsync(
             PayRunDetailsQueryParameters parameters)
         {
+            parameters.InvoiceStatus = InvoiceStatus.Held;
             var query = _dbContext.PayrunInvoices
                 .FilterPayRunInvoices(parameters)
                 .TrackChanges(false);
