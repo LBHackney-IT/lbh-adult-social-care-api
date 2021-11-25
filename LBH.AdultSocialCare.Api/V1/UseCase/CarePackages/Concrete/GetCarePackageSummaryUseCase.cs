@@ -59,16 +59,28 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             };
 
             CalculateReclaimSubTotals(package, summary);
-            CalculateTotals(summary);
+            CalculateTotals(summary, coreCost);
 
             return summary;
+        }
+
+        private static bool IsValidDateRange(DateTimeOffset startDate, DateTimeOffset? endDate)
+        {
+            var today = DateTimeOffset.Now.Date;
+            switch (today >= startDate)
+            {
+                case true when (endDate == null || endDate.Value.Date >= today):
+                    return true;
+                default:
+                    return false;
+            }
         }
 
         private static void NegateNetOffCosts(CarePackage package)
         {
             foreach (var reclaim in package.Reclaims.Where(r => r.ClaimCollector is ClaimCollector.Supplier))
             {
-                reclaim.Cost = Decimal.Negate(reclaim.Cost);
+                reclaim.Cost = decimal.Negate(reclaim.Cost);
             }
         }
 
@@ -99,27 +111,38 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             foreach (var reclaim in summary.CareCharges)
             {
-                switch (reclaim.ClaimCollector)
+                if (reclaim.Status == ReclaimStatus.Active && (DateTimeOffset.Now.Date >= reclaim.StartDate.Date) && (reclaim.EndDate == null || reclaim.EndDate.Value.Date >= DateTimeOffset.Now.Date))
                 {
-                    case ClaimCollector.Hackney:
-                        summary.HackneyReclaims.CareCharge += reclaim.Cost;
-                        summary.HackneyReclaims.SubTotal += reclaim.Cost;
-                        break;
+                    switch (reclaim.ClaimCollector)
+                    {
+                        case ClaimCollector.Hackney:
+                            summary.HackneyReclaims.CareCharge += reclaim.Cost;
+                            summary.HackneyReclaims.SubTotal += reclaim.Cost;
+                            break;
 
-                    case ClaimCollector.Supplier:
-                        summary.SupplierReclaims.CareCharge += reclaim.Cost;
-                        summary.SupplierReclaims.SubTotal += reclaim.Cost;
-                        break;
+                        case ClaimCollector.Supplier:
+                            summary.SupplierReclaims.CareCharge += reclaim.Cost;
+                            summary.SupplierReclaims.SubTotal += reclaim.Cost;
+                            break;
+                    }
                 }
             }
         }
 
-        private static void CalculateTotals(CarePackageSummaryDomain summary)
+        private static void CalculateTotals(CarePackageSummaryDomain summary, CarePackageDetail coreCost)
         {
-            summary.AdditionalWeeklyCost = summary.AdditionalWeeklyNeeds.Sum(d => d.Cost);
+            summary.AdditionalWeeklyCost = summary.AdditionalWeeklyNeeds.Where(d =>
+                (DateTimeOffset.Now.Date > d.StartDate.Date) && (d.EndDate == null || d.EndDate.Value.Date >= DateTimeOffset.Now.Date)).Sum(d => d.Cost);
             summary.AdditionalOneOffCost = summary.AdditionalOneOffNeeds.Sum(d => d.Cost);
 
-            summary.SubTotalCost = summary.CostOfPlacement + summary.AdditionalWeeklyCost;
+            if (IsValidDateRange(coreCost.StartDate, coreCost.EndDate))
+            {
+                summary.SubTotalCost = summary.CostOfPlacement + summary.AdditionalWeeklyCost;
+            }
+            else
+            {
+                summary.SubTotalCost = summary.AdditionalWeeklyCost;
+            }
 
             if (summary.FundedNursingCare?.ClaimCollector is ClaimCollector.Supplier)
             {

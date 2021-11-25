@@ -15,6 +15,8 @@ namespace Common.Extensions
 
         public static string GetDisplayName(this Enum enumeration)
         {
+            if (enumeration is null) return string.Empty;
+
             var attribute = GetText<DisplayAttribute>(enumeration);
 
             return attribute != null ? attribute.GetName() : string.Empty;

@@ -7,6 +7,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces
 {
     public interface IGetHeldInvoicesUseCase
     {
-        Task<PagedResponse<HeldInvoiceItemResponse>> ExecuteAsync(PayRunDetailsQueryParameters parameters);
+        Task<PagedResponse<HeldInvoiceDetailsResponse>> ExecuteAsync(PayRunDetailsQueryParameters parameters);
     }
 }

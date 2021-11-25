@@ -1,8 +1,10 @@
+using System;
 using AutoMapper;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
@@ -104,12 +106,27 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<CarePackageReclaimUpdateDomain, CarePackageReclaim>();
             CreateMap<CareChargePackagesDomain, CareChargePackagesResponse>();
             CreateMap<SinglePackageCareChargeDomain, SinglePackageCareChargeResponse>();
+            CreateMap<CareChargeReclaimBulkUpdateRequest, CareChargeReclaimBulkUpdateDomain>();
+            CreateMap<CareChargeReclaimUpdateRequest, CarePackageReclaimUpdateDomain>();
 
             #endregion
 
             #region PayRun
 
             CreateMap<Payrun, DraftPayRunCreationDomain>().ReverseMap();
+
+            #endregion
+
+            #region Invoice item
+
+            CreateMap<PayRunInvoiceItemDomain, PayRunInvoiceItemResponse>()
+                .ForMember(response =>
+                    response.Quantity, opt => opt.MapFrom(domain =>
+                    (int) Math.Ceiling((domain.ToDate - domain.FromDate).TotalDays)))
+                .ForMember(response =>
+                    response.TotalCost, opt => opt.MapFrom(domain =>
+                    decimal.Round(domain.TotalCost, 2)))
+                .ReverseMap();
 
             #endregion
         }
