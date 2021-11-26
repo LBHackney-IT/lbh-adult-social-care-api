@@ -124,30 +124,22 @@ namespace LBH.AdultSocialCare.Data.Extensions
             PayRunDetailsQueryParameters parameters)
         {
             // Explode search term to tokens
-            var searchTokens = Regex.Split(parameters.SearchTerm.Trim() ?? string.Empty, "\\s+").ToList();
-            var searchPredicate = PredicateBuilder.New<PayrunInvoice>();
+            var searchTokens = Regex.Split(parameters.SearchTerm ?? string.Empty, "\\s+").ToList();
+            var searchPredicate = PredicateBuilder.New<PayrunInvoice>(true);
             foreach (var searchToken in searchTokens)
             {
                 searchPredicate = searchPredicate.Or(e =>
-                    EF.Functions.Like(e.Invoice.ServiceUser.FirstName, $"%{searchToken}%")
-                    || EF.Functions.Like(e.Invoice.ServiceUser.LastName, $"%{searchToken}%")
-                    || EF.Functions.Like(e.InvoiceId.ToString(), $"%{searchToken}%")
-                    || EF.Functions.Like(e.Invoice.Supplier.SupplierName, $"%{searchToken}%"));
+                    EF.Functions.ILike(e.Invoice.ServiceUser.FirstName, $"%{searchToken}%")
+                    || EF.Functions.ILike(e.Invoice.ServiceUser.LastName, $"%{searchToken}%")
+                    || EF.Functions.ILike(e.InvoiceId.ToString(), $"%{searchToken}%")
+                    || EF.Functions.ILike(e.Invoice.Supplier.SupplierName ?? "", $"%{searchToken}%"));
             }
 
-            return invoices.AsExpandable().Where(searchPredicate).Where(invoice =>
+            return invoices.Where(searchPredicate).Where(invoice =>
                 (parameters.PackageType == null || invoice.Invoice.Package.PackageType == parameters.PackageType)
                 && (parameters.InvoiceStatus == null || invoice.InvoiceStatus == parameters.InvoiceStatus)
                 && (parameters.FromDate == null || invoice.Invoice.DateCreated >= parameters.FromDate)
                 && (parameters.ToDate == null || invoice.Invoice.DateCreated < parameters.ToDate));
-            /*return invoices.Where(invoice => (parameters.PackageType == null || invoice.Invoice.Package.PackageType == parameters.PackageType)
-                                             && (string.IsNullOrEmpty(parameters.SearchTerm)
-                                                 || (invoice.Invoice.ServiceUser.FirstName + " " + invoice.Invoice.ServiceUser.LastName).ToLower().Contains(parameters.SearchTerm.ToLower())
-                                                 || invoice.InvoiceId.ToString().Contains(parameters.SearchTerm.ToLower())
-                                                 || invoice.Invoice.Supplier.SupplierName.ToLower().Contains(parameters.SearchTerm.ToLower()))
-                                             && (parameters.InvoiceStatus == null || invoice.InvoiceStatus == parameters.InvoiceStatus)
-                                             && (parameters.FromDate == null || invoice.Invoice.DateCreated >= parameters.FromDate)
-                                             && (parameters.ToDate == null || invoice.Invoice.DateCreated<parameters.ToDate));*/
         }
 
         public static IQueryable<Payrun> FilterPayRunList(this IQueryable<Payrun> payRuns, string payRunId,
