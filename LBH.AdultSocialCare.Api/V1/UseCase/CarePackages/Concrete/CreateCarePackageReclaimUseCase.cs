@@ -195,7 +195,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 if (existingCareChargeWithoutPropertyOneToTwelveWeeks is null)
                 {
                     throw new ApiException(
-                        $"Cannot create {requestedReclaim.SubType} without {ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks.GetDisplayName()}",
+                        $"Cannot create {requestedReclaim.SubType} without {ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks.GetDisplayName()}",
                         HttpStatusCode.BadRequest);
                 }
 
