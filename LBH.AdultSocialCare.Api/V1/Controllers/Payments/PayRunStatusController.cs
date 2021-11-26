@@ -86,7 +86,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesDefaultResponseType]
         [HttpPost("{id}/approve")]
         // [AuthorizeRoles(RolesEnum.FinanceApprover)]
-        public async Task<ActionResult> ApprovePayRun([FromServices] IApprovePayRunUseCase useCase, Guid id, PayRunChangeStatusRequest request)
+        public async Task<ActionResult> ApprovePayRun([FromServices] IApprovePayRunUseCase useCase, Guid id, PayRunApproveRequest request)
         {
             await useCase.ExecuteAsync(id, request.Notes);
             return Ok();
