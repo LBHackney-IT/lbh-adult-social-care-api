@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211124212901_invoiceItemNetCostsCompensated")]
+    partial class invoiceItemNetCostsCompensated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1093,10 +1095,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("GrossTotal")
-                        .HasColumnType("decimal(13, 2)");
+                        .HasColumnType("numeric");
 
                     b.Property<decimal>("NetTotal")
-                        .HasColumnType("decimal(13, 2)");
+                        .HasColumnType("numeric");
 
                     b.Property<string>("Number")
                         .HasColumnType("text");
@@ -1111,7 +1113,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<decimal>("TotalCost")
-                        .HasColumnType("decimal(13, 2)");
+                        .HasColumnType("numeric");
 
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
@@ -1174,7 +1176,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<decimal>("Quantity")
-                        .HasColumnType("decimal(7, 2)");
+                        .HasColumnType("numeric");
 
                     b.Property<long>("SourceVersion")
                         .HasColumnType("bigint");
@@ -1183,13 +1185,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("TotalCost")
-                        .HasColumnType("decimal(13, 2)");
+                        .HasColumnType("numeric");
 
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("WeeklyCost")
-                        .HasColumnType("decimal(13, 2)");
+                        .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
@@ -1225,20 +1227,20 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("date");
+                    b.Property<DateTimeOffset>("EndDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal?>("Held")
-                        .HasColumnType("decimal(13, 2)");
+                        .HasColumnType("numeric");
 
                     b.Property<decimal?>("Paid")
-                        .HasColumnType("decimal(13, 2)");
+                        .HasColumnType("numeric");
 
-                    b.Property<DateTime>("PaidUpToDate")
-                        .HasColumnType("date");
+                    b.Property<DateTimeOffset>("PaidUpToDate")
+                        .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("date");
+                    b.Property<DateTimeOffset>("StartDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");

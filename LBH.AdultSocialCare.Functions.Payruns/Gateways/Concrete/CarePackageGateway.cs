@@ -31,6 +31,23 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
                 .ToListAsync();
         }
 
+        public async Task<IList<Guid>> GetModifiedPackageIdsAsync()
+        {
+            return await DbContext.CarePackages
+                .AsNoTracking()
+                .Where(package =>
+                    package.Details.Any(detail =>
+                        detail.Version > DbContext.InvoiceItems
+                            .Where(item => item.CarePackageDetailId == detail.Id)
+                            .Max(item => item.SourceVersion)) ||
+                   package.Reclaims.Any(reclaim =>
+                       reclaim.Version > DbContext.InvoiceItems
+                           .Where(item => item.CarePackageReclaimId == reclaim.Id)
+                           .Max(item => item.SourceVersion)))
+                .Select(package => package.Id)
+                .ToListAsync();
+        }
+
         public async Task<IList<CarePackage>> GetListAsync(IList<Guid> ids)
         {
             return await DbContext.CarePackages

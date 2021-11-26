@@ -18,9 +18,14 @@ namespace LBH.AdultSocialCare.Data.Entities.Payments
         public Guid? CarePackageDetailId { get; set; }
         public Guid? CarePackageReclaimId { get; set; }
 
-        [Column(TypeName = "decimal(13, 2)")] public decimal WeeklyCost { get; set; }
-        [Column(TypeName = "decimal(13, 2)")] public decimal TotalCost { get; set; }
-        [Column(TypeName = "decimal(7, 2)")] public decimal Quantity { get; set; }
+        [Column(TypeName = "decimal(13, 2)")]
+        public decimal WeeklyCost { get; set; }
+
+        [Column(TypeName = "decimal(13, 2)")]
+        public decimal TotalCost { get; set; }
+
+        [Column(TypeName = "decimal(7, 2)")]
+        public decimal Quantity { get; set; }
 
         public DateTimeOffset FromDate { get; set; }
         public DateTimeOffset ToDate { get; set; }
@@ -28,7 +33,11 @@ namespace LBH.AdultSocialCare.Data.Entities.Payments
         public ClaimCollector? ClaimCollector { get; set; }
         public PriceEffect PriceEffect { get; set; }
 
-        [ForeignKey(nameof(InvoiceId))] public Invoice Invoice { get; set; }
+        public long SourceVersion { get; set; }
+        public bool NetCostsCompensated { get; set; }
+
+        [ForeignKey(nameof(InvoiceId))]
+        public Invoice Invoice { get; set; }
 
         [ForeignKey(nameof(CarePackageDetailId))]
         public CarePackageDetail CarePackageDetail { get; set; }
