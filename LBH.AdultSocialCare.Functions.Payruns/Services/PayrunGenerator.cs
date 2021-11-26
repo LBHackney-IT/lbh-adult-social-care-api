@@ -46,6 +46,9 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             {
                 ImpersonateCurrentUser(payrun);
 
+                payrun.Status = PayrunStatus.InProgress;
+                await _payrunGateway.SaveAsync();
+
                 var packageIds = await _carePackageGateway.GetModifiedPackageIdsAsync();
                 await GenerateInvoices(
                     packageIds, payrun,
