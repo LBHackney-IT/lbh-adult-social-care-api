@@ -7,9 +7,9 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
     {
         public PayrunType Type { get; set; }
         public PayrunStatus Status { get; set; }
-        public DateTimeOffset? PaidFromDate { get; set; }
-        public DateTimeOffset PaidUpToDate { get; set; }
-        public DateTimeOffset StartDate { get; set; }
-        public DateTimeOffset EndDate => PaidUpToDate;
+        public DateTime? PaidFromDate { get; set; }
+        public DateTime PaidUpToDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate => PaidUpToDate;
     }
 }

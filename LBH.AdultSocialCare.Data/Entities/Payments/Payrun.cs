@@ -24,9 +24,9 @@ namespace LBH.AdultSocialCare.Data.Entities.Payments
         [Column(TypeName = "decimal(13, 2)")] public decimal? Paid { get; set; }
         [Column(TypeName = "decimal(13, 2)")] public decimal? Held { get; set; }
 
-        public DateTimeOffset PaidUpToDate { get; set; }
-        public DateTimeOffset StartDate { get; set; }
-        public DateTimeOffset EndDate { get; set; }
+        public DateTime PaidUpToDate { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
 
         public virtual ICollection<PayrunInvoice> PayrunInvoices { get; set; }
         public virtual ICollection<PayrunHistory> Histories { get; set; }

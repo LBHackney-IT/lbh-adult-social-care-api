@@ -33,6 +33,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 new[] { PayrunType.DirectPaymentsReleasedHolds, PayrunType.ResidentialReleasedHolds };
             ValidateDraftPayRun(draftPayRunCreationDomain, releaseHoldPayRunTypes);
 
+            if (!recurringPayRunTypes.Contains(draftPayRunCreationDomain.Type) && !releaseHoldPayRunTypes.Contains(draftPayRunCreationDomain.Type))
+            {
+                throw new ApiException("The selected pay run type is not valid. Pick a valid type and try again",
+                    HttpStatusCode.BadRequest);
+            }
+
             if (recurringPayRunTypes.Contains(draftPayRunCreationDomain.Type))
             {
                 var endOfLastPayRun = await _payRunGateway.GetEndDateOfLastPayRun(draftPayRunCreationDomain.Type);
