@@ -45,6 +45,20 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         public async Task UpdateAsync(CarePackageReclaimUpdateDomain carePackageReclaimUpdateDomain)
         {
+            var carePackageReclaim = await _carePackageReclaimGateway.GetAsync(carePackageReclaimUpdateDomain.Id);
+
+            if (carePackageReclaimUpdateDomain?.AssessmentFileId == Guid.Empty)
+            {
+                var documentResponse = await _fileStorage.SaveFileAsync(carePackageReclaimUpdateDomain.AssessmentFile);
+                carePackageReclaimUpdateDomain.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
+                carePackageReclaimUpdateDomain.AssessmentFileName = documentResponse?.FileName;
+            }
+            else
+            {
+                //todo FK: temp solution 
+                carePackageReclaimUpdateDomain.AssessmentFileName = carePackageReclaim.AssessmentFileName;
+            }
+
             await _carePackageReclaimGateway.UpdateAsync(carePackageReclaimUpdateDomain);
         }
 

@@ -99,6 +99,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 EndDate = createdFncReclaim.Content.EndDate,
                 Description = "test",
                 AssessmentFile = null,
+                AssessmentFileId = Guid.NewGuid()
             };
 
             var response = await _fixture.RestClient
