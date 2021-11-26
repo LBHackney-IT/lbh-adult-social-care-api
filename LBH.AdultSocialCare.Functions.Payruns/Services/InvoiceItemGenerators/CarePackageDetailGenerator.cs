@@ -60,7 +60,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     ToDate = refund.EndDate,
                     CarePackageDetailId = detail.Id,
                     SourceVersion = detail.Version,
-                    PriceEffect = refund.RefundAmount > 0 ? PriceEffect.Add : PriceEffect.Subtract // TODO: VK: Review - do we need it
+                    PriceEffect = refund.RefundAmount > 0 ? PriceEffect.Add : PriceEffect.Subtract
                 };
             }
         }

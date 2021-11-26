@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -18,6 +19,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             Func<DateTimeOffset, DateTimeOffset, decimal, decimal> calculateCurrentCost)
         {
             var existingInvoiceItems = packageInvoices
+                .Where(invoice => invoice.Status is InvoiceStatus.Accepted &&
+                                  invoice.PayrunStatus.In(PayrunStatus.Paid, PayrunStatus.PaidWithHold, PayrunStatus.Approved))
                 .SelectMany(invoice => invoice.Items)
                 .Where(packageItem.IsReferenced)
                 .ToList();
@@ -88,22 +91,32 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 .Where(item => item.ClaimCollector is null)
                 .Sum(item => item.TotalCost);
 
-            switch (reclaim.ClaimCollector)
+            if (reclaim.Status is ReclaimStatus.Cancelled)
             {
-                case ClaimCollector.Supplier:
-                    // previously deducted costs + (overpaid - underpaid) - current cost
-                    refund.RefundAmount = deductedNetCost - refundedCost - refund.CurrentCost;
-                    break;
+                // compensate remainders to / from supplier
+                refund.RefundAmount = refundedCost - deductedNetCost;
+                refund.NetCostsCompensated = true;
+            }
+            else
+            {
+                switch (reclaim.ClaimCollector)
+                {
+                    case ClaimCollector.Supplier:
+                        refund.RefundAmount = deductedNetCost != 0
+                            ? deductedNetCost - refundedCost - refund.CurrentCost   // previously deducted costs + (overpaid - underpaid) - current cost
+                            : refundedCost + refund.CurrentCost;                    // nothing deducted -> switch from Hackney to supplier, just accumulate everything // TODO: VK: Review
+                        break;
 
-                case ClaimCollector.Hackney when !existingInvoiceItems.Any(item => item.NetCostsCompensated):
-                    // we're switching from Net to Gross - refund everything from supplier and create a compensation checkpoint
-                    refund.RefundAmount = refundedCost - deductedNetCost;
-                    refund.NetCostsCompensated = true;
-                    break;
+                    case ClaimCollector.Hackney when !existingInvoiceItems.Any(item => item.NetCostsCompensated):
+                        // we're switching from Net to Gross - refund everything from supplier and create a compensation checkpoint
+                        refund.RefundAmount = refundedCost - deductedNetCost;
+                        refund.NetCostsCompensated = true;
+                        break;
 
-                case ClaimCollector.Hackney:
-                    refund.RefundAmount = 0.0m;
-                    break; // we've compensated all Net costs already and still in Gross mode - no need to refund anything
+                    case ClaimCollector.Hackney:
+                        refund.RefundAmount = 0.0m;
+                        break; // we've compensated all Net costs already and still in Gross mode - no need to refund anything
+                }
             }
         }
     }

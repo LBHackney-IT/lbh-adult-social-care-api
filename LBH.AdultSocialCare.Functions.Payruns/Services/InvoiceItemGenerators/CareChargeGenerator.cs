@@ -13,21 +13,17 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
     {
         public override IEnumerable<InvoiceItem> CreateNormalItem(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
         {
-            var invoiceItems = new List<InvoiceItem>();
-
             var careCharges = package.Reclaims
                 .Where(r => r.Type is ReclaimType.CareCharge &&
-                            r.Status is ReclaimStatus.Active)
+                            r.StartDate <= invoiceEndDate)
                 .ToList();
 
             foreach (var careCharge in careCharges)
             {
-                if (careCharge.Status != ReclaimStatus.Active) continue;
-
                 var itemRange = GetInvoiceItemDateRange(careCharge, packageInvoices, invoiceEndDate);
                 if (itemRange.Weeks <= 0) continue;
 
-                invoiceItems.Add(new InvoiceItem
+                yield return new InvoiceItem
                 {
                     Name = $"Care Charge {careCharge.SubType.GetDisplayName()}",
                     Quantity = itemRange.Weeks,
@@ -44,17 +40,14 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                         ClaimCollector.Supplier => PriceEffect.Subtract,
                         _ => throw new InvalidOperationException("Unknown claim collector")
                     }
-                });
+                };
             }
-
-            return invoiceItems;
         }
 
         public override IEnumerable<InvoiceItem> CreateRefundItem(CarePackage package, IList<InvoiceDomain> packageInvoices)
         {
             var careCharges = package.Reclaims
-                .Where(r => r.Type is ReclaimType.CareCharge &&
-                            r.Status is ReclaimStatus.Active)
+                .Where(r => r.Type is ReclaimType.CareCharge)
                 .ToList();
 
             foreach (var careCharge in careCharges)

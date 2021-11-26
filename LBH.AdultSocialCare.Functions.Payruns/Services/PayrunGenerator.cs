@@ -46,20 +46,18 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             {
                 ImpersonateCurrentUser(payrun);
 
-                var packageIds = await _carePackageGateway.GetUnpaidPackageIdsAsync(payrun.StartDate, payrun.EndDate);
-
+                var packageIds = await _carePackageGateway.GetModifiedPackageIdsAsync();
                 await GenerateInvoices(
                     packageIds, payrun,
-                    packages => _invoiceGenerator.GenerateAsync(packages, payrun.EndDate, InvoiceTypes.All));
+                    packages => _invoiceGenerator.GenerateAsync(packages, payrun.EndDate, InvoiceTypes.Refund));
 
                 // save interim result to prevent any reprocessing of refunded items
                 await _payrunGateway.SaveAsync();
 
-                packageIds = await _carePackageGateway.GetModifiedPackageIdsAsync();
-
+                packageIds = await _carePackageGateway.GetUnpaidPackageIdsAsync(payrun.StartDate, payrun.EndDate);
                 await GenerateInvoices(
                     packageIds, payrun,
-                    packages => _invoiceGenerator.GenerateAsync(packages, payrun.EndDate, InvoiceTypes.Refund));
+                    packages => _invoiceGenerator.GenerateAsync(packages, payrun.EndDate, InvoiceTypes.Normal));
 
                 payrun.Status = PayrunStatus.WaitingForReview;
                 await _payrunGateway.SaveAsync();

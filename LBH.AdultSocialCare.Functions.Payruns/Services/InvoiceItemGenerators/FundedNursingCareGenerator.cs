@@ -26,7 +26,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
         {
             var fundedNursingCare = package.Reclaims
                 .FirstOrDefault(r => r.Type is ReclaimType.Fnc &&
-                                     r.Status is ReclaimStatus.Active);
+                                     r.StartDate <= invoiceEndDate);
 
             if (fundedNursingCare is null) yield break;
 
@@ -65,8 +65,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
         public override IEnumerable<InvoiceItem> CreateRefundItem(CarePackage package, IList<InvoiceDomain> packageInvoices)
         {
             var fundedNursingCare = package.Reclaims
-                .FirstOrDefault(r => r.Type is ReclaimType.Fnc &&
-                                     r.Status is ReclaimStatus.Active);
+                .FirstOrDefault(r => r.Type is ReclaimType.Fnc);
 
             if (fundedNursingCare is null) yield break;
 

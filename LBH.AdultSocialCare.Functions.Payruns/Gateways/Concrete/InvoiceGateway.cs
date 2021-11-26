@@ -29,9 +29,12 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
                                          payrunInvoice.InvoiceStatus == InvoiceStatus.Held))
                 .Select(payrunInvoice => new InvoiceDomain
                 {
-                    Status = payrunInvoice.InvoiceStatus,
-                    EndDate = payrunInvoice.Payrun.EndDate,
+                    Id = payrunInvoice.Invoice.Id,
                     PackageId = payrunInvoice.Invoice.PackageId,
+                    Status = payrunInvoice.InvoiceStatus,
+                    PayrunStatus = payrunInvoice.Payrun.Status,
+                    StartDate = payrunInvoice.Payrun.StartDate,
+                    EndDate = payrunInvoice.Payrun.EndDate,
                     Items = payrunInvoice.Invoice.Items.ToList()
                 })
                 .ToListAsync();
