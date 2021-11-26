@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace LBH.AdultSocialCare.Api.V1.Extensions
+namespace Common.Extensions
 {
     /// <summary>
     /// Provides extension methods for <see cref="int"/>.

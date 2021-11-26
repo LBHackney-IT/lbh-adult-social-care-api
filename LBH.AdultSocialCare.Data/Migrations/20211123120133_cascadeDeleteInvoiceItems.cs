@@ -14,17 +14,17 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "FK_InvoiceItems_CarePackageReclaims_CarePackageReclaimId",
                 table: "InvoiceItems");
 
-            /*migrationBuilder.AddColumn<decimal>(
-                name: "GrossTotal",
-                table: "Invoices",
-                nullable: false,
-                defaultValue: 0m);
+            migrationBuilder.AddColumn<decimal>(
+                 name: "GrossTotal",
+                 table: "Invoices",
+                 nullable: false,
+                 defaultValue: 0m);
 
             migrationBuilder.AddColumn<decimal>(
                 name: "NetTotal",
                 table: "Invoices",
                 nullable: false,
-                defaultValue: 0m);*/
+                defaultValue: 0m);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_InvoiceItems_CarePackageDetails_CarePackageDetailId",

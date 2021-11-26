@@ -7,6 +7,7 @@ using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Common;
 using LBH.AdultSocialCare.Data.Entities.Payments;
+using LBH.AdultSocialCare.Functions.Payruns.Domain;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
@@ -21,13 +22,13 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             _fundedNursingCareGateway = fundedNursingCareGateway;
         }
 
-        public override IEnumerable<InvoiceItem> Run(CarePackage package, IList<Invoice> packageInvoices, DateTimeOffset invoiceEndDate)
+        public override IEnumerable<InvoiceItem> CreateNormalItem(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
         {
-            var invoiceItems = new List<InvoiceItem>();
             var fundedNursingCare = package.Reclaims
-                .FirstOrDefault(r => r.Type is ReclaimType.Fnc);
+                .FirstOrDefault(r => r.Type is ReclaimType.Fnc &&
+                                     r.StartDate <= invoiceEndDate);
 
-            if (fundedNursingCare is null) return invoiceItems;
+            if (fundedNursingCare is null) yield break;
 
             var actualStartDate = GetActualStartDate(fundedNursingCare, packageInvoices, invoiceEndDate);
 
@@ -38,7 +39,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 
                 if (actualWeeks <= 0) continue;
 
-                invoiceItems.Add(new InvoiceItem
+                yield return new InvoiceItem
                 {
                     Name = "Funded Nursing Care",
                     Quantity = actualWeeks,
@@ -48,18 +49,66 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     ToDate = actualEndDate,
                     CarePackageReclaimId = fundedNursingCare.Id,
                     ClaimCollector = fundedNursingCare.ClaimCollector,
+                    SourceVersion = fundedNursingCare.Version,
                     PriceEffect = fundedNursingCare.ClaimCollector switch
                     {
                         ClaimCollector.Hackney => PriceEffect.None,
                         ClaimCollector.Supplier => PriceEffect.Subtract,
                         _ => throw new InvalidOperationException("Unknown claim collector")
                     }
-                });
+                };
 
                 actualStartDate = actualEndDate.AddDays(1);
             }
+        }
 
-            return invoiceItems;
+        public override IEnumerable<InvoiceItem> CreateRefundItem(CarePackage package, IList<InvoiceDomain> packageInvoices)
+        {
+            var fundedNursingCare = package.Reclaims
+                .FirstOrDefault(r => r.Type is ReclaimType.Fnc);
+
+            if (fundedNursingCare is null) yield break;
+
+            var refund = RefundCalculator.Calculate(
+                fundedNursingCare, packageInvoices,
+                (start, end, quantity) => CalculateFncPriceForPeriod(start, end, fundedNursingCare));
+
+            if (refund.RefundAmount == 0.0m) yield break;
+
+            yield return new InvoiceItem
+            {
+                Name = "Funded Nursing Care (refund)",
+                Quantity = refund.Quantity,
+                WeeklyCost = 0.0m,              // generate refund per FNC period if we'll need real weekly FNC cost here
+                TotalCost = refund.RefundAmount,
+                FromDate = refund.StartDate,
+                ToDate = refund.EndDate,
+                CarePackageReclaimId = fundedNursingCare.Id,
+                SourceVersion = fundedNursingCare.Version,
+                NetCostsCompensated = refund.NetCostsCompensated,
+                PriceEffect = refund.RefundAmount > 0
+                    ? PriceEffect.Add
+                    : PriceEffect.Subtract
+            };
+        }
+
+        private decimal CalculateFncPriceForPeriod(DateTimeOffset start, DateTimeOffset end, CarePackageReclaim fundedNursingCare)
+        {
+            var totalCost = 0.0m;
+            var rangeStartDate = start;
+
+            foreach (var price in _fncPrices)
+            {
+                var rangeEndDate = Dates.Min(price.ActiveTo, end, fundedNursingCare.EndDate);
+                var weeks = Dates.WeeksBetween(rangeStartDate, rangeEndDate);
+
+                if (weeks <= 0) continue;
+
+                totalCost += (price.PricePerWeek * weeks);
+                rangeStartDate = rangeEndDate.AddDays(1);
+            }
+
+            return totalCost;
         }
 
         public override async Task Initialize()

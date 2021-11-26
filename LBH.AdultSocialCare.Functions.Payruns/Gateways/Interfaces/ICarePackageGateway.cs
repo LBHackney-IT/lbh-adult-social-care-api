@@ -9,6 +9,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces
     {
         Task<IList<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset startDate, DateTimeOffset endDate);
 
+        Task<IList<Guid>> GetModifiedPackageIdsAsync();
+
         Task<IList<CarePackage>> GetListAsync(IList<Guid> ids);
     }
 }

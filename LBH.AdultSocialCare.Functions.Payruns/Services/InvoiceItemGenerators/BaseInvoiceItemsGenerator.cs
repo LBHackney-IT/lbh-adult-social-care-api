@@ -7,6 +7,8 @@ using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Interfaces;
 using LBH.AdultSocialCare.Data.Entities.Payments;
+using LBH.AdultSocialCare.Functions.Payruns.Domain;
+using LBH.AdultSocialCare.Functions.Payruns.Extensions;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 {
@@ -15,10 +17,9 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
         /// <summary>
         /// This method is called for each package in invoicing period, so generator can produce invoice items for single package
         /// </summary>
-        public virtual IEnumerable<InvoiceItem> Run(CarePackage package, IList<Invoice> packageInvoices, DateTimeOffset invoiceEndDate)
-        {
-            return new List<InvoiceItem>();
-        }
+        public abstract IEnumerable<InvoiceItem> CreateNormalItem(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate);
+
+        public abstract IEnumerable<InvoiceItem> CreateRefundItem(CarePackage package, IList<InvoiceDomain> packageInvoices);
 
         /// <summary>
         /// This method is called right before invoice generation process is started, so generator can initialize its internal state
@@ -28,7 +29,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             return Task.CompletedTask;
         }
 
-        protected static DateRange GetInvoiceItemDateRange(IPackageItem packageItem, IList<Invoice> packageInvoices, DateTimeOffset invoiceEndDate)
+        protected static DateRange GetInvoiceItemDateRange(IPackageItem packageItem, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
         {
             var startDate = GetActualStartDate(packageItem, packageInvoices, invoiceEndDate);
             var endDate = Dates.Min(packageItem.EndDate, invoiceEndDate);
@@ -36,29 +37,22 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             return new DateRange(startDate, endDate);
         }
 
-        protected static DateTimeOffset GetActualStartDate(IPackageItem packageItem, IList<Invoice> packageInvoices, DateTimeOffset invoiceEndDate)
+        protected static DateTimeOffset GetActualStartDate(IPackageItem packageItem, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
         {
             var latestInvoiceItem = GetLatestInvoiceItem(packageItem, packageInvoices);
 
             return latestInvoiceItem != null ?
-                Dates.Min(packageItem.EndDate, latestInvoiceItem.ToDate.AddDays(1)) :
+                Dates.Min(packageItem.EndDate, latestInvoiceItem.ToDate) :
                 Dates.Min(packageItem.StartDate, invoiceEndDate);
         }
 
-        private static InvoiceItem GetLatestInvoiceItem(IPackageItem packageItem, IEnumerable<Invoice> invoices)
+        private static InvoiceItem GetLatestInvoiceItem(IPackageItem packageItem, IEnumerable<InvoiceDomain> invoices)
         {
             if (invoices is null) return null;
 
-            Func<InvoiceItem, Guid?> getPackageItemId = packageItem switch
-            {
-                CarePackageDetail _ => (item => item.CarePackageDetailId),
-                CarePackageReclaim _ => (item => item.CarePackageReclaimId),
-                _ => throw new InvalidOperationException($"Unsupported package item type {packageItem.GetType()}")
-            };
-
             return invoices
                 .SelectMany(invoice => invoice.Items)
-                .Where(item => getPackageItemId(item) == packageItem.Id)
+                .Where(packageItem.IsReferenced)
                 .OrderByDescending(item => item.ToDate)
                 .FirstOrDefault();
         }
