@@ -70,7 +70,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             {
                 PackageId = package.Id,
                 ServiceUserName = package.ServiceUser.FirstName,
-                SupplierId = package.SupplierId ?? 0,
+                CedarId = package.Supplier.CedarId ?? 0,
                 SupplierName = package.Supplier.SupplierName,
                 PackageType = package.PackageType,
                 Payments = payments,

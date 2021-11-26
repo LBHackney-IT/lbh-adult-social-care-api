@@ -28,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
         public async Task ExecuteAsync(Guid payRunId, string notes)
         {
             var payRun = await _payRunGateway
-                .GetPayRunAsync(payRunId, PayRunFields.None, true)
+                .GetPayRunAsync(payRunId, PayRunFields.PayrunInvoices, true)
                 .EnsureExistsAsync($"Pay Run {payRunId} not found");
 
             var validPayRunStatuses = new[] { PayrunStatus.WaitingForReview, PayrunStatus.WaitingForApproval };
@@ -36,6 +36,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             if (!validPayRunStatuses.Contains(payRun.Status))
             {
                 throw new ApiException($"Pay run status should be in review or waiting for approval to approve",
+                    HttpStatusCode.BadRequest);
+            }
+
+            if (payRun.PayrunInvoices.Any(invoice => invoice.InvoiceStatus == InvoiceStatus.Draft))
+            {
+                throw new ApiException("Can not approve pay run with draft invoice status",
                     HttpStatusCode.BadRequest);
             }
 

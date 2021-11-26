@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
+        // [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
         public async Task<ActionResult<CarePackageBrokerageResponse>> GetCarePackageBrokerageAsync(Guid packageId)
         {
             var brokerageInfo = await _getCarePackageBrokerageUseCase.ExecuteAsync(packageId);
@@ -63,7 +63,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        [AuthorizeRoles(RolesEnum.Broker)]
+        // [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult> CreateCarePackageBrokerageInfo(Guid packageId, CarePackageBrokerageCreationRequest request)
         {
             await _upsertCarePackageBrokerageUseCase.ExecuteAsync(packageId, request.ToDomain());

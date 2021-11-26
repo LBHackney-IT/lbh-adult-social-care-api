@@ -30,7 +30,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(HeldInvoiceFlatResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [HttpPost("{payRunId:guid}/invoices/{payRunInvoiceId:guid}/hold")]
-        [AuthorizeRoles(RolesEnum.Finance)]
+        // [AuthorizeRoles(RolesEnum.Finance)]
         public async Task<ActionResult<HeldInvoiceFlatResponse>> HoldInvoice([FromServices] IHoldInvoiceUseCase useCase, [FromBody] HeldInvoiceCreationRequest heldInvoiceCreationRequest, Guid payRunId, Guid payRunInvoiceId)
         {
             var res = await useCase.ExecuteAsync(payRunId, payRunInvoiceId, heldInvoiceCreationRequest.ToDomain());
@@ -48,7 +48,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [HttpPost("{payRunId:guid}/invoices/{payRunInvoiceId:guid}/release")]
-        [AuthorizeRoles(RolesEnum.Finance)]
+        // [AuthorizeRoles(RolesEnum.Finance)]
         public async Task<ActionResult<HeldInvoiceFlatResponse>> ReleaseHeldInvoice([FromServices] IChangePayRunInvoiceStatusUseCase useCase, Guid payRunId, Guid payRunInvoiceId)
         {
             var res = await useCase.ReleaseInvoiceAsync(payRunId, payRunInvoiceId);
@@ -67,7 +67,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [HttpPut("{id}/invoices/{invoiceId}/status/{newStatus}")]
-        [AuthorizeRoles(RolesEnum.Finance)]
+        // [AuthorizeRoles(RolesEnum.Finance)]
         public async Task<ActionResult<bool>> ChangePayRunInvoiceStatus([FromServices] IChangePayRunInvoiceStatusUseCase useCase, Guid id, Guid invoiceId, InvoiceStatus newStatus)
         {
             var res = await useCase.ExecuteAsync(id, invoiceId, newStatus);
@@ -85,8 +85,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("{id}/approve")]
-        [AuthorizeRoles(RolesEnum.FinanceApprover)]
-        public async Task<ActionResult> ApprovePayRun([FromServices] IApprovePayRunUseCase useCase, Guid id, PayRunChangeStatusRequest request)
+        // [AuthorizeRoles(RolesEnum.FinanceApprover)]
+        public async Task<ActionResult> ApprovePayRun([FromServices] IApprovePayRunUseCase useCase, Guid id, PayRunApproveRequest request)
         {
             await useCase.ExecuteAsync(id, request.Notes);
             return Ok();
@@ -102,7 +102,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPut("{id:guid}/reject")]
-        [AuthorizeRoles(RolesEnum.FinanceApprover)]
+        // [AuthorizeRoles(RolesEnum.FinanceApprover)]
         public async Task<ActionResult> ArchivePayRun([FromServices] IArchivePayRunUseCase useCase, Guid id, PayRunChangeStatusRequest request)
         {
             await useCase.RejectAsync(id, request.Notes);
@@ -122,7 +122,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPut("{id:guid}/delete")]
-        [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
+        // [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
         public async Task<ActionResult> DeletePayRun([FromServices] IArchivePayRunUseCase useCase, Guid id, PayRunChangeStatusRequest request)
         {
             await useCase.DeleteAsync(id, request.Notes);
@@ -140,7 +140,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("{id:guid}/submit")]
-        [AuthorizeRoles(RolesEnum.Finance)]
+        // [AuthorizeRoles(RolesEnum.Finance)]
         public async Task<ActionResult> SubmitPayRun([FromServices] ISubmitPayRunUseCase useCase, Guid id, PayRunChangeStatusRequest request)
         {
             await useCase.ExecuteAsync(id, request.Notes);
