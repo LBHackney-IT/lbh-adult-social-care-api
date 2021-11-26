@@ -65,12 +65,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 
             var result = new PayRunInsightsDomain
             {
-                TotalInvoiceAmount = invoices.Sum(i => i.Invoice.TotalCost),
+                TotalInvoiceAmount = invoices.Sum(i => i.Invoice.GrossTotal),
                 SupplierCount = invoices.Select(i => i.Invoice.SupplierId).Distinct().Count(),
                 ServiceUserCount = invoices.Select(i => i.Invoice.ServiceUserId).Distinct().Count(),
                 HoldsCount = invoices.Count(i => heldInvoiceStatuses.Contains(i.InvoiceStatus)),
                 TotalHeldAmount = invoices.Where(i => heldInvoiceStatuses.Contains(i.InvoiceStatus))
-                    .Sum(i => i.Invoice.TotalCost)
+                    .Sum(i => i.Invoice.GrossTotal)
             };
 
             return result;
@@ -221,7 +221,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         public async Task<decimal> GetPayRunInvoicedTotalAsync(Guid payRunId)
         {
             var result = await _dbContext.PayrunInvoices.Where(pi => pi.PayrunId == payRunId).TrackChanges(false)
-                .SumAsync(pi => pi.Invoice.TotalCost);
+                .SumAsync(pi => pi.Invoice.GrossTotal);
             return decimal.Round(result, 2);
         }
 
