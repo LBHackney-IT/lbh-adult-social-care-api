@@ -1,11 +1,16 @@
 using DataImporter.Services;
+using HttpServices.Services.Concrete;
+using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Net.Http;
+using System.Security.Authentication;
 using System.Security.Claims;
+using DataImporter.Extensions;
 
 namespace DataImporter
 {
@@ -24,8 +29,11 @@ namespace DataImporter
 
             services.AddScoped<ISupplierDataImport, SupplierDataImport>();
 
-            services.AddDbContext<DatabaseContext>(
-                opt => opt.UseNpgsql(_configuration.GetConnectionString("Default"), b => b.MaxBatchSize(100)));
+            services.ConfigureDbContext(_configuration);
+
+            // Configure API clients
+            services.AddTransient<IRestClient, JsonRestClient>();
+            services.ConfigureResidentApiClient(_configuration);
         }
 
         public static void ConfigureHttpContext(IServiceProvider services)
@@ -38,6 +46,5 @@ namespace DataImporter
             httpContextAccessor.HttpContext = new DefaultHttpContext();
             httpContextAccessor.HttpContext.User = new ClaimsPrincipal(identity);
         }
-
     }
 }

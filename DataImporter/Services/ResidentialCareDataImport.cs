@@ -1,6 +1,6 @@
+using HttpServices.Services.Contracts;
 using LBH.AdultSocialCare.Data;
 using OfficeOpenXml;
-using System;
 using System.IO;
 
 namespace DataImporter.Services
@@ -8,12 +8,15 @@ namespace DataImporter.Services
     public class ResidentialCareDataImport : IResidentialCareDataImport
     {
         private readonly DatabaseContext _databaseContext;
-        public ResidentialCareDataImport(DatabaseContext databaseContext)
+        private readonly IResidentsService _residentsService;
+
+        public ResidentialCareDataImport(DatabaseContext databaseContext, IResidentsService residentsService)
         {
             _databaseContext = databaseContext;
+            _residentsService = residentsService;
         }
 
-        public void Import(string fileName)
+        public async void Import(string fileName)
         {
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
@@ -37,7 +40,10 @@ namespace DataImporter.Services
                     string budgetCode = worksheet.Cells[$"Y{i}"].Value.ToString();
                     string supplierId = worksheet.Cells[$"AA{i}"].Value.ToString();
                     string supplierSite = worksheet.Cells[$"AB{i}"].Value.ToString();
+
+                    var userInformation = await _residentsService.GetServiceUserInformationAsync(int.Parse(hackneyID));
                 }
+
 
                 _databaseContext.SaveChanges();
             }
