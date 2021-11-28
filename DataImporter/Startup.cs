@@ -28,6 +28,7 @@ namespace DataImporter
             services.AddHttpContextAccessor();
 
             services.AddScoped<ISupplierDataImport, SupplierDataImport>();
+            services.AddScoped<IResidentialCareDataImport, ResidentialCareDataImport>();
 
             services.ConfigureDbContext(_configuration);
 

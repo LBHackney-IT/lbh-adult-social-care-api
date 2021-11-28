@@ -3,13 +3,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace DataImporter
 {
     class Program
     {
-        private readonly IConfiguration _configuration;
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var serviceProvider = InitService();
 
@@ -17,15 +17,18 @@ namespace DataImporter
             var residentialDataImport = serviceProvider.GetRequiredService<IResidentialCareDataImport>();
 
             //supplierDataImport.Import("supplier-data.xlsx");
-            residentialDataImport.Import("residential-data.xlsx");
+            await residentialDataImport.Import("residential-data.xlsx");
         }
 
 
         private static IServiceProvider InitService()
         {
+            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{environmentName}.json", true, true)
                 .AddEnvironmentVariables()
                 .Build();
 

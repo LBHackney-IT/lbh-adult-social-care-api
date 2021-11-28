@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace DataImporter.Services
 {
     interface IResidentialCareDataImport
     {
-        void Import(string fileName);
+        Task Import(string fileName);
     }
 }
