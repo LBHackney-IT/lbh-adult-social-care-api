@@ -46,9 +46,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task UpdateAsync(CarePackageReclaimUpdateDomain carePackageReclaimUpdateDomain)
         {
             var carePackageReclaim = await _carePackageReclaimGateway.GetAsync(carePackageReclaimUpdateDomain.Id)
-                .EnsureExistsAsync($"Care package reclaim with id {carePackageReclaimUpdateDomain.Id} not found"); ;
+                .EnsureExistsAsync($"Care package reclaim with id {carePackageReclaimUpdateDomain.Id} not found");
 
-            if (carePackageReclaimUpdateDomain.HasAssessmentBeenCarried)
+            if (!carePackageReclaimUpdateDomain.HasAssessmentBeenCarried)
             {
                 carePackageReclaim.Status = ReclaimStatus.Cancelled;
                 await _dbManager.SaveAsync();
