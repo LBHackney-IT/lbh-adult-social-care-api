@@ -45,7 +45,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         public async Task UpdateAsync(CarePackageReclaimUpdateDomain carePackageReclaimUpdateDomain)
         {
-            var carePackageReclaim = await _carePackageReclaimGateway.GetAsync(carePackageReclaimUpdateDomain.Id);
+            var carePackageReclaim = await _carePackageReclaimGateway.GetAsync(carePackageReclaimUpdateDomain.Id)
+                .EnsureExistsAsync($"Care package reclaim with id {carePackageReclaimUpdateDomain.Id} not found"); ;
+
+            if (carePackageReclaimUpdateDomain.HasAssessmentBeenCarried)
+            {
+                carePackageReclaim.Status = ReclaimStatus.Cancelled;
+                await _dbManager.SaveAsync();
+                return;
+            }
 
             if (carePackageReclaimUpdateDomain?.AssessmentFileId == Guid.Empty)
             {
@@ -59,7 +67,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 carePackageReclaimUpdateDomain.AssessmentFileName = carePackageReclaim.AssessmentFileName;
             }
 
-            await _carePackageReclaimGateway.UpdateAsync(carePackageReclaimUpdateDomain);
+            _mapper.Map(carePackageReclaimUpdateDomain, carePackageReclaim);
+            await _dbManager.SaveAsync();
         }
 
         public async Task<IList<CarePackageReclaimDomain>> UpdateListAsync(CareChargeReclaimBulkUpdateDomain reclaimBulkUpdateDomain)
