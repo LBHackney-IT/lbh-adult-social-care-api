@@ -23,6 +23,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Request
         public string Description { get; set; }
         public IFormFile AssessmentFile { get; set; }
         public Guid AssessmentFileId { get; set; }
-        public bool HasAssessmentBeenCarried { get; set; }
+        public bool HasAssessmentBeenCarried { get; set; } = true;
     }
 }
