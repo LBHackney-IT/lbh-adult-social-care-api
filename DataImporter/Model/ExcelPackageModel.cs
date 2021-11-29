@@ -71,19 +71,19 @@ namespace DataImporter.Model
                 _reclaimType = ReclaimType.CareCharge;
                 _claimCollector = ClaimCollector.Hackney;
             }
-            else if(_anpOneOffPackageType.Contains(elementType, StringComparer.Ordinal))
+            else if (_anpOneOffPackageType.Contains(elementType, StringComparer.Ordinal))
             {
                 _excelPackageType = ExcelPackageType.Detail;
                 _packageDetailType = PackageDetailType.AdditionalNeed;
                 _costPeriod = PaymentPeriod.OneOff;
             }
-            else if(_fncGrossPackageType.Contains(elementType, StringComparer.Ordinal))
+            else if (_fncGrossPackageType.Contains(elementType, StringComparer.Ordinal))
             {
                 _excelPackageType = ExcelPackageType.Reclaim;
                 _reclaimType = ReclaimType.Fnc;
                 _claimCollector = ClaimCollector.Hackney;
             }
-            else if(_fncNetPackageType.Contains(elementType, StringComparer.Ordinal))
+            else if (_fncNetPackageType.Contains(elementType, StringComparer.Ordinal))
             {
                 _excelPackageType = ExcelPackageType.Reclaim;
                 _reclaimSubType = ReclaimSubType.CareChargeProvisional;

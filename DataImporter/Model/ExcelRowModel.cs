@@ -16,10 +16,9 @@ namespace DataImporter.Model
             {
                 try
                 {
-                    NumberStyles style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands | NumberStyles.AllowLeadingSign ;
-                    CultureInfo provider = new CultureInfo("en-GB");
-                    
-                    var d = decimal.Parse(CostPer.Replace("£", string.Empty).Replace(".", string.Empty).Replace(",","."), style, CultureInfo.InvariantCulture);
+                    NumberStyles style = NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands | NumberStyles.AllowLeadingSign;
+                    var d = decimal.Parse(CostPer.Replace("£", string.Empty).Replace(".", string.Empty).Replace(",", "."), style, CultureInfo.InvariantCulture);
+
                     return d;
                 }
                 catch (Exception)
@@ -53,7 +52,5 @@ namespace DataImporter.Model
         public string BudgetCode { get; set; }
         public string SupplierID { get; set; }
         public string SupplierSite { get; set; }
-
-
     }
 }
