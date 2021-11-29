@@ -101,7 +101,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 StartDate = createdFncReclaim.Content.StartDate,
                 EndDate = createdFncReclaim.Content.EndDate,
                 Description = "test",
-                AssessmentFile = null,
                 AssessmentFileId = Guid.NewGuid(),
                 HasAssessmentBeenCarried = true
             };
