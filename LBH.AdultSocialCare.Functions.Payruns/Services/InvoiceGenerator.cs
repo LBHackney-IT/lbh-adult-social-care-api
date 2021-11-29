@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Extensions;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Entities.Interfaces;
 using LBH.AdultSocialCare.Data.Entities.Payments;
 using LBH.AdultSocialCare.Functions.Payruns.Domain;
+using LBH.AdultSocialCare.Functions.Payruns.Extensions;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
 using LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators;
 
@@ -57,14 +60,16 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 
             foreach (var generator in generators)
             {
+                if (invoiceTypes.HasFlag(InvoiceTypes.Refund))
+                {
+                    RejectOutdatedInvoices(package, packageInvoices);
+
+                    invoiceItems.AddRange(generator.CreateRefundItem(package, packageInvoices));
+                }
+
                 if (invoiceTypes.HasFlag(InvoiceTypes.Normal))
                 {
                     invoiceItems.AddRange(generator.CreateNormalItem(package, packageInvoices, invoiceEndDate));
-                }
-
-                if (invoiceTypes.HasFlag(InvoiceTypes.Refund))
-                {
-                    invoiceItems.AddRange(generator.CreateRefundItem(package, packageInvoices));
                 }
             }
 
@@ -110,6 +115,26 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 
             var net = gross - supplierReclaims;
             return (gross, net);
+        }
+
+        private void RejectOutdatedInvoices(CarePackage package, IList<InvoiceDomain> packageInvoices)
+        {
+            // there can be valid invoices but not yet paid.
+            // After package change they become invalidated, thus rejected
+            var packageItems = package.Details.Cast<IPackageItem>().Concat(package.Reclaims);
+            var outdatedInvoices = new List<PayrunInvoice>();
+
+            foreach (var packageItem in packageItems)
+            {
+                outdatedInvoices.AddRange(packageInvoices
+                    .Where(invoice =>
+                        invoice.Status.In(InvoiceStatus.Accepted, InvoiceStatus.Held) &&
+                        invoice.PayrunStatus.In(PayrunStatus.WaitingForApproval, PayrunStatus.WaitingForReview) &&
+                        invoice.Items.Any(item => packageItem.IsReferenced(item) && packageItem.Version > item.SourceVersion))
+                    .Select(invoice => invoice.PayrunInvoice));
+            }
+
+            _invoiceGateway.RejectInvoices(outdatedInvoices);
         }
 
         private async Task InitializeGeneratorsAsync()

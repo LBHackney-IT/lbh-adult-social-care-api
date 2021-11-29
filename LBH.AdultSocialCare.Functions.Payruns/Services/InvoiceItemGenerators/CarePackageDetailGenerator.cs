@@ -56,8 +56,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                         ? 0.0m
                         : detail.Cost,
                     TotalCost = refund.RefundAmount,
-                    FromDate = refund.StartDate,
-                    ToDate = refund.EndDate,
+                    FromDate = refund.PreviousStartDate,
+                    ToDate = refund.PreviousEndDate,
                     CarePackageDetailId = detail.Id,
                     SourceVersion = detail.Version,
                     PriceEffect = refund.RefundAmount > 0 ? PriceEffect.Add : PriceEffect.Subtract

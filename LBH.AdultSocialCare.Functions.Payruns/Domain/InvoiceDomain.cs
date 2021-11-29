@@ -17,5 +17,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Domain
         public DateTimeOffset EndDate { get; set; }
 
         public List<InvoiceItem> Items { get; set; }
+
+        public PayrunInvoice PayrunInvoice { get; set; }
     }
 }

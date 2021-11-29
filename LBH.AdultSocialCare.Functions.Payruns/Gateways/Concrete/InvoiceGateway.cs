@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.Payments;
 using LBH.AdultSocialCare.Functions.Payruns.Domain;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +36,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
                     PayrunStatus = payrunInvoice.Payrun.Status,
                     StartDate = payrunInvoice.Payrun.StartDate,
                     EndDate = payrunInvoice.Payrun.EndDate,
-                    Items = payrunInvoice.Invoice.Items.ToList()
+                    Items = payrunInvoice.Invoice.Items.ToList(),
+                    PayrunInvoice = payrunInvoice // need this to reject invoice
                 })
                 .ToListAsync();
 
@@ -53,6 +55,16 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
                     .Select(invoice => Convert.ToInt64(invoice.Number.Replace("INV ", "")))
                     .MaxAsync()
                 : 0;
+        }
+
+        public void RejectInvoices(IEnumerable<PayrunInvoice> payrunInvoices)
+        {
+            DbContext.AttachRange(payrunInvoices);
+
+            foreach (var payrunInvoice in payrunInvoices)
+            {
+                payrunInvoice.InvoiceStatus = InvoiceStatus.Rejected;
+            }
         }
     }
 }

@@ -81,8 +81,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                 Quantity = refund.Quantity,
                 WeeklyCost = 0.0m,              // generate refund per FNC period if we'll need real weekly FNC cost here
                 TotalCost = refund.RefundAmount,
-                FromDate = refund.StartDate,
-                ToDate = refund.EndDate,
+                FromDate = refund.PreviousStartDate,
+                ToDate = refund.PreviousEndDate,
                 CarePackageReclaimId = fundedNursingCare.Id,
                 SourceVersion = fundedNursingCare.Version,
                 NetCostsCompensated = refund.NetCostsCompensated,

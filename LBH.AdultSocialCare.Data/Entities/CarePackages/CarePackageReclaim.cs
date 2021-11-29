@@ -62,7 +62,7 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
 
         internal override IList<string> VersionedFields { get; } = new List<string>
         {
-            nameof(Cost), nameof(StartDate), nameof(EndDate), nameof(ClaimCollector)
+            nameof(Cost), nameof(StartDate), nameof(EndDate), nameof(ClaimCollector), nameof(Status)
         };
     }
 }

@@ -18,43 +18,44 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             IPackageItem packageItem, IList<InvoiceDomain> packageInvoices,
             Func<DateTimeOffset, DateTimeOffset, decimal, decimal> calculateCurrentCost)
         {
-            var existingInvoiceItems = packageInvoices
-                .Where(invoice => invoice.Status is InvoiceStatus.Accepted &&
-                                  invoice.PayrunStatus.In(PayrunStatus.Paid, PayrunStatus.PaidWithHold, PayrunStatus.Approved))
-                .SelectMany(invoice => invoice.Items)
-                .Where(packageItem.IsReferenced)
-                .ToList();
-
-            if (!existingInvoiceItems.Any()) return RefundInfo.Empty;
+            var paidInvoiceItems = GetPaidInvoiceItems(packageItem, packageInvoices);
+            if (!paidInvoiceItems.Any()) return RefundInfo.Empty;
 
             // package item has some significant updates (cost, dates etc.) -> create a new refund
-            if (packageItem.Version > existingInvoiceItems.Max(item => item.SourceVersion))
+            if (packageItem.Version > paidInvoiceItems.Max(item => item.SourceVersion))
             {
                 // calculate new cost for package item Start / End date range
                 // or till last invoice end date (for ongoing package items).
-                var lastInvoiceEndDate = packageInvoices.Max(invoice => invoice.EndDate);
+                var lastPaidDate = paidInvoiceItems.Max(item => item.ToDate);
 
-                var refundStartDate = packageItem.StartDate;
-                var refundEndDate = Dates.Min(packageItem.EndDate, lastInvoiceEndDate);
+                var currentStartDate = packageItem.StartDate;
+                var currentEndDate = Dates.Min(packageItem.EndDate, lastPaidDate);
 
-                var quantity = Dates.WeeksBetween(refundStartDate, refundEndDate);
+                // if package item date range moved into future, its start date can be greater than last invoice date
+                // no payments now needed for new range, but we still need to refund already paid.
+                // So set quantity and current cost to 0 and let the rest of logic flow.
+                var quantity = Math.Max(Dates.WeeksBetween(currentStartDate, currentEndDate), 0);
 
                 var refund = new RefundInfo
                 {
-                    StartDate = refundStartDate,
-                    EndDate = refundEndDate,
+                    PreviousStartDate = paidInvoiceItems.Min(item => item.FromDate),
+                    PreviousEndDate = lastPaidDate,
+                    CurrentStartDate = currentStartDate,
+                    CurrentEndDate = currentEndDate,
                     Quantity = quantity,
-                    CurrentCost = calculateCurrentCost(refundStartDate, refundEndDate, quantity)
+                    CurrentCost = quantity > 0
+                        ? calculateCurrentCost(currentStartDate, currentEndDate, quantity)
+                        : 0.0m
                 };
 
                 switch (packageItem)
                 {
                     case CarePackageDetail _:
-                        CalculateDetailRefundAmount(refund, existingInvoiceItems);
+                        CalculateDetailRefundAmount(refund, paidInvoiceItems);
                         break;
 
                     case CarePackageReclaim reclaim:
-                        CalculateReclaimRefundAmount(reclaim, refund, existingInvoiceItems);
+                        CalculateReclaimRefundAmount(reclaim, refund, paidInvoiceItems);
                         break;
                 }
 
@@ -64,30 +65,30 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             return RefundInfo.Empty;
         }
 
-        private static void CalculateDetailRefundAmount(RefundInfo refund, IList<InvoiceItem> existingInvoiceItems)
+        private static void CalculateDetailRefundAmount(RefundInfo refund, IList<InvoiceItem> paidInvoiceItems)
         {
-            var paidTotal = existingInvoiceItems.Sum(item => item.TotalCost);
+            var paidTotal = paidInvoiceItems.Sum(item => item.TotalCost);
 
             refund.RefundAmount = refund.CurrentCost - paidTotal;
         }
 
-        private static void CalculateReclaimRefundAmount(CarePackageReclaim reclaim, RefundInfo refund, IList<InvoiceItem> existingInvoiceItems)
+        private static void CalculateReclaimRefundAmount(CarePackageReclaim reclaim, RefundInfo refund, IList<InvoiceItem> paidInvoiceItems)
         {
             // when switching from Net to Gross we must refund everything from supplier
             // and ignore upcoming Hackney's reclaims. After switching back to Net
             // we must generate refunds starting from previous compensation point.
-            existingInvoiceItems = existingInvoiceItems
+            var actualInvoiceItems = paidInvoiceItems
                 .OrderByDescending(item => item.SourceVersion) // take just new items
                 .TakeWhile(item => !item.NetCostsCompensated) // after previous compensation checkpoint
                 .ToList();
 
             // total amount deducted from supplier for a given period
-            var deductedNetCost = existingInvoiceItems
+            var deductedNetCost = actualInvoiceItems
                 .Where(item => item.ClaimCollector is ClaimCollector.Supplier)
                 .Sum(item => item.TotalCost);
 
             // total amount of refunds to/from supplier for a given period
-            var refundedCost = existingInvoiceItems
+            var refundedCost = actualInvoiceItems
                 .Where(item => item.ClaimCollector is null)
                 .Sum(item => item.TotalCost);
 
@@ -107,7 +108,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                             : refundedCost + refund.CurrentCost;                    // nothing deducted -> switch from Hackney to supplier, just accumulate everything // TODO: VK: Review
                         break;
 
-                    case ClaimCollector.Hackney when !existingInvoiceItems.Any(item => item.NetCostsCompensated):
+                    case ClaimCollector.Hackney when !actualInvoiceItems.Any(item => item.NetCostsCompensated):
                         // we're switching from Net to Gross - refund everything from supplier and create a compensation checkpoint
                         refund.RefundAmount = refundedCost - deductedNetCost;
                         refund.NetCostsCompensated = true;
@@ -118,6 +119,16 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                         break; // we've compensated all Net costs already and still in Gross mode - no need to refund anything
                 }
             }
+        }
+
+        private static List<InvoiceItem> GetPaidInvoiceItems(IPackageItem packageItem, IList<InvoiceDomain> packageInvoices)
+        {
+            return packageInvoices
+                .Where(invoice => invoice.Status is InvoiceStatus.Accepted &&
+                                  invoice.PayrunStatus.In(PayrunStatus.Paid, PayrunStatus.PaidWithHold, PayrunStatus.Approved))
+                .SelectMany(invoice => invoice.Items)
+                .Where(packageItem.IsReferenced)
+                .ToList();
         }
     }
 }
