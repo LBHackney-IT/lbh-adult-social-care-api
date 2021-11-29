@@ -94,7 +94,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     ServiceUserId = payRunInvoice.Invoice.ServiceUserId,
                     ServiceUserName =
                     $"{payRunInvoice.Invoice.ServiceUser.FirstName} {payRunInvoice.Invoice.ServiceUser.MiddleName ?? string.Empty} {payRunInvoice.Invoice.ServiceUser.LastName}",
-                    SupplierId = payRunInvoice.Invoice.SupplierId,
+                    SupplierId = payRunInvoice.Invoice.Supplier.CedarId ?? payRunInvoice.Invoice.SupplierId,
                     SupplierName = payRunInvoice.Invoice.Supplier.SupplierName,
                     InvoiceNumber = payRunInvoice.Invoice.Number,
                     PackageType = payRunInvoice.Invoice.Package.PackageType,
@@ -148,7 +148,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                         ServiceUserId = pi.Invoice.ServiceUserId,
                         ServiceUserName =
                         $"{pi.Invoice.ServiceUser.FirstName} {pi.Invoice.ServiceUser.MiddleName ?? string.Empty} {pi.Invoice.ServiceUser.LastName}",
-                        SupplierId = pi.Invoice.SupplierId,
+                        SupplierId = pi.Invoice.Supplier.CedarId ?? pi.Invoice.SupplierId,
                         SupplierName = pi.Invoice.Supplier.SupplierName,
                         InvoiceNumber = pi.Invoice.Number,
                         PackageType = pi.Invoice.Package.PackageType,
@@ -187,7 +187,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     ServiceUserId = payRunInvoice.Invoice.ServiceUserId,
                     ServiceUserName =
                     $"{payRunInvoice.Invoice.ServiceUser.FirstName} {payRunInvoice.Invoice.ServiceUser.MiddleName ?? string.Empty} {payRunInvoice.Invoice.ServiceUser.LastName}",
-                    SupplierId = payRunInvoice.Invoice.SupplierId,
+                    SupplierId = payRunInvoice.Invoice.Supplier.CedarId ?? payRunInvoice.Invoice.SupplierId,
                     SupplierName = payRunInvoice.Invoice.Supplier.SupplierName,
                     InvoiceNumber = payRunInvoice.Invoice.Number,
                     PackageType = payRunInvoice.Invoice.Package.PackageType,
