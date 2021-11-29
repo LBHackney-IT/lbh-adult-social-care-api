@@ -4,6 +4,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -24,10 +25,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task ExecuteAsync(Guid packageId, string notes)
         {
             var package = await _carePackageGateway
-                .GetPackageAsync(packageId, PackageFields.None, true)
+                .GetPackageAsync(packageId, PackageFields.Reclaims, true)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
             package.Status = PackageStatus.Cancelled;
+
+            var reclaims = package.Reclaims.Where(r => r.Status.In(ReclaimStatus.Active, ReclaimStatus.Pending));
+
+            foreach (var reclaim in reclaims)
+            {
+                reclaim.Status = ReclaimStatus.Ended;
+                reclaim.EndDate = DateTimeOffset.Now;
+            }
 
             package.Histories.Add(new CarePackageHistory
             {
