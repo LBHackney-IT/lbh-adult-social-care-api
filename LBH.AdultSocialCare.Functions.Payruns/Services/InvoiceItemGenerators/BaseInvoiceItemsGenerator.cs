@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Extensions;
 using Common.Models;
 using LBH.AdultSocialCare.Api.Helpers;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Interfaces;
 using LBH.AdultSocialCare.Data.Entities.Payments;
@@ -42,15 +44,14 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             var latestInvoiceItem = GetLatestInvoiceItem(packageItem, packageInvoices);
 
             return latestInvoiceItem != null ?
-                Dates.Min(packageItem.EndDate, latestInvoiceItem.ToDate) :
+                Dates.Min(packageItem.EndDate, latestInvoiceItem.ToDate.AddDays(1)) :
                 Dates.Min(packageItem.StartDate, invoiceEndDate);
         }
 
         private static InvoiceItem GetLatestInvoiceItem(IPackageItem packageItem, IEnumerable<InvoiceDomain> invoices)
         {
-            if (invoices is null) return null;
-
-            return invoices
+            return invoices?
+                .Where(invoice => invoice.Status.In(InvoiceStatus.Accepted, InvoiceStatus.Held)) // TODO: VK: Review
                 .SelectMany(invoice => invoice.Items)
                 .Where(packageItem.IsReferenced)
                 .OrderByDescending(item => item.ToDate)

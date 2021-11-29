@@ -48,8 +48,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
         public async Task<long> GetInvoicesCountAsync()
         {
             // TODO: VK: Quick fix, replace with sequence
-            return await DbContext.Invoices
-                .Select(invoice => Convert.ToInt64(invoice.Number.Replace("INV ", ""))).MaxAsync();
+            return await DbContext.Invoices.AnyAsync()
+                ? await DbContext.Invoices
+                    .Select(invoice => Convert.ToInt64(invoice.Number.Replace("INV ", "")))
+                    .MaxAsync()
+                : 0;
         }
     }
 }
