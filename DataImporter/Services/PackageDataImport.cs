@@ -70,7 +70,7 @@ namespace DataImporter.Services
                     logs.Add($"{DateTimeOffset.UtcNow}\tService user {serviceUserPackage.Key} not found");
                     hasError = true;
                 }
-                var primarySupportReasonID = GetPrimarySupportReasonID(serviceUserPackage.FirstOrDefault().BudgetCode.Substring(0, 5));
+                var primarySupportReasonID = GetPrimarySupportReasonID(serviceUserPackage.FirstOrDefault().BudgetCode.Replace("-", "").Substring(0, 5));
                 if (primarySupportReasonID == 0)
                 {
                     logs.Add($"{DateTimeOffset.UtcNow}\tPrimary support reason {serviceUserPackage.FirstOrDefault().BudgetCode.Substring(0, 5)} not found");
