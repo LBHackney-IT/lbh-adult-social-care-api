@@ -52,9 +52,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 throw new ApiException("Supplier must be assigned to a package before submitting");
             }
 
-            if (package.Status.NotIn(PackageStatus.New, PackageStatus.InProgress))
+            if (package.Status.In(PackageStatus.Approved))
             {
                 throw new ApiException("Package has been approved already");
+            }
+
+            if (package.Status.In(PackageStatus.Cancelled, PackageStatus.Ended))
+            {
+                throw new ApiException("Package has been cancelled or ended already");
             }
         }
     }
