@@ -7,7 +7,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
 {
     public interface IFileStorage
     {
-        Task<DocumentResponse> SaveFileAsync(IFormFile carePlanFile);
+        Task<DocumentResponse> SaveFileAsync(string fileContent, string fileName);
         Task<string> GetFile(Guid documentId);
     }
 }

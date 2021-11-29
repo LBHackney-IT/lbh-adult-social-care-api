@@ -51,6 +51,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 Description = $"{reclaim.Type.GetDisplayName()} {ReclaimStatus.Cancelled}",
             };
 
+            // Change status of package to in-progress
+            if (carePackage.Status != PackageStatus.InProgress)
+            {
+                carePackage.Status = PackageStatus.InProgress;
+            }
+
             _carePackageHistoryGateway.Create(history);
             await _dbManager.SaveAsync();
 

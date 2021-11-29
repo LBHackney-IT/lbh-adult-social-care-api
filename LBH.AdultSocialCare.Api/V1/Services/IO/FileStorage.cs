@@ -8,6 +8,7 @@ using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace LBH.AdultSocialCare.Api.V1.Services.IO
 {
@@ -16,17 +17,26 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
         private readonly IDocumentClaimClient _documentClaimClient;
         private readonly IDocumentPostClient _documentPostClient;
         private readonly IDocumentGetClient _documentGetClient;
+        private readonly ILogger<FileStorage> _logger;
 
-        public FileStorage(IDocumentClaimClient documentClaimClient, IDocumentPostClient documentPostClient, IDocumentGetClient documentGetClient)
+
+        public FileStorage(IDocumentClaimClient documentClaimClient, IDocumentPostClient documentPostClient,
+            IDocumentGetClient documentGetClient, ILogger<FileStorage> logger)
         {
             _documentClaimClient = documentClaimClient;
             _documentPostClient = documentPostClient;
             _documentGetClient = documentGetClient;
+            _logger = logger;
         }
 
-        public async Task<DocumentResponse> SaveFileAsync(IFormFile carePlanFile)
+        public async Task<DocumentResponse> SaveFileAsync(string fileContent, string fileName)
         {
-            var fileContent = ConvertCarePlan(carePlanFile);
+            //var fileContent = ConvertCarePlan(carePlanFile);
+
+            // log to check file content
+            _logger.LogCritical(fileContent);
+            _logger.LogCritical(fileName);
+
             if (fileContent == null)
                 return new DocumentResponse();
 
@@ -45,7 +55,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
 
             await _documentPostClient.CreateDocument(new Guid(claimResponse.Document.Id), documentUploadRequest);
 
-            return new DocumentResponse { FileId = new Guid(claimResponse.Document.Id), FileName = carePlanFile.FileName };
+            return new DocumentResponse { FileId = new Guid(claimResponse.Document.Id), FileName = fileName };
         }
 
         public async Task<string> GetFile(Guid documentId)

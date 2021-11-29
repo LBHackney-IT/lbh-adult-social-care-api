@@ -5,6 +5,7 @@ using Moq;
 using System;
 using System.Threading.Tasks;
 using FluentAssertions;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using Xunit;
@@ -40,6 +41,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             gateway
                 .Setup(g => g.GetAsync(_reclaim.Id))
                 .ReturnsAsync(_reclaim);
+
+            _carePackageGateway
+                .Setup(g => g.GetPackageAsync(It.IsAny<Guid>(), It.IsAny<PackageFields>(), It.IsAny<bool>()))
+                .ReturnsAsync(carePackage);
 
             _useCase = new CancelCarePackageReclaimsUseCase(gateway.Object, _dbManager.Object, historyGateway.Object, _carePackageGateway.Object);
         }

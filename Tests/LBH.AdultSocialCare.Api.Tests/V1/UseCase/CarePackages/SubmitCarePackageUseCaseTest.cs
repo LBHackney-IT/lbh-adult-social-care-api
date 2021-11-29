@@ -117,7 +117,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             var statuses = Enum
                 .GetValues(typeof(PackageStatus))
                 .Cast<PackageStatus>()
-                .Where(s => s.NotIn(PackageStatus.New, PackageStatus.InProgress));
+                .Where(s => s.In(PackageStatus.Approved, PackageStatus.Cancelled, PackageStatus.Ended));
 
             foreach (var packageStatus in statuses)
             {
