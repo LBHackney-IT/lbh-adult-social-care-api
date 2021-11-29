@@ -47,7 +47,9 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
         // TODO: VK: Review invoice number generation and remove
         public async Task<long> GetInvoicesCountAsync()
         {
-            return await DbContext.Invoices.LongCountAsync();
+            // TODO: VK: Quick fix, replace with sequence
+            return await DbContext.Invoices
+                .Select(invoice => Convert.ToInt64(invoice.Number.Replace("INV ", ""))).MaxAsync();
         }
     }
 }
