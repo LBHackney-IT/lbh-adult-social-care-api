@@ -104,7 +104,7 @@ namespace DataImporter.Model
 
         public static PackageType GetPackageType(string elementType)
         {
-            var _residentialPackageType = new[] { "Long Stay Residential Care", "Residential Placement", "Short Stay Residential Care" };
+            var _residentialPackageType = new[] { "Interim Residential Bed", "Residential Care", "Short Stay Residential Home" };
             var _nursingPackageType = new[] { "Interim Nursing Bed", "Nursing Care", "Short Stay Nursing Home" };
 
             if (_residentialPackageType.Contains(elementType, StringComparer.OrdinalIgnoreCase))

@@ -17,7 +17,7 @@ namespace DataImporter
             var packageDataImport = serviceProvider.GetRequiredService<IPackageDataImport>();
 
             //supplierDataImport.Import("supplier-data.xlsx");
-            // await packageDataImport.Import("residential-data.xlsx");
+            await packageDataImport.Import("residential-data.xlsx");
             await packageDataImport.Import("nursing-data.xlsx");
         }
 

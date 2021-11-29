@@ -36,8 +36,7 @@ namespace DataImporter.Services
                         CedarReferenceNumber = worksheet.Cells[$"D{i}"].Value.ToString(),
                         CedarId = int.Parse(worksheet.Cells[$"E{i}"].Value.ToString()),
                         Address = worksheet.Cells[$"F{i}"].Value.ToString(),
-                        Postcode = worksheet.Cells[$"G{i}"].Value.ToString(),
-                        CreatorId = new Guid()
+                        Postcode = worksheet.Cells[$"G{i}"].Value.ToString()
                     });
                 }
                 _databaseContext.Suppliers.AddRange(suppliers);
