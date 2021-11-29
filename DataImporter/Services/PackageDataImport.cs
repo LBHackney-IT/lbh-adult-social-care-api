@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace DataImporter.Services
 {
-    public class ResidentialCareDataImport : IResidentialCareDataImport
+    public class PackageDataImport : IPackageDataImport
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IResidentsService _residentsService;
         private readonly Guid _applicationID;
-        public ResidentialCareDataImport(DatabaseContext databaseContext, IResidentsService residentsService)
+        public PackageDataImport(DatabaseContext databaseContext, IResidentsService residentsService)
         {
             _databaseContext = databaseContext;
             _residentsService = residentsService;
@@ -30,7 +30,7 @@ namespace DataImporter.Services
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
             var file = new FileInfo(fileName);
-            var excelRows = new List<ResidentialExcelModel>();
+            var excelRows = new List<ExcelRowModel>();
             using (var excelFile = new ExcelPackage(file))
             {
                 ExcelWorksheet worksheet = excelFile.Workbook.Worksheets[0];
@@ -39,10 +39,11 @@ namespace DataImporter.Services
                     if (worksheet.Cells[$"A{i}"].Value == null)
                         continue;
 
-                    var excelRow = new ResidentialExcelModel()
+                    var excelRow = new ExcelRowModel()
                     {
                         HackneyID = worksheet.Cells[$"A{i}"].Value?.ToString(),
                         ServiceTypeGroup = worksheet.Cells[$"G{i}"].Value?.ToString(),
+                        ServiceType = worksheet.Cells[$"H{i}"].Value?.ToString(),
                         ElementType = worksheet.Cells[$"I{i}"].Value?.ToString(),
                         CostPer = worksheet.Cells[$"L{i}"].Value?.ToString(),
                         Quantity = worksheet.Cells[$"N{i}"].Value?.ToString(),
@@ -62,27 +63,22 @@ namespace DataImporter.Services
             List<string> logs = new List<string>();
             foreach (var serviceUserPackage in serviceUserPackages)
             {
-               // if (serviceUserPackage.Key != "44002839") continue;
-
                 bool hasError = false;
                 Guid serviceUserID = await CreateOrSkipUser(serviceUserPackage.Key);
                 if (serviceUserID == Guid.Empty)
                 {
-                    //TODO: What should happen
                     logs.Add($"{DateTimeOffset.UtcNow}\tService user {serviceUserPackage.Key} not found");
                     hasError = true;
                 }
                 var primarySupportReasonID = GetPrimarySupportReasonID(serviceUserPackage.FirstOrDefault().BudgetCode.Substring(0, 5));
                 if (primarySupportReasonID == 0)
                 {
-                    //TODO: What should happen
                     logs.Add($"{DateTimeOffset.UtcNow}\tPrimary support reason {serviceUserPackage.FirstOrDefault().BudgetCode.Substring(0, 5)} not found");
                     hasError = true;
                 }
 
                 if (!int.TryParse(serviceUserPackage.FirstOrDefault().SupplierID, out int supplierId))
                 {
-                    //TODO: What should happen
                     logs.Add($"{DateTimeOffset.UtcNow}\tSupplierID {serviceUserPackage.FirstOrDefault().SupplierID} must be number.");
                     hasError = true;
                 }
@@ -90,7 +86,6 @@ namespace DataImporter.Services
                 var supplierID = GetSupplierID(supplierId, serviceUserPackage.FirstOrDefault().SupplierSite);
                 if (supplierID == 0)
                 {
-                    //TODO: What should happen
                     logs.Add($"{DateTimeOffset.UtcNow}\tService user {serviceUserPackage.Key}\tSupplierID: {supplierId}\tSupplierSite: {serviceUserPackage.FirstOrDefault().SupplierSite} not found.");
                     hasError = true;
                 }
@@ -100,7 +95,7 @@ namespace DataImporter.Services
                 var carePackage = new CarePackage()
                 {
                     Id = Guid.NewGuid(),
-                    PackageType = PackageType.ResidentialCare,
+                    PackageType = ExcelPackageModel.GetPackageType(serviceUserPackage.FirstOrDefault().ServiceType),
                     Status = PackageStatus.Approved,
                     PackageScheduling = PackageScheduling.Temporary,
                     DateCreated = DateTimeOffset.UtcNow,
@@ -119,7 +114,7 @@ namespace DataImporter.Services
                 foreach (var package in serviceUserPackage)
                 {
                     var excelPackageModel = new ExcelPackageModel(package.ElementType);
-                    if (excelPackageModel.PackageType == ExcelPackageModel.ExcelPackageType.Detail)
+                    if (excelPackageModel.SubPackageType == ExcelPackageModel.ExcelPackageType.Detail)
                     {
                         var corePackage = new CarePackageDetail()
                         {
@@ -132,13 +127,13 @@ namespace DataImporter.Services
                             UnitOfMeasure = package.UnitOfMeasure,
                             ServicePeriod = PaymentPeriod.Weekly,
                             StartDate = package.StartDate,
-                            CostPeriod = PaymentPeriod.Weekly,
+                            CostPeriod = excelPackageModel.CostPeriod,
                             EndDate = package.EndDate
                         };
                         carePackage.Details.Add(corePackage);
                         _databaseContext.CarePackageDetails.Add(corePackage);
                     }
-                    else if (excelPackageModel.PackageType == ExcelPackageModel.ExcelPackageType.CareCharge)
+                    else if (excelPackageModel.SubPackageType == ExcelPackageModel.ExcelPackageType.Reclaim)
                     {
                         var reclaim = new CarePackageReclaim()
                         {
@@ -151,11 +146,15 @@ namespace DataImporter.Services
                             EndDate = package.EndDate,
                             ClaimCollector = excelPackageModel.ClaimCollector,
                             SubType = excelPackageModel.ReclaimSubType,
-                            Type = ReclaimType.CareCharge,
+                            Type = excelPackageModel.ReclaimType,
                             Status = ReclaimStatus.Active
                         };
                         carePackage.Reclaims.Add(reclaim);
                         _databaseContext.CarePackageReclaims.Add(reclaim);
+                    }
+                    else
+                    {
+                        logs.Add($"{DateTimeOffset.UtcNow}\tService user {serviceUserPackage.Key}\tPackage Type {package.ElementType} is not valid.");
                     }
                 }
                 _databaseContext.CarePackages.Add(carePackage);
@@ -177,7 +176,6 @@ namespace DataImporter.Services
             var userInformation = await _residentsService.GetServiceUserInformationAsync(int.Parse(hackneyID));
             if (!userInformation.Residents.Any())
             {
-                // TODO: Define action what will happen
                 return Guid.Empty;
             }
 
@@ -187,7 +185,7 @@ namespace DataImporter.Services
                 HackneyId = int.Parse(hackneyID),
                 FirstName = userInformation.Residents[0].FirstName,
                 LastName = userInformation.Residents[0].LastName,
-                DateOfBirth = userInformation.Residents[0].DateOfBirth.Year == 0001 ? new DateTime(1040,1,1) : userInformation.Residents[0].DateOfBirth,
+                DateOfBirth = userInformation.Residents[0].DateOfBirth.Year == 0001 ? new DateTime(1040, 1, 1) : userInformation.Residents[0].DateOfBirth,
                 AddressLine1 = userInformation.Residents[0].Address?.Address,
                 PostCode = userInformation.Residents[0].Address?.Postcode
             };

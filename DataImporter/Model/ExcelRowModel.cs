@@ -3,10 +3,11 @@ using System.Globalization;
 
 namespace DataImporter.Model
 {
-    public class ResidentialExcelModel
+    public class ExcelRowModel
     {
         public string HackneyID { get; set; }
         public string ServiceTypeGroup { get; set; }
+        public string ServiceType { get; set; }
         public string ElementType { get; set; }
         public string CostPer { get; set; }
         public decimal Cost

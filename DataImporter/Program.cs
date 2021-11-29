@@ -14,10 +14,10 @@ namespace DataImporter
             var serviceProvider = InitService();
 
             var supplierDataImport = serviceProvider.GetRequiredService<ISupplierDataImport>();
-            var residentialDataImport = serviceProvider.GetRequiredService<IResidentialCareDataImport>();
+            var packageDataImport = serviceProvider.GetRequiredService<IPackageDataImport>();
 
             //supplierDataImport.Import("supplier-data.xlsx");
-            await residentialDataImport.Import("residential-data.xlsx");
+            await packageDataImport.Import("residential-data.xlsx");
         }
 
 

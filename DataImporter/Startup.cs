@@ -1,14 +1,10 @@
 using DataImporter.Services;
 using HttpServices.Services.Concrete;
 using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Data;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Net.Http;
-using System.Security.Authentication;
 using System.Security.Claims;
 using DataImporter.Extensions;
 
@@ -28,7 +24,7 @@ namespace DataImporter
             services.AddHttpContextAccessor();
 
             services.AddScoped<ISupplierDataImport, SupplierDataImport>();
-            services.AddScoped<IResidentialCareDataImport, ResidentialCareDataImport>();
+            services.AddScoped<IPackageDataImport, PackageDataImport>();
 
             services.ConfigureDbContext(_configuration);
 
