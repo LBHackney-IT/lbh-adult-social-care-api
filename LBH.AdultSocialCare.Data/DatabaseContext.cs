@@ -115,7 +115,7 @@ namespace LBH.AdultSocialCare.Data
             #region DB Functions
 
             modelBuilder
-                .HasDbFunction(typeof(DatabaseContext).GetMethod(nameof(CompareDates), new[] { typeof(DateTimeOffset?), typeof(DateTimeOffset?) }))
+                .HasDbFunction(typeof(DatabaseContext).GetMethod(nameof(CompareDates), new[] { typeof(DateTimeOffset?), typeof(DateTimeOffset?) })!)
                 .HasName("comparedates");
 
             #endregion DB Functions
@@ -123,6 +123,13 @@ namespace LBH.AdultSocialCare.Data
             modelBuilder.Entity<Invoice>()
                 .HasIndex(i => i.Number)
                 .IsUnique();
+
+            modelBuilder.Entity<Payrun>(entity =>
+            {
+                entity.Property(e => e.StartDate).HasColumnType("date");
+                entity.Property(e => e.EndDate).HasColumnType("date");
+                entity.Property(e => e.PaidUpToDate).HasColumnType("date");
+            });
 
             modelBuilder.Entity<PayrunInvoice>(entity =>
             {
@@ -138,6 +145,16 @@ namespace LBH.AdultSocialCare.Data
                     .WithMany(i => i.PayrunInvoices)
                     .HasForeignKey(pi => pi.InvoiceId);
             });
+
+            modelBuilder.Entity<CarePackageDetail>()
+                .HasMany<InvoiceItem>()
+                .WithOne(i => i.CarePackageDetail)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CarePackageReclaim>()
+                .HasMany<InvoiceItem>()
+                .WithOne(i => i.CarePackageReclaim)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //PS: Second time adding the identity config below. Resist the temptation to remove. Serves a purpose
             modelBuilder.Entity<Role>(entity =>
@@ -167,16 +184,10 @@ namespace LBH.AdultSocialCare.Data
             AdjustModelForTesting(modelBuilder);
         }
 
-        public override int SaveChanges()
-        {
-            SetEntitiesAuditInfo();
-
-            return base.SaveChanges();
-        }
-
         public override int SaveChanges(bool acceptAllChangesOnSuccess)
         {
             SetEntitiesAuditInfo();
+            TryUpdateEntitiesVersion();
 
             return base.SaveChanges(acceptAllChangesOnSuccess);
         }
@@ -185,15 +196,9 @@ namespace LBH.AdultSocialCare.Data
             CancellationToken cancellationToken = new CancellationToken())
         {
             SetEntitiesAuditInfo();
+            TryUpdateEntitiesVersion();
 
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
-        }
-
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
-        {
-            SetEntitiesAuditInfo();
-
-            return await base.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         private void SetEntitiesAuditInfo()
@@ -221,6 +226,28 @@ namespace LBH.AdultSocialCare.Data
             {
                 entity.DateUpdated = DateTimeOffset.UtcNow;
                 entity.UpdaterId = new Guid(_httpContextAccessor.HttpContext.User.Identity.GetUserId());
+            }
+        }
+
+        private void TryUpdateEntitiesVersion()
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(entry => entry.State is EntityState.Modified);
+
+            foreach (var entry in entries)
+            {
+                if (entry.Entity is BaseVersionedEntity versionedEntity)
+                {
+                    var shouldIncreaseVersion = entry.Properties.Any(prop =>
+                        prop.IsModified &&
+                        versionedEntity.VersionedFields.Contains(prop.Metadata.Name));
+
+                    if (shouldIncreaseVersion)
+                    {
+                        versionedEntity.Version++;
+                    }
+                }
             }
         }
 

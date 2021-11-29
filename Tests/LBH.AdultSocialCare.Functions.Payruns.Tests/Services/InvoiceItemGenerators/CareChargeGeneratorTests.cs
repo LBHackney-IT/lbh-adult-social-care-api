@@ -5,6 +5,7 @@ using FluentAssertions;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Payments;
+using LBH.AdultSocialCare.Functions.Payruns.Domain;
 using LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators;
 using Xunit;
 
@@ -29,7 +30,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
             package.Reclaims.ElementAt(1).Status = ReclaimStatus.Cancelled;
             package.Reclaims.ElementAt(2).StartDate = DateTimeOffset.Now.AddDays(1000);
 
-            var invoiceItems = _generator.Run(package, new List<Invoice>(), DateTimeOffset.Now.AddDays(30)).ToList();
+            var invoiceItems = _generator.CreateNormalItem(package, new List<InvoiceDomain>(), DateTimeOffset.Now.AddDays(30)).ToList();
             var activeElement = package.Reclaims.First(el => el.Status is ReclaimStatus.Active);
 
             invoiceItems.Count.Should().Be(1);
@@ -49,7 +50,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
             futureReclaim.StartDate = DateTimeOffset.Now.AddDays(265);
             futureReclaim.EndDate = DateTimeOffset.Now.AddDays(365);
 
-            var invoiceItems = _generator.Run(package, new List<Invoice>(), DateTimeOffset.Now.AddDays(30)).ToList();
+            var invoiceItems = _generator.CreateNormalItem(package, new List<InvoiceDomain>(), DateTimeOffset.Now.AddDays(30)).ToList();
 
             invoiceItems.Count.Should().Be(package.Reclaims.Count - 2);
             invoiceItems.Should().NotContain(el => el.WeeklyCost == pastReclaim.Cost);
@@ -61,7 +62,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         {
             var package = new CarePackage();
 
-            var invoices = _generator.Run(package, new List<Invoice>(), DateTimeOffset.Now.AddDays(30));
+            var invoices = _generator.CreateNormalItem(package, new List<InvoiceDomain>(), DateTimeOffset.Now.AddDays(30));
 
             invoices.Count().Should().Be(0);
         }
@@ -75,7 +76,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
 
             package.Reclaims.First().ClaimCollector = collector;
 
-            var invoiceItems = _generator.Run(package, new List<Invoice>(), DateTimeOffset.Now.AddDays(30)).ToList();
+            var invoiceItems = _generator.CreateNormalItem(package, new List<InvoiceDomain>(), DateTimeOffset.Now.AddDays(30)).ToList();
 
             invoiceItems.Count.Should().Be(1);
             invoiceItems.First().PriceEffect.Should().Be(priceEffect);

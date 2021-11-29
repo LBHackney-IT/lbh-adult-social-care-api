@@ -144,7 +144,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     Status = reclaim.Status.GetDisplayName(),
                     StartDate = reclaim.StartDate,
                     EndDate = reclaim.EndDate,
-                    WeeklyCost = reclaim.Cost
+                    WeeklyCost = reclaim.ClaimCollector == ClaimCollector.Hackney ? reclaim.Cost : decimal.Negate(reclaim.Cost)
                 }));
             }
 
@@ -179,7 +179,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             decimal netTotal = 0;
 
             // Add core cost
-            if (coreCost != null)
+            if (coreCost != null && IsValidDateRange(coreCost.StartDate, coreCost.EndDate))
             {
                 grossTotal += coreCost.Cost;
                 netTotal += coreCost.Cost;
@@ -187,17 +187,27 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             // Add weekly additional needs only
             var weeklyAdditionalNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.Weekly).ToList();
-            foreach (var need in weeklyAdditionalNeeds)
+            foreach (var need in weeklyAdditionalNeeds.Where(need => IsValidDateRange(need.StartDate, need.EndDate)))
             {
                 grossTotal += need.Cost;
                 netTotal += need.Cost;
             }
 
             // Deduct reclaims collected by supplier from package net cost
-            netTotal = reclaims.Where(reclaim => reclaim.ClaimCollector.Equals(ClaimCollector.Supplier))
+            netTotal = reclaims.Where(reclaim => reclaim.Status == ReclaimStatus.Active && reclaim.ClaimCollector == ClaimCollector.Supplier && IsValidDateRange(reclaim.StartDate, reclaim.EndDate))
                 .Aggregate(netTotal, (current, reclaim) => current - reclaim.Cost);
 
             return (grossTotal, netTotal);
+        }
+
+        private static bool IsValidDateRange(DateTimeOffset startDate, DateTimeOffset? endDate)
+        {
+            var today = DateTimeOffset.Now.Date;
+            return (today >= startDate) switch
+            {
+                true when (endDate == null || endDate.Value.Date >= today) => true,
+                _ => false
+            };
         }
     }
 }

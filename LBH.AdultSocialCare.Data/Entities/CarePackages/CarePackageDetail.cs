@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Data.Constants.Enums;
@@ -7,7 +8,7 @@ using LBH.AdultSocialCare.Data.Entities.Interfaces;
 
 namespace LBH.AdultSocialCare.Data.Entities.CarePackages
 {
-    public class CarePackageDetail : BaseEntity, IPackageItem
+    public class CarePackageDetail : BaseVersionedEntity, IPackageItem
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
@@ -29,5 +30,10 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
 
         [ForeignKey(nameof(CarePackageId))]
         public CarePackage Package { get; set; }
+
+        internal override IList<string> VersionedFields { get; } = new List<string>
+        {
+            nameof(Cost), nameof(StartDate), nameof(EndDate)
+        };
     }
 }

@@ -1,9 +1,9 @@
-using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Common;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Data.Entities.Payments
 {
@@ -18,9 +18,13 @@ namespace LBH.AdultSocialCare.Data.Entities.Payments
         public Guid? CarePackageDetailId { get; set; }
         public Guid? CarePackageReclaimId { get; set; }
 
+        [Column(TypeName = "decimal(13, 2)")]
         public decimal WeeklyCost { get; set; }
+
+        [Column(TypeName = "decimal(13, 2)")]
         public decimal TotalCost { get; set; }
 
+        [Column(TypeName = "decimal(7, 2)")]
         public decimal Quantity { get; set; }
 
         public DateTimeOffset FromDate { get; set; }
@@ -28,6 +32,9 @@ namespace LBH.AdultSocialCare.Data.Entities.Payments
 
         public ClaimCollector? ClaimCollector { get; set; }
         public PriceEffect PriceEffect { get; set; }
+
+        public long SourceVersion { get; set; }
+        public bool NetCostsCompensated { get; set; }
 
         [ForeignKey(nameof(InvoiceId))]
         public Invoice Invoice { get; set; }

@@ -58,6 +58,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 newReclaim = TryHandleProvisionalCareCharge(reclaimCreationDomain, coreCostDetail, carePackage);
             }
 
+            //ValidateCareChargeAsync(reclaimCreationDomain, coreCostDetail, carePackage);
+
             if (newReclaim is null)
             {
                 newReclaim = reclaimCreationDomain.ToEntity();
@@ -67,7 +69,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 {
                     var documentResponse = await _fileStorage.SaveFileAsync(reclaimCreationDomain.AssessmentFile);
                     newReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
-                    newReclaim.AssessmentFileName = reclaimCreationDomain.AssessmentFile?.FileName;
+                    newReclaim.AssessmentFileName = documentResponse?.FileName;
                 }
 
                 carePackage.Reclaims.Add(newReclaim);
@@ -143,6 +145,65 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 {
                     throw new ApiException(
                         $"FNC end date is invalid. Must be in the range {coreCostDetail.StartDate} - {coreCostDetail.EndDate}", HttpStatusCode.UnprocessableEntity);
+                }
+            }
+        }
+
+        private static void ValidateCareChargeAsync(CarePackageReclaimCreationDomain requestedReclaim, CarePackageDetail coreCostDetail, CarePackage carePackage)
+        {
+            //care charges should be within corePackage.StartDate - corePackage.EndDate 
+            if (requestedReclaim.StartDate < coreCostDetail.StartDate)
+            {
+                throw new ApiException(
+                    $"{requestedReclaim.SubType} start date is invalid. Must be in the range {coreCostDetail.StartDate} - {coreCostDetail.EndDate}", HttpStatusCode.UnprocessableEntity);
+            }
+
+            if (requestedReclaim.EndDate != null)
+            {
+                var careChargeEndDate = (DateTimeOffset) requestedReclaim.EndDate;
+                if (coreCostDetail.EndDate != null && !careChargeEndDate.IsInRange(coreCostDetail.StartDate, (DateTimeOffset) coreCostDetail.EndDate))
+                {
+                    throw new ApiException(
+                        $"{requestedReclaim.SubType} end date is invalid. Must be in the range {coreCostDetail.StartDate} - {coreCostDetail.EndDate}", HttpStatusCode.UnprocessableEntity);
+                }
+            }
+
+            // check requested care charge dates with existing care charge dates
+            var existingReclaims = carePackage.Reclaims
+                .Where(r => r.Status.In(ReclaimStatus.Active, ReclaimStatus.Pending));
+
+            if (requestedReclaim.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks)
+            {
+                var existingProvisionalCareCharge =
+                    existingReclaims.FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeProvisional);
+
+                if (existingProvisionalCareCharge != null)
+                {
+                    if (existingProvisionalCareCharge.EndDate != requestedReclaim.StartDate.AddDays(-1))
+                    {
+                        throw new ApiException(
+                            $"{requestedReclaim.SubType} start date is invalid. Date for {requestedReclaim.SubType} should be consecutive with previous care charge type",
+                            HttpStatusCode.BadRequest);
+                    }
+                }
+            }
+            else if (requestedReclaim.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks)
+            {
+                var existingCareChargeWithoutPropertyOneToTwelveWeeks =
+                    existingReclaims.FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
+
+                if (existingCareChargeWithoutPropertyOneToTwelveWeeks is null)
+                {
+                    throw new ApiException(
+                        $"Cannot create {requestedReclaim.SubType} without {ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks.GetDisplayName()}",
+                        HttpStatusCode.BadRequest);
+                }
+
+                if (existingCareChargeWithoutPropertyOneToTwelveWeeks.EndDate != requestedReclaim.StartDate.AddDays(-1))
+                {
+                    throw new ApiException(
+                        $"{requestedReclaim.SubType} start date is invalid. Date for {requestedReclaim.SubType} should be consecutive with previous care charge type",
+                        HttpStatusCode.BadRequest);
                 }
             }
         }

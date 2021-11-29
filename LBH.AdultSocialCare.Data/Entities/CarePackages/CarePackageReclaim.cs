@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Data.Constants.Enums;
@@ -7,7 +8,7 @@ using LBH.AdultSocialCare.Data.Entities.Interfaces;
 
 namespace LBH.AdultSocialCare.Data.Entities.CarePackages
 {
-    public class CarePackageReclaim : BaseEntity, IPackageItem
+    public class CarePackageReclaim : BaseVersionedEntity, IPackageItem
     {
         private ReclaimStatus _status;
 
@@ -36,7 +37,7 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
         public string Description { get; set; }
         public string ClaimReason { get; set; }
 
-        public Guid AssessmentFileId { get; set; }
+        public Guid? AssessmentFileId { get; set; }
         public string AssessmentFileName { get; set; }
 
         [ForeignKey(nameof(CarePackageId))]
@@ -49,9 +50,19 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
                 return _status;
             }
 
+            if (EndDate != null && DateTimeOffset.Now.Date >= EndDate.Value.Date)
+            {
+                return ReclaimStatus.Ended;
+            }
+
             return DateTimeOffset.Now.Date >= StartDate.Date
                 ? ReclaimStatus.Active // Ended status should be set manually, so no check for the end date here
                 : ReclaimStatus.Pending;
         }
+
+        internal override IList<string> VersionedFields { get; } = new List<string>
+        {
+            nameof(Cost), nameof(StartDate), nameof(EndDate), nameof(ClaimCollector)
+        };
     }
 }

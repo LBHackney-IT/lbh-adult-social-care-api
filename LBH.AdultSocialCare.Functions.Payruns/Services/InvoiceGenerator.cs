@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Payments;
+using LBH.AdultSocialCare.Functions.Payruns.Domain;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
 using LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators;
 
@@ -24,7 +25,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             _fundedNursingCareGateway = fundedNursingCareGateway;
         }
 
-        public async Task<IList<Invoice>> GenerateAsync(IList<CarePackage> packages, DateTimeOffset invoiceEndDate)
+        public async Task<IList<Invoice>> GenerateAsync(IList<CarePackage> packages, DateTimeOffset invoiceEndDate, InvoiceTypes invoiceTypes)
         {
             await InitializeGeneratorsAsync();
 
@@ -38,22 +39,34 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 
             foreach (var package in packages)
             {
-                var packageInvoices = oldInvoices.GetValueOrDefault(package.Id);
-                invoices.Add(
-                    GenerateInvoice(package, packageInvoices, invoiceEndDate, ref invoicesCount));
+                var packageInvoices = oldInvoices.GetValueOrDefault(package.Id) ?? new List<InvoiceDomain>();
+
+                invoices.Add(GenerateInvoice(
+                    package, packageInvoices,
+                    invoiceEndDate, invoiceTypes, ref invoicesCount));
             }
 
             return invoices;
         }
 
-        private Invoice GenerateInvoice(CarePackage package, IList<Invoice> packageInvoices, DateTimeOffset invoiceEndDate, ref int invoiceNumber)
+        private Invoice GenerateInvoice(
+            CarePackage package, IList<InvoiceDomain> packageInvoices,
+            DateTimeOffset invoiceEndDate, InvoiceTypes invoiceTypes, ref int invoiceNumber)
         {
             var invoiceItems = new List<InvoiceItem>();
             var generators = _generators[package.PackageType];
 
             foreach (var generator in generators)
             {
-                invoiceItems.AddRange(generator.Run(package, packageInvoices, invoiceEndDate));
+                if (invoiceTypes.HasFlag(InvoiceTypes.Normal))
+                {
+                    invoiceItems.AddRange(generator.CreateNormalItem(package, packageInvoices, invoiceEndDate));
+                }
+
+                if (invoiceTypes.HasFlag(InvoiceTypes.Refund))
+                {
+                    invoiceItems.AddRange(generator.CreateRefundItem(package, packageInvoices));
+                }
             }
 
             var totals = CalculateTotals(invoiceItems);
@@ -107,8 +120,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 {
                     PackageType.NursingCare, new List<BaseInvoiceItemsGenerator>
                     {
-                        new CoreCostGenerator(),
-                        new AdditionalNeedsCostGenerator(),
+                        new CarePackageDetailGenerator(),
                         new FundedNursingCareGenerator(_fundedNursingCareGateway),
                         new CareChargeGenerator()
                     }
@@ -116,8 +128,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 {
                     PackageType.ResidentialCare, new List<BaseInvoiceItemsGenerator>
                     {
-                        new CoreCostGenerator(),
-                        new AdditionalNeedsCostGenerator(),
+                        new CarePackageDetailGenerator(),
                         new CareChargeGenerator()
                     }
                 }

@@ -461,6 +461,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<HeldInvoiceCreationDomain>(input);
         }
 
+        public static IEnumerable<HeldInvoiceDetailsResponse> ToResponse(this IEnumerable<HeldInvoiceDetailsDomain> input)
+        {
+            return _mapper.Map<IEnumerable<HeldInvoiceDetailsResponse>>(input);
+        }
+
+        public static IEnumerable<HeldInvoiceDetailsDomain> ToDomain(this IEnumerable<HeldInvoiceDetailsResponse> input)
+        {
+            return _mapper.Map<IEnumerable<HeldInvoiceDetailsDomain>>(input);
+        }
+
         public static HeldInvoice ToEntity(this HeldInvoiceFlatDomain input)
         {
             return _mapper.Map<HeldInvoice>(input);
@@ -479,16 +489,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static HeldInvoiceFlatDomain ToDomain(this HeldInvoiceFlatResponse input)
         {
             return _mapper.Map<HeldInvoiceFlatDomain>(input);
-        }
-
-        public static IEnumerable<PayRunInvoiceItemResponse> ToResponse(this IEnumerable<PayRunInvoiceItemDomain> input)
-        {
-            return _mapper.Map<IEnumerable<PayRunInvoiceItemResponse>>(input);
-        }
-
-        public static IEnumerable<PayRunInvoiceItemDomain> ToDomain(this IEnumerable<PayRunInvoiceItemResponse> input)
-        {
-            return _mapper.Map<IEnumerable<PayRunInvoiceItemDomain>>(input);
         }
 
         public static IEnumerable<PayRunListResponse> ToResponse(this IEnumerable<PayRunListDomain> input)
@@ -529,6 +529,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static UsersMinimalDomain TosMinimalDomain(this User input)
         {
             return _mapper.Map<UsersMinimalDomain>(input);
+        }
+
+        public static CareChargeReclaimFileDomain ToDomain(this CareChargeReclaimFileRequest input)
+        {
+            return _mapper.Map<CareChargeReclaimFileDomain>(input);
+        }
+
+        public static CareChargeReclaimFileRequest ToRequest(this CareChargeReclaimFileDomain input)
+        {
+            return _mapper.Map<CareChargeReclaimFileRequest>(input);
         }
 
         public static IEnumerable<CarePackageReclaimUpdateDomain> ToDomain(this IEnumerable<CareChargeReclaimUpdateRequest> input)

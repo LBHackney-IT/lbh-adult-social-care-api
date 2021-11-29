@@ -39,6 +39,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         {
             var types = Enum.GetValues(typeof(PayrunType)).OfType<PayrunType>().Select(x => (int) x).ToArray();
             var statuses = Enum.GetValues(typeof(PayrunStatus)).OfType<PayrunStatus>().Select(x => (int) x).ToArray();
+            var paidStatuses = new[] { PayrunStatus.Paid, PayrunStatus.PaidWithHold };
+            var heldInvoiceStatuses = new[] { InvoiceStatus.Held, InvoiceStatus.Released, InvoiceStatus.ReleaseAccepted };
             var payRunList = await _dbContext.Payruns
                 .FilterPayRunList(parameters.PayRunId, parameters.PayRunType,
                     parameters.PayRunStatus, parameters.DateFrom, parameters.DateTo)
@@ -50,8 +52,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     PayRunTypeName = types.Contains((int) pr.Type) ? pr.Type.ToDescription() : string.Empty,
                     PayRunStatusId = (int) pr.Status,
                     PayRunStatusName = statuses.Contains((int) pr.Status) ? pr.Status.GetDisplayName() : string.Empty,
-                    TotalAmountPaid = pr.Paid,
-                    TotalAmountHeld = pr.Held,
+                    TotalAmountPaid = paidStatuses.Contains(pr.Status) ? pr.PayrunInvoices.Where(pi => pi.InvoiceStatus == InvoiceStatus.Accepted).Sum(pi => pi.Invoice.GrossTotal) : pr.Paid,
+                    TotalAmountHeld = pr.PayrunInvoices.Where(pi => heldInvoiceStatuses.Contains(pi.InvoiceStatus)).Sum(pi => pi.Invoice.GrossTotal),
                     DateFrom = pr.StartDate,
                     DateTo = pr.EndDate,
                     DateCreated = pr.DateCreated

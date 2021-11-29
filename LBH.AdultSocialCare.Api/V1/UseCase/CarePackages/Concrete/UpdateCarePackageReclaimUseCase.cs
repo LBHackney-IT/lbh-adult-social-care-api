@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using HttpServices.Models.Responses;
+using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Data.Constants.Enums;
@@ -44,18 +45,44 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         public async Task UpdateAsync(CarePackageReclaimUpdateDomain carePackageReclaimUpdateDomain)
         {
-            await _carePackageReclaimGateway.UpdateAsync(carePackageReclaimUpdateDomain);
+            var carePackageReclaim = await _carePackageReclaimGateway.GetAsync(carePackageReclaimUpdateDomain.Id)
+                .EnsureExistsAsync($"Care package reclaim with id {carePackageReclaimUpdateDomain.Id} not found");
+
+            if (!carePackageReclaimUpdateDomain.HasAssessmentBeenCarried)
+            {
+                carePackageReclaim.Status = ReclaimStatus.Cancelled;
+                await _dbManager.SaveAsync();
+                return;
+            }
+
+            if (carePackageReclaimUpdateDomain?.AssessmentFileId == Guid.Empty)
+            {
+                var documentResponse = await _fileStorage.SaveFileAsync(carePackageReclaimUpdateDomain.AssessmentFile);
+                carePackageReclaimUpdateDomain.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
+                carePackageReclaimUpdateDomain.AssessmentFileName = documentResponse?.FileName;
+            }
+            else
+            {
+                //todo FK: temp solution 
+                carePackageReclaimUpdateDomain.AssessmentFileName = carePackageReclaim.AssessmentFileName;
+            }
+
+            _mapper.Map(carePackageReclaimUpdateDomain, carePackageReclaim);
+            await _dbManager.SaveAsync();
         }
 
-        public async Task<IList<CarePackageReclaimDomain>> UpdateListAsync(IList<CarePackageReclaimUpdateDomain> requestedReclaims)
+        public async Task<IList<CarePackageReclaimDomain>> UpdateListAsync(CareChargeReclaimBulkUpdateDomain reclaimBulkUpdateDomain)
         {
-            var requestedReclaimIds = requestedReclaims.Select(r => r.Id).ToList();
+            var requestedReclaimIds = reclaimBulkUpdateDomain.Reclaims.Select(r => r.Id).ToList();
             var existingReclaims = await _carePackageReclaimGateway.GetListAsync(requestedReclaimIds);
 
             EnsureReclaimsExist(requestedReclaimIds, existingReclaims);
 
             var package = await GetPackage(existingReclaims);
             var result = new List<CarePackageReclaim>();
+
+            // Check overlap between existing and requested care charges
+            ValidateUpdateCareCharges(existingReclaims, package);
 
             foreach (var existingReclaim in existingReclaims)
             {
@@ -65,11 +92,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
 
                 // For MVP scope always update provisional care charges and replace other types of care charges
-                var requestedReclaim = requestedReclaims.First(r => r.Id == existingReclaim.Id);
+                var requestedReclaim = reclaimBulkUpdateDomain.Reclaims.First(r => r.Id == existingReclaim.Id);
 
                 if (existingReclaim.SubType is ReclaimSubType.CareChargeProvisional)
                 {
                     UpdateProvisionalReclaim(requestedReclaim, existingReclaim, package);
+
+                    if (reclaimBulkUpdateDomain?.AssessmentFileId == Guid.Empty)
+                    {
+                        var documentResponse = await _fileStorage.SaveFileAsync(reclaimBulkUpdateDomain.AssessmentFile);
+                        existingReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
+                        existingReclaim.AssessmentFileName = documentResponse?.FileName;
+                    }
                     result.Add(existingReclaim);
                 }
                 else
@@ -77,10 +111,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     existingReclaim.Status = ReclaimStatus.Ended;
                     existingReclaim.EndDate = DateTimeOffset.Now.Date;
 
-                    if (requestedReclaim.AssessmentFileId == Guid.Empty)
+                    if (reclaimBulkUpdateDomain?.AssessmentFileId == Guid.Empty)
                     {
-                        var documentResponse = await _fileStorage.SaveFileAsync(requestedReclaim.AssessmentFile);
+                        var documentResponse = await _fileStorage.SaveFileAsync(reclaimBulkUpdateDomain.AssessmentFile);
                         requestedReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
+                        requestedReclaim.AssessmentFileName = documentResponse?.FileName;
                     }
 
                     var newReclaim = CreateNewReclaim(requestedReclaim, existingReclaim, package);
@@ -148,6 +183,49 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             package.Reclaims.Add(newReclaim);
             return newReclaim;
+        }
+
+        private static void ValidateUpdateCareCharges(List<CarePackageReclaim> existingReclaims, CarePackage carePackage)
+        {
+            var existingProvisionalCareCharge = GetCarePackageReclaim(existingReclaims, carePackage, ReclaimSubType.CareChargeProvisional);
+            var secondCareChargeSubType = GetCarePackageReclaim(existingReclaims, carePackage, CareChargeSubTypes.GetCareChargeSubTypeOrder(ReclaimSubType.CareChargeProvisional));
+
+            if (existingProvisionalCareCharge != null)
+            {
+                if (secondCareChargeSubType != null)
+                {
+                    if (existingProvisionalCareCharge.EndDate != secondCareChargeSubType.StartDate.AddDays(-1))
+                    {
+                        throw new ApiException(
+                            $"{secondCareChargeSubType.SubType} start date is invalid. Date for {secondCareChargeSubType.SubType} should be consecutive with previous care charge type",
+                            HttpStatusCode.BadRequest);
+                    }
+                }
+            }
+
+            if (secondCareChargeSubType != null)
+            {
+                var thirdCareChargeSubType = GetCarePackageReclaim(existingReclaims, carePackage,
+                    CareChargeSubTypes.GetCareChargeSubTypeOrder(secondCareChargeSubType.SubType));
+
+                if (thirdCareChargeSubType != null)
+                {
+                    if (secondCareChargeSubType.EndDate != thirdCareChargeSubType.StartDate.AddDays(-1))
+                    {
+                        throw new ApiException(
+                            $"{thirdCareChargeSubType.SubType} start date is invalid. Date for {thirdCareChargeSubType.SubType} should be consecutive with previous care charge type",
+                            HttpStatusCode.BadRequest);
+                    }
+                }
+            }
+        }
+
+        private static CarePackageReclaim GetCarePackageReclaim(List<CarePackageReclaim> carePackageReclaim, CarePackage carePackage,
+            ReclaimSubType reclaimSubType)
+        {
+            var existingCareCharge = carePackageReclaim.FirstOrDefault(r => r.SubType == reclaimSubType) ?? carePackage.Reclaims.FirstOrDefault(r => r.SubType == reclaimSubType);
+
+            return existingCareCharge;
         }
     }
 }

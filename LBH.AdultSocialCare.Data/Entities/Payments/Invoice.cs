@@ -18,9 +18,9 @@ namespace LBH.AdultSocialCare.Data.Entities.Payments
         public Guid ServiceUserId { get; set; }
         public Guid PackageId { get; set; }
 
-        public decimal TotalCost { get; set; }
-        public decimal GrossTotal { get; set; }
-        public decimal NetTotal { get; set; }
+        [Column(TypeName = "decimal(13, 2)")] public decimal TotalCost { get; set; }
+        [Column(TypeName = "decimal(13, 2)")] public decimal GrossTotal { get; set; }
+        [Column(TypeName = "decimal(13, 2)")] public decimal NetTotal { get; set; }
 
         [ForeignKey(nameof(PackageId))]
         public CarePackage Package { get; set; }

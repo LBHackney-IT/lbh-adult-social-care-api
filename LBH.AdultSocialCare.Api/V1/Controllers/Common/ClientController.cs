@@ -45,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        [AuthorizeRoles(RolesEnum.Broker)]
+        // [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<ServiceUserResponse>> Create(ServiceUserRequest serviceUserRequest)
         {
             try
@@ -112,7 +112,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesDefaultResponseType]
         [HttpDelete]
         [Route("{clientId}")]
-        [AuthorizeRoles(RolesEnum.Broker)]
+        // [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<bool>> Delete(Guid clientId)
         {
             try

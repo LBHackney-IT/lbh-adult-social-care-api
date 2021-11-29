@@ -45,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
 
             await _documentPostClient.CreateDocument(new Guid(claimResponse.Document.Id), documentUploadRequest);
 
-            return new DocumentResponse { FileId = new Guid(claimResponse.Document.Id) };
+            return new DocumentResponse { FileId = new Guid(claimResponse.Document.Id), FileName = carePlanFile.FileName };
         }
 
         public async Task<string> GetFile(Guid documentId)
@@ -62,7 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
                     carePlanFile.CopyTo(stream);
 
                     var bytes = stream.ToArray();
-                    return $"data:image/png;base64,{Convert.ToBase64String(bytes)}";
+                    return $"data:{carePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}";
                 }
             }
 

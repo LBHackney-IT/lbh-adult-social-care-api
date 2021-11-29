@@ -58,7 +58,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid>("ServiceUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("SocialWorkerCarePlanFileId")
+                    b.Property<Guid?>("SocialWorkerCarePlanFileId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("SocialWorkerCarePlanFileName")
@@ -140,6 +140,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
 
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CarePackageId");
@@ -207,7 +210,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("AssessmentFileId")
+                    b.Property<Guid?>("AssessmentFileId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("AssessmentFileName")
@@ -254,6 +257,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
+
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -1087,10 +1093,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("GrossTotal")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
                     b.Property<decimal>("NetTotal")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
                     b.Property<string>("Number")
                         .HasColumnType("text");
@@ -1105,7 +1111,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("integer");
 
                     b.Property<decimal>("TotalCost")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
@@ -1161,23 +1167,29 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<bool>("NetCostsCompensated")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("PriceEffect")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("Quantity")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(7, 2)");
+
+                    b.Property<long>("SourceVersion")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTimeOffset>("ToDate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal>("TotalCost")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
 
                     b.Property<decimal>("WeeklyCost")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
                     b.HasKey("Id");
 
@@ -1213,20 +1225,20 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTimeOffset>("EndDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("date");
 
                     b.Property<decimal?>("Held")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
                     b.Property<decimal?>("Paid")
-                        .HasColumnType("numeric");
+                        .HasColumnType("decimal(13, 2)");
 
-                    b.Property<DateTimeOffset>("PaidUpToDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("PaidUpToDate")
+                        .HasColumnType("date");
 
-                    b.Property<DateTimeOffset>("StartDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("date");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -1636,11 +1648,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 {
                     b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageDetail", "CarePackageDetail")
                         .WithMany()
-                        .HasForeignKey("CarePackageDetailId");
+                        .HasForeignKey("CarePackageDetailId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageReclaim", "CarePackageReclaim")
                         .WithMany()
-                        .HasForeignKey("CarePackageReclaimId");
+                        .HasForeignKey("CarePackageReclaimId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
                         .WithMany()
