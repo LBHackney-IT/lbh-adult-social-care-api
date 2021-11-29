@@ -12,37 +12,37 @@ namespace LBH.AdultSocialCare.Data.SeedConfiguration
             {
                 PrimarySupportReasonId = 1,
                 PrimarySupportReasonName = "Physical Support",
-                CederBudgetCode = "Ceder - Physical Support"
+                CederBudgetCode = "D0822"
             }, new PrimarySupportReason
             {
                 PrimarySupportReasonId = 2,
                 PrimarySupportReasonName = "Sensory Support",
-                CederBudgetCode = "Ceder Sensory Support"
+                CederBudgetCode = "D0823"
             }, new PrimarySupportReason
             {
                 PrimarySupportReasonId = 3,
                 PrimarySupportReasonName = "Support with memory and cognition",
-                CederBudgetCode = "Ceder Support with memory and cognition"
+                CederBudgetCode = "D0824"
             }, new PrimarySupportReason
             {
                 PrimarySupportReasonId = 4,
                 PrimarySupportReasonName = "Learning Disability Support",
-                CederBudgetCode = "Ceder Learning Disability Support"
+                CederBudgetCode = "D0825"
             }, new PrimarySupportReason
             {
                 PrimarySupportReasonId = 5,
                 PrimarySupportReasonName = "Mental Health Support (ASC)",
-                CederBudgetCode = "Ceder Mental Health Support (ASC)"
+                CederBudgetCode = "D0826"
             }, new PrimarySupportReason
             {
                 PrimarySupportReasonId = 6,
                 PrimarySupportReasonName = "Social Support",
-                CederBudgetCode = "Ceder Social Support"
+                CederBudgetCode = "D0828"
             }, new PrimarySupportReason
             {
                 PrimarySupportReasonId = 7,
                 PrimarySupportReasonName = "Mental Health Support (ELFT)",
-                CederBudgetCode = "Ceder Mental Health Support (ELFT)"
+                CederBudgetCode = "D0829"
             });
         }
     }
