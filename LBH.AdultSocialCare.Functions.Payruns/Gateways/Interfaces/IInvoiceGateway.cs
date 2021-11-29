@@ -9,6 +9,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces
     {
         Task<Dictionary<Guid, List<InvoiceDomain>>> GetInvoicesByPackageIds(IList<Guid> packageIds);
 
-        Task<int> GetInvoicesCountAsync();
+        Task<long> GetInvoicesCountAsync();
     }
 }

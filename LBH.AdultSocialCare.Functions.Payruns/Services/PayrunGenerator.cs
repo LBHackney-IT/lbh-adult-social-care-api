@@ -4,7 +4,6 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Payments;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -44,31 +43,38 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 
             foreach (var payrun in draftPayruns)
             {
-                ImpersonateCurrentUser(payrun);
+                try
+                {
+                    ImpersonateCurrentUser(payrun);
 
-                payrun.Status = PayrunStatus.InProgress;
-                await _payrunGateway.SaveAsync();
+                    payrun.Status = PayrunStatus.InProgress;
+                    await _payrunGateway.SaveAsync();
 
-                var packageIds = await _carePackageGateway.GetModifiedPackageIdsAsync();
-                await GenerateInvoices(
-                    packageIds, payrun,
-                    packages => _invoiceGenerator.GenerateAsync(packages, payrun.EndDate, InvoiceTypes.Refund));
+                    // 1. generate refund invoices
+                    var packageIds = await _carePackageGateway.GetModifiedPackageIdsAsync();
+                    await GenerateInvoices(packageIds, payrun, InvoiceTypes.Refund);
 
-                // save interim result to prevent any reprocessing of refunded items
-                await _payrunGateway.SaveAsync();
+                    // save interim result to prevent any reprocessing of refunded items
+                    await _payrunGateway.SaveAsync();
 
-                packageIds = await _carePackageGateway.GetUnpaidPackageIdsAsync(payrun.StartDate, payrun.EndDate);
-                await GenerateInvoices(
-                    packageIds, payrun,
-                    packages => _invoiceGenerator.GenerateAsync(packages, payrun.EndDate, InvoiceTypes.Normal));
+                    // 2. generate normal invoices
+                    packageIds = await _carePackageGateway.GetUnpaidPackageIdsAsync(payrun.StartDate, payrun.EndDate);
+                    await GenerateInvoices(packageIds, payrun, InvoiceTypes.Normal);
 
-                payrun.Status = PayrunStatus.WaitingForReview;
-                await _payrunGateway.SaveAsync();
+                    payrun.Status = PayrunStatus.WaitingForReview;
+                    await _payrunGateway.SaveAsync();
+                }
+                catch (Exception ex)
+                {
+                    await ArchivePayrun(payrun, ex);
+                    throw;
+                }
             }
         }
 
-        private async Task GenerateInvoices(IList<Guid> packageIds, Payrun payrun, Func<IList<CarePackage>, Task<IList<Invoice>>> generationFunc)
+        private async Task GenerateInvoices(IList<Guid> packageIds, Payrun payrun, InvoiceTypes invoiceType)
         {
+            var lastInvoiceNumber = await _invoiceGateway.GetInvoicesCountAsync();
             var iterations = Math.Ceiling((double) packageIds.Count / PackageBatchSize);
 
             for (var i = 0; i < iterations; i++)
@@ -76,7 +82,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 var batchIds = packageIds.Skip(i * PackageBatchSize).Take(PackageBatchSize).ToList();
                 var packages = await _carePackageGateway.GetListAsync(batchIds);
 
-                var invoices = await generationFunc(packages);
+                var invoices = await _invoiceGenerator.GenerateAsync(packages, payrun.EndDate, invoiceType, lastInvoiceNumber);
 
                 _logger.LogDebug("Generated invoices: {Invoices}", JsonConvert.SerializeObject(invoices, Formatting.Indented));
 
@@ -88,12 +94,27 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                     {
                         Payrun = payrun,
                         Invoice = invoice,
-                        InvoiceStatus = InvoiceStatus.Draft
+                        InvoiceStatus = InvoiceStatus.Accepted
                     };
 
                     payrun.PayrunInvoices.Add(payrunInvoice);
                 }
+
+                lastInvoiceNumber += invoices.Count;
             }
+        }
+
+        private async Task ArchivePayrun(Payrun payrun, Exception ex)
+        {
+            payrun.Status = PayrunStatus.Archived;
+            payrun.Histories.Add(new PayrunHistory
+            {
+                PayRunId = payrun.Id,
+                Status = PayrunStatus.Archived,
+                Notes = ex.Message
+            });
+
+            await _payrunGateway.SaveAsync();
         }
 
         private void ImpersonateCurrentUser(Payrun payrun)

@@ -45,9 +45,9 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
         }
 
         // TODO: VK: Review invoice number generation and remove
-        public async Task<int> GetInvoicesCountAsync()
+        public async Task<long> GetInvoicesCountAsync()
         {
-            return await DbContext.Invoices.CountAsync();
+            return await DbContext.Invoices.LongCountAsync();
         }
     }
 }

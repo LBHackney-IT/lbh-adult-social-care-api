@@ -25,7 +25,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             _fundedNursingCareGateway = fundedNursingCareGateway;
         }
 
-        public async Task<IList<Invoice>> GenerateAsync(IList<CarePackage> packages, DateTimeOffset invoiceEndDate, InvoiceTypes invoiceTypes)
+        public async Task<IList<Invoice>> GenerateAsync(IList<CarePackage> packages, DateTimeOffset invoiceEndDate, InvoiceTypes invoiceTypes, long lastInvoiceNumber)
         {
             await InitializeGeneratorsAsync();
 
@@ -34,7 +34,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 .Select(package => package.Id)
                 .ToList();
 
-            var invoicesCount = await _invoiceGateway.GetInvoicesCountAsync();
             var oldInvoices = await _invoiceGateway.GetInvoicesByPackageIds(packageIds);
 
             foreach (var package in packages)
@@ -43,7 +42,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 
                 invoices.Add(GenerateInvoice(
                     package, packageInvoices,
-                    invoiceEndDate, invoiceTypes, ref invoicesCount));
+                    invoiceEndDate, invoiceTypes, ref lastInvoiceNumber));
             }
 
             return invoices;
@@ -51,7 +50,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 
         private Invoice GenerateInvoice(
             CarePackage package, IList<InvoiceDomain> packageInvoices,
-            DateTimeOffset invoiceEndDate, InvoiceTypes invoiceTypes, ref int invoiceNumber)
+            DateTimeOffset invoiceEndDate, InvoiceTypes invoiceTypes, ref long lastInvoiceNumber)
         {
             var invoiceItems = new List<InvoiceItem>();
             var generators = _generators[package.PackageType];
@@ -80,7 +79,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 GrossTotal = totals.Gross,
                 NetTotal = totals.Net,
                 TotalCost = totals.Net,             // TODO: VK: Review, remove
-                Number = $"INV {++invoiceNumber}"
+                Number = $"INV {++lastInvoiceNumber}"
             };
         }
 
