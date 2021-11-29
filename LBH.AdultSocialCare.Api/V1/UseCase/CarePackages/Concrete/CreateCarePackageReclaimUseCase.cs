@@ -58,7 +58,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 newReclaim = TryHandleProvisionalCareCharge(reclaimCreationDomain, coreCostDetail, carePackage);
             }
 
-            //ValidateCareChargeAsync(reclaimCreationDomain, coreCostDetail, carePackage);
+            ValidateCareChargeAsync(reclaimCreationDomain, coreCostDetail, carePackage);
 
             if (newReclaim is null)
             {
@@ -104,10 +104,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             else
             {
                 // some 'real' care charge is requested (1-12 wk / 13+ wk etc.) - end provisional reclaim if any
+                // The provisional end date should be 1 day before start date of requested reclaim
                 if (provisionalReclaim != null)
                 {
                     provisionalReclaim.Status = ReclaimStatus.Ended;
-                    provisionalReclaim.EndDate = DateTimeOffset.Now.Date;
+                    provisionalReclaim.EndDate = requestedReclaim.StartDate.Date.AddDays(-1);
                 }
             }
 
@@ -168,18 +169,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
             }
 
-            // check requested care charge dates with existing care charge dates
-            var existingReclaims = carePackage.Reclaims
-                .Where(r => r.Status.In(ReclaimStatus.Active, ReclaimStatus.Pending));
-
+            // Compare requested care charge dates with existing care charge dates
             if (requestedReclaim.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks)
             {
                 var existingProvisionalCareCharge =
-                    existingReclaims.FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeProvisional);
+                    carePackage.Reclaims.FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeProvisional);
 
                 if (existingProvisionalCareCharge != null)
                 {
-                    if (existingProvisionalCareCharge.EndDate != requestedReclaim.StartDate.AddDays(-1))
+                    if (existingProvisionalCareCharge.EndDate != requestedReclaim.StartDate.Date.AddDays(-1))
                     {
                         throw new ApiException(
                             $"{requestedReclaim.SubType} start date is invalid. Date for {requestedReclaim.SubType} should be consecutive with previous care charge type",
@@ -190,7 +188,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             else if (requestedReclaim.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks)
             {
                 var existingCareChargeWithoutPropertyOneToTwelveWeeks =
-                    existingReclaims.FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
+                    carePackage.Reclaims.Where(r => r.Status.In(ReclaimStatus.Active, ReclaimStatus.Pending))
+                        .FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
 
                 if (existingCareChargeWithoutPropertyOneToTwelveWeeks is null)
                 {
@@ -199,7 +198,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                         HttpStatusCode.BadRequest);
                 }
 
-                if (existingCareChargeWithoutPropertyOneToTwelveWeeks.EndDate != requestedReclaim.StartDate.AddDays(-1))
+                // Calculate 12 weeks from startDate for EndDate of CareChargeWithoutPropertyOneToTwelveWeeks if it is null
+                var propertyOneToTwelveWeeksEndDate = existingCareChargeWithoutPropertyOneToTwelveWeeks.EndDate ??
+                                                      existingCareChargeWithoutPropertyOneToTwelveWeeks.StartDate.Date
+                                                          .AddDays(12 * 7);
+
+                if (propertyOneToTwelveWeeksEndDate.Date != requestedReclaim.StartDate.Date.AddDays(-1))
                 {
                     throw new ApiException(
                         $"{requestedReclaim.SubType} start date is invalid. Date for {requestedReclaim.SubType} should be consecutive with previous care charge type",
