@@ -59,7 +59,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 .Setup(g => g.GetPackageAsync(_package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
                 .ReturnsAsync(_package);
 
-            _useCase = new CreateCarePackageReclaimUseCase(gateway.Object, _dbManager.Object, Mapper, _fileStorage.Object,_logger.Object);
+            _useCase = new CreateCarePackageReclaimUseCase(gateway.Object, _dbManager.Object, Mapper, _fileStorage.Object, _logger.Object);
         }
 
         [Fact]
