@@ -53,6 +53,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
             }
 
+            // Change status of package to in-progress
+            package.Status = PackageStatus.InProgress;
+
             await _databaseManager.SaveAsync();
         }
 
