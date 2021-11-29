@@ -70,7 +70,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
                 if (reclaimCreationDomain.AssessmentFileId == Guid.Empty)
                 {
-                    var documentResponse = await _fileStorage.SaveFileAsync(reclaimCreationDomain.AssessmentFile);
+                    var documentResponse = await _fileStorage.SaveFileAsync
+                        (ConvertCarePlan(reclaimCreationDomain.AssessmentFile),reclaimCreationDomain.AssessmentFile.FileName);
                     newReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
                     newReclaim.AssessmentFileName = documentResponse?.FileName;
                 }
@@ -219,6 +220,22 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                         HttpStatusCode.BadRequest);
                 }
             }
+        }
+
+        private static string ConvertCarePlan(IFormFile carePlanFile)
+        {
+            if (carePlanFile != null)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    carePlanFile.CopyTo(stream);
+
+                    var bytes = stream.ToArray();
+                    return $"data:{carePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}";
+                }
+            }
+
+            return null;
         }
     }
 }

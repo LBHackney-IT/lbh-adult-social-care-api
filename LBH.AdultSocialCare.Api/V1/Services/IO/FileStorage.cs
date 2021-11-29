@@ -29,20 +29,13 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
             _logger = logger;
         }
 
-        public async Task<DocumentResponse> SaveFileAsync(IFormFile carePlanFile)
+        public async Task<DocumentResponse> SaveFileAsync(string fileContent, string fileName)
         {
-            using (var stream = new MemoryStream())
-            {
-                carePlanFile.CopyTo(stream);
+            //var fileContent = ConvertCarePlan(carePlanFile);
 
-                var bytes = stream.ToArray();
-                _logger.LogCritical(bytes.ToString());
-            }
-
-            var fileContent = ConvertCarePlan(carePlanFile);
-
-            // log to check converted file content
+            // log to check file content
             _logger.LogCritical(fileContent);
+            _logger.LogCritical(fileName);
 
             if (fileContent == null)
                 return new DocumentResponse();
@@ -60,11 +53,9 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
 
             var documentUploadRequest = new DocumentUploadRequest() { base64Document = fileContent };
 
-            // log to check claimResponse.Document.Id
-            _logger.LogCritical(claimResponse.Document.Id);
             await _documentPostClient.CreateDocument(new Guid(claimResponse.Document.Id), documentUploadRequest);
 
-            return new DocumentResponse { FileId = new Guid(claimResponse.Document.Id), FileName = carePlanFile.FileName };
+            return new DocumentResponse { FileId = new Guid(claimResponse.Document.Id), FileName = fileName };
         }
 
         public async Task<string> GetFile(Guid documentId)

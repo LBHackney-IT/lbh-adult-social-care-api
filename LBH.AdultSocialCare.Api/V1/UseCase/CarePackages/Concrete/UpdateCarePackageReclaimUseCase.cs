@@ -57,7 +57,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             if (carePackageReclaimUpdateDomain?.AssessmentFileId == Guid.Empty)
             {
-                var documentResponse = await _fileStorage.SaveFileAsync(carePackageReclaimUpdateDomain.AssessmentFile);
+                var documentResponse = await _fileStorage.
+                    SaveFileAsync(ConvertCarePlan(carePackageReclaimUpdateDomain.AssessmentFile),carePackageReclaimUpdateDomain.AssessmentFile.FileName);
                 carePackageReclaimUpdateDomain.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
                 carePackageReclaimUpdateDomain.AssessmentFileName = documentResponse?.FileName;
             }
@@ -100,7 +101,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
                     if (reclaimBulkUpdateDomain?.AssessmentFileId == Guid.Empty)
                     {
-                        var documentResponse = await _fileStorage.SaveFileAsync(reclaimBulkUpdateDomain.AssessmentFile);
+                        var documentResponse = await _fileStorage.
+                            SaveFileAsync(ConvertCarePlan(reclaimBulkUpdateDomain.AssessmentFile), reclaimBulkUpdateDomain.AssessmentFile.FileName);
                         existingReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
                         existingReclaim.AssessmentFileName = documentResponse?.FileName;
                     }
@@ -113,7 +115,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
                     if (reclaimBulkUpdateDomain?.AssessmentFileId == Guid.Empty)
                     {
-                        var documentResponse = await _fileStorage.SaveFileAsync(reclaimBulkUpdateDomain.AssessmentFile);
+                        var documentResponse = await _fileStorage.SaveFileAsync(ConvertCarePlan(reclaimBulkUpdateDomain.AssessmentFile), reclaimBulkUpdateDomain.AssessmentFile.FileName);
                         requestedReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
                         requestedReclaim.AssessmentFileName = documentResponse?.FileName;
                     }
@@ -229,6 +231,22 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var existingCareCharge = carePackageReclaim.FirstOrDefault(r => r.SubType == reclaimSubType) ?? carePackage.Reclaims.FirstOrDefault(r => r.SubType == reclaimSubType);
 
             return existingCareCharge;
+        }
+
+        private static string ConvertCarePlan(IFormFile carePlanFile)
+        {
+            if (carePlanFile != null)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    carePlanFile.CopyTo(stream);
+
+                    var bytes = stream.ToArray();
+                    return $"data:{carePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}";
+                }
+            }
+
+            return null;
         }
     }
 }

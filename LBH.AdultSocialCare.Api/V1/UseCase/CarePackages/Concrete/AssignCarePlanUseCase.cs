@@ -44,7 +44,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             if (carePlanAssignment.CarePlanFileId == Guid.Empty)
             {
-                documentResponse = await _fileStorage.SaveFileAsync(carePlanAssignment.CarePlanFile);
+                documentResponse = await _fileStorage.SaveFileAsync(ConvertCarePlan(carePlanAssignment.CarePlanFile), carePlanAssignment.CarePlanFile.FileName);
             }
 
             var package = new CarePackage
@@ -67,6 +67,22 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             _carePackageGateway.Create(package);
             await _dbManager.SaveAsync();
+        }
+
+        private static string ConvertCarePlan(IFormFile carePlanFile)
+        {
+            if (carePlanFile != null)
+            {
+                using (var stream = new MemoryStream())
+                {
+                    carePlanFile.CopyTo(stream);
+
+                    var bytes = stream.ToArray();
+                    return $"data:{carePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}";
+                }
+            }
+
+            return null;
         }
     }
 }
