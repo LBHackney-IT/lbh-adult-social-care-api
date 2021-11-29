@@ -36,6 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             var result = new PayRunInsightsResponse
             {
                 PayRunId = payRun.Id,
+                PayRunStatus = payRun.Status,
                 TotalInvoiceAmount = insights.TotalInvoiceAmount,
                 TotalDifferenceFromLastCycle = insights.TotalInvoiceAmount - previousPayRunTotal,
                 SupplierCount = insights.SupplierCount,
