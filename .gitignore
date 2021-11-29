@@ -66,5 +66,6 @@ tmp/
 
 # Ignore development json file
 LBH.AdultSocialCare.Api/appsettings.Development.json
+DataImporter/appsettings.Development.json
 LBH.AdultSocialCare.Functions.Payruns/appsettings.Development.json
 global.json

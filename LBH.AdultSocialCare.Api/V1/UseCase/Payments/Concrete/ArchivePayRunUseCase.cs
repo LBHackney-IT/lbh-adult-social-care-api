@@ -30,9 +30,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 .GetPayRunAsync(payRunId, PayRunFields.None, true)
                 .EnsureExistsAsync($"Pay Run {payRunId} not found");
 
-            if (payRun.Status != PayrunStatus.WaitingForApproval)
+            var validPayRunStatuses = new[]
             {
-                throw new ApiException("Pay run status should be waiting for approval to archive",
+                PayrunStatus.Approved, PayrunStatus.Paid, PayrunStatus.PaidWithHold
+            };
+
+            if (validPayRunStatuses.Contains(payRun.Status))
+            {
+                throw new ApiException($"Can not archive pay run with {payRun.Status.GetDisplayName()}",
                     HttpStatusCode.BadRequest);
             }
 

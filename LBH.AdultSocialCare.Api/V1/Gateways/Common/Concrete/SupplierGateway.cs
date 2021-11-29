@@ -78,25 +78,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
             var suppliersPage = await _databaseContext.Suppliers
                 .FilterByName(supplierName)
+                .OrderBy(s => s.SupplierName)
                 .GetPage(parameters.PageNumber, parameters.PageSize)
                 .ToListAsync().ConfigureAwait(false);
 
             return PagedList<SupplierDomain>
                 .ToPagedList(suppliersPage?.ToDomain(), suppliersCount, parameters.PageNumber, parameters.PageSize);
-        }
-
-        public async Task<IEnumerable<SupplierMinimalDomain>> GetSupplierMinimalList()
-        {
-            return await _databaseContext.Suppliers
-                .Select(s => new SupplierMinimalDomain { Id = s.Id, SupplierName = s.SupplierName }).ToListAsync()
-                .ConfigureAwait(false);
-        }
-
-        public async Task<IEnumerable<SupplierMinimalDomain>> GetSupplierMinimalInList(List<long> supplierIds)
-        {
-            return await _databaseContext.Suppliers.Where(s => supplierIds.Contains(s.Id))
-                .Select(s => new SupplierMinimalDomain { Id = s.Id, SupplierName = s.SupplierName }).ToListAsync()
-                .ConfigureAwait(false);
         }
 
         private async Task<Supplier> GetSupplierEntityAsync(int supplierId)

@@ -45,6 +45,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 await _payRunInvoiceGateway.GetPayRunInvoiceAsync(payRunInvoiceId, PayRunInvoiceFields.None, true)
                     .EnsureExistsAsync($"Pay run invoice with id {payRunInvoiceId} not found");
 
+            // If invoice is held, released from a different endpoint.
+            // Status change here is limited based on pay run status but release can happen regardless of pay run status
+            if (payRunInvoice.InvoiceStatus == InvoiceStatus.Held)
+            {
+                throw new ApiException("Status change not allowed. Use release endpoint", HttpStatusCode.BadRequest);
+            }
+
             var validStatuses = new[] { InvoiceStatus.Accepted, InvoiceStatus.Rejected, InvoiceStatus.Draft };
 
             if ((validStatuses.Contains(newStatus) && payRunInvoice.InvoiceStatus != InvoiceStatus.Held) ||
