@@ -31,8 +31,13 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
 
         public async Task<DocumentResponse> SaveFileAsync(IFormFile carePlanFile)
         {
-            // log to check carePlanFile
-            _logger.LogCritical(carePlanFile.ContentType);
+            using (var stream = new MemoryStream())
+            {
+                carePlanFile.CopyTo(stream);
+
+                var bytes = stream.ToArray();
+                _logger.LogCritical(bytes.ToString());
+            }
 
             var fileContent = ConvertCarePlan(carePlanFile);
 
