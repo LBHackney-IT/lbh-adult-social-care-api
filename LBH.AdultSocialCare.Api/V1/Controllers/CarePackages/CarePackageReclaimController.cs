@@ -223,5 +223,25 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             var reclaim = await useCase.ExecuteAsync(reclaimId, request);
             return Ok(reclaim.ToResponse());
         }
+
+        /// <summary>Update single care charge reclaim.</summary>
+        /// <param name="requestedReclaims">Care charge reclaims to be updated.</param>
+        /// <returns>Care charge reclaims to be updated.</returns>
+        /// <response code="200">When operation is completed successfully.</response>
+        /// <response code="400">When requested reclaims belong to different care packages.</response>
+        /// <response code="404">When one of requested reclaims isn't found.</response>
+        /// <response code="422">When validation of requested reclaims failed.</response>
+        [ProducesResponseType(typeof(Task), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        [HttpPut("care-charges/{careChargeId}")]
+        // [AuthorizeRoles(RolesEnum.CareChargeManager)]
+        public async Task<ActionResult> UpdateProvisionalCareChargeReclaims(CareChargeReclaimUpdateRequest requestedReclaims)
+        {
+            await _updateCarePackageReclaimUseCase.UpdateAsync(requestedReclaims.ToDomain());
+            return Ok();
+        }
     }
 }
