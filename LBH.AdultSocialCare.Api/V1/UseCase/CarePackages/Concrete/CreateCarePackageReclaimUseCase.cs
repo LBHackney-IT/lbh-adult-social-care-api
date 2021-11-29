@@ -71,7 +71,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 if (reclaimCreationDomain.AssessmentFileId == Guid.Empty)
                 {
                     var documentResponse = await _fileStorage.SaveFileAsync
-                        (ConvertCarePlan(reclaimCreationDomain.AssessmentFile),reclaimCreationDomain.AssessmentFile.FileName);
+                        (ConvertCarePlan(reclaimCreationDomain.AssessmentFile), reclaimCreationDomain.AssessmentFile.FileName);
                     newReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
                     newReclaim.AssessmentFileName = documentResponse?.FileName;
                 }
