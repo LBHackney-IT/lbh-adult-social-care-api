@@ -58,7 +58,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 newReclaim = TryHandleProvisionalCareCharge(reclaimCreationDomain, coreCostDetail, carePackage);
             }
 
-            ValidateCareChargeAsync(reclaimCreationDomain, coreCostDetail, carePackage);
+            if (reclaimType is ReclaimType.CareCharge)
+            {
+                ValidateCareChargeAsync(reclaimCreationDomain, coreCostDetail, carePackage);
+            }
 
             if (newReclaim is null)
             {
