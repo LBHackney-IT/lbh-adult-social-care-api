@@ -29,16 +29,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly IDatabaseManager _dbManager;
         private readonly IMapper _mapper;
         private readonly IFileStorage _fileStorage;
-        private readonly ILogger<CreateCarePackageReclaimUseCase> _logger;
 
         public CreateCarePackageReclaimUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager,
-            IMapper mapper, IFileStorage fileStorage, ILogger<CreateCarePackageReclaimUseCase> logger)
+            IMapper mapper, IFileStorage fileStorage)
         {
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
             _mapper = mapper;
             _fileStorage = fileStorage;
-            _logger = logger;
         }
 
         public async Task<CarePackageReclaimResponse> CreateCarePackageReclaim(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType)
@@ -74,11 +72,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
                 if (reclaimCreationDomain.AssessmentFileId == Guid.Empty)
                 {
-                    var test = ConvertCarePlan(reclaimCreationDomain.AssessmentFile);
-                    _logger.LogCritical(test);
-                    _logger.LogCritical(reclaimCreationDomain.AssessmentFile.Length.ToString());
                     var documentResponse = await _fileStorage.SaveFileAsync
-                        (ConvertCarePlan(reclaimCreationDomain.AssessmentFile), reclaimCreationDomain.AssessmentFile.FileName);
+                        (ConvertCarePlan(reclaimCreationDomain.AssessmentFile), reclaimCreationDomain?.AssessmentFile?.FileName);
                     newReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
                     newReclaim.AssessmentFileName = documentResponse?.FileName;
                 }

@@ -9,10 +9,13 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data.Constants.Enums;
+using Microsoft.AspNetCore.Http;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
@@ -28,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             _generator = _fixture.Generator;
         }
 
-        [Fact(Skip = "For unblock FE")]
+        [Fact]
         public async Task ShouldCreateFundedNursingCareReclaimForExistingNursingCarePackage()
         {
             var package = _generator.CreateCarePackage(PackageType.NursingCare);
@@ -60,7 +63,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             response.Message.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
-        [Fact(Skip = "For unblock FE")]
+        [Fact]
         public async Task ShouldReturnFundedNursingCareReclaim()
         {
             var package = _generator.CreateCarePackage(PackageType.NursingCare);
@@ -80,7 +83,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 .Excluding(reclaim => reclaim.AssessmentFile));
         }
 
-        [Fact(Skip = "For unblock FE")]
+        [Fact]
         public async Task ShouldUpdateFundedNursingCareReclaim()
         {
             var package = _generator.CreateCarePackage(PackageType.NursingCare);
@@ -114,7 +117,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             carePackageReclaim.Cost.Should().Be(updateRequest.Cost);
         }
 
-        [Fact(Skip = "For unblock FE")]
+        [Fact]
         public async Task ShouldCreateNewCareCharge()
         {
             var package = _generator.CreateCarePackage();
@@ -126,11 +129,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 ClaimCollector = ClaimCollector.Hackney,
                 SubType = ReclaimSubType.CareChargeProvisional,
                 CarePackageId = package.Id,
-                AssessmentFile = null,
                 StartDate = DateTimeOffset.Now.AddDays(-1),
                 EndDate = DateTimeOffset.Now.AddDays(2),
                 Description = "test",
-                ClaimReason = "test"
+                ClaimReason = "test",
+                AssessmentFile = null
             };
 
             var response = await _fixture.RestClient
@@ -345,7 +348,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 StartDate = DateTimeOffset.Now.Date.AddDays(-1),
                 EndDate = DateTimeOffset.Now.Date.AddDays(2),
                 Description = "Test",
-                AssessmentFile = null
+                AssessmentFileId = Guid.NewGuid()
             };
             return request;
         }

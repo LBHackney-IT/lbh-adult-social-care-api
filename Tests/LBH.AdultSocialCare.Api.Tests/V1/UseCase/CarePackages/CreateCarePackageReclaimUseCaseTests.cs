@@ -22,7 +22,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private readonly CreateCarePackageReclaimUseCase _useCase;
         private readonly CarePackage _package;
         private readonly Mock<IFileStorage> _fileStorage;
-        private readonly Mock<ILogger<CreateCarePackageReclaimUseCase>> _logger;
 
         public CreateCarePackageReclaimUseCaseTests()
         {
@@ -52,14 +51,13 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             _dbManager = new Mock<IDatabaseManager>();
             _fileStorage = new Mock<IFileStorage>();
-            _logger = new Mock<ILogger<CreateCarePackageReclaimUseCase>>();
 
             var gateway = new Mock<ICarePackageGateway>();
             gateway
                 .Setup(g => g.GetPackageAsync(_package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
                 .ReturnsAsync(_package);
 
-            _useCase = new CreateCarePackageReclaimUseCase(gateway.Object, _dbManager.Object, Mapper, _fileStorage.Object, _logger.Object);
+            _useCase = new CreateCarePackageReclaimUseCase(gateway.Object, _dbManager.Object, Mapper, _fileStorage.Object);
         }
 
         [Fact]
@@ -78,7 +76,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
         }
 
-        [Fact(Skip = "For unblock FE")]
+        [Fact]
         public async Task ShouldCreateNewProvisionalChargeWhenExistingIsCancelled()
         {
             _package.Reclaims.Single().Status = ReclaimStatus.Cancelled;
@@ -87,7 +85,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 CarePackageId = _package.Id,
                 Cost = 2m,
-                SubType = ReclaimSubType.CareChargeProvisional
+                SubType = ReclaimSubType.CareChargeProvisional,
+                AssessmentFileId = Guid.NewGuid()
             }, ReclaimType.CareCharge);
 
             _package.Reclaims.Count.Should().Be(2);

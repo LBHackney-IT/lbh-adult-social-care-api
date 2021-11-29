@@ -48,7 +48,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 _dbManagerMock.Object, fileStorageMock.Object);
         }
 
-        [Fact(Skip = "For unblock FE")]
+        [Fact]
         public async void ShouldCreateNewPackage()
         {
             var newPackage = new CarePackage();
@@ -65,7 +65,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 HackneyUserId = 1,
                 BrokerId = Guid.NewGuid(),
                 PackageType = PackageType.NursingCare,
-                Notes = "Hello world"
+                Notes = "Hello world",
+                CarePlanFile = null,
+                CarePlanFileId = Guid.NewGuid(),
             };
 
             await _useCase.ExecuteAsync(assignment);
