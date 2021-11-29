@@ -4,7 +4,9 @@ using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System;
+using System.Net;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
@@ -26,6 +28,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var package = await _carePackageGateway
                 .GetPackageAsync(packageId, PackageFields.None, true)
                 .EnsureExistsAsync($"Care package {packageId} not found");
+
+            if (package.Status != PackageStatus.SubmittedForApproval)
+            {
+                throw new ApiException($"Package must be submitted for approval to be approved", HttpStatusCode.BadRequest);
+            }
 
             package.Status = PackageStatus.Approved;
             package.DateApproved = DateTimeOffset.UtcNow;

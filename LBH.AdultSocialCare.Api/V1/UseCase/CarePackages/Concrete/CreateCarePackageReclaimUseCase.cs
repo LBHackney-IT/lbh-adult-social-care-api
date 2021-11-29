@@ -80,6 +80,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 Description = $"{newReclaim.Type.GetDisplayName()} Created",
             });
 
+            // Change status of package to in-progress
+            if (carePackage.Status != PackageStatus.InProgress)
+            {
+                carePackage.Status = PackageStatus.InProgress;
+            }
+
             await _dbManager.SaveAsync("Could not save care package reclaim to database");
             return newReclaim.ToDomain().ToResponse();
         }
@@ -152,7 +158,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         private static void ValidateCareChargeAsync(CarePackageReclaimCreationDomain requestedReclaim, CarePackageDetail coreCostDetail, CarePackage carePackage)
         {
-            //care charges should be within corePackage.StartDate - corePackage.EndDate 
+            //care charges should be within corePackage.StartDate - corePackage.EndDate
             if (requestedReclaim.StartDate < coreCostDetail.StartDate)
             {
                 throw new ApiException(

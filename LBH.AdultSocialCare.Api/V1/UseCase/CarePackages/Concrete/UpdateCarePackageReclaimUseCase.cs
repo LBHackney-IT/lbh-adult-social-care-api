@@ -63,7 +63,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
             else
             {
-                //todo FK: temp solution 
+                //todo FK: temp solution
                 carePackageReclaimUpdateDomain.AssessmentFileName = carePackageReclaim.AssessmentFileName;
             }
 
@@ -127,6 +127,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     Description = $"{existingReclaim.Type.GetDisplayName()} {existingReclaim.SubType.GetDisplayName()} Updated",
                 });
             }
+
+            // Change package status to in progress
+            package.Status = PackageStatus.InProgress;
 
             await _dbManager.SaveAsync();
             return result.ToDomain().ToList();
