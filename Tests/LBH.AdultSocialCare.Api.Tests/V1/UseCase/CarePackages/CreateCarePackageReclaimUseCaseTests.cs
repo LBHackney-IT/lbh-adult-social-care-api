@@ -11,6 +11,7 @@ using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
@@ -21,6 +22,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private readonly CreateCarePackageReclaimUseCase _useCase;
         private readonly CarePackage _package;
         private readonly Mock<IFileStorage> _fileStorage;
+        private readonly Mock<ILogger<CreateCarePackageReclaimUseCase>> _logger;
 
         public CreateCarePackageReclaimUseCaseTests()
         {
@@ -50,13 +52,14 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             _dbManager = new Mock<IDatabaseManager>();
             _fileStorage = new Mock<IFileStorage>();
+            _logger = new Mock<ILogger<CreateCarePackageReclaimUseCase>>();
 
             var gateway = new Mock<ICarePackageGateway>();
             gateway
                 .Setup(g => g.GetPackageAsync(_package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
                 .ReturnsAsync(_package);
 
-            _useCase = new CreateCarePackageReclaimUseCase(gateway.Object, _dbManager.Object, Mapper, _fileStorage.Object);
+            _useCase = new CreateCarePackageReclaimUseCase(gateway.Object, _dbManager.Object, Mapper, _fileStorage.Object,_logger.Object);
         }
 
         [Fact]
