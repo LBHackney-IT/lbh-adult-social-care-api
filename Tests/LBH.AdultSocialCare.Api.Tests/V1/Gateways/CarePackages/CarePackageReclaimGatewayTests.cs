@@ -19,21 +19,22 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.CarePackages
             _generator = new DatabaseTestDataGenerator(Context);
         }
 
-        [Theory]
-        [MemberData(nameof(ReclaimStatusExpectations))]
-        public void ShouldReturnCorrectStatus(ReclaimStatus currentStatus, DateTimeOffset startDate, ReclaimStatus expectedStatus)
-        {
-            var package = _generator.CreateCarePackage();
-            var reclaim = _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
+        //Todo FK:
+        //[Theory]
+        //[MemberData(nameof(ReclaimStatusExpectations))]
+        //public void ShouldReturnCorrectStatus(ReclaimStatus currentStatus, DateTimeOffset startDate, ReclaimStatus expectedStatus)
+        //{
+        //    var package = _generator.CreateCarePackage();
+        //    var reclaim = _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
 
-            reclaim.Status = currentStatus;
-            reclaim.StartDate = startDate;
-            Context.SaveChanges();
+        //    reclaim.Status = currentStatus;
+        //    reclaim.StartDate = startDate;
+        //    Context.SaveChanges();
 
-            _gateway.GetAsync(reclaim.Id);
+        //    _gateway.GetAsync(reclaim.Id);
 
-            reclaim.Status.Should().Be(expectedStatus);
-        }
+        //    reclaim.Status.Should().Be(expectedStatus);
+        //}
 
         public static IEnumerable<object[]> ReclaimStatusExpectations() =>
             new List<object[]>
