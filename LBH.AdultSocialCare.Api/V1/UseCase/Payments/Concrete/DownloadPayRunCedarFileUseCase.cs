@@ -11,6 +11,7 @@ using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.Payments;
 using OfficeOpenXml;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
@@ -52,6 +53,17 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 await package.SaveAsync();
             }
             stream.Position = 0;
+
+            // Record download history then return stream
+            var history = new PayrunHistory
+            {
+                Notes = "Cedar file downloaded", Status = payRun.Status, Type = PayRunHistoryType.CedarFileDownload
+            };
+
+            payRun.Histories.Add(history);
+
+            await _dbManager.SaveAsync($"Failed to add pay run history");
+
             return stream;
         }
     }
