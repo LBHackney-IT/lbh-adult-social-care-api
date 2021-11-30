@@ -33,7 +33,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 foreach (var group in invoiceItemsGroups)
                 {
                     var currentStartDate = packageItem.StartDate;
-                    var currentEndDate = Dates.Min(packageItem.EndDate, group.First().FromDate);
+                    var currentEndDate = Dates.Min(packageItem.EndDate, group.First().ToDate);
 
                     // if package item date range moved into future, its start date can be greater than last invoice date
                     // no payments now needed for new range, but we still need to refund already paid.
