@@ -43,7 +43,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 ServiceUserCount = insights.ServiceUserCount,
                 HoldsCount = insights.HoldsCount,
                 TotalHeldAmount = insights.TotalHeldAmount,
-                IsCedarFileDownloaded = insights.IsCedarFileDownloaded
+                IsCedarFileDownloaded = insights.IsCedarFileDownloaded,
+                PaidBy = insights.PaidBy,
+                PaidOn = insights.PaidOn
             };
 
             return result;

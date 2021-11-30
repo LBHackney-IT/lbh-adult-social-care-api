@@ -8,6 +8,9 @@ namespace LBH.AdultSocialCare.Data.Constants.Enums
         NormalRecord = 1,
 
         [Display(Name = "CedarFileDownload")]
-        CedarFileDownload = 2
+        CedarFileDownload = 2,
+
+        [Display(Name = "PaidPayrun")]
+        PaidPayrun = 3
     }
 }
