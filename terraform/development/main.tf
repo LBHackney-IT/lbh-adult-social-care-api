@@ -65,7 +65,6 @@ resource "aws_sqs_queue" "payruns_queue" {
   name                            = "lbh-adult-social-care-payruns-development"
   visibility_timeout_seconds      = 60
   max_message_size                = 2048
-  reserved_concurrent_executions  = 1
 }
 
 resource "aws_sqs_queue_policy" "payruns_queue_to_lambda_policy" {
