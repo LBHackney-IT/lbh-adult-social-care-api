@@ -108,6 +108,27 @@ resources:
                       - ""
                       - - "arn:aws:s3:::"
                         - "Ref": "ServerlessDeploymentBucket"
+          - PolicyName: sqsOperations
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - "sqs:GetQueueUrl"
+                    - "sqs:ReceiveMessage"
+                    - "sqs:DeleteMessage"
+                    - "sqs:GetQueueAttributes"
+                    - "sqs:ChangeMessageVisibility"
+                  Resource:
+                    - Fn::Join:
+                        - ':'
+                        - - 'arn:aws:sqs'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - Fn::Join:
+                              - '-'
+                              - - 'lbh-adult-social-care-payruns'
+                                - ${self:provider.stage}
           - PolicyName: lambdaInvocation
             PolicyDocument:
               Version: '2012-10-17'

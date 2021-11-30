@@ -85,7 +85,8 @@ resource "aws_sqs_queue_policy" "payruns_queue_to_lambda_policy" {
           "sqs:DeleteMessage",
           "sqs:GetQueueAttributes",
           "sqs:ReceiveMessage",
-          "sqs:GetQueueUrl"
+          "sqs:GetQueueUrl",
+          "sqs:ChangeMessageVisibility"
         ],
         "Resource": aws_sqs_queue.payruns_queue.arn,
       }
