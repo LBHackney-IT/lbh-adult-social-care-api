@@ -215,8 +215,7 @@ workflows:
       - check-code-formatting
       - assume-role-staging:
           context: mosaic-staging-context
-          requires:
-              - build-and-test
+          
           filters:
              branches:
               only:
