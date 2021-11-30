@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Extensions;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Common;
 using LBH.AdultSocialCare.Data.Entities.Payments;
@@ -129,6 +130,11 @@ namespace LBH.AdultSocialCare.Data
                 entity.Property(e => e.StartDate).HasColumnType("date");
                 entity.Property(e => e.EndDate).HasColumnType("date");
                 entity.Property(e => e.PaidUpToDate).HasColumnType("date");
+            });
+
+            modelBuilder.Entity<PayrunHistory>(entity =>
+            {
+                entity.Property(e => e.Type).IsRequired().HasDefaultValue(PayRunHistoryType.NormalRecord);
             });
 
             modelBuilder.Entity<PayrunInvoice>(entity =>
