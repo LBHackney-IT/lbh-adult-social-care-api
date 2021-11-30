@@ -10,7 +10,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Domain
         public Guid Id { get; set; }
         public Guid PackageId { get; set; }
 
-        public InvoiceStatus Status { get; set; }
+        public InvoiceStatus Status => PayrunInvoice.InvoiceStatus;
         public PayrunStatus PayrunStatus { get; set; }
 
         public DateTimeOffset StartDate { get; set; }

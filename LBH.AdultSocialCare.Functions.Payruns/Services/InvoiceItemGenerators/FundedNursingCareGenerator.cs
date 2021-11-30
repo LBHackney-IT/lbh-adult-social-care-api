@@ -26,11 +26,12 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
         {
             var fundedNursingCare = package.Reclaims
                 .FirstOrDefault(reclaim => reclaim.Type is ReclaimType.Fnc &&
-                                           reclaim.Status is ReclaimStatus.Active);
+                                           (reclaim.Status is ReclaimStatus.Active ||
+                                           (reclaim.Status is ReclaimStatus.Pending && reclaim.StartDate <= invoiceEndDate)));
 
             if (fundedNursingCare is null) yield break;
 
-            var actualStartDate = GetActualStartDate(fundedNursingCare, packageInvoices, invoiceEndDate);
+            var actualStartDate = GetActualStartDate(fundedNursingCare, packageInvoices);
 
             foreach (var price in _fncPrices)
             {
