@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using Common.Extensions;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
@@ -17,6 +18,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
         public ReclaimStatus Status { get; set; }
         public ReclaimType Type { get; set; }
         public ReclaimSubType SubType { get; set; }
+
+        public string SubTypeName => SubType.GetDisplayName();
 
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
