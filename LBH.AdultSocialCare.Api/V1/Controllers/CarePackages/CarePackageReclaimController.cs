@@ -164,7 +164,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         public async Task<ActionResult<decimal>> GetProvisionalCareChargeAmountUsingServiceUserId(Guid serviceUserId)
         {
             var provisionalAmount = await _getCareChargeUseCase.GetUsingServiceUserIdAsync(serviceUserId);
-            return Ok(provisionalAmount.Amount);
+            return Ok(provisionalAmount?.Amount);
         }
 
         /// <summary>
