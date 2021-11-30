@@ -96,9 +96,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 
         public async Task<bool> CheckExistsUnApprovedPayRunAsync(PayrunType payRunType)
         {
-            var approvedPayRunStatuses = new[] { PayrunStatus.Approved, PayrunStatus.Paid, PayrunStatus.PaidWithHold };
+            var completedPayRunStatuses = new[] { PayrunStatus.Archived, PayrunStatus.Paid, PayrunStatus.PaidWithHold };
             return await _dbContext.Payruns
-                .Where(pr => pr.Type == payRunType && !approvedPayRunStatuses.Contains(pr.Status)).AnyAsync();
+                .Where(pr => pr.Type == payRunType && !completedPayRunStatuses.Contains(pr.Status)).AnyAsync();
         }
 
         public async Task<IEnumerable<Payrun>> GetPayRunsByTypeAndStatusAsync(PayrunType[] types, PayrunStatus[] statuses)

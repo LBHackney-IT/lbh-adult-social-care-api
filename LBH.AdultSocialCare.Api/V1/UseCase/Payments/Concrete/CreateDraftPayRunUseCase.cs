@@ -28,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
         public async Task CreateDraftPayRun(DraftPayRunCreationDomain draftPayRunCreationDomain)
         {
             var recurringPayRunTypes = new[] { PayrunType.DirectPayments, PayrunType.ResidentialRecurring };
-            var unApprovedPayRunStatuses = new[] { PayrunStatus.Draft, PayrunStatus.InProgress, PayrunStatus.WaitingForReview, PayrunStatus.WaitingForApproval };
+            var unApprovedPayRunStatuses = new[] { PayrunStatus.Draft, PayrunStatus.InProgress, PayrunStatus.WaitingForReview, PayrunStatus.WaitingForApproval, PayrunStatus.Approved };
             var releaseHoldPayRunTypes =
                 new[] { PayrunType.DirectPaymentsReleasedHolds, PayrunType.ResidentialReleasedHolds };
             ValidateDraftPayRun(draftPayRunCreationDomain, releaseHoldPayRunTypes);
