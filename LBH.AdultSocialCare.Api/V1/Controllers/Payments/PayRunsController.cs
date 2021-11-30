@@ -173,31 +173,17 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         /// <summary>
         /// Gets Cedar file for single pay run.
         /// </summary>
+        /// <param name="useCase">Use case to export cedar file</param>
         /// <param name="payRunId">Pay run Id.</param>
         /// <returns>Cedar file of single pay run</returns>
         [ProducesResponseType(typeof(ActionResult), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
-        [HttpGet("{payRunId}/download")]
-        public async Task<ActionResult> DownloadCedarFile(Guid payRunId)
+        [HttpGet("{payRunId:guid}/download")]
+        public async Task<ActionResult> DownloadCedarFile([FromServices] IDownloadPayRunCedarFileUseCase useCase, Guid payRunId)
         {
-            await Task.Yield();
-            var list = new List<PayRunInsightsResponse>()
-            {
-                new PayRunInsightsResponse() { PayRunId = payRunId, TotalHeldAmount = 100M},
-                new PayRunInsightsResponse() { PayRunId = payRunId, TotalHeldAmount = 200M},
-            };
-            var stream = new MemoryStream();
-
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-
-            using (var package = new ExcelPackage(stream))
-            {
-                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
-                workSheet.Cells.LoadFromCollection(list, true);
-                package.Save();
-            }
-            stream.Position = 0;
-            string excelName = $"{payRunId} Cedar File.xlsx";
+            var stream = await useCase.ExecuteAsync(payRunId);
+            
+            var excelName = $"{payRunId} Cedar File.xlsx";
 
             return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
