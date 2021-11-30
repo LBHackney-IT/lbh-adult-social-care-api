@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using LBH.AdultSocialCare.Api.Helpers;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Domain
