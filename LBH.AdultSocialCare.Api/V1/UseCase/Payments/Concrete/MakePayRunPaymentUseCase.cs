@@ -64,7 +64,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             var history = new PayrunHistory
             {
                 Status = payRun.Status,
-                Notes = $"Pay run marked as paid"
+                Notes = $"Pay run marked as paid",
+                Type = PayRunHistoryType.PaidPayrun
             };
 
             payRun.Histories.Add(history);
