@@ -24,6 +24,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task<CarePackageReclaimResponse> GetCarePackageReclaim(Guid carePackageId, ReclaimType reclaimType)
         {
             var res = await _carePackageReclaimGateway.GetSingleAsync(carePackageId, reclaimType);
+
+            if (res.Status == ReclaimStatus.Cancelled) res.HasAssessmentBeenCarried = false;
             return res.ToResponse();
         }
 

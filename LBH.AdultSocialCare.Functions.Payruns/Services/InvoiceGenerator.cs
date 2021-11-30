@@ -83,8 +83,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 Items = invoiceItems,
                 GrossTotal = totals.Gross,
                 NetTotal = totals.Net,
-                TotalCost = totals.Net,             // TODO: VK: Review, remove
-                Number = $"INV {++lastInvoiceNumber}"
+                TotalCost = totals.Net, // TODO: VK: Review, remove?
+                Number = $"INV-{DateTimeOffset.UtcNow:yyMMdd}-{++lastInvoiceNumber:0000}"
             };
         }
 

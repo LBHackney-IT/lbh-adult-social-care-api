@@ -45,13 +45,21 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
                 .ToDictionary(group => group.Key, group => group.ToList());
         }
 
-        // TODO: VK: Review invoice number generation and remove
         public async Task<long> GetInvoicesCountAsync()
         {
-            // TODO: VK: Quick fix, replace with sequence
-            return await DbContext.Invoices.AnyAsync()
+            var currentDate = DateTimeOffset.UtcNow.Date;
+
+            // TODO: VK: Customers in different timezones may create repeating numbers and fail
+            // Move to DB side (calculated field / sequence)
+            return
+                await DbContext.Invoices
+                    .AnyAsync(payrun =>
+                        payrun.Number.Length == 15 &&
+                        DbContext.CompareDates(payrun.DateCreated, currentDate) == 0) // temp prevention of fail on legacy numbers
                 ? await DbContext.Invoices
-                    .Select(invoice => Convert.ToInt64(invoice.Number.Replace("INV ", "")))
+                    .Where(invoice =>
+                        DbContext.CompareDates(invoice.DateCreated, currentDate) == 0)
+                    .Select(invoice => Convert.ToInt32(invoice.Number.Substring(11, 4)))
                     .MaxAsync()
                 : 0;
         }
