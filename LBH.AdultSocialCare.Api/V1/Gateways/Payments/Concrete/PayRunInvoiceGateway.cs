@@ -134,6 +134,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         {
             parameters.InvoiceStatus = InvoiceStatus.Held;
             var query = _dbContext.PayrunInvoices
+                .Where(pr => pr.Payrun.Status != PayrunStatus.Archived)
                 .FilterPayRunInvoices(parameters)
                 .TrackChanges(false);
 
