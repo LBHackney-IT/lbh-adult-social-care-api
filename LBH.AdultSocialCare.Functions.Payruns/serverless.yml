@@ -31,6 +31,18 @@ functions:
     role: lambdaExecutionRole
     environment:
       ConnectionStrings__Default: Host=${ssm:/hasc-api/${self:provider.stage}/postgres-hostname};Port=${ssm:/hasc-api/${self:provider.stage}/postgres-port};Database=${ssm:/hasc-api/${self:provider.stage}/postgres-database};Username=${ssm:/hasc-api/${self:provider.stage}/postgres-username};Password=${ssm:/hasc-api/${self:provider.stage}/postgres-password}
+    events:
+      - sqs:
+        arn:
+          Fn::Join:
+            - ':'
+            - - 'arn:aws:sqs'
+              - Ref: 'AWS::Region'
+              - Ref: 'AWS::AccountId'
+              - Fn::Join:
+                  - '-'
+                  - - 'lbh-adult-social-care-payruns'
+                    - ${self:provider.stage}
 resources:
   Resources:
     sqsCreateMappingPermission:
@@ -51,6 +63,20 @@ resources:
         Action: "lambda:ListFunctions"
         FunctionName: ${self:service}-${self:provider.stage}
         Principal: "sqs.amazonaws.com"
+    sqsLambdaMapping:
+      Type: AWS::Lambda::EventSourceMapping
+      Properties:
+        EventSourceArn:
+          Fn::Join:
+            - ':'
+            - - 'arn:aws:sqs'
+              - Ref: 'AWS::Region'
+              - Ref: 'AWS::AccountId'
+              - Fn::Join:
+                - '-'
+                - - 'lbh-adult-social-care-payruns'
+                  - ${self:provider.stage}
+        FunctionName: ${self:service}-${self:provider.stage}
     lambdaExecutionRole:
       Type: AWS::IAM::Role
       Properties:
