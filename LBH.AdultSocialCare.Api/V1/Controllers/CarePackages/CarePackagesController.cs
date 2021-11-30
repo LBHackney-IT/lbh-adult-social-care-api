@@ -188,6 +188,30 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             return Ok();
         }
 
+        /// <summary>Creates a new packages for a service user with HackneyId given and assigns it to a broker.</summary>
+        /// <param name="request">Care plan assignment information.</param>
+        /// <returns>Ok if operation is successful.</returns>
+        /// <response code="200">If operation have completed successfully</response>
+        /// <response code="404">If service user with given HackneyId doesn't exists</response>
+        /// <response code="500">If user has already an active package with given type assigned.</response>
+        [ProducesResponseType(typeof(CarePackagePlainResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpPost("assign2")]
+        [DisableRequestSizeLimit]
+        // [AuthorizeRoles(RolesEnum.Broker)]
+        public ActionResult AssignCarePlan2([FromForm] CarePlanAssignmentRequest request)
+        {
+            using (var stream = new MemoryStream())
+            {
+                request.CarePlanFile.CopyTo(stream);
+                var bytes = stream.ToArray();
+                return Ok($"length:{request.CarePlanFile.Length} data:{request.CarePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}");
+            }
+        }
+
+
         /// <summary>Returns a financial care package summary.</summary>
         /// <param name="carePackageId">An unique identifier of a package to get summary of.</param>
         /// <returns>A financial care package summary response.</returns>
