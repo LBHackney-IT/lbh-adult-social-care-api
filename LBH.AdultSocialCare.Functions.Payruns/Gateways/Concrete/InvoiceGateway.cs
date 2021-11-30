@@ -53,11 +53,12 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
             // Move to DB side (calculated field / sequence)
             return
                 await DbContext.Invoices
-                    .AnyAsync(payrun =>
-                        payrun.Number.Length == 15 &&
-                        DbContext.CompareDates(payrun.DateCreated, currentDate) == 0) // temp prevention of fail on legacy numbers
+                    .AnyAsync(invoice =>
+                        invoice.Number.Length == 15 &&
+                        DbContext.CompareDates(invoice.DateCreated, currentDate) == 0) // temp prevention of fail on legacy numbers
                 ? await DbContext.Invoices
                     .Where(invoice =>
+                        invoice.Number.Length == 15 &&
                         DbContext.CompareDates(invoice.DateCreated, currentDate) == 0)
                     .Select(invoice => Convert.ToInt32(invoice.Number.Substring(11, 4)))
                     .MaxAsync()
