@@ -119,8 +119,17 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 // The provisional end date should be 1 day before start date of requested reclaim
                 if (provisionalReclaim != null)
                 {
-                    provisionalReclaim.Status = ReclaimStatus.Ended;
-                    provisionalReclaim.EndDate = requestedReclaim.StartDate.Date.AddDays(-1);
+                    var provisionalReclaimStatus = ReclaimStatus.Ended;
+                    var provisionalReclaimEndDate = requestedReclaim.StartDate.Date.AddDays(-1);
+
+                    if (provisionalReclaim.StartDate.Date == requestedReclaim.StartDate.Date)
+                    {
+                        provisionalReclaimStatus = ReclaimStatus.Cancelled;
+                        provisionalReclaimEndDate = requestedReclaim.StartDate.Date;
+                    }
+
+                    provisionalReclaim.Status = provisionalReclaimStatus;
+                    provisionalReclaim.EndDate = provisionalReclaimEndDate;
                 }
             }
 
@@ -185,7 +194,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             if (requestedReclaim.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks)
             {
                 var existingProvisionalCareCharge =
-                    carePackage.Reclaims.FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeProvisional);
+                    carePackage.Reclaims.Where(r => r.Status != ReclaimStatus.Cancelled)
+                        .FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeProvisional);
 
                 if (existingProvisionalCareCharge != null)
                 {

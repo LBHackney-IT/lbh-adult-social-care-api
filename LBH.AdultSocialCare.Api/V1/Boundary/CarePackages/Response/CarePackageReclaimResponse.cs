@@ -29,5 +29,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
 
         public Guid AssessmentFileId { get; set; }
         public string AssessmentFileName { get; set; }
+        public bool HasAssessmentBeenCarried { get; set; }
     }
 }
