@@ -160,7 +160,7 @@ namespace DataImporter.Services
                 _databaseContext.CarePackages.Add(carePackage);
             }
 
-            File.WriteAllLines("logs.txt", logs);
+            File.WriteAllLines($"{fileName}_logs.txt", logs);
             _databaseContext.SaveChanges();
         }
 
