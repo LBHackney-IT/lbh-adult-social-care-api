@@ -2,7 +2,6 @@ using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
-using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using LBH.AdultSocialCare.Data.Constants.Enums;
@@ -11,7 +10,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
+using OfficeOpenXml;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
 {
@@ -165,6 +168,38 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         {
             var res = await useCase.GetDetailsAsync(payRunId, invoiceId);
             return Ok(res);
+        }
+
+        /// <summary>
+        /// Gets Cedar file for single pay run.
+        /// </summary>
+        /// <param name="payRunId">Pay run Id.</param>
+        /// <returns>Cedar file of single pay run</returns>
+        [ProducesResponseType(typeof(ActionResult), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [HttpGet("{payRunId}/download")]
+        public async Task<ActionResult> DownloadCedarFile(Guid payRunId)
+        {
+            await Task.Yield();
+            var list = new List<PayRunInsightsResponse>()
+            {
+                new PayRunInsightsResponse() { PayRunId = payRunId, TotalHeldAmount = 100M},
+                new PayRunInsightsResponse() { PayRunId = payRunId, TotalHeldAmount = 200M},
+            };
+            var stream = new MemoryStream();
+
+            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+
+            using (var package = new ExcelPackage(stream))
+            {
+                var workSheet = package.Workbook.Worksheets.Add("Sheet1");
+                workSheet.Cells.LoadFromCollection(list, true);
+                package.Save();
+            }
+            stream.Position = 0;
+            string excelName = $"{payRunId} Cedar File.xlsx";
+
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
     }
 }
