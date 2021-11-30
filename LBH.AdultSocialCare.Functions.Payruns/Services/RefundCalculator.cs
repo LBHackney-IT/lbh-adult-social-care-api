@@ -14,55 +14,56 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 {
     public static class RefundCalculator
     {
-        public static RefundInfo Calculate(
+        public static IEnumerable<RefundInfo> Calculate(
             IPackageItem packageItem, IList<InvoiceDomain> packageInvoices,
             Func<DateTimeOffset, DateTimeOffset, decimal, decimal> calculateCurrentCost)
         {
             var paidInvoiceItems = GetPaidInvoiceItems(packageItem, packageInvoices);
-            if (!paidInvoiceItems.Any()) return RefundInfo.Empty;
+            if (!paidInvoiceItems.Any()) yield break;
 
             // package item has some significant updates (cost, dates etc.) -> create a new refund
             if (packageItem.Version > paidInvoiceItems.Max(item => item.SourceVersion))
             {
-                // calculate new cost for package item Start / End date range
-                // or till last invoice end date (for ongoing package items).
-                var lastPaidDate = paidInvoiceItems.Max(item => item.ToDate);
+                // always create a refund in range of first invoice to avoid
+                // tricky cases with jagged diapasons of refunds / rejected / normal items
+                // [--inv1--][--inv2--][--inv2--]
+                // [--ref1--][--ref2--][--ref2--]
+                var invoiceItemsGroups = paidInvoiceItems.GroupBy(item => item.FromDate);
 
-                var currentStartDate = packageItem.StartDate;
-                var currentEndDate = Dates.Min(packageItem.EndDate, lastPaidDate);
-
-                // if package item date range moved into future, its start date can be greater than last invoice date
-                // no payments now needed for new range, but we still need to refund already paid.
-                // So set quantity and current cost to 0 and let the rest of logic flow.
-                var quantity = Math.Max(Dates.WeeksBetween(currentStartDate, currentEndDate), 0);
-
-                var refund = new RefundInfo
+                foreach (var group in invoiceItemsGroups)
                 {
-                    PreviousStartDate = paidInvoiceItems.Min(item => item.FromDate),
-                    PreviousEndDate = lastPaidDate,
-                    CurrentStartDate = currentStartDate,
-                    CurrentEndDate = currentEndDate,
-                    Quantity = quantity,
-                    CurrentCost = quantity > 0
-                        ? calculateCurrentCost(currentStartDate, currentEndDate, quantity)
-                        : 0.0m
-                };
+                    var currentStartDate = packageItem.StartDate;
+                    var currentEndDate = Dates.Min(packageItem.EndDate, group.First().FromDate);
 
-                switch (packageItem)
-                {
-                    case CarePackageDetail _:
-                        CalculateDetailRefundAmount(refund, paidInvoiceItems);
-                        break;
+                    // if package item date range moved into future, its start date can be greater than last invoice date
+                    // no payments now needed for new range, but we still need to refund already paid.
+                    // So set quantity and current cost to 0 and let the rest of logic flow.
+                    var quantity = Math.Max(Dates.WeeksBetween(currentStartDate, currentEndDate), 0);
 
-                    case CarePackageReclaim reclaim:
-                        CalculateReclaimRefundAmount(reclaim, refund, paidInvoiceItems);
-                        break;
+                    var refund = new RefundInfo
+                    {
+                        StartDate = group.First().FromDate,
+                        EndDate = group.First().ToDate,
+                        Quantity = quantity,
+                        CurrentCost = quantity > 0
+                            ? calculateCurrentCost(currentStartDate, currentEndDate, quantity)
+                            : 0.0m // prevent generation for one-offs not dependent on quantity
+                    };
+
+                    switch (packageItem)
+                    {
+                        case CarePackageDetail _:
+                            CalculateDetailRefundAmount(refund, group.ToList());
+                            break;
+
+                        case CarePackageReclaim reclaim:
+                            CalculateReclaimRefundAmount(reclaim, refund, group.ToList());
+                            break;
+                    }
+
+                    yield return refund;
                 }
-
-                return refund;
             }
-
-            return RefundInfo.Empty;
         }
 
         private static void CalculateDetailRefundAmount(RefundInfo refund, IList<InvoiceItem> paidInvoiceItems)

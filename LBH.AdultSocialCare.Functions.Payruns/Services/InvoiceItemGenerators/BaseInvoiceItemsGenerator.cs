@@ -16,16 +16,10 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 {
     public abstract class BaseInvoiceItemsGenerator
     {
-        /// <summary>
-        /// This method is called for each package in invoicing period, so generator can produce invoice items for single package
-        /// </summary>
-        public abstract IEnumerable<InvoiceItem> CreateNormalItem(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate);
+        public abstract IEnumerable<InvoiceItem> CreateNormalItems(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate);
 
-        public abstract IEnumerable<InvoiceItem> CreateRefundItem(CarePackage package, IList<InvoiceDomain> packageInvoices);
+        public abstract IEnumerable<InvoiceItem> CreateRefundItems(CarePackage package, IList<InvoiceDomain> packageInvoices);
 
-        /// <summary>
-        /// This method is called right before invoice generation process is started, so generator can initialize its internal state
-        /// </summary>
         public virtual Task Initialize()
         {
             return Task.CompletedTask;

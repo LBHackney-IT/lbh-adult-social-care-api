@@ -11,11 +11,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 {
     public class CareChargeGenerator : BaseInvoiceItemsGenerator
     {
-        public override IEnumerable<InvoiceItem> CreateNormalItem(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
+        public override IEnumerable<InvoiceItem> CreateNormalItems(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
         {
             var careCharges = package.Reclaims
-                .Where(r => r.Type is ReclaimType.CareCharge &&
-                            r.StartDate <= invoiceEndDate)
+                .Where(reclaim => reclaim.Type is ReclaimType.CareCharge &&
+                                  reclaim.Status is ReclaimStatus.Active)
                 .ToList();
 
             foreach (var careCharge in careCharges)
@@ -44,7 +44,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             }
         }
 
-        public override IEnumerable<InvoiceItem> CreateRefundItem(CarePackage package, IList<InvoiceDomain> packageInvoices)
+        public override IEnumerable<InvoiceItem> CreateRefundItems(CarePackage package, IList<InvoiceDomain> packageInvoices)
         {
             var careCharges = package.Reclaims
                 .Where(r => r.Type is ReclaimType.CareCharge)
@@ -52,27 +52,28 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 
             foreach (var careCharge in careCharges)
             {
-                var refund = RefundCalculator.Calculate(
+                var refunds = RefundCalculator.Calculate(
                     careCharge, packageInvoices,
                     (start, end, quantity) => careCharge.Cost * quantity);
 
-                if (refund.RefundAmount == 0.0m) continue;
-
-                yield return new InvoiceItem
+                foreach (var refund in refunds)
                 {
-                    Name = $"Care Charge {careCharge.SubType.GetDisplayName()} (refund)",
-                    Quantity = refund.Quantity,
-                    WeeklyCost = careCharge.Cost,
-                    TotalCost = refund.RefundAmount,
-                    FromDate = refund.PreviousStartDate,
-                    ToDate = refund.PreviousEndDate,
-                    CarePackageReclaimId = careCharge.Id,
-                    SourceVersion = careCharge.Version,
-                    NetCostsCompensated = refund.NetCostsCompensated,
-                    PriceEffect = refund.RefundAmount > 0
-                        ? PriceEffect.Add
-                        : PriceEffect.Subtract
-                };
+                    yield return new InvoiceItem
+                    {
+                        Name = $"Care Charge {careCharge.SubType.GetDisplayName()} (refund)",
+                        Quantity = refund.Quantity,
+                        WeeklyCost = careCharge.Cost,
+                        TotalCost = refund.RefundAmount,
+                        FromDate = refund.StartDate,
+                        ToDate = refund.EndDate,
+                        CarePackageReclaimId = careCharge.Id,
+                        SourceVersion = careCharge.Version,
+                        NetCostsCompensated = refund.NetCostsCompensated,
+                        PriceEffect = refund.RefundAmount > 0
+                            ? PriceEffect.Add
+                            : PriceEffect.Subtract
+                    };
+                }
             }
         }
     }

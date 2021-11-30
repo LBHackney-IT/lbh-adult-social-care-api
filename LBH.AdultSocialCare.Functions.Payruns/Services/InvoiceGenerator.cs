@@ -64,12 +64,12 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 {
                     RejectOutdatedInvoices(package, packageInvoices);
 
-                    invoiceItems.AddRange(generator.CreateRefundItem(package, packageInvoices));
+                    invoiceItems.AddRange(generator.CreateRefundItems(package, packageInvoices));
                 }
 
                 if (invoiceTypes.HasFlag(InvoiceTypes.Normal))
                 {
-                    invoiceItems.AddRange(generator.CreateNormalItem(package, packageInvoices, invoiceEndDate));
+                    invoiceItems.AddRange(generator.CreateNormalItems(package, packageInvoices, invoiceEndDate));
                 }
             }
 

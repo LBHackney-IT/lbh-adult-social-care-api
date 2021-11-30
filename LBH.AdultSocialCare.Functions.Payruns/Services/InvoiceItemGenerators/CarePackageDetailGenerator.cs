@@ -10,7 +10,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 {
     public class CarePackageDetailGenerator : BaseInvoiceItemsGenerator
     {
-        public override IEnumerable<InvoiceItem> CreateNormalItem(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
+        public override IEnumerable<InvoiceItem> CreateNormalItems(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
         {
             foreach (var detail in package.Details)
             {
@@ -36,32 +36,33 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             }
         }
 
-        public override IEnumerable<InvoiceItem> CreateRefundItem(CarePackage package, IList<InvoiceDomain> packageInvoices)
+        public override IEnumerable<InvoiceItem> CreateRefundItems(CarePackage package, IList<InvoiceDomain> packageInvoices)
         {
             foreach (var detail in package.Details)
             {
-                var refund = RefundCalculator.Calculate(
+                var refunds = RefundCalculator.Calculate(
                     detail, packageInvoices,
                     (start, end, quantity) => detail.CostPeriod is PaymentPeriod.OneOff
                         ? detail.Cost
                         : detail.Cost * quantity);
 
-                if (refund.RefundAmount == 0) continue;
-
-                yield return new InvoiceItem
+                foreach (var refund in refunds)
                 {
-                    Name = $"{GetItemName(detail)} (refund)",
-                    Quantity = refund.Quantity,
-                    WeeklyCost = detail.CostPeriod is PaymentPeriod.OneOff
-                        ? 0.0m
-                        : detail.Cost,
-                    TotalCost = refund.RefundAmount,
-                    FromDate = refund.PreviousStartDate,
-                    ToDate = refund.PreviousEndDate,
-                    CarePackageDetailId = detail.Id,
-                    SourceVersion = detail.Version,
-                    PriceEffect = refund.RefundAmount > 0 ? PriceEffect.Add : PriceEffect.Subtract
-                };
+                    yield return new InvoiceItem
+                    {
+                        Name = $"{GetItemName(detail)} (refund)",
+                        Quantity = refund.Quantity,
+                        WeeklyCost = detail.CostPeriod is PaymentPeriod.OneOff
+                            ? 0.0m
+                            : detail.Cost,
+                        TotalCost = refund.RefundAmount,
+                        FromDate = refund.StartDate,
+                        ToDate = refund.EndDate,
+                        CarePackageDetailId = detail.Id,
+                        SourceVersion = detail.Version,
+                        PriceEffect = refund.RefundAmount > 0 ? PriceEffect.Add : PriceEffect.Subtract
+                    };
+                }
             }
         }
 
