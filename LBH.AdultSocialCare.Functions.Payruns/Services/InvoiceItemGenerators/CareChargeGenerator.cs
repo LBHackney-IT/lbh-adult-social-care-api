@@ -15,7 +15,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
         {
             var careCharges = package.Reclaims
                 .Where(reclaim => reclaim.Type is ReclaimType.CareCharge &&
-                                  reclaim.Status is ReclaimStatus.Active)
+                                  (reclaim.Status is ReclaimStatus.Active ||
+                                  (reclaim.Status is ReclaimStatus.Pending && reclaim.StartDate <= invoiceEndDate)))
                 .ToList();
 
             foreach (var careCharge in careCharges)

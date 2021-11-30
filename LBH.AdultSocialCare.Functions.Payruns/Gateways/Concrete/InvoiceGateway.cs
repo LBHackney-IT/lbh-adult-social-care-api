@@ -32,7 +32,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
                 {
                     Id = payrunInvoice.Invoice.Id,
                     PackageId = payrunInvoice.Invoice.PackageId,
-                    Status = payrunInvoice.InvoiceStatus,
                     PayrunStatus = payrunInvoice.Payrun.Status,
                     StartDate = payrunInvoice.Payrun.StartDate,
                     EndDate = payrunInvoice.Payrun.EndDate,

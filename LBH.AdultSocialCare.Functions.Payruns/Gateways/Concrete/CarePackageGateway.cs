@@ -22,10 +22,10 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
                 .AsNoTracking()
                 .Where(package =>
                     package.Details.Any(detail =>
-                        DbContext.CompareDates(detail.StartDate, /* < */ endDate) == -1 &&
+                        DbContext.CompareDates(detail.StartDate, /* <= */ endDate) <= 0 &&
                         (detail.EndDate == null || DbContext.CompareDates(detail.EndDate, /* >= */ startDate.Date) >= 0)) ||
                     package.Reclaims.Any(reclaim =>
-                        DbContext.CompareDates(reclaim.StartDate, /* < */ endDate) == -1 &&
+                        DbContext.CompareDates(reclaim.StartDate, /* <= */ endDate) <= 0 &&
                         (reclaim.EndDate == null || DbContext.CompareDates(reclaim.EndDate, /* >= */ startDate.Date) >= 0)))
                 .Select(package => package.Id)
                 .ToListAsync();
