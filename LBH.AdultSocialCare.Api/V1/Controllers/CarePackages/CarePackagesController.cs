@@ -207,7 +207,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             {
                 request.CarePlanFile.CopyTo(stream);
                 var bytes = stream.ToArray();
-                return Ok($"length:{request.CarePlanFile.Length} data:{request.CarePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}");
+                return Ok($"base64Length: {Convert.ToBase64String(bytes).Length} byteCount: {bytes.Length} length:{request.CarePlanFile.Length} data:{request.CarePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}");
             }
         }
 

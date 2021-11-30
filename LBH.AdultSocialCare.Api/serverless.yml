@@ -3,11 +3,12 @@ provider:
   name: aws
   runtime: dotnetcore3.1
   memorySize: 2048
+  apiGateway:
+    binaryMediaTypes:
+      - '*/*'
   tracing:
     lambda: true
-    apiGateway:
-      binaryMediaTypes:
-        - '*/*'
+    apiGateway: true
   vpc: ${self:custom.vpc.${opt:stage}}
   stage: ${opt:stage}
   # TODO: Enable this line if DynamoDb is in use
