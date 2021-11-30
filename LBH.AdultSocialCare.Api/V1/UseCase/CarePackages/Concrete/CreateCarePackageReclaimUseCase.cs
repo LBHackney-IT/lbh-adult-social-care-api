@@ -57,7 +57,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
             else if (reclaimType is ReclaimType.CareCharge)
             {
-                newReclaim = TryHandleProvisionalCareCharge(reclaimCreationDomain, coreCostDetail, carePackage);
+                newReclaim = TryHandleProvisionalCareCharge(reclaimCreationDomain, carePackage);
             }
 
             if (reclaimType is ReclaimType.CareCharge)
@@ -96,7 +96,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             return newReclaim.ToDomain().ToResponse();
         }
 
-        private CarePackageReclaim TryHandleProvisionalCareCharge(CarePackageReclaimCreationDomain requestedReclaim, CarePackageDetail coreCostDetail, CarePackage carePackage)
+        private CarePackageReclaim TryHandleProvisionalCareCharge(CarePackageReclaimCreationDomain requestedReclaim, CarePackage carePackage)
         {
             var provisionalReclaim = carePackage.Reclaims
                 .FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeProvisional &&
@@ -104,8 +104,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             if (requestedReclaim.SubType is ReclaimSubType.CareChargeProvisional)
             {
-                requestedReclaim.StartDate = coreCostDetail.StartDate;
-
                 // new provisional reclaim shouldn't be created, update existing instead
                 if (provisionalReclaim != null)
                 {
