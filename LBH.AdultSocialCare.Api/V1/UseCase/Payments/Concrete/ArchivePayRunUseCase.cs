@@ -30,18 +30,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 .GetPayRunAsync(payRunId, PayRunFields.None, true)
                 .EnsureExistsAsync($"Pay Run {payRunId} not found");
 
-            var validPayRunStatuses = new[]
+            if (payRun.Status == PayrunStatus.Archived)
             {
-                PayrunStatus.Approved, PayrunStatus.Paid, PayrunStatus.PaidWithHold
-            };
+                throw new ApiException($"Pay run with id {payRunId} already archived", HttpStatusCode.BadRequest);
+            }
 
-            if (validPayRunStatuses.Contains(payRun.Status))
+            if (payRun.Status.In(PayrunStatus.Paid, PayrunStatus.PaidWithHold))
             {
-                throw new ApiException($"Can not archive pay run with {payRun.Status.GetDisplayName()}",
+                throw new ApiException($"Can not archive pay run in status {payRun.Status.GetDisplayName()}",
                     HttpStatusCode.BadRequest);
             }
 
-            payRun.Status = PayrunStatus.Archived;
+            payRun.Status = payRun.Status == PayrunStatus.Approved ? PayrunStatus.WaitingForApproval : PayrunStatus.Archived;
 
             var history = new PayrunHistory
             {
@@ -60,11 +60,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             var payRun = await _payRunGateway
                 .GetPayRunAsync(payRunId, PayRunFields.None, true)
                 .EnsureExistsAsync($"Pay Run {payRunId} not found");
-            var validPayRunStatuses = new[]
+
+            if (payRun.Status == PayrunStatus.Archived)
             {
-                PayrunStatus.Draft, PayrunStatus.WaitingForApproval, PayrunStatus.WaitingForReview
-            };
-            if (!validPayRunStatuses.Contains(payRun.Status))
+                throw new ApiException($"Pay run with id {payRunId} already archived");
+            }
+
+            if (payRun.Status.NotIn(PayrunStatus.Draft, PayrunStatus.WaitingForApproval, PayrunStatus.WaitingForReview))
             {
                 throw new ApiException("Not allowed. Pay run status should be draft, waiting for approval, or waiting for review to delete",
                     HttpStatusCode.BadRequest);
