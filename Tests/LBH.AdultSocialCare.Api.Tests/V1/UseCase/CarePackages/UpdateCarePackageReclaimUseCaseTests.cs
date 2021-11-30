@@ -70,7 +70,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _useCase = new UpdateCarePackageReclaimUseCase(carePackageReclaimGateway.Object, carePackageGateway.Object, _dbManager.Object, Mapper, _fileStorage.Object);
         }
 
-        [Fact(Skip = "For unblock FE")]
+        [Fact]
         public async Task ShouldUpdateProvisionalReclaims()
         {
             const decimal newCost = 34.56m;
@@ -80,6 +80,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             await _useCase.UpdateListAsync(new CareChargeReclaimBulkUpdateDomain()
             {
+                AssessmentFileId = Guid.NewGuid(),
                 Reclaims = new List<CarePackageReclaimUpdateDomain>()
                 {
                     new CarePackageReclaimUpdateDomain()
@@ -104,19 +105,21 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     reclaim.StartDate != _package.Details.First().StartDate, "Non-provisional reclaims shouldn't be updated");
         }
 
-        [Fact(Skip = "For unblock FE")]
+        [Fact]
         public async Task ShouldEndExistingReclaimsAndCreateNewOnes()
         {
             const decimal newCost = 34.56m;
 
             var reclaims = _requestedIds.Select(id => new CarePackageReclaimUpdateDomain
             {
+                AssessmentFileId = Guid.NewGuid(),
                 Id = id,
                 Cost = newCost
             }).ToList();
 
             await _useCase.UpdateListAsync(new CareChargeReclaimBulkUpdateDomain()
             {
+                AssessmentFileId = Guid.NewGuid(),
                 Reclaims = reclaims
             });
 

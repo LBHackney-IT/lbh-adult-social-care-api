@@ -19,6 +19,7 @@ using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -29,7 +30,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly IMapper _mapper;
         private readonly IFileStorage _fileStorage;
 
-        public CreateCarePackageReclaimUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IMapper mapper, IFileStorage fileStorage)
+        public CreateCarePackageReclaimUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager,
+            IMapper mapper, IFileStorage fileStorage)
         {
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
@@ -71,7 +73,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 if (reclaimCreationDomain.AssessmentFileId == Guid.Empty)
                 {
                     var documentResponse = await _fileStorage.SaveFileAsync
-                        (ConvertCarePlan(reclaimCreationDomain.AssessmentFile), reclaimCreationDomain.AssessmentFile.FileName);
+                        (ConvertCarePlan(reclaimCreationDomain.AssessmentFile), reclaimCreationDomain?.AssessmentFile?.FileName);
                     newReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
                     newReclaim.AssessmentFileName = documentResponse?.FileName;
                 }

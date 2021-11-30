@@ -1,8 +1,8 @@
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.Common;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.Common;
 
 namespace LBH.AdultSocialCare.Data.Entities.Payments
 {
@@ -16,6 +16,7 @@ namespace LBH.AdultSocialCare.Data.Entities.Payments
         public string Notes { get; set; }
 
         public PayrunStatus Status { get; set; }
+        public PayRunHistoryType? Type { get; set; }
 
         [ForeignKey(nameof(PayRunId))]
         public Payrun Payrun { get; set; }

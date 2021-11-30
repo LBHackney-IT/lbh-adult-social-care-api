@@ -60,6 +60,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             var invoices = await _dbContext.PayrunInvoices.Where(p => p.PayrunId == payRunId).Include(pi => pi.Invoice)
                 .ToListAsync();
 
+            var isCedarDownloaded = await _dbContext.PayrunHistories.Where(ph => ph.PayRunId.Equals(payRunId))
+                .AnyAsync(ph => ph.Type == PayRunHistoryType.CedarFileDownload);
+
             var heldInvoiceStatuses =
                 new[] { InvoiceStatus.Held, InvoiceStatus.Released, InvoiceStatus.ReleaseAccepted };
 
@@ -70,7 +73,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 ServiceUserCount = invoices.Select(i => i.Invoice.ServiceUserId).Distinct().Count(),
                 HoldsCount = invoices.Count(i => heldInvoiceStatuses.Contains(i.InvoiceStatus)),
                 TotalHeldAmount = invoices.Where(i => heldInvoiceStatuses.Contains(i.InvoiceStatus))
-                    .Sum(i => i.Invoice.GrossTotal)
+                    .Sum(i => i.Invoice.GrossTotal),
+                IsCedarFileDownloaded = isCedarDownloaded
             };
 
             return result;

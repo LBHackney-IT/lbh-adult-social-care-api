@@ -2,7 +2,6 @@ using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
-using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using LBH.AdultSocialCare.Data.Constants.Enums;
@@ -11,7 +10,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
+using OfficeOpenXml;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
 {
@@ -165,6 +168,24 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         {
             var res = await useCase.GetDetailsAsync(payRunId, invoiceId);
             return Ok(res);
+        }
+
+        /// <summary>Gets Cedar file for single pay run.</summary>
+        /// <param name="useCase">Use case to export cedar file</param>
+        /// <param name="payRunId">Pay run Id.</param>
+        /// <returns>Cedar file of single pay run</returns>
+        [ProducesResponseType(typeof(File), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [HttpGet("{payRunId:guid}/download")]
+        public async Task<ActionResult> DownloadCedarFile([FromServices] IDownloadPayRunCedarFileUseCase useCase, Guid payRunId)
+        {
+            var stream = await useCase.ExecuteAsync(payRunId);
+
+            var excelName = $"{payRunId} Cedar File.xlsx";
+
+            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
         }
     }
 }

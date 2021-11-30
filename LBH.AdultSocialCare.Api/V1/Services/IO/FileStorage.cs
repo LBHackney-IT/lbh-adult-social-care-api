@@ -17,26 +17,17 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
         private readonly IDocumentClaimClient _documentClaimClient;
         private readonly IDocumentPostClient _documentPostClient;
         private readonly IDocumentGetClient _documentGetClient;
-        private readonly ILogger<FileStorage> _logger;
 
 
-        public FileStorage(IDocumentClaimClient documentClaimClient, IDocumentPostClient documentPostClient,
-            IDocumentGetClient documentGetClient, ILogger<FileStorage> logger)
+        public FileStorage(IDocumentClaimClient documentClaimClient, IDocumentPostClient documentPostClient, IDocumentGetClient documentGetClient)
         {
             _documentClaimClient = documentClaimClient;
             _documentPostClient = documentPostClient;
             _documentGetClient = documentGetClient;
-            _logger = logger;
         }
 
         public async Task<DocumentResponse> SaveFileAsync(string fileContent, string fileName)
         {
-            //var fileContent = ConvertCarePlan(carePlanFile);
-
-            // log to check file content
-            _logger.LogCritical(fileContent);
-            _logger.LogCritical(fileName);
-
             if (fileContent == null)
                 return new DocumentResponse();
 

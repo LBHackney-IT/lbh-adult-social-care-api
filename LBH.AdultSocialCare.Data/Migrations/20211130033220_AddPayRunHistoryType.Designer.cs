@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211130033220_AddPayRunHistoryType")]
+    partial class AddPayRunHistoryType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1303,11 +1305,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasIndex("UpdaterId");
 
-                    b.ToTable("PayrunHistories");
+                    b.ToTable("PayrunHistory");
 
-                    b.HasCheckConstraint("CK_PayrunHistories_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8)");
+                    b.HasCheckConstraint("CK_PayrunHistory_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8)");
 
-                    b.HasCheckConstraint("CK_PayrunHistories_Type", "\"Type\" IN (0, 1, 2)");
+                    b.HasCheckConstraint("CK_PayrunHistory_Type", "\"Type\" IN (0, 1, 2)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.PayrunInvoice", b =>
