@@ -57,7 +57,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             // Record download history then return stream
             var history = new PayrunHistory
             {
-                Notes = "Cedar file downloaded", Status = payRun.Status, Type = PayRunHistoryType.CedarFileDownload
+                Notes = "Cedar file downloaded",
+                Status = payRun.Status,
+                Type = PayRunHistoryType.CedarFileDownload
             };
 
             payRun.Histories.Add(history);

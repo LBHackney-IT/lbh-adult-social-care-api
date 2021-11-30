@@ -58,6 +58,7 @@ namespace LBH.AdultSocialCare.Data
         public DbSet<CarePackageHistory> CarePackageHistories { get; set; }
 
         public DbSet<Payrun> Payruns { get; set; }
+        public DbSet<PayrunHistory> PayrunHistories { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
         public DbSet<PayrunInvoice> PayrunInvoices { get; set; }
