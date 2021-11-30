@@ -179,6 +179,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("assign")]
+        [RequestFormLimits(MultipartBodyLengthLimit = 209715200)]
+        [RequestSizeLimit(209715200)]
         // [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult> AssignCarePlan([FromForm] CarePlanAssignmentRequest request)
         {
