@@ -145,7 +145,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .Select(pi => new HeldInvoiceDetailsDomain
                 {
                     PayRunId = pi.PayrunId,
-                    PayRunNumber = pi.PayrunId.ToString().Substring(0, 6),
+                    PayRunNumber = pi.Payrun.Number,
                     DateCreated = pi.DateCreated,
                     StartDate = pi.Payrun.StartDate,
                     EndDate = pi.Payrun.EndDate,

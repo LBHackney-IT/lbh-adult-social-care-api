@@ -121,7 +121,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
         {
             // Don't have a logged-in user in lambda, so impersonate it as a payrun creator
             // Database context will then use it as Creator / Updater
-            // TODO: VK: Consider having a dedicated user to run lambda functions
             var userIdClaim = new Claim(ClaimTypes.NameIdentifier, payrun.CreatorId.ToString());
             ((ClaimsIdentity) _httpContextAccessor.HttpContext.User.Identity).AddClaim(userIdClaim);
         }

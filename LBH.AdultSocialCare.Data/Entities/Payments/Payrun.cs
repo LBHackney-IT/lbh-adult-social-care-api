@@ -18,6 +18,7 @@ namespace LBH.AdultSocialCare.Data.Entities.Payments
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
+        public string Number { get; set; }
         public PayrunType Type { get; set; }
         public PayrunStatus Status { get; set; }
 

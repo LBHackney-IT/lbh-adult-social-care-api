@@ -47,7 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .Select(pr => new PayRunListDomain
                 {
                     PayRunId = pr.Id,
-                    PayRunNumber = pr.Id.ToString().Substring(0, 6), //Todo FK: temp solution
+                    PayRunNumber = pr.Number,
                     PayRunTypeId = (int) pr.Type,
                     PayRunTypeName = types.Contains((int) pr.Type) ? pr.Type.ToDescription() : string.Empty,
                     PayRunStatusId = (int) pr.Status,
@@ -75,6 +75,23 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 
         public async Task CreateDraftPayRun(Payrun payRun)
         {
+            var currentDate = DateTimeOffset.UtcNow.Date;
+
+            // TODO: VK: Customers in different timezones may create repeating numbers and fail
+            // Move to DB side (calculated field / sequence)
+            var payrunsCount =
+                await _dbContext.Payruns
+                    .AnyAsync(payrun =>
+                        payrun.Number.Length == 15 &&
+                        _dbContext.CompareDates(payrun.DateCreated, currentDate) == 0) // temp prevention of fail on legacy numbers
+                ? await _dbContext.Payruns
+                    .Where(payrun => _dbContext.CompareDates(payrun.DateCreated, currentDate) == 0)
+                    .Select(payrun => Convert.ToInt32(payrun.Number.Substring(11, 4)))
+                    .MaxAsync()
+                : 0;
+
+            payRun.Number = $"PYR-{DateTimeOffset.UtcNow:yyMMdd}-{++payrunsCount:0000}";
+
             await _dbContext.Payruns.AddAsync(payRun);
             try
             {
