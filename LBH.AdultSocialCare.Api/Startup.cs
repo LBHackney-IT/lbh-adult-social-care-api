@@ -33,6 +33,7 @@ using System.Reflection;
 using Amazon;
 using Amazon.Extensions.NETCore.Setup;
 using LBH.AdultSocialCare.Data;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace LBH.AdultSocialCare.Api
 {
@@ -71,6 +72,11 @@ namespace LBH.AdultSocialCare.Api
                     => throw new InvalidModelStateException(context.ModelState.AllModelStateErrors(),
                         "There are some validation errors. Please correct and try again")))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+
+            services.Configure<FormOptions>(x =>
+            {
+                x.MultipartBodyLengthLimit = 209715200;
+            });
 
             services.AddApiVersioning(o =>
             {
