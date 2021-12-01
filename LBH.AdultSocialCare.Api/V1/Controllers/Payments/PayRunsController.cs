@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using OfficeOpenXml;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
@@ -179,6 +180,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [HttpGet("{payRunId:guid}/download")]
+        [AllowAnonymous]
         public async Task<ActionResult> DownloadCedarFile([FromServices] IDownloadPayRunCedarFileUseCase useCase, Guid payRunId)
         {
             var stream = await useCase.ExecuteAsync(payRunId);
