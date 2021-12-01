@@ -47,24 +47,28 @@ resources:
   Resources:
     sqsCreateMappingPermission:
       Type: AWS::Lambda::Permission
+      DependsOn: AdultSocialCarePayrunsLambdaFunction
       Properties:
         Action: "lambda:CreateEventSourceMapping"
         FunctionName: ${self:service}-${self:provider.stage}
         Principal: "sqs.amazonaws.com"
     sqsListMappingsPermission:
       Type: AWS::Lambda::Permission
+      DependsOn: AdultSocialCarePayrunsLambdaFunction
       Properties:
         Action: "lambda:ListEventSourceMappings"
         FunctionName: ${self:service}-${self:provider.stage}
         Principal: "sqs.amazonaws.com"
     sqsListFunctionsPermission:
       Type: AWS::Lambda::Permission
+      DependsOn: AdultSocialCarePayrunsLambdaFunction
       Properties:
         Action: "lambda:ListFunctions"
         FunctionName: ${self:service}-${self:provider.stage}
         Principal: "sqs.amazonaws.com"
     sqsLambdaMapping:
       Type: AWS::Lambda::EventSourceMapping
+      DependsOn: AdultSocialCarePayrunsLambdaFunction
       Properties:
         EventSourceArn:
           Fn::Join:
