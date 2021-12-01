@@ -9,5 +9,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Security.Response
         public string Name { get; set; }
         public string Token { get; set; }
         public IEnumerable<string> Groups { get; set; }
+        public IEnumerable<string> Roles { get; set; }
     }
 }

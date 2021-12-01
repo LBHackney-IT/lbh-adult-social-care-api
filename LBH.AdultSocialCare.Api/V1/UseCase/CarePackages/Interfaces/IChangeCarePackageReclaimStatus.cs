@@ -1,7 +1,6 @@
+using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using System;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces
 {

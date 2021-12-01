@@ -1,9 +1,9 @@
+using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.ComponentModel.DataAnnotations;
 using LBH.AdultSocialCare.Api.Attributes;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using Microsoft.AspNetCore.Http;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
 {
@@ -22,5 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
         public string Notes { get; set; }
 
         public IFormFile CarePlanFile { get; set; }
+
+        public Guid CarePlanFileId { get; set; }
     }
 }

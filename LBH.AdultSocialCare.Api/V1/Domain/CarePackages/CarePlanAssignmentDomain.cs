@@ -1,6 +1,6 @@
-using System;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using Microsoft.AspNetCore.Http;
+using System;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
 {
@@ -14,5 +14,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
         public string Notes { get; set; }
 
         public IFormFile CarePlanFile { get; set; }
+        public Guid CarePlanFileId { get; set; }
     }
 }

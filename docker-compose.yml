@@ -18,6 +18,17 @@ services:
 #      - AWS_SECRET_ACCESS_KEY=local
     links:
       - dev-database
+
+  functions-payruns:
+    image: functions-payruns
+    build:
+      context: LBH.AdultSocialCare.Functions.Payruns/
+      dockerfile: ./Dockerfile
+    environment:
+      - CONNECTION_STRING=Host=dev-database;Port=5432;Database=testdb;Username=postgres;Password=mypassword
+    links:
+      - dev-database
+
   dev-database:
     env_file:
       - database.env
@@ -29,7 +40,7 @@ services:
     image: base-api-test
     build:
       context: .
-      dockerfile: LBH.AdultSocialCare.Api.Tests/Dockerfile
+      dockerfile: Tests/LBH.AdultSocialCare.Api.Tests/Dockerfile
     environment:
       - DB_HOST=test-database
       - DB_PORT=5432
@@ -46,6 +57,12 @@ services:
       - test-database
 # TODO: If using DynamoDb remove the line above and uncomment the line below.
 #      - dynamodb-database
+
+  functions-payruns-test:
+    image: functions-payruns-test
+    build:
+      context: .
+      dockerfile: Tests/LBH.AdultSocialCare.Functions.Payruns.Tests/Dockerfile
 
   test-database:
     image: test-database

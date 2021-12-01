@@ -60,3 +60,36 @@ module "postgres_db_development" {
     publicly_accessible = false
     project_name = "adult social care"
 }
+
+resource "aws_sqs_queue" "payruns_queue" {
+  name                            = "lbh-adult-social-care-payruns-development"
+  visibility_timeout_seconds      = 60
+  max_message_size                = 2048
+}
+
+resource "aws_sqs_queue_policy" "payruns_queue_to_lambda_policy" {
+  queue_url = aws_sqs_queue.payruns_queue.id
+
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": [
+            "lambda.amazonaws.com"
+          ]
+        },
+        "Action": [
+          "sqs:SendMessage",
+          "sqs:DeleteMessage",
+          "sqs:GetQueueAttributes",
+          "sqs:ReceiveMessage",
+          "sqs:GetQueueUrl",
+          "sqs:ChangeMessageVisibility"
+        ],
+        "Resource": aws_sqs_queue.payruns_queue.arn,
+      }
+    ]
+  })
+}

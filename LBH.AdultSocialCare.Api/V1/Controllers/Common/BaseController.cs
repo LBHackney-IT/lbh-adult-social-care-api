@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
@@ -16,7 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         public string GetCorrelationId()
         {
             StringValues correlationId;
-            HttpContext.Request.Headers.TryGetValue(Constants.CorrelationId, out correlationId);
+            HttpContext.Request.Headers.TryGetValue(CorrelationConstants.CorrelationId, out correlationId);
 
             if (!correlationId.Any())
                 throw new KeyNotFoundException("Request is missing a correlationId");

@@ -1,11 +1,14 @@
+using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using System;
 using LBH.AdultSocialCare.Api.Attributes;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
 {
+    [GenerateMappingFor(typeof(CarePackageReclaim))]
     [GenerateMappingFor(typeof(CarePackageReclaimResponse))]
+    [GenerateListMappingFor(typeof(CarePackageReclaim))]
     [GenerateListMappingFor(typeof(CarePackageReclaimResponse))]
     public class CarePackageReclaimDomain
     {
@@ -33,6 +36,8 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
 
         public string ClaimReason { get; set; }
 
-        public string AssessmentFileUrl { get; set; }
+        public Guid AssessmentFileId { get; set; }
+        public string AssessmentFileName { get; set; }
+        public bool HasAssessmentBeenCarried { get; set; } = true;
     }
 }

@@ -1,16 +1,23 @@
 using Amazon.XRay.Recorder.Handlers.AwsSdk;
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
+using HttpServices.Services.Concrete;
+using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.Providers;
 using LBH.AdultSocialCare.Api.V1;
 using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
+using LBH.AdultSocialCare.Api.V1.Gateways;
+using LBH.AdultSocialCare.Api.V1.Services.Auth;
+using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Api.Versioning;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,30 +30,26 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using HttpServices.Services.Concrete;
-using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Api.Providers;
-using LBH.AdultSocialCare.Api.V1.Core.Invoicing;
-using LBH.AdultSocialCare.Api.V1.Gateways;
-using LBH.AdultSocialCare.Api.V1.Services.Auth;
-using LBH.AdultSocialCare.Api.V1.Services.IO;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
+using Amazon;
+using Amazon.Extensions.NETCore.Setup;
+using LBH.AdultSocialCare.Data;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace LBH.AdultSocialCare.Api
 {
 
     public class Startup
     {
-
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
             Configuration = configuration;
+            CurrentEnvironment = environment;
 
             AWSSDKHandler.RegisterXRayForAllServices();
         }
 
         public IConfiguration Configuration { get; }
+        private IHostEnvironment CurrentEnvironment { get; }
 
         private static List<ApiVersionDescription> _apiVersions { get; set; }
         private const string ApiName = "Adult Social Care API";
@@ -70,6 +73,11 @@ namespace LBH.AdultSocialCare.Api
                         "There are some validation errors. Please correct and try again")))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
+            services.Configure<FormOptions>(x =>
+            {
+                x.MultipartBodyLengthLimit = 209715200;
+            });
+
             services.AddApiVersioning(o =>
             {
                 o.DefaultApiVersion = new ApiVersion(1, 0);
@@ -88,28 +96,29 @@ namespace LBH.AdultSocialCare.Api
             // Add auto mapper
             services.AddAutoMapper(typeof(Startup));
 
-            services.ConfigureLogging(Configuration);
+            services.ConfigureLogging(CurrentEnvironment, Configuration);
 
             services.ConfigureDbContext(Configuration);
             services.AddAuthentication();
             services.ConfigureIdentityService();
             services.ConfigureJWT(Configuration);
 
+            services.AddScoped<IDatabaseManager, DatabaseManager>();
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();
             services.AddScoped<IFileStorage, FileStorage>();
 
+            services.AddDefaultAWSOptions(new AWSOptions { Region = RegionEndpoint.GetBySystemName(Configuration["AWS:Region"]) });
+            services.AddAmazonSqs(CurrentEnvironment, Configuration);
+
             services.AddHttpContextAccessor();
 
-            services.AddScoped<IDatabaseManager, DatabaseManager>();
             services.RegisterGateways();
             services.RegisterUseCases();
 
             // Configure API clients
             services.AddTransient<IRestClient, JsonRestClient>();
-            services.ConfigureTransactionsApiClient(Configuration);
             services.ConfigureResidentApiClient(Configuration);
-
-            services.AddTransient<InvoiceGenerator>();
+            services.ConfigureDocumentApiClient(Configuration);
         }
 
         private static void ConfigureSwagger(IServiceCollection services) => services.AddSwaggerGen(c =>

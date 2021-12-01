@@ -1,9 +1,11 @@
+using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using System;
 using LBH.AdultSocialCare.Api.Attributes;
-using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
 {
+    [GenerateMappingFor(typeof(CarePackageSettings))]
     [GenerateMappingFor(typeof(CarePackageSettingsResponse))]
     [GenerateListMappingFor(typeof(CarePackageSettingsResponse))]
     public class CarePackageSettingsDomain
@@ -15,5 +17,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
         public bool HospitalAvoidance { get; set; }
         public bool IsReEnablement { get; set; }
         public bool IsS117Client { get; set; }
+        public bool IsS117ClientConfirmed { get; set; }
     }
 }

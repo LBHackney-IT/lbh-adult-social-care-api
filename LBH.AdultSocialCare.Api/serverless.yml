@@ -3,6 +3,9 @@ provider:
   name: aws
   runtime: dotnetcore3.1
   memorySize: 2048
+  apiGateway:
+    binaryMediaTypes:
+      - '*/*'
   tracing:
     lambda: true
     apiGateway: true
@@ -35,6 +38,12 @@ functions:
         HASCHttpClients__TransactionsApiKey: ${ssm:/hasc-api/${self:provider.stage}/TRANSACTIONS-API-KEY}
         ResidentsAPI__BaseUrl: ${ssm:/hasc-api/${self:provider.stage}/RESIDENTS-BASE-URL}
         ResidentsAPI__ApiKey: ${ssm:/hasc-api/${self:provider.stage}/RESIDENTS-API-KEY}
+        PayrunsQueue__Url: ${ssm:/hasc-api/${self:provider.stage}/PAYRUNS-QUEUE-URL}
+        AWS__Region: ${self:provider.region}
+        DocumentAPI__BaseUrl: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTS-BASE-URL}
+        DocumentAPI__ClaimBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTAPI-POST-CLAIM-TOKEN}
+        DocumentAPI__PostBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTAPI-POST-DOCUMENT-TOKEN}
+        DocumentAPI__GetBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTSAPI-GET-DOCUMENT-TOKEN}
     events:
       - http:
           path: /{proxy+}
@@ -98,6 +107,21 @@ resources:
                   Action:
                     - "lambda:InvokeFunction"
                   Resource: "*"
+          - PolicyName: sqsOperations
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - "sqs:GetQueueUrl"
+                    - "sqs:SendMessage"
+                  Resource:
+                    - Fn::Join:
+                        - ':'
+                        - - 'arn:aws:sqs'
+                          - Ref: 'AWS::Region'
+                          - Ref: 'AWS::AccountId'
+                          - lbh-adult-social-care-payruns-${self:provider.stage}
 custom:
   vpc:
     development:

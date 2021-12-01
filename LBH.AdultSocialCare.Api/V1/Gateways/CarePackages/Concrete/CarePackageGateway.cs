@@ -1,20 +1,21 @@
-using Common.Extensions;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Data;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Extensions;
+using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
 {
@@ -35,8 +36,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                     queryParameters.Status, queryParameters.BrokerId, queryParameters.FromDate, queryParameters.ToDate);
 
             var packages = await filteredPackageQuery
-                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
-                .Take(queryParameters.PageSize)
                 .AsNoTracking()
                 .Select(cp => new BrokerPackageItemDomain
                 {
@@ -51,7 +50,17 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                     PackageStatus = cp.Status.GetDisplayName(),
                     BrokerName = cp.Broker.Name,
                     DateAssigned = cp.DateCreated
-                }).ToListAsync();
+                })
+                .ToListAsync();
+
+            var preferences = FilterPreferences.BrokerListStatus();
+            packages = packages
+                .OrderBy(x => preferences.IndexOf(x.PackageStatus)).ThenBy(x => x.DateAssigned)
+                .ToList();
+
+            packages = packages
+                .Skip((queryParameters.PageNumber - 1) * queryParameters.PageSize)
+                .Take(queryParameters.PageSize).ToList();
 
             var packageCount = await filteredPackageQuery
                 .CountAsync();

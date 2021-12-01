@@ -1,8 +1,9 @@
 using AutoMapper;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
+using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using LBH.AdultSocialCare.Data.Entities.Common;
+using LBH.AdultSocialCare.Data.Entities.Payments;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -85,5 +86,14 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion ServiceUsers
+
+        #region PayRun
+
+        public static Payrun ToEntity(this DraftPayRunCreationDomain input)
+        {
+            return _mapper.Map<Payrun>(input);
+        }
+
+        #endregion
     }
 }

@@ -1,16 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using System;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 {

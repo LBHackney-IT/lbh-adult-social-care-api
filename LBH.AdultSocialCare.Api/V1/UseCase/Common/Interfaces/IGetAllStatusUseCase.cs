@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using LBH.AdultSocialCare.Data.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces
 {

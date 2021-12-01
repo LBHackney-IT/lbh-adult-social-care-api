@@ -29,6 +29,26 @@
       <None Remove="terraform\**" />
       <None Remove="V1\UseCase\DayCareApproveBrokeredUseCase\**" />
       <None Remove="V1\UseCase\DayCareApprovePackageUseCase\**" />
+      <Compile Remove="Helpers\Dates.cs" />
+      <Compile Remove="V1\Extensions\IdentityExtensions.cs" />
+      <Compile Remove="V1\AppConstants\PriceEffect.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211109113250_HeldInvoiceModels.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211109113250_HeldInvoiceModels.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211109115506_AddBaseEntityOnHeldInvoice.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211109115506_AddBaseEntityOnHeldInvoice.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211109143254_PayRunHistoryModel.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211109143254_PayRunHistoryModel.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211117080956_addedInvoiceGrossAndNetTotals.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211117080956_addedInvoiceGrossAndNetTotals.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\CarePackageSchedulingOptionsSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\DepartmentSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\FundedNursingCarePriceSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\PackageStatusSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\PrimarySupportReasonSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\ProvisionalCareChargeAmountSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\RolesSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\SupplierSeed.cs" />
+      <Compile Remove="V1\Infrastructure\SeedConfiguration\UserRolesSeed.cs" />
     </ItemGroup>
     <ItemGroup>
       <Compile Remove="V1\Infrastructure\Migrations\20210514130701_TestMigration.cs" />
@@ -51,17 +71,20 @@
       <Compile Remove="V1\Infrastructure\Migrations\20211006172739_AutoSeedEnums.Designer.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20211006175844_IdentityTablesNavigation.cs" />
       <Compile Remove="V1\Infrastructure\Migrations\20211006175844_IdentityTablesNavigation.Designer.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211108104056_AddIsReclaimOnInvoiceItem.cs" />
+      <Compile Remove="V1\Infrastructure\Migrations\20211108104056_AddIsReclaimOnInvoiceItem.Designer.cs" />
     </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="5.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.5.4.36" />
-    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.3.101" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.0.1" />
+    <PackageReference Include="AWSSDK.SQS" Version="3.7.1.34" />
     <PackageReference Include="AWSXRayRecorder.Core" Version="2.10.0" />
     <PackageReference Include="AWSXRayRecorder.Handlers.AspNetCore" Version="2.7.2" />
     <PackageReference Include="AWSXRayRecorder.Handlers.AwsSdk" Version="2.8.2" />
     <PackageReference Include="AWSXRayRecorder.Handlers.EntityFramework" Version="1.1.0" />
+    <PackageReference Include="EPPlus" Version="5.8.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.16" />
     <PackageReference Include="Microsoft.AspNetCore.HealthChecks" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.16" />
@@ -84,6 +107,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HttpServices\HttpServices.csproj" />
+    <ProjectReference Include="..\LBH.AdultSocialCare.Data\LBH.AdultSocialCare.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -97,7 +121,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent" Condition="$(SKIP_CODE_GENERATION)!=1">
-      <Exec Command="..\LBH.AdultSocialCare.Api.CodeGenerator\bin\$(ConfigurationName)\netcoreapp3.1\LBH.AdultSocialCare.Api.CodeGenerator.exe $(ProjectDir)\V1\" />
+    <Exec Command="..\LBH.AdultSocialCare.Api.CodeGenerator\bin\$(ConfigurationName)\netcoreapp3.1\LBH.AdultSocialCare.Api.CodeGenerator.exe $(ProjectDir)\V1\ $(ProjectDir)\V1\ $(ProjectDir)..\LBH.AdultSocialCare.Data\" />
   </Target>
 
 </Project>

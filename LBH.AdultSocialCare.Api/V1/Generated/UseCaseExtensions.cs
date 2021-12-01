@@ -6,6 +6,8 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.Security.Interfaces;
 
@@ -55,16 +57,27 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<IGetAllUsersUseCase, GetAllUsersUseCase>();
             services.AddScoped<IGetFundedNursingCarePriceUseCase, GetFundedNursingCarePriceUseCase>();
             services.AddScoped<IGetServiceUserUseCase, GetServiceUserUseCase>();
-            services.AddScoped<IPayRunUseCase, PayRunUseCase>();
+            services.AddScoped<IApprovePayRunUseCase, ApprovePayRunUseCase>();
+            services.AddScoped<IArchivePayRunUseCase, ArchivePayRunUseCase>();
+            services.AddScoped<IChangePayRunInvoiceStatusUseCase, ChangePayRunInvoiceStatusUseCase>();
+            services.AddScoped<ICreateDraftPayRunUseCase, CreateDraftPayRunUseCase>();
+            services.AddScoped<IDownloadPayRunCedarFileUseCase, DownloadPayRunCedarFileUseCase>();
+            services.AddScoped<IGetDepartmentUseCase, GetDepartmentUseCase>();
+            services.AddScoped<IGetEndDateOfLastPayRunUseCase, GetEndDateOfLastPayRunUseCase>();
+            services.AddScoped<IGetHeldInvoicesUseCase, GetHeldInvoicesUseCase>();
+            services.AddScoped<IGetPackagePaymentHistoryUseCase, GetPackagePaymentHistoryUseCase>();
+            services.AddScoped<IGetPayRunDetailsUseCase, GetPayRunDetailsUseCase>();
+            services.AddScoped<IGetPayRunInsightsUseCase, GetPayRunInsightsUseCase>();
+            services.AddScoped<IGetPayRunInvoiceUseCase, GetPayRunInvoiceUseCase>();
+            services.AddScoped<IGetPayRunListUseCase, GetPayRunListUseCase>();
+            services.AddScoped<IGetReleasedInvoiceCountUseCase, GetReleasedInvoiceCountUseCase>();
+            services.AddScoped<IHoldInvoiceUseCase, HoldInvoiceUseCase>();
+            services.AddScoped<IMakePayRunPaymentUseCase, MakePayRunPaymentUseCase>();
+            services.AddScoped<ISubmitPayRunUseCase, SubmitPayRunUseCase>();
             services.AddScoped<IAuthUseCase, AuthUseCase>();
-            services.AddScoped<IDeleteRoleUseCase, DeleteRoleUseCase>();
-            services.AddScoped<IDeleteUsersUseCase, DeleteUsersUseCase>();
             services.AddScoped<IGetAllRoleUseCase, GetAllRoleUseCase>();
-            services.AddScoped<IGetRoleUseCase, GetRoleUseCase>();
             services.AddScoped<IGetUsersUseCase, GetUsersUseCase>();
             services.AddScoped<IIdentityHelperUseCase, IdentityHelperUseCase>();
-            services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
-            services.AddScoped<IUpsertRoleUseCase, UpsertRoleUseCase>();
         }
     }
 }

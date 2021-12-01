@@ -1,11 +1,11 @@
+using LBH.AdultSocialCare.Api.CodeGenerator.Helpers;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using LBH.AdultSocialCare.Api.CodeGenerator.Helpers;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
 {
@@ -203,7 +203,10 @@ namespace LBH.AdultSocialCare.Api.CodeGenerator.Generators
                 codeBuilder.AppendLine($"using {@using};");
             }
 
-            var usings = NamespaceResolver.FindNamespaces(syntaxForrest, "Boundary", "Domain", "Infrastructure.Entities");
+            var usings = NamespaceResolver.FindNamespaces(syntaxForrest,
+                "LBH.AdultSocialCare.Api.V1.Boundary",
+                "LBH.AdultSocialCare.Api.V1.Domain",
+                "LBH.AdultSocialCare.Data.Entities");
 
             foreach (var @using in usings)
             {

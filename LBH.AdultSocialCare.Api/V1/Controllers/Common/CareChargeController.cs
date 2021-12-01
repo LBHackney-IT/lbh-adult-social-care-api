@@ -1,14 +1,13 @@
-using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Extensions;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
@@ -34,6 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(PagedResponse<CareChargePackagesResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
+        // [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover, RolesEnum.Finance, RolesEnum.FinanceApprover, RolesEnum.CareChargeManager)]
         public async Task<ActionResult<PagedResponse<CareChargePackagesResponse>>> GetCareChargePackages([FromQuery] CareChargePackagesParameters parameters)
         {
             var result = await _getCareChargePackagesUseCase.GetCareChargePackages(parameters).ConfigureAwait(false);

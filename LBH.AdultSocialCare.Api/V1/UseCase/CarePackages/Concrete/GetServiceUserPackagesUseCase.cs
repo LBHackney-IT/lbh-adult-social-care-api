@@ -1,16 +1,17 @@
 using Common.Extensions;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Helpers;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -58,6 +59,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     DateAssigned = carePackage.DateAssigned,
                     GrossTotal = 0,
                     NetTotal = 0,
+                    SocialWorkerCarePlanFileId = carePackage.SocialWorkerCarePlanFileId,
+                    SocialWorkerCarePlanFileName = carePackage.SocialWorkerCarePlanFileName,
                     Notes = new List<CarePackageHistoryResponse>(),
                     PackageItems = new List<CarePackageCostItemResponse>()
                 };
@@ -69,6 +72,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     .Where(d => d.Type == PackageDetailType.AdditionalNeed).ToList();
 
                 packageResponse.PackageItems = CollectPackageItems(carePackage, coreCost, additionalNeeds, carePackage.Reclaims.ToList());
+
+                var preferences = FilterPreferences.PackageItemStatus();
+
+                packageResponse.PackageItems = packageResponse.PackageItems.OrderBy(
+                    item => preferences.IndexOf(item.Status));
 
                 // Get care package history if package request i.e new, in-progress, not-approved
                 if (packageRequestStatuses.Contains(carePackage.Status))
@@ -136,7 +144,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     Status = reclaim.Status.GetDisplayName(),
                     StartDate = reclaim.StartDate,
                     EndDate = reclaim.EndDate,
-                    WeeklyCost = reclaim.Cost
+                    WeeklyCost = reclaim.ClaimCollector == ClaimCollector.Hackney ? reclaim.Cost : decimal.Negate(reclaim.Cost)
                 }));
             }
 
@@ -171,7 +179,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             decimal netTotal = 0;
 
             // Add core cost
-            if (coreCost != null)
+            if (coreCost != null && IsValidDateRange(coreCost.StartDate, coreCost.EndDate))
             {
                 grossTotal += coreCost.Cost;
                 netTotal += coreCost.Cost;
@@ -179,17 +187,27 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             // Add weekly additional needs only
             var weeklyAdditionalNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.Weekly).ToList();
-            foreach (var need in weeklyAdditionalNeeds)
+            foreach (var need in weeklyAdditionalNeeds.Where(need => IsValidDateRange(need.StartDate, need.EndDate)))
             {
                 grossTotal += need.Cost;
                 netTotal += need.Cost;
             }
 
             // Deduct reclaims collected by supplier from package net cost
-            netTotal = reclaims.Where(reclaim => reclaim.ClaimCollector.Equals(ClaimCollector.Supplier))
+            netTotal = reclaims.Where(reclaim => reclaim.Status == ReclaimStatus.Active && reclaim.ClaimCollector == ClaimCollector.Supplier && IsValidDateRange(reclaim.StartDate, reclaim.EndDate))
                 .Aggregate(netTotal, (current, reclaim) => current - reclaim.Cost);
 
             return (grossTotal, netTotal);
+        }
+
+        private static bool IsValidDateRange(DateTimeOffset startDate, DateTimeOffset? endDate)
+        {
+            var today = DateTimeOffset.Now.Date;
+            return (today >= startDate) switch
+            {
+                true when (endDate == null || endDate.Value.Date >= today) => true,
+                _ => false
+            };
         }
     }
 }

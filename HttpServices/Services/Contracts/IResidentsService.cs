@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
+using System.Threading.Tasks;
 
 namespace HttpServices.Services.Contracts
 {

@@ -1,9 +1,9 @@
-using System.Net.Http;
-using System.Threading.Tasks;
 using HttpServices.Helpers;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace HttpServices.Services.Concrete
 {

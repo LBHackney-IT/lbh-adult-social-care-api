@@ -1,7 +1,7 @@
-using System;
 using Common.Extensions;
-using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using System;
+using LBH.AdultSocialCare.Api.Attributes;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {

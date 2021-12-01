@@ -1,10 +1,9 @@
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Extensions;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.RequestFeatures.Parameters;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
+using LBH.AdultSocialCare.Data.Entities.Common;
+using LBH.AdultSocialCare.Data.Extensions;
+using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
 {
@@ -17,9 +16,5 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces
         public Task<SupplierDomain> UpdateAsync(SupplierDomain supplier);
 
         public Task<PagedList<SupplierDomain>> ListAsync(RequestParameters parameters, string supplierName);
-
-        public Task<IEnumerable<SupplierMinimalDomain>> GetSupplierMinimalList();
-
-        public Task<IEnumerable<SupplierMinimalDomain>> GetSupplierMinimalInList(List<long> supplierIds);
     }
 }

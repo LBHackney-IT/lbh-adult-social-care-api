@@ -1,41 +1,30 @@
 using HttpServices.Services.Concrete;
 using HttpServices.Services.Contracts;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Diagnostics;
 using System.Net.Http;
-using System.Reflection;
+using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Text;
-using LBH.AdultSocialCare.Api.V1.Exceptions.Filters;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.Common;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Amazon.SQS;
+using LBH.AdultSocialCare.Api.Configuration;
+using LBH.AdultSocialCare.Api.V1.Services.IO;
+using LBH.AdultSocialCare.Api.V1.Services.Queuing;
+using LBH.AdultSocialCare.Data;
+using LBH.AdultSocialCare.Data.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
 {
-
     public static class ServiceExtensions
     {
-
-        public static void ConfigureTransactionsApiClient(this IServiceCollection services, IConfiguration configuration)
-        {
-            services
-                .AddHttpClient<ITransactionsService, TransactionsService>(client =>
-                {
-                    client.BaseAddress = new Uri(configuration["HASCHttpClients:TransactionsBaseUrl"]);
-                    client.DefaultRequestHeaders.Add("x-api-key", configuration["HASCHttpClients:TransactionsApiKey"]);
-                })
-                .ConfigureMessageHandlers();
-        }
-
         public static void ConfigureResidentApiClient(this IServiceCollection services, IConfiguration configuration)
         {
             services
@@ -66,34 +55,35 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             string connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ??
                                       configuration.GetConnectionString("DatabaseConnectionString");
 
-            string assemblyName = Assembly.GetCallingAssembly().GetName().Name;
-
             /*services.AddDbContext<DatabaseContext>(
                 opt => opt.UseNpgsql(connectionString, b => b.MigrationsAssembly(assemblyName)).AddXRayInterceptor(true));*/
 
             services.AddDbContext<DatabaseContext>(opt
-                => opt.UseNpgsql(connectionString, b => b.MigrationsAssembly(assemblyName)));
+                => opt.UseNpgsql(connectionString, b => b.MigrationsAssembly("LBH.AdultSocialCare.Data")));
         }
 
-        public static void ConfigureLogging(this IServiceCollection services, IConfiguration configuration)
+        public static void ConfigureLogging(this IServiceCollection services, IHostEnvironment environment, IConfiguration configuration)
         {
             // We rebuild the logging stack so as to ensure the console logger is not used in production.
             // See here: https://weblog.west-wind.com/posts/2018/Dec/31/Dont-let-ASPNET-Core-Default-Console-Logging-Slow-your-App-down
-            services.AddSingleton<ILogger>(provider =>
-                provider.GetRequiredService<ILogger<LBHExceptionFilter>>());
-
             services.AddLogging(config =>
             {
                 // Clear out default configuration
                 config.ClearProviders();
 
-                config.AddConfiguration(configuration.GetSection("Logging"));
-                config.AddDebug();
+                var loggingConfig = configuration.GetSection("Logging");
+
+                config.AddConfiguration(loggingConfig);
                 config.AddEventSourceLogger();
 
-                if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == Environments.Development)
+                if (environment.IsDevelopment())
                 {
+                    config.AddDebug();
                     config.AddConsole();
+                }
+                else
+                {
+                    config.AddLambdaLogger(new LambdaLoggerOptions(loggingConfig));
                 }
             });
         }
@@ -126,6 +116,53 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                             : TimeSpan.FromMinutes(10)
                     };
                 });
+        }
+
+        public static void AddAmazonSqs(this IServiceCollection services, IHostEnvironment environment, IConfiguration configuration)
+        {
+            services.Configure<PayrunsQueueOptions>(configuration.GetSection(PayrunsQueueOptions.SectionName));
+            services.AddScoped<IQueueService, AmazonSqsService>();
+
+            if (environment.IsDevelopment())
+            {
+                services.AddScoped<IAmazonSQS, AmazonSqsEmulator>();
+                services.AddHttpClient<IAmazonSQS, AmazonSqsEmulator>(client =>
+                {
+                    client.BaseAddress = new Uri(configuration["PayrunsQueue:DevelopmentUrl"]);
+                    client.Timeout = TimeSpan.FromDays(1); // For debugging purposes
+                });
+            }
+            else
+            {
+                services.AddAWSService<IAmazonSQS>();
+            }
+        }
+
+        public static void ConfigureDocumentApiClient(this IServiceCollection services, IConfiguration configuration)
+        {
+            services
+                .AddHttpClient<IDocumentClaimClient, DocumentClaimClient>(client =>
+                {
+                    client.BaseAddress = new Uri(configuration["DocumentAPI:BaseUrl"]);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(configuration["DocumentAPI:ClaimBearerToken"]);
+                })
+                .ConfigureMessageHandlers();
+
+            services
+                .AddHttpClient<IDocumentPostClient, DocumentPostClient>(client =>
+                {
+                    client.BaseAddress = new Uri(configuration["DocumentAPI:BaseUrl"]);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(configuration["DocumentAPI:PostBearerToken"]);
+                })
+                .ConfigureMessageHandlers();
+
+            services
+                .AddHttpClient<IDocumentGetClient, DocumentGetClient>(client =>
+                {
+                    client.BaseAddress = new Uri(configuration["DocumentAPI:BaseUrl"]);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(configuration["DocumentAPI:GetBearerToken"]);
+                })
+                .ConfigureMessageHandlers();
         }
 
         private static IHttpClientBuilder ConfigureMessageHandlers(this IHttpClientBuilder builder)

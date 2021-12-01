@@ -1,9 +1,9 @@
+using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
 {

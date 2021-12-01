@@ -1,15 +1,17 @@
+using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Validations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using LBH.AdultSocialCare.Api.Attributes;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
-using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Validations;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
 {
     [GenerateMappingFor(typeof(CarePackageDetailDomain))]
+    [GenerateListMappingFor(typeof(CarePackageDetail))]
     public class CarePackageDetailRequest : IValidatableObject
     {
         [GuidNotEmpty]

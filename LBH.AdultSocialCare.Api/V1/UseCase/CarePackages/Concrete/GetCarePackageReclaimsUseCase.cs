@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Common.Extensions;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -26,6 +24,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task<CarePackageReclaimResponse> GetCarePackageReclaim(Guid carePackageId, ReclaimType reclaimType)
         {
             var res = await _carePackageReclaimGateway.GetSingleAsync(carePackageId, reclaimType);
+
+            if (res.Status == ReclaimStatus.Cancelled) res.HasAssessmentBeenCarried = false;
             return res.ToResponse();
         }
 

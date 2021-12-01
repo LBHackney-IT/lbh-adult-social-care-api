@@ -1,16 +1,17 @@
-using System;
-using System.IO;
-using System.Threading.Tasks;
 using Common.Extensions;
-using LBH.AdultSocialCare.Api.V1.AppConstants.Enums;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using HttpServices.Models.Responses;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -39,7 +40,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var serviceUser = await _getServiceUserUseCase.GetServiceUserInformation(carePlanAssignment.HackneyUserId);
             await _ensureSingleActivePackageTypePerUserUseCase.ExecuteAsync(serviceUser.Id, carePlanAssignment.PackageType);
 
-            var carePlanFileUrl = await UploadCarePlan(carePlanAssignment.CarePlanFile);
+            var documentResponse = new DocumentResponse();
+
+            if (carePlanAssignment.CarePlanFileId == Guid.Empty)
+            {
+                documentResponse = await _fileStorage.SaveFileAsync(ConvertCarePlan(carePlanAssignment.CarePlanFile), carePlanAssignment.CarePlanFile?.FileName);
+            }
 
             var package = new CarePackage
             {
@@ -48,7 +54,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 PackageType = carePlanAssignment.PackageType,
                 Status = PackageStatus.New,
                 DateAssigned = DateTimeOffset.Now,
-                SocialWorkerCarePlanFileUrl = carePlanFileUrl
+                SocialWorkerCarePlanFileId = documentResponse?.FileId ?? Guid.Empty,
+                SocialWorkerCarePlanFileName = documentResponse?.FileName
             };
 
             package.Histories.Add(new CarePackageHistory
@@ -62,22 +69,20 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             await _dbManager.SaveAsync();
         }
 
-        private async Task<string> UploadCarePlan(IFormFile carePlanFile)
+        private static string ConvertCarePlan(IFormFile carePlanFile)
         {
             if (carePlanFile != null)
             {
                 using (var stream = new MemoryStream())
                 {
                     carePlanFile.CopyTo(stream);
-                    var bytes = stream.ToArray();
 
-                    return await _fileStorage.SaveFileAsync(bytes);
+                    var bytes = stream.ToArray();
+                    return $"data:{carePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}";
                 }
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
     }
 }

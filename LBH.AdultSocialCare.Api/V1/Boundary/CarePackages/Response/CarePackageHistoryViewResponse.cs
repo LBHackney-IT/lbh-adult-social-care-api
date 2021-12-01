@@ -11,6 +11,8 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
         public DateTimeOffset? AssignedOn { get; set; }
         public string ApprovedBy { get; set; }
         public DateTimeOffset? ApprovedOn { get; set; }
+        public Guid? SocialWorkerCarePlanFileId { get; set; }
+        public string SocialWorkerCarePlanFileName { get; set; }
         public IEnumerable<CarePackageHistoryResponse> History { get; set; }
     }
 }

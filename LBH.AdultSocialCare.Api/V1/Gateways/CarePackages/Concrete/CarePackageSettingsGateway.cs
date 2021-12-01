@@ -1,12 +1,11 @@
+using LBH.AdultSocialCare.Api.V1.Extensions;
+using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Extensions;
-using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Infrastructure;
-using LBH.AdultSocialCare.Api.V1.Infrastructure.Entities.CarePackages;
-using Microsoft.EntityFrameworkCore;
+using LBH.AdultSocialCare.Data;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
 {

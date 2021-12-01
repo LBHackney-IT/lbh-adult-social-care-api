@@ -1,12 +1,13 @@
-using System;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Extensions;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
 {
@@ -38,6 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
+        // [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
         public async Task<ActionResult<CarePackageBrokerageResponse>> GetCarePackageBrokerageAsync(Guid packageId)
         {
             var brokerageInfo = await _getCarePackageBrokerageUseCase.ExecuteAsync(packageId);
@@ -61,6 +63,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
+        // [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult> CreateCarePackageBrokerageInfo(Guid packageId, CarePackageBrokerageCreationRequest request)
         {
             await _upsertCarePackageBrokerageUseCase.ExecuteAsync(packageId, request.ToDomain());
