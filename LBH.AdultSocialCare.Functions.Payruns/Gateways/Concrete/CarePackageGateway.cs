@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -21,12 +22,13 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
             return await DbContext.CarePackages
                 .AsNoTracking()
                 .Where(package =>
-                    package.Details.Any(detail =>
-                        DbContext.CompareDates(detail.StartDate, /* <= */ endDate) <= 0 &&
-                        (detail.EndDate == null || DbContext.CompareDates(detail.EndDate, /* >= */ startDate.Date) >= 0)) ||
-                    package.Reclaims.Any(reclaim =>
-                        DbContext.CompareDates(reclaim.StartDate, /* <= */ endDate) <= 0 &&
-                        (reclaim.EndDate == null || DbContext.CompareDates(reclaim.EndDate, /* >= */ startDate.Date) >= 0)))
+                    package.Status == PackageStatus.Approved &&
+                    (package.Details.Any(detail =>
+                         DbContext.CompareDates(detail.StartDate, /* <= */ endDate) <= 0 &&
+                         (detail.EndDate == null || DbContext.CompareDates(detail.EndDate, /* >= */ startDate.Date) >= 0)) ||
+                     package.Reclaims.Any(reclaim =>
+                         DbContext.CompareDates(reclaim.StartDate, /* <= */ endDate) <= 0 &&
+                         (reclaim.EndDate == null || DbContext.CompareDates(reclaim.EndDate, /* >= */ startDate.Date) >= 0))))
                 .Select(package => package.Id)
                 .ToListAsync();
         }
