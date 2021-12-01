@@ -119,6 +119,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 {
                     var provisionalReclaimStatus = ReclaimStatus.Ended;
                     var provisionalReclaimEndDate = requestedReclaim.StartDate.Date.AddDays(-1);
+                    if (provisionalReclaimEndDate.Date >= DateTimeOffset.Now.Date)
+                    {
+                        provisionalReclaimStatus = ReclaimStatus.Active;
+                    }
 
                     if (provisionalReclaim.StartDate.Date == requestedReclaim.StartDate.Date)
                     {

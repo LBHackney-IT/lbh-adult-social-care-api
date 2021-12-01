@@ -110,8 +110,22 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
                 else
                 {
-                    existingReclaim.Status = ReclaimStatus.Ended;
-                    existingReclaim.EndDate = DateTimeOffset.Now.Date;
+                    if (requestedReclaim.StartDate.Date == existingReclaim.StartDate.Date)
+                    {
+                        existingReclaim.Status = ReclaimStatus.Cancelled;
+                    }
+                    else if (requestedReclaim.StartDate.Date > existingReclaim.StartDate.Date)
+                    {
+                        existingReclaim.EndDate = requestedReclaim.StartDate.Date.AddDays(-1);
+                        existingReclaim.Status = existingReclaim.EndDate.GetValueOrDefault().Date < DateTimeOffset.Now.Date
+                            ? ReclaimStatus.Ended
+                            : existingReclaim.Status;
+                    }
+                    else
+                    {
+                        existingReclaim.Status = ReclaimStatus.Ended;
+                        existingReclaim.EndDate = DateTimeOffset.Now.Date;
+                    }
 
                     if (reclaimBulkUpdateDomain?.AssessmentFileId == Guid.Empty)
                     {
