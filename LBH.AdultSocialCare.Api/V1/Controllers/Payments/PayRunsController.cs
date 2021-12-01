@@ -187,7 +187,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
             var excelName = $"{payRunId} Cedar File.xlsx";
 
             return new FileContentResult(stream.ToArray(),
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {FileDownloadName = excelName};
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            { FileDownloadName = excelName };
         }
     }
 }
