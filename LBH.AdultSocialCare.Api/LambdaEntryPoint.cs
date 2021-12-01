@@ -7,6 +7,8 @@ namespace LBH.AdultSocialCare.Api
     {
         protected override void Init(IWebHostBuilder builder)
         {
+            RegisterResponseContentEncodingForContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", ResponseContentEncoding.Base64);
+
             builder
                 .UseStartup<Startup>();
         }
