@@ -180,14 +180,14 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [HttpGet("{payRunId:guid}/download")]
-        [AllowAnonymous]
         public async Task<ActionResult> DownloadCedarFile([FromServices] IDownloadPayRunCedarFileUseCase useCase, Guid payRunId)
         {
             var stream = await useCase.ExecuteAsync(payRunId);
 
             var excelName = $"{payRunId} Cedar File.xlsx";
 
-            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+            return new FileContentResult(stream.ToArray(),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet") {FileDownloadName = excelName};
         }
     }
 }
