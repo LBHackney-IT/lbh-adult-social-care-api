@@ -45,6 +45,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 .GetPackageAsync(reclaimCreationDomain.CarePackageId, PackageFields.Details | PackageFields.Reclaims, true)
                 .EnsureExistsAsync($"Care package with id {reclaimCreationDomain.CarePackageId} not found");
 
+            if (carePackage.Status.In(PackageStatus.Cancelled, PackageStatus.Ended))
+            {
+                throw new ApiException($"Can not create {reclaimType.GetDisplayName()} for care package status {carePackage.Status.GetDisplayName()}",
+                    HttpStatusCode.BadRequest);
+            }
+
             var coreCostDetail = carePackage.Details
                 .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost)
                 .EnsureExists($"Core cost for package with id {reclaimCreationDomain.CarePackageId} not found", HttpStatusCode.InternalServerError);
@@ -87,9 +93,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             });
 
             // Change status of package to in-progress
-            if (carePackage.Status != PackageStatus.InProgress)
+            if (carePackage.Status == PackageStatus.Approved)
             {
-                carePackage.Status = PackageStatus.InProgress;
+                carePackage.Status = PackageStatus.SubmittedForApproval;
             }
 
             await _dbManager.SaveAsync("Could not save care package reclaim to database");
