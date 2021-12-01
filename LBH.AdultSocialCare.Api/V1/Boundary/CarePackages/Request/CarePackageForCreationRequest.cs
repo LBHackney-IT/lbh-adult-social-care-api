@@ -18,7 +18,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
         [EnumDataType(typeof(PackageScheduling))]
         public PackageScheduling? PackageScheduling { get; set; }
 
-        [Range(1, 4)]
+        [EnumDataType(typeof(PackageType))]
         public PackageType PackageType { get; set; }
 
         // Package settings
