@@ -5,6 +5,7 @@ using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
 {
+    [GenerateListMappingFor(typeof(PayRunInvoiceItemResponse))]
     public class PayRunInvoiceItemDomain
     {
         public Guid Id { get; set; } // Invoice item id
