@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using OfficeOpenXml;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
@@ -184,8 +185,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
             var stream = await useCase.ExecuteAsync(payRunId);
 
             var excelName = $"{payRunId} Cedar File.xlsx";
-
-            return File(stream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", excelName);
+            byte[] b1 = stream.ToArray();
+            stream.Flush();
+            return new FileContentResult(b1,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            { FileDownloadName = excelName };
         }
     }
 }
