@@ -241,7 +241,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             return await _dbContext.PayrunInvoices.Where(pi => pi.InvoiceStatus == InvoiceStatus.Released && pi.Payrun.Status != PayrunStatus.Archived).CountAsync();
         }
 
-        
+
 
         private static IQueryable<PayrunInvoice> BuildPayRunInvoiceQuery(IQueryable<PayrunInvoice> query, PayRunInvoiceFields fields)
         {
