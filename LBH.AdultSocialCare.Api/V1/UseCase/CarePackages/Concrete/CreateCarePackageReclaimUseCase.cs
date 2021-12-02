@@ -118,17 +118,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost)
                 .EnsureExists($"Core cost for package with id {reclaimCreationDomain.CarePackageId} not found", HttpStatusCode.InternalServerError);
 
-            // Start date of provisional CC cannot be before package start date
-            if (!reclaimCreationDomain.StartDate.IsInRange(coreCostDetail.StartDate, coreCostDetail.EndDate ?? DateTimeOffset.Now.AddYears(10)))
-            {
-                throw new ApiException($"{ReclaimSubType.CareChargeProvisional.GetDisplayName()} start date must be equal or greater than {coreCostDetail.StartDate}", HttpStatusCode.UnprocessableEntity);
-            }
-
-            // If provisional cc is set to be ongoing, force end date to be the end date of the package
-            if (coreCostDetail.EndDate != null && reclaimCreationDomain.EndDate == null)
-            {
-                reclaimCreationDomain.EndDate = coreCostDetail.EndDate;
-            }
+            ValidateProvisionalCareChargeAsync(reclaimCreationDomain, carePackage, coreCostDetail);
 
             var newReclaim = reclaimCreationDomain.ToEntity();
 
@@ -305,5 +295,39 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             return null;
         }
+
+        private static void ValidateProvisionalCareChargeAsync(CarePackageReclaimCreationDomain reclaimCreationDomain, CarePackage carePackage, CarePackageDetail coreCostDetail)
+        {
+            if (reclaimCreationDomain.SubType != ReclaimSubType.CareChargeProvisional)
+            {
+                throw new ApiException($"Cannot create {reclaimCreationDomain.SubType.GetDisplayName()}. Manage other care charges types in the Care Charges menu",
+                    HttpStatusCode.BadRequest);
+            }
+
+            if (carePackage.Reclaims.Any(cc => cc.SubType == ReclaimSubType.CareChargeProvisional))
+            {
+                throw new ApiException($"Provisional Care charge assessment for this package already done",
+                    HttpStatusCode.BadRequest);
+            }
+
+            if (carePackage.Reclaims.Any(cc => cc.SubType != ReclaimSubType.CareChargeProvisional))
+            {
+                throw new ApiException($"Care charge assessment for this package already done. Manage care charges for this package in the Care Charges menu",
+                    HttpStatusCode.BadRequest);
+            }
+
+            // Start date of provisional CC cannot be before package start date
+            if (!reclaimCreationDomain.StartDate.IsInRange(coreCostDetail.StartDate, coreCostDetail.EndDate ?? DateTimeOffset.Now.AddYears(10)))
+            {
+                throw new ApiException($"{ReclaimSubType.CareChargeProvisional.GetDisplayName()} start date must be equal or greater than {coreCostDetail.StartDate.Date}", HttpStatusCode.UnprocessableEntity);
+            }
+
+            // If provisional cc is set to be ongoing, force end date to be the end date of the package
+            if (coreCostDetail.EndDate != null && reclaimCreationDomain.EndDate == null)
+            {
+                reclaimCreationDomain.EndDate = coreCostDetail.EndDate;
+            }
+        }
+
     }
 }
