@@ -126,6 +126,10 @@ namespace LBH.AdultSocialCare.Data
                 .HasIndex(i => i.Number)
                 .IsUnique();
 
+            modelBuilder.Entity<Payrun>()
+                .HasIndex(p => p.Number)
+                .IsUnique();
+
             modelBuilder.Entity<Payrun>(entity =>
             {
                 entity.Property(e => e.StartDate).HasColumnType("date");
