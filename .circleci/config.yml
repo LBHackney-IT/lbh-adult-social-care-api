@@ -186,30 +186,28 @@ jobs:
           aws-account: $AWS_ACCOUNT_PRODUCTION
 
 workflows:
-  # check-and-deploy-development:
-    # jobs:
-      # - check-code-formatting
-      # - build-and-test
-      # - assume-role-development:
-          # context: mosaic-staging-context
-          # requires:
-            # - build-and-test
-          # filters:
-            # branches:
-              # only: develop
-      # # - terraform-init-and-apply-to-development:
-          # # requires:
-            # # - assume-role-development
-          # # filters:
-            # # branches:
-              # # only: develop
-      # - deploy-to-development:
-          # context: mosaic-staging-context
-          # requires:
-            # - assume-role-development
-          # filters:
-            # branches:
-              # only: develop
+  check-and-deploy-development:
+    jobs:
+    - check-code-formatting
+    #- build-and-test
+    - assume-role-development:
+        context: mosaic-development-context
+        #requires:
+        #    - build-and-test
+        filters:
+            branches:
+              only: development
+    - terraform-init-and-apply-to-development:
+          requires:
+            - assume-role-development
+          filters:
+            branches:
+              only: development
+    - deploy-to-development:
+          context: mosaic-development-context           
+          filters:
+            branches:
+              only: development
   check-and-deploy-staging-and-production:
       jobs:      
       - check-code-formatting
