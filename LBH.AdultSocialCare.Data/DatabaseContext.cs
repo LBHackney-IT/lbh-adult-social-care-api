@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Common.Extensions;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -14,6 +9,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Data
 {
@@ -42,6 +42,7 @@ namespace LBH.AdultSocialCare.Data
 
         public DbSet<CarePackage> CarePackages { get; set; }
         public DbSet<CarePackageSettings> CarePackageSettings { get; set; }
+        public DbSet<CarePackageResource> CarePackageResources { get; set; }
 
         public DbSet<CarePackageDetail> CarePackageDetails { get; set; }
         public DbSet<CarePackageReclaim> CarePackageReclaims { get; set; }
