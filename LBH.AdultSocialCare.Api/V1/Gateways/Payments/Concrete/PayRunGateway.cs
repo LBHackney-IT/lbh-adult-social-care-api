@@ -152,6 +152,58 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             return payrun;
         }
 
+        public async Task<List<CedarFileInvoiceHeader>> GetCedarFileList(Guid payRunId)
+        {
+            return await _dbContext.PayrunInvoices
+                .Where(p => p.PayrunId == payRunId)
+                .Include(item => item.Invoice)
+                .ThenInclude(item => item.Items)
+                .Include(item => item.Invoice)
+                .ThenInclude(item => item.Supplier)
+                .Include(item => item.Invoice)
+                .ThenInclude(item => item.Package)
+                .ThenInclude(item => item.PrimarySupportReason)
+                .Select(p => new CedarFileInvoiceHeader
+                {
+                    InvoiceHeaderId = 2,
+                    Subtype = 96,
+                    InvoiceSupplierNumber = p.Invoice.Supplier.CedarId,
+                    InvoiceReferenceNumber = p.Invoice.Number,
+                    TransactionDate = p.Invoice.DateCreated,
+                    ReceivedDate = p.Invoice.DateCreated,
+                    SupplierSiteReferenceId = p.Invoice.Supplier.CedarReferenceNumber,
+                    GrossAmount = p.Invoice.GrossTotal,
+                    NetAmount = p.Invoice.NetTotal,
+                    InvoiceItems = p.Invoice.Items.Select(it => new CedarFileInvoiceLineDomain()
+                    {
+                        InvoiceLineId = 3,
+                        Name = it.Name,
+                        Quantity = it.Quantity,
+                        Cost = it.WeeklyCost,
+                        TaxFlag = 0,
+                        CostCentre = p.Invoice.Package.PrimarySupportReason.CederBudgetCode,
+                        Subjective = "520060",
+                        Analysis = "X",
+                        TaxStatus = "EXE"
+                    }).ToList()
+                })
+                .ToListAsync();
+        }
+
+        public async Task<CedarFileHeader> GetPayRunInvoicesInfoAsync(Guid payRunId)
+        {
+            var invoices = await _dbContext.PayrunInvoices.Where(p => p.PayrunId == payRunId).Include(pi => pi.Invoice)
+                .ToListAsync();
+
+            var result = new CedarFileHeader
+            {
+                TotalValueOfInvoices = invoices.Sum(i => i.Invoice.GrossTotal),
+                TotalNumberOfInvoices = invoices.Count,
+            };
+
+            return result;
+        }
+
         private static IQueryable<Payrun> BuildPayRunQuery(IQueryable<Payrun> query, PayRunFields fields)
         {
             if (fields.HasFlag(PayRunFields.Creator)) query = query.Include(p => p.Creator);
