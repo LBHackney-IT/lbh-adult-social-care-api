@@ -5,7 +5,10 @@ using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Common.Extensions;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
@@ -33,6 +36,24 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         {
             var result = await _carePackageReclaimGateway.GetListAsync(carePackageId, reclaimType, reclaimSubType);
             return result.ToDomain();
+        }
+
+        public async Task<CarePackageReclaimResponse> GetProvisionalCareCharge(Guid carePackageId)
+        {
+            var carePackage = await _carePackageGateway
+                .GetPackageAsync(carePackageId, PackageFields.Reclaims, true)
+                .EnsureExistsAsync($"Care package with id {carePackageId} not found");
+
+            var provisionalCareChargeReclaim =
+                carePackage.Reclaims.FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeProvisional);
+
+            var res = provisionalCareChargeReclaim.ToDomain();
+
+            if (carePackage.Reclaims.Any())
+                res.HasAssessmentBeenCarried =
+                    carePackage.Reclaims.Any(cc => cc.SubType != ReclaimSubType.CareChargeProvisional);
+
+            return res.ToResponse();
         }
     }
 }

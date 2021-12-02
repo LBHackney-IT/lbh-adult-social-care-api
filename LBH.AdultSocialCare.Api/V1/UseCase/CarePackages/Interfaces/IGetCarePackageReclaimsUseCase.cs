@@ -12,5 +12,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces
         Task<CarePackageReclaimResponse> GetCarePackageReclaim(Guid carePackageId, ReclaimType reclaimType);
 
         Task<IEnumerable<CarePackageReclaimDomain>> GetListAsync(Guid carePackageId, ReclaimType? reclaimType, ReclaimSubType? reclaimSubType);
+
+        Task<CarePackageReclaimResponse> GetProvisionalCareCharge(Guid carePackageId);
     }
 }

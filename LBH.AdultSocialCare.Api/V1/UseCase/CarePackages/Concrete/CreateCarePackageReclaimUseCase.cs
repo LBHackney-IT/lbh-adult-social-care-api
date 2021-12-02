@@ -102,6 +102,54 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             return newReclaim.ToDomain().ToResponse();
         }
 
+        public async Task<CarePackageReclaimResponse> CreateProvisionalCareCharge(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType)
+        {
+            var carePackage = await _carePackageGateway
+                .GetPackageAsync(reclaimCreationDomain.CarePackageId, PackageFields.Details | PackageFields.Reclaims, true)
+                .EnsureExistsAsync($"Care package with id {reclaimCreationDomain.CarePackageId} not found");
+
+            if (carePackage.Status.In(PackageStatus.Cancelled, PackageStatus.Ended))
+            {
+                throw new ApiException($"Can not create {reclaimType.GetDisplayName()} for care package status {carePackage.Status.GetDisplayName()}",
+                    HttpStatusCode.BadRequest);
+            }
+
+            var coreCostDetail = carePackage.Details
+                .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost)
+                .EnsureExists($"Core cost for package with id {reclaimCreationDomain.CarePackageId} not found", HttpStatusCode.InternalServerError);
+
+            // Start date of provisional CC cannot be before package start date
+            if (!reclaimCreationDomain.StartDate.IsInRange(coreCostDetail.StartDate, coreCostDetail.EndDate ?? DateTimeOffset.Now.AddYears(10)))
+            {
+                throw new ApiException($"{ReclaimSubType.CareChargeProvisional.GetDisplayName()} start date must be equal or greater than {coreCostDetail.StartDate}", HttpStatusCode.UnprocessableEntity);
+            }
+
+            // If provisional cc is set to be ongoing, force end date to be the end date of the package
+            if (coreCostDetail.EndDate != null && reclaimCreationDomain.EndDate == null)
+            {
+                reclaimCreationDomain.EndDate = coreCostDetail.EndDate;
+            }
+
+            var newReclaim = reclaimCreationDomain.ToEntity();
+
+            carePackage.Reclaims.Add(newReclaim);
+
+            carePackage.Histories.Add(new CarePackageHistory
+            {
+                Description = $"{reclaimType.GetDisplayName()} {reclaimCreationDomain.SubType.GetDisplayName()} Created",
+            });
+
+            // Change status of package to submitted for approval
+            if (carePackage.Status == PackageStatus.Approved)
+            {
+                carePackage.Status = PackageStatus.SubmittedForApproval;
+            }
+
+            await _dbManager.SaveAsync("Could not save care package reclaim to database");
+            return newReclaim.ToDomain().ToResponse();
+        }
+
+
         private CarePackageReclaim TryHandleProvisionalCareCharge(CarePackageReclaimCreationDomain requestedReclaim, CarePackage carePackage)
         {
             var provisionalReclaim = carePackage.Reclaims
