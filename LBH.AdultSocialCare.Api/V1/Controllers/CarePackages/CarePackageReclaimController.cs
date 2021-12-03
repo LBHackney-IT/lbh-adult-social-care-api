@@ -79,7 +79,12 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             return Ok();
         }
 
-
+        /// <summary>
+        /// Create and update care charge reclaims.
+        /// </summary>
+        /// <param name="careChargesCreationRequest">Request object.</param>
+        /// <param name="carePackageId">Care package Id.</param>
+        /// <returns>Ok if success</returns>
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
