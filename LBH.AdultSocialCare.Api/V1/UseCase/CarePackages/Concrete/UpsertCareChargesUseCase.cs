@@ -250,6 +250,19 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             {
                 throw new ApiException($"13+ care charge must be in request and with a valid Id", HttpStatusCode.BadRequest);
             }
+
+            // If package core cost has end date, care charge end date cannot be after that date
+            if (coreCost.EndDate != null)
+            {
+                var maxCareChargeEndDate = Dates.Max(provisionalCareCharge?.EndDate, oneToTwelveCareCharge?.EndDate,
+                    thirteenPlusCareCharge?.EndDate);
+
+                if (maxCareChargeEndDate.Date > coreCost.EndDate.GetValueOrDefault().Date)
+                {
+                    throw new ApiException(
+                        $"Max care charge end date expected to be {coreCost.EndDate.GetValueOrDefault().Date:yyyy-MM-dd}", HttpStatusCode.BadRequest);
+                }
+            }
         }
     }
 }
