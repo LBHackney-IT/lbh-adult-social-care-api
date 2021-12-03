@@ -159,8 +159,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     throw new ApiException($"1-12 must take exactly 12 weeks: Expected end date is {expectedEndDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
                 }
 
-                // 1-12 weeks starts a day after provisional
-                if (provisionalCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1) != oneToTwelveCareCharge.StartDate.Date)
+                // 1-12 weeks starts a day after provisional if not on package start date which will cancel provisional care charge
+                if ((provisionalCareCharge.StartDate.Date != oneToTwelveCareCharge.StartDate.Date) && (provisionalCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1) !=
+                     oneToTwelveCareCharge.StartDate.Date))
                 {
                     throw new ApiException($"1-12 must start one day after provisional care charge end", HttpStatusCode.BadRequest);
                 }
