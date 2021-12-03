@@ -148,6 +148,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             return Ok(result);
         }
 
+        /// <summary>
+        /// Gets financial assessment details.
+        /// </summary>
+        /// <param name="carePackageId">Care package Id.</param>
+        /// <returns>Returns current care charges on package if success</returns>
+        [ProducesResponseType(typeof(CarePackageReclaimResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [HttpGet("care-charges/assessment-details")]
+        public async Task<ActionResult<FinancialAssessmentViewResponse>> GetFinancialAssessmentDetails(Guid carePackageId)
+        {
+            var result = await _getCarePackageReclaimsUseCase.GetFinancialAssessmentDetailsAsync(carePackageId);
+            return Ok(result);
+        }
+
         /// <summary>Return single funded nursing care package reclaim.</summary>
         /// <param name="carePackageId">The care package Id.</param>
         /// <returns>The Care Package Claim response.</returns>
