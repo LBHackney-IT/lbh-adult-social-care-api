@@ -65,21 +65,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             return Ok(fundedNursingCareResponse);
         }
 
-        /*/// <summary>Creates a new care charge reclaim.</summary>
-        /// <param name="careChargeReclaimCreationRequest">The care charge reclaim request.</param>
-        /// <returns>The created care charge reclaim.</returns>
-        [ProducesResponseType(typeof(CarePackageReclaimResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
-        [HttpPost("care-charges")]
-        // [AuthorizeRoles(RolesEnum.CareChargeManager)]
-        public async Task<ActionResult<CarePackageReclaimResponse>> CreateCareChargeReclaim([FromForm] CareChargeReclaimCreationRequest careChargeReclaimCreationRequest)
-        {
-            var carePackageReclaimResponse = await _createCarePackageReclaimUseCase.CreateCarePackageReclaim(careChargeReclaimCreationRequest.ToDomain(), ReclaimType.CareCharge);
-            return Ok(carePackageReclaimResponse);
-        }*/
-
         /// <summary>Update single funded nursing care reclaim.</summary>
         /// <param name="fundedNursingCareUpdateRequest">The funded nursing care update request.</param>
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
