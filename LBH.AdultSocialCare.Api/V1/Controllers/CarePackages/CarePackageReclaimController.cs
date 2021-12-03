@@ -10,7 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 
@@ -93,7 +95,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         }
 
         
-        [ProducesResponseType(typeof(IEnumerable<CarePackageReclaimResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
@@ -104,6 +106,41 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         {
             await _upsertCareChargesUseCase.ExecuteAsync(carePackageId, careChargesCreationRequest.ToeDomain());
             return Ok();
+        }
+
+        /// <summary>
+        /// Uploads care charge assessment file.
+        /// </summary>
+        /// <param name="useCase">The use case.</param>
+        /// <param name="carePackageId">The care package identifier.</param>
+        /// <returns>Package Resource Id</returns>
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        [HttpPost("care-charges/assessment-file"), DisableRequestSizeLimit]
+        // [AuthorizeRoles(RolesEnum.CareChargeManager)]
+        public async Task<ActionResult> UploadCareChargeAssessmentFile([FromServices] ICreatePackageResourceUseCase useCase, Guid carePackageId)
+        {
+            try
+            {
+                var formCollection = await Request.ReadFormAsync();
+                var file = formCollection.Files[0];
+
+                if (file == null)
+                {
+                    throw new ApiException($"Please select a file and try again", HttpStatusCode.BadRequest);
+                }
+
+                var resourceId =
+                    await useCase.CreateFileAsync(carePackageId, PackageResourceType.CareChargeAssessmentFile, file);
+
+                return Ok(resourceId);
+            }
+            catch (Exception e)
+            {
+                throw new ApiException($"An error occurred: {e.Message} {e.InnerException?.Message}");
+            }
         }
 
         /// <summary>Return list of care charge reclaims for a package with optional filtering by care charge sub-type.</summary>
