@@ -131,8 +131,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 StartDate = DateTimeOffset.Now.AddDays(-1),
                 EndDate = DateTimeOffset.Now.AddDays(2),
                 Description = "test",
-                ClaimReason = "test",
-                AssessmentFile = null
+                ClaimReason = "test"
             };
 
             var response = await _fixture.RestClient
@@ -164,8 +163,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 StartDate = DateTimeOffset.Now.AddDays(-1),
                 EndDate = DateTimeOffset.Now.AddDays(2),
                 Description = "test",
-                ClaimReason = "test",
-                AssessmentFile = null
+                ClaimReason = "test"
             };
 
             var response = await _fixture.RestClient
