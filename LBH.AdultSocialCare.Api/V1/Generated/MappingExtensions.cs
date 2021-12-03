@@ -31,7 +31,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             _mapper = mapper;
         }
 
-
         public static IEnumerable<CarePackage> ToEntity(this IEnumerable<CarePackageApprovableListItemDomain> input)
         {
             return _mapper.Map<IEnumerable<CarePackage>>(input);
@@ -492,6 +491,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<HeldInvoiceFlatDomain>(input);
         }
 
+        public static IEnumerable<PayRunInvoiceItemResponse> ToResponse(this IEnumerable<PayRunInvoiceItemDomain> input)
+        {
+            return _mapper.Map<IEnumerable<PayRunInvoiceItemResponse>>(input);
+        }
+
+        public static IEnumerable<PayRunInvoiceItemDomain> ToDomain(this IEnumerable<PayRunInvoiceItemResponse> input)
+        {
+            return _mapper.Map<IEnumerable<PayRunInvoiceItemDomain>>(input);
+        }
+
         public static IEnumerable<PayRunListResponse> ToResponse(this IEnumerable<PayRunListDomain> input)
         {
             return _mapper.Map<IEnumerable<PayRunListResponse>>(input);
@@ -530,26 +539,6 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static UsersMinimalDomain TosMinimalDomain(this User input)
         {
             return _mapper.Map<UsersMinimalDomain>(input);
-        }
-
-        public static IEnumerable<CareChargeReclaimCreationDomain> ToDomain(this IEnumerable<CareChargeReclaimCreationRequest> input)
-        {
-            return _mapper.Map<IEnumerable<CareChargeReclaimCreationDomain>>(input);
-        }
-
-        public static IEnumerable<CareChargeReclaimCreationRequest> ToRequest(this IEnumerable<CareChargeReclaimCreationDomain> input)
-        {
-            return _mapper.Map<IEnumerable<CareChargeReclaimCreationRequest>>(input);
-        }
-
-        public static CareChargeReclaimCreationDomain ToDomain(this CareChargeReclaimCreationRequest input)
-        {
-            return _mapper.Map<CareChargeReclaimCreationDomain>(input);
-        }
-
-        public static CareChargeReclaimCreationRequest ToRequest(this CareChargeReclaimCreationDomain input)
-        {
-            return _mapper.Map<CareChargeReclaimCreationRequest>(input);
         }
 
         public static CareChargeReclaimFileDomain ToDomain(this CareChargeReclaimFileRequest input)

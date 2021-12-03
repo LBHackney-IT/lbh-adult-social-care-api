@@ -262,5 +262,33 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             await _updateCarePackageReclaimUseCase.UpdateAsync(requestedReclaims.ToDomain());
             return Ok();
         }
+
+        /// <summary>Return single provisional care charge reclaims</summary>
+        /// <param name="carePackageId">The care package Id.</param>
+        /// <returns>A provisional care charges for a package.</returns>
+        [ProducesResponseType(typeof(CarePackageReclaimResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet("care-charges/provisional")]
+        public async Task<ActionResult<CarePackageReclaimResponse>> GetProvisionalCareCharges(Guid carePackageId)
+        {
+            var result = await _getCarePackageReclaimsUseCase.GetProvisionalCareCharge(carePackageId);
+            return Ok(result);
+        }
+
+        /// <summary>Creates a provisional care charge reclaim.</summary>
+        /// <param name="careChargeReclaimCreationRequest">The care charge reclaim request.</param>
+        /// <returns>The created provisional care charge reclaim.</returns>
+        [ProducesResponseType(typeof(CarePackageReclaimResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [HttpPost("care-charges/provisional")]
+        public async Task<ActionResult<CarePackageReclaimResponse>> CreateProvisionalCareChargeReclaim(CareChargeReclaimCreationRequest careChargeReclaimCreationRequest)
+        {
+            var carePackageReclaimResponse = await _createCarePackageReclaimUseCase.CreateProvisionalCareCharge(careChargeReclaimCreationRequest.ToDomain(), ReclaimType.CareCharge);
+            return Ok(carePackageReclaimResponse);
+        }
     }
 }

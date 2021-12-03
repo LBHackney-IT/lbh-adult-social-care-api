@@ -59,14 +59,14 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
         private static InvoiceItem CreateWeeklyItem(CarePackageDetail detail, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
         {
             var itemRange = GetInvoiceItemDateRange(detail, packageInvoices, invoiceEndDate);
-            if (itemRange.Weeks <= 0) return null;
+            if (itemRange.WeeksInclusive <= 0) return null;
 
             return new InvoiceItem
             {
                 Name = GetItemName(detail),
-                Quantity = itemRange.Weeks,
+                Quantity = itemRange.WeeksInclusive,
                 WeeklyCost = detail.Cost,
-                TotalCost = detail.Cost * itemRange.Weeks,
+                TotalCost = detail.Cost * itemRange.WeeksInclusive,
                 FromDate = itemRange.StartDate,
                 ToDate = itemRange.EndDate,
                 CarePackageDetailId = detail.Id,

@@ -8,8 +8,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
 {
-    [GenerateListMappingFor(typeof(CareChargeReclaimCreationDomain))]
-    [GenerateMappingFor(typeof(CareChargeReclaimCreationDomain))]
     public class CareChargeReclaimCreationRequest
     {
         public Guid? Id { get; set; } // Reclaim Id if modifying
