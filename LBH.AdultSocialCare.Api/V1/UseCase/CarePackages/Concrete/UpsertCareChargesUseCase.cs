@@ -1,23 +1,21 @@
-using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Gateways;
-using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Api.V1.Services.IO;
-using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.Helpers;
+using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Factories;
+using LBH.AdultSocialCare.Api.V1.Gateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
+using LBH.AdultSocialCare.Api.V1.Services.IO;
+using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
-using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -27,17 +25,25 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly IDatabaseManager _dbManager;
         private readonly IFileStorage _fileStorage;
         private readonly IMapper _mapper;
+        private readonly ICarePackageReclaimGateway _carePackageReclaimGateway;
 
-        public UpsertCareChargesUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IFileStorage fileStorage, IMapper mapper)
+        public UpsertCareChargesUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IFileStorage fileStorage, IMapper mapper, ICarePackageReclaimGateway carePackageReclaimGateway)
         {
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
             _fileStorage = fileStorage;
             _mapper = mapper;
+            _carePackageReclaimGateway = carePackageReclaimGateway;
         }
 
         public async Task ExecuteAsync(Guid carePackageId, CareChargesCreateDomain careChargesCreateDomain)
         {
+            // All care charges to have one care package Id
+            foreach (var careCharge in careChargesCreateDomain.CareCharges)
+            {
+                careCharge.CarePackageId = carePackageId;
+            }
+
             ValidateCareChargeModificationRequest(careChargesCreateDomain.CareCharges);
 
             // Get package with all reclaims
@@ -50,7 +56,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 throw new ApiException($"This service user is under S117, not allowed to add care charges", HttpStatusCode.BadRequest);
             }
 
-            var validReclaimStatuses = new[] {ReclaimStatus.Active, ReclaimStatus.Ended, ReclaimStatus.Pending};
+            var validReclaimStatuses = new[] { ReclaimStatus.Active, ReclaimStatus.Ended, ReclaimStatus.Pending };
             var existingCareCharges = package.Reclaims
                 .Where(r => r.Type == ReclaimType.CareCharge && validReclaimStatuses.Contains(r.Status)).ToList();
 
@@ -74,11 +80,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
             if (existingOneToTwelveCareCharge == null && oneToTwelveCareCharge != null)
             {
-                package.Reclaims.Add(provisionalCareCharge.ToEntity());
+                package.Reclaims.Add(oneToTwelveCareCharge.ToEntity());
             }
             if (existingThirteenPlusCareCharge == null && thirteenPlusCareCharge != null)
             {
-                package.Reclaims.Add(provisionalCareCharge.ToEntity());
+                package.Reclaims.Add(thirteenPlusCareCharge.ToEntity());
             }
 
             // If dates have changed, update care charge
@@ -87,7 +93,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 if (existingCareCharge.SubType == ReclaimSubType.CareChargeProvisional && provisionalCareCharge != null)
                 {
                     _mapper.Map(provisionalCareCharge, existingCareCharge);
-                    if (oneToTwelveCareCharge!= null && existingCareCharge.StartDate == oneToTwelveCareCharge.StartDate)
+                    if (oneToTwelveCareCharge != null && existingCareCharge.StartDate == oneToTwelveCareCharge.StartDate)
                     {
                         existingCareCharge.Status = ReclaimStatus.Cancelled;
                     }
@@ -104,19 +110,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
             }
 
-            // Upload and add assessment file if attached
-            if (careChargesCreateDomain.AssessmentFile != null)
-            {
-                var documentResponse = await _fileStorage.SaveFileAsync(ConvertCarePlan(careChargesCreateDomain.AssessmentFile), careChargesCreateDomain.AssessmentFile?.FileName);
-                package.Resources.Add(new CarePackageResource
-                {
-                    Type = PackageResourceType.CareChargeAssessmentFile,
-                    Name = documentResponse.FileName,
-                    FileExtension = Path.GetExtension(careChargesCreateDomain.AssessmentFile.FileName),
-                    FileId = documentResponse.FileId
-                });
-            }
-
             await _dbManager.SaveAsync();
         }
 
@@ -124,10 +117,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         {
             // In request each care charge sub-type can have only one entry
             var invalidSubType = (from c in careCharges
-                group c by c.SubType
+                                  group c by c.SubType
                 into grp
-                where grp.Count() > 1
-                select grp.Key).ToList();
+                                  where grp.Count() > 1
+                                  select grp.Key).ToList();
 
             if (invalidSubType.Any())
             {
@@ -144,6 +137,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 throw new ApiException($"Provisional care charge must have an end date", HttpStatusCode.BadRequest);
             }
 
+            // 1-12 must have end date
+            if (oneToTwelveCareCharge is { EndDate: null })
+            {
+                throw new ApiException($"1-12 care charge must have an end date", HttpStatusCode.BadRequest);
+            }
+
             // Package cannot have 13+ without 1-12
             if (thirteenPlusCareCharge != null && oneToTwelveCareCharge == null)
             {
@@ -154,9 +153,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             if (provisionalCareCharge != null && oneToTwelveCareCharge != null)
             {
                 // 1-12 must take exactly 12 weeks
-                if ((oneToTwelveCareCharge.EndDate.GetValueOrDefault().Date - oneToTwelveCareCharge.StartDate).Days != 84)
+                if ((oneToTwelveCareCharge.EndDate.GetValueOrDefault().Date - oneToTwelveCareCharge.StartDate).Days + 1 != 84)
                 {
-                    throw new ApiException($"1-12 must take exactly 12 weeks", HttpStatusCode.BadRequest);
+                    var expectedEndDate = oneToTwelveCareCharge.StartDate.Date.AddDays(84);
+                    throw new ApiException($"1-12 must take exactly 12 weeks: Expected end date is {expectedEndDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
                 }
 
                 // 1-12 weeks starts a day after provisional
@@ -171,14 +171,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 // 13+ starts a day after 1-12
                 if (oneToTwelveCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1) != thirteenPlusCareCharge.StartDate.Date)
                 {
-                    throw new ApiException($"13+ must start one day after 1-12 end", HttpStatusCode.BadRequest);
+                    var expectedStart = oneToTwelveCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1);
+                    throw new ApiException($"13+ must start one day after 1-12 end: {expectedStart:yyy-MM-dd}", HttpStatusCode.BadRequest);
                 }
             }
         }
 
         private static void EnsureUpdatedReclaimsExist(IEnumerable<CareChargeReclaimCreationDomain> modifiedReclaims, IEnumerable<CarePackageReclaim> existingReclaims)
         {
-            var modifiedReclaimIds = modifiedReclaims.Where(cc => cc.Id != null).Select(cc => (Guid)cc.Id);
+            var modifiedReclaimIds = modifiedReclaims.Where(cc => cc.Id != null).Select(cc => (Guid) cc.Id);
             var existingReclaimIds = existingReclaims.Where(r => r.Type == ReclaimType.CareCharge).Select(r => r.Id)
                 .ToList();
             var missedIds = modifiedReclaimIds
@@ -210,7 +211,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var existingOneToTwelveCareCharge = existingReclaims.FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
             var existingThirteenPlusCareCharge = existingReclaims.FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks);
 
-            
             var minCareChargeStartDate = Dates.Min(provisionalCareCharge?.StartDate, oneToTwelveCareCharge?.StartDate,
                 thirteenPlusCareCharge?.StartDate);
 
@@ -229,7 +229,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             // Only provisional care charge, ongoing and package has end date, make package end date to be end date of provisional care charge
-            if (provisionalCareCharge is {EndDate: null} && oneToTwelveCareCharge == null && thirteenPlusCareCharge == null && coreCost.EndDate != null)
+            if (provisionalCareCharge is { EndDate: null } && oneToTwelveCareCharge == null && thirteenPlusCareCharge == null && coreCost.EndDate != null)
             {
                 provisionalCareCharge.EndDate = coreCost.EndDate;
             }
@@ -249,22 +249,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             {
                 throw new ApiException($"13+ care charge must be in request and with a valid Id", HttpStatusCode.BadRequest);
             }
-        }
-
-        private static string ConvertCarePlan(IFormFile carePlanFile)
-        {
-            if (carePlanFile != null)
-            {
-                using (var stream = new MemoryStream())
-                {
-                    carePlanFile.CopyTo(stream);
-
-                    var bytes = stream.ToArray();
-                    return $"data:{carePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}";
-                }
-            }
-
-            return null;
         }
     }
 }

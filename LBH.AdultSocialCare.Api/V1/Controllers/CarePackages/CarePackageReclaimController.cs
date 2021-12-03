@@ -94,7 +94,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             return Ok();
         }
 
-        
+
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
@@ -102,7 +102,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesDefaultResponseType]
         [HttpPut("care-charges")]
         // [AuthorizeRoles(RolesEnum.CareChargeManager)]
-        public async Task<ActionResult> UpdateCareChargeReclaims([FromForm] CareChargesCreationRequest careChargesCreationRequest, Guid carePackageId)
+        public async Task<ActionResult> UpdateCareChargeReclaims([FromBody] CareChargesCreationRequest careChargesCreationRequest, Guid carePackageId)
         {
             await _upsertCareChargesUseCase.ExecuteAsync(carePackageId, careChargesCreationRequest.ToeDomain());
             return Ok();

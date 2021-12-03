@@ -24,8 +24,8 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
 
         public ReclaimStatus Status
         {
-            get => CalculateStatus();
-            set => _status = value;
+            get => _status;
+            set => _status = CalculateStatus(value);
         }
 
         public ReclaimType Type { get; set; }
@@ -43,11 +43,11 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
         [ForeignKey(nameof(CarePackageId))]
         public CarePackage Package { get; set; }
 
-        private ReclaimStatus CalculateStatus()
+        private ReclaimStatus CalculateStatus(ReclaimStatus value)
         {
-            if (_status is ReclaimStatus.Cancelled || _status is ReclaimStatus.Ended)
+            if (value is ReclaimStatus.Cancelled || value is ReclaimStatus.Ended)
             {
-                return _status;
+                return value;
             }
 
             if (EndDate != null && DateTimeOffset.Now.Date >= EndDate.Value.Date)

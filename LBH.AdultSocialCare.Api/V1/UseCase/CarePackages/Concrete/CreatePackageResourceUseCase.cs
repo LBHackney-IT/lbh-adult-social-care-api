@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
-    public class CreatePackageResourceUseCase: ICreatePackageResourceUseCase
+    public class CreatePackageResourceUseCase : ICreatePackageResourceUseCase
     {
         private readonly ICarePackageGateway _gateway;
         private readonly IDatabaseManager _dbManager;
