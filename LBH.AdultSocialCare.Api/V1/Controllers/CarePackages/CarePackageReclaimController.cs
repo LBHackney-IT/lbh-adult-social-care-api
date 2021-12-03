@@ -29,13 +29,15 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         private readonly IGetFundedNursingCarePriceUseCase _getFundedNursingCarePriceUseCase;
         private readonly ICareChargeUseCase _getCareChargeUseCase;
         private readonly IGetSinglePackageCareChargeUseCase _getSinglePackageCareChargeUseCase;
+        private readonly IUpsertCareChargesUseCase _upsertCareChargesUseCase;
 
         public CarePackageReclaimController(ICreateCarePackageReclaimUseCase createCarePackageReclaimUseCase,
             IUpdateCarePackageReclaimUseCase updateCarePackageReclaimUseCase,
             IGetCarePackageReclaimsUseCase getCarePackageReclaimsUseCase,
             IGetFundedNursingCarePriceUseCase getFundedNursingCarePriceUseCase,
             ICareChargeUseCase getCareChargeUseCase,
-            IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase)
+            IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase,
+            IUpsertCareChargesUseCase upsertCareChargesUseCase)
         {
             _createCarePackageReclaimUseCase = createCarePackageReclaimUseCase;
             _updateCarePackageReclaimUseCase = updateCarePackageReclaimUseCase;
@@ -43,6 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             _getFundedNursingCarePriceUseCase = getFundedNursingCarePriceUseCase;
             _getCareChargeUseCase = getCareChargeUseCase;
             _getSinglePackageCareChargeUseCase = getSinglePackageCareChargeUseCase;
+            _upsertCareChargesUseCase = upsertCareChargesUseCase;
         }
 
         /// <summary>Creates a new funded nursing care reclaim.</summary>
@@ -60,7 +63,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             return Ok(fundedNursingCareResponse);
         }
 
-        /// <summary>Creates a new care charge reclaim.</summary>
+        /*/// <summary>Creates a new care charge reclaim.</summary>
         /// <param name="careChargeReclaimCreationRequest">The care charge reclaim request.</param>
         /// <returns>The created care charge reclaim.</returns>
         [ProducesResponseType(typeof(CarePackageReclaimResponse), StatusCodes.Status200OK)]
@@ -73,7 +76,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         {
             var carePackageReclaimResponse = await _createCarePackageReclaimUseCase.CreateCarePackageReclaim(careChargeReclaimCreationRequest.ToDomain(), ReclaimType.CareCharge);
             return Ok(carePackageReclaimResponse);
-        }
+        }*/
 
         /// <summary>Update single funded nursing care reclaim.</summary>
         /// <param name="fundedNursingCareUpdateRequest">The funded nursing care update request.</param>
@@ -89,13 +92,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             return Ok();
         }
 
-        /// <summary>Update single care charge reclaim.</summary>
-        /// <param name="requestedReclaims">List of care charge reclaims to be updated.</param>
-        /// <returns>List of updated care charge reclaims.</returns>
-        /// <response code="200">When operation is completed successfully.</response>
-        /// <response code="400">When requested reclaims belong to different care packages.</response>
-        /// <response code="404">When one of requested reclaims isn't found.</response>
-        /// <response code="422">When validation of requested reclaims failed.</response>
+        
         [ProducesResponseType(typeof(IEnumerable<CarePackageReclaimResponse>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
@@ -103,10 +100,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesDefaultResponseType]
         [HttpPut("care-charges")]
         // [AuthorizeRoles(RolesEnum.CareChargeManager)]
-        public async Task<ActionResult<IEnumerable<CarePackageReclaimResponse>>> UpdateCareChargeReclaims([FromForm] CareChargeReclaimBulkUpdateRequest requestedReclaims)
+        public async Task<ActionResult> UpdateCareChargeReclaims([FromForm] CareChargesCreationRequest careChargesCreationRequest, Guid carePackageId)
         {
-            var result = await _updateCarePackageReclaimUseCase.UpdateListAsync(requestedReclaims.ToDomain());
-            return Ok(result.ToResponse());
+            await _upsertCareChargesUseCase.ExecuteAsync(carePackageId, careChargesCreationRequest.ToeDomain());
+            return Ok();
         }
 
         /// <summary>Return list of care charge reclaims for a package with optional filtering by care charge sub-type.</summary>

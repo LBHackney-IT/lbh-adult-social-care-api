@@ -31,6 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             _mapper = mapper;
         }
 
+
         public static IEnumerable<CarePackage> ToEntity(this IEnumerable<CarePackageApprovableListItemDomain> input)
         {
             return _mapper.Map<IEnumerable<CarePackage>>(input);
@@ -531,6 +532,26 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<UsersMinimalDomain>(input);
         }
 
+        public static IEnumerable<CareChargeReclaimCreationDomain> ToDomain(this IEnumerable<CareChargeReclaimCreationRequest> input)
+        {
+            return _mapper.Map<IEnumerable<CareChargeReclaimCreationDomain>>(input);
+        }
+
+        public static IEnumerable<CareChargeReclaimCreationRequest> ToRequest(this IEnumerable<CareChargeReclaimCreationDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CareChargeReclaimCreationRequest>>(input);
+        }
+
+        public static CareChargeReclaimCreationDomain ToDomain(this CareChargeReclaimCreationRequest input)
+        {
+            return _mapper.Map<CareChargeReclaimCreationDomain>(input);
+        }
+
+        public static CareChargeReclaimCreationRequest ToRequest(this CareChargeReclaimCreationDomain input)
+        {
+            return _mapper.Map<CareChargeReclaimCreationRequest>(input);
+        }
+
         public static CareChargeReclaimFileDomain ToDomain(this CareChargeReclaimFileRequest input)
         {
             return _mapper.Map<CareChargeReclaimFileDomain>(input);
@@ -549,6 +570,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<CareChargeReclaimUpdateRequest> ToRequest(this IEnumerable<CarePackageReclaimUpdateDomain> input)
         {
             return _mapper.Map<IEnumerable<CareChargeReclaimUpdateRequest>>(input);
+        }
+
+        public static CareChargesCreateDomain ToeDomain(this CareChargesCreationRequest input)
+        {
+            return _mapper.Map<CareChargesCreateDomain>(input);
+        }
+
+        public static CareChargesCreationRequest ToionRequest(this CareChargesCreateDomain input)
+        {
+            return _mapper.Map<CareChargesCreationRequest>(input);
         }
 
         public static CarePackageBrokerageDomain ToDomain(this CarePackageBrokerageCreationRequest input)
