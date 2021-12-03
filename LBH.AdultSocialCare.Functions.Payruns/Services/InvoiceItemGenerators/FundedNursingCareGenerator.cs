@@ -22,15 +22,16 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             _fundedNursingCareGateway = fundedNursingCareGateway;
         }
 
-        public override IEnumerable<InvoiceItem> CreateNormalItem(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
+        public override IEnumerable<InvoiceItem> CreateNormalItems(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
         {
             var fundedNursingCare = package.Reclaims
-                .FirstOrDefault(r => r.Type is ReclaimType.Fnc &&
-                                     r.StartDate <= invoiceEndDate);
+                .FirstOrDefault(reclaim => reclaim.Type is ReclaimType.Fnc &&
+                                           (reclaim.Status is ReclaimStatus.Active ||
+                                           (reclaim.Status is ReclaimStatus.Pending && reclaim.StartDate <= invoiceEndDate)));
 
             if (fundedNursingCare is null) yield break;
 
-            var actualStartDate = GetActualStartDate(fundedNursingCare, packageInvoices, invoiceEndDate);
+            var actualStartDate = GetActualStartDate(fundedNursingCare, packageInvoices);
 
             foreach (var price in _fncPrices)
             {
@@ -62,34 +63,35 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             }
         }
 
-        public override IEnumerable<InvoiceItem> CreateRefundItem(CarePackage package, IList<InvoiceDomain> packageInvoices)
+        public override IEnumerable<InvoiceItem> CreateRefundItems(CarePackage package, IList<InvoiceDomain> packageInvoices)
         {
             var fundedNursingCare = package.Reclaims
                 .FirstOrDefault(r => r.Type is ReclaimType.Fnc);
 
             if (fundedNursingCare is null) yield break;
 
-            var refund = RefundCalculator.Calculate(
+            var refunds = RefundCalculator.Calculate(
                 fundedNursingCare, packageInvoices,
                 (start, end, quantity) => CalculateFncPriceForPeriod(start, end, fundedNursingCare));
 
-            if (refund.RefundAmount == 0.0m) yield break;
-
-            yield return new InvoiceItem
+            foreach (var refund in refunds)
             {
-                Name = "Funded Nursing Care (refund)",
-                Quantity = refund.Quantity,
-                WeeklyCost = 0.0m,              // generate refund per FNC period if we'll need real weekly FNC cost here
-                TotalCost = refund.RefundAmount,
-                FromDate = refund.PreviousStartDate,
-                ToDate = refund.PreviousEndDate,
-                CarePackageReclaimId = fundedNursingCare.Id,
-                SourceVersion = fundedNursingCare.Version,
-                NetCostsCompensated = refund.NetCostsCompensated,
-                PriceEffect = refund.RefundAmount > 0
-                    ? PriceEffect.Add
-                    : PriceEffect.Subtract
-            };
+                yield return new InvoiceItem
+                {
+                    Name = "Funded Nursing Care (refund)",
+                    Quantity = refund.Quantity,
+                    WeeklyCost = refund.CurrentCost,
+                    TotalCost = refund.RefundAmount,
+                    FromDate = refund.StartDate,
+                    ToDate = refund.EndDate,
+                    CarePackageReclaimId = fundedNursingCare.Id,
+                    SourceVersion = fundedNursingCare.Version,
+                    NetCostsCompensated = refund.NetCostsCompensated,
+                    PriceEffect = refund.RefundAmount > 0
+                        ? PriceEffect.Add
+                        : PriceEffect.Subtract
+                };
+            }
         }
 
         private decimal CalculateFncPriceForPeriod(DateTimeOffset start, DateTimeOffset end, CarePackageReclaim fundedNursingCare)

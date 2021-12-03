@@ -11,6 +11,7 @@ using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using Microsoft.Extensions.Logging;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
@@ -75,7 +76,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
         }
 
-        [Fact(Skip = "For unblock FE")]
+        [Fact]
         public async Task ShouldCreateNewProvisionalChargeWhenExistingIsCancelled()
         {
             _package.Reclaims.Single().Status = ReclaimStatus.Cancelled;
@@ -84,7 +85,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 CarePackageId = _package.Id,
                 Cost = 2m,
-                SubType = ReclaimSubType.CareChargeProvisional
+                SubType = ReclaimSubType.CareChargeProvisional,
+                AssessmentFileId = Guid.NewGuid()
             }, ReclaimType.CareCharge);
 
             _package.Reclaims.Count.Should().Be(2);

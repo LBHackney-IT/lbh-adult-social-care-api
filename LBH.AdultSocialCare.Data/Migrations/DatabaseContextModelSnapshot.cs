@@ -524,43 +524,43 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         new
                         {
                             PrimarySupportReasonId = 1,
-                            CederBudgetCode = "Ceder - Physical Support",
+                            CederBudgetCode = "D0822",
                             PrimarySupportReasonName = "Physical Support"
                         },
                         new
                         {
                             PrimarySupportReasonId = 2,
-                            CederBudgetCode = "Ceder Sensory Support",
+                            CederBudgetCode = "D0823",
                             PrimarySupportReasonName = "Sensory Support"
                         },
                         new
                         {
                             PrimarySupportReasonId = 3,
-                            CederBudgetCode = "Ceder Support with memory and cognition",
+                            CederBudgetCode = "D0824",
                             PrimarySupportReasonName = "Support with memory and cognition"
                         },
                         new
                         {
                             PrimarySupportReasonId = 4,
-                            CederBudgetCode = "Ceder Learning Disability Support",
+                            CederBudgetCode = "D0825",
                             PrimarySupportReasonName = "Learning Disability Support"
                         },
                         new
                         {
                             PrimarySupportReasonId = 5,
-                            CederBudgetCode = "Ceder Mental Health Support (ASC)",
+                            CederBudgetCode = "D0826",
                             PrimarySupportReasonName = "Mental Health Support (ASC)"
                         },
                         new
                         {
                             PrimarySupportReasonId = 6,
-                            CederBudgetCode = "Ceder Social Support",
+                            CederBudgetCode = "D0828",
                             PrimarySupportReasonName = "Social Support"
                         },
                         new
                         {
                             PrimarySupportReasonId = 7,
-                            CederBudgetCode = "Ceder Mental Health Support (ELFT)",
+                            CederBudgetCode = "D0829",
                             PrimarySupportReasonName = "Mental Health Support (ELFT)"
                         });
                 });
@@ -1231,6 +1231,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<decimal?>("Held")
                         .HasColumnType("decimal(13, 2)");
 
+                    b.Property<string>("Number")
+                        .HasColumnType("text");
+
                     b.Property<decimal?>("Paid")
                         .HasColumnType("decimal(13, 2)");
 
@@ -1252,6 +1255,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
+
+                    b.HasIndex("Number")
+                        .IsUnique();
 
                     b.HasIndex("UpdaterId");
 
@@ -1287,6 +1293,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
+                    b.Property<int>("Type")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1);
+
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
 
@@ -1298,9 +1309,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasIndex("UpdaterId");
 
-                    b.ToTable("PayrunHistory");
+                    b.ToTable("PayrunHistories");
 
-                    b.HasCheckConstraint("CK_PayrunHistory_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8)");
+                    b.HasCheckConstraint("CK_PayrunHistories_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8)");
+
+                    b.HasCheckConstraint("CK_PayrunHistories_Type", "\"Type\" IN (0, 1, 2, 3)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.PayrunInvoice", b =>

@@ -60,6 +60,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             var invoices = await _dbContext.PayrunInvoices.Where(p => p.PayrunId == payRunId).Include(pi => pi.Invoice)
                 .ToListAsync();
 
+            var isCedarDownloaded = await _dbContext.PayrunHistories.Where(ph => ph.PayRunId.Equals(payRunId))
+                .AnyAsync(ph => ph.Type == PayRunHistoryType.CedarFileDownload);
+
+            var paidLog = await _dbContext.PayrunHistories.Include(ph => ph.Creator).FirstOrDefaultAsync(ph => ph.PayRunId.Equals(payRunId) && ph.Type == PayRunHistoryType.PaidPayrun);
+
             var heldInvoiceStatuses =
                 new[] { InvoiceStatus.Held, InvoiceStatus.Released, InvoiceStatus.ReleaseAccepted };
 
@@ -70,7 +75,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 ServiceUserCount = invoices.Select(i => i.Invoice.ServiceUserId).Distinct().Count(),
                 HoldsCount = invoices.Count(i => heldInvoiceStatuses.Contains(i.InvoiceStatus)),
                 TotalHeldAmount = invoices.Where(i => heldInvoiceStatuses.Contains(i.InvoiceStatus))
-                    .Sum(i => i.Invoice.GrossTotal)
+                    .Sum(i => i.Invoice.GrossTotal),
+                IsCedarFileDownloaded = isCedarDownloaded,
+                PaidBy = paidLog?.Creator.Name,
+                PaidOn = paidLog?.DateCreated
             };
 
             return result;
@@ -126,6 +134,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         {
             parameters.InvoiceStatus = InvoiceStatus.Held;
             var query = _dbContext.PayrunInvoices
+                .Where(pr => pr.Payrun.Status != PayrunStatus.Archived)
                 .FilterPayRunInvoices(parameters)
                 .TrackChanges(false);
 
@@ -136,7 +145,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .Select(pi => new HeldInvoiceDetailsDomain
                 {
                     PayRunId = pi.PayrunId,
-                    PayRunNumber = pi.PayrunId.ToString().Substring(0, 6),
+                    PayRunNumber = pi.Payrun.Number,
                     DateCreated = pi.DateCreated,
                     StartDate = pi.Payrun.StartDate,
                     EndDate = pi.Payrun.EndDate,
@@ -231,6 +240,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         {
             return await _dbContext.PayrunInvoices.Where(pi => pi.InvoiceStatus == InvoiceStatus.Released && pi.Payrun.Status != PayrunStatus.Archived).CountAsync();
         }
+
+
 
         private static IQueryable<PayrunInvoice> BuildPayRunInvoiceQuery(IQueryable<PayrunInvoice> query, PayRunInvoiceFields fields)
         {

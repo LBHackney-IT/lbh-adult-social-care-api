@@ -58,7 +58,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             if (carePackageReclaimUpdateDomain?.AssessmentFileId == Guid.Empty)
             {
                 var documentResponse = await _fileStorage.
-                    SaveFileAsync(ConvertCarePlan(carePackageReclaimUpdateDomain.AssessmentFile), carePackageReclaimUpdateDomain.AssessmentFile.FileName);
+                    SaveFileAsync(ConvertCarePlan(carePackageReclaimUpdateDomain.AssessmentFile), carePackageReclaimUpdateDomain.AssessmentFile?.FileName);
                 carePackageReclaimUpdateDomain.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
                 carePackageReclaimUpdateDomain.AssessmentFileName = documentResponse?.FileName;
             }
@@ -102,7 +102,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     if (reclaimBulkUpdateDomain?.AssessmentFileId == Guid.Empty)
                     {
                         var documentResponse = await _fileStorage.
-                            SaveFileAsync(ConvertCarePlan(reclaimBulkUpdateDomain.AssessmentFile), reclaimBulkUpdateDomain.AssessmentFile.FileName);
+                            SaveFileAsync(ConvertCarePlan(reclaimBulkUpdateDomain.AssessmentFile), reclaimBulkUpdateDomain.AssessmentFile?.FileName);
                         existingReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
                         existingReclaim.AssessmentFileName = documentResponse?.FileName;
                     }
@@ -110,12 +110,26 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
                 else
                 {
-                    existingReclaim.Status = ReclaimStatus.Ended;
-                    existingReclaim.EndDate = DateTimeOffset.Now.Date;
+                    if (requestedReclaim.StartDate.Date == existingReclaim.StartDate.Date)
+                    {
+                        existingReclaim.Status = ReclaimStatus.Cancelled;
+                    }
+                    else if (requestedReclaim.StartDate.Date > existingReclaim.StartDate.Date)
+                    {
+                        existingReclaim.EndDate = requestedReclaim.StartDate.Date.AddDays(-1);
+                        existingReclaim.Status = existingReclaim.EndDate.GetValueOrDefault().Date < DateTimeOffset.Now.Date
+                            ? ReclaimStatus.Ended
+                            : existingReclaim.Status;
+                    }
+                    else
+                    {
+                        existingReclaim.Status = ReclaimStatus.Ended;
+                        existingReclaim.EndDate = DateTimeOffset.Now.Date;
+                    }
 
                     if (reclaimBulkUpdateDomain?.AssessmentFileId == Guid.Empty)
                     {
-                        var documentResponse = await _fileStorage.SaveFileAsync(ConvertCarePlan(reclaimBulkUpdateDomain.AssessmentFile), reclaimBulkUpdateDomain.AssessmentFile.FileName);
+                        var documentResponse = await _fileStorage.SaveFileAsync(ConvertCarePlan(reclaimBulkUpdateDomain.AssessmentFile), reclaimBulkUpdateDomain.AssessmentFile?.FileName);
                         requestedReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
                         requestedReclaim.AssessmentFileName = documentResponse?.FileName;
                     }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Common.Extensions;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Common;
 using LBH.AdultSocialCare.Data.Entities.Payments;
@@ -57,6 +58,7 @@ namespace LBH.AdultSocialCare.Data
         public DbSet<CarePackageHistory> CarePackageHistories { get; set; }
 
         public DbSet<Payrun> Payruns { get; set; }
+        public DbSet<PayrunHistory> PayrunHistories { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
         public DbSet<PayrunInvoice> PayrunInvoices { get; set; }
@@ -124,11 +126,20 @@ namespace LBH.AdultSocialCare.Data
                 .HasIndex(i => i.Number)
                 .IsUnique();
 
+            modelBuilder.Entity<Payrun>()
+                .HasIndex(p => p.Number)
+                .IsUnique();
+
             modelBuilder.Entity<Payrun>(entity =>
             {
                 entity.Property(e => e.StartDate).HasColumnType("date");
                 entity.Property(e => e.EndDate).HasColumnType("date");
                 entity.Property(e => e.PaidUpToDate).HasColumnType("date");
+            });
+
+            modelBuilder.Entity<PayrunHistory>(entity =>
+            {
+                entity.Property(e => e.Type).IsRequired().HasDefaultValue(PayRunHistoryType.NormalRecord);
             });
 
             modelBuilder.Entity<PayrunInvoice>(entity =>

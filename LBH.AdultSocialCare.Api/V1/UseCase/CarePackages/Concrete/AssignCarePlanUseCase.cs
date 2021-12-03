@@ -44,7 +44,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             if (carePlanAssignment.CarePlanFileId == Guid.Empty)
             {
-                documentResponse = await _fileStorage.SaveFileAsync(ConvertCarePlan(carePlanAssignment.CarePlanFile), carePlanAssignment.CarePlanFile.FileName);
+                documentResponse = await _fileStorage.SaveFileAsync(ConvertCarePlan(carePlanAssignment.CarePlanFile), carePlanAssignment.CarePlanFile?.FileName);
             }
 
             var package = new CarePackage

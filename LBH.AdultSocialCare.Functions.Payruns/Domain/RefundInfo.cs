@@ -4,11 +4,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Domain
 {
     public class RefundInfo
     {
-        public DateTimeOffset PreviousStartDate { get; set; }
-        public DateTimeOffset PreviousEndDate { get; set; }
-
-        public DateTimeOffset CurrentStartDate { get; set; }
-        public DateTimeOffset CurrentEndDate { get; set; }
+        public DateTimeOffset StartDate { get; set; }
+        public DateTimeOffset EndDate { get; set; }
 
         public decimal CurrentCost { get; set; }
         public decimal RefundAmount { get; set; }

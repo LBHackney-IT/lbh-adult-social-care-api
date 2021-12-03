@@ -64,12 +64,12 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 {
                     RejectOutdatedInvoices(package, packageInvoices);
 
-                    invoiceItems.AddRange(generator.CreateRefundItem(package, packageInvoices));
+                    invoiceItems.AddRange(generator.CreateRefundItems(package, packageInvoices));
                 }
 
                 if (invoiceTypes.HasFlag(InvoiceTypes.Normal))
                 {
-                    invoiceItems.AddRange(generator.CreateNormalItem(package, packageInvoices, invoiceEndDate));
+                    invoiceItems.AddRange(generator.CreateNormalItems(package, packageInvoices, invoiceEndDate));
                 }
             }
 
@@ -83,8 +83,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 Items = invoiceItems,
                 GrossTotal = totals.Gross,
                 NetTotal = totals.Net,
-                TotalCost = totals.Net,             // TODO: VK: Review, remove
-                Number = $"INV {++lastInvoiceNumber}"
+                TotalCost = totals.Net, // TODO: VK: Review, remove?
+                Number = $"INV-{DateTimeOffset.UtcNow:yyMMdd}-{++lastInvoiceNumber:0000}"
             };
         }
 

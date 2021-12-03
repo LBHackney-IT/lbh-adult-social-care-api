@@ -14,6 +14,9 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
         public int ServiceUserCount { get; set; }
         public int HoldsCount { get; set; }
         public decimal TotalHeldAmount { get; set; }
+        public bool IsCedarFileDownloaded { get; set; }
+        public string PaidBy { get; set; }
+        public DateTimeOffset? PaidOn { get; set; }
         public string PayRunStatusName => PayRunStatus.GetDisplayName();
     }
 }

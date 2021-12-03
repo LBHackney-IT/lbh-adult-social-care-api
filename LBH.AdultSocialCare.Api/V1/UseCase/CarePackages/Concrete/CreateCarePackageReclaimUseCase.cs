@@ -19,6 +19,7 @@ using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -29,7 +30,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly IMapper _mapper;
         private readonly IFileStorage _fileStorage;
 
-        public CreateCarePackageReclaimUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IMapper mapper, IFileStorage fileStorage)
+        public CreateCarePackageReclaimUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager,
+            IMapper mapper, IFileStorage fileStorage)
         {
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
@@ -43,6 +45,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 .GetPackageAsync(reclaimCreationDomain.CarePackageId, PackageFields.Details | PackageFields.Reclaims, true)
                 .EnsureExistsAsync($"Care package with id {reclaimCreationDomain.CarePackageId} not found");
 
+            if (carePackage.Status.In(PackageStatus.Cancelled, PackageStatus.Ended))
+            {
+                throw new ApiException($"Can not create {reclaimType.GetDisplayName()} for care package status {carePackage.Status.GetDisplayName()}",
+                    HttpStatusCode.BadRequest);
+            }
+
             var coreCostDetail = carePackage.Details
                 .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost)
                 .EnsureExists($"Core cost for package with id {reclaimCreationDomain.CarePackageId} not found", HttpStatusCode.InternalServerError);
@@ -55,7 +63,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
             else if (reclaimType is ReclaimType.CareCharge)
             {
-                newReclaim = TryHandleProvisionalCareCharge(reclaimCreationDomain, coreCostDetail, carePackage);
+                newReclaim = TryHandleProvisionalCareCharge(reclaimCreationDomain, carePackage);
             }
 
             if (reclaimType is ReclaimType.CareCharge)
@@ -71,7 +79,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 if (reclaimCreationDomain.AssessmentFileId == Guid.Empty)
                 {
                     var documentResponse = await _fileStorage.SaveFileAsync
-                        (ConvertCarePlan(reclaimCreationDomain.AssessmentFile), reclaimCreationDomain.AssessmentFile.FileName);
+                        (ConvertCarePlan(reclaimCreationDomain.AssessmentFile), reclaimCreationDomain?.AssessmentFile?.FileName);
                     newReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
                     newReclaim.AssessmentFileName = documentResponse?.FileName;
                 }
@@ -85,16 +93,54 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             });
 
             // Change status of package to in-progress
-            if (carePackage.Status != PackageStatus.InProgress)
+            if (carePackage.Status == PackageStatus.Approved)
             {
-                carePackage.Status = PackageStatus.InProgress;
+                carePackage.Status = PackageStatus.SubmittedForApproval;
             }
 
             await _dbManager.SaveAsync("Could not save care package reclaim to database");
             return newReclaim.ToDomain().ToResponse();
         }
 
-        private CarePackageReclaim TryHandleProvisionalCareCharge(CarePackageReclaimCreationDomain requestedReclaim, CarePackageDetail coreCostDetail, CarePackage carePackage)
+        public async Task<CarePackageReclaimResponse> CreateProvisionalCareCharge(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType)
+        {
+            var carePackage = await _carePackageGateway
+                .GetPackageAsync(reclaimCreationDomain.CarePackageId, PackageFields.Details | PackageFields.Reclaims, true)
+                .EnsureExistsAsync($"Care package with id {reclaimCreationDomain.CarePackageId} not found");
+
+            if (carePackage.Status.In(PackageStatus.Cancelled, PackageStatus.Ended))
+            {
+                throw new ApiException($"Can not create {reclaimType.GetDisplayName()} for care package status {carePackage.Status.GetDisplayName()}",
+                    HttpStatusCode.BadRequest);
+            }
+
+            var coreCostDetail = carePackage.Details
+                .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost)
+                .EnsureExists($"Core cost for package with id {reclaimCreationDomain.CarePackageId} not found", HttpStatusCode.InternalServerError);
+
+            ValidateProvisionalCareChargeAsync(reclaimCreationDomain, carePackage, coreCostDetail);
+
+            var newReclaim = reclaimCreationDomain.ToEntity();
+
+            carePackage.Reclaims.Add(newReclaim);
+
+            carePackage.Histories.Add(new CarePackageHistory
+            {
+                Description = $"{reclaimType.GetDisplayName()} {reclaimCreationDomain.SubType.GetDisplayName()} Created",
+            });
+
+            // Change status of package to submitted for approval
+            if (carePackage.Status == PackageStatus.Approved)
+            {
+                carePackage.Status = PackageStatus.SubmittedForApproval;
+            }
+
+            await _dbManager.SaveAsync("Could not save care package reclaim to database");
+            return newReclaim.ToDomain().ToResponse();
+        }
+
+
+        private CarePackageReclaim TryHandleProvisionalCareCharge(CarePackageReclaimCreationDomain requestedReclaim, CarePackage carePackage)
         {
             var provisionalReclaim = carePackage.Reclaims
                 .FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeProvisional &&
@@ -102,8 +148,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             if (requestedReclaim.SubType is ReclaimSubType.CareChargeProvisional)
             {
-                requestedReclaim.StartDate = coreCostDetail.StartDate;
-
                 // new provisional reclaim shouldn't be created, update existing instead
                 if (provisionalReclaim != null)
                 {
@@ -117,8 +161,21 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 // The provisional end date should be 1 day before start date of requested reclaim
                 if (provisionalReclaim != null)
                 {
-                    provisionalReclaim.Status = ReclaimStatus.Ended;
-                    provisionalReclaim.EndDate = requestedReclaim.StartDate.Date.AddDays(-1);
+                    var provisionalReclaimStatus = ReclaimStatus.Ended;
+                    var provisionalReclaimEndDate = requestedReclaim.StartDate.Date.AddDays(-1);
+                    if (provisionalReclaimEndDate.Date >= DateTimeOffset.Now.Date)
+                    {
+                        provisionalReclaimStatus = ReclaimStatus.Active;
+                    }
+
+                    if (provisionalReclaim.StartDate.Date == requestedReclaim.StartDate.Date)
+                    {
+                        provisionalReclaimStatus = ReclaimStatus.Cancelled;
+                        provisionalReclaimEndDate = requestedReclaim.StartDate.Date;
+                    }
+
+                    provisionalReclaim.Status = provisionalReclaimStatus;
+                    provisionalReclaim.EndDate = provisionalReclaimEndDate;
                 }
             }
 
@@ -183,7 +240,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             if (requestedReclaim.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks)
             {
                 var existingProvisionalCareCharge =
-                    carePackage.Reclaims.FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeProvisional);
+                    carePackage.Reclaims.Where(r => r.Status != ReclaimStatus.Cancelled)
+                        .FirstOrDefault(r => r.SubType == ReclaimSubType.CareChargeProvisional);
 
                 if (existingProvisionalCareCharge != null)
                 {
@@ -237,5 +295,39 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             return null;
         }
+
+        private static void ValidateProvisionalCareChargeAsync(CarePackageReclaimCreationDomain reclaimCreationDomain, CarePackage carePackage, CarePackageDetail coreCostDetail)
+        {
+            if (reclaimCreationDomain.SubType != ReclaimSubType.CareChargeProvisional)
+            {
+                throw new ApiException($"Cannot create {reclaimCreationDomain.SubType.GetDisplayName()}. Manage other care charges types in the Care Charges menu",
+                    HttpStatusCode.BadRequest);
+            }
+
+            if (carePackage.Reclaims.Any(cc => cc.SubType == ReclaimSubType.CareChargeProvisional))
+            {
+                throw new ApiException($"Provisional Care charge assessment for this package already done",
+                    HttpStatusCode.BadRequest);
+            }
+
+            if (carePackage.Reclaims.Any(cc => cc.SubType != ReclaimSubType.CareChargeProvisional))
+            {
+                throw new ApiException($"Care charge assessment for this package already done. Manage care charges for this package in the Care Charges menu",
+                    HttpStatusCode.BadRequest);
+            }
+
+            // Start date of provisional CC cannot be before package start date
+            if (!reclaimCreationDomain.StartDate.IsInRange(coreCostDetail.StartDate, coreCostDetail.EndDate ?? DateTimeOffset.Now.AddYears(10)))
+            {
+                throw new ApiException($"{ReclaimSubType.CareChargeProvisional.GetDisplayName()} start date must be equal or greater than {coreCostDetail.StartDate.Date}", HttpStatusCode.UnprocessableEntity);
+            }
+
+            // If provisional cc is set to be ongoing, force end date to be the end date of the package
+            if (coreCostDetail.EndDate != null && reclaimCreationDomain.EndDate == null)
+            {
+                reclaimCreationDomain.EndDate = coreCostDetail.EndDate;
+            }
+        }
+
     }
 }

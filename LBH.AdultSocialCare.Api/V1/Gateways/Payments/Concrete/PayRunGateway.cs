@@ -47,7 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .Select(pr => new PayRunListDomain
                 {
                     PayRunId = pr.Id,
-                    PayRunNumber = pr.Id.ToString().Substring(0, 6), //Todo FK: temp solution
+                    PayRunNumber = pr.Number,
                     PayRunTypeId = (int) pr.Type,
                     PayRunTypeName = types.Contains((int) pr.Type) ? pr.Type.ToDescription() : string.Empty,
                     PayRunStatusId = (int) pr.Status,
@@ -75,6 +75,23 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 
         public async Task CreateDraftPayRun(Payrun payRun)
         {
+            var currentDate = DateTimeOffset.UtcNow.Date;
+
+            // TODO: VK: Customers in different timezones may create repeating numbers and fail
+            // Move to DB side (calculated field / sequence)
+            var payrunsCount =
+                await _dbContext.Payruns
+                    .AnyAsync(payrun =>
+                        payrun.Number.Length == 15 &&
+                        _dbContext.CompareDates(payrun.DateCreated, currentDate) == 0) // temp prevention of fail on legacy numbers
+                ? await _dbContext.Payruns
+                    .Where(payrun => _dbContext.CompareDates(payrun.DateCreated, currentDate) == 0)
+                    .Select(payrun => Convert.ToInt32(payrun.Number.Substring(11, 4)))
+                    .MaxAsync()
+                : 0;
+
+            payRun.Number = $"PYR-{DateTimeOffset.UtcNow:yyMMdd}-{++payrunsCount:0000}";
+
             await _dbContext.Payruns.AddAsync(payRun);
             try
             {
@@ -96,9 +113,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 
         public async Task<bool> CheckExistsUnApprovedPayRunAsync(PayrunType payRunType)
         {
-            var approvedPayRunStatuses = new[] { PayrunStatus.Approved, PayrunStatus.Paid, PayrunStatus.PaidWithHold };
+            var completedPayRunStatuses = new[] { PayrunStatus.Archived, PayrunStatus.Paid, PayrunStatus.PaidWithHold };
             return await _dbContext.Payruns
-                .Where(pr => pr.Type == payRunType && !approvedPayRunStatuses.Contains(pr.Status)).AnyAsync();
+                .Where(pr => pr.Type == payRunType && !completedPayRunStatuses.Contains(pr.Status)).AnyAsync();
         }
 
         public async Task<IEnumerable<Payrun>> GetPayRunsByTypeAndStatusAsync(PayrunType[] types, PayrunStatus[] statuses)
@@ -133,6 +150,58 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .Where(pi => pi.Invoice.PackageId == packageId && invoiceStatuses.Contains(pi.InvoiceStatus) && payrunTypes.Contains(pi.Payrun.Type) && payRunStatuses.Contains(pi.Payrun.Status))
                 .OrderByDescending(pi => pi.Payrun.EndDate).Select(pi => pi.Payrun).FirstOrDefaultAsync();
             return payrun;
+        }
+
+        public async Task<List<CedarFileInvoiceHeader>> GetCedarFileList(Guid payRunId)
+        {
+            return await _dbContext.PayrunInvoices
+                .Where(p => p.PayrunId == payRunId)
+                .Include(item => item.Invoice)
+                .ThenInclude(item => item.Items)
+                .Include(item => item.Invoice)
+                .ThenInclude(item => item.Supplier)
+                .Include(item => item.Invoice)
+                .ThenInclude(item => item.Package)
+                .ThenInclude(item => item.PrimarySupportReason)
+                .Select(p => new CedarFileInvoiceHeader
+                {
+                    InvoiceHeaderId = 2,
+                    Subtype = 96,
+                    InvoiceSupplierNumber = p.Invoice.Supplier.CedarId,
+                    InvoiceReferenceNumber = p.Invoice.Number,
+                    TransactionDate = p.Invoice.DateCreated,
+                    ReceivedDate = p.Invoice.DateCreated,
+                    SupplierSiteReferenceId = p.Invoice.Supplier.CedarReferenceNumber,
+                    GrossAmount = p.Invoice.GrossTotal,
+                    NetAmount = p.Invoice.NetTotal,
+                    InvoiceItems = p.Invoice.Items.Select(it => new CedarFileInvoiceLineDomain()
+                    {
+                        InvoiceLineId = 3,
+                        Name = it.Name,
+                        Quantity = it.Quantity,
+                        Cost = it.WeeklyCost,
+                        TaxFlag = 0,
+                        CostCentre = p.Invoice.Package.PrimarySupportReason.CederBudgetCode,
+                        Subjective = "520060",
+                        Analysis = "X",
+                        TaxStatus = "EXE"
+                    }).ToList()
+                })
+                .ToListAsync();
+        }
+
+        public async Task<CedarFileHeader> GetPayRunInvoicesInfoAsync(Guid payRunId)
+        {
+            var invoices = await _dbContext.PayrunInvoices.Where(p => p.PayrunId == payRunId).Include(pi => pi.Invoice)
+                .ToListAsync();
+
+            var result = new CedarFileHeader
+            {
+                TotalValueOfInvoices = invoices.Sum(i => i.Invoice.GrossTotal),
+                TotalNumberOfInvoices = invoices.Count,
+            };
+
+            return result;
         }
 
         private static IQueryable<Payrun> BuildPayRunQuery(IQueryable<Payrun> query, PayRunFields fields)

@@ -108,10 +108,5 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion CareCharges
-
-        public static IEnumerable<PayRunInvoiceItemResponse> ToResponse(this IEnumerable<PayRunInvoiceItemDomain> input)
-        {
-            return _mapper.Map<IEnumerable<PayRunInvoiceItemResponse>>(input);
-        }
     }
 }

@@ -116,19 +116,6 @@ namespace LBH.AdultSocialCare.Api.V1.Profiles
             CreateMap<Payrun, DraftPayRunCreationDomain>().ReverseMap();
 
             #endregion
-
-            #region Invoice item
-
-            CreateMap<PayRunInvoiceItemDomain, PayRunInvoiceItemResponse>()
-                .ForMember(response =>
-                    response.Quantity, opt => opt.MapFrom(domain =>
-                    (int) Math.Ceiling((domain.ToDate - domain.FromDate).TotalDays)))
-                .ForMember(response =>
-                    response.TotalCost, opt => opt.MapFrom(domain =>
-                    decimal.Round(domain.TotalCost, 2)))
-                .ReverseMap();
-
-            #endregion
         }
     }
 }

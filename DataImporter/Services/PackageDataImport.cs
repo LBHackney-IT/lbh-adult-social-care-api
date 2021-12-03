@@ -120,7 +120,7 @@ namespace DataImporter.Services
                         {
                             CarePackageId = carePackage.Id,
                             CreatorId = _applicationID,
-                            Cost = package.Cost,
+                            Cost = Math.Abs(package.Cost),
                             DateCreated = DateTimeOffset.UtcNow,
                             Id = Guid.NewGuid(),
                             Type = excelPackageModel.PackageDetailType,
@@ -139,7 +139,7 @@ namespace DataImporter.Services
                         {
                             CarePackageId = carePackage.Id,
                             CreatorId = _applicationID,
-                            Cost = package.Cost,
+                            Cost = Math.Abs(package.Cost),
                             DateCreated = DateTimeOffset.UtcNow,
                             Id = Guid.NewGuid(),
                             StartDate = package.StartDate,
@@ -160,7 +160,7 @@ namespace DataImporter.Services
                 _databaseContext.CarePackages.Add(carePackage);
             }
 
-            File.WriteAllLines("logs.txt", logs);
+            File.WriteAllLines($"{fileName}_logs.txt", logs);
             _databaseContext.SaveChanges();
         }
 

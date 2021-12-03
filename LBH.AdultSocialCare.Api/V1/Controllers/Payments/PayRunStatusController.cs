@@ -146,5 +146,24 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
             await useCase.ExecuteAsync(id, request.Notes);
             return Ok();
         }
+
+        /// <summary>
+        /// Marks pay run as paid after it's approved.
+        /// </summary>
+        /// <param name="useCase">Use case to mark pay run as paid.</param>
+        /// <param name="id">Pay run id.</param>
+        /// <returns>Ok when operation is successful</returns>
+        [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
+        [ProducesDefaultResponseType]
+        [HttpPut("{id:guid}/pay")]
+        // [AuthorizeRoles(RolesEnum.Finance)]
+        public async Task<IActionResult> MarkPayRunAsPaidAsync([FromServices] IMakePayRunPaymentUseCase useCase, Guid id)
+        {
+            await useCase.ExecuteAsync(id);
+            return Ok();
+        }
     }
 }

@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
+using System.IO;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
 {
@@ -179,6 +180,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("assign")]
+        [DisableRequestSizeLimit]
         // [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult> AssignCarePlan([FromForm] CarePlanAssignmentRequest request)
         {
