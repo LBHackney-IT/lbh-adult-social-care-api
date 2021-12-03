@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using AutoMapper;
+using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using LBH.AdultSocialCare.Api.V1.Domain.Security;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Common;
 using LBH.AdultSocialCare.Data.Entities.Payments;
 
@@ -92,6 +95,20 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static Payrun ToEntity(this DraftPayRunCreationDomain input)
         {
             return _mapper.Map<Payrun>(input);
+        }
+
+        #endregion
+
+        #region Care charges
+
+        public static CarePackageReclaim ToEntity(this CareChargeReclaimCreationDomain input)
+        {
+            return _mapper.Map<CarePackageReclaim>(input);
+        }
+
+        public static IEnumerable<CarePackageReclaim> ToEntity(this IEnumerable<CareChargeReclaimCreationDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageReclaim>>(input);
         }
 
         #endregion

@@ -16,7 +16,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
         public async Task<int> GetAsync()
         {
             var result = await _gateway.GetReleasedInvoiceCountAsync();
-            return result == 0 ? 24 : result; // TODO: Remove dummy value
+            return result;
         }
     }
 }

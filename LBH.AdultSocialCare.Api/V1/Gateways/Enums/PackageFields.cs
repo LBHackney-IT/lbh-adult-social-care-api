@@ -15,6 +15,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Enums
         PrimarySupportReason = 64,
         Broker = 128,
         Approver = 256,
-        All = Details | Reclaims | Settings | Supplier | Histories | ServiceUser | PrimarySupportReason,
+        Resources = 512,
+        All = Details | Reclaims | Settings | Supplier | Histories | ServiceUser | PrimarySupportReason | Resources,
     }
 }

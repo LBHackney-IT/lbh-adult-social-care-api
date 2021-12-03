@@ -99,13 +99,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 {
                     UpdateProvisionalReclaim(requestedReclaim, existingReclaim, package);
 
-                    if (reclaimBulkUpdateDomain?.AssessmentFileId == Guid.Empty)
-                    {
-                        var documentResponse = await _fileStorage.
-                            SaveFileAsync(ConvertCarePlan(reclaimBulkUpdateDomain.AssessmentFile), reclaimBulkUpdateDomain.AssessmentFile?.FileName);
-                        existingReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
-                        existingReclaim.AssessmentFileName = documentResponse?.FileName;
-                    }
                     result.Add(existingReclaim);
                 }
                 else
@@ -125,13 +118,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     {
                         existingReclaim.Status = ReclaimStatus.Ended;
                         existingReclaim.EndDate = DateTimeOffset.Now.Date;
-                    }
-
-                    if (reclaimBulkUpdateDomain?.AssessmentFileId == Guid.Empty)
-                    {
-                        var documentResponse = await _fileStorage.SaveFileAsync(ConvertCarePlan(reclaimBulkUpdateDomain.AssessmentFile), reclaimBulkUpdateDomain.AssessmentFile?.FileName);
-                        requestedReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
-                        requestedReclaim.AssessmentFileName = documentResponse?.FileName;
                     }
 
                     var newReclaim = CreateNewReclaim(requestedReclaim, existingReclaim, package);

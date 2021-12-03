@@ -1,15 +1,15 @@
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Extensions;
-using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
-using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -54,6 +54,26 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     carePackage.Reclaims.Any(cc => cc.SubType != ReclaimSubType.CareChargeProvisional);
 
             return res.ToResponse();
+        }
+
+        public async Task<FinancialAssessmentViewResponse> GetFinancialAssessmentDetailsAsync(Guid carePackageId)
+        {
+            var package = await _carePackageGateway.GetPackageAsync(carePackageId, PackageFields.Reclaims | PackageFields.Resources, false)
+                .EnsureExistsAsync($"Care package with id {carePackageId} not found");
+
+            var validStatuses = new[] { ReclaimStatus.Pending, ReclaimStatus.Active, ReclaimStatus.Ended };
+
+            var existingReclaims = package.Reclaims
+                .Where(pr => pr.Type == ReclaimType.CareCharge && validStatuses.Contains(pr.Status))
+                .OrderBy(pr => pr.StartDate).ToList();
+
+            var resource = package.Resources.OrderByDescending(pr => pr.DateCreated).FirstOrDefault();
+
+            return new FinancialAssessmentViewResponse
+            {
+                CareCharges = existingReclaims.ToDomain().ToResponse(),
+                Resource = resource.ToDomain().ToResponse()
+            };
         }
     }
 }
