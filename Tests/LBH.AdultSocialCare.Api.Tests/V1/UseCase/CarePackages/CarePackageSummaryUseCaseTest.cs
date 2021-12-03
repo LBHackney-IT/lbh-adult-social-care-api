@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Moq;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Common;
@@ -18,6 +19,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
     {
         private readonly CarePackage _package;
         private readonly GetCarePackageSummaryUseCase _useCase;
+
+        private DateTime startDate = DateTime.Now.AddDays(-30);
+        private DateTime endDate = DateTime.Now.AddDays(10);
 
         public CarePackageSummaryUseCaseTest()
         {
@@ -104,7 +108,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _package.Details.Add(new CarePackageDetail
             {
                 Cost = coreCost,
-                Type = PackageDetailType.CoreCost
+                Type = PackageDetailType.CoreCost,
+                StartDate = startDate,
+                EndDate = endDate
             });
         }
 
@@ -114,7 +120,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 Cost = cost,
                 Type = type,
-                ClaimCollector = collector
+                ClaimCollector = collector,
+                StartDate = startDate,
+                EndDate = endDate,
+                Status = ReclaimStatus.Active
             });
         }
 
@@ -124,7 +133,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 Cost = cost,
                 Type = PackageDetailType.AdditionalNeed,
-                CostPeriod = period
+                CostPeriod = period,
+                StartDate = startDate,
+                EndDate = endDate
             });
         }
     }

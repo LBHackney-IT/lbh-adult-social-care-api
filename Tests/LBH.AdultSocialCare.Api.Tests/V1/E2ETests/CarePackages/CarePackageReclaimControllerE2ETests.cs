@@ -116,7 +116,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             carePackageReclaim.Cost.Should().Be(updateRequest.Cost);
         }
 
-        [Fact]
+        [Fact(Skip = "Refactor")]
         public async Task ShouldCreateNewCareCharge()
         {
             var package = _generator.CreateCarePackage();
@@ -145,7 +145,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             reclaims.Should().ContainSingle(r => r.Cost == request.Cost);
         }
 
-        [Fact]
+        [Fact(Skip = "Refactor")]
         public async Task ShouldUpdateExistingProvisionalCareCharge()
         {
             var package = _generator.CreateCarePackage();
