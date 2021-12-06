@@ -32,7 +32,11 @@ data "aws_subnet_ids" "development_private_subnets" {
   }
 }
 
- data "aws_ssm_parameter" "adult_sc_postgres_db_password" {
+data "aws_ssm_parameter" "adult_sc_postgres_db_name" {
+   name = "/hasc-api/development/postgres-database"
+ }
+
+data "aws_ssm_parameter" "adult_sc_postgres_db_password" {
    name = "/hasc-api/development/postgres-password"
  }
 
@@ -44,7 +48,7 @@ module "postgres_db_development" {
     source = "github.com/LBHackney-IT/aws-hackney-common-terraform.git//modules/database/postgres"
     environment_name = "development"
     vpc_id = data.aws_vpc.development_vpc.id
-    db_identifier = "adult-social-care"
+    db_identifier = data.aws_ssm_parameter.adult_sc_postgres_db_name.value
     db_name = "adult_sc_db"
     db_port  = 5829
     subnet_ids = data.aws_subnet_ids.development_private_subnets.ids
