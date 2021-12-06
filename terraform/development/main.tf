@@ -14,21 +14,21 @@ terraform {
     bucket  = "lbh-mosaic-terraform-state-development"
     encrypt = true
     region  = "eu-west-2"
-    key     = "services/hasc-api/state"
+    key     = "services/adult-social-care-api/state"
   }
 }
 
 /*    POSTGRES SET UP    */
 data "aws_vpc" "development_vpc" {
   tags = {
-    Name = "mosaic-dev-development"
+    Name = "ASCFinance-dev"
   }
 }
 data "aws_subnet_ids" "development_private_subnets" {
   vpc_id = data.aws_vpc.development_vpc.id
   filter {
-    name   = "tag:environment"
-    values = ["development"]
+    name   = "tag:Name"
+    values = ["ASCFinance-dev-private-eu-west-2b", "ASCFinance-dev-private-eu-west-2a"]
   }
 }
 
