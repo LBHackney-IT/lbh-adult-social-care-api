@@ -203,9 +203,10 @@ namespace LBH.AdultSocialCare.Api
                 }
             }
 
-            app.UseCors(options => options.WithOrigins("http://localhost:3000", "https://d1ewp85mz183f9.cloudfront.net",
-                    "https://social-care-care-packages-staging.hackney.gov.uk", "https://d2s6rc0vyqw6a1.cloudfront.net",
-                    "https://social-care-care-packages.hackney.gov.uk")
+            app.UseCors(options => options.WithOrigins("http://localhost:3000",
+                "https://d1a3w0e0r3zv0o.cloudfront.net", "https://social-care-development.hackney.gov",
+                "https://d1ewp85mz183f9.cloudfront.net", "https://social-care-care-packages-staging.hackney.gov.uk",
+                "https://d2s6rc0vyqw6a1.cloudfront.net", "https://social-care-care-packages.hackney.gov.uk")
                 .AllowAnyMethod()
                 .AllowAnyHeader());
             app.UseCorrelation();
