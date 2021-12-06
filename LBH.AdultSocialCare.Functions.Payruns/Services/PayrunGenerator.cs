@@ -19,27 +19,32 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IInvoiceGateway _invoiceGateway;
         private readonly ICarePackageGateway _carePackageGateway;
+        private readonly IFundedNursingCareGateway _fundedNursingCareGateway;
         private readonly IPayrunGateway _payrunGateway;
         private readonly ILogger<PayrunGenerator> _logger;
-        private readonly InvoiceGenerator _invoiceGenerator;
+        private InvoiceGenerator _invoiceGenerator;
 
         public PayrunGenerator(
-            InvoiceGenerator invoiceGenerator, IHttpContextAccessor httpContextAccessor, IInvoiceGateway invoiceGateway,
-            ICarePackageGateway carePackageGateway, IPayrunGateway payrunGateway, ILogger<PayrunGenerator> logger)
+            IHttpContextAccessor httpContextAccessor, IInvoiceGateway invoiceGateway,
+            ICarePackageGateway carePackageGateway, IFundedNursingCareGateway fundedNursingCareGateway,
+            IPayrunGateway payrunGateway, ILogger<PayrunGenerator> logger)
         {
             _httpContextAccessor = httpContextAccessor;
             _invoiceGateway = invoiceGateway;
             _carePackageGateway = carePackageGateway;
+            _fundedNursingCareGateway = fundedNursingCareGateway;
             _payrunGateway = payrunGateway;
             _logger = logger;
-
-            _invoiceGenerator = invoiceGenerator;
         }
 
         public async Task GenerateAsync()
         {
             // TODO: VK: Handle payrun ID from SQS, add reprocessing for hang-up draft / in-progress payruns
             var draftPayruns = await _payrunGateway.GetDraftPayrunsAsync();
+            if (draftPayruns.Count == 0) return;
+
+            var fncPrices = await _fundedNursingCareGateway.GetFundedNursingCarePricesAsync();
+            _invoiceGenerator = new InvoiceGenerator(_invoiceGateway, fncPrices);
 
             foreach (var payrun in draftPayruns)
             {

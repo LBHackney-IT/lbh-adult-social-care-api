@@ -1,8 +1,8 @@
 using System;
 
-namespace LBH.AdultSocialCare.Api.Helpers
+namespace Common.Helpers
 {
-    public interface ICurrentDateTimeOffsetProvider
+    public interface ICurrentDateProvider
     {
         public DateTimeOffset Now { get; }
         public DateTimeOffset UtcNow { get; }

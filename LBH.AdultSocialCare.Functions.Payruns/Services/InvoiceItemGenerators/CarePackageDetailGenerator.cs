@@ -38,7 +38,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             if (oneOffInvoiceItemExists) return null;
 
             var startDate = Dates.Max(detail.StartDate, PayrunConstants.DefaultStartDate);
-            var endDate = detail.EndDate ?? startDate.AddDays(1); // arbitrary number just to get quantity 1 in UI for ongoing one-off, review
+            var endDate = detail.EndDate ?? startDate; // quantity is infinite for ongoing one-offs, so limit it to 1 day
 
             if (startDate.UtcDateTime > invoiceEndDate.UtcDateTime) return null;
 
@@ -66,7 +66,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                 Name = GetItemName(detail),
                 Quantity = itemRange.WeeksInclusive,
                 WeeklyCost = detail.Cost,
-                TotalCost = detail.Cost * itemRange.WeeksInclusive,
+                TotalCost = Math.Round(detail.Cost * itemRange.WeeksInclusive, 2),
                 FromDate = itemRange.StartDate,
                 ToDate = itemRange.EndDate,
                 CarePackageDetailId = detail.Id,
@@ -81,9 +81,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             {
                 var refunds = RefundCalculator.Calculate(
                     detail, packageInvoices,
-                    (start, end, quantity) => detail.CostPeriod is PaymentPeriod.OneOff
-                        ? detail.Cost
-                        : detail.Cost * quantity);
+                    (paymentRange, quantity) => CalculateCostForPeriod(detail, paymentRange, quantity));
 
                 foreach (var refund in refunds)
                 {
@@ -103,15 +101,32 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                         WeeklyCost = detail.CostPeriod is PaymentPeriod.OneOff
                             ? 0.0m
                             : detail.Cost,
-                        TotalCost = refund.RefundAmount,
+                        TotalCost = refund.Amount,
                         FromDate = refund.StartDate,
-                        ToDate = refund.EndDate,
+                        ToDate = (detail.CostPeriod is PaymentPeriod.OneOff && detail.EndDate is null)
+                            ? refund.StartDate // quantity is infinite for ongoing one-offs, so limit it to 1 day
+                            : refund.EndDate,
                         CarePackageDetailId = detail.Id,
                         SourceVersion = detail.Version,
-                        PriceEffect = refund.RefundAmount > 0 ? PriceEffect.Add : PriceEffect.Subtract
+                        PriceEffect = refund.Amount > 0
+                            ? PriceEffect.Add
+                            : PriceEffect.Subtract
                     };
                 }
             }
+        }
+
+        private static decimal CalculateCostForPeriod(CarePackageDetail detail, DateRange paymentRange, decimal quantity)
+        {
+            if (detail.CostPeriod is PaymentPeriod.OneOff)
+            {
+                // ignore end date of one-offs, payment is done single time at start date
+                return ((detail.StartDate >= paymentRange.StartDate) && (detail.StartDate <= paymentRange.EndDate))
+                    ? detail.Cost
+                    : 0.0m;
+            }
+
+            return detail.Cost * quantity;
         }
 
         private static string GetItemName(CarePackageDetail detail)

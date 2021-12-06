@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Common.Extensions;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Entities.Common;
 using LBH.AdultSocialCare.Data.Entities.Interfaces;
 using LBH.AdultSocialCare.Data.Entities.Payments;
 using LBH.AdultSocialCare.Functions.Payruns.Domain;
@@ -17,20 +18,19 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
     public class InvoiceGenerator
     {
         private readonly IInvoiceGateway _invoiceGateway;
-        private readonly IFundedNursingCareGateway _fundedNursingCareGateway;
+        private readonly IList<FundedNursingCarePrice> _fncPrices;
 
         private Dictionary<PackageType, List<BaseInvoiceItemsGenerator>> _generators;
 
-        public InvoiceGenerator(
-            IInvoiceGateway invoiceGateway, IFundedNursingCareGateway fundedNursingCareGateway)
+        public InvoiceGenerator(IInvoiceGateway invoiceGateway, IList<FundedNursingCarePrice> fncPrices)
         {
             _invoiceGateway = invoiceGateway;
-            _fundedNursingCareGateway = fundedNursingCareGateway;
+            _fncPrices = fncPrices;
         }
 
         public async Task<IList<Invoice>> GenerateAsync(IList<CarePackage> packages, DateTimeOffset invoiceEndDate, InvoiceTypes invoiceTypes, long lastInvoiceNumber)
         {
-            await InitializeGeneratorsAsync();
+            InitializeGeneratorsAsync();
 
             var invoices = new List<Invoice>();
             var packageIds = packages
@@ -137,7 +137,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             _invoiceGateway.RejectInvoices(outdatedInvoices);
         }
 
-        private async Task InitializeGeneratorsAsync()
+        private void InitializeGeneratorsAsync()
         {
             _generators = new Dictionary<PackageType, List<BaseInvoiceItemsGenerator>>
             {
@@ -145,7 +145,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                     PackageType.NursingCare, new List<BaseInvoiceItemsGenerator>
                     {
                         new CarePackageDetailGenerator(),
-                        new FundedNursingCareGenerator(_fundedNursingCareGateway),
+                        new FundedNursingCareGenerator(_fncPrices),
                         new CareChargeGenerator()
                     }
                 },
@@ -157,11 +157,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                     }
                 }
             };
-
-            foreach (var generator in _generators.Values.SelectMany(generators => generators))
-            {
-                await generator.Initialize();
-            }
         }
     }
 }

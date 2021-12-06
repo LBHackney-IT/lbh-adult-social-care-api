@@ -33,8 +33,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
                     Id = payrunInvoice.Invoice.Id,
                     PackageId = payrunInvoice.Invoice.PackageId,
                     PayrunStatus = payrunInvoice.Payrun.Status,
-                    StartDate = payrunInvoice.Payrun.StartDate,
-                    EndDate = payrunInvoice.Payrun.EndDate,
                     Items = payrunInvoice.Invoice.Items.ToList(),
                     PayrunInvoice = payrunInvoice // need this to reject invoice
                 })
