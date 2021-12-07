@@ -36,7 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task<CarePackageReclaimDomain> ExecuteAsync(Guid reclaimId, CarePackageReclaimEndRequest request)
         {
             var reclaim = await _gateway
-                .GetAsync(reclaimId)
+                .GetAsync(reclaimId, true)
                 .EnsureExistsAsync($"Care package reclaim {reclaimId} not found");
 
             reclaim.Status = ReclaimStatus.Ended;

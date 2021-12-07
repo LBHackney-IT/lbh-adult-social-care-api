@@ -59,7 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             // Get and cancel active/pending reclaims starting after the cancelled reclaim
             var reclaimsToBeCancelled = carePackage.Reclaims.Where(r =>
                 r.Type == ReclaimType.CareCharge && r.StartDate.Date > reclaim.StartDate &&
-                r.Status.In(ReclaimStatus.Active, ReclaimStatus.Pending)).ToList();
+                r.Status.In(ReclaimStatus.Active, ReclaimStatus.Pending, ReclaimStatus.Ended)).ToList();
 
             foreach (var packageReclaim in reclaimsToBeCancelled)
             {
@@ -73,7 +73,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             await _dbManager.SaveAsync();
 
-            return reclaim.ToDomain();
+            return currentReclaim.ToDomain();
         }
     }
 }

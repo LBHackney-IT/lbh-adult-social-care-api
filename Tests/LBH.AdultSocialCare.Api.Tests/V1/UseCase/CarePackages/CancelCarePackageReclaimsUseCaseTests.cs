@@ -5,6 +5,7 @@ using Moq;
 using System;
 using System.Threading.Tasks;
 using FluentAssertions;
+using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -25,13 +26,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             var carePackage = localFixture.Generator.CreateCarePackage();
 
-            _reclaim = new CarePackageReclaim
-            {
-                Id = new Guid(),
-                Status = ReclaimStatus.Active,
-                Type = ReclaimType.CareCharge,
-                CarePackageId = carePackage.Id
-            };
+            _reclaim = TestDataHelper.CreateCarePackageReclaim(carePackage.Id, ClaimCollector.Hackney,
+                ReclaimType.CareCharge, ReclaimSubType.CareChargeProvisional);
+            _reclaim.Status = ReclaimStatus.Active;
+
+            carePackage.Reclaims.Add(_reclaim);
 
             _dbManager = new Mock<IDatabaseManager>();
             var historyGateway = new Mock<ICarePackageHistoryGateway>();
