@@ -11,7 +11,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
     public class CarePackageDetailGeneratorWeeklyTests
     {
         private readonly CarePackage _package;
-        private readonly CarePackageDetailGenerator _generator;
+        private readonly CarePackageDetailPeriodicalGenerator _generator;
 
         public CarePackageDetailGeneratorWeeklyTests()
         {
@@ -33,7 +33,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 Package = _package
             });
 
-            _generator = new CarePackageDetailGenerator();
+            _generator = new CarePackageDetailPeriodicalGenerator();
         }
 
         #region Normal finite weekly needs

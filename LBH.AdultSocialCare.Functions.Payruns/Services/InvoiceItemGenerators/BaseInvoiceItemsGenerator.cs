@@ -37,6 +37,26 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                 : Dates.Max(packageItem.StartDate, PayrunConstants.DefaultStartDate);
         }
 
+        protected static string GetDetailItemName(CarePackageDetail detail)
+        {
+            switch (detail.Type)
+            {
+                case PackageDetailType.CoreCost:
+                    return detail.Package.PackageType switch
+                    {
+                        PackageType.NursingCare => "Nursing Care Core",
+                        PackageType.ResidentialCare => "Residential Care Core",
+                        _ => throw new ArgumentException($"Unsupported {detail.Type}")
+                    };
+
+                case PackageDetailType.AdditionalNeed:
+                    return $"Additional {detail.CostPeriod.GetDisplayName()} Cost";
+
+                default:
+                    throw new ArgumentException($"Unsupported {detail.Type}");
+            }
+        }
+
         private static InvoiceItem GetLatestInvoiceItem(IPackageItem packageItem, IEnumerable<InvoiceDomain> invoices)
         {
             return invoices?

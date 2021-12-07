@@ -144,7 +144,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 {
                     PackageType.NursingCare, new List<BaseInvoiceItemsGenerator>
                     {
-                        new CarePackageDetailGenerator(),
+                        new CarePackageDetailPeriodicalGenerator(),
+                        new CarePackageDetailOneOffGenerator(),
                         new FundedNursingCareGenerator(_fncPrices),
                         new CareChargeGenerator()
                     }
@@ -152,7 +153,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 {
                     PackageType.ResidentialCare, new List<BaseInvoiceItemsGenerator>
                     {
-                        new CarePackageDetailGenerator(),
+                        new CarePackageDetailPeriodicalGenerator(),
+                        new CarePackageDetailOneOffGenerator(),
                         new CareChargeGenerator()
                     }
                 }

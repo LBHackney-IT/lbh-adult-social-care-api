@@ -8,12 +8,12 @@ using Xunit;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenerators
 {
-    public class CarePackageDetailGeneratorOneOffTests
+    public class CarePackageDetailOneOffGeneratorTests
     {
         private readonly CarePackage _package;
-        private readonly CarePackageDetailGenerator _generator;
+        private readonly CarePackageDetailOneOffGenerator _generator;
 
-        public CarePackageDetailGeneratorOneOffTests()
+        public CarePackageDetailOneOffGeneratorTests()
         {
             _package = new CarePackage
             {
@@ -33,7 +33,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 Package = _package
             });
 
-            _generator = new CarePackageDetailGenerator();
+            _generator = new CarePackageDetailOneOffGenerator();
         }
 
         #region Normal invoices
@@ -182,7 +182,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .CreateRefund()
                 .VerifyLastInvoice(
                     (300.0m, "2022-11-29", "2022-11-29"),   // new payment
-                    (-100.0m, "2022-12-01", "2022-12-01")); // refund previous
+                    (-100.0m, "2022-12-01", "2022-12-01")); // refund previous one
         }
 
         [Fact]
