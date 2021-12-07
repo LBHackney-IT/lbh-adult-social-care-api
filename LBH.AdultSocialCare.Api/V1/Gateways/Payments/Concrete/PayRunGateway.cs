@@ -42,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             var paidStatuses = new[] { PayrunStatus.Paid, PayrunStatus.PaidWithHold };
             var heldInvoiceStatuses = new[] { InvoiceStatus.Held, InvoiceStatus.Released, InvoiceStatus.ReleaseAccepted };
             var payRunList = await _dbContext.Payruns
-                .FilterPayRunList(parameters.PayRunId, parameters.PayRunType,
+                .FilterPayRunList(parameters.SearchTerm, parameters.PayRunType,
                     parameters.PayRunStatus, parameters.DateFrom, parameters.DateTo)
                 .Select(pr => new PayRunListDomain
                 {
@@ -66,7 +66,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .Take(parameters.PageSize).ToList();
 
             var payRunCount = await _dbContext.Payruns
-                .FilterPayRunList(parameters.PayRunId, parameters.PayRunType,
+                .FilterPayRunList(parameters.SearchTerm, parameters.PayRunType,
                     parameters.PayRunStatus, parameters.DateFrom, parameters.DateTo)
                 .CountAsync();
 
