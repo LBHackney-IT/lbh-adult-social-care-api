@@ -179,7 +179,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                         InvoiceLineId = 3,
                         Name = it.Name,
                         Quantity = it.Quantity,
-                        Cost = it.WeeklyCost,
+                        Cost = it.WeeklyCost == 0 ? it.TotalCost : it.WeeklyCost,
                         TaxFlag = 0,
                         CostCentre = p.Invoice.Package.PrimarySupportReason.CederBudgetCode,
                         Subjective = "520060",
