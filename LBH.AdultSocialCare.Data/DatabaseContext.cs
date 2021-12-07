@@ -294,12 +294,12 @@ namespace LBH.AdultSocialCare.Data
                         var enumValuesString = String.Join(", ", enumValues);
 
                         // TODO: VK: Review nullable enum fields and remove this
-                        // DO: Updated this condition to add 0 if enum is nullable
+                        // DO: Updated this condition to add NULL if enum is nullable
                         if (property.IsNullable)
                         {
-                            if (!enumValues.Contains(0))
+                            if (!enumValuesString.Contains("NULL"))
                             {
-                                enumValuesString = $"0, {enumValuesString}";
+                                enumValuesString = $"NULL, {enumValuesString}";
                             }
                         }
 
