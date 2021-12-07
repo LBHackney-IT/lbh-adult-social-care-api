@@ -121,6 +121,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             ValidateProvisionalCareChargeAsync(reclaimCreationDomain, carePackage, coreCostDetail);
 
+            reclaimCreationDomain.SubType = ReclaimSubType.CareChargeProvisional;
             var newReclaim = reclaimCreationDomain.ToEntity();
 
             carePackage.Reclaims.Add(newReclaim);
