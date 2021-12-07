@@ -220,7 +220,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// Cancels a reclaim with a given reclaimId
         /// </summary>
         /// <param name="reclaimId">The unique identifier of reclaim to cancel.</param>
-        /// <param name="useCase">A reference to the ICancelCarePackageReclaimsUseCase instance.</param>
+        /// <param name="useCase">A reference to the ICancelCareChargeUseCase instance.</param>
         /// <response code="200">When operation has been completed successfully.</response>
         /// <response code="404">When reclaim with given id doesn't exists.</response>
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
@@ -228,7 +228,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesDefaultResponseType]
         [HttpPut("care-charges/{reclaimId}/cancel")]
         public async Task<ActionResult<CarePackageReclaimResponse>> CancelReclaim(
-            Guid reclaimId, [FromServices] ICancelCarePackageReclaimsUseCase useCase)
+            Guid reclaimId, [FromServices] ICancelCareChargeUseCase useCase)
         {
             var reclaim = await useCase.ExecuteAsync(reclaimId);
             return Ok(reclaim.ToResponse());
@@ -239,7 +239,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// </summary>
         /// <param name="reclaimId">The unique identifier of reclaim to end.</param>
         /// <param name="request">Extra options for ending the request.</param>
-        /// <param name="useCase">A reference to the IEndCarePackageReclaimUseCase instance</param>
+        /// <param name="useCase">A reference to the IEndCareChargeUseCase instance</param>
         /// <response code="200">When operation has been completed successfully.</response>
         /// <response code="404">When reclaim with given id doesn't exists.</response>
         [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
@@ -248,7 +248,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpPut("care-charges/{reclaimId}/end")]
         public async Task<ActionResult<CarePackageReclaimResponse>> EndReclaim(
             Guid reclaimId, CarePackageReclaimEndRequest request,
-            [FromServices] IEndCarePackageReclaimUseCase useCase)
+            [FromServices] IEndCareChargeUseCase useCase)
         {
             var reclaim = await useCase.ExecuteAsync(reclaimId, request);
             return Ok(reclaim.ToResponse());

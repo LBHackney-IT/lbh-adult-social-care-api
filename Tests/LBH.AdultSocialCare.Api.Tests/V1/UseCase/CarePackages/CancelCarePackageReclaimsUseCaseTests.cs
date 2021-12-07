@@ -17,7 +17,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
     {
         private readonly CarePackageReclaim _reclaim;
         private readonly Mock<IDatabaseManager> _dbManager;
-        private readonly CancelCarePackageReclaimsUseCase _useCase;
+        private readonly CancelCareChargeUseCase _useCase;
         private readonly Mock<ICarePackageGateway> _carePackageGateway;
 
         public CancelCarePackageReclaimsUseCaseTests()
@@ -45,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 .Setup(g => g.GetPackageAsync(It.IsAny<Guid>(), It.IsAny<PackageFields>(), It.IsAny<bool>()))
                 .ReturnsAsync(carePackage);
 
-            _useCase = new CancelCarePackageReclaimsUseCase(gateway.Object, _dbManager.Object, historyGateway.Object, _carePackageGateway.Object);
+            _useCase = new CancelCareChargeUseCase(gateway.Object, _dbManager.Object, historyGateway.Object, _carePackageGateway.Object);
         }
 
         [Fact]

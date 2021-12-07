@@ -19,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
         {
             services.AddScoped<IApproveCarePackageUseCase, ApproveCarePackageUseCase>();
             services.AddScoped<IAssignCarePlanUseCase, AssignCarePlanUseCase>();
-            services.AddScoped<ICancelCarePackageReclaimsUseCase, CancelCarePackageReclaimsUseCase>();
+            services.AddScoped<ICancelCareChargeUseCase, CancelCareChargeUseCase>();
             services.AddScoped<ICancelCarePackageUseCase, CancelCarePackageUseCase>();
             services.AddScoped<ICarePackageOptionsUseCase, CarePackageOptionsUseCase>();
             services.AddScoped<ICreateCarePackageReclaimUseCase, CreateCarePackageReclaimUseCase>();
@@ -27,7 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             services.AddScoped<ICreatePackageResourceUseCase, CreatePackageResourceUseCase>();
             services.AddScoped<IDeclineCarePackageUseCase, DeclineCarePackageUseCase>();
             services.AddScoped<IDeleteCarePackageUseCase, DeleteCarePackageUseCase>();
-            services.AddScoped<IEndCarePackageReclaimUseCase, EndCarePackageReclaimUseCase>();
+            services.AddScoped<IEndCareChargeUseCase, EndCareChargeUseCase>();
             services.AddScoped<IEndCarePackageUseCase, EndCarePackageUseCase>();
             services.AddScoped<IEnsureSingleActivePackageTypePerUserUseCase, EnsureSingleActivePackageTypePerUserUseCase>();
             services.AddScoped<IGetApprovableCarePackagesUseCase, GetApprovableCarePackagesUseCase>();

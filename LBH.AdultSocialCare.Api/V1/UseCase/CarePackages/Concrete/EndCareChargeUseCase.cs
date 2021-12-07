@@ -16,14 +16,14 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
-    public class EndCarePackageReclaimUseCase : IEndCarePackageReclaimUseCase
+    public class EndCareChargeUseCase : IEndCareChargeUseCase
     {
         private readonly ICarePackageReclaimGateway _gateway;
         private readonly IDatabaseManager _dbManager;
         private readonly ICarePackageHistoryGateway _carePackageHistoryGateway;
         private readonly ICarePackageGateway _carePackageGateway;
 
-        public EndCarePackageReclaimUseCase(ICarePackageReclaimGateway gateway, IDatabaseManager dbManager
+        public EndCareChargeUseCase(ICarePackageReclaimGateway gateway, IDatabaseManager dbManager
             , ICarePackageHistoryGateway carePackageHistoryGateway, ICarePackageGateway carePackageGateway)
         {
             _gateway = gateway;
@@ -38,6 +38,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 .GetAsync(reclaimId, false)
                 .EnsureExistsAsync($"Care package reclaim {reclaimId} not found");
 
+            // Throw if reclaim is not a care charge
+            if (reclaim.Type != ReclaimType.CareCharge)
+            {
+                throw new ApiException($"Not allowed. Reclaim not a care charge",
+                    HttpStatusCode.BadRequest);
+            }
+
+            // Throw if reclaim already ended
             if (reclaim.Status == ReclaimStatus.Ended)
             {
                 throw new ApiException($"Care charge with id {reclaim.Id} already cancelled",
