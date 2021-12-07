@@ -190,6 +190,11 @@ namespace LBH.AdultSocialCare.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<CarePackageHistory>(entity =>
+            {
+                entity.Property(e => e.Status).IsRequired().HasDefaultValue(HistoryStatus.PackageInformation);
+            });
+
             #endregion Entity Config
 
             AddEnumConstrains(modelBuilder);

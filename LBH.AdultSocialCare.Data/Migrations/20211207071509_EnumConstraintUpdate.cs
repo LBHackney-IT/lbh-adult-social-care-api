@@ -86,6 +86,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
             migrationBuilder.Sql(@"UPDATE ""CarePackageHistories"" SET ""Status"" = 13 WHERE ""Status"" = 0;");
             migrationBuilder.Sql(
                 @"UPDATE ""CarePackageDetails"" SET ""ServicePeriod"" = ""CostPeriod"" WHERE ""ServicePeriod"" = 0;");
+            migrationBuilder.Sql(@"UPDATE ""CarePackageReclaims"" SET ""Type"" = 2 WHERE ""Type"" = 0;");
 
             migrationBuilder.CreateCheckConstraint(
                 name: "CK_Payruns_Status",
