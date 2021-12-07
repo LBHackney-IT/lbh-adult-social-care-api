@@ -7,10 +7,12 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
+using LBH.AdultSocialCare.Api.V1.Domain.Payments;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.Payments;
@@ -57,8 +59,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 workSheet.Cells.Style.Font.Size = 10;
                 workSheet.Cells.Style.Font.Name = "Arial";
 
-                // set header info 
+                // Set header info 
                 var headerIndex = 1;
+
                 workSheet.Cells[headerIndex, 1].Value = 1;
                 workSheet.Cells[headerIndex, 2].Value = 0;
                 workSheet.Cells[headerIndex, 3].Value = "AP";
@@ -67,55 +70,62 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 workSheet.Cells[headerIndex, 6].Value = "E5013";
                 workSheet.Cells[headerIndex, 7].Value = "HA";
 
+                // Set background color for invoice header
                 workSheet.Cells[headerIndex, 1, headerIndex, 11].Style.Fill.PatternType = ExcelFillStyle.Solid;
                 workSheet.Cells[headerIndex, 1, headerIndex, 11].Style.Fill.BackgroundColor.SetColor(Color.Yellow);
 
-
                 var invoiceRowIndex = 2;
+
+                // Set initial invoice line number
                 var invoiceNumber = 1;
+
                 foreach (var invoice in invoiceList)
                 {
-                    // set invoice header 
-                    workSheet.Cells[invoiceRowIndex, 1].Value = invoice.InvoiceHeaderId;
-                    workSheet.Cells[invoiceRowIndex, 2].Value = invoiceNumber;
-                    workSheet.Cells[invoiceRowIndex, 3].Value = invoice.Subtype;
-                    workSheet.Cells[invoiceRowIndex, 4].Value = invoice.InvoiceSupplierNumber;
-                    workSheet.Cells[invoiceRowIndex, 5].Value = invoice.InvoiceReferenceNumber;
-                    workSheet.Cells[invoiceRowIndex, 6].Value = invoice.TransactionDate.Date;
-                    workSheet.Cells[invoiceRowIndex, 7].Value = invoice.ReceivedDate.Date;
-                    workSheet.Cells[invoiceRowIndex, 8].Value = invoice.SupplierSiteReferenceId;
-                    workSheet.Cells[invoiceRowIndex, 9].Value = invoice.GrossAmount;
-                    workSheet.Cells[invoiceRowIndex, 10].Value = invoice.NetAmount;
-                    workSheet.Cells[invoiceRowIndex, 11].Value = invoice.GrossVatAmount;
+                    // Get Property Value of invoice header using Reflection
+                    var invoiceModel = new CedarFileInvoiceHeader();
+                    var cellIndex = 0;
 
-                    workSheet.Cells[invoiceRowIndex, 1, invoiceRowIndex, 11].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                    workSheet.Cells[invoiceRowIndex, 1, invoiceRowIndex, 11].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+                    foreach (PropertyInfo property in invoiceModel.GetType().GetProperties())
+                    {
+                        if (property.Name == "InvoiceItems")
+                            continue;
+                        if (property.Name == "InvoiceNumber") invoice.InvoiceNumber = invoiceNumber;
+                        cellIndex++;
+                        workSheet.Cells[invoiceRowIndex, cellIndex].Value = property.GetValue(invoice, null);
+                    }
 
+                    // Set background color for invoice line
+                    workSheet.Cells[invoiceRowIndex, 1, invoiceRowIndex, cellIndex].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    workSheet.Cells[invoiceRowIndex, 1, invoiceRowIndex, cellIndex].Style.Fill.BackgroundColor.SetColor(Color.Orange);
+
+                    // Set invoice item row index
                     var invoiceItemRowIndex = invoiceRowIndex + 1;
+
+                    // Set initial invoice item number
                     var invoiceLineNumber = 1;
 
                     foreach (var invoiceItem in invoice.InvoiceItems)
                     {
-                        // set invoice list 
-                        workSheet.Cells[invoiceItemRowIndex, 1].Value = invoiceItem.InvoiceLineId;
-                        workSheet.Cells[invoiceItemRowIndex, 2].Value = invoiceNumber;
-                        workSheet.Cells[invoiceItemRowIndex, 3].Value = invoiceLineNumber;
-                        workSheet.Cells[invoiceItemRowIndex, 4].Value = invoiceItem.Name;
-                        workSheet.Cells[invoiceItemRowIndex, 5].Value = invoiceItem.Quantity;
-                        workSheet.Cells[invoiceItemRowIndex, 6].Value = invoiceItem.Cost;
-                        workSheet.Cells[invoiceItemRowIndex, 7].Value = invoiceItem.TaxFlag;
-                        workSheet.Cells[invoiceItemRowIndex, 8].Value = invoiceItem.CostCentre;
-                        workSheet.Cells[invoiceItemRowIndex, 9].Value = invoiceItem.Subjective;
-                        workSheet.Cells[invoiceItemRowIndex, 10].Value = invoiceItem.Analysis;
-                        workSheet.Cells[invoiceItemRowIndex, 11].Value = invoiceItem.TaxStatus;
+                        // Get Property Value of invoice item using Reflection
+                        var invoiceLineModel = new CedarFileInvoiceLineDomain();
+                        var cellIndexInvoiceLine = 0;
 
-                        workSheet.Cells[invoiceItemRowIndex, 1, invoiceItemRowIndex, 11].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        workSheet.Cells[invoiceItemRowIndex, 1, invoiceItemRowIndex, 11].Style.Fill.BackgroundColor.SetColor(Color.LawnGreen);
+                        foreach (PropertyInfo propertyInvoiceItem in invoiceLineModel.GetType().GetProperties())
+                        {
+                            cellIndexInvoiceLine++;
+                            if (propertyInvoiceItem.Name == "InvoiceNumber") invoiceItem.InvoiceNumber = invoiceNumber;
+                            if (propertyInvoiceItem.Name == "InvoiceLineNumber") invoiceItem.InvoiceLineNumber = invoiceLineNumber;
+                            workSheet.Cells[invoiceItemRowIndex, cellIndexInvoiceLine].Value = propertyInvoiceItem.GetValue(invoiceItem, null);
+                        }
+
+                        workSheet.Cells[invoiceItemRowIndex, 1, invoiceItemRowIndex, cellIndexInvoiceLine].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        workSheet.Cells[invoiceItemRowIndex, 1, invoiceItemRowIndex, cellIndexInvoiceLine].Style.Fill.BackgroundColor.SetColor(Color.LawnGreen);
 
                         invoiceItemRowIndex++;
                         invoiceLineNumber++;
                     }
 
+                    // Set next invoice header row index
                     invoiceRowIndex = invoiceItemRowIndex;
                     invoiceNumber++;
                 }
