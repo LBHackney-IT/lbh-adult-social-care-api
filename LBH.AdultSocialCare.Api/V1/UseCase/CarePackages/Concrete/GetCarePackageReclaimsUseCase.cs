@@ -45,12 +45,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 .EnsureExistsAsync($"Care package with id {carePackageId} not found");
 
             var provisionalCareChargeReclaim =
-                carePackage.Reclaims.FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeProvisional);
+                carePackage.Reclaims.OrderBy(r => r.DateCreated).FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeProvisional);
 
-            var res = provisionalCareChargeReclaim.ToDomain();
+            var res = provisionalCareChargeReclaim?.ToDomain();
 
             if (provisionalCareChargeReclaim == null)
-                return res.ToResponse();
+                return null;
 
             res.HasAssessmentBeenCarried =
                 carePackage.Reclaims.Any(cc => cc.SubType != ReclaimSubType.CareChargeProvisional);

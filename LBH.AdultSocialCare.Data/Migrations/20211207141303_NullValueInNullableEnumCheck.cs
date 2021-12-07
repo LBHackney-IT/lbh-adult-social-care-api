@@ -14,6 +14,10 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                 name: "CK_CarePackageReclaims_SubType",
                 table: "CarePackageReclaims");
 
+            migrationBuilder.Sql(@"UPDATE ""CarePackageReclaims"" SET ""SubType"" = NULL WHERE ""SubType"" = 0;");
+            migrationBuilder.Sql(
+                @"UPDATE ""InvoiceItems"" SET ""ClaimCollector"" = NULL WHERE ""ClaimCollector"" = 0;");
+
             migrationBuilder.CreateCheckConstraint(
                 name: "CK_InvoiceItems_ClaimCollector",
                 table: "InvoiceItems",
