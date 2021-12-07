@@ -23,7 +23,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         public async Task<CarePackageHistoryViewResponse> ExecuteAsync(Guid packageId)
         {
-            var package = await _carePackageGateway.GetPackageAsync(packageId, PackageFields.Approver | PackageFields.Broker, false).EnsureExistsAsync($"Package with id {packageId} not found");
+            var package = await _carePackageGateway.GetPackageAsync(packageId, PackageFields.Approver | PackageFields.Broker | PackageFields.Resources, false).EnsureExistsAsync($"Package with id {packageId} not found");
 
             var packageHistory = await _carePackageHistoryGateway.ListAsync(packageId);
 
@@ -35,8 +35,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 AssignedOn = package.DateAssigned,
                 ApprovedBy = package.Approver?.Name,
                 ApprovedOn = package.DateApproved,
-                SocialWorkerCarePlanFileId = package.SocialWorkerCarePlanFileId,
-                SocialWorkerCarePlanFileName = package.SocialWorkerCarePlanFileName,
+                Resource = package.Resources.ToDomain().ToResponse(),
                 History = packageHistory.OrderByDescending(h => h.Id).ToResponse()
             };
 
