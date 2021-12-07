@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211202110058_AddPackageResourceEntity")]
+    partial class AddPackageResourceEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,11 +93,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("CarePackages");
 
-                    b.HasCheckConstraint("CK_CarePackages_PackageScheduling", "\"PackageScheduling\" IN (1, 2, 3)");
+                    b.HasCheckConstraint("CK_CarePackages_PackageScheduling", "\"PackageScheduling\" IN (0, 1, 2, 3)");
 
-                    b.HasCheckConstraint("CK_CarePackages_PackageType", "\"PackageType\" IN (2, 4)");
+                    b.HasCheckConstraint("CK_CarePackages_PackageType", "\"PackageType\" IN (0, 2, 4)");
 
-                    b.HasCheckConstraint("CK_CarePackages_Status", "\"Status\" IN (1, 2, 3, 4, 5, 6, 7, 8)");
+                    b.HasCheckConstraint("CK_CarePackages_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageDetail", b =>
@@ -153,11 +155,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("CarePackageDetails");
 
-                    b.HasCheckConstraint("CK_CarePackageDetails_CostPeriod", "\"CostPeriod\" IN (1, 2, 3, 4)");
+                    b.HasCheckConstraint("CK_CarePackageDetails_CostPeriod", "\"CostPeriod\" IN (0, 1, 2, 3, 4)");
 
-                    b.HasCheckConstraint("CK_CarePackageDetails_ServicePeriod", "\"ServicePeriod\" IN (1, 2, 3, 4)");
+                    b.HasCheckConstraint("CK_CarePackageDetails_ServicePeriod", "\"ServicePeriod\" IN (0, 1, 2, 3, 4)");
 
-                    b.HasCheckConstraint("CK_CarePackageDetails_Type", "\"Type\" IN (1, 2)");
+                    b.HasCheckConstraint("CK_CarePackageDetails_Type", "\"Type\" IN (0, 1, 2)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageHistory", b =>
@@ -186,9 +188,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.Property<int>("Status")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(13);
+                        .HasColumnType("integer");
 
                     b.Property<Guid?>("UpdaterId")
                         .HasColumnType("uuid");
@@ -203,7 +203,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("CarePackageHistories");
 
-                    b.HasCheckConstraint("CK_CarePackageHistories_Status", "\"Status\" IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13)");
+                    b.HasCheckConstraint("CK_CarePackageHistories_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageReclaim", b =>
@@ -251,7 +251,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("SubType")
+                    b.Property<int>("SubType")
                         .HasColumnType("integer");
 
                     b.Property<int>("Type")
@@ -273,13 +273,13 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("CarePackageReclaims");
 
-                    b.HasCheckConstraint("CK_CarePackageReclaims_ClaimCollector", "\"ClaimCollector\" IN (1, 2)");
+                    b.HasCheckConstraint("CK_CarePackageReclaims_ClaimCollector", "\"ClaimCollector\" IN (0, 1, 2)");
 
-                    b.HasCheckConstraint("CK_CarePackageReclaims_Status", "\"Status\" IN (1, 2, 3, 4)");
+                    b.HasCheckConstraint("CK_CarePackageReclaims_Status", "\"Status\" IN (0, 1, 2, 3, 4)");
 
                     b.HasCheckConstraint("CK_CarePackageReclaims_SubType", "\"SubType\" IN (0, 1, 2, 3)");
 
-                    b.HasCheckConstraint("CK_CarePackageReclaims_Type", "\"Type\" IN (1, 2)");
+                    b.HasCheckConstraint("CK_CarePackageReclaims_Type", "\"Type\" IN (0, 1, 2)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageResource", b =>
@@ -306,9 +306,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("PackageId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
@@ -319,13 +316,11 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.HasIndex("PackageId");
-
                     b.HasIndex("UpdaterId");
 
                     b.ToTable("CarePackageResources");
 
-                    b.HasCheckConstraint("CK_CarePackageResources_Type", "\"Type\" IN (1, 2, 3)");
+                    b.HasCheckConstraint("CK_CarePackageResources_Type", "\"Type\" IN (0, 1, 2, 3)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackageSchedulingOption", b =>
@@ -343,7 +338,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("CarePackageSchedulingOptions");
 
-                    b.HasCheckConstraint("CK_CarePackageSchedulingOptions_Id", "\"Id\" IN (1, 2, 3)");
+                    b.HasCheckConstraint("CK_CarePackageSchedulingOptions_Id", "\"Id\" IN (0, 1, 2, 3)");
 
                     b.HasData(
                         new
@@ -1253,9 +1248,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("InvoiceItems");
 
-                    b.HasCheckConstraint("CK_InvoiceItems_ClaimCollector", "\"ClaimCollector\" IN (0, 1, 2)");
+                    b.HasCheckConstraint("CK_InvoiceItems_ClaimCollector", "\"ClaimCollector\" IN (1, 2)");
 
-                    b.HasCheckConstraint("CK_InvoiceItems_PriceEffect", "\"PriceEffect\" IN (1, 2, 3)");
+                    b.HasCheckConstraint("CK_InvoiceItems_PriceEffect", "\"PriceEffect\" IN (0, 1, 2, 3)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.Payrun", b =>
@@ -1311,9 +1306,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("Payruns");
 
-                    b.HasCheckConstraint("CK_Payruns_Status", "\"Status\" IN (1, 2, 3, 4, 5, 6, 7, 8)");
+                    b.HasCheckConstraint("CK_Payruns_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8)");
 
-                    b.HasCheckConstraint("CK_Payruns_Type", "\"Type\" IN (1, 2, 3, 4)");
+                    b.HasCheckConstraint("CK_Payruns_Type", "\"Type\" IN (0, 1, 2, 3, 4)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.PayrunHistory", b =>
@@ -1359,9 +1354,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("PayrunHistories");
 
-                    b.HasCheckConstraint("CK_PayrunHistories_Status", "\"Status\" IN (1, 2, 3, 4, 5, 6, 7, 8)");
+                    b.HasCheckConstraint("CK_PayrunHistories_Status", "\"Status\" IN (0, 1, 2, 3, 4, 5, 6, 7, 8)");
 
-                    b.HasCheckConstraint("CK_PayrunHistories_Type", "\"Type\" IN (1, 2, 3)");
+                    b.HasCheckConstraint("CK_PayrunHistories_Type", "\"Type\" IN (0, 1, 2, 3)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.PayrunInvoice", b =>
@@ -1404,7 +1399,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("PayrunInvoices");
 
-                    b.HasCheckConstraint("CK_PayrunInvoices_InvoiceStatus", "\"InvoiceStatus\" IN (1, 2, 3, 4, 5, 6)");
+                    b.HasCheckConstraint("CK_PayrunInvoices_InvoiceStatus", "\"InvoiceStatus\" IN (0, 1, 2, 3, 4, 5, 6)");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -1590,12 +1585,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.HasOne("LBH.AdultSocialCare.Data.Entities.Common.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LBH.AdultSocialCare.Data.Entities.CarePackages.CarePackage", "Package")
-                        .WithMany("Resources")
-                        .HasForeignKey("PackageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

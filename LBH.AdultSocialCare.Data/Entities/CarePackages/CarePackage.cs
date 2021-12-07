@@ -14,6 +14,7 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
             Details = new List<CarePackageDetail>();
             Reclaims = new List<CarePackageReclaim>();
             Histories = new List<CarePackageHistory>();
+            Resources = new List<CarePackageResource>();
         }
 
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -54,5 +55,6 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
         public virtual ICollection<CarePackageDetail> Details { get; set; }
         public virtual ICollection<CarePackageReclaim> Reclaims { get; set; }
         public virtual ICollection<CarePackageHistory> Histories { get; set; }
+        public virtual ICollection<CarePackageResource> Resources { get; set; }
     }
 }

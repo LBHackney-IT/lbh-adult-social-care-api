@@ -65,6 +65,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         private static void ValidateCareCharge(CarePackageReclaim carePackageReclaim, CarePackage carePackage)
         {
+            if (carePackage == null || carePackage.Reclaims.Count == 0) return;
+
             var existingReclaims = carePackage?.Reclaims
                 .Where(r => r.Status.In(ReclaimStatus.Active, ReclaimStatus.Pending));
 
@@ -77,7 +79,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 if (existingCareChargeWithoutPropertyThirteenPlusWeeks != null)
                 {
                     throw new ApiException(
-                        $"There is a existing {existingCareChargeWithoutPropertyThirteenPlusWeeks.Status.GetDisplayName()} {ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks.GetDisplayName()}, to avoid the overlap cancel it first",
+                        $"There is an existing {existingCareChargeWithoutPropertyThirteenPlusWeeks.Status.GetDisplayName()} {ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks.GetDisplayName()}. Gaps not allowed, cancel the care charge first",
                         HttpStatusCode.BadRequest);
                 }
             }

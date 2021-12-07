@@ -75,6 +75,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             {
                 newReclaim = reclaimCreationDomain.ToEntity();
                 newReclaim.Type = reclaimType;
+                newReclaim.Status = ReclaimStatus.Active;
 
                 if (reclaimCreationDomain.AssessmentFileId == Guid.Empty)
                 {
@@ -120,6 +121,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             ValidateProvisionalCareChargeAsync(reclaimCreationDomain, carePackage, coreCostDetail);
 
+            reclaimCreationDomain.SubType = ReclaimSubType.CareChargeProvisional;
             var newReclaim = reclaimCreationDomain.ToEntity();
 
             carePackage.Reclaims.Add(newReclaim);

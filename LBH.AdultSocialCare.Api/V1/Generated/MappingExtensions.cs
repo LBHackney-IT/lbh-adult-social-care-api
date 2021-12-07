@@ -281,6 +281,46 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<IEnumerable<CarePackageReclaimUpdateDomain>>(input);
         }
 
+        public static CarePackageResource ToEntity(this CarePackageResourceDomain input)
+        {
+            return _mapper.Map<CarePackageResource>(input);
+        }
+
+        public static CarePackageResourceDomain ToDomain(this CarePackageResource input)
+        {
+            return _mapper.Map<CarePackageResourceDomain>(input);
+        }
+
+        public static IEnumerable<CarePackageResource> ToEntity(this IEnumerable<CarePackageResourceDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageResource>>(input);
+        }
+
+        public static IEnumerable<CarePackageResourceDomain> ToDomain(this IEnumerable<CarePackageResource> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageResourceDomain>>(input);
+        }
+
+        public static CarePackageResourceResponse ToResponse(this CarePackageResourceDomain input)
+        {
+            return _mapper.Map<CarePackageResourceResponse>(input);
+        }
+
+        public static CarePackageResourceDomain ToDomain(this CarePackageResourceResponse input)
+        {
+            return _mapper.Map<CarePackageResourceDomain>(input);
+        }
+
+        public static IEnumerable<CarePackageResourceResponse> ToResponse(this IEnumerable<CarePackageResourceDomain> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageResourceResponse>>(input);
+        }
+
+        public static IEnumerable<CarePackageResourceDomain> ToDomain(this IEnumerable<CarePackageResourceResponse> input)
+        {
+            return _mapper.Map<IEnumerable<CarePackageResourceDomain>>(input);
+        }
+
         public static CarePackageSettings ToEntity(this CarePackageSettingsDomain input)
         {
             return _mapper.Map<CarePackageSettings>(input);
@@ -559,6 +599,16 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         public static IEnumerable<CareChargeReclaimUpdateRequest> ToRequest(this IEnumerable<CarePackageReclaimUpdateDomain> input)
         {
             return _mapper.Map<IEnumerable<CareChargeReclaimUpdateRequest>>(input);
+        }
+
+        public static CareChargesCreateDomain ToeDomain(this CareChargesCreationRequest input)
+        {
+            return _mapper.Map<CareChargesCreateDomain>(input);
+        }
+
+        public static CareChargesCreationRequest ToionRequest(this CareChargesCreateDomain input)
+        {
+            return _mapper.Map<CareChargesCreationRequest>(input);
         }
 
         public static CarePackageBrokerageDomain ToDomain(this CarePackageBrokerageCreationRequest input)

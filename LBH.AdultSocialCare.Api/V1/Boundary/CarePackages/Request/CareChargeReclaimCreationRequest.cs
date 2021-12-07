@@ -1,14 +1,17 @@
+using LBH.AdultSocialCare.Api.Attributes;
+using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Validations;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
 {
     public class CareChargeReclaimCreationRequest
     {
+        public Guid? Id { get; set; } // Reclaim Id if modifying
+
         [Required, GuidNotEmpty]
         public Guid CarePackageId { get; set; }
 
@@ -24,11 +27,10 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
         [Range(1, 3)]
         public ReclaimSubType SubType { get; set; }
 
-        public DateTimeOffset StartDate { get; set; }
+        [Required] public DateTimeOffset? StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
 
         public string Description { get; set; }
         public string ClaimReason { get; set; }
-        public IFormFile AssessmentFile { get; set; }
     }
 }

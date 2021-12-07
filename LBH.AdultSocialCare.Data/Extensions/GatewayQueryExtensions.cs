@@ -132,6 +132,7 @@ namespace LBH.AdultSocialCare.Data.Extensions
                     EF.Functions.ILike(e.Invoice.ServiceUser.FirstName, $"%{searchToken}%")
                     || EF.Functions.ILike(e.Invoice.ServiceUser.LastName, $"%{searchToken}%")
                     || EF.Functions.ILike(e.InvoiceId.ToString(), $"%{searchToken}%")
+                    || EF.Functions.ILike(e.Invoice.Number, $"%{searchToken}%")
                     || EF.Functions.ILike(e.Invoice.Supplier.SupplierName ?? "", $"%{searchToken}%"));
             }
 
@@ -147,6 +148,7 @@ namespace LBH.AdultSocialCare.Data.Extensions
             DateTimeOffset? dateTo) =>
             payRuns.Where(e => (
                 (payRunId == null || e.Id.ToString().ToLower().Contains(payRunId.ToLower()))
+                || (payRunId == null || e.Number.ToLower().Contains(payRunId.ToLower()))
                 && (payrunType == null || e.Type.Equals(payrunType))
                 && (payrunStatus == null || e.Status.Equals(payrunStatus))
                 && (dateFrom == null || e.DateCreated >= dateFrom)
