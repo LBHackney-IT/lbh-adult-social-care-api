@@ -72,6 +72,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             coreCostDetail.Type = PackageDetailType.CoreCost;
             coreCostDetail.Cost = brokerageInfo.CoreCost;
             coreCostDetail.CostPeriod = PaymentPeriod.Weekly;
+            coreCostDetail.ServicePeriod = coreCostDetail.CostPeriod;
             coreCostDetail.StartDate = brokerageInfo.StartDate;
             coreCostDetail.EndDate = brokerageInfo.EndDate;
         }
@@ -83,7 +84,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 throw new ApiException("Core cost cannot be specified in Details list", HttpStatusCode.BadRequest);
             }
 
-            package.Details.Add(requestedDetail.ToEntity());
+            var detail = requestedDetail.ToEntity();
+            detail.ServicePeriod = detail.CostPeriod;
+
+            package.Details.Add(detail);
         }
 
         private void UpdateDetail(CarePackage package, CarePackageDetailDomain requestedDetail)
