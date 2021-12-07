@@ -54,6 +54,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 PackageType = carePlanAssignment.PackageType,
                 Status = PackageStatus.New,
                 DateAssigned = DateTimeOffset.Now,
+                PackageScheduling = PackageScheduling.Temporary, // TODO: Review if package scheduling can be made nullable
                 SocialWorkerCarePlanFileId = documentResponse?.FileId ?? Guid.Empty,
                 SocialWorkerCarePlanFileName = documentResponse?.FileName
             };
