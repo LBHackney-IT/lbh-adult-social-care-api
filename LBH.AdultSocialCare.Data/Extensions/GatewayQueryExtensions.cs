@@ -143,12 +143,12 @@ namespace LBH.AdultSocialCare.Data.Extensions
                 && (parameters.ToDate == null || invoice.Invoice.DateCreated < parameters.ToDate));
         }
 
-        public static IQueryable<Payrun> FilterPayRunList(this IQueryable<Payrun> payRuns, string payRunId,
+        public static IQueryable<Payrun> FilterPayRunList(this IQueryable<Payrun> payRuns, string searchTerm,
             PayrunType? payrunType, PayrunStatus? payrunStatus, DateTimeOffset? dateFrom,
             DateTimeOffset? dateTo) =>
             payRuns.Where(e => (
-                (payRunId == null || e.Id.ToString().ToLower().Contains(payRunId.ToLower()))
-                || (payRunId == null || e.Number.ToLower().Contains(payRunId.ToLower()))
+                (searchTerm == null || e.Id.ToString().ToLower().Contains(searchTerm.ToLower()))
+                || (searchTerm == null || e.Number.ToLower().Contains(searchTerm.ToLower()))
                 && (payrunType == null || e.Type.Equals(payrunType))
                 && (payrunStatus == null || e.Status.Equals(payrunStatus))
                 && (dateFrom == null || e.DateCreated >= dateFrom)
