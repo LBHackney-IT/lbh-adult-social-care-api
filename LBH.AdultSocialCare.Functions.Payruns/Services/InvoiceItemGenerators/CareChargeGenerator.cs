@@ -22,14 +22,14 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             foreach (var careCharge in careCharges)
             {
                 var itemRange = GetInvoiceItemDateRange(careCharge, packageInvoices, invoiceEndDate);
-                if (itemRange.Weeks <= 0) continue;
+                if (itemRange.WeeksInclusive <= 0) continue;
 
                 yield return new InvoiceItem
                 {
                     Name = $"Care Charge {careCharge.SubType.GetDisplayName()}",
-                    Quantity = itemRange.Weeks,
+                    Quantity = itemRange.WeeksInclusive,
                     WeeklyCost = careCharge.Cost,
-                    TotalCost = careCharge.Cost * itemRange.Weeks,
+                    TotalCost = careCharge.Cost * itemRange.WeeksInclusive,
                     FromDate = itemRange.StartDate,
                     ToDate = itemRange.EndDate,
                     CarePackageReclaimId = careCharge.Id,

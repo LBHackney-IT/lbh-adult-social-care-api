@@ -14,25 +14,29 @@ terraform {
     bucket  = "lbh-mosaic-terraform-state-development"
     encrypt = true
     region  = "eu-west-2"
-    key     = "services/hasc-api/state"
+    key     = "services/adult-social-care-api/state"
   }
 }
 
 /*    POSTGRES SET UP    */
 data "aws_vpc" "development_vpc" {
   tags = {
-    Name = "vpc-housing-development"
+    Name = "ASCFinance-dev"
   }
 }
 data "aws_subnet_ids" "development_private_subnets" {
   vpc_id = data.aws_vpc.development_vpc.id
   filter {
-    name   = "tag:environment"
-    values = ["development"]
+    name   = "tag:Name"
+    values = ["ASCFinance-dev-private-eu-west-2b", "ASCFinance-dev-private-eu-west-2a"]
   }
 }
 
- data "aws_ssm_parameter" "adult_sc_postgres_db_password" {
+data "aws_ssm_parameter" "adult_sc_postgres_db_name" {
+   name = "/hasc-api/development/postgres-database"
+ }
+
+data "aws_ssm_parameter" "adult_sc_postgres_db_password" {
    name = "/hasc-api/development/postgres-password"
  }
 
@@ -44,12 +48,12 @@ module "postgres_db_development" {
     source = "github.com/LBHackney-IT/aws-hackney-common-terraform.git//modules/database/postgres"
     environment_name = "development"
     vpc_id = data.aws_vpc.development_vpc.id
-    db_identifier = "adult-sc-db"
+    db_identifier = data.aws_ssm_parameter.adult_sc_postgres_db_name.value
     db_name = "adult_sc_db"
     db_port  = 5829
     subnet_ids = data.aws_subnet_ids.development_private_subnets.ids
     db_engine = "postgres"
-    db_engine_version = "12.5"
+    db_engine_version = "12.7"
     db_instance_class = "db.t3.small"
     db_allocated_storage = 20
     maintenance_window = "sun:10:00-sun:10:30"
