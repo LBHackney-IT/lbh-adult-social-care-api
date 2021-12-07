@@ -1,3 +1,4 @@
+using Common.Exceptions.CustomExceptions;
 using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
@@ -5,16 +6,12 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Common.Exceptions.CustomExceptions;
-using LBH.AdultSocialCare.Api.V1.Extensions;
-using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
 {
@@ -58,7 +55,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("fnc")]
-        // [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<CarePackageReclaimResponse>> CreateFundedNursingCare([FromForm] FundedNursingCareCreationRequest fundedNursingCareCreationRequest)
         {
             var fundedNursingCareResponse = await _createCarePackageReclaimUseCase.CreateCarePackageReclaim(fundedNursingCareCreationRequest.ToDomain(), ReclaimType.Fnc);
@@ -72,7 +68,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPut("fnc")]
-        // [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult> UpdateFundedNursingCare([FromForm] FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
         {
             await _updateCarePackageReclaimUseCase.UpdateAsync(fundedNursingCareUpdateRequest.ToDomain());
@@ -91,7 +86,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [HttpPut("care-charges")]
-        // [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult> UpdateCareChargeReclaims([FromBody] CareChargesCreationRequest careChargesCreationRequest, Guid carePackageId)
         {
             await _upsertCareChargesUseCase.ExecuteAsync(carePackageId, careChargesCreationRequest.ToeDomain());
@@ -109,7 +103,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost("care-charges/assessment-file"), DisableRequestSizeLimit]
-        // [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult> UploadCareChargeAssessmentFile([FromServices] ICreatePackageResourceUseCase useCase, Guid carePackageId)
         {
             try
@@ -234,7 +227,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [HttpPut("care-charges/{reclaimId}/cancel")]
-        // [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult<CarePackageReclaimResponse>> CancelReclaim(
             Guid reclaimId, [FromServices] ICancelCarePackageReclaimsUseCase useCase)
         {
@@ -254,7 +246,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [HttpPut("care-charges/{reclaimId}/end")]
-        // [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult<CarePackageReclaimResponse>> EndReclaim(
             Guid reclaimId, CarePackageReclaimEndRequest request,
             [FromServices] IEndCarePackageReclaimUseCase useCase)
@@ -276,7 +267,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [HttpPut("care-charges/{careChargeId}")]
-        // [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult> UpdateProvisionalCareChargeReclaims(CareChargeReclaimUpdateRequest requestedReclaims)
         {
             await _updateCarePackageReclaimUseCase.UpdateAsync(requestedReclaims.ToDomain());

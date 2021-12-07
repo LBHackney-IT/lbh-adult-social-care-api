@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _carePackageGateway = new Mock<ICarePackageGateway>();
 
             gateway
-                .Setup(g => g.GetAsync(_reclaim.Id))
+                .Setup(g => g.GetAsync(_reclaim.Id, It.IsAny<bool>()))
                 .ReturnsAsync(_reclaim);
 
             _carePackageGateway
