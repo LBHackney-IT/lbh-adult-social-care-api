@@ -29,7 +29,7 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
         }
 
         public ReclaimType Type { get; set; }
-        public ReclaimSubType SubType { get; set; }
+        public ReclaimSubType? SubType { get; set; }
 
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }

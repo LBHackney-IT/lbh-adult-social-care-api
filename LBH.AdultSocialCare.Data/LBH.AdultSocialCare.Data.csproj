@@ -11,6 +11,12 @@
       <Compile Remove="Migrations\20211120101535_AddCareChargeManagerRoles.Designer.cs" />
       <Compile Remove="Migrations\20211123090604_CarePackageReclaimAddAssessmentFileTest.cs" />
       <Compile Remove="Migrations\20211123090604_CarePackageReclaimAddAssessmentFileTest.Designer.cs" />
+      <Compile Remove="Migrations\20211207062539_EnumConstraintUpdate.cs" />
+      <Compile Remove="Migrations\20211207062539_EnumConstraintUpdate.Designer.cs" />
+      <Compile Remove="Migrations\20211207064141_EnumConstraintUpdate.cs" />
+      <Compile Remove="Migrations\20211207064141_EnumConstraintUpdate.Designer.cs" />
+      <Compile Remove="Migrations\20211207070752_EnumConstraintUpdate.cs" />
+      <Compile Remove="Migrations\20211207070752_EnumConstraintUpdate.Designer.cs" />
     </ItemGroup>
 
     <ItemGroup>
