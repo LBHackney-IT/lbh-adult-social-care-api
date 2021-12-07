@@ -8,6 +8,8 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
     public class CedarFileInvoiceLineDomain
     {
         public int InvoiceLineId { get; set; }
+        public int InvoiceNumber { get; set; }
+        public int InvoiceLineNumber { get; set; }
         public string Name { get; set; }
         public decimal Quantity { get; set; }
         public decimal Cost { get; set; }

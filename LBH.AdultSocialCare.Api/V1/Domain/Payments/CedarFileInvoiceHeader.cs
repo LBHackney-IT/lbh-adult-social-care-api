@@ -8,6 +8,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
     public class CedarFileInvoiceHeader
     {
         public int InvoiceHeaderId { get; set; }
+        public int InvoiceNumber { get; set; }
         public int Subtype { get; set; }
         public int? InvoiceSupplierNumber { get; set; }
         public string InvoiceReferenceNumber { get; set; }
