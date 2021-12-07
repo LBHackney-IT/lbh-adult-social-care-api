@@ -47,16 +47,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var provisionalCareChargeReclaim =
                 carePackage.Reclaims.FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeProvisional);
 
-            var careChargeReclaim =
-                carePackage.Reclaims.Count(cc => cc.SubType != ReclaimSubType.CareChargeProvisional);
-
             var res = provisionalCareChargeReclaim.ToDomain();
 
             if (provisionalCareChargeReclaim == null)
-                return new CarePackageReclaimResponse()
-                {
-                    HasAssessmentBeenCarried = careChargeReclaim > 0
-                };
+                return res.ToResponse();
 
             res.HasAssessmentBeenCarried =
                 carePackage.Reclaims.Any(cc => cc.SubType != ReclaimSubType.CareChargeProvisional);
