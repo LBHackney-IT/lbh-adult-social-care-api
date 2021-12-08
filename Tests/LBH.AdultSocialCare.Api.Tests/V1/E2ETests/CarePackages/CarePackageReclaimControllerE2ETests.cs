@@ -48,6 +48,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
 
             carePackageReclaim.Should().BeEquivalentTo(request, opt => opt
                 .Excluding(reclaim => reclaim.EndDate)
+                .Excluding(reclaim => reclaim.AssessmentFileId)
                 .Excluding(reclaim => reclaim.AssessmentFile));
         }
 
@@ -80,6 +81,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
 
             response.Content.Should().BeEquivalentTo(request, opt => opt
                 .Excluding(reclaim => reclaim.EndDate)
+                .Excluding(reclaim => reclaim.AssessmentFileId)
                 .Excluding(reclaim => reclaim.AssessmentFile));
         }
 
