@@ -137,7 +137,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                     ? PaymentPeriod.Weekly
                     : f.PickRandom(PaymentPeriod.Weekly, PaymentPeriod.OneOff))*/
                 .RuleFor(d => d.CostPeriod, costPeriod)
-                .RuleFor(d => d.ServicePeriod, costPeriod)
                 .RuleFor(d => d.StartDate, f => f.Date.Past().Date)
                 .RuleFor(d => d.EndDate, f => f.Date.Future().Date)
                 .RuleFor(d => d.Type, type)
