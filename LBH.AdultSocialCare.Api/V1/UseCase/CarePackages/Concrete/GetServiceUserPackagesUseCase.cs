@@ -59,7 +59,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     DateAssigned = carePackage.DateAssigned,
                     GrossTotal = 0,
                     NetTotal = 0,
-                    Resource = carePackage.Resources.ToDomain().ToResponse(),
+                    SocialWorkerCarePlanFileId = carePackage.Resources?.Where(r => r.Type == PackageResourceType.CarePlanFile).OrderByDescending(x => x.DateCreated).FirstOrDefault()?.FileId,
+                    SocialWorkerCarePlanFileName = carePackage.Resources?.Where(r => r.Type == PackageResourceType.CarePlanFile).OrderByDescending(x => x.DateCreated).FirstOrDefault()?.Name,
                     Notes = new List<CarePackageHistoryResponse>(),
                     PackageItems = new List<CarePackageCostItemResponse>()
                 };

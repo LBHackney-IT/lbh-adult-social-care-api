@@ -14,6 +14,5 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
         public Guid? SocialWorkerCarePlanFileId { get; set; }
         public string SocialWorkerCarePlanFileName { get; set; }
         public IEnumerable<CarePackageHistoryResponse> History { get; set; }
-        public IEnumerable<CarePackageResourceResponse> Resource { get; set; }
     }
 }

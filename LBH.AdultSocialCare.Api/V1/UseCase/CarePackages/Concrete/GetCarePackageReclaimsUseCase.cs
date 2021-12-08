@@ -28,7 +28,22 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         {
             var res = await _carePackageReclaimGateway.GetSingleAsync(carePackageId, reclaimType);
 
-            if (res.Status == ReclaimStatus.Cancelled) res.HasAssessmentBeenCarried = false;
+            var package = await _carePackageGateway.GetPackageAsync(carePackageId, PackageFields.Resources, false)
+                .EnsureExistsAsync($"Package with id {carePackageId} not found");
+
+            var resourceType = reclaimType == ReclaimType.Fnc
+            ? PackageResourceType.FncAssessmentFile
+            : PackageResourceType.CareChargeAssessmentFile;
+
+            if (res == null)
+                return null;
+
+            res.AssessmentFileId = package.Resources?.Where(r => r.Type == resourceType)
+                .OrderByDescending(x => x.DateCreated).FirstOrDefault()?.FileId;
+            res.AssessmentFileName = package.Resources?.Where(r => r.Type == resourceType)
+                .OrderByDescending(x => x.DateCreated).FirstOrDefault()?.Name;
+
+            if (res?.Status == ReclaimStatus.Cancelled) res.HasAssessmentBeenCarried = false;
             return res.ToResponse();
         }
 

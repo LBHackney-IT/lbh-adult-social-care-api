@@ -7,6 +7,7 @@ using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -35,7 +36,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 AssignedOn = package.DateAssigned,
                 ApprovedBy = package.Approver?.Name,
                 ApprovedOn = package.DateApproved,
-                Resource = package.Resources.ToDomain().ToResponse(),
+                SocialWorkerCarePlanFileId = package.Resources?.Where(r => r.Type == PackageResourceType.CarePlanFile).OrderByDescending(x => x.DateCreated).FirstOrDefault()?.FileId,
+                SocialWorkerCarePlanFileName = package.Resources?.Where(r => r.Type == PackageResourceType.CarePlanFile).OrderByDescending(x => x.DateCreated).FirstOrDefault()?.Name,
                 History = packageHistory.OrderByDescending(h => h.Id).ToResponse()
             };
 

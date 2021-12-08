@@ -17,6 +17,5 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
         public string SocialWorkerCarePlanFileName { get; set; }
         public IEnumerable<CarePackageHistoryResponse> Notes { get; set; }
         public IEnumerable<CarePackageCostItemResponse> PackageItems { get; set; }
-        public IEnumerable<CarePackageResourceResponse> Resource { get; set; }
     }
 }
