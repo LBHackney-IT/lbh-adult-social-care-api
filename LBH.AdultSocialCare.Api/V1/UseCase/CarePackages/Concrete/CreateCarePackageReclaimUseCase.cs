@@ -121,8 +121,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             ValidateProvisionalCareChargeAsync(reclaimCreationDomain, carePackage, coreCostDetail);
 
+            //todo FK: ?
             reclaimCreationDomain.SubType = ReclaimSubType.CareChargeProvisional;
             var newReclaim = reclaimCreationDomain.ToEntity();
+
+            //todo FK: ?
+            newReclaim.Type = ReclaimType.CareCharge;
+            newReclaim.Status = ReclaimStatus.Active;
 
             carePackage.Reclaims.Add(newReclaim);
 
@@ -306,13 +311,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     HttpStatusCode.BadRequest);
             }
 
-            if (carePackage.Reclaims.Any(cc => cc.SubType == ReclaimSubType.CareChargeProvisional))
+            if (carePackage.Reclaims.Any(cc => cc.Type == ReclaimType.CareCharge && cc.SubType == ReclaimSubType.CareChargeProvisional))
             {
                 throw new ApiException($"Provisional Care charge assessment for this package already done",
                     HttpStatusCode.BadRequest);
             }
 
-            if (carePackage.Reclaims.Any(cc => cc.SubType != ReclaimSubType.CareChargeProvisional))
+            if (carePackage.Reclaims.Any(cc => cc.Type == ReclaimType.CareCharge && cc.SubType != ReclaimSubType.CareChargeProvisional))
             {
                 throw new ApiException($"Care charge assessment for this package already done. Manage care charges for this package in the Care Charges menu",
                     HttpStatusCode.BadRequest);

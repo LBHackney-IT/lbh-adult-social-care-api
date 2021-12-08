@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces
 {
-    public interface ICancelCarePackageReclaimsUseCase
+    public interface ICancelCareChargeUseCase
     {
         Task<CarePackageReclaimDomain> ExecuteAsync(Guid reclaimId);
     }

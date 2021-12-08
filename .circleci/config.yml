@@ -193,13 +193,15 @@ workflows:
           branches:
               only: develop
     - build-and-test:
+        requires:
+            - check-code-formatting
         filters:
           branches:
               only: develop
     - assume-role-development:
-        context: mosaic-development-context
         requires:
             - build-and-test
+        context: mosaic-development-context        
         filters:
             branches:
               only: develop
@@ -210,6 +212,8 @@ workflows:
             branches:
               only: develop
     - deploy-to-development:
+          requires:
+            - terraform-init-and-apply-to-development
           context: mosaic-development-context           
           filters:
             branches:
@@ -222,13 +226,15 @@ workflows:
             branches:
                 only: staging
       - build-and-test:
+          requires:
+            - check-code-formatting
           filters:
             branches:
                 only: staging
       - assume-role-staging:
-          context: mosaic-staging-context
           requires:
               - build-and-test
+          context: mosaic-staging-context          
           filters:
              branches:
               only: 
@@ -255,10 +261,14 @@ workflows:
             branches:
                 only: master
       - build-and-test:
+          requires:
+            - check-code-formatting
           filters:
             branches:
                 only: master
       - assume-role-production:
+          requires:
+            - build-and-test
           context: api-assume-role-social-care-production-context
           filters:
              branches:

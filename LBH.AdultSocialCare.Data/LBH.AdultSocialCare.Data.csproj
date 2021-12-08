@@ -17,6 +17,8 @@
       <Compile Remove="Migrations\20211207064141_EnumConstraintUpdate.Designer.cs" />
       <Compile Remove="Migrations\20211207070752_EnumConstraintUpdate.cs" />
       <Compile Remove="Migrations\20211207070752_EnumConstraintUpdate.Designer.cs" />
+      <Compile Remove="Migrations\20211207114140_CarePackageHistoriesIdIncrement.cs" />
+      <Compile Remove="Migrations\20211207114140_CarePackageHistoriesIdIncrement.Designer.cs" />
     </ItemGroup>
 
     <ItemGroup>
