@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211208154950_CarePackageDetailRemoveServicePeriod")]
+    partial class CarePackageDetailRemoveServicePeriod
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1038,22 +1040,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
                             UserName = "test@gmail.com"
-                        },
-                        new
-                        {
-                            Id = new Guid("75996f73-3a1a-4efa-8729-eb4a48c465b0"),
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "6b3d758b-924a-482c-af77-e31711a74a2f",
-                            Email = "migration@gmail.com",
-                            EmailConfirmed = false,
-                            LockoutEnabled = true,
-                            LockoutEnd = new DateTimeOffset(new DateTime(2521, 12, 8, 17, 25, 40, 935, DateTimeKind.Unspecified).AddTicks(7737), new TimeSpan(0, 3, 0, 0, 0)),
-                            Name = "Migration User",
-                            PasswordHash = "AQAAAAEAACcQAAAAEFZSuEqut3biK0yaWcDBpQR2draz7roFwzCnbTVF4yl38cMg1ULpUS3gVplbtitcmQ==",
-                            PhoneNumber = "1234567890",
-                            PhoneNumberConfirmed = false,
-                            TwoFactorEnabled = false,
-                            UserName = "migration@gmail.com"
                         });
                 });
 

@@ -73,6 +73,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var existingOneToTwelveCareCharge = existingCareCharges.FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
             var existingThirteenPlusCareCharge = existingCareCharges.FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks);
 
+            // 13+ and package has end date, set end date on 13+
+            var coreCost = package.Details.SingleOrDefault(d => d.Type == PackageDetailType.CoreCost);
+            if (thirteenPlusCareCharge is { EndDate: null } && coreCost?.EndDate != null)
+            {
+                thirteenPlusCareCharge.EndDate = coreCost.EndDate;
+            }
+
             // If not in Db add
             if (existingProvisionalCareCharge == null && provisionalCareCharge != null)
             {
@@ -143,28 +150,21 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 throw new ApiException($"1-12 care charge must have an end date", HttpStatusCode.BadRequest);
             }
 
+            //No gaps in care charge date allowed
+            if (provisionalCareCharge != null && oneToTwelveCareCharge != null)
+            {
+                // 1-12 weeks starts a day after provisional if not on package start date which will cancel provisional care charge
+                if ((provisionalCareCharge.StartDate.Date != oneToTwelveCareCharge.StartDate.Date) && (provisionalCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1) !=
+                    oneToTwelveCareCharge.StartDate.Date))
+                {
+                    throw new ApiException($"1-12 must start one day after provisional care charge end", HttpStatusCode.BadRequest);
+                }
+            }
+
             // Package cannot have 13+ without 1-12
             if (thirteenPlusCareCharge != null && oneToTwelveCareCharge == null)
             {
                 throw new ApiException($"Not allowed to have care charges for 13+ without 1-12", HttpStatusCode.BadRequest);
-            }
-
-            //No gaps in care charge date allowed
-            if (provisionalCareCharge != null && oneToTwelveCareCharge != null)
-            {
-                // 1-12 must take exactly 12 weeks
-                if ((oneToTwelveCareCharge.EndDate.GetValueOrDefault().Date - oneToTwelveCareCharge.StartDate).Days + 1 != 84)
-                {
-                    var expectedEndDate = oneToTwelveCareCharge.StartDate.Date.AddDays(84);
-                    throw new ApiException($"1-12 must take exactly 12 weeks: Expected end date is {expectedEndDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
-                }
-
-                // 1-12 weeks starts a day after provisional if not on package start date which will cancel provisional care charge
-                if ((provisionalCareCharge.StartDate.Date != oneToTwelveCareCharge.StartDate.Date) && (provisionalCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1) !=
-                     oneToTwelveCareCharge.StartDate.Date))
-                {
-                    throw new ApiException($"1-12 must start one day after provisional care charge end", HttpStatusCode.BadRequest);
-                }
             }
 
             if (oneToTwelveCareCharge != null && thirteenPlusCareCharge != null)
@@ -218,7 +218,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             // Care charges cannot be before package start date
             if (minCareChargeStartDate.Date < coreCost.StartDate.Date)
             {
-                throw new ApiException($"Care charge start date cannot be before package start date",
+                throw new ApiException($"Care charge start date cannot be before package start date. Expected min start date {coreCost.StartDate.Date:yyyy-MM-dd}",
                     HttpStatusCode.BadRequest);
             }
 
@@ -249,6 +249,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             if ((thirteenPlusCareCharge == null && existingThirteenPlusCareCharge != null) || (existingThirteenPlusCareCharge != null && thirteenPlusCareCharge?.Id != existingThirteenPlusCareCharge?.Id))
             {
                 throw new ApiException($"13+ care charge must be in request and with a valid Id", HttpStatusCode.BadRequest);
+            }
+
+            // If package core cost ongoing or package end date greater than/= 1-12 end date, 1-12 must be exactly 12 weeks
+            if (oneToTwelveCareCharge != null && (coreCost.EndDate == null || coreCost.EndDate.GetValueOrDefault().Date >= oneToTwelveCareCharge.StartDate.Date.AddDays(84)))
+            {
+                if ((oneToTwelveCareCharge.EndDate.GetValueOrDefault().Date - oneToTwelveCareCharge.StartDate).Days + 1 != 84)
+                {
+                    var expectedEndDate = oneToTwelveCareCharge.StartDate.Date.AddDays(84);
+                    throw new ApiException($"1-12 must take exactly 12 weeks: Expected end date is {expectedEndDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
+                }
             }
 
             // If package core cost has end date, care charge end date cannot be after that date

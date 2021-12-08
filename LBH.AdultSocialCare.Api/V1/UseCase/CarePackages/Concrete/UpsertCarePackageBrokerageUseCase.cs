@@ -72,7 +72,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             coreCostDetail.Type = PackageDetailType.CoreCost;
             coreCostDetail.Cost = brokerageInfo.CoreCost;
             coreCostDetail.CostPeriod = PaymentPeriod.Weekly;
-            coreCostDetail.ServicePeriod = coreCostDetail.CostPeriod;
             coreCostDetail.StartDate = brokerageInfo.StartDate;
             coreCostDetail.EndDate = brokerageInfo.EndDate;
         }
@@ -85,7 +84,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             var detail = requestedDetail.ToEntity();
-            detail.ServicePeriod = detail.CostPeriod;
 
             package.Details.Add(detail);
         }
