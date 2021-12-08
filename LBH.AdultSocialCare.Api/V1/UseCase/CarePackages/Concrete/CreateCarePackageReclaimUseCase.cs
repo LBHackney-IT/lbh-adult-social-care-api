@@ -28,15 +28,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
         private readonly IMapper _mapper;
-        private readonly IFileStorage _fileStorage;
+        private readonly ICreatePackageResourceUseCase _createPackageResourceUseCase;
 
         public CreateCarePackageReclaimUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager,
-            IMapper mapper, IFileStorage fileStorage)
+            IMapper mapper, ICreatePackageResourceUseCase createPackageResourceUseCase)
         {
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
             _mapper = mapper;
-            _fileStorage = fileStorage;
+            _createPackageResourceUseCase = createPackageResourceUseCase;
         }
 
         public async Task<CarePackageReclaimResponse> CreateCarePackageReclaim(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType)
@@ -79,10 +79,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
                 if (reclaimCreationDomain.AssessmentFileId == Guid.Empty)
                 {
-                    var documentResponse = await _fileStorage.SaveFileAsync
-                        (ConvertCarePlan(reclaimCreationDomain.AssessmentFile), reclaimCreationDomain?.AssessmentFile?.FileName);
-                    newReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
-                    newReclaim.AssessmentFileName = documentResponse?.FileName;
+                    var resourceType = newReclaim.Type == ReclaimType.Fnc
+                        ? PackageResourceType.FncAssessmentFile
+                        : PackageResourceType.CareChargeAssessmentFile;
+                    await _createPackageResourceUseCase.CreateFileAsync(carePackage.Id, resourceType, reclaimCreationDomain.AssessmentFile);
                 }
 
                 carePackage.Reclaims.Add(newReclaim);
@@ -285,22 +285,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                         HttpStatusCode.BadRequest);
                 }
             }
-        }
-
-        private static string ConvertCarePlan(IFormFile carePlanFile)
-        {
-            if (carePlanFile != null)
-            {
-                using (var stream = new MemoryStream())
-                {
-                    carePlanFile.CopyTo(stream);
-
-                    var bytes = stream.ToArray();
-                    return $"data:{carePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}";
-                }
-            }
-
-            return null;
         }
 
         private static void ValidateProvisionalCareChargeAsync(CarePackageReclaimCreationDomain reclaimCreationDomain, CarePackage carePackage, CarePackageDetail coreCostDetail)

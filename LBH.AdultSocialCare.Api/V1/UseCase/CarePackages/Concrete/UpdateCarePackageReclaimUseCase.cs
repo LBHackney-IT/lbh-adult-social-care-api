@@ -29,24 +29,27 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
         private readonly IMapper _mapper;
-        private readonly IFileStorage _fileStorage;
+        private readonly ICreatePackageResourceUseCase _createPackageResourceUseCase;
 
         public UpdateCarePackageReclaimUseCase(
             ICarePackageReclaimGateway carePackageReclaimGateway, ICarePackageGateway carePackageGateway,
             IDatabaseManager dbManager, IMapper mapper,
-            IFileStorage fileStorage)
+            ICreatePackageResourceUseCase createPackageResourceUseCase)
         {
             _carePackageReclaimGateway = carePackageReclaimGateway;
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
             _mapper = mapper;
-            _fileStorage = fileStorage;
+            _createPackageResourceUseCase = createPackageResourceUseCase;
         }
 
         public async Task UpdateAsync(CarePackageReclaimUpdateDomain carePackageReclaimUpdateDomain)
         {
             var carePackageReclaim = await _carePackageReclaimGateway.GetAsync(carePackageReclaimUpdateDomain.Id, true)
                 .EnsureExistsAsync($"Care package reclaim with id {carePackageReclaimUpdateDomain.Id} not found");
+
+            var carePackage = await _carePackageGateway
+                .GetPackageAsync(carePackageReclaim.CarePackageId, PackageFields.Resources, true);
 
             if (!carePackageReclaimUpdateDomain.HasAssessmentBeenCarried && carePackageReclaim.Type == ReclaimType.Fnc)
             {
@@ -55,17 +58,17 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 return;
             }
 
-            if (carePackageReclaimUpdateDomain?.AssessmentFileId == Guid.Empty)
+            if (carePackageReclaim.Type == ReclaimType.Fnc)
             {
-                var documentResponse = await _fileStorage.
-                    SaveFileAsync(ConvertCarePlan(carePackageReclaimUpdateDomain.AssessmentFile), carePackageReclaimUpdateDomain.AssessmentFile?.FileName);
-                carePackageReclaimUpdateDomain.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
-                carePackageReclaimUpdateDomain.AssessmentFileName = documentResponse?.FileName;
-            }
-            else
-            {
-                //todo FK: temp solution
-                carePackageReclaimUpdateDomain.AssessmentFileName = carePackageReclaim.AssessmentFileName;
+                var resourceType = carePackageReclaim.Type == ReclaimType.Fnc
+                    ? PackageResourceType.FncAssessmentFile
+                    : PackageResourceType.CareChargeAssessmentFile;
+
+                if (carePackageReclaimUpdateDomain?.AssessmentFileId == Guid.Empty && carePackageReclaimUpdateDomain.AssessmentFile != null)
+                {
+                    await _createPackageResourceUseCase.CreateFileAsync(carePackage.Id, resourceType,
+                        carePackageReclaimUpdateDomain.AssessmentFile);
+                }
             }
 
             _mapper.Map(carePackageReclaimUpdateDomain, carePackageReclaim);

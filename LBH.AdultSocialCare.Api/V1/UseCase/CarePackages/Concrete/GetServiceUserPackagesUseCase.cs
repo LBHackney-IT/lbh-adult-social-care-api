@@ -37,7 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 PackageStatus.New, PackageStatus.InProgress, PackageStatus.NotApproved
             };
 
-            const PackageFields fields = PackageFields.Details | PackageFields.Reclaims | PackageFields.Settings;
+            const PackageFields fields = PackageFields.Details | PackageFields.Reclaims | PackageFields.Settings | PackageFields.Resources;
             var userPackages = await _carePackageGateway.GetServiceUserPackagesAsync(serviceUserId, fields);
             var response = new ServiceUserPackagesViewResponse
             {
@@ -59,8 +59,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     DateAssigned = carePackage.DateAssigned,
                     GrossTotal = 0,
                     NetTotal = 0,
-                    SocialWorkerCarePlanFileId = carePackage.SocialWorkerCarePlanFileId,
-                    SocialWorkerCarePlanFileName = carePackage.SocialWorkerCarePlanFileName,
+                    SocialWorkerCarePlanFileId = carePackage.Resources?.Where(r => r.Type == PackageResourceType.CarePlanFile).OrderByDescending(x => x.DateCreated).FirstOrDefault()?.FileId,
+                    SocialWorkerCarePlanFileName = carePackage.Resources?.Where(r => r.Type == PackageResourceType.CarePlanFile).OrderByDescending(x => x.DateCreated).FirstOrDefault()?.Name,
                     Notes = new List<CarePackageHistoryResponse>(),
                     PackageItems = new List<CarePackageCostItemResponse>()
                 };
