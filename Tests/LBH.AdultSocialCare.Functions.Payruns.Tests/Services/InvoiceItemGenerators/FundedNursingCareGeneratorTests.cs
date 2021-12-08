@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FastDeepCloner;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Common;
@@ -9,6 +10,7 @@ using LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators;
 using LBH.AdultSocialCare.Functions.Payruns.Tests.Dsl;
 using LBH.AdultSocialCare.Functions.Payruns.Tests.Extensions;
 using LBH.AdultSocialCare.TestFramework;
+using LBH.AdultSocialCare.TestFramework.Extensions;
 using Moq;
 using Xunit;
 
@@ -61,7 +63,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
             _generator = new FundedNursingCareGenerator(_fncPrices);
         }
 
-        #region Normal finite care charges
+        #region Normal finite FNC
 
         [Fact]
         public void ShouldCreateInvoice()
@@ -169,9 +171,27 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .VerifyLastInvoice(/* none */);
         }
 
-        #endregion Normal finite care charges
+        [Fact]
+        public void ShouldHandleMultipleReclaims()
+        {
+            var newReclaim = _package.Reclaims.First().DeepCopy(CloneLevel.FirstLevelOnly);
 
-        #region Refunds for finite care charges
+            // migrated FNCs have a secondary compensation reclaim with negative cost
+            newReclaim.Cost = -700.0m;
+
+            _package.Reclaims.Add(newReclaim);
+
+            PaymentExperiment
+                .For(_package, _generator)
+                .CreateInvoice("2023-01-14")
+                .VerifyLastInvoice(
+                    (3100.0m, "2022-12-01", "2022-12-31"),
+                    (-3100.0m, "2022-12-01", "2022-12-31"));
+        }
+
+        #endregion Normal finite FNC
+
+        #region Refunds for finite FNC
 
         [Fact]
         public void ShouldCreateRefundOnStartDateChange()
@@ -223,7 +243,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .Pay()
                 .UpdateReclaim(r => r.StartDate = "2022-11-30".ToUtcDate())
                 .CreateRefund() // period is extended 1 day back, cost hasn't deducted -> supplier overpaid
-                .VerifyLastInvoice((100.0m, "2022-11-30", "2022-11-30"));
+                .VerifyLastInvoice((-100.0m, "2022-11-30", "2022-11-30"));
         }
 
         [Fact]
@@ -334,9 +354,9 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .VerifyLastInvoice(/* none */);
         }
 
-        #endregion Refunds for finite care charges
+        #endregion Refunds for finite FNC
 
-        #region Ongoing care charges
+        #region Ongoing FNC
 
         [Fact]
         public void ShouldCreateInvoiceForOngoingCareCharge()
@@ -387,6 +407,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .VerifyLastInvoice(/* none, difference will be paid with next normal invoice */);
         }
 
-        #endregion
+        #endregion Ongoing FNC
     }
 }

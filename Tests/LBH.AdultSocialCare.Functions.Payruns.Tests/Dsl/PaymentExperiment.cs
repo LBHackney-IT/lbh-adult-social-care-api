@@ -50,8 +50,15 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Dsl
 
         public PaymentExperiment UpdateReclaim(Action<CarePackageReclaim> action)
         {
-            action(_package.Reclaims.First());
-            _package.Reclaims.First().Version += 1;
+            return UpdateReclaim(_package.Reclaims.First().Id, action);
+        }
+
+        public PaymentExperiment UpdateReclaim(Guid id, Action<CarePackageReclaim> action)
+        {
+            var reclaim = _package.Reclaims.First(r => r.Id == id);
+
+            action(reclaim);
+            reclaim.Version += 1;
 
             return this;
         }

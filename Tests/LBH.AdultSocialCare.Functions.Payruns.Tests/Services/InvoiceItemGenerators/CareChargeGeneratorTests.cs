@@ -183,7 +183,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .Pay()
                 .UpdateReclaim(r => r.StartDate = "2022-11-30".ToUtcDate())
                 .CreateRefund() // period is extended 1 day back, cost hasn't deducted -> supplier overpaid
-                .VerifyLastInvoice((100.0m, "2022-11-30", "2022-11-30"));
+                .VerifyLastInvoice((-100.0m, "2022-11-30", "2022-11-30"));
         }
 
         [Fact]

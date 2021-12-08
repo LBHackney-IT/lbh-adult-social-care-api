@@ -21,73 +21,87 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 
         public override IEnumerable<InvoiceItem> CreateNormalItems(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
         {
-            var fundedNursingCare = package.Reclaims
-                .FirstOrDefault(reclaim => reclaim.Type is ReclaimType.Fnc &&
-                                           reclaim.Status != ReclaimStatus.Cancelled &&
-                                           reclaim.StartDate <= invoiceEndDate);
+            var fncReclaims = package.Reclaims
+                .Where(reclaim => reclaim.Type is ReclaimType.Fnc &&
+                                  reclaim.Status != ReclaimStatus.Cancelled &&
+                                  reclaim.StartDate <= invoiceEndDate)
+                .ToList();
 
-            if (fundedNursingCare is null) yield break;
-
-            var actualStartDate = GetActualStartDate(fundedNursingCare, packageInvoices);
-
-            foreach (var price in _fncPrices)
+            foreach (var reclaim in fncReclaims)
             {
-                var paymentRange = new DateRange(
-                    actualStartDate,
-                    Dates.Min(price.ActiveTo, invoiceEndDate, fundedNursingCare.EndDate));
+                var actualStartDate = GetActualStartDate(reclaim, packageInvoices);
 
-                if (paymentRange.WeeksInclusive <= 0) continue;
-
-                yield return new InvoiceItem
+                foreach (var price in _fncPrices)
                 {
-                    Name = "Funded Nursing Care",
-                    Quantity = paymentRange.WeeksInclusive,
-                    WeeklyCost = price.PricePerWeek,
-                    TotalCost = Math.Round(paymentRange.WeeksInclusive * price.PricePerWeek, 2),
-                    FromDate = paymentRange.StartDate,
-                    ToDate = paymentRange.EndDate,
-                    CarePackageReclaimId = fundedNursingCare.Id,
-                    ClaimCollector = fundedNursingCare.ClaimCollector,
-                    SourceVersion = fundedNursingCare.Version,
-                    PriceEffect = fundedNursingCare.ClaimCollector switch
-                    {
-                        ClaimCollector.Hackney => PriceEffect.None,
-                        ClaimCollector.Supplier => PriceEffect.Subtract,
-                        _ => throw new InvalidOperationException("Unknown claim collector")
-                    }
-                };
+                    var paymentRange = new DateRange(
+                        actualStartDate,
+                        Dates.Min(price.ActiveTo, invoiceEndDate, reclaim.EndDate));
 
-                actualStartDate = paymentRange.EndDate.AddDays(1);
+                    if (paymentRange.WeeksInclusive <= 0) continue;
+
+                    var invoiceItem = new InvoiceItem
+                    {
+                        Name = "Funded Nursing Care",
+                        Quantity = paymentRange.WeeksInclusive,
+                        WeeklyCost = price.PricePerWeek,
+                        TotalCost = Math.Round(paymentRange.WeeksInclusive * price.PricePerWeek, 2),
+                        FromDate = paymentRange.StartDate,
+                        ToDate = paymentRange.EndDate,
+                        CarePackageReclaimId = reclaim.Id,
+                        ClaimCollector = reclaim.ClaimCollector,
+                        SourceVersion = reclaim.Version,
+                        PriceEffect = reclaim.ClaimCollector switch
+                        {
+                            ClaimCollector.Hackney => PriceEffect.None,
+                            ClaimCollector.Supplier => PriceEffect.Subtract,
+                            _ => throw new InvalidOperationException("Unknown claim collector")
+                        }
+                    };
+
+                    if (reclaim.Cost < 0)
+                    {
+                        // for migrated items we may have 2 FNC reclaims with same value, one positive, one negative
+                        // assuming that migrated reclaims have prices aligned with FNC prices table, use just sign of migrated data
+                        invoiceItem.TotalCost *= -1;
+                    }
+
+                    yield return invoiceItem;
+
+                    actualStartDate = paymentRange.EndDate.AddDays(1);
+                }
             }
         }
 
         public override IEnumerable<InvoiceItem> CreateRefundItems(CarePackage package, IList<InvoiceDomain> packageInvoices)
         {
             var fundedNursingCare = package.Reclaims
-                .FirstOrDefault(r => r.Type is ReclaimType.Fnc);
+                .Where(r => r.Type is ReclaimType.Fnc)
+                .ToList();
 
-            if (fundedNursingCare is null) yield break;
 
-            var refunds = RefundCalculator.Calculate(
-                fundedNursingCare, packageInvoices,
-                (paymentRange, quantity) => CalculateFncPriceForPeriod(paymentRange, fundedNursingCare));
-
-            foreach (var refund in refunds)
+            foreach (var reclaim in fundedNursingCare)
             {
-                yield return new InvoiceItem
+                var refunds = RefundCalculator.Calculate(
+                    reclaim, packageInvoices,
+                    (paymentRange, quantity) => CalculateFncPriceForPeriod(paymentRange, reclaim));
+
+                foreach (var refund in refunds)
                 {
-                    Name = "Funded Nursing Care (refund)",
-                    Quantity = refund.Quantity,
-                    WeeklyCost = GetPriceForDate(refund.StartDate),
-                    TotalCost = refund.Amount,
-                    FromDate = refund.StartDate,
-                    ToDate = refund.EndDate,
-                    CarePackageReclaimId = fundedNursingCare.Id,
-                    SourceVersion = fundedNursingCare.Version,
-                    PriceEffect = refund.Amount > 0
-                        ? PriceEffect.Add
-                        : PriceEffect.Subtract
-                };
+                    yield return new InvoiceItem
+                    {
+                        Name = "Funded Nursing Care (adjustment)",
+                        Quantity = refund.Quantity,
+                        WeeklyCost = GetPriceForDate(refund.StartDate),
+                        TotalCost = refund.Amount,
+                        FromDate = refund.StartDate,
+                        ToDate = refund.EndDate,
+                        CarePackageReclaimId = reclaim.Id,
+                        SourceVersion = reclaim.Version,
+                        PriceEffect = refund.Amount > 0
+                            ? PriceEffect.Add
+                            : PriceEffect.Subtract
+                    };
+                }
             }
         }
 

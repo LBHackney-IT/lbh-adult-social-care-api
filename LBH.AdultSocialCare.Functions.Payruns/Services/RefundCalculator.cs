@@ -77,6 +77,23 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             // ..[--ref0--][--ref1--][--ref2--]
             var currentCost = calculateCurrentCost(unpaidRange, unpaidRange.WeeksInclusive);
 
+            if (packageItem is CarePackageReclaim reclaim)
+            {
+                switch (reclaim.ClaimCollector)
+                {
+                    case ClaimCollector.Hackney:
+                        currentCost = 0.0m;
+                        break;
+
+                    case ClaimCollector.Supplier:
+                        currentCost *= -1;
+                        break;
+
+                    default:
+                        throw new InvalidOperationException($"Unsupported claim collector {reclaim.ClaimCollector}");
+                }
+            }
+
             return new Refund
             {
                 StartDate = unpaidRange.StartDate,
@@ -84,7 +101,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 Quantity = unpaidRange.WeeksInclusive,
                 Amount = Math.Round(currentCost, 2)
             };
-
         }
 
         private static decimal CalculateRefundAmount(IPackageItem packageItem, decimal currentCost, IList<InvoiceItem> paidInvoiceItems)
