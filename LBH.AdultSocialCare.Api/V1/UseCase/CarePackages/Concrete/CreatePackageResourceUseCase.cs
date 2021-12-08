@@ -34,13 +34,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var package = await _gateway.GetPackageAsync(carePackageId, PackageFields.None, true)
                 .EnsureExistsAsync($"Care package with id {carePackageId} not found");
 
-            var documentResponse = await _fileStorage.SaveFileAsync(ConvertCarePlan(file), file.FileName);
+            var documentResponse = await _fileStorage.SaveFileAsync(ConvertCarePlan(file), file?.FileName);
 
             var resourceToCreate = new CarePackageResource
             {
                 Type = type,
                 Name = documentResponse.FileName,
-                FileExtension = Path.GetExtension(file.FileName),
+                FileExtension = Path.GetExtension(file?.FileName),
                 FileId = documentResponse.FileId,
                 PackageId = carePackageId
             };
