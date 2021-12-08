@@ -61,7 +61,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                 {
                     yield return new InvoiceItem
                     {
-                        Name = $"{GetDetailItemName(detail)} (refund)",
+                        Name = $"{GetDetailItemName(detail)} (adjustment)",
                         Quantity = 1,
                         WeeklyCost = 0.0m,
                         TotalCost = refund.Amount,

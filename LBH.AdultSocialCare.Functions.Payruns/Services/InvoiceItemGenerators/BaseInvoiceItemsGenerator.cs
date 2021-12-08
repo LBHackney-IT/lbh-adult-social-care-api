@@ -57,6 +57,15 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             }
         }
 
+        protected static string FormatDescription(string description)
+        {
+            if (String.IsNullOrEmpty(description)) return description;
+
+            return description.Length > 27
+                ? $"({description[..27]}...)"
+                : $"({description})";
+        }
+
         private static InvoiceItem GetLatestInvoiceItem(IPackageItem packageItem, IEnumerable<InvoiceDomain> invoices)
         {
             return invoices?

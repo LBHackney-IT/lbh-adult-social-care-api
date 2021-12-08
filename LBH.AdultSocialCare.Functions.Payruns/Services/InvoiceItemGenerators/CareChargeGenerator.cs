@@ -61,7 +61,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                 {
                     yield return new InvoiceItem
                     {
-                        Name = $"Care Charge {careCharge.SubType.GetDisplayName()} (refund)",
+                        Name = $"Care Charge {careCharge.SubType.GetDisplayName()} (adjustment)",
                         Quantity = refund.Quantity,
                         WeeklyCost = careCharge.Cost,
                         TotalCost = refund.Amount,

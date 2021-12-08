@@ -41,7 +41,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 
                     var invoiceItem = new InvoiceItem
                     {
-                        Name = "Funded Nursing Care",
+                        Name = $"Funded Nursing Care {FormatDescription(reclaim.Description)}",
                         Quantity = paymentRange.WeeksInclusive,
                         WeeklyCost = price.PricePerWeek,
                         TotalCost = Math.Round(paymentRange.WeeksInclusive * price.PricePerWeek, 2),
@@ -89,7 +89,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                 {
                     yield return new InvoiceItem
                     {
-                        Name = "Funded Nursing Care (adjustment)",
+                        Name = $"Funded Nursing Care (adjustment) {FormatDescription(reclaim.Description)}",
                         Quantity = refund.Quantity,
                         WeeklyCost = GetPriceForDate(refund.StartDate),
                         TotalCost = refund.Amount,
