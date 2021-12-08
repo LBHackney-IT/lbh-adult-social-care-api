@@ -1,4 +1,5 @@
 using System;
+using LBH.AdultSocialCare.Data.Constants;
 using LBH.AdultSocialCare.Data.Entities.Common;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,21 @@ namespace LBH.AdultSocialCare.Data.SeedConfiguration
             };
             passwordHasher.HashPassword(userOne, "Admin*123");
 
+            var migrationUser = new User
+            {
+                Id = UserConstants.MigrationUserId,
+                Name = "Migration User",
+                Email = "migration@gmail.com",
+                UserName = "migration@gmail.com",
+                PhoneNumber = "1234567890",
+                LockoutEnabled = true,
+                LockoutEnd = DateTimeOffset.Now.AddYears(500),
+                ConcurrencyStamp = "6b3d758b-924a-482c-af77-e31711a74a2f"
+            };
+            migrationUser.PasswordHash = passwordHasher.HashPassword(migrationUser, "W_C4mQ3+%c!9RpAx@tCp!UqfQCf2w*Eqwbu4@vmTfXcqj&Y-khg4UdgJH?65hD9L");
+
             builder.HasData(userOne);
+            builder.HasData(migrationUser);
         }
     }
 }
