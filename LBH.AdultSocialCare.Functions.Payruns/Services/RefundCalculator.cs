@@ -14,111 +14,149 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 {
     public static class RefundCalculator
     {
-        public static IEnumerable<RefundInfo> Calculate(
+        public static IEnumerable<Refund> Calculate(
             IPackageItem packageItem, IList<InvoiceDomain> packageInvoices,
-            Func<DateTimeOffset, DateTimeOffset, decimal, decimal> calculateCurrentCost)
+            Func<DateRange, decimal, decimal> calculateCurrentCost)
         {
             var paidInvoiceItems = GetPaidInvoiceItems(packageItem, packageInvoices);
-            if (!paidInvoiceItems.Any()) yield break;
+            if (!paidInvoiceItems.Any()) yield break; // no payments. no refunds
 
             // package item has some significant updates (cost, dates etc.) -> create a new refund
             if (packageItem.Version > paidInvoiceItems.Max(item => item.SourceVersion))
             {
+                // handle possible shift of package item start date before first paid invoice
+                var refund = TryRefundBeforeFirstPaidDate(packageItem, paidInvoiceItems, calculateCurrentCost);
+                if ((refund != null) && (refund.Amount != 0.0m)) yield return refund;
+
                 // always create a refund in range of first invoice to avoid
                 // tricky cases with jagged diapasons of refunds / rejected / normal items
                 // [--inv1--][--inv2--][--inv2--]
                 // [--ref1--][--ref2--][--ref2--]
                 var invoiceItemsGroups = paidInvoiceItems.GroupBy(item => item.FromDate);
 
-                foreach (var group in invoiceItemsGroups)
+                foreach (var paidItems in invoiceItemsGroups)
                 {
-                    var currentStartDate = packageItem.StartDate;
-                    var currentEndDate = Dates.Min(packageItem.EndDate, group.First().ToDate);
+                    var currentRange = new DateRange(
+                        Dates.Max(packageItem.StartDate, paidItems.First().FromDate),
+                        Dates.Min(packageItem.EndDate, paidItems.First().ToDate));
 
                     // if package item date range moved into future, its start date can be greater than last invoice date
                     // no payments now needed for new range, but we still need to refund already paid.
                     // So set quantity and current cost to 0 and let the rest of logic flow.
-                    var quantity = Math.Max(Dates.WeeksBetween(currentStartDate, currentEndDate), 0);
+                    var quantity = Math.Max(currentRange.WeeksInclusive, 0);
 
-                    var refund = new RefundInfo
+                    var currentCost = Math.Round(calculateCurrentCost(currentRange, quantity), 2);
+                    var refundAmount = Math.Round(CalculateRefundAmount(packageItem, currentCost, paidItems.ToList()), 2);
+
+                    if (refundAmount != 0.0m)
                     {
-                        StartDate = group.First().FromDate,
-                        EndDate = group.First().ToDate,
-                        Quantity = quantity,
-                        CurrentCost = quantity > 0
-                            ? calculateCurrentCost(currentStartDate, currentEndDate, quantity)
-                            : 0.0m // prevent generation for one-offs not dependent on quantity
-                    };
-
-                    switch (packageItem)
-                    {
-                        case CarePackageDetail _:
-                            CalculateDetailRefundAmount(refund, group.ToList());
-                            break;
-
-                        case CarePackageReclaim reclaim:
-                            CalculateReclaimRefundAmount(reclaim, refund, group.ToList());
-                            break;
+                        yield return new Refund
+                        {
+                            StartDate = paidItems.First().FromDate,
+                            EndDate = paidItems.First().ToDate,
+                            Quantity = quantity,
+                            Amount = refundAmount
+                        };
                     }
-
-                    yield return refund;
                 }
             }
         }
 
-        private static void CalculateDetailRefundAmount(RefundInfo refund, IList<InvoiceItem> paidInvoiceItems)
+        private static Refund TryRefundBeforeFirstPaidDate(
+            IPackageItem packageItem, List<InvoiceItem> paidInvoiceItems,
+            Func<DateRange, decimal, decimal> calculateCurrentCost)
         {
-            var paidTotal = paidInvoiceItems.Sum(item => item.TotalCost);
+            var unpaidRange = new DateRange(
+                packageItem.StartDate,
+                paidInvoiceItems.Min(item => item.FromDate).AddDays(-1));
 
-            refund.RefundAmount = refund.CurrentCost - paidTotal;
+            if (unpaidRange.WeeksInclusive <= 0) return null;
+
+            // package item start date has been shifted before previously paid invoices - create adjustment for this unpaid period
+            // ............[--inv1--][--inv2--]
+            // ..[--ref0--][--ref1--][--ref2--]
+            var currentCost = calculateCurrentCost(unpaidRange, unpaidRange.WeeksInclusive);
+
+            if (packageItem is CarePackageReclaim reclaim)
+            {
+                switch (reclaim.ClaimCollector)
+                {
+                    case ClaimCollector.Hackney:
+                        currentCost = 0.0m;
+                        break;
+
+                    case ClaimCollector.Supplier:
+                        currentCost *= -1;
+                        break;
+
+                    default:
+                        throw new InvalidOperationException($"Unsupported claim collector {reclaim.ClaimCollector}");
+                }
+            }
+
+            return new Refund
+            {
+                StartDate = unpaidRange.StartDate,
+                EndDate = unpaidRange.EndDate,
+                Quantity = unpaidRange.WeeksInclusive,
+                Amount = Math.Round(currentCost, 2)
+            };
         }
 
-        private static void CalculateReclaimRefundAmount(CarePackageReclaim reclaim, RefundInfo refund, IList<InvoiceItem> paidInvoiceItems)
+        private static decimal CalculateRefundAmount(IPackageItem packageItem, decimal currentCost, IList<InvoiceItem> paidInvoiceItems)
         {
-            // when switching from Net to Gross we must refund everything from supplier
-            // and ignore upcoming Hackney's reclaims. After switching back to Net
-            // we must generate refunds starting from previous compensation point.
-            var actualInvoiceItems = paidInvoiceItems
-                .OrderByDescending(item => item.SourceVersion) // take just new items
-                .TakeWhile(item => !item.NetCostsCompensated) // after previous compensation checkpoint
-                .ToList();
+            switch (packageItem)
+            {
+                case CarePackageDetail _:
+                    return CalculateDetailRefundAmount(currentCost, paidInvoiceItems);
 
+                case CarePackageReclaim reclaim:
+                    return CalculateReclaimRefundAmount(reclaim, currentCost, paidInvoiceItems);
+
+                default:
+                    throw new InvalidOperationException($"Unsupported IPackageItem {packageItem.GetType()}");
+            }
+        }
+
+        private static decimal CalculateDetailRefundAmount(decimal currentCost, IList<InvoiceItem> paidInvoiceItems)
+        {
+            return currentCost - paidInvoiceItems.Sum(item => item.TotalCost);
+        }
+
+        private static decimal CalculateReclaimRefundAmount(CarePackageReclaim reclaim, decimal currentCost, IList<InvoiceItem> paidInvoiceItems)
+        {
             // total amount deducted from supplier for a given period
-            var deductedNetCost = actualInvoiceItems
+            var deductedNetCost = paidInvoiceItems
                 .Where(item => item.ClaimCollector is ClaimCollector.Supplier)
                 .Sum(item => item.TotalCost);
 
             // total amount of refunds to/from supplier for a given period
-            var refundedCost = actualInvoiceItems
+            var refundedCost = paidInvoiceItems
                 .Where(item => item.ClaimCollector is null)
                 .Sum(item => item.TotalCost);
 
-            if (reclaim.Status is ReclaimStatus.Cancelled)
-            {
-                // compensate remainders to / from supplier
-                refund.RefundAmount = refundedCost - deductedNetCost;
-                refund.NetCostsCompensated = true;
-            }
-            else
+            if (reclaim.Status != ReclaimStatus.Cancelled)
             {
                 switch (reclaim.ClaimCollector)
                 {
                     case ClaimCollector.Supplier:
-                        refund.RefundAmount = deductedNetCost != 0
-                            ? deductedNetCost - refundedCost - refund.CurrentCost   // previously deducted costs + (overpaid - underpaid) - current cost
-                            : refundedCost + refund.CurrentCost;                    // nothing deducted -> switch from Hackney to supplier, just accumulate everything // TODO: VK: Review
-                        break;
-
-                    case ClaimCollector.Hackney when !actualInvoiceItems.Any(item => item.NetCostsCompensated):
-                        // we're switching from Net to Gross - refund everything from supplier and create a compensation checkpoint
-                        refund.RefundAmount = refundedCost - deductedNetCost;
-                        refund.NetCostsCompensated = true;
-                        break;
+                        // previously deducted costs + (overpaid - underpaid) - current cost
+                        return deductedNetCost - refundedCost - currentCost;
 
                     case ClaimCollector.Hackney:
-                        refund.RefundAmount = 0.0m;
-                        break; // we've compensated all Net costs already and still in Gross mode - no need to refund anything
+                        // when switching collector from Supplier to Hackney we refund everything not yet refunded,
+                        // then when staying in Hackney deducted and refunded costs are equal so no refund generated;
+                        // if initial collector is Hackney, deducted and refunded costs are zero - no refund generated
+                        return deductedNetCost - refundedCost;
+
+                    default:
+                        throw new InvalidOperationException($"Unsupported ClaimCollector {reclaim.ClaimCollector}");
                 }
+            }
+            else
+            {
+                // compensate remainders to / from supplier
+                return deductedNetCost - refundedCost;
             }
         }
 

@@ -3,6 +3,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
 using System;
 using System.Threading.Tasks;
+using Common.Helpers;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
 {
@@ -15,11 +16,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete
             _gateway = gateway;
         }
 
-        public ICurrentDateTimeOffsetProvider CurrentDateTimeOffsetProvider { get; set; } = new CurrentDateTimeOffsetProvider();
+        public ICurrentDateProvider CurrentDateProvider { get; set; } = new CurrentDateProvider();
 
         public async Task<decimal> GetActiveFundedNursingCarePriceAsync()
         {
-            return await GetFundedNursingCarePriceAsync(CurrentDateTimeOffsetProvider.Now)
+            return await GetFundedNursingCarePriceAsync(CurrentDateProvider.Now)
                 .ConfigureAwait(false);
         }
 

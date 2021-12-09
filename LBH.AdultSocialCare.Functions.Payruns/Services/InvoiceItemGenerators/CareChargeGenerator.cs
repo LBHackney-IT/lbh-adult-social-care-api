@@ -15,8 +15,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
         {
             var careCharges = package.Reclaims
                 .Where(reclaim => reclaim.Type is ReclaimType.CareCharge &&
-                                  (reclaim.Status is ReclaimStatus.Active ||
-                                  (reclaim.Status is ReclaimStatus.Pending && reclaim.StartDate <= invoiceEndDate)))
+                                  reclaim.Status != ReclaimStatus.Cancelled &&
+                                  reclaim.StartDate <= invoiceEndDate)
                 .ToList();
 
             foreach (var careCharge in careCharges)
@@ -29,7 +29,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     Name = $"Care Charge {careCharge.SubType.GetDisplayName()}",
                     Quantity = itemRange.WeeksInclusive,
                     WeeklyCost = careCharge.Cost,
-                    TotalCost = careCharge.Cost * itemRange.WeeksInclusive,
+                    TotalCost = Math.Round(careCharge.Cost * itemRange.WeeksInclusive, 2),
                     FromDate = itemRange.StartDate,
                     ToDate = itemRange.EndDate,
                     CarePackageReclaimId = careCharge.Id,
@@ -55,22 +55,21 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             {
                 var refunds = RefundCalculator.Calculate(
                     careCharge, packageInvoices,
-                    (start, end, quantity) => careCharge.Cost * quantity);
+                    (paymentRange, quantity) => careCharge.Cost * quantity);
 
                 foreach (var refund in refunds)
                 {
                     yield return new InvoiceItem
                     {
-                        Name = $"Care Charge {careCharge.SubType.GetDisplayName()} (refund)",
+                        Name = $"Care Charge {careCharge.SubType.GetDisplayName()} (adjustment)",
                         Quantity = refund.Quantity,
                         WeeklyCost = careCharge.Cost,
-                        TotalCost = refund.RefundAmount,
+                        TotalCost = refund.Amount,
                         FromDate = refund.StartDate,
                         ToDate = refund.EndDate,
                         CarePackageReclaimId = careCharge.Id,
                         SourceVersion = careCharge.Version,
-                        NetCostsCompensated = refund.NetCostsCompensated,
-                        PriceEffect = refund.RefundAmount > 0
+                        PriceEffect = refund.Amount > 0
                             ? PriceEffect.Add
                             : PriceEffect.Subtract
                     };

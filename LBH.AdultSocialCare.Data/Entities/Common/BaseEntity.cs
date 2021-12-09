@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using LBH.AdultSocialCare.Data.Constants;
 
 namespace LBH.AdultSocialCare.Data.Entities.Common
 {
@@ -45,5 +46,7 @@ namespace LBH.AdultSocialCare.Data.Entities.Common
         /// </summary>
         [ForeignKey(nameof(UpdaterId))]
         public User Updater { get; set; }
+
+        public bool IsMigrated => (CreatorId == UserConstants.MigrationUserId);
     }
 }
