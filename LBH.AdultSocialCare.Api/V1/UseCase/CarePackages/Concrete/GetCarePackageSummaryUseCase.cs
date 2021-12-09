@@ -58,6 +58,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 FundedNursingCare = package.Reclaims.FirstOrDefault(r => r.Type is ReclaimType.Fnc)?.ToDomain()
             };
 
+            var fncResource = package.Resources?.OrderByDescending(r => r.DateCreated)
+                .FirstOrDefault(r => r.Type == PackageResourceType.FncAssessmentFile);
+
+            if (summary.FundedNursingCare != null)
+            {
+                summary.FundedNursingCare.AssessmentFileId = fncResource?.FileId;
+                summary.FundedNursingCare.AssessmentFileName = fncResource?.Name;
+            }
+
             CalculateReclaimSubTotals(package, summary, coreCost);
             CalculateTotals(summary, coreCost);
 
