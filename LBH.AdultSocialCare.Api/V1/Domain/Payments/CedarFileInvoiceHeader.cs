@@ -12,8 +12,8 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Payments
         public int Subtype { get; set; }
         public int? InvoiceSupplierNumber { get; set; }
         public string InvoiceReferenceNumber { get; set; }
-        public DateTimeOffset TransactionDate { get; set; }
-        public DateTimeOffset ReceivedDate { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public DateTime ReceivedDate { get; set; }
         public string SupplierSiteReferenceId { get; set; }
         public decimal GrossAmount { get; set; }
         public decimal NetAmount { get; set; }
