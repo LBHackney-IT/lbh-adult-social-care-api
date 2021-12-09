@@ -62,6 +62,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     {
                         // for migrated items we may have 2 FNC reclaims with same value, one positive, one negative
                         // assuming that migrated reclaims have prices aligned with FNC prices table, use just sign of migrated data
+                        invoiceItem.WeeklyCost *= -1;
                         invoiceItem.TotalCost *= -1;
                     }
 
