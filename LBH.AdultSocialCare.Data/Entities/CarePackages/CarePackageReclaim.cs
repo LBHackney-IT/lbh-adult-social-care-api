@@ -48,7 +48,7 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
                 return value;
             }
 
-            if (EndDate != null && DateTimeOffset.Now.Date >= EndDate.Value.Date)
+            if (EndDate != null && DateTimeOffset.Now.Date > EndDate.Value.Date)
             {
                 return ReclaimStatus.Ended;
             }
@@ -60,7 +60,7 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
 
         private ReclaimStatus CalculateStatus()
         {
-            if (EndDate != null && CurrentDateProvider.Now.Date >= EndDate.Value.Date)
+            if (EndDate != null && CurrentDateProvider.Now.Date > EndDate.Value.Date)
             {
                 return ReclaimStatus.Ended;
             }

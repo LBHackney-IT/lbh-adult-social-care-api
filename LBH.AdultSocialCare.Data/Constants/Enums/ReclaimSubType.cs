@@ -4,7 +4,7 @@ namespace LBH.AdultSocialCare.Data.Constants.Enums
 {
     public enum ReclaimSubType
     {
-        [Display(Name = "Provisional")]
+        [Display(Name = "Provisional Care Charge")]
         CareChargeProvisional = 1,
 
         [Display(Name = "Without Property 1-12 Weeks")]
