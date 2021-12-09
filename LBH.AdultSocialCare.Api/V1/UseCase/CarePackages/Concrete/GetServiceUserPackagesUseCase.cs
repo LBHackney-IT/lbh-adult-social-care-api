@@ -1,18 +1,18 @@
 using Common.Extensions;
+using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Entities.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.Helpers;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.CarePackages;
-using LBH.AdultSocialCare.Data.Entities.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -119,7 +119,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     Name = package.PackageType.GetDisplayName(),
                     Type = package.PackageType.GetDisplayName(),
                     CollectedBy = ClaimCollector.Hackney.GetDisplayName(),
-                    Status = package.Status.GetDisplayName(),
+                    Status = CalculatePackageStatus(package, coreCost),
                     StartDate = coreCost.StartDate,
                     EndDate = coreCost.EndDate,
                     WeeklyCost = coreCost.Cost
@@ -135,7 +135,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     Name = GetAdditionalNeedName(need.CostPeriod),
                     Type = "Additional Needs",
                     CollectedBy = ClaimCollector.Hackney.GetDisplayName(),
-                    Status = package.Status.GetDisplayName(),
+                    Status = coreCost != null ? CalculatePackageStatus(package, coreCost) : package.Status.GetDisplayName(),
                     StartDate = need.StartDate,
                     EndDate = need.EndDate,
                     WeeklyCost = need.Cost
@@ -148,10 +148,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 carePackageCostItem.AddRange(reclaims.Select(reclaim => new CarePackageCostItemResponse
                 {
                     Id = reclaim.Id,
-                    Name = Enum.IsDefined(typeof(ReclaimSubType), reclaim.SubType) ? reclaim.SubType.GetDisplayName() : GetCareChargeName(reclaim.Type),
+                    Name = reclaim.SubType != null && Enum.IsDefined(typeof(ReclaimSubType), reclaim.SubType) ? reclaim.SubType.GetDisplayName() : GetCareChargeName(reclaim.Type),
                     Type = GetCareChargeName(reclaim.Type),
                     CollectedBy = reclaim.ClaimCollector.GetDisplayName(),
-                    Status = reclaim.Status.GetDisplayName(),
+                    Status = CalculateReclaimStatus(reclaim).GetDisplayName(),
                     StartDate = reclaim.StartDate,
                     EndDate = reclaim.EndDate,
                     WeeklyCost = reclaim.ClaimCollector == ClaimCollector.Hackney ? reclaim.Cost : decimal.Negate(reclaim.Cost)
@@ -159,6 +159,24 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             return carePackageCostItem;
+        }
+
+        private static ReclaimStatus CalculateReclaimStatus(CarePackageReclaim reclaim)
+        {
+            var today = DateTimeOffset.Now.Date;
+            if (reclaim.Status is ReclaimStatus.Cancelled || reclaim.Status is ReclaimStatus.Ended)
+            {
+                return reclaim.Status;
+            }
+
+            if (reclaim.EndDate != null && today > reclaim.EndDate.Value.Date)
+            {
+                return ReclaimStatus.Ended;
+            }
+
+            return today >= reclaim.StartDate.Date
+                ? ReclaimStatus.Active
+                : ReclaimStatus.Pending;
         }
 
         private static string GetAdditionalNeedName(PaymentPeriod paymentPeriod)
