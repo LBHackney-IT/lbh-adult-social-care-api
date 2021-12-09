@@ -96,8 +96,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         private static string CalculatePackageStatus(CarePackage package, IPackageItem coreCost)
         {
+            var today = DateTimeOffset.Now.Date;
             return package.Status switch
             {
+                PackageStatus.Approved when coreCost.EndDate != null &&
+                                            coreCost.EndDate.GetValueOrDefault().Date < today => "Ended",
                 PackageStatus.Approved when IsValidDateRange(coreCost.StartDate, coreCost.EndDate) => "Active",
                 PackageStatus.Approved => "Future",
                 _ => package.Status.GetDisplayName()
