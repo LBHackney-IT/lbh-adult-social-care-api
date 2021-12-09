@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Entities.Interfaces;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -32,10 +33,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         {
             // Check service user exists
             var serviceUser = await _serviceUserGateway.GetByIdAsync(serviceUserId).EnsureExistsAsync($"Service user with id {serviceUserId} not found");
-            var packageRequestStatuses = new[]
-            {
-                PackageStatus.New, PackageStatus.InProgress, PackageStatus.NotApproved
-            };
 
             const PackageFields fields = PackageFields.Details | PackageFields.Reclaims | PackageFields.Settings | PackageFields.Resources;
             var userPackages = await _carePackageGateway.GetServiceUserPackagesAsync(serviceUserId, fields);
@@ -49,10 +46,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             foreach (var carePackage in userPackages)
             {
+                var coreCost = carePackage.Details
+                    .SingleOrDefault(d => d.Type is PackageDetailType.CoreCost);
+
                 var packageResponse = new ServiceUserPackageViewItemResponse
                 {
                     PackageId = carePackage.Id,
-                    PackageStatus = carePackage.Status.GetDisplayName(),
+                    PackageStatus = CalculatePackageStatus(carePackage, coreCost),
                     PackageType = carePackage.PackageType.GetDisplayName(),
                     IsS117Client = carePackage.Settings?.IsS117Client,
                     IsS117ClientConfirmed = carePackage.Settings?.IsS117ClientConfirmed,
@@ -65,9 +65,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     PackageItems = new List<CarePackageCostItemResponse>()
                 };
 
-                var coreCost = carePackage.Details
-                    .SingleOrDefault(d => d.Type is PackageDetailType.CoreCost);
-
                 var additionalNeeds = carePackage.Details
                     .Where(d => d.Type == PackageDetailType.AdditionalNeed).ToList();
 
@@ -79,7 +76,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     item => preferences.IndexOf(item.Status));
 
                 // Get care package history if package request i.e new, in-progress, not-approved
-                if (packageRequestStatuses.Contains(carePackage.Status))
+                if (carePackage.Status.In(PackageStatus.New, PackageStatus.InProgress, PackageStatus.NotApproved))
                 {
                     var packageHistory = await _carePackageHistoryGateway.ListAsync(carePackage.Id);
                     packageResponse.Notes = packageHistory.OrderByDescending(h => h.Id).ToResponse();
@@ -95,6 +92,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             response.Packages = packagesResponse;
 
             return response;
+        }
+
+        private static string CalculatePackageStatus(CarePackage package, IPackageItem coreCost)
+        {
+            return package.Status switch
+            {
+                PackageStatus.Approved when IsValidDateRange(coreCost.StartDate, coreCost.EndDate) => "Active",
+                PackageStatus.Approved => "Future",
+                _ => package.Status.GetDisplayName()
+            };
         }
 
         private static IEnumerable<CarePackageCostItemResponse> CollectPackageItems(CarePackage package, CarePackageDetail coreCost, IReadOnlyCollection<CarePackageDetail> additionalNeeds, IReadOnlyCollection<CarePackageReclaim> reclaims)
