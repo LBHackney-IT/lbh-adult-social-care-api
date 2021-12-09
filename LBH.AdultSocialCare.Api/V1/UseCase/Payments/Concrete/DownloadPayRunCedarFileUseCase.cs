@@ -32,7 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             _dbManager = dbManager;
         }
 
-        public async Task<MemoryStream> ExecuteAsync(Guid payRunId)
+        public async Task<CedarFileResponse> ExecuteAsync(Guid payRunId)
         {
             var payRun = await _payRunGateway.GetPayRunAsync(payRunId, PayRunFields.None, true)
                 .EnsureExistsAsync($"Pay run with id {payRunId} not found");
@@ -92,6 +92,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                         if (property.Name == "InvoiceNumber") invoice.InvoiceNumber = invoiceNumber;
                         cellIndex++;
                         workSheet.Cells[invoiceRowIndex, cellIndex].Value = property.GetValue(invoice, null);
+                        if (property.PropertyType == typeof(DateTime)) workSheet.Cells[invoiceRowIndex, cellIndex].Style.Numberformat.Format = "dd/mm/yyyy";
                     }
 
                     // Set background color for invoice line
@@ -146,7 +147,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 
             await _dbManager.SaveAsync($"Failed to add pay run history");
 
-            return stream;
+            return new CedarFileResponse()
+            {
+                Stream = stream,
+                PayRunNumber = payRun.Number
+            };
         }
     }
 }
