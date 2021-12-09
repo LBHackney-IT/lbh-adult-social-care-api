@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using LBH.AdultSocialCare.Data.Constants;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators;
@@ -75,7 +77,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .For(_package, _generator)
                 .UpdateDetail(d => d.StartDate = "2022-12-04".ToUtcDate())
                 .CreateInvoice("2022-12-03")
-                .VerifyLastInvoice(/* none */);
+                .EnsureNoInvoiceGenerated();
         }
 
         [Fact]
@@ -88,6 +90,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         }
 
         #endregion Normal finite weekly needs
+
 
         #region Refunds for finite details
 
@@ -199,6 +202,24 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .VerifyLastInvoice((700.0m, "2022-12-01", "2022-12-07"));
         }
 
+        [Fact]
+        public void ShouldSkipRefundForMigratedItemsBeforeFirstPayrunStart()
+        {
+            _package.Details.First().StartDate = PayrunConstants.DefaultStartDate.AddDays(-100);
+
+            var invoiceStartDate = PayrunConstants.DefaultStartDate;
+            var invoiceEndDate = PayrunConstants.DefaultStartDate.AddDays(6);
+
+            PaymentExperiment
+                .For(_package, _generator)
+                .CreateInvoice(invoiceEndDate)
+                .VerifyLastInvoice((700.0m, invoiceStartDate, invoiceEndDate))
+                .Pay()
+                .UpdateDetail(d => d.Cost = 500.0m)
+                .CreateRefund() // just one refund is expected, period before first payrun date is unpaid in our system but should be ignored
+                .VerifyLastInvoice((-200.0m, invoiceStartDate, invoiceEndDate));
+        }
+
         #endregion Refunds for finite details
 
         #region Ongoing weekly needs
@@ -249,7 +270,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .Pay()
                 .UpdateDetail(d => d.EndDate = null)
                 .CreateRefund()
-                .VerifyLastInvoice(/* none, difference will be paid with next normal invoice */);
+                .EnsureNoInvoiceGenerated(); // difference will be paid with next normal invoice
         }
 
         #endregion Ongoing weekly needs

@@ -129,7 +129,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .For(_package, _generator)
                 .UpdateReclaim(d => d.StartDate = "2022-12-04".ToUtcDate())
                 .CreateInvoice("2022-12-03")
-                .VerifyLastInvoice(/* none */);
+                .EnsureNoInvoiceGenerated();
         }
 
         [Fact]
@@ -168,7 +168,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .For(_package, _generator)
                 .UpdateReclaim(r => r.Status = ReclaimStatus.Cancelled)
                 .CreateInvoice("2022-12-07")
-                .VerifyLastInvoice(/* none */);
+                .EnsureNoInvoiceGenerated();
         }
 
         [Fact]
@@ -338,7 +338,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .Pay()
                 .UpdateReclaim(r => r.Cost = 500.0m)
                 .CreateRefund()
-                .VerifyLastInvoice(/* none */);
+                .EnsureNoInvoiceGenerated();
         }
 
         [Fact]
@@ -351,7 +351,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .Pay()
                 .UpdateReclaim(r => r.Status = ReclaimStatus.Cancelled)
                 .CreateRefund()
-                .VerifyLastInvoice(/* none */);
+                .EnsureNoInvoiceGenerated();
         }
 
         #endregion Refunds for finite FNC
@@ -404,7 +404,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .Pay()
                 .UpdateReclaim(d => d.EndDate = null)
                 .CreateRefund()
-                .VerifyLastInvoice(/* none, difference will be paid with next normal invoice */);
+                .EnsureNoInvoiceGenerated(); // difference will be paid with next normal invoice
         }
 
         #endregion Ongoing FNC
