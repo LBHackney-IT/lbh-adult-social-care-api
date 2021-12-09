@@ -33,17 +33,18 @@ functions:
     handler: LBH.AdultSocialCare.Api::LBH.AdultSocialCare.Api.LambdaEntryPoint::FunctionHandlerAsync
     role: lambdaExecutionRole
     environment:
-        CONNECTION_STRING: Host=${ssm:/hasc-api/${self:provider.stage}/postgres-hostname};Port=${ssm:/hasc-api/${self:provider.stage}/postgres-port};Database=${ssm:/hasc-api/${self:provider.stage}/postgres-database};Username=${ssm:/hasc-api/${self:provider.stage}/postgres-username};Password=${ssm:/hasc-api/${self:provider.stage}/postgres-password}
-        HASCHttpClients__TransactionsBaseUrl: ${ssm:/hasc-api/${self:provider.stage}/TRANSACTIONS-BASE-URL}
-        HASCHttpClients__TransactionsApiKey: ${ssm:/hasc-api/${self:provider.stage}/TRANSACTIONS-API-KEY}
-        ResidentsAPI__BaseUrl: ${ssm:/hasc-api/${self:provider.stage}/RESIDENTS-BASE-URL}
-        ResidentsAPI__ApiKey: ${ssm:/hasc-api/${self:provider.stage}/RESIDENTS-API-KEY}
-        PayrunsQueue__Url: ${ssm:/hasc-api/${self:provider.stage}/PAYRUNS-QUEUE-URL}
         AWS__Region: ${self:provider.region}
-        DocumentAPI__BaseUrl: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTS-BASE-URL}
-        DocumentAPI__ClaimBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTAPI-POST-CLAIM-TOKEN}
-        DocumentAPI__PostBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTAPI-POST-DOCUMENT-TOKEN}
-        DocumentAPI__GetBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTSAPI-GET-DOCUMENT-TOKEN}
+        CONNECTION_STRING: Host=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_HOSTNAME};Port=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_PORT};Database=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_DATABASE};Username=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_USERNAME};Password=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_PASSWORD}
+        HASCHttpClients__TransactionsBaseUrl: ${ssm:/hasc-api/${self:provider.stage}/TRANSACTIONS_BASE_URL}
+        HASCHttpClients__TransactionsApiKey: ${ssm:/hasc-api/${self:provider.stage}/TRANSACTIONS_API_KEY}
+        ResidentsAPI__BaseUrl: ${ssm:/hasc-api/${self:provider.stage}/RESIDENTS_BASE_URL}
+        ResidentsAPI__ApiKey: ${ssm:/hasc-api/${self:provider.stage}/RESIDENTS_API_KEY}
+        PayrunsQueue__Url: ${ssm:/hasc-api/${self:provider.stage}/PAYRUNS_QUEUE_URL}
+        DocumentAPI__BaseUrl: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTS_BASE_URL}
+        DocumentAPI__ClaimBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTAPI_POST_CLAIM_TOKEN}
+        DocumentAPI__PostBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTAPI_POST_DOCUMENT_TOKEN}
+        DocumentAPI__GetBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTSAPI_GET_DOCUMENT_TOKEN}
+        JwtSettings__expiryInSeconds: ${ssm:/hasc-api/${self:provider.stage}/JWT_SETTINGS_EXPIRY_IN_SECONDS}
     events:
       - http:
           path: /{proxy+}
