@@ -89,16 +89,30 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Dsl
 
         public PaymentExperiment VerifyLastInvoice(params (decimal Cost, string StartDate, string EndDate)[] expectations)
         {
+            return VerifyLastInvoice(expectations.Select(e => (
+                e.Cost,
+                e.StartDate.ToUtcDate(),
+                e.EndDate.ToUtcDate())).ToArray());
+        }
+
+        public PaymentExperiment VerifyLastInvoice(params (decimal Cost, DateTimeOffset StartDate, DateTimeOffset EndDate)[] expectations)
+        {
             _lastInvoice.Items.Count.Should().Be(expectations.Length);
 
             foreach (var (cost, startDate, endDate) in expectations)
             {
                 _lastInvoice.Items.Should().ContainSingle(item =>
                     item.TotalCost == cost &&
-                    item.FromDate == startDate.ToUtcDate() &&
-                    item.ToDate == endDate.ToUtcDate());
+                    item.FromDate == startDate &&
+                    item.ToDate == endDate);
             }
 
+            return this;
+        }
+
+        public PaymentExperiment EnsureNoInvoiceGenerated()
+        {
+            _lastInvoice.Items.Count.Should().Be(0);
             return this;
         }
 

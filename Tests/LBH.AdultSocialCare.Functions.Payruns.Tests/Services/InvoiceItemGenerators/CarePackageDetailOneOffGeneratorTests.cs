@@ -55,7 +55,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .CreateInvoice("2022-12-06")
                 .VerifyLastInvoice((100.0m, "2022-12-01", "2022-12-31"))
                 .CreateInvoice("2022-01-31")
-                .VerifyLastInvoice(/* none: one-off has been created already  */);
+                .EnsureNoInvoiceGenerated(); // one-off has been created already
         }
 
         [Fact]
@@ -75,7 +75,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
             PaymentExperiment
                 .For(_package, _generator)
                 .CreateInvoice("2022-11-30")
-                .VerifyLastInvoice(/* none */);
+                .EnsureNoInvoiceGenerated();
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .Pay()
                 .UpdateDetail(d => d.StartDate = "2022-12-06".ToUtcDate())
                 .CreateRefund()
-                .VerifyLastInvoice(/* none */);
+                .EnsureNoInvoiceGenerated();
         }
 
         [Fact]
@@ -166,7 +166,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .CreateInvoice("2022-12-06")
                 .Pay()
                 .CreateInvoice("2022-12-12")
-                .VerifyLastInvoice(/* none */);
+                .EnsureNoInvoiceGenerated();
         }
 
         [Fact]
@@ -194,7 +194,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .Pay()
                 .UpdateDetail(d => d.EndDate = null)
                 .CreateRefund()
-                .VerifyLastInvoice(/* none */);
+                .EnsureNoInvoiceGenerated();
         }
 
         #endregion Ongoing one-off

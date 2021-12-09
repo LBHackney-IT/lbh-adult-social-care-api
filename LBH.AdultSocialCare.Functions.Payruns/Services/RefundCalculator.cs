@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.Helpers;
+using LBH.AdultSocialCare.Data.Constants;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Interfaces;
@@ -67,7 +68,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             Func<DateRange, decimal, decimal> calculateCurrentCost)
         {
             var unpaidRange = new DateRange(
-                packageItem.StartDate,
+                Dates.Max(packageItem.StartDate, PayrunConstants.DefaultStartDate),
                 paidInvoiceItems.Min(item => item.FromDate).AddDays(-1));
 
             if (unpaidRange.WeeksInclusive <= 0) return null;
