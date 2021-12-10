@@ -15,14 +15,12 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
     public class FileStorage : IFileStorage
     {
         private readonly IDocumentClaimClient _documentClaimClient;
-        private readonly IDocumentPostClient _documentPostClient;
         private readonly IDocumentGetClient _documentGetClient;
 
 
-        public FileStorage(IDocumentClaimClient documentClaimClient, IDocumentPostClient documentPostClient, IDocumentGetClient documentGetClient)
+        public FileStorage(IDocumentClaimClient documentClaimClient, IDocumentGetClient documentGetClient)
         {
             _documentClaimClient = documentClaimClient;
-            _documentPostClient = documentPostClient;
             _documentGetClient = documentGetClient;
         }
 
@@ -37,14 +35,11 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
                 UserCreatedBy = "hasc-finance-api",
                 ApiCreatedBy = "hasc-finance-api",
                 ValidUntil = DateTime.Now.AddYears(+10),
-                RetentionExpiresAt = DateTime.Now.AddYears(+10)
+                RetentionExpiresAt = DateTime.Now.AddYears(+10),
+                Base64Document = fileContent
             };
 
-            var claimResponse = await _documentClaimClient.CreateClaim(documentClaimRequest);
-
-            var documentUploadRequest = new DocumentUploadRequest() { base64Document = fileContent };
-
-            await _documentPostClient.CreateDocument(new Guid(claimResponse.Document.Id), documentUploadRequest);
+            var claimResponse = await _documentClaimClient.CreateClaimAndDocument(documentClaimRequest);
 
             return new DocumentResponse { FileId = new Guid(claimResponse.Document.Id), FileName = fileName };
         }
@@ -52,22 +47,6 @@ namespace LBH.AdultSocialCare.Api.V1.Services.IO
         public async Task<string> GetFile(Guid documentId)
         {
             return await _documentGetClient.GetDocument(documentId);
-        }
-
-        private static string ConvertCarePlan(IFormFile carePlanFile)
-        {
-            if (carePlanFile != null)
-            {
-                using (var stream = new MemoryStream())
-                {
-                    carePlanFile.CopyTo(stream);
-
-                    var bytes = stream.ToArray();
-                    return $"data:{carePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}";
-                }
-            }
-
-            return null;
         }
     }
 }
