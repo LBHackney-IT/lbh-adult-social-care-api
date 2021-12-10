@@ -254,7 +254,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             // If package core cost ongoing or package end date greater than/= 1-12 end date, 1-12 must be exactly 12 weeks
             if (oneToTwelveCareCharge != null && (coreCost.EndDate == null || coreCost.EndDate.GetValueOrDefault().Date >= oneToTwelveCareCharge.StartDate.Date.AddDays(84)))
             {
-                if ((oneToTwelveCareCharge.EndDate.GetValueOrDefault().Date - oneToTwelveCareCharge.StartDate).Days + 1 != 84)
+                if ((oneToTwelveCareCharge.EndDate.GetValueOrDefault().Date - oneToTwelveCareCharge.StartDate.Date).Days != 84)
                 {
                     var expectedEndDate = oneToTwelveCareCharge.StartDate.Date.AddDays(84);
                     throw new ApiException($"1-12 must take exactly 12 weeks: Expected end date is {expectedEndDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
