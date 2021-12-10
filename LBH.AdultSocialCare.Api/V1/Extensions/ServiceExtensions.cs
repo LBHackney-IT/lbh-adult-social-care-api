@@ -149,14 +149,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 .ConfigureMessageHandlers();
 
             services
-                .AddHttpClient<IDocumentPostClient, DocumentPostClient>(client =>
-                {
-                    client.BaseAddress = new Uri(configuration["DocumentAPI:BaseUrl"]);
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(configuration["DocumentAPI:PostBearerToken"]);
-                })
-                .ConfigureMessageHandlers();
-
-            services
                 .AddHttpClient<IDocumentGetClient, DocumentGetClient>(client =>
                 {
                     client.BaseAddress = new Uri(configuration["DocumentAPI:BaseUrl"]);

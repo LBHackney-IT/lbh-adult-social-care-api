@@ -42,7 +42,6 @@ functions:
         PayrunsQueue__Url: ${ssm:/hasc-api/${self:provider.stage}/PAYRUNS_QUEUE_URL}
         DocumentAPI__BaseUrl: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTS_BASE_URL}
         DocumentAPI__ClaimBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTAPI_POST_CLAIM_TOKEN}
-        DocumentAPI__PostBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTAPI_POST_DOCUMENT_TOKEN}
         DocumentAPI__GetBearerToken: ${ssm:/hasc-api/${self:provider.stage}/DOCUMENTSAPI_GET_DOCUMENT_TOKEN}
         JwtSettings__expiryInSeconds: ${ssm:/hasc-api/${self:provider.stage}/JWT_SETTINGS_EXPIRY_IN_SECONDS}
     events:
