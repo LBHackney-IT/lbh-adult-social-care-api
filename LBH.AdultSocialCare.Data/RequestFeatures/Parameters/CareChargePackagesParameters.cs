@@ -7,5 +7,6 @@ namespace LBH.AdultSocialCare.Data.RequestFeatures.Parameters
         public string Status { get; set; }
         public string OrderByDate { get; set; }
         public Guid? ModifiedBy { get; set; }
+        public string SearchTerm { get; set; }
     }
 }

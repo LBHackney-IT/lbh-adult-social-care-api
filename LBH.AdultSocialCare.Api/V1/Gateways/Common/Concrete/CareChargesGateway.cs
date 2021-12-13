@@ -68,7 +68,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
         private async Task<int> GetCareChargePackagesCount(CareChargePackagesParameters parameters)
         {
             return await _dbContext.CarePackages
-                .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate)
+                .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate, parameters.SearchTerm)
                 .Where(c => c.Settings.IsS117ClientConfirmed == false)
                 .CountAsync();
         }
@@ -76,7 +76,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
         private async Task<List<CareChargePackagesDomain>> GetCareChargePackagesList(CareChargePackagesParameters parameters)
         {
             return await _dbContext.CarePackages
-                .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate)
+                .FilterCareChargeCarePackageList(parameters.Status, parameters.ModifiedBy, parameters.OrderByDate, parameters.SearchTerm)
                 .Where(c => c.Settings.IsS117ClientConfirmed == false)
                 .Include(item => item.Settings)
                 .Include(item => item.ServiceUser)

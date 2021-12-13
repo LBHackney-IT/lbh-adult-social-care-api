@@ -73,10 +73,13 @@ namespace LBH.AdultSocialCare.Data.Extensions
                                                                    EF.Functions.ILike(u.Email, $"%{searchTerm}%"))));
 
         public static IQueryable<CarePackage> FilterCareChargeCarePackageList(this IQueryable<CarePackage> carePackages,
-            string status, Guid? modifiedBy, string orderByDate)
+            string status, Guid? modifiedBy, string orderByDate, string searchTerm)
         {
             var filteredList = carePackages.Where(c =>
                 (modifiedBy.Equals(null) || c.UpdaterId == modifiedBy) &&
+                (String.IsNullOrEmpty(searchTerm)
+                   || c.ServiceUser.FirstName.ToLower().Contains(searchTerm.ToLower())
+                   || c.ServiceUser.LastName.ToLower().Contains(searchTerm.ToLower())) &&
                 (status != null
                     ? c.Reclaims.Any(r =>
                           r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) ==
