@@ -29,10 +29,13 @@ functions:
     name: ${self:service}-${self:provider.stage}
     handler: LBH.AdultSocialCare.Functions.Payruns::LBH.AdultSocialCare.Functions.Payruns.LambdaEntryPoint::HandleEvent
     role: lambdaExecutionRole
+    timeout: 60
+    reservedConcurrency: 1
     environment:
       ConnectionStrings__Default: Host=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_HOSTNAME};Port=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_PORT};Database=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_DATABASE};Username=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_USERNAME};Password=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_PASSWORD}
     events:
       - sqs:
+        batchSize: 1
         arn:
           Fn::Join:
             - ':'
