@@ -63,7 +63,7 @@ module "postgres_db_staging" {
 
 resource "aws_sqs_queue" "payruns_queue" {
   name                            = "lbh-adult-social-care-payruns-staging"
-  visibility_timeout_seconds      = 60
+  visibility_timeout_seconds      = 360
   max_message_size                = 2048
 }
 
