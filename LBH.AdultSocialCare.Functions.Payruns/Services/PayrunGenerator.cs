@@ -39,6 +39,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 
         public async Task GenerateAsync()
         {
+            await Task.Delay(45000);
+
             // TODO: VK: Handle payrun ID from SQS, add reprocessing for hang-up draft / in-progress payruns
             var draftPayruns = await _payrunGateway.GetDraftPayrunsAsync();
             if (draftPayruns.Count == 0) return;

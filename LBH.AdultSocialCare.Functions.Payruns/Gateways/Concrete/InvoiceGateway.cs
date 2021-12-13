@@ -50,10 +50,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
             // TODO: VK: Customers in different timezones may create repeating numbers and fail
             // Move to DB side (calculated field / sequence)
             return
-                await DbContext.Invoices.AnyAsync()
+                await DbContext.Invoices
+                    .AnyAsync(invoice =>
+                        DbContext.CompareDates(invoice.DateCreated, currentDate) == 0)
                     ? await DbContext.Invoices
                         .Where(invoice =>
-                            invoice.Number.Length == 15 &&
                             DbContext.CompareDates(invoice.DateCreated, currentDate) == 0)
                         .Select(invoice => Convert.ToInt32(invoice.Number.Substring(11, 4)))
                         .MaxAsync()
