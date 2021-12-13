@@ -36,16 +36,7 @@ functions:
     events:
       - sqs:
           batchSize: 1
-          arn:
-            Fn::Join:
-              - ':'
-              - - 'arn:aws:sqs'
-                - Ref: 'AWS::Region'
-                - Ref: 'AWS::AccountId'
-                - Fn::Join:
-                  - '-'
-                  - - 'lbh-adult-social-care-payruns'
-                    - ${self:provider.stage}
+          arn: arn:aws:sqs:${AWS::Region}:${AWS::AccountId}-lbh-adult-social-care-payruns-${self:provider.stage}
 resources:
   Resources:
     sqsCreateMappingPermission:
