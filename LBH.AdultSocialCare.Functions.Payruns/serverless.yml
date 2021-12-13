@@ -43,9 +43,9 @@ functions:
                 - Ref: 'AWS::Region'
                 - Ref: 'AWS::AccountId'
                 - Fn::Join:
-                    - '-'
-                    - - 'lbh-adult-social-care-payruns'
-                      - ${self:provider.stage}
+                  - '-'
+                  - - 'lbh-adult-social-care-payruns'
+                    - ${self:provider.stage}
 resources:
   Resources:
     sqsCreateMappingPermission:
