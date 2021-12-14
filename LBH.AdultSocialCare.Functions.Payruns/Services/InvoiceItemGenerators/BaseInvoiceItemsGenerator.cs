@@ -69,7 +69,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
         private static InvoiceItem GetLatestInvoiceItem(IPackageItem packageItem, IEnumerable<InvoiceDomain> invoices)
         {
             return invoices?
-                .Where(invoice => invoice.Status.In(InvoiceStatus.Accepted, InvoiceStatus.Held)) // TODO: VK: Review
+                .Where(invoice => invoice.Status.In(InvoiceStatus.Accepted, InvoiceStatus.Held))
                 .SelectMany(invoice => invoice.Items)
                 .Where(packageItem.IsReferenced)
                 .OrderByDescending(item => item.ToDate)

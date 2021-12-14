@@ -135,22 +135,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             _dbContext.CarePackageReclaims.RemoveRange(reclaims);
         }
 
-        public async Task<List<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset dateTo)
-        {
-            // TODO: VK: Temporary stub, handle PaidUpTo dates
-            return await _dbContext.CarePackages
-                .Select(p => p.Id)
-                .ToListAsync();
-        }
-
-        public async Task<List<CarePackage>> GetByIdsAsync(IEnumerable<Guid> packageIds, PackageFields fields = PackageFields.All)
-        {
-            var query = BuildPackageQuery(
-                _dbContext.CarePackages.Where(p => packageIds.Contains(p.Id)), fields);
-
-            return await query.ToListAsync();
-        }
-
         public async Task<List<CarePackage>> GetServiceUserPackagesAsync(Guid serviceUserId, PackageFields fields = PackageFields.None,
             bool trackChanges = false)
         {
