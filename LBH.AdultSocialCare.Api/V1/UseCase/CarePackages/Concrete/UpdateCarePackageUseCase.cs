@@ -23,15 +23,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly ICarePackageSettingsGateway _carePackageSettings;
         private readonly IEnsureSingleActivePackageTypePerUserUseCase _ensureSingleActivePackageTypePerUserUseCase;
+        private readonly ICreatePackageResourceUseCase _createPackageResourceUseCase;
 
         public UpdateCarePackageUseCase(IMapper mapper, IDatabaseManager dbManager, ICarePackageGateway carePackageGateway,
-            ICarePackageSettingsGateway carePackageSettings, IEnsureSingleActivePackageTypePerUserUseCase ensureSingleActivePackageTypePerUserUseCase)
+            ICarePackageSettingsGateway carePackageSettings, IEnsureSingleActivePackageTypePerUserUseCase ensureSingleActivePackageTypePerUserUseCase,
+            ICreatePackageResourceUseCase createPackageResourceUseCase)
         {
             _mapper = mapper;
             _dbManager = dbManager;
             _carePackageGateway = carePackageGateway;
             _carePackageSettings = carePackageSettings;
             _ensureSingleActivePackageTypePerUserUseCase = ensureSingleActivePackageTypePerUserUseCase;
+            _createPackageResourceUseCase = createPackageResourceUseCase;
         }
 
         public async Task<CarePackagePlainResponse> UpdateAsync(Guid carePackageId, CarePackageUpdateDomain carePackageUpdateDomain)
@@ -62,6 +65,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             {
                 // Delete funded nursing care if added to package
                 await _carePackageGateway.DeleteReclaimsForPackage(carePackageId, ReclaimType.Fnc);
+            }
+
+            if (carePackageUpdateDomain.SocialWorkerCarePlanFileId == null)
+            {
+                await _createPackageResourceUseCase.CreateFileAsync(carePackageId, PackageResourceType.CarePlanFile, carePackageUpdateDomain.SocialWorkerCarePlanFile);
             }
 
             // Update values
