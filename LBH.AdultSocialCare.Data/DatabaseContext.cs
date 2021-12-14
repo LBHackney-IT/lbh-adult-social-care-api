@@ -293,16 +293,6 @@ namespace LBH.AdultSocialCare.Data
                         var enumValues = Enum.GetValues(propertyType).Cast<int>().ToList();
                         var enumValuesString = String.Join(", ", enumValues);
 
-                        // TODO: VK: Review nullable enum fields and remove this
-                        // DO: Updated this condition to add NULL if enum is nullable
-                        if (property.IsNullable)
-                        {
-                            if (!enumValuesString.Contains("NULL"))
-                            {
-                                enumValuesString = $"NULL, {enumValuesString}";
-                            }
-                        }
-
                         modelBuilder
                             .Entity(entityType.ClrType)
                             .HasCheckConstraint(
