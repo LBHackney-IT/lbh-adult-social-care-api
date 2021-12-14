@@ -16,7 +16,8 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
         public PackageScheduling PackageScheduling { get; set; }
         public PackageStatus Status { get; set; }
         public int PrimarySupportReasonId { get; set; }
-
+        public Guid? SocialWorkerCarePlanFileId { get; set; }
+        public string SocialWorkerCarePlanFileName { get; set; }
         public ServiceUserBasicDomain ServiceUser { get; set; }
         public CarePackageSettingsDomain Settings { get; set; }
     }
