@@ -33,11 +33,11 @@ data "aws_subnet_ids" "staging_private_subnets" {
 }
 
  data "aws_ssm_parameter" "hasc_postgres_db_password" {
-   name = "/hasc-api/staging/postgres-password"
+   name = "/hasc-api/staging/POSTGRES_PASSWORD"
  }
 
  data "aws_ssm_parameter" "hasc_postgres_username" {
-   name = "/hasc-api/staging/postgres-username"
+   name = "/hasc-api/staging/POSTGRES_USERNAME"
  }
 
 module "postgres_db_staging" {

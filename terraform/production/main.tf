@@ -33,11 +33,11 @@ data "aws_subnet_ids" "production_private_subnets" {
 }
 
  data "aws_ssm_parameter" "hasc_postgres_db_password" {
-   name = "/hasc-api/production/postgres-password"
+   name = "/hasc-api/production/POSTGRES_PASSWORD"
  }
 
  data "aws_ssm_parameter" "hasc_postgres_username" {
-   name = "/hasc-api/production/postgres-username"
+   name = "/hasc-api/production/POSTGRES_USERNAME"
  }
 
 module "postgres_db_production" {
