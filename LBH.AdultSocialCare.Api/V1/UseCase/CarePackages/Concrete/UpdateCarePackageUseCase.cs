@@ -67,7 +67,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 await _carePackageGateway.DeleteReclaimsForPackage(carePackageId, ReclaimType.Fnc);
             }
 
-            if (carePackageUpdateDomain.SocialWorkerCarePlanFileId == null)
+            if (carePackageUpdateDomain.SocialWorkerCarePlanFileId == null && carePackageUpdateDomain.SocialWorkerCarePlanFile != null)
             {
                 await _createPackageResourceUseCase.CreateFileAsync(carePackageId, PackageResourceType.CarePlanFile, carePackageUpdateDomain.SocialWorkerCarePlanFile);
             }
