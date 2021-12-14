@@ -144,7 +144,7 @@ namespace DataImporter.Services
                             StartDate = package.StartDate,
                             EndDate = package.EndDate,
                             ClaimCollector = excelPackageModel.ClaimCollector,
-                            SubType = excelPackageModel.ReclaimSubType,
+                            SubType = excelPackageModel.CareChargeSubType,
                             Type = excelPackageModel.ReclaimType,
                             Status = ReclaimStatus.Active
                         };
