@@ -58,6 +58,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 throw new ApiException($"This service user is under S117, not allowed to add care charges", HttpStatusCode.BadRequest);
             }
 
+            if (package.Status.In(PackageStatus.Cancelled, PackageStatus.Ended))
+            {
+                throw new ApiException($"Cannot update care charges for care package in status {package.Status.GetDisplayName()}",
+                    HttpStatusCode.BadRequest);
+            }
+
             var validReclaimStatuses = new[] { ReclaimStatus.Active, ReclaimStatus.Ended, ReclaimStatus.Pending };
             var existingCareCharges = package.Reclaims
                 .Where(r => r.Type == ReclaimType.CareCharge && validReclaimStatuses.Contains(r.Status)).ToList();
@@ -121,7 +127,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             try
             {
-                EnsureValidPackageTotals(package);
+                CareChargeExtensions.EnsureValidPackageTotals(package);
                 await _dbManager.SaveAsync();
             }
             catch (ApiException ex)
@@ -132,52 +138,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             // Get package and check reclaim totals are valid
             /*var packageFromDb = await _carePackageGateway.GetPackageAsync(carePackageId, PackageFields.Details | PackageFields.Reclaims, true)
                 .EnsureExistsAsync($"Care package with id {carePackageId} not found");*/
-        }
-
-        private static void EnsureValidPackageTotals(CarePackage package)
-        {
-            var coreCost = package.Details
-                .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost)
-                .EnsureExists($"Core cost for package {package.Id} not found");
-
-            var additionalNeeds = package.Details
-                .Where(d => d.Type == PackageDetailType.AdditionalNeed).ToList();
-
-            CareChargeExtensions.NegateNetOffCosts(package);
-
-            var summary = new CarePackageSummaryDomain
-            {
-                StartDate = coreCost.StartDate,
-                EndDate = coreCost.EndDate,
-                CostOfPlacement = coreCost.Cost,
-
-                AdditionalWeeklyNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.Weekly).ToDomain(),
-                AdditionalOneOffNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.OneOff).ToDomain(),
-
-                CareCharges = package.Reclaims.Where(r => r.Type is ReclaimType.CareCharge).ToDomain(),
-                FundedNursingCare = package.Reclaims.FirstOrDefault(r => r.Type is ReclaimType.Fnc)?.ToDomain()
-            };
-
-            var validReclaimStatuses = new[] { ReclaimStatus.Active, ReclaimStatus.Ended, ReclaimStatus.Pending };
-            var startDates = new List<DateTimeOffset> { coreCost.StartDate };
-            startDates.AddRange(summary.CareCharges.Where(cc => cc.Status.In(validReclaimStatuses)).Select(careCharge => careCharge.StartDate).ToList());
-            startDates = startDates.Distinct().ToList();
-
-            foreach (var startDate in startDates)
-            {
-                CareChargeExtensions.CalculateReclaimSubTotals(package, summary, coreCost, startDate.Date, validReclaimStatuses);
-                CareChargeExtensions.CalculateTotals(summary, coreCost, startDate.Date);
-
-                var reclaimsTotal = Math.Abs(summary.SupplierReclaims?.SubTotal ?? 0) + Math.Abs(summary.HackneyReclaims?.SubTotal ?? 0);
-                var packageSubTotal = summary.SubTotalCost;
-
-                if (reclaimsTotal > packageSubTotal)
-                {
-                    throw new ApiException(
-                        $"Not allowed. Reclaim total {decimal.Round(reclaimsTotal, 2)} at date {startDate.Date: yyyy-MM-dd} is greater that package cost of {decimal.Round(packageSubTotal, 2)}",
-                        HttpStatusCode.BadRequest);
-                }
-            }
         }
 
         private static void ValidateCareChargeModificationRequest(IList<CareChargeReclaimCreationDomain> careCharges)

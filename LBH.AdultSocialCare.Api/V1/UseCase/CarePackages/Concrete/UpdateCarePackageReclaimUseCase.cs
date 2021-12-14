@@ -1,25 +1,23 @@
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
+using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using HttpServices.Models.Responses;
-using LBH.AdultSocialCare.Api.Helpers;
-using LBH.AdultSocialCare.Api.V1.Extensions;
-using LBH.AdultSocialCare.Api.V1.Services.IO;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.CarePackages;
-using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -45,11 +43,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         public async Task UpdateAsync(CarePackageReclaimUpdateDomain carePackageReclaimUpdateDomain)
         {
-            var carePackageReclaim = await _carePackageReclaimGateway.GetAsync(carePackageReclaimUpdateDomain.Id, true)
+            var reclaimFromDb = await _carePackageReclaimGateway.GetAsync(carePackageReclaimUpdateDomain.Id, false)
                 .EnsureExistsAsync($"Care package reclaim with id {carePackageReclaimUpdateDomain.Id} not found");
 
             var carePackage = await _carePackageGateway
-                .GetPackageAsync(carePackageReclaim.CarePackageId, PackageFields.Resources, true);
+                .GetPackageAsync(reclaimFromDb.CarePackageId, PackageFields.Resources | PackageFields.Details | PackageFields.Reclaims, true);
+
+            var carePackageReclaim = carePackage.Reclaims.Single(r => r.Id == reclaimFromDb.Id);
 
             if (!carePackageReclaimUpdateDomain.HasAssessmentBeenCarried && carePackageReclaim.Type == ReclaimType.Fnc)
             {
@@ -71,8 +71,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
             }
 
-            _mapper.Map(carePackageReclaimUpdateDomain, carePackageReclaim);
-            await _dbManager.SaveAsync();
+            try
+            {
+                _mapper.Map(carePackageReclaimUpdateDomain, carePackageReclaim);
+                CareChargeExtensions.EnsureValidPackageTotals(carePackage);
+                await _dbManager.SaveAsync("Could not update care package reclaim");
+            }
+            catch (ApiException ex)
+            {
+                throw new ApiException(ex.Message, ex.StatusCode);
+            }
         }
 
         public async Task<IList<CarePackageReclaimDomain>> UpdateListAsync(CareChargeReclaimBulkUpdateDomain reclaimBulkUpdateDomain)

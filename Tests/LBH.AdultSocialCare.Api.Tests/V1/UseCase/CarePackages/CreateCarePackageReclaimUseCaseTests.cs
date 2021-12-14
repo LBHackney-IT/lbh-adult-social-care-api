@@ -23,10 +23,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private readonly CreateCarePackageReclaimUseCase _useCase;
         private readonly CarePackage _package;
         private readonly Mock<ICreatePackageResourceUseCase> _createPackageResourceUseCase;
+        private readonly DateTimeOffset _today = DateTimeOffset.Now.Date;
 
         public CreateCarePackageReclaimUseCaseTests()
         {
-
             _package = new CarePackage
             {
                 Id = Guid.NewGuid(),
@@ -36,7 +36,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     new CarePackageDetail
                     {
                         Cost = 34.12m,
-                        Type = PackageDetailType.CoreCost
+                        Type = PackageDetailType.CoreCost,
+                        StartDate = _today.AddDays(-30),
+                        EndDate = _today.AddDays(30)
                     }
                 },
                 Reclaims =
@@ -46,7 +48,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                         Cost = 1m,
                         Type = ReclaimType.CareCharge,
                         SubType = ReclaimSubType.CareChargeProvisional,
-                        Status = ReclaimStatus.Active
+                        Status = ReclaimStatus.Active,
+                        StartDate = _today.AddDays(-30),
+                        EndDate = _today.AddDays(30)
                     }
                 }
             };
@@ -69,7 +73,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 CarePackageId = _package.Id,
                 Cost = 2m,
-                SubType = ReclaimSubType.CareChargeProvisional
+                SubType = ReclaimSubType.CareChargeProvisional,
+                StartDate = _today.AddDays(-30),
+                EndDate = _today.AddDays(30)
             }, ReclaimType.CareCharge);
 
             _package.Reclaims.Count.Should().Be(1);
@@ -88,7 +94,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 CarePackageId = _package.Id,
                 Cost = 2m,
                 SubType = ReclaimSubType.CareChargeProvisional,
-                AssessmentFileId = Guid.NewGuid()
+                AssessmentFileId = Guid.NewGuid(),
+                StartDate = _today.AddDays(-30),
+                EndDate = _today.AddDays(30)
             }, ReclaimType.CareCharge);
 
             _package.Reclaims.Count.Should().Be(2);
@@ -105,7 +113,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 CarePackageId = _package.Id,
                 Cost = 2m,
-                SubType = ReclaimSubType.CareChargeProvisional
+                SubType = ReclaimSubType.CareChargeProvisional,
+                StartDate = _today.AddDays(-30),
+                EndDate = _today.AddDays(30)
             }, ReclaimType.CareCharge);
 
             _package.Reclaims.Count.Should().Be(1);

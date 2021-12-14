@@ -1,9 +1,13 @@
+using Common.Exceptions.CustomExceptions;
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using Common.Extensions;
+using System.Net;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
 {
@@ -17,7 +21,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
 
             summary.SubTotalCost = 0;
 
-            if (IsValidDateRange(currentDate, coreCost.StartDate, coreCost.EndDate))
+            if (IsValidDateRange(currentDate.Date, coreCost.StartDate, coreCost.EndDate))
             {
                 summary.SubTotalCost = summary.CostOfPlacement + summary.AdditionalWeeklyCost;
 
@@ -56,6 +60,62 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             {
                 reclaim.Cost = decimal.Negate(reclaim.Cost);
             }
+        }
+
+        public static void RemoveNegativeCosts(CarePackage package)
+        {
+            foreach (var reclaim in package.Reclaims.Where(r => r.ClaimCollector is ClaimCollector.Supplier))
+            {
+                reclaim.Cost = decimal.Round(Math.Abs(reclaim.Cost), 2);
+            }
+        }
+
+        public static void EnsureValidPackageTotals(CarePackage package)
+        {
+            var coreCost = package.Details
+                .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost)
+                .EnsureExists($"Core cost for package {package.Id} not found");
+
+            var additionalNeeds = package.Details
+                .Where(d => d.Type == PackageDetailType.AdditionalNeed).ToList();
+
+            CareChargeExtensions.NegateNetOffCosts(package);
+
+            var summary = new CarePackageSummaryDomain
+            {
+                StartDate = coreCost.StartDate,
+                EndDate = coreCost.EndDate,
+                CostOfPlacement = coreCost.Cost,
+
+                AdditionalWeeklyNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.Weekly).ToDomain(),
+                AdditionalOneOffNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.OneOff).ToDomain(),
+
+                CareCharges = package.Reclaims.Where(r => r.Type is ReclaimType.CareCharge).ToDomain(),
+                FundedNursingCare = package.Reclaims.FirstOrDefault(r => r.Type is ReclaimType.Fnc)?.ToDomain()
+            };
+
+            var validReclaimStatuses = new[] { ReclaimStatus.Active, ReclaimStatus.Ended, ReclaimStatus.Pending };
+            var startDates = new List<DateTimeOffset> { coreCost.StartDate };
+            startDates.AddRange(summary.CareCharges.Where(cc => cc.Status.In(validReclaimStatuses)).Select(careCharge => careCharge.StartDate).ToList());
+            startDates = startDates.Distinct().ToList();
+
+            foreach (var startDate in startDates)
+            {
+                CareChargeExtensions.CalculateReclaimSubTotals(package, summary, coreCost, startDate.Date, validReclaimStatuses);
+                CareChargeExtensions.CalculateTotals(summary, coreCost, startDate.Date);
+
+                var reclaimsTotal = Math.Abs(summary.SupplierReclaims?.SubTotal ?? 0) + Math.Abs(summary.HackneyReclaims?.SubTotal ?? 0);
+                var packageSubTotal = summary.SubTotalCost + Math.Abs(summary.SupplierReclaims?.SubTotal ?? 0);
+
+                if (reclaimsTotal > packageSubTotal)
+                {
+                    throw new ApiException(
+                        $"Not allowed. Reclaim total {decimal.Round(reclaimsTotal, 2)} at date {startDate.Date: yyyy-MM-dd} is greater that package cost of {decimal.Round(packageSubTotal, 2)}",
+                        HttpStatusCode.BadRequest);
+                }
+            }
+
+            CareChargeExtensions.RemoveNegativeCosts(package);
         }
 
         public static void CalculateReclaimSubTotals(CarePackage package, CarePackageSummaryDomain summary, CarePackageDetail coreCost, DateTimeOffset currentDate, ReclaimStatus[] validReclaimStatuses)
