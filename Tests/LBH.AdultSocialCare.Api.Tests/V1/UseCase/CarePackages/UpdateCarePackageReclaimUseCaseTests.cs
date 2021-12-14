@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Api.V1.Services.IO;
+using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using Xunit;
@@ -25,14 +26,14 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private readonly List<Guid> _requestedIds;
         private readonly CarePackage _package;
         private readonly UpdateCarePackageReclaimUseCase _useCase;
-        private readonly Mock<IFileStorage> _fileStorage;
+        private readonly Mock<ICreatePackageResourceUseCase> _createPackageResourceUseCase;
 
         public UpdateCarePackageReclaimUseCaseTests()
         {
             var carePackageReclaimGateway = new Mock<ICarePackageReclaimGateway>();
             var carePackageGateway = new Mock<ICarePackageGateway>();
             _dbManager = new Mock<IDatabaseManager>();
-            _fileStorage = new Mock<IFileStorage>();
+            _createPackageResourceUseCase = new Mock<ICreatePackageResourceUseCase>();
 
             _requestedIds = 3.ItemsOf(Guid.NewGuid);
 
@@ -67,7 +68,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 .Setup(g => g.GetPackageAsync(_package.Id, PackageFields.Details, true))
                 .ReturnsAsync(_package);
 
-            _useCase = new UpdateCarePackageReclaimUseCase(carePackageReclaimGateway.Object, carePackageGateway.Object, _dbManager.Object, Mapper, _fileStorage.Object);
+            _useCase = new UpdateCarePackageReclaimUseCase(carePackageReclaimGateway.Object, carePackageGateway.Object, _dbManager.Object, Mapper, _createPackageResourceUseCase.Object);
         }
 
         [Fact]

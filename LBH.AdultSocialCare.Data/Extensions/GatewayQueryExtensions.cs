@@ -73,10 +73,13 @@ namespace LBH.AdultSocialCare.Data.Extensions
                                                                    EF.Functions.ILike(u.Email, $"%{searchTerm}%"))));
 
         public static IQueryable<CarePackage> FilterCareChargeCarePackageList(this IQueryable<CarePackage> carePackages,
-            string status, Guid? modifiedBy, string orderByDate)
+            string status, Guid? modifiedBy, string orderByDate, string searchTerm)
         {
             var filteredList = carePackages.Where(c =>
                 (modifiedBy.Equals(null) || c.UpdaterId == modifiedBy) &&
+                (String.IsNullOrEmpty(searchTerm)
+                   || c.ServiceUser.FirstName.ToLower().Contains(searchTerm.ToLower())
+                   || c.ServiceUser.LastName.ToLower().Contains(searchTerm.ToLower())) &&
                 (status != null
                     ? c.Reclaims.Any(r =>
                           r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) ==
@@ -132,6 +135,7 @@ namespace LBH.AdultSocialCare.Data.Extensions
                     EF.Functions.ILike(e.Invoice.ServiceUser.FirstName, $"%{searchToken}%")
                     || EF.Functions.ILike(e.Invoice.ServiceUser.LastName, $"%{searchToken}%")
                     || EF.Functions.ILike(e.InvoiceId.ToString(), $"%{searchToken}%")
+                    || EF.Functions.ILike(e.Invoice.Number, $"%{searchToken}%")
                     || EF.Functions.ILike(e.Invoice.Supplier.SupplierName ?? "", $"%{searchToken}%"));
             }
 
@@ -142,11 +146,11 @@ namespace LBH.AdultSocialCare.Data.Extensions
                 && (parameters.ToDate == null || invoice.Invoice.DateCreated < parameters.ToDate));
         }
 
-        public static IQueryable<Payrun> FilterPayRunList(this IQueryable<Payrun> payRuns, string payRunId,
+        public static IQueryable<Payrun> FilterPayRunList(this IQueryable<Payrun> payRuns, string searchTerm,
             PayrunType? payrunType, PayrunStatus? payrunStatus, DateTimeOffset? dateFrom,
             DateTimeOffset? dateTo) =>
             payRuns.Where(e => (
-                (payRunId == null || e.Id.ToString().ToLower().Contains(payRunId.ToLower()))
+                (searchTerm == null || e.Id.ToString().ToLower().Contains(searchTerm.ToLower()) || e.Number.ToLower().Contains(searchTerm.ToLower()))
                 && (payrunType == null || e.Type.Equals(payrunType))
                 && (payrunStatus == null || e.Status.Equals(payrunStatus))
                 && (dateFrom == null || e.DateCreated >= dateFrom)

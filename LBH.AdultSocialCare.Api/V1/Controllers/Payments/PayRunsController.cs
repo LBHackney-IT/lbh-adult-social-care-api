@@ -182,12 +182,11 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [HttpGet("{payRunId:guid}/download")]
         public async Task<ActionResult> DownloadCedarFile([FromServices] IDownloadPayRunCedarFileUseCase useCase, Guid payRunId)
         {
-            var stream = await useCase.ExecuteAsync(payRunId);
+            var res = await useCase.ExecuteAsync(payRunId);
 
-            var excelName = $"{payRunId} Cedar File.xlsx";
-            byte[] b1 = stream.ToArray();
-            stream.Flush();
-            return new FileContentResult(b1,
+            var excelName = $"CEDAR_{res.PayRunNumber}.xlsx";
+
+            return new FileContentResult(res.Stream.ToArray(),
                 "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             { FileDownloadName = excelName };
         }

@@ -2,6 +2,7 @@ using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Bogus;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Data.Constants.Enums;
@@ -38,7 +39,14 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 
         public List<CarePackageDetail> CreateCarePackageDetails(CarePackage package, int count, PackageDetailType type)
         {
-            var details = TestDataHelper.CreateCarePackageDetails(count, type);
+            var faker = new Bogus.Faker();
+            var costPeriod = type switch
+            {
+                PackageDetailType.CoreCost => PaymentPeriod.Weekly,
+                PackageDetailType.AdditionalNeed => faker.PickRandom(PaymentPeriod.Weekly, PaymentPeriod.OneOff),
+                _ => PaymentPeriod.Weekly
+            };
+            var details = TestDataHelper.CreateCarePackageDetails(count, type, costPeriod);
 
             package.Details.AddRange(details);
             _context.SaveChanges();

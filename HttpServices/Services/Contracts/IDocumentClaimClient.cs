@@ -9,6 +9,6 @@ namespace HttpServices.Services.Contracts
 {
     public interface IDocumentClaimClient
     {
-        Task<DocumentClaimResponse> CreateClaim(DocumentClaimRequest request);
+        Task<DocumentClaimResponse> CreateClaimAndDocument(DocumentClaimRequest request);
     }
 }

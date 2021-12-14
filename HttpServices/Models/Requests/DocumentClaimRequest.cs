@@ -11,5 +11,6 @@ namespace HttpServices.Models.Requests
         public string ApiCreatedBy { get; set; }
         public DateTime RetentionExpiresAt { get; set; }
         public DateTime ValidUntil { get; set; }
+        public string Base64Document { get; set; }
     }
 }

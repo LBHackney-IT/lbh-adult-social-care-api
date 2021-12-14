@@ -7,6 +7,7 @@ using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -23,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         public async Task<CarePackageHistoryViewResponse> ExecuteAsync(Guid packageId)
         {
-            var package = await _carePackageGateway.GetPackageAsync(packageId, PackageFields.Approver | PackageFields.Broker, false).EnsureExistsAsync($"Package with id {packageId} not found");
+            var package = await _carePackageGateway.GetPackageAsync(packageId, PackageFields.Approver | PackageFields.Broker | PackageFields.Resources, false).EnsureExistsAsync($"Package with id {packageId} not found");
 
             var packageHistory = await _carePackageHistoryGateway.ListAsync(packageId);
 
@@ -35,8 +36,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 AssignedOn = package.DateAssigned,
                 ApprovedBy = package.Approver?.Name,
                 ApprovedOn = package.DateApproved,
-                SocialWorkerCarePlanFileId = package.SocialWorkerCarePlanFileId,
-                SocialWorkerCarePlanFileName = package.SocialWorkerCarePlanFileName,
+                SocialWorkerCarePlanFileId = package.Resources?.Where(r => r.Type == PackageResourceType.CarePlanFile).OrderByDescending(x => x.DateCreated).FirstOrDefault()?.FileId,
+                SocialWorkerCarePlanFileName = package.Resources?.Where(r => r.Type == PackageResourceType.CarePlanFile).OrderByDescending(x => x.DateCreated).FirstOrDefault()?.Name,
                 History = packageHistory.OrderByDescending(h => h.Id).ToResponse()
             };
 

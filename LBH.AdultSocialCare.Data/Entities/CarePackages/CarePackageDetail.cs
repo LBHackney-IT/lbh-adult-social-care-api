@@ -1,10 +1,10 @@
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.Common;
+using LBH.AdultSocialCare.Data.Entities.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.Common;
-using LBH.AdultSocialCare.Data.Entities.Interfaces;
 
 namespace LBH.AdultSocialCare.Data.Entities.CarePackages
 {
@@ -21,8 +21,6 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
         public decimal Cost { get; set; }
 
         public PaymentPeriod CostPeriod { get; set; }
-        public PaymentPeriod ServicePeriod { get; set; }
-
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
 

@@ -16,7 +16,7 @@ namespace Common.Extensions.Concrete
 
         public bool Includes(DateTimeOffset value)
         {
-            return (value >= Start) && (value < End);
+            return (value >= Start) && (value <= End);
         }
 
         public bool Includes(IRange<DateTimeOffset> range)

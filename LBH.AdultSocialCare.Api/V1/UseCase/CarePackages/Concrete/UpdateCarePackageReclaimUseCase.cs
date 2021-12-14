@@ -1,25 +1,23 @@
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
+using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using HttpServices.Models.Responses;
-using LBH.AdultSocialCare.Api.Helpers;
-using LBH.AdultSocialCare.Api.V1.Extensions;
-using LBH.AdultSocialCare.Api.V1.Services.IO;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.CarePackages;
-using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -29,24 +27,29 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
         private readonly IMapper _mapper;
-        private readonly IFileStorage _fileStorage;
+        private readonly ICreatePackageResourceUseCase _createPackageResourceUseCase;
 
         public UpdateCarePackageReclaimUseCase(
             ICarePackageReclaimGateway carePackageReclaimGateway, ICarePackageGateway carePackageGateway,
             IDatabaseManager dbManager, IMapper mapper,
-            IFileStorage fileStorage)
+            ICreatePackageResourceUseCase createPackageResourceUseCase)
         {
             _carePackageReclaimGateway = carePackageReclaimGateway;
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
             _mapper = mapper;
-            _fileStorage = fileStorage;
+            _createPackageResourceUseCase = createPackageResourceUseCase;
         }
 
         public async Task UpdateAsync(CarePackageReclaimUpdateDomain carePackageReclaimUpdateDomain)
         {
-            var carePackageReclaim = await _carePackageReclaimGateway.GetAsync(carePackageReclaimUpdateDomain.Id)
+            var reclaimFromDb = await _carePackageReclaimGateway.GetAsync(carePackageReclaimUpdateDomain.Id, false)
                 .EnsureExistsAsync($"Care package reclaim with id {carePackageReclaimUpdateDomain.Id} not found");
+
+            var carePackage = await _carePackageGateway
+                .GetPackageAsync(reclaimFromDb.CarePackageId, PackageFields.Resources | PackageFields.Details | PackageFields.Reclaims, true);
+
+            var carePackageReclaim = carePackage.Reclaims.Single(r => r.Id == reclaimFromDb.Id);
 
             if (!carePackageReclaimUpdateDomain.HasAssessmentBeenCarried && carePackageReclaim.Type == ReclaimType.Fnc)
             {
@@ -55,21 +58,29 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 return;
             }
 
-            if (carePackageReclaimUpdateDomain?.AssessmentFileId == Guid.Empty)
+            if (carePackageReclaim.Type == ReclaimType.Fnc)
             {
-                var documentResponse = await _fileStorage.
-                    SaveFileAsync(ConvertCarePlan(carePackageReclaimUpdateDomain.AssessmentFile), carePackageReclaimUpdateDomain.AssessmentFile?.FileName);
-                carePackageReclaimUpdateDomain.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
-                carePackageReclaimUpdateDomain.AssessmentFileName = documentResponse?.FileName;
-            }
-            else
-            {
-                //todo FK: temp solution
-                carePackageReclaimUpdateDomain.AssessmentFileName = carePackageReclaim.AssessmentFileName;
+                var resourceType = carePackageReclaim.Type == ReclaimType.Fnc
+                    ? PackageResourceType.FncAssessmentFile
+                    : PackageResourceType.CareChargeAssessmentFile;
+
+                if (carePackageReclaimUpdateDomain?.AssessmentFileId == Guid.Empty && carePackageReclaimUpdateDomain.AssessmentFile != null)
+                {
+                    await _createPackageResourceUseCase.CreateFileAsync(carePackage.Id, resourceType,
+                        carePackageReclaimUpdateDomain.AssessmentFile);
+                }
             }
 
-            _mapper.Map(carePackageReclaimUpdateDomain, carePackageReclaim);
-            await _dbManager.SaveAsync();
+            try
+            {
+                _mapper.Map(carePackageReclaimUpdateDomain, carePackageReclaim);
+                CareChargeExtensions.EnsureValidPackageTotals(carePackage);
+                await _dbManager.SaveAsync("Could not update care package reclaim");
+            }
+            catch (ApiException ex)
+            {
+                throw new ApiException(ex.Message, ex.StatusCode);
+            }
         }
 
         public async Task<IList<CarePackageReclaimDomain>> UpdateListAsync(CareChargeReclaimBulkUpdateDomain reclaimBulkUpdateDomain)
@@ -99,13 +110,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 {
                     UpdateProvisionalReclaim(requestedReclaim, existingReclaim, package);
 
-                    if (reclaimBulkUpdateDomain?.AssessmentFileId == Guid.Empty)
-                    {
-                        var documentResponse = await _fileStorage.
-                            SaveFileAsync(ConvertCarePlan(reclaimBulkUpdateDomain.AssessmentFile), reclaimBulkUpdateDomain.AssessmentFile?.FileName);
-                        existingReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
-                        existingReclaim.AssessmentFileName = documentResponse?.FileName;
-                    }
                     result.Add(existingReclaim);
                 }
                 else
@@ -125,13 +129,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     {
                         existingReclaim.Status = ReclaimStatus.Ended;
                         existingReclaim.EndDate = DateTimeOffset.Now.Date;
-                    }
-
-                    if (reclaimBulkUpdateDomain?.AssessmentFileId == Guid.Empty)
-                    {
-                        var documentResponse = await _fileStorage.SaveFileAsync(ConvertCarePlan(reclaimBulkUpdateDomain.AssessmentFile), reclaimBulkUpdateDomain.AssessmentFile?.FileName);
-                        requestedReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
-                        requestedReclaim.AssessmentFileName = documentResponse?.FileName;
                     }
 
                     var newReclaim = CreateNewReclaim(requestedReclaim, existingReclaim, package);

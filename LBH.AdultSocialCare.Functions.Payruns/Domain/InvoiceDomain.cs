@@ -13,9 +13,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Domain
         public InvoiceStatus Status => PayrunInvoice.InvoiceStatus;
         public PayrunStatus PayrunStatus { get; set; }
 
-        public DateTimeOffset StartDate { get; set; }
-        public DateTimeOffset EndDate { get; set; }
-
         public List<InvoiceItem> Items { get; set; }
 
         public PayrunInvoice PayrunInvoice { get; set; }

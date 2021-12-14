@@ -85,7 +85,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         /// <returns>A list of packages the service users has if success</returns>
         [ProducesResponseType(typeof(ServiceUserPackagesViewResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
-        [HttpGet("{serviceUserId}/care-packages")]
+        [HttpGet("{serviceUserId:guid}/care-packages")]
         public async Task<ActionResult<ServiceUserPackagesViewResponse>> GetServiceUserPackages(Guid serviceUserId)
         {
             var result = await _getServiceUserPackagesUseCase.ExecuteAsync(serviceUserId);
