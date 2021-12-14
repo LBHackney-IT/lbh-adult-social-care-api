@@ -75,7 +75,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 HospitalAvoidance = carePackageSettings.HospitalAvoidance,
                 IsReEnablement = carePackageSettings.IsReEnablement,
                 IsS117Client = carePackageSettings.IsS117Client,
-                PackageType = carePackage.PackageType
+                PackageType = carePackage.PackageType,
+                SocialWorkerCarePlanFileId = Guid.NewGuid()
             };
         }
 
