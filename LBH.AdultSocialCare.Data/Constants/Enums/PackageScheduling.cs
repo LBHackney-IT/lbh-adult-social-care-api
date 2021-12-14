@@ -1,8 +1,10 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using LBH.AdultSocialCare.Data.Attributes;
 
 namespace LBH.AdultSocialCare.Data.Constants.Enums
 {
+    [Lookup]
     public enum PackageScheduling
     {
         [Description("6 weeks and under")]

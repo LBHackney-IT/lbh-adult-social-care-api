@@ -1,7 +1,9 @@
 using System.ComponentModel;
+using LBH.AdultSocialCare.Data.Attributes;
 
 namespace LBH.AdultSocialCare.Data.Constants.Enums
 {
+    [Lookup]
     public enum PayrunType
     {
         [Description("Residential Recurring")]

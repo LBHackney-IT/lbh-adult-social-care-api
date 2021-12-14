@@ -73,6 +73,8 @@ namespace LBH.AdultSocialCare.Api
                         "There are some validation errors. Please correct and try again")))
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
+            services.AddResponseCaching();
+
             services.Configure<FormOptions>(x =>
             {
                 x.MultipartBodyLengthLimit = 209715200;
@@ -209,7 +211,9 @@ namespace LBH.AdultSocialCare.Api
                 "https://d2s6rc0vyqw6a1.cloudfront.net", "https://social-care-care-packages.hackney.gov.uk")
                 .AllowAnyMethod()
                 .AllowAnyHeader());
+
             app.UseCorrelation();
+            app.UseResponseCaching(); // must be called after CORS
 
             if (env.IsDevelopment())
             {
