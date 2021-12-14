@@ -34,15 +34,15 @@ data "aws_subnet_ids" "development_private_subnets" {
 
 data "aws_ssm_parameter" "adult_sc_postgres_db_name" {
    name = "/hasc-api/development/POSTGRES_DATABASE"
- }
+}
 
 data "aws_ssm_parameter" "adult_sc_postgres_db_password" {
    name = "/hasc-api/development/POSTGRES_PASSWORD"
- }
+}
 
  data "aws_ssm_parameter" "adult_sc_postgres_username" {
    name = "/hasc-api/development/POSTGRES_USERNAME"
- }
+}
 
 module "postgres_db_development" {
     source = "github.com/LBHackney-IT/aws-hackney-common-terraform.git//modules/database/postgres"
