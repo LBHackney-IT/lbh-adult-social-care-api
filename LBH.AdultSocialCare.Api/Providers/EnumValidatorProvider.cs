@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc.ModelBinding.Metadata;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace LBH.AdultSocialCare.Api.Providers
@@ -7,7 +6,7 @@ namespace LBH.AdultSocialCare.Api.Providers
     {
         public void CreateValidators(ModelValidatorProviderContext context)
         {
-            if (context.ModelMetadata.MetadataKind == ModelMetadataKind.Type)
+            if (context.ModelMetadata.IsEnum || context.ModelMetadata.IsNullableValueType)
             {
                 context.Results.Add(new ValidatorItem
                 {

@@ -100,7 +100,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 TestDataHelper.CarePackageUpdateRequest(carePackage, updatedCarePackageSettings);
 
             var response = await localFixture.RestClient
-                .PutAsync<CarePackagePlainResponse>($"api/v1/care-packages/{carePackage.Id}", carePackageUpdateRequest)
+                .UpdateFormAsync<CarePackagePlainResponse>($"api/v1/care-packages/{carePackage.Id}", carePackageUpdateRequest)
                 .ConfigureAwait(false);
 
             var packageSettingsEntity = localFixture.DatabaseContext.CarePackageSettings.SingleOrDefault(ps => ps.CarePackageId.Equals(carePackage.Id));
@@ -155,7 +155,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             historyEntry?.Status.Should().Be(HistoryStatus.SubmittedForApproval);
         }
 
-        [Fact(Skip = "For unblock FE")]
+        [Fact]
         public async Task ShouldAssignCarePlan()
         {
             var request = new CarePlanAssignmentRequest

@@ -32,28 +32,24 @@ data "aws_subnet_ids" "production_private_subnets" {
   }
 }
 
-data "aws_ssm_parameter" "hasc_postgres_db_name" {
-  name = "/hasc-api/production/POSTGRES_DATABASE"
-}
+ data "aws_ssm_parameter" "hasc_postgres_db_password" {
+   name = "/hasc-api/production/POSTGRES_PASSWORD"
+ }
 
-data "aws_ssm_parameter" "hasc_postgres_db_password" {
-  name = "/hasc-api/production/POSTGRES_PASSWORD"
-}
-
-data "aws_ssm_parameter" "hasc_postgres_username" {
-  name = "/hasc-api/production/POSTGRES_USERNAME"
-}
+ data "aws_ssm_parameter" "hasc_postgres_username" {
+   name = "/hasc-api/production/POSTGRES_USERNAME"
+ }
 
 module "postgres_db_production" {
     source = "github.com/LBHackney-IT/aws-hackney-common-terraform.git//modules/database/postgres"
     environment_name = "production"
     vpc_id = data.aws_vpc.production_vpc.id
-    db_identifier = data.aws_ssm_parameter.hasc_postgres_db_name.value
+    db_identifier = "social-care-care-packages-db"
     db_name = "hasc_db"
     db_port  = 5829
     subnet_ids = data.aws_subnet_ids.production_private_subnets.ids
     db_engine = "postgres"
-    db_engine_version = "12.5"
+    db_engine_version = "12.7"
     db_instance_class = "db.t3.small"
     db_allocated_storage = 20
     maintenance_window = "sun:10:00-sun:10:30"
