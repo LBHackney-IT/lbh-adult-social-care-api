@@ -14,6 +14,7 @@ using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.Payments;
 using LBH.AdultSocialCare.Data.Extensions;
 using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
+using LBH.AdultSocialCare.Data.Constants;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 {
@@ -132,7 +133,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .OrderByDescending(pr => pr.PaidUpToDate)
                 .FirstOrDefaultAsync();
 
-            return lastPayRun?.PaidUpToDate ?? DateTimeOffset.Now.AddDays(-28);
+            return lastPayRun?.PaidUpToDate ?? PayrunConstants.DefaultStartDate.AddDays(-1);
         }
 
         public async Task<Payrun> GetPreviousPayRunAsync(PayrunType payRunType)
