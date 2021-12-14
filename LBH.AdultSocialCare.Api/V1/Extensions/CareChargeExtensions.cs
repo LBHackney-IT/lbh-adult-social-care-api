@@ -28,7 +28,6 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 if (summary.FundedNursingCare is { ClaimCollector: ClaimCollector.Supplier })
                 {
                     summary.FncPayment = summary.FundedNursingCare.Cost;
-                    summary.SubTotalCost += summary.FncPayment.Value;
                 }
             }
 
@@ -38,6 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             {
                 // FNC is already included in SubTotalCost
                 summary.TotalWeeklyCost += summary.SupplierReclaims.CareCharge;
+                summary.TotalWeeklyCost += summary.SupplierReclaims.Fnc;
             }
         }
 
@@ -105,7 +105,7 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 CareChargeExtensions.CalculateTotals(summary, coreCost, startDate.Date);
 
                 var reclaimsTotal = Math.Abs(summary.SupplierReclaims?.SubTotal ?? 0) + Math.Abs(summary.HackneyReclaims?.SubTotal ?? 0);
-                var packageSubTotal = summary.SubTotalCost + Math.Abs(summary.SupplierReclaims?.SubTotal ?? 0);
+                var packageSubTotal = summary.SubTotalCost;
 
                 if (reclaimsTotal > packageSubTotal)
                 {
