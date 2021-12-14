@@ -7,7 +7,9 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
@@ -39,10 +41,17 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task<CarePackageResponse> GetCarePackageCoreAsync(Guid carePackageId)
         {
             var package = await _carePackageGateway
-                .GetPackageAsync(carePackageId, PackageFields.ServiceUser | PackageFields.Settings)
+                .GetPackageAsync(carePackageId, PackageFields.ServiceUser | PackageFields.Settings | PackageFields.Resources)
                 .EnsureExistsAsync($"Care package {carePackageId} not found");
 
-            return package.ToDomain().ToResponse();
+            var result = package.ToDomain();
+
+            result.SocialWorkerCarePlanFileId = package.Resources?.Where(r => r.Type == PackageResourceType.CarePlanFile)
+                .OrderByDescending(x => x.DateCreated).FirstOrDefault()?.FileId;
+            result.SocialWorkerCarePlanFileName = package.Resources?.Where(r => r.Type == PackageResourceType.CarePlanFile)
+                .OrderByDescending(x => x.DateCreated).FirstOrDefault()?.Name;
+
+            return result.ToResponse();
         }
 
         public async Task<BrokerPackageViewResponse> GetBrokerPackageViewListAsync(BrokerPackageViewQueryParameters queryParameters)

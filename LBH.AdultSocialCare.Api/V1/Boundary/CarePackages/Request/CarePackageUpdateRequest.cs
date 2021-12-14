@@ -1,7 +1,9 @@
+using System;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using System.ComponentModel.DataAnnotations;
 using LBH.AdultSocialCare.Api.Attributes;
 using LBH.AdultSocialCare.Data.Constants.Enums;
+using Microsoft.AspNetCore.Http;
 
 namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
 {
@@ -34,5 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
         [Required]
         [EnumDataType(typeof(PackageType))]
         public PackageType PackageType { get; set; }
+        public Guid? SocialWorkerCarePlanFileId { get; set; }
+        public IFormFile SocialWorkerCarePlanFile { get; set; }
     }
 }

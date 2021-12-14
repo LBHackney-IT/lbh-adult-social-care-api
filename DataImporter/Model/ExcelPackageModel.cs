@@ -24,7 +24,7 @@ namespace DataImporter.Model
         private readonly ExcelPackageType _excelPackageType;
         private readonly PackageDetailType _packageDetailType;
         private readonly ClaimCollector _claimCollector;
-        private readonly ReclaimSubType _reclaimSubType;
+        private readonly ReclaimSubType? _careChargeSubType;
         private readonly ReclaimType _reclaimType;
         private readonly PaymentPeriod _costPeriod;
 
@@ -45,21 +45,21 @@ namespace DataImporter.Model
             else if (_careChargeProvisionalNetPackageType.Contains(elementType, StringComparer.OrdinalIgnoreCase))
             {
                 _excelPackageType = ExcelPackageType.Reclaim;
-                _reclaimSubType = ReclaimSubType.CareChargeProvisional;
+                _careChargeSubType = ReclaimSubType.CareChargeProvisional;
                 _reclaimType = ReclaimType.CareCharge;
                 _claimCollector = ClaimCollector.Supplier;
             }
             else if (_careChargeProvisionalGrossPackageType.Contains(elementType, StringComparer.OrdinalIgnoreCase))
             {
                 _excelPackageType = ExcelPackageType.Reclaim;
-                _reclaimSubType = ReclaimSubType.CareChargeProvisional;
+                _careChargeSubType = ReclaimSubType.CareChargeProvisional;
                 _reclaimType = ReclaimType.CareCharge;
                 _claimCollector = ClaimCollector.Hackney;
             }
             else if (_careCharge13PlusNetPackageType.Contains(elementType, StringComparer.OrdinalIgnoreCase))
             {
                 _excelPackageType = ExcelPackageType.Reclaim;
-                _reclaimSubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks;
+                _careChargeSubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks;
                 _reclaimType = ReclaimType.CareCharge;
                 _claimCollector = ClaimCollector.Supplier;
 
@@ -67,7 +67,7 @@ namespace DataImporter.Model
             else if (_careCharge13PlusGrossPackageType.Contains(elementType, StringComparer.OrdinalIgnoreCase))
             {
                 _excelPackageType = ExcelPackageType.Reclaim;
-                _reclaimSubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks;
+                _careChargeSubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks;
                 _reclaimType = ReclaimType.CareCharge;
                 _claimCollector = ClaimCollector.Hackney;
             }
@@ -86,7 +86,7 @@ namespace DataImporter.Model
             else if (_fncNetPackageType.Contains(elementType, StringComparer.Ordinal))
             {
                 _excelPackageType = ExcelPackageType.Reclaim;
-                _reclaimSubType = ReclaimSubType.CareChargeProvisional;
+                _careChargeSubType = ReclaimSubType.CareChargeProvisional;
                 _reclaimType = ReclaimType.Fnc;
                 _claimCollector = ClaimCollector.Supplier;
             }
@@ -123,7 +123,7 @@ namespace DataImporter.Model
         public ExcelPackageType SubPackageType { get { return _excelPackageType; } }
         public PackageDetailType PackageDetailType { get { return _packageDetailType; } }
         public ClaimCollector ClaimCollector { get { return _claimCollector; } }
-        public ReclaimSubType ReclaimSubType { get { return _reclaimSubType; } }
+        public ReclaimSubType? CareChargeSubType { get { return _careChargeSubType; } }
         public ReclaimType ReclaimType { get { return _reclaimType; } }
         public PaymentPeriod CostPeriod { get { return _costPeriod; } }
 
