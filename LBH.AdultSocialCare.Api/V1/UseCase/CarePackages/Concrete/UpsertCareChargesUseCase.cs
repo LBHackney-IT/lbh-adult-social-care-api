@@ -3,6 +3,7 @@ using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
@@ -38,6 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         public async Task ExecuteAsync(Guid carePackageId, CareChargesCreateDomain careChargesCreateDomain)
         {
+            // await using var transaction = await _dbManager.BeginTransactionAsync();
             // All care charges to have one care package Id
             foreach (var careCharge in careChargesCreateDomain.CareCharges)
             {
@@ -54,6 +56,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             if (package.Settings.IsS117Client)
             {
                 throw new ApiException($"This service user is under S117, not allowed to add care charges", HttpStatusCode.BadRequest);
+            }
+
+            if (package.Status.In(PackageStatus.Cancelled, PackageStatus.Ended))
+            {
+                throw new ApiException($"Cannot update care charges for care package in status {package.Status.GetDisplayName()}",
+                    HttpStatusCode.BadRequest);
             }
 
             var validReclaimStatuses = new[] { ReclaimStatus.Active, ReclaimStatus.Ended, ReclaimStatus.Pending };
@@ -117,7 +125,19 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
             }
 
-            await _dbManager.SaveAsync();
+            try
+            {
+                CareChargeExtensions.EnsureValidPackageTotals(package);
+                await _dbManager.SaveAsync();
+            }
+            catch (ApiException ex)
+            {
+                throw new ApiException(ex.Message, ex.StatusCode);
+            }
+
+            // Get package and check reclaim totals are valid
+            /*var packageFromDb = await _carePackageGateway.GetPackageAsync(carePackageId, PackageFields.Details | PackageFields.Reclaims, true)
+                .EnsureExistsAsync($"Care package with id {carePackageId} not found");*/
         }
 
         private static void ValidateCareChargeModificationRequest(IList<CareChargeReclaimCreationDomain> careCharges)

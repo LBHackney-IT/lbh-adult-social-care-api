@@ -3,23 +3,18 @@ using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using System;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using HttpServices.Models.Responses;
-using LBH.AdultSocialCare.Api.V1.Extensions;
-using LBH.AdultSocialCare.Api.V1.Services.IO;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.CarePackages;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -99,8 +94,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 carePackage.Status = PackageStatus.SubmittedForApproval;
             }
 
-            await _dbManager.SaveAsync("Could not save care package reclaim to database");
-            return newReclaim.ToDomain().ToResponse();
+            try
+            {
+                CareChargeExtensions.EnsureValidPackageTotals(carePackage);
+                await _dbManager.SaveAsync("Could not save care package reclaim to database");
+                return newReclaim.ToDomain().ToResponse();
+            }
+            catch (ApiException ex)
+            {
+                throw new ApiException(ex.Message, ex.StatusCode);
+            }
         }
 
         public async Task<CarePackageReclaimResponse> CreateProvisionalCareCharge(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType)
@@ -145,7 +148,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             await _dbManager.SaveAsync("Could not save care package reclaim to database");
             return newReclaim.ToDomain().ToResponse();
         }
-
 
         private CarePackageReclaim TryHandleProvisionalCareCharge(CarePackageReclaimCreationDomain requestedReclaim, CarePackage carePackage)
         {
@@ -319,6 +321,5 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 reclaimCreationDomain.EndDate = coreCostDetail.EndDate;
             }
         }
-
     }
 }

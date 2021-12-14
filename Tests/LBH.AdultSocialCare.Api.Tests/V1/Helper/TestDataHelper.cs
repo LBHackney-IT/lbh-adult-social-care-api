@@ -132,7 +132,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
         public static List<CarePackageDetail> CreateCarePackageDetails(int count, PackageDetailType type, PaymentPeriod costPeriod = PaymentPeriod.Weekly)
         {
             return new Faker<CarePackageDetail>()
-                .RuleFor(r => r.Cost, f => Math.Round(f.Random.Decimal(0m, 1000m), 2)) // Workaround to avoid precision loss in SQLite)
+                .RuleFor(r => r.Cost, f => Math.Round(f.Random.Decimal(100m, 1000m), 2)) // Workaround to avoid precision loss in SQLite)
                 /*.RuleFor(d => d.CostPeriod, f => type == PackageDetailType.CoreCost
                     ? PaymentPeriod.Weekly
                     : f.PickRandom(PaymentPeriod.Weekly, PaymentPeriod.OneOff))*/
