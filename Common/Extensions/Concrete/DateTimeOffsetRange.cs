@@ -21,7 +21,7 @@ namespace Common.Extensions.Concrete
 
         public bool Includes(IRange<DateTimeOffset> range)
         {
-            return (Start <= range.Start) && (range.End <= End);
+            return (Start <= range.Start) && (range.End < End);
         }
     }
 }
