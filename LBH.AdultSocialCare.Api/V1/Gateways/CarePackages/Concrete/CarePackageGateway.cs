@@ -213,6 +213,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             if (fields.HasFlag(PackageFields.PrimarySupportReason)) query = query.Include(p => p.PrimarySupportReason);
             if (fields.HasFlag(PackageFields.Broker)) query = query.Include(p => p.Broker);
             if (fields.HasFlag(PackageFields.Approver)) query = query.Include(p => p.Approver);
+            if (fields.HasFlag(PackageFields.Resources)) query = query.Include(p => p.Resources);
 
             return query;
         }

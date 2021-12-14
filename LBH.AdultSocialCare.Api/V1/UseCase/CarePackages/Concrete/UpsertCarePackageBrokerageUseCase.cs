@@ -83,7 +83,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 throw new ApiException("Core cost cannot be specified in Details list", HttpStatusCode.BadRequest);
             }
 
-            package.Details.Add(requestedDetail.ToEntity());
+            var detail = requestedDetail.ToEntity();
+
+            package.Details.Add(detail);
         }
 
         private void UpdateDetail(CarePackage package, CarePackageDetailDomain requestedDetail)

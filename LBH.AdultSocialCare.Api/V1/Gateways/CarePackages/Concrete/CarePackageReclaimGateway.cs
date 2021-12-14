@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Common.Extensions;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Data.Constants.Enums;
@@ -54,9 +55,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             }
         }
 
-        public async Task<CarePackageReclaim> GetAsync(Guid reclaimId)
+        public async Task<CarePackageReclaim> GetAsync(Guid reclaimId, bool trackChanges = false)
         {
             return await _dbContext.CarePackageReclaims
+                .TrackChanges(trackChanges)
                 .FirstOrDefaultAsync(r => r.Id == reclaimId);
         }
 

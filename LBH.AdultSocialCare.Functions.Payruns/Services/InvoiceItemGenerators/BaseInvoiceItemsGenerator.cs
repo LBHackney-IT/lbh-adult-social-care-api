@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Data.Constants;
@@ -21,11 +20,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 
         public abstract IEnumerable<InvoiceItem> CreateRefundItems(CarePackage package, IList<InvoiceDomain> packageInvoices);
 
-        public virtual Task Initialize()
-        {
-            return Task.CompletedTask;
-        }
-
         protected static DateRange GetInvoiceItemDateRange(IPackageItem packageItem, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
         {
             var startDate = GetActualStartDate(packageItem, packageInvoices);
@@ -41,6 +35,35 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             return latestInvoiceItem != null
                 ? Dates.Min(packageItem.EndDate, latestInvoiceItem.ToDate.AddDays(1))
                 : Dates.Max(packageItem.StartDate, PayrunConstants.DefaultStartDate);
+        }
+
+        protected static string GetDetailItemName(CarePackageDetail detail)
+        {
+            switch (detail.Type)
+            {
+                case PackageDetailType.CoreCost:
+                    return detail.Package.PackageType switch
+                    {
+                        PackageType.NursingCare => "Nursing Care Core",
+                        PackageType.ResidentialCare => "Residential Care Core",
+                        _ => throw new ArgumentException($"Unsupported {detail.Type}")
+                    };
+
+                case PackageDetailType.AdditionalNeed:
+                    return $"Additional {detail.CostPeriod.GetDisplayName()} Cost";
+
+                default:
+                    throw new ArgumentException($"Unsupported {detail.Type}");
+            }
+        }
+
+        protected static string FormatDescription(string description)
+        {
+            if (String.IsNullOrEmpty(description)) return description;
+
+            return description.Length > 27
+                ? $"({description[..27]}...)"
+                : $"({description})";
         }
 
         private static InvoiceItem GetLatestInvoiceItem(IPackageItem packageItem, IEnumerable<InvoiceDomain> invoices)

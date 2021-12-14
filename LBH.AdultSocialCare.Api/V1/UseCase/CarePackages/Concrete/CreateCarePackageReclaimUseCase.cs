@@ -3,23 +3,18 @@ using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using System;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using HttpServices.Models.Responses;
-using LBH.AdultSocialCare.Api.V1.Extensions;
-using LBH.AdultSocialCare.Api.V1.Services.IO;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.CarePackages;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -28,15 +23,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
         private readonly IMapper _mapper;
-        private readonly IFileStorage _fileStorage;
+        private readonly ICreatePackageResourceUseCase _createPackageResourceUseCase;
 
         public CreateCarePackageReclaimUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager,
-            IMapper mapper, IFileStorage fileStorage)
+            IMapper mapper, ICreatePackageResourceUseCase createPackageResourceUseCase)
         {
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
             _mapper = mapper;
-            _fileStorage = fileStorage;
+            _createPackageResourceUseCase = createPackageResourceUseCase;
         }
 
         public async Task<CarePackageReclaimResponse> CreateCarePackageReclaim(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType)
@@ -75,13 +70,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             {
                 newReclaim = reclaimCreationDomain.ToEntity();
                 newReclaim.Type = reclaimType;
+                newReclaim.Status = ReclaimStatus.Active;
 
                 if (reclaimCreationDomain.AssessmentFileId == Guid.Empty)
                 {
-                    var documentResponse = await _fileStorage.SaveFileAsync
-                        (ConvertCarePlan(reclaimCreationDomain.AssessmentFile), reclaimCreationDomain?.AssessmentFile?.FileName);
-                    newReclaim.AssessmentFileId = documentResponse?.FileId ?? Guid.Empty;
-                    newReclaim.AssessmentFileName = documentResponse?.FileName;
+                    var resourceType = newReclaim.Type == ReclaimType.Fnc
+                        ? PackageResourceType.FncAssessmentFile
+                        : PackageResourceType.CareChargeAssessmentFile;
+                    await _createPackageResourceUseCase.CreateFileAsync(carePackage.Id, resourceType, reclaimCreationDomain.AssessmentFile);
                 }
 
                 carePackage.Reclaims.Add(newReclaim);
@@ -93,6 +89,57 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             });
 
             // Change status of package to in-progress
+            if (carePackage.Status == PackageStatus.Approved)
+            {
+                carePackage.Status = PackageStatus.SubmittedForApproval;
+            }
+
+            try
+            {
+                CareChargeExtensions.EnsureValidPackageTotals(carePackage);
+                await _dbManager.SaveAsync("Could not save care package reclaim to database");
+                return newReclaim.ToDomain().ToResponse();
+            }
+            catch (ApiException ex)
+            {
+                throw new ApiException(ex.Message, ex.StatusCode);
+            }
+        }
+
+        public async Task<CarePackageReclaimResponse> CreateProvisionalCareCharge(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType)
+        {
+            var carePackage = await _carePackageGateway
+                .GetPackageAsync(reclaimCreationDomain.CarePackageId, PackageFields.Details | PackageFields.Reclaims, true)
+                .EnsureExistsAsync($"Care package with id {reclaimCreationDomain.CarePackageId} not found");
+
+            if (carePackage.Status.In(PackageStatus.Cancelled, PackageStatus.Ended))
+            {
+                throw new ApiException($"Can not create {reclaimType.GetDisplayName()} for care package status {carePackage.Status.GetDisplayName()}",
+                    HttpStatusCode.BadRequest);
+            }
+
+            var coreCostDetail = carePackage.Details
+                .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost)
+                .EnsureExists($"Core cost for package with id {reclaimCreationDomain.CarePackageId} not found", HttpStatusCode.InternalServerError);
+
+            ValidateProvisionalCareChargeAsync(reclaimCreationDomain, carePackage, coreCostDetail);
+
+            //todo FK: ?
+            reclaimCreationDomain.SubType = ReclaimSubType.CareChargeProvisional;
+            var newReclaim = reclaimCreationDomain.ToEntity();
+
+            //todo FK: ?
+            newReclaim.Type = ReclaimType.CareCharge;
+            newReclaim.Status = ReclaimStatus.Active;
+
+            carePackage.Reclaims.Add(newReclaim);
+
+            carePackage.Histories.Add(new CarePackageHistory
+            {
+                Description = $"{reclaimType.GetDisplayName()} {reclaimCreationDomain.SubType.GetDisplayName()} Created",
+            });
+
+            // Change status of package to submitted for approval
             if (carePackage.Status == PackageStatus.Approved)
             {
                 carePackage.Status = PackageStatus.SubmittedForApproval;
@@ -242,20 +289,37 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
         }
 
-        private static string ConvertCarePlan(IFormFile carePlanFile)
+        private static void ValidateProvisionalCareChargeAsync(CarePackageReclaimCreationDomain reclaimCreationDomain, CarePackage carePackage, CarePackageDetail coreCostDetail)
         {
-            if (carePlanFile != null)
+            if (reclaimCreationDomain.SubType != ReclaimSubType.CareChargeProvisional)
             {
-                using (var stream = new MemoryStream())
-                {
-                    carePlanFile.CopyTo(stream);
-
-                    var bytes = stream.ToArray();
-                    return $"data:{carePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}";
-                }
+                throw new ApiException($"Cannot create {reclaimCreationDomain.SubType.GetDisplayName()}. Manage other care charges types in the Care Charges menu",
+                    HttpStatusCode.BadRequest);
             }
 
-            return null;
+            if (carePackage.Reclaims.Any(cc => cc.Type == ReclaimType.CareCharge && cc.SubType == ReclaimSubType.CareChargeProvisional))
+            {
+                throw new ApiException($"Provisional Care charge assessment for this package already done",
+                    HttpStatusCode.BadRequest);
+            }
+
+            if (carePackage.Reclaims.Any(cc => cc.Type == ReclaimType.CareCharge && cc.SubType != ReclaimSubType.CareChargeProvisional))
+            {
+                throw new ApiException($"Care charge assessment for this package already done. Manage care charges for this package in the Care Charges menu",
+                    HttpStatusCode.BadRequest);
+            }
+
+            // Start date of provisional CC cannot be before package start date
+            if (!reclaimCreationDomain.StartDate.IsInRange(coreCostDetail.StartDate, coreCostDetail.EndDate ?? DateTimeOffset.Now.AddYears(10)))
+            {
+                throw new ApiException($"{ReclaimSubType.CareChargeProvisional.GetDisplayName()} start date must be equal or greater than {coreCostDetail.StartDate.Date}", HttpStatusCode.UnprocessableEntity);
+            }
+
+            // If provisional cc is set to be ongoing, force end date to be the end date of the package
+            if (coreCostDetail.EndDate != null && reclaimCreationDomain.EndDate == null)
+            {
+                reclaimCreationDomain.EndDate = coreCostDetail.EndDate;
+            }
         }
     }
 }

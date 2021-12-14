@@ -1,17 +1,18 @@
 using Common.Extensions;
+using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Common.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Entities.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.Helpers;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -32,12 +33,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         {
             // Check service user exists
             var serviceUser = await _serviceUserGateway.GetByIdAsync(serviceUserId).EnsureExistsAsync($"Service user with id {serviceUserId} not found");
-            var packageRequestStatuses = new[]
-            {
-                PackageStatus.New, PackageStatus.InProgress, PackageStatus.NotApproved
-            };
 
-            const PackageFields fields = PackageFields.Details | PackageFields.Reclaims | PackageFields.Settings;
+            const PackageFields fields = PackageFields.Details | PackageFields.Reclaims | PackageFields.Settings | PackageFields.Resources;
             var userPackages = await _carePackageGateway.GetServiceUserPackagesAsync(serviceUserId, fields);
             var response = new ServiceUserPackagesViewResponse
             {
@@ -49,24 +46,24 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             foreach (var carePackage in userPackages)
             {
+                var coreCost = carePackage.Details
+                    .SingleOrDefault(d => d.Type is PackageDetailType.CoreCost);
+
                 var packageResponse = new ServiceUserPackageViewItemResponse
                 {
                     PackageId = carePackage.Id,
-                    PackageStatus = carePackage.Status.GetDisplayName(),
+                    PackageStatus = CalculatePackageStatus(carePackage, coreCost),
                     PackageType = carePackage.PackageType.GetDisplayName(),
                     IsS117Client = carePackage.Settings?.IsS117Client,
                     IsS117ClientConfirmed = carePackage.Settings?.IsS117ClientConfirmed,
                     DateAssigned = carePackage.DateAssigned,
                     GrossTotal = 0,
                     NetTotal = 0,
-                    SocialWorkerCarePlanFileId = carePackage.SocialWorkerCarePlanFileId,
-                    SocialWorkerCarePlanFileName = carePackage.SocialWorkerCarePlanFileName,
+                    SocialWorkerCarePlanFileId = carePackage.Resources?.Where(r => r.Type == PackageResourceType.CarePlanFile).OrderByDescending(x => x.DateCreated).FirstOrDefault()?.FileId,
+                    SocialWorkerCarePlanFileName = carePackage.Resources?.Where(r => r.Type == PackageResourceType.CarePlanFile).OrderByDescending(x => x.DateCreated).FirstOrDefault()?.Name,
                     Notes = new List<CarePackageHistoryResponse>(),
                     PackageItems = new List<CarePackageCostItemResponse>()
                 };
-
-                var coreCost = carePackage.Details
-                    .SingleOrDefault(d => d.Type is PackageDetailType.CoreCost);
 
                 var additionalNeeds = carePackage.Details
                     .Where(d => d.Type == PackageDetailType.AdditionalNeed).ToList();
@@ -79,7 +76,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     item => preferences.IndexOf(item.Status));
 
                 // Get care package history if package request i.e new, in-progress, not-approved
-                if (packageRequestStatuses.Contains(carePackage.Status))
+                if (carePackage.Status.In(PackageStatus.New, PackageStatus.InProgress, PackageStatus.NotApproved))
                 {
                     var packageHistory = await _carePackageHistoryGateway.ListAsync(carePackage.Id);
                     packageResponse.Notes = packageHistory.OrderByDescending(h => h.Id).ToResponse();
@@ -97,6 +94,19 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             return response;
         }
 
+        private static string CalculatePackageStatus(CarePackage package, IPackageItem coreCost)
+        {
+            var today = DateTimeOffset.Now.Date;
+            return package.Status switch
+            {
+                PackageStatus.Approved when coreCost.EndDate != null &&
+                                            coreCost.EndDate.GetValueOrDefault().Date < today => "Ended",
+                PackageStatus.Approved when IsValidDateRange(coreCost.StartDate, coreCost.EndDate) => "Active",
+                PackageStatus.Approved => "Future",
+                _ => package.Status.GetDisplayName()
+            };
+        }
+
         private static IEnumerable<CarePackageCostItemResponse> CollectPackageItems(CarePackage package, CarePackageDetail coreCost, IReadOnlyCollection<CarePackageDetail> additionalNeeds, IReadOnlyCollection<CarePackageReclaim> reclaims)
         {
             var carePackageCostItem = new List<CarePackageCostItemResponse>();
@@ -109,7 +119,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     Name = package.PackageType.GetDisplayName(),
                     Type = package.PackageType.GetDisplayName(),
                     CollectedBy = ClaimCollector.Hackney.GetDisplayName(),
-                    Status = package.Status.GetDisplayName(),
+                    Status = CalculatePackageStatus(package, coreCost),
                     StartDate = coreCost.StartDate,
                     EndDate = coreCost.EndDate,
                     WeeklyCost = coreCost.Cost
@@ -125,7 +135,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     Name = GetAdditionalNeedName(need.CostPeriod),
                     Type = "Additional Needs",
                     CollectedBy = ClaimCollector.Hackney.GetDisplayName(),
-                    Status = package.Status.GetDisplayName(),
+                    Status = coreCost != null ? CalculatePackageStatus(package, coreCost) : package.Status.GetDisplayName(),
                     StartDate = need.StartDate,
                     EndDate = need.EndDate,
                     WeeklyCost = need.Cost
@@ -138,10 +148,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 carePackageCostItem.AddRange(reclaims.Select(reclaim => new CarePackageCostItemResponse
                 {
                     Id = reclaim.Id,
-                    Name = Enum.IsDefined(typeof(ReclaimSubType), reclaim.SubType) ? reclaim.SubType.GetDisplayName() : GetCareChargeName(reclaim.Type),
+                    Name = reclaim.SubType != null && Enum.IsDefined(typeof(ReclaimSubType), reclaim.SubType) ? reclaim.SubType.GetDisplayName() : GetCareChargeName(reclaim.Type),
                     Type = GetCareChargeName(reclaim.Type),
                     CollectedBy = reclaim.ClaimCollector.GetDisplayName(),
-                    Status = reclaim.Status.GetDisplayName(),
+                    Status = CalculateReclaimStatus(reclaim).GetDisplayName(),
                     StartDate = reclaim.StartDate,
                     EndDate = reclaim.EndDate,
                     WeeklyCost = reclaim.ClaimCollector == ClaimCollector.Hackney ? reclaim.Cost : decimal.Negate(reclaim.Cost)
@@ -149,6 +159,24 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             return carePackageCostItem;
+        }
+
+        private static ReclaimStatus CalculateReclaimStatus(CarePackageReclaim reclaim)
+        {
+            var today = DateTimeOffset.Now.Date;
+            if (reclaim.Status is ReclaimStatus.Cancelled || reclaim.Status is ReclaimStatus.Ended)
+            {
+                return reclaim.Status;
+            }
+
+            if (reclaim.EndDate != null && today > reclaim.EndDate.Value.Date)
+            {
+                return ReclaimStatus.Ended;
+            }
+
+            return today >= reclaim.StartDate.Date
+                ? ReclaimStatus.Active
+                : ReclaimStatus.Pending;
         }
 
         private static string GetAdditionalNeedName(PaymentPeriod paymentPeriod)

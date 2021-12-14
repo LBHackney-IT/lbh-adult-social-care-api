@@ -38,6 +38,9 @@ namespace LBH.AdultSocialCare.Data.Constants.Enums
         BrokeredEnded = 11,
 
         [Display(Name = "Care Package cancelled")]
-        Cancelled = 12
+        Cancelled = 12,
+
+        [Display(Name = "Package Information")]
+        PackageInformation = 13
     }
 }

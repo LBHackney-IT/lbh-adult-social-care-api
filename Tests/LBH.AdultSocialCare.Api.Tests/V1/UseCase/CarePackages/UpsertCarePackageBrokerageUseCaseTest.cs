@@ -16,6 +16,7 @@ using System.Linq;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.TestFramework.Extensions;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages

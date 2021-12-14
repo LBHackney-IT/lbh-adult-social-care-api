@@ -3,13 +3,13 @@ using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Entities.Common;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using System;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.CarePackages;
-using LBH.AdultSocialCare.Data.Entities.Common;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
@@ -18,6 +18,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
     {
         private readonly CarePackage _package;
         private readonly GetCarePackageSummaryUseCase _useCase;
+
+        private readonly DateTime _startDate = DateTime.Now.AddDays(-30);
+        private readonly DateTime _endDate = DateTime.Now.AddDays(10);
 
         public CarePackageSummaryUseCaseTest()
         {
@@ -104,7 +107,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _package.Details.Add(new CarePackageDetail
             {
                 Cost = coreCost,
-                Type = PackageDetailType.CoreCost
+                Type = PackageDetailType.CoreCost,
+                StartDate = _startDate,
+                EndDate = _endDate
             });
         }
 
@@ -114,7 +119,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 Cost = cost,
                 Type = type,
-                ClaimCollector = collector
+                ClaimCollector = collector,
+                StartDate = _startDate,
+                EndDate = _endDate,
+                Status = ReclaimStatus.Active
             });
         }
 
@@ -124,7 +132,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 Cost = cost,
                 Type = PackageDetailType.AdditionalNeed,
-                CostPeriod = period
+                CostPeriod = period,
+                StartDate = _startDate,
+                EndDate = _endDate
             });
         }
     }

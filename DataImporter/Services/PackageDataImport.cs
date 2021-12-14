@@ -125,7 +125,6 @@ namespace DataImporter.Services
                             Id = Guid.NewGuid(),
                             Type = excelPackageModel.PackageDetailType,
                             UnitOfMeasure = package.UnitOfMeasure,
-                            ServicePeriod = PaymentPeriod.Weekly,
                             StartDate = package.StartDate,
                             CostPeriod = excelPackageModel.CostPeriod,
                             EndDate = package.EndDate

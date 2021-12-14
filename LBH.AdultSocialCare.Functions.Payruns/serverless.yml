@@ -29,20 +29,10 @@ functions:
     name: ${self:service}-${self:provider.stage}
     handler: LBH.AdultSocialCare.Functions.Payruns::LBH.AdultSocialCare.Functions.Payruns.LambdaEntryPoint::HandleEvent
     role: lambdaExecutionRole
+    timeout: 60
+    reservedConcurrency: 1
     environment:
-      ConnectionStrings__Default: Host=${ssm:/hasc-api/${self:provider.stage}/postgres-hostname};Port=${ssm:/hasc-api/${self:provider.stage}/postgres-port};Database=${ssm:/hasc-api/${self:provider.stage}/postgres-database};Username=${ssm:/hasc-api/${self:provider.stage}/postgres-username};Password=${ssm:/hasc-api/${self:provider.stage}/postgres-password}
-    events:
-      - sqs:
-        arn:
-          Fn::Join:
-            - ':'
-            - - 'arn:aws:sqs'
-              - Ref: 'AWS::Region'
-              - Ref: 'AWS::AccountId'
-              - Fn::Join:
-                  - '-'
-                  - - 'lbh-adult-social-care-payruns'
-                    - ${self:provider.stage}
+      ConnectionStrings__Default: Host=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_HOSTNAME};Port=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_PORT};Database=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_DATABASE};Username=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_USERNAME};Password=${ssm:/hasc-api/${self:provider.stage}/POSTGRES_PASSWORD}
 resources:
   Resources:
     sqsCreateMappingPermission:
@@ -70,6 +60,7 @@ resources:
       Type: AWS::Lambda::EventSourceMapping
       DependsOn: AdultSocialCarePayrunsLambdaFunction
       Properties:
+        BatchSize: 1
         EventSourceArn:
           Fn::Join:
             - ':'
@@ -146,10 +137,10 @@ custom:
   vpc:
     development:
       securityGroupIds:
-        - sg-
+        - sg-0bc64f3cdeb9786f6
       subnetIds:
-        - subnet-0d4086ab96db46047
-        - subnet-0f5eeab6b619d5e1a
+        - subnet-0dffd9d5ee819aa51
+        - subnet-0e2457e93dbb5e396
     staging:
       securityGroupIds:
         - sg-0630857460fcc6b3e

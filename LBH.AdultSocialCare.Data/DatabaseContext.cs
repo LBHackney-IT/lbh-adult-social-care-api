@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Common.Extensions;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -14,6 +9,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Data
 {
@@ -42,6 +42,7 @@ namespace LBH.AdultSocialCare.Data
 
         public DbSet<CarePackage> CarePackages { get; set; }
         public DbSet<CarePackageSettings> CarePackageSettings { get; set; }
+        public DbSet<CarePackageResource> CarePackageResources { get; set; }
 
         public DbSet<CarePackageDetail> CarePackageDetails { get; set; }
         public DbSet<CarePackageReclaim> CarePackageReclaims { get; set; }
@@ -189,6 +190,12 @@ namespace LBH.AdultSocialCare.Data
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<CarePackageHistory>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Status).IsRequired().HasDefaultValue(HistoryStatus.PackageInformation);
+            });
+
             #endregion Entity Config
 
             AddEnumConstrains(modelBuilder);
@@ -283,13 +290,17 @@ namespace LBH.AdultSocialCare.Data
 
                     if (propertyType.IsEnum)
                     {
-                        var enumValues = Enum.GetValues(propertyType).Cast<int>();
+                        var enumValues = Enum.GetValues(propertyType).Cast<int>().ToList();
                         var enumValuesString = String.Join(", ", enumValues);
 
                         // TODO: VK: Review nullable enum fields and remove this
-                        if (!property.IsNullable)
+                        // DO: Updated this condition to add NULL if enum is nullable
+                        if (property.IsNullable)
                         {
-                            enumValuesString = $"0, {enumValuesString}";
+                            if (!enumValuesString.Contains("NULL"))
+                            {
+                                enumValuesString = $"NULL, {enumValuesString}";
+                            }
                         }
 
                         modelBuilder

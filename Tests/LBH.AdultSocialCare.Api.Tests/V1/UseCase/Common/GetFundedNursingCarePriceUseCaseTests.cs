@@ -3,6 +3,7 @@ using LBH.AdultSocialCare.Api.V1.UseCase.Common.Concrete;
 using Moq;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.TestFramework;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
@@ -17,7 +18,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Common
 
             var currentTime = DateTime.Now;
 
-            useCase.CurrentDateTimeOffsetProvider = new MockCurrentDateTimeOffsetProvider { Now = currentTime };
+            useCase.CurrentDateProvider = new MockCurrentDateProvider { Now = currentTime };
             await useCase.GetActiveFundedNursingCarePriceAsync().ConfigureAwait(false);
 
             gateway.Verify(g => g.GetFundedNursingCarePriceAsync(currentTime), Times.Once);

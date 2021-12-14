@@ -21,9 +21,9 @@ namespace HttpServices.Services.Concrete
             _restClient.Init(httpClient);
         }
 
-        public async Task<DocumentClaimResponse> CreateClaim(DocumentClaimRequest request)
+        public async Task<DocumentClaimResponse> CreateClaimAndDocument(DocumentClaimRequest request)
         {
-            return await _restClient.PostAsync<DocumentClaimResponse>("claims", request, "Failed to create document claim");
+            return await _restClient.PostAsync<DocumentClaimResponse>("claims/claim_and_document", request, "Failed to create document claim");
         }
     }
 }

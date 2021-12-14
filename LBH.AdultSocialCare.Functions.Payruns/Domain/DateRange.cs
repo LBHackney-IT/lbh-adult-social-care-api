@@ -14,6 +14,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Domain
         public DateTimeOffset StartDate { get; }
         public DateTimeOffset EndDate { get; }
 
-        public decimal Weeks => Dates.WeeksBetween(StartDate, EndDate);
+        // ensure that end date is included in paid interval
+        public decimal WeeksInclusive => Dates.WeeksBetween(StartDate, EndDate.AddDays(1));
     }
 }

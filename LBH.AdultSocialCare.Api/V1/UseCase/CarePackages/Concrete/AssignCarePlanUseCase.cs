@@ -54,9 +54,19 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 PackageType = carePlanAssignment.PackageType,
                 Status = PackageStatus.New,
                 DateAssigned = DateTimeOffset.Now,
-                SocialWorkerCarePlanFileId = documentResponse?.FileId ?? Guid.Empty,
-                SocialWorkerCarePlanFileName = documentResponse?.FileName
+                PackageScheduling = PackageScheduling.Temporary, // TODO: Review if package scheduling can be made nullable
             };
+
+            if (documentResponse != null)
+            {
+                package.Resources.Add(new CarePackageResource()
+                {
+                    FileId = documentResponse.FileId,
+                    FileExtension = Path.GetExtension(documentResponse.FileName),
+                    Name = documentResponse.FileName,
+                    Type = PackageResourceType.CarePlanFile,
+                });
+            }
 
             package.Histories.Add(new CarePackageHistory
             {

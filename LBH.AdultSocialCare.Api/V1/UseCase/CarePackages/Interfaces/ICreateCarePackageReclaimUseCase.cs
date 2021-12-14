@@ -8,5 +8,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces
     public interface ICreateCarePackageReclaimUseCase
     {
         Task<CarePackageReclaimResponse> CreateCarePackageReclaim(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType);
+
+        Task<CarePackageReclaimResponse> CreateProvisionalCareCharge(
+            CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType);
     }
 }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.Services.IO;
+using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using Microsoft.Extensions.Logging;
@@ -21,7 +22,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private readonly Mock<IDatabaseManager> _dbManager;
         private readonly CreateCarePackageReclaimUseCase _useCase;
         private readonly CarePackage _package;
-        private readonly Mock<IFileStorage> _fileStorage;
+        private readonly Mock<ICreatePackageResourceUseCase> _createPackageResourceUseCase;
+        private readonly DateTimeOffset _today = DateTimeOffset.Now.Date;
 
         public CreateCarePackageReclaimUseCaseTests()
         {
@@ -34,7 +36,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     new CarePackageDetail
                     {
                         Cost = 34.12m,
-                        Type = PackageDetailType.CoreCost
+                        Type = PackageDetailType.CoreCost,
+                        StartDate = _today.AddDays(-30),
+                        EndDate = _today.AddDays(30)
                     }
                 },
                 Reclaims =
@@ -44,20 +48,22 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                         Cost = 1m,
                         Type = ReclaimType.CareCharge,
                         SubType = ReclaimSubType.CareChargeProvisional,
-                        Status = ReclaimStatus.Active
+                        Status = ReclaimStatus.Active,
+                        StartDate = _today.AddDays(-30),
+                        EndDate = _today.AddDays(30)
                     }
                 }
             };
 
             _dbManager = new Mock<IDatabaseManager>();
-            _fileStorage = new Mock<IFileStorage>();
+            _createPackageResourceUseCase = new Mock<ICreatePackageResourceUseCase>();
 
             var gateway = new Mock<ICarePackageGateway>();
             gateway
                 .Setup(g => g.GetPackageAsync(_package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
                 .ReturnsAsync(_package);
 
-            _useCase = new CreateCarePackageReclaimUseCase(gateway.Object, _dbManager.Object, Mapper, _fileStorage.Object);
+            _useCase = new CreateCarePackageReclaimUseCase(gateway.Object, _dbManager.Object, Mapper, _createPackageResourceUseCase.Object);
         }
 
         [Fact]
@@ -67,7 +73,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 CarePackageId = _package.Id,
                 Cost = 2m,
-                SubType = ReclaimSubType.CareChargeProvisional
+                SubType = ReclaimSubType.CareChargeProvisional,
+                StartDate = _today.AddDays(-30),
+                EndDate = _today.AddDays(30)
             }, ReclaimType.CareCharge);
 
             _package.Reclaims.Count.Should().Be(1);
@@ -86,7 +94,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 CarePackageId = _package.Id,
                 Cost = 2m,
                 SubType = ReclaimSubType.CareChargeProvisional,
-                AssessmentFileId = Guid.NewGuid()
+                AssessmentFileId = Guid.NewGuid(),
+                StartDate = _today.AddDays(-30),
+                EndDate = _today.AddDays(30)
             }, ReclaimType.CareCharge);
 
             _package.Reclaims.Count.Should().Be(2);
@@ -103,7 +113,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 CarePackageId = _package.Id,
                 Cost = 2m,
-                SubType = ReclaimSubType.CareChargeProvisional
+                SubType = ReclaimSubType.CareChargeProvisional,
+                StartDate = _today.AddDays(-30),
+                EndDate = _today.AddDays(30)
             }, ReclaimType.CareCharge);
 
             _package.Reclaims.Count.Should().Be(1);

@@ -136,6 +136,11 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
             return _mapper.Map<List<CarePackageReclaimUpdateDomain>>(input);
         }
 
+        public static CareChargeReclaimCreationDomain ToCareChargeDomain(this CareChargeReclaimCreationRequest input)
+        {
+            return _mapper.Map<CareChargeReclaimCreationDomain>(input);
+        }
+
         #endregion
     }
 }

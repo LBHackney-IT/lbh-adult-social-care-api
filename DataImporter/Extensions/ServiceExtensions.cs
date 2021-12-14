@@ -25,7 +25,7 @@ namespace DataImporter.Extensions
 
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
         {
-            string connectionString = configuration.GetConnectionString("Default");
+            string connectionString = configuration.GetConnectionString("DatabaseConnectionString");
 
             services.AddDbContext<DatabaseContext>(opt
                 => opt.UseNpgsql(connectionString, b => b.MigrationsAssembly("LBH.AdultSocialCare.Data")));

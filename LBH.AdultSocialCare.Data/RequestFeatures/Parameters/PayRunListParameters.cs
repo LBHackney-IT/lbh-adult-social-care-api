@@ -5,7 +5,7 @@ namespace LBH.AdultSocialCare.Data.RequestFeatures.Parameters
 {
     public class PayRunListParameters : RequestParameters
     {
-        public string PayRunId { get; set; }
+        public string SearchTerm { get; set; }
         public PayrunType? PayRunType { get; set; }
         public PayrunStatus? PayRunStatus { get; set; }
         public DateTimeOffset? DateFrom { get; set; }
