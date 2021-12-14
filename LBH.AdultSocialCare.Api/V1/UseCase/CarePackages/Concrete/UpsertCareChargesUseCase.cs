@@ -3,6 +3,7 @@ using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
@@ -38,6 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         public async Task ExecuteAsync(Guid carePackageId, CareChargesCreateDomain careChargesCreateDomain)
         {
+            // await using var transaction = await _dbManager.BeginTransactionAsync();
             // All care charges to have one care package Id
             foreach (var careCharge in careChargesCreateDomain.CareCharges)
             {
@@ -117,7 +119,65 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
             }
 
-            await _dbManager.SaveAsync();
+            try
+            {
+                EnsureValidPackageTotals(package);
+                await _dbManager.SaveAsync();
+            }
+            catch (ApiException ex)
+            {
+                throw new ApiException(ex.Message, ex.StatusCode);
+            }
+
+            // Get package and check reclaim totals are valid
+            /*var packageFromDb = await _carePackageGateway.GetPackageAsync(carePackageId, PackageFields.Details | PackageFields.Reclaims, true)
+                .EnsureExistsAsync($"Care package with id {carePackageId} not found");*/
+        }
+
+        private static void EnsureValidPackageTotals(CarePackage package)
+        {
+            var coreCost = package.Details
+                .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost)
+                .EnsureExists($"Core cost for package {package.Id} not found");
+
+            var additionalNeeds = package.Details
+                .Where(d => d.Type == PackageDetailType.AdditionalNeed).ToList();
+
+            CareChargeExtensions.NegateNetOffCosts(package);
+
+            var summary = new CarePackageSummaryDomain
+            {
+                StartDate = coreCost.StartDate,
+                EndDate = coreCost.EndDate,
+                CostOfPlacement = coreCost.Cost,
+
+                AdditionalWeeklyNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.Weekly).ToDomain(),
+                AdditionalOneOffNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.OneOff).ToDomain(),
+
+                CareCharges = package.Reclaims.Where(r => r.Type is ReclaimType.CareCharge).ToDomain(),
+                FundedNursingCare = package.Reclaims.FirstOrDefault(r => r.Type is ReclaimType.Fnc)?.ToDomain()
+            };
+
+            var validReclaimStatuses = new[] { ReclaimStatus.Active, ReclaimStatus.Ended, ReclaimStatus.Pending };
+            var startDates = new List<DateTimeOffset> { coreCost.StartDate };
+            startDates.AddRange(summary.CareCharges.Where(cc => cc.Status.In(validReclaimStatuses)).Select(careCharge => careCharge.StartDate).ToList());
+            startDates = startDates.Distinct().ToList();
+
+            foreach (var startDate in startDates)
+            {
+                CareChargeExtensions.CalculateReclaimSubTotals(package, summary, coreCost, startDate.Date, validReclaimStatuses);
+                CareChargeExtensions.CalculateTotals(summary, coreCost, startDate.Date);
+
+                var reclaimsTotal = Math.Abs(summary.SupplierReclaims?.SubTotal ?? 0) + Math.Abs(summary.HackneyReclaims?.SubTotal ?? 0);
+                var packageSubTotal = summary.SubTotalCost;
+
+                if (reclaimsTotal > packageSubTotal)
+                {
+                    throw new ApiException(
+                        $"Not allowed. Reclaim total {decimal.Round(reclaimsTotal, 2)} at date {startDate.Date: yyyy-MM-dd} is greater that package cost of {decimal.Round(packageSubTotal, 2)}",
+                        HttpStatusCode.BadRequest);
+                }
+            }
         }
 
         private static void ValidateCareChargeModificationRequest(IList<CareChargeReclaimCreationDomain> careCharges)
