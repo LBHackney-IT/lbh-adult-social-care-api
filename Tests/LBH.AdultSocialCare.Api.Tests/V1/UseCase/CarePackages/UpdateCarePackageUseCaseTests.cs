@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Moq;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
@@ -19,12 +20,14 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private readonly Mock<ICarePackageGateway> _carePackageGateway;
         private readonly Mock<ICarePackageSettingsGateway> _carePackageSettingsGateway;
         private readonly UpdateCarePackageUseCase _useCase;
+        private readonly Mock<ICreatePackageResourceUseCase> _createPackageResourceUseCase;
 
         public UpdateCarePackageUseCaseTests()
         {
             _dbManager = new Mock<IDatabaseManager>();
             _carePackageGateway = new Mock<ICarePackageGateway>();
             _carePackageSettingsGateway = new Mock<ICarePackageSettingsGateway>();
+            _createPackageResourceUseCase = new Mock<ICreatePackageResourceUseCase>();
 
             _carePackageGateway.Setup(cp => cp.GetPackagePlainAsync(It.IsAny<Guid>(), It.IsAny<bool>())).ReturnsAsync(() => null);
             _carePackageSettingsGateway.Setup(cps => cps.GetPackageSettingsPlainAsync(It.IsAny<Guid>(), It.IsAny<bool>())).ReturnsAsync(() => null);
@@ -33,7 +36,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             _useCase = new UpdateCarePackageUseCase(
                 Mapper, _dbManager.Object, _carePackageGateway.Object,
-                _carePackageSettingsGateway.Object, ensureSingleActivePackageTypePerUserUseCase);
+                _carePackageSettingsGateway.Object, ensureSingleActivePackageTypePerUserUseCase, _createPackageResourceUseCase.Object);
         }
 
         [Fact]
