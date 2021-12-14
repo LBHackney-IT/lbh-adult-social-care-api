@@ -32,19 +32,23 @@ data "aws_subnet_ids" "staging_private_subnets" {
   }
 }
 
- data "aws_ssm_parameter" "hasc_postgres_db_password" {
-   name = "/hasc-api/staging/POSTGRES_PASSWORD"
- }
+data "aws_ssm_parameter" "hasc_postgres_db_name" {
+  name = "/hasc-api/staging/POSTGRES_DATABASE"
+}
 
- data "aws_ssm_parameter" "hasc_postgres_username" {
-   name = "/hasc-api/staging/POSTGRES_USERNAME"
- }
+data "aws_ssm_parameter" "hasc_postgres_db_password" {
+  name = "/hasc-api/staging/POSTGRES_PASSWORD"
+}
+
+data "aws_ssm_parameter" "hasc_postgres_username" {
+  name = "/hasc-api/staging/POSTGRES_USERNAME"
+}
 
 module "postgres_db_staging" {
     source = "github.com/LBHackney-IT/aws-hackney-common-terraform.git//modules/database/postgres"
     environment_name = "staging"
     vpc_id = data.aws_vpc.staging_vpc.id
-    db_identifier = "adult-social-care-db"
+    db_identifier = data.aws_ssm_parameter.hasc_postgres_db_name.value
     db_name = "hasc_db"
     db_port  = 5829
     subnet_ids = data.aws_subnet_ids.staging_private_subnets.ids
