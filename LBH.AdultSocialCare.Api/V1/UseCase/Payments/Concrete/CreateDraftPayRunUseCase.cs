@@ -33,7 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                     HttpStatusCode.BadRequest);
             }
 
-            var unApprovedPayRunExists = await _payRunGateway.CheckExistsUnApprovedPayRunAsync(allowedPayRunTypes);
+            var unApprovedPayRunExists = await _payRunGateway.CheckExistsUnApprovedPayRunAsync();
             if (unApprovedPayRunExists)
                 throw new ApiException($"Operation not allowed. There exists a pay run that is not approved", HttpStatusCode.PreconditionFailed);
 

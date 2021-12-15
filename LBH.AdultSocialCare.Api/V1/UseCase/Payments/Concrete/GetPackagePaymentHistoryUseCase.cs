@@ -36,8 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             var payRunStatuses = new[] { PayrunStatus.Approved, PayrunStatus.Paid, PayrunStatus.PaidWithHold };
             var payRunTypes = new[]
             {
-                PayrunType.ResidentialRecurring, PayrunType.DirectPayments, PayrunType.ResidentialReleasedHolds,
-                PayrunType.DirectPaymentsReleasedHolds
+                PayrunType.ResidentialRecurring, PayrunType.ResidentialReleasedHolds
             };
 
             var packageLatestPayRun =
