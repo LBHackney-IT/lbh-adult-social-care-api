@@ -112,11 +112,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .CountAsync();
         }
 
-        public async Task<bool> CheckExistsUnApprovedPayRunAsync(PayrunType payRunType)
+        public async Task<bool> CheckExistsUnApprovedPayRunAsync(PayrunType[] payRunTypes)
         {
             var completedPayRunStatuses = new[] { PayrunStatus.Archived, PayrunStatus.Paid, PayrunStatus.PaidWithHold };
             return await _dbContext.Payruns
-                .Where(pr => pr.Type == payRunType && !completedPayRunStatuses.Contains(pr.Status)).AnyAsync();
+                .Where(pr => payRunTypes.Contains(pr.Type) && !completedPayRunStatuses.Contains(pr.Status)).AnyAsync();
         }
 
         public async Task<IEnumerable<Payrun>> GetPayRunsByTypeAndStatusAsync(PayrunType[] types, PayrunStatus[] statuses)

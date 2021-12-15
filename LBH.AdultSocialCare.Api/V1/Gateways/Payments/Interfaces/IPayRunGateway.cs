@@ -20,7 +20,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
 
         Task<int> GetDraftPayRunCount(PayrunType payRunType);
 
-        Task<bool> CheckExistsUnApprovedPayRunAsync(PayrunType payRunType);
+        Task<bool> CheckExistsUnApprovedPayRunAsync(PayrunType[] payRunTypes);
 
         Task<IEnumerable<Payrun>> GetPayRunsByTypeAndStatusAsync(PayrunType[] types, PayrunStatus[] statuses);
 
