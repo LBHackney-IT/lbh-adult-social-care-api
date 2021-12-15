@@ -182,10 +182,10 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpPost("assign")]
         [DisableRequestSizeLimit]
         // [AuthorizeRoles(RolesEnum.Broker)]
-        public async Task<ActionResult> AssignCarePlan([FromForm] CarePlanAssignmentRequest request)
+        public async Task<ActionResult<Guid>> AssignCarePlan([FromForm] CarePlanAssignmentRequest request)
         {
-            await _assignCarePlanUseCase.ExecuteAsync(request.ToDomain());
-            return Ok();
+            var result = await _assignCarePlanUseCase.ExecuteAsync(request.ToDomain());
+            return Ok(result);
         }
 
         /// <summary>Returns a financial care package summary.</summary>
