@@ -112,11 +112,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .CountAsync();
         }
 
-        public async Task<bool> CheckExistsUnApprovedPayRunAsync(PayrunType payRunType)
+        public async Task<bool> CheckExistsUnApprovedPayRunAsync()
         {
             var completedPayRunStatuses = new[] { PayrunStatus.Archived, PayrunStatus.Paid, PayrunStatus.PaidWithHold };
             return await _dbContext.Payruns
-                .Where(pr => pr.Type == payRunType && !completedPayRunStatuses.Contains(pr.Status)).AnyAsync();
+                .Where(pr => !completedPayRunStatuses.Contains(pr.Status)).AnyAsync();
         }
 
         public async Task<IEnumerable<Payrun>> GetPayRunsByTypeAndStatusAsync(PayrunType[] types, PayrunStatus[] statuses)
@@ -145,10 +145,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             return previousPayRun;
         }
 
-        public async Task<Payrun> GetPackageLatestPayRunAsync(Guid packageId, PayrunType[] payrunTypes, PayrunStatus[] payRunStatuses, InvoiceStatus[] invoiceStatuses)
+        public async Task<Payrun> GetPackageLatestPayRunAsync(Guid packageId, PayrunStatus[] payRunStatuses, InvoiceStatus[] invoiceStatuses)
         {
             var payrun = await _dbContext.PayrunInvoices
-                .Where(pi => pi.Invoice.PackageId == packageId && invoiceStatuses.Contains(pi.InvoiceStatus) && payrunTypes.Contains(pi.Payrun.Type) && payRunStatuses.Contains(pi.Payrun.Status))
+                .Where(pi => pi.Invoice.PackageId == packageId && invoiceStatuses.Contains(pi.InvoiceStatus) && payRunStatuses.Contains(pi.Payrun.Status))
                 .OrderByDescending(pi => pi.Payrun.EndDate).Select(pi => pi.Payrun).FirstOrDefaultAsync();
             return payrun;
         }

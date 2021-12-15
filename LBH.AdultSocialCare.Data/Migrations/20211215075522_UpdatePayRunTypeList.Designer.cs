@@ -3,15 +3,17 @@ using System;
 using LBH.AdultSocialCare.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20211215075522_UpdatePayRunTypeList")]
+    partial class UpdatePayRunTypeList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1049,7 +1051,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             LockoutEnabled = true,
                             LockoutEnd = new DateTimeOffset(new DateTime(2521, 12, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Name = "Migration User",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJMF9t0Ryx8UeTtqprU/mA9L5FAq1Iv76Hz20QKlDLMb4T8w3K7eCt4ywGC2BhLJHQ==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEBEO+mmspCIVNk8b2GsQirAlQElOn2Ep5ThcFo9cpkphwWQ79YeFRzNgQSpSRCWG+w==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
@@ -1309,7 +1311,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasCheckConstraint("CK_Payruns_Status", "\"Status\" IN (1, 2, 3, 4, 5, 6, 7, 8)");
 
-                    b.HasCheckConstraint("CK_Payruns_Type", "\"Type\" IN (1, 2)");
+                    b.HasCheckConstraint("CK_Payruns_Type", "\"Type\" IN (1, 3)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.PayrunHistory", b =>

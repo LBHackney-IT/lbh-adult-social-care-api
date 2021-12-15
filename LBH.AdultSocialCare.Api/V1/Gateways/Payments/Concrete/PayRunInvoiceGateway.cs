@@ -9,6 +9,7 @@ using LBH.AdultSocialCare.Data.Extensions;
 using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -39,20 +40,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 parameters.PageSize);
         }
 
-        public async Task<PagedList<PayrunInvoice>> GetPackageInvoicesAsync(Guid packageId, RequestParameters parameters, PayrunStatus[] payRunStatuses, InvoiceStatus[] invoiceStatuses,
+        public async Task<IList<PayrunInvoice>> GetPackageInvoicesAsync(Guid packageId, PayrunStatus[] payRunStatuses, InvoiceStatus[] invoiceStatuses,
             PayRunInvoiceFields fields = PayRunInvoiceFields.None, bool trackChanges = false)
         {
             var query = _dbContext.PayrunInvoices.Where(p => p.Invoice.PackageId == packageId && payRunStatuses.Contains(p.Payrun.Status) && invoiceStatuses.Contains(p.InvoiceStatus))
                 .TrackChanges(trackChanges);
 
-            var payRunInvoices = await BuildPayRunInvoiceQuery(query, fields)
-                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-                .Take(parameters.PageSize)
+            return await BuildPayRunInvoiceQuery(query, fields)
+                .OrderByDescending(pi => pi.DateCreated)
                 .ToListAsync();
-
-            var invoiceCount = await query.CountAsync();
-            return PagedList<PayrunInvoice>.ToPagedList(payRunInvoices, invoiceCount, parameters.PageNumber,
-                parameters.PageSize);
         }
 
         public async Task<PayRunInsightsDomain> GetPayRunInsightsAsync(Guid payRunId)
@@ -240,8 +236,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         {
             return await _dbContext.PayrunInvoices.Where(pi => pi.InvoiceStatus == InvoiceStatus.Released && pi.Payrun.Status != PayrunStatus.Archived).CountAsync();
         }
-
-
 
         private static IQueryable<PayrunInvoice> BuildPayRunInvoiceQuery(IQueryable<PayrunInvoice> query, PayRunInvoiceFields fields)
         {
