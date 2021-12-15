@@ -39,5 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
         Task<PagedList<CarePackageApprovableListItemDomain>> GetApprovablePackagesAsync(ApprovableCarePackagesQueryParameters parameters, PackageStatus[] statusesToInclude);
 
         Task DeletePackage(Guid packageId);
+
+        Task<CarePackageDomain> GetServiceUserActivePackages(int hackneyId);
     }
 }

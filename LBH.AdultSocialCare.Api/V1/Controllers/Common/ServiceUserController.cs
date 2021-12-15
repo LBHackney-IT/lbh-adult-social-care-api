@@ -91,5 +91,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             var result = await _getServiceUserPackagesUseCase.ExecuteAsync(serviceUserId);
             return Ok(result);
         }
+
+        //todo FK: will be replaced as search
+        /// <summary>Return service user information.</summary>
+        /// <param name="request">Request to filter list of service user returned.</param>
+        /// <returns>The Service User Information response.</returns>
+        [ProducesResponseType(typeof(ServiceUserInformationResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet("new-search")]
+        // [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
+        public async Task<ActionResult<ServiceUserInformationResponse>> NewSearchServiceUser([FromQuery] ServiceUserQueryRequest request)
+        {
+            var result = await _getServiceUserMasterSearchUseCase.GetServiceUsersNew(request);
+            return Ok(result);
+        }
     }
 }
