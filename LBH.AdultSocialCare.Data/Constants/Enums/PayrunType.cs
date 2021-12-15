@@ -10,11 +10,6 @@ namespace LBH.AdultSocialCare.Data.Constants.Enums
         ResidentialRecurring = 1,
 
         [Description("Residential Released Holds")]
-        ResidentialReleasedHolds = 2,
-
-        /*[Description("Direct Payments")]
-        DirectPayments = 3,*/
-        /*[Description("Direct Payments Released Holds")]
-        DirectPaymentsReleasedHolds = 4,*/
+        ResidentialReleasedHolds = 2
     }
 }

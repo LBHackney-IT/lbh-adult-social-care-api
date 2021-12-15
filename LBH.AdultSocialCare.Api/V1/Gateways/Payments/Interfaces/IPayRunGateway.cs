@@ -28,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
 
         Task<Payrun> GetPreviousPayRunAsync(PayrunType payRunType);
 
-        Task<Payrun> GetPackageLatestPayRunAsync(Guid packageId, PayrunType[] payrunTypes, PayrunStatus[] payRunStatuses, InvoiceStatus[] invoiceStatuses);
+        Task<Payrun> GetPackageLatestPayRunAsync(Guid packageId, PayrunStatus[] payRunStatuses, InvoiceStatus[] invoiceStatuses);
 
         Task<List<CedarFileInvoiceHeader>> GetCedarFileList(Guid payRunId);
 
