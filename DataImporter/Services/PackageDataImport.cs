@@ -138,7 +138,8 @@ namespace DataImporter.Services
                         {
                             CarePackageId = carePackage.Id,
                             CreatorId = _applicationID,
-                            Cost = Math.Abs(package.Cost),
+                            Cost = excelPackageModel.ReclaimType == ReclaimType.Fnc ? package.Cost : Math.Abs(package.Cost),
+                            Description = package.ElementType,
                             DateCreated = DateTimeOffset.UtcNow,
                             Id = Guid.NewGuid(),
                             StartDate = package.StartDate,

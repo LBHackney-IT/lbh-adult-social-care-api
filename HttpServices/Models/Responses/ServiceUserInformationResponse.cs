@@ -6,6 +6,6 @@ namespace HttpServices.Models.Responses
     {
         public List<ResidentResponse> Residents { get; set; }
         public int totalCount { get; set; }
-        public int nextCursor { get; set; }
+        public int? nextCursor { get; set; }
     }
 }
