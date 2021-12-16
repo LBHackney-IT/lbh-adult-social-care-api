@@ -315,6 +315,17 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 throw new ApiException($"{ReclaimSubType.CareChargeProvisional.GetDisplayName()} start date must be equal or greater than {coreCostDetail.StartDate.Date}", HttpStatusCode.UnprocessableEntity);
             }
 
+            // End date of provisional CC cannot be before package end date
+            if (reclaimCreationDomain.EndDate != null)
+            {
+                var provisionalCareChargeEndDate = (DateTimeOffset) reclaimCreationDomain.EndDate;
+                if (coreCostDetail.EndDate != null && !provisionalCareChargeEndDate.IsInRange(coreCostDetail.StartDate, (DateTimeOffset) coreCostDetail.EndDate))
+                {
+                    throw new ApiException(
+                        $"{reclaimCreationDomain.SubType} end date is invalid. Must be in the range {coreCostDetail.StartDate} - {coreCostDetail.EndDate}", HttpStatusCode.UnprocessableEntity);
+                }
+            }
+
             // If provisional cc is set to be ongoing, force end date to be the end date of the package
             if (coreCostDetail.EndDate != null && reclaimCreationDomain.EndDate == null)
             {
