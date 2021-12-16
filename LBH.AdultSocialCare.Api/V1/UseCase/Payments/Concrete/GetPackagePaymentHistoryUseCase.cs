@@ -74,7 +74,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             return new PackagePaymentViewResponse
             {
                 PackageId = package.Id,
-                ServiceUserName = package.ServiceUser.FirstName,
+                ServiceUserName = $"{package.ServiceUser.FirstName} {package.ServiceUser.MiddleName} {package.ServiceUser.LastName}",
                 CedarId = package.Supplier.CedarId ?? 0,
                 SupplierName = package.Supplier.SupplierName,
                 PackageType = package.PackageType,
