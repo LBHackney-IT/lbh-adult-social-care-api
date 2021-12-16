@@ -156,14 +156,18 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         public async Task<List<CedarFileInvoiceHeader>> GetCedarFileList(Guid payRunId)
         {
             return await _dbContext.PayrunInvoices
-                .Where(p => p.PayrunId == payRunId)
+                .Where(p => p.PayrunId == payRunId && p.InvoiceStatus == InvoiceStatus.Accepted)
                 .Include(item => item.Invoice)
                 .ThenInclude(item => item.Items)
+                .ThenInclude(item => item.CarePackageDetail)
                 .Include(item => item.Invoice)
                 .ThenInclude(item => item.Supplier)
                 .Include(item => item.Invoice)
                 .ThenInclude(item => item.Package)
                 .ThenInclude(item => item.PrimarySupportReason)
+                .Include(item => item.Invoice)
+                .ThenInclude(item => item.Items)
+                .ThenInclude(item => item.CarePackageReclaim)
                 .Select(p => new CedarFileInvoiceHeader
                 {
                     InvoiceHeaderId = 2,
@@ -183,7 +187,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                         Cost = it.WeeklyCost == 0 ? it.TotalCost : it.WeeklyCost,
                         TaxFlag = 0,
                         CostCentre = p.Invoice.Package.PrimarySupportReason.CederBudgetCode,
-                        Subjective = "520060",
+                        Subjective = it.CarePackageDetailId != Guid.Empty ? it.CarePackageDetail.Subjective : it.CarePackageReclaimId != Guid.Empty ? it.CarePackageReclaim.Subjective : null,
                         Analysis = "X",
                         TaxStatus = "EXE"
                     }).ToList()
