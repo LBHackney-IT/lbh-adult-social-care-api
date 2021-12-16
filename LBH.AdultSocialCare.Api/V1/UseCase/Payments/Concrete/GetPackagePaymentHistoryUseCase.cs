@@ -5,13 +5,13 @@ using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.Payments;
 using LBH.AdultSocialCare.Data.Extensions;
 using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 {
@@ -50,7 +50,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             var pagedInvoices = PagedList<PayrunInvoice>.ToPagedList(payRunInvoices, allInvoices.Count, parameters.PageNumber,
                 parameters.PageSize);
 
-
             var payments = new PagedResponse<PackagePaymentItemResponse>
             {
                 PagingMetaData = pagedInvoices.PagingMetaData,
@@ -60,6 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                     PeriodTo = i.Payrun.EndDate.Date,
                     PayRunId = i.PayrunId,
                     InvoiceId = i.InvoiceId,
+                    InvoiceNumber = i.Invoice.Number,
                     AmountPaid = decimal.Round(i.Invoice.GrossTotal, 2)
                 })
             };
