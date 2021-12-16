@@ -36,6 +36,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
 
         Task DeletePackage(Guid packageId);
 
-        Task<CarePackageDomain> GetServiceUserActivePackages(int hackneyId);
+        Task<List<CarePackage>> GetServiceUserActivePackages(List<int> hackneyId);
     }
 }
