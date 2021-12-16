@@ -32,8 +32,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 .EnsureExistsAsync($"Package with id {carePackageId} not found");
 
             var resourceType = reclaimType == ReclaimType.Fnc
-            ? PackageResourceType.FncAssessmentFile
-            : PackageResourceType.CareChargeAssessmentFile;
+                ? PackageResourceType.FncAssessmentFile
+                : PackageResourceType.CareChargeAssessmentFile;
 
             if (res == null)
                 return null;

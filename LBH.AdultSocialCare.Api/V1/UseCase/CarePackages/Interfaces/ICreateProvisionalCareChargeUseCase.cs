@@ -5,10 +5,8 @@ using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces
 {
-    public interface ICreateCarePackageReclaimUseCase
+    public interface ICreateProvisionalCareChargeUseCase
     {
-        Task<CarePackageReclaimResponse> CreateCarePackageReclaim(CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType);
-
         Task<CarePackageReclaimResponse> CreateProvisionalCareCharge(
             CarePackageReclaimCreationDomain reclaimCreationDomain, ReclaimType reclaimType);
     }
