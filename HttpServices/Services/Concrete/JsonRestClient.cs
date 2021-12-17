@@ -1,12 +1,13 @@
 using Common.Extensions;
 using HttpServices.Services.Contracts;
+using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace HttpServices.Services.Concrete
 {
@@ -16,8 +17,6 @@ namespace HttpServices.Services.Concrete
     public class JsonRestClient : IRestClient
     {
         private HttpClient _httpClient;
-
-        private readonly JsonSerializerOptions _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         public void Init(HttpClient httpClient)
         {
@@ -93,10 +92,11 @@ namespace HttpServices.Services.Concrete
             if (httpResponse.Content == null ||
                 httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return default;
 
-            var responseStream = await httpResponse.Content.ReadAsStreamAsync();
+            // var responseStream = await httpResponse.Content.ReadAsStreamAsync();
+            // var responseContent = await JsonSerializer.DeserializeAsync<TResult>(responseStream, _options);
 
-            var responseContent = await JsonSerializer.DeserializeAsync<TResult>(responseStream, _options);
-            return responseContent;
+            var content = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<TResult>(content);
         }
     }
 }
