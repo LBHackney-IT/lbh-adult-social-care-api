@@ -58,7 +58,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpPost("fnc")]
         public async Task<ActionResult<CarePackageReclaimResponse>> CreateFundedNursingCare(
             [FromForm] FundedNursingCareCreationRequest request,
-            [FromServices] ICreateFncReclaimUseCase useCase)
+            [FromServices] ICreateFundedNursingCareUseCase useCase)
         {
             var response = await useCase.ExecuteAsync(request.ToDomain());
             return Ok(response);
@@ -169,7 +169,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpGet("fnc")]
         public async Task<ActionResult<CarePackageReclaimResponse>> GetFundedNursingCare(Guid carePackageId)
         {
-            var result = await _getCarePackageReclaimsUseCase.GetCarePackageReclaim(carePackageId, ReclaimType.Fnc);
+            var result = await _getCarePackageReclaimsUseCase.GetFundedNursingCare(carePackageId);
             return Ok(result);
         }
 

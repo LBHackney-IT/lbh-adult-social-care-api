@@ -15,7 +15,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.CarePackages
 
         public CarePackageReclaimGatewayTests()
         {
-            _gateway = new CarePackageReclaimGateway(Context, Mapper);
+            _gateway = new CarePackageReclaimGateway(Context);
             _generator = new DatabaseTestDataGenerator(Context);
         }
 

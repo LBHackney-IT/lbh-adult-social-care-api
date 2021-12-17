@@ -17,13 +17,13 @@ using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
-    public class CreateFncReclaimUseCase : ICreateFncReclaimUseCase
+    public class CreateFundedNursingCareUseCase : ICreateFundedNursingCareUseCase
     {
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
         private readonly ICreatePackageResourceUseCase _createPackageResourceUseCase;
 
-        public CreateFncReclaimUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager,
+        public CreateFundedNursingCareUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager,
             ICreatePackageResourceUseCase createPackageResourceUseCase)
         {
             _carePackageGateway = carePackageGateway;
@@ -46,7 +46,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var fncPayment = CreateReclaimEntity(requestedReclaim, ReclaimSubType.FncPayment);
             var fncReclaim = CreateReclaimEntity(requestedReclaim, ReclaimSubType.FncReclaim);
 
-            fncReclaim.Cost = Decimal.Negate(fncPayment.Cost);
+            fncReclaim.Cost = Decimal.Negate(requestedReclaim.Cost);
 
             package.Reclaims.Add(fncPayment);
             package.Reclaims.Add(fncReclaim);
