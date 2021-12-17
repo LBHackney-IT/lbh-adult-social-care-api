@@ -186,16 +186,13 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             _dbContext.CarePackages.Remove(carePackage);
         }
 
-        public async Task<CarePackageDomain> GetServiceUserActivePackages(int hackneyId)
+        public async Task<List<CarePackage>> GetServiceUserActivePackages(List<int> hackneyId)
         {
-            var carePackage = await _dbContext.CarePackages
-                .Where(p => p.ServiceUser.HackneyId == hackneyId &&
-                                          p.Status != PackageStatus.Cancelled &&
-                                          p.Status != PackageStatus.Ended)
-                .OrderByDescending(x => x.DateCreated)
-                .FirstOrDefaultAsync();
-
-            return carePackage.ToDomain();
+            return await _dbContext.CarePackages
+                .Include(p => p.ServiceUser)
+                .Where(p => hackneyId.Contains(p.ServiceUser.HackneyId) &&
+                            p.Status != PackageStatus.Cancelled &&
+                            p.Status != PackageStatus.Ended).ToListAsync();
         }
 
         private static IQueryable<CarePackage> BuildPackageQuery(IQueryable<CarePackage> query, PackageFields fields)
