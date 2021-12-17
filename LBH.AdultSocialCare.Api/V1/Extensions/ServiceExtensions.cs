@@ -1,5 +1,10 @@
+using Amazon.SQS;
 using HttpServices.Services.Concrete;
 using HttpServices.Services.Contracts;
+using LBH.AdultSocialCare.Api.Configuration;
+using LBH.AdultSocialCare.Api.V1.Services.Queuing;
+using LBH.AdultSocialCare.Data;
+using LBH.AdultSocialCare.Data.Entities.Common;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +19,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Text;
-using Amazon.SQS;
-using LBH.AdultSocialCare.Api.Configuration;
-using LBH.AdultSocialCare.Api.V1.Services.IO;
-using LBH.AdultSocialCare.Api.V1.Services.Queuing;
-using LBH.AdultSocialCare.Data;
-using LBH.AdultSocialCare.Data.Entities.Common;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
 {

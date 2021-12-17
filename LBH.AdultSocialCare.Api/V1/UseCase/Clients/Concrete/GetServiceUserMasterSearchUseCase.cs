@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Common.Extensions;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
@@ -30,9 +31,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Clients.Concrete
             var serviceUserInformation = await _residentsService.SearchServiceUserInformationAsync(request)
                 .EnsureExistsAsync($"service user with hackney Id : {request.HackneyId} not found");
 
+            var hackneyIds = serviceUserInformation.Residents.Select(s => int.Parse(s.MosaicId)).ToList();
+            var carePackages = await _carePackageGateway.GetServiceUserActivePackages(hackneyIds);
+
             foreach (var serviceUser in serviceUserInformation.Residents)
             {
-                var carePackage = await _carePackageGateway.GetServiceUserActivePackages(Convert.ToInt32(serviceUser.MosaicId));
+                var carePackage = carePackages.FirstOrDefault(c => c.ServiceUser?.HackneyId == Convert.ToInt32(serviceUser.MosaicId));
                 if (carePackage != null)
                 {
                     serviceUser.ActivePackage = carePackage.PackageType.GetDisplayName();
