@@ -3,11 +3,9 @@ using HttpServices.Services.Contracts;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Net.Http;
-using System.Text.Json;
+using System.Text;
 using System.Threading.Tasks;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace HttpServices.Services.Concrete
 {
@@ -63,26 +61,19 @@ namespace HttpServices.Services.Concrete
         {
             Debug.Assert(_httpClient != null, "Init() method must be called before making any requests");
 
-            // Init request message
             var httpRequestMessage = new HttpRequestMessage
             {
                 Method = method,
                 RequestUri = new Uri($"{_httpClient.BaseAddress}{url}")
             };
 
-            // Add request content
             if (payload != null)
             {
-                var requestStream = new MemoryStream();
-                var writer = new Utf8JsonWriter(requestStream);
-
-                JsonSerializer.Serialize(writer, payload);
-                requestStream.Seek(0, SeekOrigin.Begin);
-
-                httpRequestMessage.Content = new StreamContent(requestStream); ;
+                var jsonBody = JsonConvert.SerializeObject(payload);
+                httpRequestMessage.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
             }
 
-            using var httpResponse = await _httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
+            var httpResponse = await _httpClient.SendAsync(httpRequestMessage).ConfigureAwait(false);
 
             if (!httpResponse.IsSuccessStatusCode)
             {
@@ -91,9 +82,6 @@ namespace HttpServices.Services.Concrete
 
             if (httpResponse.Content == null ||
                 httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return default;
-
-            // var responseStream = await httpResponse.Content.ReadAsStreamAsync();
-            // var responseContent = await JsonSerializer.DeserializeAsync<TResult>(responseStream, _options);
 
             var content = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
             return JsonConvert.DeserializeObject<TResult>(content);
