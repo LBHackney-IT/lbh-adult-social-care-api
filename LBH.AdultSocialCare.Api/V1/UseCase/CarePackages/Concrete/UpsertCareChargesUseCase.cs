@@ -158,12 +158,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var oneToTwelveCareCharge = careCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
             var thirteenPlusCareCharge = careCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks);
 
-            //If package has care charge other than provisional, provisional must have end date
-            if ((oneToTwelveCareCharge != null || thirteenPlusCareCharge != null) && provisionalCareCharge?.EndDate == null)
-            {
-                throw new ApiException($"Provisional care charge must have an end date", HttpStatusCode.BadRequest);
-            }
-
             // 1-12 must have end date
             if (oneToTwelveCareCharge is { EndDate: null })
             {
@@ -248,6 +242,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 throw new ApiException($"Initial care charge must start on package start date",
                     HttpStatusCode.BadRequest);
             }
+
+            /*//If package has 1-12 care charge, provisional must have end date
+            if (oneToTwelveCareCharge != null && oneToTwelveCareCharge.StartDate.Date != coreCost.StartDate.Date && provisionalCareCharge?.EndDate == null)
+            {
+                throw new ApiException($"Provisional care charge must have an end date", HttpStatusCode.BadRequest);
+            }*/
 
             // Only provisional care charge, ongoing and package has end date, make package end date to be end date of provisional care charge
             if (provisionalCareCharge is { EndDate: null } && oneToTwelveCareCharge == null && thirteenPlusCareCharge == null && coreCost.EndDate != null)
