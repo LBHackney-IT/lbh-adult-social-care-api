@@ -84,6 +84,36 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             VerifyPackageDetails(package, request);
         }
 
+        [Fact]
+        public async Task UpdateCarePackageDetailsShouldFailIfAnpDatesOutsideCoreCostDates()
+        {
+            var package = _generator.CreateCarePackage();
+            var details = _generator.CreateCarePackageDetails(package, 1, PackageDetailType.AdditionalNeed);
+
+            var request = new CarePackageBrokerageCreationRequest
+            {
+                CoreCost = 123.45m,
+                StartDate = DateTimeOffset.Now.Date.AddDays(-30),
+                EndDate = DateTimeOffset.Now.Date.AddDays(30),
+                SupplierId = 2,
+                Details = details.ToRequest().ToList()
+            };
+
+            request.Details.Add(TestDataHelper.CreateCarePackageDetailDomainList(2, PackageDetailType.AdditionalNeed).First().ToRequest());
+
+            foreach (var detail in request.Details)
+            {
+                detail.Cost += 10.0m;
+                detail.StartDate = request.StartDate?.AddDays(-40);
+                detail.EndDate = request.EndDate?.AddDays(40);
+            }
+
+            var response = await _fixture.RestClient
+                .PutAsync<object>($"api/v1/care-packages/{package.Id}/details", request);
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
+        }
+
         private static void VerifyPackageDetails(CarePackage package, CarePackageBrokerageCreationRequest request)
         {
             package.SupplierId.Should().Be(request.SupplierId);

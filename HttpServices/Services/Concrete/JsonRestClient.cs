@@ -1,10 +1,11 @@
 using Common.Extensions;
 using HttpServices.Services.Contracts;
-using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Net.Http;
-using System.Text;
+using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace HttpServices.Services.Concrete
@@ -15,6 +16,8 @@ namespace HttpServices.Services.Concrete
     public class JsonRestClient : IRestClient
     {
         private HttpClient _httpClient;
+
+        private readonly JsonSerializerOptions _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         public void Init(HttpClient httpClient)
         {
@@ -56,23 +59,31 @@ namespace HttpServices.Services.Concrete
             return await SubmitRequest<TResult>(url, null, errorMessage, HttpMethod.Delete).ConfigureAwait(false);
         }
 
-        private async Task<TResult> SubmitRequest<TResult>(string url, object payload, string errorMessage, HttpMethod method)
+        private async Task<TResult> SubmitRequest<TResult>(string url, object payload, string errorMessage,
+            HttpMethod method)
         {
             Debug.Assert(_httpClient != null, "Init() method must be called before making any requests");
 
+            // Init request message
             var httpRequestMessage = new HttpRequestMessage
             {
                 Method = method,
                 RequestUri = new Uri($"{_httpClient.BaseAddress}{url}")
             };
 
+            // Add request content
             if (payload != null)
             {
-                var jsonBody = JsonConvert.SerializeObject(payload);
-                httpRequestMessage.Content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+                var requestStream = new MemoryStream();
+                var writer = new Utf8JsonWriter(requestStream);
+
+                JsonSerializer.Serialize(writer, payload);
+                requestStream.Seek(0, SeekOrigin.Begin);
+
+                httpRequestMessage.Content = new StreamContent(requestStream); ;
             }
 
-            var httpResponse = await _httpClient.SendAsync(httpRequestMessage).ConfigureAwait(false);
+            using var httpResponse = await _httpClient.SendAsync(httpRequestMessage, HttpCompletionOption.ResponseHeadersRead).ConfigureAwait(false);
 
             if (!httpResponse.IsSuccessStatusCode)
             {
@@ -82,8 +93,10 @@ namespace HttpServices.Services.Concrete
             if (httpResponse.Content == null ||
                 httpResponse.Content.Headers.ContentType?.MediaType != "application/json") return default;
 
-            var content = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
-            return JsonConvert.DeserializeObject<TResult>(content);
+            var responseStream = await httpResponse.Content.ReadAsStreamAsync();
+
+            var responseContent = await JsonSerializer.DeserializeAsync<TResult>(responseStream, _options);
+            return responseContent;
         }
     }
 }

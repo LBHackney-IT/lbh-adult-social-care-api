@@ -25,6 +25,7 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
         public DateTimeOffset? EndDate { get; set; }
 
         public string UnitOfMeasure { get; set; }
+        public string Subjective { get; set; }
 
         [ForeignKey(nameof(CarePackageId))]
         public CarePackage Package { get; set; }
