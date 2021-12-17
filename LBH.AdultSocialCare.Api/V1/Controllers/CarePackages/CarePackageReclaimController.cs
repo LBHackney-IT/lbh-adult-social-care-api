@@ -65,15 +65,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         }
 
         /// <summary>Update single funded nursing care reclaim.</summary>
-        /// <param name="fundedNursingCareUpdateRequest">The funded nursing care update request.</param>
+        /// <param name="request">The funded nursing care update request.</param>
+        /// <param name="carePackageId">A unique care package identifier.</param>
+        /// <param name="useCase">A reference to an IUpdateFundedNursingCareUseCase instance.</param>
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPut("fnc")]
-        public async Task<ActionResult> UpdateFundedNursingCare([FromForm] FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
+        public async Task<ActionResult> UpdateFundedNursingCare(
+            [FromForm] FundedNursingCareUpdateRequest request, Guid carePackageId,
+            [FromServices] IUpdateFundedNursingCareUseCase useCase)
         {
-            await _updateCarePackageReclaimUseCase.UpdateAsync(fundedNursingCareUpdateRequest.ToDomain());
+            await useCase.UpdateAsync(request.ToDomain(), carePackageId);
             return Ok();
         }
 

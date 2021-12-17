@@ -76,7 +76,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         {
             var coreCost = package.Details
                 .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost)
-                .EnsureExists($"Core cost for package {requestedReclaim.CarePackageId} not found", HttpStatusCode.InternalServerError);
+                .EnsureExists($"Core cost for package {package.Id} not found", HttpStatusCode.InternalServerError);
 
             if (package.Status.In(PackageStatus.Cancelled, PackageStatus.Ended))
             {
@@ -90,7 +90,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             if (package.Reclaims.Any(r => r.Type is ReclaimType.Fnc))
             {
-                throw new ApiException($"FNC already added to package {requestedReclaim.CarePackageId}", HttpStatusCode.Conflict);
+                throw new ApiException($"FNC already added to package {package.Id}", HttpStatusCode.Conflict);
             }
 
             if (!requestedReclaim.StartDate.IsInRange(coreCost.StartDate, coreCost.EndDate ?? DateTimeOffset.Now.AddYears(10)))
