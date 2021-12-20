@@ -56,7 +56,8 @@ namespace HttpServices.Services.Concrete
             return await SubmitRequest<TResult>(url, null, errorMessage, HttpMethod.Delete).ConfigureAwait(false);
         }
 
-        private async Task<TResult> SubmitRequest<TResult>(string url, object payload, string errorMessage, HttpMethod method)
+        private async Task<TResult> SubmitRequest<TResult>(string url, object payload, string errorMessage,
+            HttpMethod method)
         {
             Debug.Assert(_httpClient != null, "Init() method must be called before making any requests");
 

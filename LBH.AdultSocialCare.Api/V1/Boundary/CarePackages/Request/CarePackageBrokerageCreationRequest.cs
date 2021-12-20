@@ -33,6 +33,20 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request
                     $"Package Details should not contain any item of type Core Cost ({PackageDetailType.CoreCost})",
                     new[] { nameof(Details) });
             }
+
+            // ANP not outside core package dates
+            foreach (var carePackageDetail in Details)
+            {
+                if (carePackageDetail.StartDate.GetValueOrDefault().Date < StartDate.GetValueOrDefault().Date)
+                {
+                    yield return new ValidationResult($"ANP start date cannot be before core cost start date", new[] { nameof(Details) });
+                }
+
+                if (EndDate != null && carePackageDetail.EndDate.GetValueOrDefault().Date > EndDate.GetValueOrDefault().Date)
+                {
+                    yield return new ValidationResult($"ANP end date cannot be after core cost end date", new[] { nameof(Details) });
+                }
+            }
         }
     }
 }

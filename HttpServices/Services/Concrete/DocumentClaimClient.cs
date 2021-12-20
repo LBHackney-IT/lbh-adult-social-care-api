@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using HttpServices.Models.Requests;
 using HttpServices.Models.Responses;
 using HttpServices.Services.Contracts;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace HttpServices.Services.Concrete
 {
