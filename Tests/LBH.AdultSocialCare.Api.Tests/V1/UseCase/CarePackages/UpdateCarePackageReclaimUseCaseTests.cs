@@ -546,10 +546,23 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         [Fact]
         public async Task ShouldNotAllowUpdateCareChargeProvisionalItemIfThereIsExistReclaim()
         {
+            var packageId = Guid.NewGuid();
             var reclaimId = Guid.NewGuid();
+            var provisionalCareCharge = new CarePackageReclaim
+            {
+                Cost = 1m,
+                Type = ReclaimType.CareCharge,
+                SubType = ReclaimSubType.CareChargeProvisional,
+                Status = ReclaimStatus.Cancelled,
+                StartDate = _today.AddDays(-30),
+                EndDate = _today.AddDays(-20),
+                Id = reclaimId,
+                CarePackageId = packageId,
+                ClaimCollector = ClaimCollector.Supplier
+            };
             var package = new CarePackage
             {
-                Id = Guid.NewGuid(),
+                Id = packageId,
                 PackageType = PackageType.ResidentialCare,
                 Details =
                 {
@@ -563,17 +576,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 },
                 Reclaims =
                 {
-                    new CarePackageReclaim
-                    {
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeProvisional,
-                        Status = ReclaimStatus.Cancelled,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(-20),
-                        Id = Guid.NewGuid(),
-                        ClaimCollector = ClaimCollector.Supplier
-                    },
+                    provisionalCareCharge
+                    ,
                     new CarePackageReclaim
                     {
                         Cost = 1m,
@@ -582,7 +586,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                         Status = ReclaimStatus.Active,
                         StartDate = _today.AddDays(-20),
                         EndDate = _today.AddDays(20),
-                        Id = reclaimId,
+                        Id = Guid.NewGuid(),
+                        CarePackageId = packageId,
                         ClaimCollector = ClaimCollector.Supplier
                     }
                 }
@@ -591,6 +596,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _carePackageGateway
                .Setup(g => g.GetPackageAsync(package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
                .ReturnsAsync(package);
+
+            _carePackageReclaimGateway
+               .Setup(g => g.GetAsync(It.IsAny<Guid>(), It.IsAny<bool>()))
+               .ReturnsAsync(provisionalCareCharge);
 
             var exception = await Assert.ThrowsAsync<ApiException>(async () =>
             {
@@ -607,7 +616,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             });
 
             //TODO: Fix with correct value
-            exception.StatusCode.Should().Be(500);
+            exception.StatusCode.Should().Be(400);
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
         }
