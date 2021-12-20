@@ -46,6 +46,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             var carePackageReclaim = carePackage.Reclaims.Single(r => r.Id == reclaimFromDb.Id);
 
+            if (carePackageReclaim.SubType == ReclaimSubType.CareChargeProvisional && carePackage.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional && r.Status.In(ReclaimStatus.Active, ReclaimStatus.Pending, ReclaimStatus.Ended)))
+            {
+                throw new ApiException($"Operation not allowed. Package has been assessed.", HttpStatusCode.BadRequest);
+            }
+
             try
             {
                 _mapper.Map(carePackageReclaimUpdateDomain, carePackageReclaim);

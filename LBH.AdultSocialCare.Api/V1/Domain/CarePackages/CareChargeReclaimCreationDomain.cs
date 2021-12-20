@@ -36,7 +36,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
                 return value;
             }
 
-            if (EndDate != null && DateTimeOffset.Now.Date >= EndDate.Value.Date)
+            if (EndDate != null && DateTimeOffset.Now.Date > EndDate.Value.Date)
             {
                 return ReclaimStatus.Ended;
             }
