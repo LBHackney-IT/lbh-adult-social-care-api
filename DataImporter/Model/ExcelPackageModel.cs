@@ -80,13 +80,14 @@ namespace DataImporter.Model
             else if (_fncGrossPackageType.Contains(elementType, StringComparer.OrdinalIgnoreCase))
             {
                 _excelPackageType = ExcelPackageType.Reclaim;
+                _careChargeSubType = ReclaimSubType.FncReclaim;
                 _reclaimType = ReclaimType.Fnc;
                 _claimCollector = ClaimCollector.Hackney;
             }
             else if (_fncNetPackageType.Contains(elementType, StringComparer.OrdinalIgnoreCase))
             {
                 _excelPackageType = ExcelPackageType.Reclaim;
-                _careChargeSubType = ReclaimSubType.CareChargeProvisional;
+                _careChargeSubType = ReclaimSubType.FncPayment;
                 _reclaimType = ReclaimType.Fnc;
                 _claimCollector = ClaimCollector.Supplier;
             }
