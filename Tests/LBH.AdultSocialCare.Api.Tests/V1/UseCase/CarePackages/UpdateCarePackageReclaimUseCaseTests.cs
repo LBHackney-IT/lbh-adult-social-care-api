@@ -254,70 +254,25 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         }
 
         [Fact]
-        public async Task ShouldNotAllowUpdateCareChargeWithoutPropertyThirteenPlusWeeksItemIfThereIsOverlap()
-        {
-            var reclaimId = Guid.NewGuid();
-            var package = new CarePackage
-            {
-                Id = Guid.NewGuid(),
-                PackageType = PackageType.ResidentialCare,
-                Details =
-                {
-                    new CarePackageDetail
-                    {
-                        Cost = 34.12m,
-                        Type = PackageDetailType.CoreCost,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30)
-                    }
-                },
-                Reclaims =
-                {
-                    new CarePackageReclaim
-                    {
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks,
-                        Status = ReclaimStatus.Active,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30),
-                        Id = reclaimId,
-                        ClaimCollector = ClaimCollector.Supplier
-                    }
-                }
-            };
-
-            _carePackageGateway
-               .Setup(g => g.GetPackageAsync(package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
-               .ReturnsAsync(package);
-
-            var exception = await Assert.ThrowsAsync<ApiException>(async () =>
-            {
-                await _useCase.UpdateAsync(new CarePackageReclaimUpdateDomain
-                {
-                    Cost = 2m,
-                    StartDate = _today.AddDays(-40),
-                    EndDate = _today.AddDays(30),
-                    Id = reclaimId,
-                    ClaimCollector = ClaimCollector.Hackney,
-                    ClaimReason = "Reason updated",
-                    Description = "Description updated"
-                });
-            });
-
-            //TODO: Fix with correct value
-            exception.StatusCode.Should().Be(500);
-
-            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
-        }
-
-        [Fact]
         public async Task ShouldAllowUpdateCareChargeWithoutPropertyOneToTwelveWeeksItemIfNoOverlap()
         {
+            var packageId = Guid.NewGuid();
             var reclaimId = Guid.NewGuid();
+            var thirteenPlusCareCharge = new CarePackageReclaim
+            {
+                Cost = 1m,
+                Type = ReclaimType.CareCharge,
+                SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks,
+                Status = ReclaimStatus.Active,
+                StartDate = _today.AddDays(-30),
+                EndDate = _today.AddDays(30),
+                Id = reclaimId,
+                CarePackageId = packageId,
+                ClaimCollector = ClaimCollector.Supplier
+            };
             var package = new CarePackage
             {
-                Id = Guid.NewGuid(),
+                Id = packageId,
                 PackageType = PackageType.ResidentialCare,
                 Details =
                 {
@@ -325,34 +280,27 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     {
                         Cost = 34.12m,
                         Type = PackageDetailType.CoreCost,
-                        StartDate = _today.AddDays(-30),
+                        StartDate = _today.AddDays(-40),
                         EndDate = _today.AddDays(30)
                     }
                 },
                 Reclaims =
                 {
-                    new CarePackageReclaim
-                    {
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                        Status = ReclaimStatus.Active,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30),
-                        Id = reclaimId,
-                        ClaimCollector = ClaimCollector.Supplier
-                    }
+                    thirteenPlusCareCharge
                 }
             };
 
             _carePackageGateway
                .Setup(g => g.GetPackageAsync(package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
                .ReturnsAsync(package);
+            _carePackageReclaimGateway
+               .Setup(g => g.GetAsync(It.IsAny<Guid>(), It.IsAny<bool>()))
+               .ReturnsAsync(thirteenPlusCareCharge);
 
             await _useCase.UpdateAsync(new CarePackageReclaimUpdateDomain
             {
                 Cost = 2m,
-                StartDate = _today.AddDays(-20),
+                StartDate = _today.AddDays(-40),
                 EndDate = _today.AddDays(30),
                 Id = reclaimId,
                 ClaimCollector = ClaimCollector.Hackney,
@@ -367,73 +315,28 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             package.Reclaims.First().ClaimCollector.Should().Be(ClaimCollector.Hackney);
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task ShouldNotAllowUpdateCareChargeWithoutPropertyOneToTwelveWeeksItemIfThereIsOverlap()
-        {
-            var reclaimId = Guid.NewGuid();
-            var package = new CarePackage
-            {
-                Id = Guid.NewGuid(),
-                PackageType = PackageType.ResidentialCare,
-                Details =
-                {
-                    new CarePackageDetail
-                    {
-                        Cost = 34.12m,
-                        Type = PackageDetailType.CoreCost,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30)
-                    }
-                },
-                Reclaims =
-                {
-                    new CarePackageReclaim
-                    {
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                        Status = ReclaimStatus.Active,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30),
-                        Id = reclaimId,
-                        ClaimCollector = ClaimCollector.Supplier
-                    }
-                }
-            };
-
-            _carePackageGateway
-               .Setup(g => g.GetPackageAsync(package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
-               .ReturnsAsync(package);
-
-            var exception = await Assert.ThrowsAsync<ApiException>(async () =>
-            {
-                await _useCase.UpdateAsync(new CarePackageReclaimUpdateDomain
-                {
-                    Cost = 2m,
-                    StartDate = _today.AddDays(-40),
-                    EndDate = _today.AddDays(30),
-                    Id = reclaimId,
-                    ClaimCollector = ClaimCollector.Hackney,
-                    ClaimReason = "Reason updated",
-                    Description = "Description updated"
-                });
-            });
-
-            //TODO: Fix with correct value
-            exception.StatusCode.Should().Be(500);
-
-            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
         }
 
         [Fact]
         public async Task ShouldAllowUpdateCareChargeProvisionalItemIfNoOverlap()
         {
+            var packageId = Guid.NewGuid();
             var reclaimId = Guid.NewGuid();
+            var provisionalCareCharge = new CarePackageReclaim
+            {
+                Cost = 1m,
+                Type = ReclaimType.CareCharge,
+                SubType = ReclaimSubType.CareChargeProvisional,
+                Status = ReclaimStatus.Active,
+                StartDate = _today.AddDays(-30),
+                EndDate = _today.AddDays(30),
+                Id = reclaimId,
+                CarePackageId = packageId,
+                ClaimCollector = ClaimCollector.Supplier
+            };
             var package = new CarePackage
             {
-                Id = Guid.NewGuid(),
+                Id = packageId,
                 PackageType = PackageType.ResidentialCare,
                 Details =
                 {
@@ -441,34 +344,27 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     {
                         Cost = 34.12m,
                         Type = PackageDetailType.CoreCost,
-                        StartDate = _today.AddDays(-30),
+                        StartDate = _today.AddDays(-40),
                         EndDate = _today.AddDays(30)
                     }
                 },
                 Reclaims =
                 {
-                    new CarePackageReclaim
-                    {
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeProvisional,
-                        Status = ReclaimStatus.Active,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30),
-                        Id = reclaimId,
-                        ClaimCollector = ClaimCollector.Supplier
-                    }
+                    provisionalCareCharge
                 }
             };
 
             _carePackageGateway
                .Setup(g => g.GetPackageAsync(package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
                .ReturnsAsync(package);
+            _carePackageReclaimGateway
+                .Setup(g => g.GetAsync(It.IsAny<Guid>(), It.IsAny<bool>()))
+                .ReturnsAsync(provisionalCareCharge);
 
             await _useCase.UpdateAsync(new CarePackageReclaimUpdateDomain
             {
                 Cost = 2m,
-                StartDate = _today.AddDays(-20),
+                StartDate = _today.AddDays(-40),
                 EndDate = _today.AddDays(30),
                 Id = reclaimId,
                 ClaimCollector = ClaimCollector.Hackney,
@@ -483,64 +379,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             package.Reclaims.First().ClaimCollector.Should().Be(ClaimCollector.Hackney);
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
-        }
-
-        [Fact]
-        public async Task ShouldNotAllowUpdateCareChargeProvisionalItemIfThereIsOverlap()
-        {
-            var reclaimId = Guid.NewGuid();
-            var package = new CarePackage
-            {
-                Id = Guid.NewGuid(),
-                PackageType = PackageType.ResidentialCare,
-                Details =
-                {
-                    new CarePackageDetail
-                    {
-                        Cost = 34.12m,
-                        Type = PackageDetailType.CoreCost,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30)
-                    }
-                },
-                Reclaims =
-                {
-                    new CarePackageReclaim
-                    {
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeProvisional,
-                        Status = ReclaimStatus.Active,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30),
-                        Id = reclaimId,
-                        ClaimCollector = ClaimCollector.Supplier
-                    }
-                }
-            };
-
-            _carePackageGateway
-               .Setup(g => g.GetPackageAsync(package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
-               .ReturnsAsync(package);
-
-            var exception = await Assert.ThrowsAsync<ApiException>(async () =>
-            {
-                await _useCase.UpdateAsync(new CarePackageReclaimUpdateDomain
-                {
-                    Cost = 2m,
-                    StartDate = _today.AddDays(-40),
-                    EndDate = _today.AddDays(30),
-                    Id = reclaimId,
-                    ClaimCollector = ClaimCollector.Hackney,
-                    ClaimReason = "Reason updated",
-                    Description = "Description updated"
-                });
-            });
-
-            //TODO: Fix with correct value
-            exception.StatusCode.Should().Be(500);
-
-            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
         }
 
         [Fact]
