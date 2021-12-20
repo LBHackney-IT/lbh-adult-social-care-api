@@ -54,6 +54,19 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             }
         }
 
+        public static ReclaimStatus CalculateReclaimStatus(DateTimeOffset currentDate, DateTimeOffset startDate, DateTimeOffset? endDate)
+        {
+            var today = currentDate.Date;
+            if (endDate != null && today > endDate.Value.Date)
+            {
+                return ReclaimStatus.Ended;
+            }
+
+            return today >= startDate.Date
+                ? ReclaimStatus.Active
+                : ReclaimStatus.Pending;
+        }
+
         public static void NegateNetOffCosts(CarePackage package)
         {
             foreach (var reclaim in package.Reclaims.Where(r => r.ClaimCollector is ClaimCollector.Supplier))

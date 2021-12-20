@@ -72,13 +72,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         private static void ValidateProvisionalCareChargeAsync(CarePackageReclaimCreationDomain reclaimCreationDomain, CarePackage carePackage, CarePackageDetail coreCostDetail)
         {
+            var validReclaimStatuses = new[] { ReclaimStatus.Active, ReclaimStatus.Pending, ReclaimStatus.Ended };
             if (reclaimCreationDomain.SubType != ReclaimSubType.CareChargeProvisional)
             {
                 throw new ApiException($"Cannot create {reclaimCreationDomain.SubType.GetDisplayName()}. Manage other care charges types in the Care Charges menu",
                     HttpStatusCode.BadRequest);
             }
 
-            if (carePackage.Reclaims.Any(cc => cc.Type == ReclaimType.CareCharge && cc.SubType == ReclaimSubType.CareChargeProvisional))
+            if (carePackage.Reclaims.Any(cc => cc.Type == ReclaimType.CareCharge && cc.SubType == ReclaimSubType.CareChargeProvisional && cc.Status.In(validReclaimStatuses)))
             {
                 throw new ApiException($"Provisional Care charge assessment for this package already done",
                     HttpStatusCode.BadRequest);

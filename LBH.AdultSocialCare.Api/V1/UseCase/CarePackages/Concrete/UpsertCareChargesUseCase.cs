@@ -24,15 +24,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
     {
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
-        private readonly IFileStorage _fileStorage;
         private readonly IMapper _mapper;
         private readonly ICarePackageReclaimGateway _carePackageReclaimGateway;
 
-        public UpsertCareChargesUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IFileStorage fileStorage, IMapper mapper, ICarePackageReclaimGateway carePackageReclaimGateway)
+        public UpsertCareChargesUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IMapper mapper, ICarePackageReclaimGateway carePackageReclaimGateway)
         {
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
-            _fileStorage = fileStorage;
             _mapper = mapper;
             _carePackageReclaimGateway = carePackageReclaimGateway;
         }
@@ -107,21 +105,27 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             {
                 if (existingCareCharge.SubType == ReclaimSubType.CareChargeProvisional && provisionalCareCharge != null)
                 {
-                    _mapper.Map(provisionalCareCharge, existingCareCharge);
                     if (oneToTwelveCareCharge != null && existingCareCharge.StartDate == oneToTwelveCareCharge.StartDate)
                     {
                         existingCareCharge.Status = ReclaimStatus.Cancelled;
+                    }
+                    else
+                    {
+                        _mapper.Map(provisionalCareCharge, existingCareCharge);
+                        existingCareCharge.Status = provisionalCareCharge.Status;
                     }
                 }
 
                 if (existingCareCharge.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks && oneToTwelveCareCharge != null)
                 {
                     _mapper.Map(oneToTwelveCareCharge, existingCareCharge);
+                    existingCareCharge.Status = oneToTwelveCareCharge.Status;
                 }
 
                 if (existingCareCharge.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks && thirteenPlusCareCharge != null)
                 {
                     _mapper.Map(thirteenPlusCareCharge, existingCareCharge);
+                    existingCareCharge.Status = thirteenPlusCareCharge.Status;
                 }
             }
 
