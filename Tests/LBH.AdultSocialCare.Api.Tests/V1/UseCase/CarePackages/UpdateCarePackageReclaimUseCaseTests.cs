@@ -196,64 +196,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         }
 
         [Fact]
-        public async Task ShouldAllowUpdateCareChargeWithoutPropertyThirteenPlusWeeksItemIfNoOverlap()
-        {
-            var reclaimId = Guid.NewGuid();
-            var package = new CarePackage
-            {
-                Id = Guid.NewGuid(),
-                PackageType = PackageType.ResidentialCare,
-                Details =
-                {
-                    new CarePackageDetail
-                    {
-                        Cost = 34.12m,
-                        Type = PackageDetailType.CoreCost,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30)
-                    }
-                },
-                Reclaims =
-                {
-                    new CarePackageReclaim
-                    {
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks,
-                        Status = ReclaimStatus.Active,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30),
-                        Id = reclaimId,
-                        ClaimCollector = ClaimCollector.Supplier
-                    }
-                }
-            };
-
-            _carePackageGateway
-               .Setup(g => g.GetPackageAsync(package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
-               .ReturnsAsync(package);
-
-            await _useCase.UpdateAsync(new CarePackageReclaimUpdateDomain
-            {
-                Cost = 2m,
-                StartDate = _today.AddDays(-20),
-                EndDate = _today.AddDays(30),
-                Id = reclaimId,
-                ClaimCollector = ClaimCollector.Hackney,
-                ClaimReason = "Reason updated",
-                Description = "Description updated"
-            });
-
-            package.Reclaims.Count.Should().Be(1);
-            package.Reclaims.First().Cost.Should().Be(2m);
-            package.Reclaims.First().Description.Should().NotBeNullOrEmpty();
-            package.Reclaims.First().ClaimReason.Should().NotBeNullOrEmpty();
-            package.Reclaims.First().ClaimCollector.Should().Be(ClaimCollector.Hackney);
-
-            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
-        }
-
-        [Fact]
         public async Task ShouldAllowUpdateCareChargeWithoutPropertyOneToTwelveWeeksItemIfNoOverlap()
         {
             var packageId = Guid.NewGuid();

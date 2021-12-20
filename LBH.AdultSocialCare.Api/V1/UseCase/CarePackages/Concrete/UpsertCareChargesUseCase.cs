@@ -110,16 +110,20 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     {
                         existingCareCharge.Status = ReclaimStatus.Cancelled;
                     }
+
+                    existingCareCharge.Status = provisionalCareCharge.Status;
                 }
 
                 if (existingCareCharge.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks && oneToTwelveCareCharge != null)
                 {
                     _mapper.Map(oneToTwelveCareCharge, existingCareCharge);
+                    existingCareCharge.Status = oneToTwelveCareCharge.Status;
                 }
 
                 if (existingCareCharge.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks && thirteenPlusCareCharge != null)
                 {
                     _mapper.Map(thirteenPlusCareCharge, existingCareCharge);
+                    existingCareCharge.Status = thirteenPlusCareCharge.Status;
                 }
             }
 
