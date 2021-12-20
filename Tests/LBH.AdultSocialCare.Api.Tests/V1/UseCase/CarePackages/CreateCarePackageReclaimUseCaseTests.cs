@@ -133,58 +133,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         }
 
         [Fact]
-        public async Task ShouldSetEndDateOfProvisionalWithStartDateOfCareChargeWithoutPropertyOneToTwelveWeeks()
-        {
-            var package = new CarePackage
-            {
-                Id = Guid.NewGuid(),
-                PackageType = PackageType.ResidentialCare,
-                Details =
-                {
-                    new CarePackageDetail
-                    {
-                        Cost = 34.12m,
-                        Type = PackageDetailType.CoreCost,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30)
-                    }
-                },
-                Reclaims =
-                {
-                    new CarePackageReclaim
-                    {
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeProvisional,
-                        Status = ReclaimStatus.Active,
-                        StartDate = _today.AddDays(-20),
-                        EndDate = _today.AddDays(30)
-                    }
-                }
-            };
-            _carePackageGateway
-               .Setup(g => g.GetPackageAsync(package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
-               .ReturnsAsync(package);
-
-            await _useCase.CreateCarePackageReclaim(new CarePackageReclaimCreationDomain
-            {
-                CarePackageId = package.Id,
-                Cost = 2m,
-                SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                StartDate = _today.AddDays(-20),
-                EndDate = _today.AddDays(30)
-            }, ReclaimType.CareCharge);
-
-            package.Reclaims.Count.Should().Be(2);
-            package.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).Should().NotBeNull();
-            package.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).Status.Should().NotBe(ReclaimStatus.Active);
-            package.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).EndDate.Should().Be(_today.AddDays(-21));
-            package.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks).Status.Should().Be(ReclaimStatus.Active);
-
-            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
-        }
-
-        [Fact]
         public async Task ShouldSetCancelledProvisionalIfCareChargeWithoutPropertyOneToTwelveWeeksOverlap()
         {
             var package = new CarePackage
