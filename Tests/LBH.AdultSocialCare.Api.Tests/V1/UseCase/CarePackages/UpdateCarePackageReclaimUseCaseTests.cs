@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -64,7 +63,14 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _carePackageGateway = new Mock<ICarePackageGateway>();
             _carePackageReclaimGateway = new Mock<ICarePackageReclaimGateway>();
 
-            _useCase = new UpdateCarePackageReclaimUseCase(_carePackageReclaimGateway.Object, _carePackageGateway.Object, _dbManager.Object, Mapper, _createPackageResourceUseCase.Object);
+            _carePackageReclaimGateway
+                .Setup(g => g.GetListAsync(It.IsAny<IEnumerable<Guid>>()))
+                .ReturnsAsync(((IEnumerable<Guid> ids) => _defaultPackage.Reclaims.Where(r => ids.Contains(r.Id)).ToList()));
+            _carePackageGateway
+                .Setup(g => g.GetPackageAsync(_defaultPackage.Id, PackageFields.Details, true))
+                .ReturnsAsync(_defaultPackage);
+
+            _useCase = new UpdateCarePackageReclaimUseCase(_carePackageReclaimGateway.Object, _carePackageGateway.Object, _dbManager.Object, Mapper);
         }
 
         [Fact]

@@ -24,27 +24,30 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             _carePackageGateway = carePackageGateway;
         }
 
-        public async Task<CarePackageReclaimResponse> GetCarePackageReclaim(Guid carePackageId, ReclaimType reclaimType)
+        public async Task<CarePackageReclaimResponse> GetFundedNursingCare(Guid carePackageId)
         {
-            var res = await _carePackageReclaimGateway.GetSingleAsync(carePackageId, reclaimType);
+            var reclaim = await _carePackageReclaimGateway.GetSingleAsync(carePackageId, ReclaimType.Fnc, ReclaimSubType.FncPayment);
 
-            var package = await _carePackageGateway.GetPackageAsync(carePackageId, PackageFields.Resources, false)
+            if (reclaim == null) return null;
+
+            var package = await _carePackageGateway
+                .GetPackageAsync(carePackageId, PackageFields.Resources)
                 .EnsureExistsAsync($"Package with id {carePackageId} not found");
 
-            var resourceType = reclaimType == ReclaimType.Fnc
-            ? PackageResourceType.FncAssessmentFile
-            : PackageResourceType.CareChargeAssessmentFile;
+            var assessmentFile = package.Resources
+                .Where(r => r.Type == PackageResourceType.FncAssessmentFile)
+                .OrderByDescending(r => r.DateCreated)
+                .FirstOrDefault();
 
-            if (res == null)
-                return null;
+            reclaim.AssessmentFileId = assessmentFile?.FileId;
+            reclaim.AssessmentFileName = assessmentFile?.Name;
 
-            res.AssessmentFileId = package.Resources?.Where(r => r.Type == resourceType)
-                .OrderByDescending(x => x.DateCreated).FirstOrDefault()?.FileId;
-            res.AssessmentFileName = package.Resources?.Where(r => r.Type == resourceType)
-                .OrderByDescending(x => x.DateCreated).FirstOrDefault()?.Name;
+            if (reclaim.Status is ReclaimStatus.Cancelled)
+            {
+                reclaim.HasAssessmentBeenCarried = false;
+            }
 
-            if (res?.Status == ReclaimStatus.Cancelled) res.HasAssessmentBeenCarried = false;
-            return res.ToResponse();
+            return reclaim.ToResponse();
         }
 
         public async Task<IEnumerable<CarePackageReclaimDomain>> GetListAsync(Guid carePackageId, ReclaimType? reclaimType, ReclaimSubType? reclaimSubType)

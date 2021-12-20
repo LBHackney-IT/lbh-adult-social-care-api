@@ -406,6 +406,74 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
         }
+
+        [Fact]
+        public async Task ShouldSetCancelledProvisionalIfCareChargeWithoutPropertyOneToTwelveWeeksOverlap()
+        {
+            _defaultPackage.Details.Clear();
+            _defaultPackage.Details.Add(new CarePackageDetail
+            {
+                Cost = 34.12m,
+                Type = PackageDetailType.CoreCost,
+                StartDate = _today.AddDays(-30),
+                EndDate = _today.AddDays(300)
+            });
+
+            var provisionalCareCharge = new CarePackageReclaim
+            {
+                Cost = 1m,
+                Type = ReclaimType.CareCharge,
+                SubType = ReclaimSubType.CareChargeProvisional,
+                Status = ReclaimStatus.Active,
+                StartDate = _today.AddDays(-30),
+                EndDate = _today.AddDays(300)
+            };
+            _defaultPackage.Reclaims.Add(provisionalCareCharge);
+
+            _carePackageGateway
+                .Setup(g => g.GetPackageAsync(It.IsAny<Guid>(), It.IsAny<PackageFields>(), It.IsAny<bool>()))
+                .ReturnsAsync(_defaultPackage);
+
+            var careChargesUpdateDomain = new CareChargesCreateDomain()
+            {
+                CareCharges = new List<CareChargeReclaimCreationDomain>()
+                {
+                    new CareChargeReclaimCreationDomain
+                    {
+                        CarePackageId = _defaultPackage.Id,
+                        Id = provisionalCareCharge.Id,
+                        Cost = 1m,
+                        Type = ReclaimType.CareCharge,
+                        SubType = ReclaimSubType.CareChargeProvisional,
+                        StartDate = _today.AddDays(-30),
+                        EndDate = _today.AddDays(-1),
+                        Status = ReclaimStatus.Active,
+                        ClaimCollector = ClaimCollector.Hackney
+                    },
+                    new CareChargeReclaimCreationDomain()
+                    {
+                        CarePackageId = _defaultPackage.Id,
+                        Cost = 2m,
+                        Type = ReclaimType.CareCharge,
+                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
+                        StartDate = _today.AddDays(-30),
+                        EndDate = _today.AddDays(54),
+                        Status = ReclaimStatus.Pending,
+                        ClaimCollector = ClaimCollector.Hackney
+                    }
+                }
+            };
+
+            await _useCase.ExecuteAsync(_defaultPackage.Id, careChargesUpdateDomain);
+
+            _defaultPackage.Reclaims.Count.Should().Be(2);
+            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).Should().NotBeNull();
+            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).Status.Should().Be(ReclaimStatus.Cancelled);
+            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).EndDate.Should().Be(_today.AddDays(300));
+            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks).Status.Should().Be(ReclaimStatus.Active);
+
+            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
+        }
     }
 
 }
