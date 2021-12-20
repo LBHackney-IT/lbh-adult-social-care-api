@@ -45,11 +45,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 careCharge.CarePackageId = carePackageId;
             }
 
-            ValidateCareChargeModificationRequest(careChargesCreateDomain.CareCharges);
-
             // Get package with all reclaims
             var package = await _carePackageGateway.GetPackageAsync(carePackageId, PackageFields.Settings | PackageFields.Details | PackageFields.Reclaims, true)
                 .EnsureExistsAsync($"Care package with id {carePackageId} not found");
+
+            ValidateCareChargeModificationRequest(package, careChargesCreateDomain.CareCharges);
+
 
             // Is user in Section 117, reject care charges
             if (package.Settings.IsS117Client)
@@ -145,7 +146,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 .EnsureExistsAsync($"Care package with id {carePackageId} not found");*/
         }
 
-        private static void ValidateCareChargeModificationRequest(IList<CareChargeReclaimCreationDomain> careCharges)
+        private static void ValidateCareChargeModificationRequest(CarePackage package, IList<CareChargeReclaimCreationDomain> careCharges)
         {
             // In request each care charge sub-type can have only one entry
             var invalidSubType = (from c in careCharges
@@ -180,8 +181,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
             }
 
-            // Package cannot have 13+ without 1-12
-            if (thirteenPlusCareCharge != null && oneToTwelveCareCharge == null)
+            // Package cannot have 13+ without 1-12 if the data is not migrated
+            if (thirteenPlusCareCharge != null && oneToTwelveCareCharge == null && !package.IsMigrated)
             {
                 throw new ApiException($"Not allowed to have care charges for 13+ without 1-12", HttpStatusCode.BadRequest);
             }
@@ -235,14 +236,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 thirteenPlusCareCharge?.StartDate);
 
             // Care charges cannot be before package start date
-            if (minCareChargeStartDate.Date < coreCost.StartDate.Date)
+            if (minCareChargeStartDate < coreCost.StartDate.Date)
             {
                 throw new ApiException($"Care charge start date cannot be before package start date. Expected min start date {coreCost.StartDate.Date:yyyy-MM-dd}",
                     HttpStatusCode.BadRequest);
             }
 
             // Initial care charge must start on package start date
-            if (minCareChargeStartDate.Date != coreCost.StartDate.Date)
+            if (minCareChargeStartDate != coreCost.StartDate)
             {
                 throw new ApiException($"Initial care charge must start on package start date",
                     HttpStatusCode.BadRequest);
