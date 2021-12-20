@@ -66,13 +66,22 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 carePackage.Reclaims.OrderBy(r => r.DateCreated)
                     .FirstOrDefault(cc => cc.Type == ReclaimType.CareCharge && cc.SubType == ReclaimSubType.CareChargeProvisional);
 
-            var res = provisionalCareChargeReclaim?.ToDomain();
+            var res = new CarePackageReclaimDomain();
 
+            bool hasAssessmentBeenCarried = carePackage.Reclaims.Any(cc => cc.Type == ReclaimType.CareCharge && cc.SubType != ReclaimSubType.CareChargeProvisional);
+
+            if (hasAssessmentBeenCarried)
+            {
+                //Migrated data may have contribution without provisional.
+                return res.ToResponse();
+            }
+            
             if (provisionalCareChargeReclaim == null)
                 return null;
 
-            res.HasAssessmentBeenCarried =
-                carePackage.Reclaims.Any(cc => cc.Type == ReclaimType.CareCharge && cc.SubType != ReclaimSubType.CareChargeProvisional);
+            res = provisionalCareChargeReclaim?.ToDomain();
+            res.HasAssessmentBeenCarried = hasAssessmentBeenCarried;
+
             return res.ToResponse();
         }
 
