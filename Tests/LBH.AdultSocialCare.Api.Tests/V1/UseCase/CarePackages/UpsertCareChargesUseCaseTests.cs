@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Exceptions.CustomExceptions;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
@@ -116,6 +117,47 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks).EndDate.Should().Be(_today.AddDays(30));
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task ShouldNotAllowAddingCareChargeWithoutPropertyOneToTwelveWeeksIfDaterangeIsMoreThan12Weeks()
+        {
+            _defaultPackage.Details.Clear();
+            _defaultPackage.Details.Add(new CarePackageDetail
+            {
+                Cost = 34.12m,
+                Type = PackageDetailType.CoreCost,
+                StartDate = _today.AddDays(-30),
+                EndDate = _today.AddDays(300)
+            });
+            _carePackageGateway
+               .Setup(g => g.GetPackageAsync(_defaultPackage.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
+               .ReturnsAsync(_defaultPackage);
+
+            var careChargesCreateDomain = new CareChargesCreateDomain()
+            {
+                CareCharges = new List<CareChargeReclaimCreationDomain>()
+                {
+                    new CareChargeReclaimCreationDomain
+                    {
+                        CarePackageId = _defaultPackage.Id,
+                        Cost = 2m,
+                        Type = ReclaimType.CareCharge,
+                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
+                        StartDate = _today.AddDays(-30),
+                        EndDate = _today.AddDays(90)
+                    }
+                }
+            };
+
+            var exception = await Assert.ThrowsAsync<ApiException>(async () =>
+            {
+                await _useCase.ExecuteAsync(_defaultPackage.Id, careChargesCreateDomain);
+            });
+
+            exception.StatusCode.Should().Be(400);
+
+            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
         }
     }
 }

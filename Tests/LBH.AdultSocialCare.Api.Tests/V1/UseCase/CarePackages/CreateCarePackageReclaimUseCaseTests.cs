@@ -237,58 +237,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         }
 
         [Fact]
-        public async Task ShouldNotAllowAddingCareChargeWithoutPropertyOneToTwelveWeeksIfDaterangeIsMoreThan12Weeks()
-        {
-            var package = new CarePackage
-            {
-                Id = Guid.NewGuid(),
-                PackageType = PackageType.ResidentialCare,
-                Details =
-                {
-                    new CarePackageDetail
-                    {
-                        Cost = 34.12m,
-                        Type = PackageDetailType.CoreCost,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30)
-                    }
-                },
-                Reclaims =
-                {
-                    new CarePackageReclaim
-                    {
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeProvisional,
-                        Status = ReclaimStatus.Active,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30)
-                    }
-                }
-            };
-            _carePackageGateway
-               .Setup(g => g.GetPackageAsync(package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
-               .ReturnsAsync(package);
-
-            var exception = await Assert.ThrowsAsync<ApiException>(async () =>
-            {
-                await _useCase.CreateCarePackageReclaim(new CarePackageReclaimCreationDomain
-                {
-                    CarePackageId = package.Id,
-                    Cost = 2m,
-                    SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                    StartDate = _today.AddDays(-30),
-                    EndDate = _today.AddDays(90)
-                }, ReclaimType.CareCharge);
-            });
-
-            //TODO: Fix with correct value
-            exception.StatusCode.Should().Be(500);
-
-            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
-        }
-
-        [Fact]
         public async Task ShouldNotAllowAddingProvisionalIfReclaimExist()
         {
             var package = new CarePackage
