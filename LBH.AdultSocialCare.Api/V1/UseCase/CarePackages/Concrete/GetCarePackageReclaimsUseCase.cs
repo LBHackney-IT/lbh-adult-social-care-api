@@ -75,7 +75,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 //Migrated data may have contribution without provisional.
                 return res.ToResponse();
             }
-            
+
             if (provisionalCareChargeReclaim == null)
                 return null;
 
