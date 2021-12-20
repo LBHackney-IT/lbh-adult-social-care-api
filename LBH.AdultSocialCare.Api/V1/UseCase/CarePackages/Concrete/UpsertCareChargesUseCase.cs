@@ -242,7 +242,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             // Initial care charge must start on package start date
-            if (minCareChargeStartDate != coreCost.StartDate.Date)
+            if (minCareChargeStartDate != coreCost.StartDate)
             {
                 throw new ApiException($"Initial care charge must start on package start date",
                     HttpStatusCode.BadRequest);
