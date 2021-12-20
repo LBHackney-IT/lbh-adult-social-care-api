@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Core;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -54,7 +55,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             try
             {
                 _mapper.Map(carePackageReclaimUpdateDomain, carePackageReclaim);
-                CareChargeExtensions.EnsureValidPackageTotals(carePackage);
+                ReclaimCostValidator.Validate(carePackage);
                 await _dbManager.SaveAsync("Could not update care package reclaim");
             }
             catch (ApiException ex)

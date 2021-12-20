@@ -27,7 +27,7 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
         public decimal AdditionalOneOffCost { get; set; }
 
         public decimal CostOfPlacement { get; set; }
-        public decimal? FncPayment { get; set; }
+        public decimal FncPayment { get; set; }
         public decimal SubTotalCost { get; set; }
         public decimal TotalWeeklyCost { get; set; }
 

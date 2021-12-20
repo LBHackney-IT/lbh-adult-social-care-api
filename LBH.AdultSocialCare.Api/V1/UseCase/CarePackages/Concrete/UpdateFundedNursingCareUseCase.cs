@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
+using LBH.AdultSocialCare.Api.Core;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
@@ -61,7 +61,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 fncReclaim.Id = fncReclaimId;
                 fncReclaim.Cost = Decimal.Negate(fncPayment.Cost);
 
-                CareChargeExtensions.EnsureValidPackageTotals(package);
+                ReclaimCostValidator.Validate(package);
 
                 await using (var transaction = await _dbManager.BeginTransactionAsync())
                 {
