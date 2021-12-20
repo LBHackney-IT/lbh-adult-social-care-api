@@ -24,15 +24,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
     {
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
-        private readonly IFileStorage _fileStorage;
         private readonly IMapper _mapper;
         private readonly ICarePackageReclaimGateway _carePackageReclaimGateway;
 
-        public UpsertCareChargesUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IFileStorage fileStorage, IMapper mapper, ICarePackageReclaimGateway carePackageReclaimGateway)
+        public UpsertCareChargesUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IMapper mapper, ICarePackageReclaimGateway carePackageReclaimGateway)
         {
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
-            _fileStorage = fileStorage;
             _mapper = mapper;
             _carePackageReclaimGateway = carePackageReclaimGateway;
         }

@@ -1,20 +1,18 @@
+using Common.Exceptions.CustomExceptions;
+using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
+using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using Moq;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using FluentAssertions;
-using LBH.AdultSocialCare.Api.V1.Services.IO;
-using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.CarePackages;
-using Microsoft.Extensions.Logging;
 using Xunit;
-using Common.Exceptions.CustomExceptions;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 {
@@ -239,58 +237,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         }
 
         [Fact]
-        public async Task ShouldKeepActiveProvisionalIfCareChargeWithoutPropertyOneToTwelveWeeksStartDateAheadInActualDate()
-        {
-            var package = new CarePackage
-            {
-                Id = Guid.NewGuid(),
-                PackageType = PackageType.ResidentialCare,
-                Details =
-                {
-                    new CarePackageDetail
-                    {
-                        Cost = 34.12m,
-                        Type = PackageDetailType.CoreCost,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(30)
-                    }
-                },
-                Reclaims =
-                {
-                    new CarePackageReclaim
-                    {
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeProvisional,
-                        Status = ReclaimStatus.Active,
-                        StartDate = _today.AddDays(-10),
-                        EndDate = _today.AddDays(20)
-                    }
-                }
-            };
-            _carePackageGateway
-               .Setup(g => g.GetPackageAsync(package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
-               .ReturnsAsync(package);
-
-            await _useCase.CreateCarePackageReclaim(new CarePackageReclaimCreationDomain
-            {
-                CarePackageId = package.Id,
-                Cost = 2m,
-                SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                StartDate = _today.AddDays(10),
-                EndDate = _today.AddDays(20)
-            }, ReclaimType.CareCharge);
-
-            package.Reclaims.Count.Should().Be(2);
-            package.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).Should().NotBeNull();
-            package.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).Status.Should().Be(ReclaimStatus.Active);
-            package.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).EndDate.Should().Be(_today.AddDays(-21));
-            package.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks).Status.Should().Be(ReclaimStatus.Pending);
-
-            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
-        }
-
-        [Fact]
         public async Task ShouldNotAllowAddingCareChargeWithoutPropertyOneToTwelveWeeksIfDaterangeIsMoreThan12Weeks()
         {
             var package = new CarePackage
@@ -335,7 +281,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     EndDate = _today.AddDays(90)
                 }, ReclaimType.CareCharge);
             });
-
 
             //TODO: Fix with correct value
             exception.StatusCode.Should().Be(500);
@@ -398,7 +343,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 }, ReclaimType.CareCharge);
             });
 
-
             //TODO: Fix with correct value
             exception.StatusCode.Should().Be(400);
 
@@ -460,12 +404,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 }, ReclaimType.CareCharge);
             });
 
-
             //TODO: Fix with correct value
             exception.StatusCode.Should().Be(500);
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
         }
-
     }
 }
