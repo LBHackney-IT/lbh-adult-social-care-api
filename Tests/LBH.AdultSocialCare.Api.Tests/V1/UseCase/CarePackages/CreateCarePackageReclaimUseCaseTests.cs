@@ -388,7 +388,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             var exception = await Assert.ThrowsAsync<ApiException>(async () =>
             {
-                await _useCase.CreateCarePackageReclaim(new CarePackageReclaimCreationDomain
+                await _useCase.CreateProvisionalCareCharge(new CarePackageReclaimCreationDomain
                 {
                     CarePackageId = package.Id,
                     Cost = 2m,
@@ -400,7 +400,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
 
             //TODO: Fix with correct value
-            exception.StatusCode.Should().Be(500);
+            exception.StatusCode.Should().Be(400);
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
         }
