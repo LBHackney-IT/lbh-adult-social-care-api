@@ -1,5 +1,9 @@
+using Common.Exceptions.CustomExceptions;
+using FluentAssertions;
+using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Data.Constants.Enums;
@@ -9,10 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Exceptions.CustomExceptions;
-using FluentAssertions;
-using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
@@ -60,7 +60,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _carePackageReclaimGateway = new Mock<ICarePackageReclaimGateway>();
             _useCase = new UpsertCareChargesUseCase(_carePackageGateway.Object, _dbManager.Object, Mapper, _carePackageReclaimGateway.Object);
         }
-
 
         [Fact]
         public async Task ShouldKeepActiveProvisionalIfCareChargeWithoutPropertyOneToTwelveWeeksStartDateAheadInActualDate()
@@ -146,6 +145,66 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                         SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
                         StartDate = _today.AddDays(-30),
                         EndDate = _today.AddDays(90)
+                    }
+                }
+            };
+
+            var exception = await Assert.ThrowsAsync<ApiException>(async () =>
+            {
+                await _useCase.ExecuteAsync(_defaultPackage.Id, careChargesCreateDomain);
+            });
+
+            exception.StatusCode.Should().Be(400);
+
+            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
+        }
+
+        [Fact]
+        public async Task ShouldNotAllowOverlapBetweenCareCharges()
+        {
+            _defaultPackage.Details.Clear();
+            _defaultPackage.Details.Add(new CarePackageDetail
+            {
+                Cost = 34.12m,
+                Type = PackageDetailType.CoreCost,
+                StartDate = _today.AddDays(-30),
+                EndDate = _today.AddDays(300)
+            });
+
+            _carePackageGateway
+               .Setup(g => g.GetPackageAsync(_defaultPackage.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
+               .ReturnsAsync(_defaultPackage);
+
+            var careChargesCreateDomain = new CareChargesCreateDomain()
+            {
+                CareCharges = new List<CareChargeReclaimCreationDomain>()
+                {
+                    new CareChargeReclaimCreationDomain
+                    {
+                        CarePackageId = _defaultPackage.Id,
+                        Cost = 1m,
+                        Type = ReclaimType.CareCharge,
+                        SubType = ReclaimSubType.CareChargeProvisional,
+                        StartDate = _today.AddDays(-30),
+                        EndDate = _today.AddDays(5)
+                    },
+                    new CareChargeReclaimCreationDomain()
+                    {
+                        CarePackageId = _defaultPackage.Id,
+                        Cost = 2m,
+                        Type = ReclaimType.CareCharge,
+                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
+                        StartDate = _today.AddDays(5),
+                        EndDate = _today.AddDays(30)
+                    },
+                    new CareChargeReclaimCreationDomain()
+                    {
+                        CarePackageId = _defaultPackage.Id,
+                        Cost = 2m,
+                        Type = ReclaimType.CareCharge,
+                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
+                        StartDate = _today.AddDays(25),
+                        EndDate = _today.AddDays(300)
                     }
                 }
             };
