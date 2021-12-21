@@ -182,7 +182,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     InvoiceItems = p.Invoice.Items.Select(it => new CedarFileInvoiceLineDomain()
                     {
                         InvoiceLineId = 3,
-                        Name = it.Name,
+                        Name = $"{it.FromDate.ToString("ddMMyy")}{it.ToDate.ToString("ddMMyy")} {it.Invoice.ServiceUser.HackneyId}",
                         Quantity = it.Quantity,
                         Cost = it.WeeklyCost == 0 ? it.TotalCost : it.WeeklyCost,
                         TaxFlag = 0,
