@@ -53,7 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             var carePackage = await _carePackageGateway
-                .GetPackageAsync(reclaim.CarePackageId, PackageFields.Reclaims, true)
+                .GetPackageAsync(reclaim.CarePackageId, PackageFields.Reclaims | PackageFields.Details, true)
                 .EnsureExistsAsync($"Care package with id {reclaim.CarePackageId} not found");
 
             var corePackage = carePackage.Details.SingleOrDefault(x => x.Type == PackageDetailType.CoreCost);

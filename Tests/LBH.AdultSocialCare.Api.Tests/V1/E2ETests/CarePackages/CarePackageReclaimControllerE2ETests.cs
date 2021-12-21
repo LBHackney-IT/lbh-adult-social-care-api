@@ -315,6 +315,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         {
             var package = _generator.CreateCarePackage();
             var reclaim = _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
+            var detail = _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
 
             var endDate = DateTimeOffset.Now;
 
