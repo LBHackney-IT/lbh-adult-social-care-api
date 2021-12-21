@@ -69,7 +69,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             var summary = await _useCase.ExecuteAsync(_package.Id);
 
             summary.TotalWeeklyCost.Should().Be(140.0m);
-            summary.AdditionalOneOffCost.Should().Be(60.0m);
+            summary.OneOffCost.Should().Be(60.0m);
         }
 
         [Theory]

@@ -64,13 +64,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             FillFundedNursingCare();
             FillReclaimsSubTotals();
 
-            _summary.SubTotalCost = _summary.CostOfPlacement + _summary.FncPayment;
-
+            _summary.TotalCostOfPlacement = _summary.CostOfPlacement + _summary.FncPayment;
             _summary.AdditionalWeeklyCost = _package.GetAdditionalWeeklyCost();
-            _summary.AdditionalOneOffCost = _package.GetAdditionalOneOffCost();
+            _summary.OneOffCost = _package.GetAdditionalOneOffCost();
 
             _summary.TotalWeeklyCost =
-                +_summary.SubTotalCost
+                _summary.TotalCostOfPlacement
                 + _summary.AdditionalWeeklyCost
                 - (_summary.SupplierReclaims?.SubTotal ?? 0.0m);
 
