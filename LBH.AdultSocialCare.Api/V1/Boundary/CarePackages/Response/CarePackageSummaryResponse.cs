@@ -24,11 +24,11 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response
         public IEnumerable<CarePackageDetailResponse> AdditionalOneOffNeeds { get; set; }
 
         public decimal AdditionalWeeklyCost { get; set; }
-        public decimal AdditionalOneOffCost { get; set; }
+        public decimal OneOffCost { get; set; }
 
         public decimal CostOfPlacement { get; set; }
-        public decimal? FncPayment { get; set; }
-        public decimal SubTotalCost { get; set; }
+        public decimal FncPayment { get; set; }
+        public decimal TotalCostOfPlacement { get; set; }
         public decimal TotalWeeklyCost { get; set; }
 
         public CarePackageReclaimResponse FundedNursingCare { get; set; }

@@ -5,6 +5,7 @@ namespace DataImporter.Model
 {
     public class ExcelRowModel
     {
+        public int RowNumber { get; set; }
         public string HackneyID { get; set; }
         public string ServiceTypeGroup { get; set; }
         public string ServiceType { get; set; }

@@ -145,6 +145,21 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             // add reclaims
             if (reclaims.Any())
             {
+                foreach (var item in reclaims)
+                {
+                    var reclaim = new CarePackageCostItemResponse
+                    {
+                        Id = item.Id,
+                        Name = item.SubType != null && Enum.IsDefined(typeof(ReclaimSubType), item.SubType) ? item.SubType.GetDisplayName() : GetCareChargeName(item.Type),
+                        Type = GetCareChargeName(item.Type),
+                        CollectedBy = item.ClaimCollector.GetDisplayName(),
+                        Status = CalculateReclaimStatus(item).GetDisplayName(),
+                        StartDate = item.StartDate,
+                        EndDate = item.EndDate,
+                        WeeklyCost = item.ClaimCollector == ClaimCollector.Hackney ? item.Cost : decimal.Negate(item.Cost)
+                    };
+                }
+
                 carePackageCostItem.AddRange(reclaims.Select(reclaim => new CarePackageCostItemResponse
                 {
                     Id = reclaim.Id,
@@ -154,7 +169,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     Status = CalculateReclaimStatus(reclaim).GetDisplayName(),
                     StartDate = reclaim.StartDate,
                     EndDate = reclaim.EndDate,
-                    WeeklyCost = reclaim.ClaimCollector == ClaimCollector.Hackney ? reclaim.Cost : decimal.Negate(reclaim.Cost)
+                    WeeklyCost = reclaim.SubType == ReclaimSubType.FncPayment || reclaim.ClaimCollector == ClaimCollector.Hackney ? reclaim.Cost : decimal.Negate(reclaim.Cost)
                 }));
             }
 

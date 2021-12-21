@@ -51,19 +51,19 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             return Ok(result);
         }
 
-        /// <summary>Return service user response.</summary>
-        /// <param name="queryParameters">Query parameters to filter list of service user returned.</param>
-        /// <returns>The Service User Information response.</returns>
-        [ProducesResponseType(typeof(ServiceUserResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
-        [HttpGet("search")]
-        public async Task<ActionResult<ServiceUserResponse>> SearchServiceUser([FromQuery] ServiceUserQueryParameters queryParameters)
-        {
-            var result = await _getServiceUserSearchUseCase.GetServiceUsers(queryParameters);
-            return Ok(result);
-        }
+        ///// <summary>Return service user response.</summary>
+        ///// <param name="queryParameters">Query parameters to filter list of service user returned.</param>
+        ///// <returns>The Service User Information response.</returns>
+        //[ProducesResponseType(typeof(ServiceUserResponse), StatusCodes.Status200OK)]
+        //[ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        //[ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        //[ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        //[HttpGet("search")]
+        //public async Task<ActionResult<ServiceUserResponse>> SearchServiceUser([FromQuery] ServiceUserQueryParameters queryParameters)
+        //{
+        //    var result = await _getServiceUserSearchUseCase.GetServiceUsers(queryParameters);
+        //    return Ok(result);
+        //}
 
         /// <summary>Return service user information.</summary>
         /// <param name="request">Request to filter list of service user returned.</param>
@@ -92,7 +92,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             return Ok(result);
         }
 
-        //todo FK: will be replaced as search
         /// <summary>Return service user information.</summary>
         /// <param name="request">Request to filter list of service user returned.</param>
         /// <returns>The Service User Information response.</returns>
@@ -100,7 +99,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
-        [HttpGet("new-search")]
+        [HttpGet("search")]
         // [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
         public async Task<ActionResult<ServiceUserInformationResponse>> NewSearchServiceUser([FromQuery] ServiceUserQueryRequest request)
         {

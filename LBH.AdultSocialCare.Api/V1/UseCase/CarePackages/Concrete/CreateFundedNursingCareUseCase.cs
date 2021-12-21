@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
+using LBH.AdultSocialCare.Api.Core;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Extensions;
@@ -58,7 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 package.Status = PackageStatus.SubmittedForApproval;
             }
 
-            CareChargeExtensions.EnsureValidPackageTotals(package);
+            ReclaimCostValidator.Validate(package);
 
             await using (var transaction = await _dbManager.BeginTransactionAsync())
             {

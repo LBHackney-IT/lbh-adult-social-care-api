@@ -71,22 +71,23 @@ namespace DataImporter.Model
                 _reclaimType = ReclaimType.CareCharge;
                 _claimCollector = ClaimCollector.Hackney;
             }
-            else if (_anpOneOffPackageType.Contains(elementType, StringComparer.Ordinal))
+            else if (_anpOneOffPackageType.Contains(elementType, StringComparer.OrdinalIgnoreCase))
             {
                 _excelPackageType = ExcelPackageType.Detail;
                 _packageDetailType = PackageDetailType.AdditionalNeed;
                 _costPeriod = PaymentPeriod.OneOff;
             }
-            else if (_fncGrossPackageType.Contains(elementType, StringComparer.Ordinal))
+            else if (_fncGrossPackageType.Contains(elementType, StringComparer.OrdinalIgnoreCase))
             {
                 _excelPackageType = ExcelPackageType.Reclaim;
+                _careChargeSubType = ReclaimSubType.FncReclaim;
                 _reclaimType = ReclaimType.Fnc;
                 _claimCollector = ClaimCollector.Hackney;
             }
-            else if (_fncNetPackageType.Contains(elementType, StringComparer.Ordinal))
+            else if (_fncNetPackageType.Contains(elementType, StringComparer.OrdinalIgnoreCase))
             {
                 _excelPackageType = ExcelPackageType.Reclaim;
-                _careChargeSubType = ReclaimSubType.CareChargeProvisional;
+                _careChargeSubType = ReclaimSubType.FncPayment;
                 _reclaimType = ReclaimType.Fnc;
                 _claimCollector = ClaimCollector.Supplier;
             }
@@ -104,8 +105,8 @@ namespace DataImporter.Model
 
         public static PackageType GetPackageType(string elementType)
         {
-            var _residentialPackageType = new[] { "Interim Residential Bed", "Residential Care", "Short Stay Residential Home" };
-            var _nursingPackageType = new[] { "Interim Nursing Bed", "Nursing Care", "Short Stay Nursing Home" };
+            var _residentialPackageType = new[] { "Residential", "Interim Residential Bed", "Residential Care", "Short Stay Residential Home" };
+            var _nursingPackageType = new[] { "FNCC reclaim", "Interim Nursing Bed", "Nursing Care", "Short Stay Nursing Home" };
 
             if (_residentialPackageType.Contains(elementType, StringComparer.OrdinalIgnoreCase))
             {

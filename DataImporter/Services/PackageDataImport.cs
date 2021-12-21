@@ -41,6 +41,7 @@ namespace DataImporter.Services
 
                     var excelRow = new ExcelRowModel()
                     {
+                        RowNumber = i,
                         HackneyID = worksheet.Cells[$"A{i}"].Value?.ToString(),
                         ServiceTypeGroup = worksheet.Cells[$"G{i}"].Value?.ToString(),
                         ServiceType = worksheet.Cells[$"H{i}"].Value?.ToString(),
@@ -51,8 +52,8 @@ namespace DataImporter.Services
                         StartDateOA = worksheet.Cells[$"W{i}"].Value?.ToString(),
                         EndDateOA = worksheet.Cells[$"X{i}"].Value?.ToString(),
                         BudgetCode = worksheet.Cells[$"Y{i}"].Value?.ToString(),
-                        SupplierID = worksheet.Cells[$"AA{i}"].Value?.ToString(),
-                        SupplierSite = worksheet.Cells[$"AB{i}"].Value?.ToString()
+                        SupplierID = worksheet.Cells[$"AB{i}"].Value?.ToString(),
+                        SupplierSite = worksheet.Cells[$"AC{i}"].Value?.ToString()
                     };
 
                     excelRows.Add(excelRow);
@@ -67,26 +68,26 @@ namespace DataImporter.Services
                 Guid serviceUserID = await CreateOrSkipUser(serviceUserPackage.Key);
                 if (serviceUserID == Guid.Empty)
                 {
-                    logs.Add($"{DateTimeOffset.UtcNow}\tService user {serviceUserPackage.Key} not found");
+                    logs.Add($"{DateTimeOffset.UtcNow}\tRow Number: {serviceUserPackage.FirstOrDefault().RowNumber}\tService user {serviceUserPackage.Key} not found");
                     hasError = true;
                 }
                 var primarySupportReasonID = GetPrimarySupportReasonID(serviceUserPackage.FirstOrDefault().BudgetCode.Replace("-", "").Substring(0, 5));
                 if (primarySupportReasonID == 0)
                 {
-                    logs.Add($"{DateTimeOffset.UtcNow}\tPrimary support reason {serviceUserPackage.FirstOrDefault().BudgetCode.Substring(0, 5)} not found");
+                    logs.Add($"{DateTimeOffset.UtcNow}\tRow Number: {serviceUserPackage.FirstOrDefault().RowNumber}\tPrimary support reason {serviceUserPackage.FirstOrDefault().BudgetCode.Substring(0, 5)} not found");
                     hasError = true;
                 }
 
                 if (!int.TryParse(serviceUserPackage.FirstOrDefault().SupplierID, out int supplierId))
                 {
-                    logs.Add($"{DateTimeOffset.UtcNow}\tSupplierID {serviceUserPackage.FirstOrDefault().SupplierID} must be number.");
+                    logs.Add($"{DateTimeOffset.UtcNow}\tRow Number: {serviceUserPackage.FirstOrDefault().RowNumber}\tSupplierID {serviceUserPackage.FirstOrDefault().SupplierID} must be number.");
                     hasError = true;
                 }
 
                 var supplierID = GetSupplierID(supplierId, serviceUserPackage.FirstOrDefault().SupplierSite);
                 if (supplierID == 0)
                 {
-                    logs.Add($"{DateTimeOffset.UtcNow}\tService user {serviceUserPackage.Key}\tSupplierID: {supplierId}\tSupplierSite: {serviceUserPackage.FirstOrDefault().SupplierSite} not found.");
+                    logs.Add($"{DateTimeOffset.UtcNow}\tRow Number: {serviceUserPackage.FirstOrDefault().RowNumber}\tService user {serviceUserPackage.Key}\tSupplierID: {supplierId}\tSupplierSite: {serviceUserPackage.FirstOrDefault().SupplierSite} not found.");
                     hasError = true;
                 }
 
@@ -154,7 +155,7 @@ namespace DataImporter.Services
                     }
                     else
                     {
-                        logs.Add($"{DateTimeOffset.UtcNow}\tService user {serviceUserPackage.Key}\tPackage Type {package.ElementType} is not valid.");
+                        logs.Add($"{DateTimeOffset.UtcNow}\tRow Number: {serviceUserPackage.FirstOrDefault().RowNumber}\tService user {serviceUserPackage.Key}\tPackage Type {package.ElementType} is not valid.");
                     }
                 }
                 _databaseContext.CarePackages.Add(carePackage);

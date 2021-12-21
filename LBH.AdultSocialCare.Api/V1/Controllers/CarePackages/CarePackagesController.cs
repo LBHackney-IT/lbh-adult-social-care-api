@@ -246,7 +246,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpPost("{carePackageId}/end")]
         public async Task<ActionResult> EndPackage(Guid carePackageId, CarePackageEndRequest request)
         {
-            await _endCarePackageUseCase.ExecuteAsync(carePackageId, request.EndDate.GetValueOrDefault().Date, request.Notes);
+            await _endCarePackageUseCase.ExecuteAsync(carePackageId, request.EndDate.GetValueOrDefault(), request.Notes);
             return Ok();
         }
 
