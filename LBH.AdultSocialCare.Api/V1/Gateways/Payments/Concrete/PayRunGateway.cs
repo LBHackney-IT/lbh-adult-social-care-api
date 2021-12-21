@@ -59,7 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     DateTo = pr.EndDate,
                     DateCreated = pr.DateCreated
                 })
-                .OrderBy(p => p.PayRunStatusId).ThenBy(p => p.DateCreated)
+                .OrderBy(p => p.DateCreated)
                 .ToListAsync();
 
             payRunList = payRunList
