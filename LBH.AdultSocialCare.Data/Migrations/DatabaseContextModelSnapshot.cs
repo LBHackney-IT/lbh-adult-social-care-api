@@ -122,6 +122,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<DateTimeOffset>("StartDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Subjective")
+                        .HasColumnType("text");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
@@ -237,6 +240,9 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                     b.Property<int?>("SubType")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Subjective")
+                        .HasColumnType("text");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
@@ -260,7 +266,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasCheckConstraint("CK_CarePackageReclaims_Status", "\"Status\" IN (1, 2, 3, 4)");
 
-                    b.HasCheckConstraint("CK_CarePackageReclaims_SubType", "\"SubType\" IN (NULL, 1, 2, 3)");
+                    b.HasCheckConstraint("CK_CarePackageReclaims_SubType", "\"SubType\" IN (1, 2, 3, 4, 5)");
 
                     b.HasCheckConstraint("CK_CarePackageReclaims_Type", "\"Type\" IN (1, 2)");
                 });
@@ -1049,7 +1055,6 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
                             LockoutEnabled = true,
                             LockoutEnd = new DateTimeOffset(new DateTime(2521, 12, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             Name = "Migration User",
-                            PasswordHash = "AQAAAAEAACcQAAAAEKYPIqwiDLYiR3uXhm/X4tDTTapNnoOouHxXDx5ATevmnXncR+pglbIgvvGx1TXLwg==",
                             PhoneNumber = "1234567890",
                             PhoneNumberConfirmed = false,
                             TwoFactorEnabled = false,
@@ -1249,7 +1254,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.ToTable("InvoiceItems");
 
-                    b.HasCheckConstraint("CK_InvoiceItems_ClaimCollector", "\"ClaimCollector\" IN (NULL, 1, 2)");
+                    b.HasCheckConstraint("CK_InvoiceItems_ClaimCollector", "\"ClaimCollector\" IN (1, 2)");
 
                     b.HasCheckConstraint("CK_InvoiceItems_PriceEffect", "\"PriceEffect\" IN (1, 2, 3)");
                 });
@@ -1309,7 +1314,7 @@ namespace LBH.AdultSocialCare.Api.V1.Infrastructure.Migrations
 
                     b.HasCheckConstraint("CK_Payruns_Status", "\"Status\" IN (1, 2, 3, 4, 5, 6, 7, 8)");
 
-                    b.HasCheckConstraint("CK_Payruns_Type", "\"Type\" IN (1, 2, 3, 4)");
+                    b.HasCheckConstraint("CK_Payruns_Type", "\"Type\" IN (1, 2)");
                 });
 
             modelBuilder.Entity("LBH.AdultSocialCare.Data.Entities.Payments.PayrunHistory", b =>

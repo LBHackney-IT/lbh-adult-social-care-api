@@ -9,7 +9,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces
 {
     public interface IGetCarePackageReclaimsUseCase
     {
-        Task<CarePackageReclaimResponse> GetCarePackageReclaim(Guid carePackageId, ReclaimType reclaimType);
+        Task<CarePackageReclaimResponse> GetFundedNursingCare(Guid carePackageId);
 
         Task<IEnumerable<CarePackageReclaimDomain>> GetListAsync(Guid carePackageId, ReclaimType? reclaimType, ReclaimSubType? reclaimSubType);
 

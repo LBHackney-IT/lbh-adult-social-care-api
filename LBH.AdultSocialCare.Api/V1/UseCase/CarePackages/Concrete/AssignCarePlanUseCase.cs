@@ -35,14 +35,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             _fileStorage = fileStorage;
         }
 
-        public async Task ExecuteAsync(CarePlanAssignmentDomain carePlanAssignment)
+        public async Task<Guid> ExecuteAsync(CarePlanAssignmentDomain carePlanAssignment)
         {
             var serviceUser = await _getServiceUserUseCase.GetServiceUserInformation(carePlanAssignment.HackneyUserId);
             await _ensureSingleActivePackageTypePerUserUseCase.ExecuteAsync(serviceUser.Id, carePlanAssignment.PackageType);
 
             var documentResponse = new DocumentResponse();
 
-            if (carePlanAssignment.CarePlanFileId == Guid.Empty)
+            if (carePlanAssignment.CarePlanFileId == Guid.Empty && carePlanAssignment.CarePlanFile != null)
             {
                 documentResponse = await _fileStorage.SaveFileAsync(ConvertCarePlan(carePlanAssignment.CarePlanFile), carePlanAssignment.CarePlanFile?.FileName);
             }
@@ -57,7 +57,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 PackageScheduling = PackageScheduling.Temporary, // TODO: Review if package scheduling can be made nullable
             };
 
-            if (documentResponse != null)
+            if (documentResponse.FileId != Guid.Empty)
             {
                 package.Resources.Add(new CarePackageResource()
                 {
@@ -77,6 +77,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             _carePackageGateway.Create(package);
             await _dbManager.SaveAsync();
+            return package.Id;
         }
 
         private static string ConvertCarePlan(IFormFile carePlanFile)

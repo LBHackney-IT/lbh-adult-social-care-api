@@ -1,4 +1,3 @@
-using AutoMapper;
 using Common.Exceptions.CustomExceptions;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
@@ -19,40 +18,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
     public class CarePackageReclaimGateway : ICarePackageReclaimGateway
     {
         private readonly DatabaseContext _dbContext;
-        private readonly IMapper _mapper;
 
-        public CarePackageReclaimGateway(DatabaseContext dbContext, IMapper mapper)
+        public CarePackageReclaimGateway(DatabaseContext dbContext)
         {
             _dbContext = dbContext;
-            _mapper = mapper;
-        }
-
-        public async Task CreateAsync(CarePackageReclaim carePackageReclaim)
-        {
-
-            await _dbContext.CarePackageReclaims.AddAsync(carePackageReclaim);
-        }
-
-        public async Task<bool> UpdateAsync(CarePackageReclaimUpdateDomain carePackageReclaimUpdateDomain)
-        {
-            var carePackageReclaim = await _dbContext.CarePackageReclaims
-                .FirstOrDefaultAsync(item => item.Id == carePackageReclaimUpdateDomain.Id);
-
-            if (carePackageReclaim == null)
-            {
-                throw new EntityNotFoundException($"Unable to locate care package reclaim {carePackageReclaimUpdateDomain.Id}");
-            }
-
-            _mapper.Map(carePackageReclaimUpdateDomain, carePackageReclaim);
-            try
-            {
-                await _dbContext.SaveChangesAsync();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw new DbSaveFailedException($"Update for care package reclaim for {carePackageReclaimUpdateDomain.Id} failed {ex.Message}");
-            }
         }
 
         public async Task<CarePackageReclaim> GetAsync(Guid reclaimId, bool trackChanges = false)
@@ -87,11 +56,13 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
                 .ToListAsync();
         }
 
-        public async Task<CarePackageReclaimDomain> GetSingleAsync(Guid carePackageId, ReclaimType reclaimType)
+        public async Task<CarePackageReclaimDomain> GetSingleAsync(Guid carePackageId, ReclaimType reclaimType, ReclaimSubType? reclaimSubType)
         {
             var carePackageReclaim = await _dbContext.CarePackageReclaims
-                .Where(a => a.CarePackageId.Equals(carePackageId) &&
-                            a.Type.Equals(reclaimType))
+                .Where(reclaim =>
+                    reclaim.CarePackageId.Equals(carePackageId) &&
+                    reclaim.Type.Equals(reclaimType) &&
+                    (reclaimSubType == null || reclaim.SubType == reclaimSubType))
                 .FirstOrDefaultAsync();
 
             return carePackageReclaim?.ToDomain();

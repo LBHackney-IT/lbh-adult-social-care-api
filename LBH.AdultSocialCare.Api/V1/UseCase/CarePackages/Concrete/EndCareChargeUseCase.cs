@@ -53,7 +53,22 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             var carePackage = await _carePackageGateway
-                .GetPackageAsync(reclaim.CarePackageId, PackageFields.Reclaims, true);
+                .GetPackageAsync(reclaim.CarePackageId, PackageFields.Reclaims | PackageFields.Details, true)
+                .EnsureExistsAsync($"Care package with id {reclaim.CarePackageId} not found");
+
+            var corePackage = carePackage.Details.SingleOrDefault(x => x.Type == PackageDetailType.CoreCost);
+            // If the package is not ongoing, endDate must be range withinPackage
+            if (corePackage.EndDate.HasValue && !request.EndDate.Value.IsInRange(corePackage.StartDate, corePackage.EndDate.Value))
+            {
+                throw new ApiException($"End date cannot be later core package date {corePackage.EndDate.Value}",
+                    HttpStatusCode.BadRequest);
+            }
+
+            if (request.EndDate < corePackage.StartDate)
+            {
+                throw new ApiException($"End date cannot be beyond core package date {corePackage.StartDate}",
+                    HttpStatusCode.BadRequest);
+            }
 
             var currentReclaim = carePackage.Reclaims.First(r => r.Id == reclaim.Id);
             currentReclaim.Status = ReclaimStatus.Ended;

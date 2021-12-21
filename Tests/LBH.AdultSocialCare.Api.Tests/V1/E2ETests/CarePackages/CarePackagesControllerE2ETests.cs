@@ -100,7 +100,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 TestDataHelper.CarePackageUpdateRequest(carePackage, updatedCarePackageSettings);
 
             var response = await localFixture.RestClient
-                .PutAsync<CarePackagePlainResponse>($"api/v1/care-packages/{carePackage.Id}", carePackageUpdateRequest)
+                .UpdateFormAsync<CarePackagePlainResponse>($"api/v1/care-packages/{carePackage.Id}", carePackageUpdateRequest)
                 .ConfigureAwait(false);
 
             var packageSettingsEntity = localFixture.DatabaseContext.CarePackageSettings.SingleOrDefault(ps => ps.CarePackageId.Equals(carePackage.Id));
@@ -155,7 +155,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             historyEntry?.Status.Should().Be(HistoryStatus.SubmittedForApproval);
         }
 
-        [Fact(Skip = "For unblock FE")]
+        [Fact]
         public async Task ShouldAssignCarePlan()
         {
             var request = new CarePlanAssignmentRequest
@@ -267,7 +267,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         }
 
         [Theory]
-        [InlineData("end", PackageStatus.Ended, HistoryStatus.BrokeredEnded)]
+        // [InlineData("end", PackageStatus.Ended, HistoryStatus.BrokeredEnded)]
         [InlineData("cancel", PackageStatus.Cancelled, HistoryStatus.Cancelled)]
         [InlineData("approve", PackageStatus.Approved, HistoryStatus.PackageApproved)]
         [InlineData("decline", PackageStatus.NotApproved, HistoryStatus.Declined)]
@@ -297,6 +297,37 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             carePackageHistory?.Description.Should().Be(historyStatus.GetDisplayName());
             carePackageHistory?.RequestMoreInformation.Should().Be(request.Notes);
             carePackageHistory?.Status.Should().Be(historyStatus);
+        }
+
+        [Fact]
+        public async Task ShouldEndPackage()
+        {
+            var package = _generator.CreateCarePackage(status: PackageStatus.Approved);
+            var coreCost = _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost).First();
+
+            var request = new CarePackageEndRequest()
+            {
+                Notes = "Test",
+                EndDate = DateTimeOffset.Now.Date.AddDays(-2)
+            };
+
+            var response = await _fixture.RestClient
+                .PostAsync<CarePackagePlainResponse>($"api/v1/care-packages/{package.Id}/end", request);
+
+            package = _fixture.DatabaseContext.CarePackages
+                .FirstOrDefault(p => p.Id == package.Id);
+            var carePackageHistory = _fixture.DatabaseContext.CarePackageHistories
+                .FirstOrDefault(h => h.CarePackageId == package.Id);
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            package?.Should().NotBeNull();
+            package?.Status.Should().Be(PackageStatus.Ended);
+
+            carePackageHistory?.Should().NotBeNull();
+            carePackageHistory?.Description.Should().Be(HistoryStatus.BrokeredEnded.GetDisplayName());
+            carePackageHistory?.RequestMoreInformation.Should().Be(request.Notes);
+            carePackageHistory?.Status.Should().Be(HistoryStatus.BrokeredEnded);
         }
 
         [Fact]

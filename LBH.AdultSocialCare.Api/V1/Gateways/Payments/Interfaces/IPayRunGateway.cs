@@ -20,7 +20,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
 
         Task<int> GetDraftPayRunCount(PayrunType payRunType);
 
-        Task<bool> CheckExistsUnApprovedPayRunAsync(PayrunType payRunType);
+        Task<bool> CheckExistsUnApprovedPayRunAsync();
 
         Task<IEnumerable<Payrun>> GetPayRunsByTypeAndStatusAsync(PayrunType[] types, PayrunStatus[] statuses);
 
@@ -28,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
 
         Task<Payrun> GetPreviousPayRunAsync(PayrunType payRunType);
 
-        Task<Payrun> GetPackageLatestPayRunAsync(Guid packageId, PayrunType[] payrunTypes, PayrunStatus[] payRunStatuses, InvoiceStatus[] invoiceStatuses);
+        Task<Payrun> GetPackageLatestPayRunAsync(Guid packageId, PayrunStatus[] payRunStatuses, InvoiceStatus[] invoiceStatuses);
 
         Task<List<CedarFileInvoiceHeader>> GetCedarFileList(Guid payRunId);
 

@@ -75,16 +75,25 @@ namespace LBH.AdultSocialCare.Data.Extensions
         public static IQueryable<CarePackage> FilterCareChargeCarePackageList(this IQueryable<CarePackage> carePackages,
             string status, Guid? modifiedBy, string orderByDate, string searchTerm)
         {
-            var filteredList = carePackages.Where(c =>
+            // Explode search term to tokens
+            var searchTokens = Regex.Split(searchTerm ?? string.Empty, "\\s+").ToList();
+            var searchPredicate = PredicateBuilder.New<CarePackage>(true);
+            foreach (var searchToken in searchTokens)
+            {
+                searchPredicate = searchPredicate.Or(e =>
+                    EF.Functions.ILike(e.ServiceUser.FirstName, $"%{searchToken}%")
+                    || EF.Functions.ILike(e.ServiceUser.LastName, $"%{searchToken}%")
+                    || EF.Functions.ILike(e.ServiceUser.HackneyId.ToString(), $"%{searchToken}%"));
+            }
+
+            var filteredList = carePackages.Where(searchPredicate).Where(c =>
                 (modifiedBy.Equals(null) || c.UpdaterId == modifiedBy) &&
-                (String.IsNullOrEmpty(searchTerm)
-                   || c.ServiceUser.FirstName.ToLower().Contains(searchTerm.ToLower())
-                   || c.ServiceUser.LastName.ToLower().Contains(searchTerm.ToLower())) &&
                 (status != null
                     ? c.Reclaims.Any(r =>
                           r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional) ==
                       (status == "Existing")
                     : c.Equals(c)));
+
 
             switch (orderByDate)
             {
@@ -136,6 +145,7 @@ namespace LBH.AdultSocialCare.Data.Extensions
                     || EF.Functions.ILike(e.Invoice.ServiceUser.LastName, $"%{searchToken}%")
                     || EF.Functions.ILike(e.InvoiceId.ToString(), $"%{searchToken}%")
                     || EF.Functions.ILike(e.Invoice.Number, $"%{searchToken}%")
+                    || EF.Functions.ILike(e.Payrun.Number, $"%{searchToken}%")
                     || EF.Functions.ILike(e.Invoice.Supplier.SupplierName ?? "", $"%{searchToken}%"));
             }
 

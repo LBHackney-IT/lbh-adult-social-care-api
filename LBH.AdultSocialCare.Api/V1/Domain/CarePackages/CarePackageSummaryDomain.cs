@@ -26,11 +26,11 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
         public IEnumerable<CarePackageDetailDomain> AdditionalOneOffNeeds { get; set; }
 
         public decimal AdditionalWeeklyCost { get; set; }
-        public decimal AdditionalOneOffCost { get; set; }
+        public decimal OneOffCost { get; set; }
 
         public decimal CostOfPlacement { get; set; }
-        public decimal? FncPayment { get; set; }
-        public decimal SubTotalCost { get; set; }
+        public decimal FncPayment { get; set; }
+        public decimal TotalCostOfPlacement { get; set; }
         public decimal TotalWeeklyCost { get; set; }
 
         public CarePackageReclaimDomain FundedNursingCare { get; set; }

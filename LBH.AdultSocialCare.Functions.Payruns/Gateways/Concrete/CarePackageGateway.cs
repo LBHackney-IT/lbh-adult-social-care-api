@@ -55,6 +55,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
             return await DbContext.CarePackages
                 .Include(package => package.Details)
                 .Include(package => package.Reclaims)
+                .Include(package => package.ServiceUser)
                 .AsNoTracking()
                 .Where(package => ids.Contains(package.Id))
                 .ToListAsync();

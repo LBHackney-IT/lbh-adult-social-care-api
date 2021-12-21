@@ -5,11 +5,13 @@ using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using LBH.AdultSocialCare.Data.Entities.Payments;
+using LBH.AdultSocialCare.Data.Extensions;
+using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 {
@@ -33,28 +35,31 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 .EnsureExistsAsync($"Package with id {packageId} not found");
 
             var invoiceStatuses = new[] { InvoiceStatus.Accepted };
-            var payRunStatuses = new[] { PayrunStatus.Approved, PayrunStatus.Paid, PayrunStatus.PaidWithHold };
-            var payRunTypes = new[]
-            {
-                PayrunType.ResidentialRecurring, PayrunType.DirectPayments, PayrunType.ResidentialReleasedHolds,
-                PayrunType.DirectPaymentsReleasedHolds
-            };
+            var payRunStatuses = new[] { PayrunStatus.Paid, PayrunStatus.PaidWithHold };
 
             var packageLatestPayRun =
-                await _payRunGateway.GetPackageLatestPayRunAsync(packageId, payRunTypes, payRunStatuses, invoiceStatuses);
+                await _payRunGateway.GetPackageLatestPayRunAsync(packageId, payRunStatuses, invoiceStatuses);
 
-            var payRunInvoices = await _payRunInvoiceGateway.GetPackageInvoicesAsync(packageId, parameters, payRunStatuses,
+            var allInvoices = await _payRunInvoiceGateway.GetPackageInvoicesAsync(packageId, payRunStatuses,
                 invoiceStatuses, PayRunInvoiceFields.Invoice | PayRunInvoiceFields.Payrun, false);
+
+            var payRunInvoices = allInvoices
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .ToList();
+            var pagedInvoices = PagedList<PayrunInvoice>.ToPagedList(payRunInvoices, allInvoices.Count, parameters.PageNumber,
+                parameters.PageSize);
 
             var payments = new PagedResponse<PackagePaymentItemResponse>
             {
-                PagingMetaData = payRunInvoices.PagingMetaData,
-                Data = payRunInvoices.Select(i => new PackagePaymentItemResponse
+                PagingMetaData = pagedInvoices.PagingMetaData,
+                Data = pagedInvoices.Select(i => new PackagePaymentItemResponse
                 {
                     PeriodFrom = i.Payrun.StartDate.Date,
                     PeriodTo = i.Payrun.EndDate.Date,
                     PayRunId = i.PayrunId,
                     InvoiceId = i.InvoiceId,
+                    InvoiceNumber = i.Invoice.Number,
                     AmountPaid = decimal.Round(i.Invoice.GrossTotal, 2)
                 })
             };
@@ -62,14 +67,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             var packagePayment = new PackageTotalPaymentResponse
             {
                 PackageId = package.Id,
-                TotalPaid = decimal.Round(payRunInvoices.Sum(pi => pi.Invoice.GrossTotal), 2),
+                TotalPaid = decimal.Round(allInvoices.Sum(pi => pi.Invoice.GrossTotal), 2),
                 DateTo = packageLatestPayRun != null ? packageLatestPayRun.EndDate.Date : DateTime.Today
             };
 
             return new PackagePaymentViewResponse
             {
                 PackageId = package.Id,
-                ServiceUserName = package.ServiceUser.FirstName,
+                ServiceUserName = $"{package.ServiceUser.FirstName} {package.ServiceUser.MiddleName} {package.ServiceUser.LastName}",
                 CedarId = package.Supplier.CedarId ?? 0,
                 SupplierName = package.Supplier.SupplierName,
                 PackageType = package.PackageType,

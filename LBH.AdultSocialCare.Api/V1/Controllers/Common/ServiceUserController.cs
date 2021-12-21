@@ -51,35 +51,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
             return Ok(result);
         }
 
-        /// <summary>Return service user response.</summary>
-        /// <param name="queryParameters">Query parameters to filter list of service user returned.</param>
-        /// <returns>The Service User Information response.</returns>
-        [ProducesResponseType(typeof(ServiceUserResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
-        [HttpGet("search")]
-        public async Task<ActionResult<ServiceUserResponse>> SearchServiceUser([FromQuery] ServiceUserQueryParameters queryParameters)
-        {
-            var result = await _getServiceUserSearchUseCase.GetServiceUsers(queryParameters);
-            return Ok(result);
-        }
-
-        /// <summary>Return service user information.</summary>
-        /// <param name="request">Request to filter list of service user returned.</param>
-        /// <returns>The Service User Information response.</returns>
-        [ProducesResponseType(typeof(ServiceUserInformationResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
-        [HttpGet("master-search")]
-        // [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
-        public async Task<ActionResult<ServiceUserInformationResponse>> SearchServiceUser([FromQuery] ServiceUserQueryRequest request)
-        {
-            var result = await _getServiceUserMasterSearchUseCase.GetServiceUsers(request);
-            return Ok(result);
-        }
-
         /// <summary>Get all the packages for a service user</summary>
         /// <param name="serviceUserId">The service user identifier.</param>
         /// <returns>A list of packages the service users has if success</returns>
@@ -89,6 +60,21 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         public async Task<ActionResult<ServiceUserPackagesViewResponse>> GetServiceUserPackages(Guid serviceUserId)
         {
             var result = await _getServiceUserPackagesUseCase.ExecuteAsync(serviceUserId);
+            return Ok(result);
+        }
+
+        /// <summary>Return service user information.</summary>
+        /// <param name="request">Request to filter list of service user returned.</param>
+        /// <returns>The Service User Information response.</returns>
+        [ProducesResponseType(typeof(ServiceUserSearchResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
+        [HttpGet("search")]
+        // [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
+        public async Task<ActionResult<ServiceUserSearchResponse>> SearchServiceUser([FromQuery] ServiceUserQueryRequest request)
+        {
+            var result = await _getServiceUserMasterSearchUseCase.GetServiceUsers(request);
             return Ok(result);
         }
     }
