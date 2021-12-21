@@ -48,6 +48,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                     invoiceEndDate, invoiceTypes, ref lastInvoiceNumber));
             }
 
+            await _invoiceGateway.AcceptReleasedInvoices(packageIds);
+
             return invoices;
         }
 
