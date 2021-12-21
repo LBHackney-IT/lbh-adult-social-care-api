@@ -29,6 +29,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
 
             foreach (var reclaim in fncReclaims)
             {
+                if (reclaim.ClaimCollector is ClaimCollector.Hackney && reclaim.SubType is ReclaimSubType.FncReclaim) continue;
+
                 var actualStartDate = GetActualStartDate(reclaim, packageInvoices);
 
                 foreach (var price in _fncPrices)

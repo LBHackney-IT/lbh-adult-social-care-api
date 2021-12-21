@@ -120,6 +120,16 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .EnsureNoInvoiceGenerated();
         }
 
+        [Fact]
+        public void ShouldSkipHackneyCareCharges()
+        {
+            PaymentExperiment
+                .For(_package, _generator)
+                .UpdateReclaim(r => r.ClaimCollector = ClaimCollector.Hackney)
+                .CreateInvoice("2022-12-07")
+                .EnsureNoInvoiceGenerated();
+        }
+
         #endregion Normal finite care charges
 
         #region Refunds for finite care charges

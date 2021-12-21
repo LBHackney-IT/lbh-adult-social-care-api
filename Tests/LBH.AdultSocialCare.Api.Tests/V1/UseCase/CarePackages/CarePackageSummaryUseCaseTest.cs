@@ -43,9 +43,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         }
 
         [Theory]
-        //                                                    Total weekly cost
-        [InlineData(ReclaimType.Fnc, ClaimCollector.Supplier, 80)]
-        [InlineData(ReclaimType.Fnc, ClaimCollector.Hackney, 100)]
+        [InlineData(ReclaimType.Fnc, ClaimCollector.Supplier, 100)] // core + FNC - FNC
+        [InlineData(ReclaimType.Fnc, ClaimCollector.Hackney, 120)] // core + FNC, no FNC deduction for Hackney
         [InlineData(ReclaimType.CareCharge, ClaimCollector.Supplier, 80)]
         [InlineData(ReclaimType.CareCharge, ClaimCollector.Hackney, 100)]
         public async Task ShouldConsiderReclaimCollector(ReclaimType reclaimType, ClaimCollector collector, decimal totalWeeklyCost)
@@ -119,6 +118,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 Cost = cost,
                 Type = type,
+                SubType = type is ReclaimType.Fnc
+                    ? ReclaimSubType.FncPayment
+                    : ReclaimSubType.CareChargeProvisional,
                 ClaimCollector = collector,
                 StartDate = _startDate,
                 EndDate = _endDate,
