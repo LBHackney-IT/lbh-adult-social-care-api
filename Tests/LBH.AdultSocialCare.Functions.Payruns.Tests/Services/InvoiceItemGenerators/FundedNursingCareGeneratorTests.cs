@@ -38,6 +38,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 Cost = 700.0m,
                 Status = ReclaimStatus.Active,
                 Type = ReclaimType.Fnc,
+                SubType = ReclaimSubType.FncPayment,
                 ClaimCollector = ClaimCollector.Supplier,
                 StartDate = "2022-12-01".ToUtcDate(),
                 EndDate = "2022-12-31".ToUtcDate(),
@@ -176,8 +177,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         {
             var newReclaim = _package.Reclaims.First().DeepCopy(CloneLevel.FirstLevelOnly);
 
-            // migrated FNCs have a secondary compensation reclaim with negative cost
             newReclaim.Cost = -700.0m;
+            newReclaim.SubType = ReclaimSubType.FncReclaim;
 
             _package.Reclaims.Add(newReclaim);
 
@@ -187,6 +188,17 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .VerifyLastInvoice(
                     (3100.0m, "2022-12-01", "2022-12-31"),
                     (-3100.0m, "2022-12-01", "2022-12-31"));
+        }
+
+        [Fact]
+        public void ShouldSkipHackneyFncReclaim()
+        {
+            PaymentExperiment
+                .For(_package, _generator)
+                .UpdateReclaim(r => r.ClaimCollector = ClaimCollector.Hackney)
+                .UpdateReclaim(r => r.SubType = ReclaimSubType.FncReclaim)
+                .CreateInvoice("2023-01-14")
+                .EnsureNoInvoiceGenerated();
         }
 
         #endregion Normal finite FNC

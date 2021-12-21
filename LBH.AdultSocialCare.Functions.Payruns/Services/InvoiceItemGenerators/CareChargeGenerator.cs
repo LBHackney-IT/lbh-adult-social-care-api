@@ -14,9 +14,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
         public override IEnumerable<InvoiceItem> CreateNormalItems(CarePackage package, IList<InvoiceDomain> packageInvoices, DateTimeOffset invoiceEndDate)
         {
             var careCharges = package.Reclaims
-                .Where(reclaim => reclaim.Type is ReclaimType.CareCharge &&
-                                  reclaim.Status != ReclaimStatus.Cancelled &&
-                                  reclaim.StartDate <= invoiceEndDate)
+                .Where(reclaim =>
+                    reclaim.Type is ReclaimType.CareCharge &&
+                    reclaim.ClaimCollector is ClaimCollector.Supplier &&
+                    reclaim.Status != ReclaimStatus.Cancelled &&
+                    reclaim.StartDate <= invoiceEndDate)
                 .ToList();
 
             foreach (var careCharge in careCharges)
