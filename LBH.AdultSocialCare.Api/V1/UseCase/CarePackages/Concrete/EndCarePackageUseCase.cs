@@ -47,7 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             // Validate - Select end date not before start date
-            if (endDate.Date < coreCost.StartDate.Date)
+            if (endDate < coreCost.StartDate)
             {
                 throw new ApiException(
                     $"Package end date cannot be before start date of {coreCost.StartDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
@@ -58,13 +58,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             // Update package detail end dates
             foreach (var packageDetail in package.Details)
             {
-                if (packageDetail.EndDate == null || packageDetail.EndDate.Value.Date > endDate.Date)
+                if (packageDetail.EndDate == null || packageDetail.EndDate.Value > endDate)
                 {
-                    packageDetail.EndDate = endDate.Date;
+                    packageDetail.EndDate = endDate;
                 }
             }
 
-            if (endDate.Date < today)
+            if (endDate < today)
             {
                 // Mark package as ended
                 package.Status = PackageStatus.Ended;
@@ -75,14 +75,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 foreach (var reclaim in reclaims)
                 {
                     // If reclaim in future, cancel
-                    if (reclaim.StartDate.Date >= endDate.Date)
+                    if (reclaim.StartDate >= endDate)
                     {
                         reclaim.Status = ReclaimStatus.Cancelled;
                     }
                     else
                     {
                         reclaim.Status = ReclaimStatus.Ended;
-                        reclaim.EndDate = endDate.Date;
+                        reclaim.EndDate = endDate;
                     }
                 }
             }
