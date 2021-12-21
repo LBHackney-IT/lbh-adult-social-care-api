@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LBH.AdultSocialCare.Data.Attributes;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
@@ -15,12 +16,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
     public class LookupController : BaseController
     {
         [HttpGet]
+        [ResponseCache(Duration = 600, VaryByQueryKeys = new[] { "name" })]
         public ActionResult<List<LookupItemResponse>> GetLookup(string name)
         {
-            // TODO: VK: Add some [Lookup] attribute to avoid accessing any enum for security reason
-            // TODO: VK: Consider [OptionName] attribute to keep separated strings for lookups and some other strings
-            // TODO: VK: optimize, look just for enums in Data assembly, add output caching
-
             var lookup = AppDomain.CurrentDomain
                 .GetAssemblies()
                 .Select(assembly => assembly
@@ -29,6 +27,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
                 .FirstOrDefault(type => type != null);
 
             if (lookup is null) return NotFound();
+
+            // explicitly mark lookups with [Lookup] to prevent exploring internal code structure from outside reading _any_ enums
+            if (!lookup.GetCustomAttributes(typeof(LookupAttribute), false).Any()) return NotFound();
 
             var values = Enum.GetValues(lookup)
                 .Cast<Enum>()

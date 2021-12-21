@@ -57,6 +57,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             foreach (var invoice in payRunInvoices)
             {
                 var (supplierReclaimsTotal, hackneyReclaimsTotal) = CalculateTotals(invoice.InvoiceItems);
+                InvoiceStatus invoiceStatus = invoice.InvoiceStatus;
+                if ((payrun.Status == PayrunStatus.Paid || payrun.Status == PayrunStatus.PaidWithHold)
+                  && (invoice.InvoiceStatus == InvoiceStatus.Released || invoice.InvoiceStatus == InvoiceStatus.ReleaseAccepted))
+                {
+                    invoiceStatus = InvoiceStatus.Held;
+                }
+
                 var invoiceRes = new PayRunInvoiceResponse
                 {
                     Id = invoice.Id,
@@ -73,7 +80,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                     NetTotal = decimal.Round(invoice.NetTotal, 2),
                     SupplierReclaimsTotal = decimal.Round(supplierReclaimsTotal, 2),
                     HackneyReclaimsTotal = decimal.Round(hackneyReclaimsTotal, 2),
-                    InvoiceStatus = invoice.InvoiceStatus,
+                    InvoiceStatus = invoiceStatus,
                     AssignedBrokerName = invoice.AssignedBrokerName,
                     InvoiceItems = invoice.InvoiceItems.ToResponse()
                 };

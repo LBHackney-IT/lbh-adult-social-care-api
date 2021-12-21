@@ -37,6 +37,7 @@ namespace HttpServices.Services.Concrete
                 .AddParameter("last_name", request.LastName)
                 .AddParameter("postCode", request.PostCode)
                 .AddParameter("date_of_birth", request.DateOfBirth)
+                .AddParameter("cursor", request.Cursor ?? 0)
                 .ToString();
 
             return await _restClient

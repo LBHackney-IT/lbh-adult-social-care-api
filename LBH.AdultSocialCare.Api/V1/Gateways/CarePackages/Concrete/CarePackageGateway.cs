@@ -135,22 +135,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             _dbContext.CarePackageReclaims.RemoveRange(reclaims);
         }
 
-        public async Task<List<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset dateTo)
-        {
-            // TODO: VK: Temporary stub, handle PaidUpTo dates
-            return await _dbContext.CarePackages
-                .Select(p => p.Id)
-                .ToListAsync();
-        }
-
-        public async Task<List<CarePackage>> GetByIdsAsync(IEnumerable<Guid> packageIds, PackageFields fields = PackageFields.All)
-        {
-            var query = BuildPackageQuery(
-                _dbContext.CarePackages.Where(p => packageIds.Contains(p.Id)), fields);
-
-            return await query.ToListAsync();
-        }
-
         public async Task<List<CarePackage>> GetServiceUserPackagesAsync(Guid serviceUserId, PackageFields fields = PackageFields.None,
             bool trackChanges = false)
         {
@@ -182,6 +166,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             var packages = await query
                 .Include(cp => cp.ServiceUser)
                 .Include(cp => cp.Approver)
+                .OrderBy(cp => cp.Status)
                 .GetPage(parameters.PageNumber, parameters.PageSize)
                 .AsNoTracking()
                 .ToListAsync();
@@ -200,6 +185,15 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             var carePackage = await _dbContext.CarePackages
                 .Where(pr => pr.Id.Equals(packageId)).FirstOrDefaultAsync();
             _dbContext.CarePackages.Remove(carePackage);
+        }
+
+        public async Task<List<CarePackage>> GetServiceUserActivePackages(List<int> hackneyId)
+        {
+            return await _dbContext.CarePackages
+                .Include(p => p.ServiceUser)
+                .Where(p => hackneyId.Contains(p.ServiceUser.HackneyId) &&
+                            p.Status != PackageStatus.Cancelled &&
+                            p.Status != PackageStatus.Ended).ToListAsync();
         }
 
         private static IQueryable<CarePackage> BuildPackageQuery(IQueryable<CarePackage> query, PackageFields fields)

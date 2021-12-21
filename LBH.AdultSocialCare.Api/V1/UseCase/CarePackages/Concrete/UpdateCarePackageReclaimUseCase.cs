@@ -11,13 +11,12 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Core;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -27,18 +26,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
         private readonly IMapper _mapper;
-        private readonly ICreatePackageResourceUseCase _createPackageResourceUseCase;
 
         public UpdateCarePackageReclaimUseCase(
             ICarePackageReclaimGateway carePackageReclaimGateway, ICarePackageGateway carePackageGateway,
-            IDatabaseManager dbManager, IMapper mapper,
-            ICreatePackageResourceUseCase createPackageResourceUseCase)
+            IDatabaseManager dbManager, IMapper mapper)
         {
             _carePackageReclaimGateway = carePackageReclaimGateway;
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
             _mapper = mapper;
-            _createPackageResourceUseCase = createPackageResourceUseCase;
         }
 
         public async Task UpdateAsync(CarePackageReclaimUpdateDomain carePackageReclaimUpdateDomain)
@@ -51,30 +47,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             var carePackageReclaim = carePackage.Reclaims.Single(r => r.Id == reclaimFromDb.Id);
 
-            if (!carePackageReclaimUpdateDomain.HasAssessmentBeenCarried && carePackageReclaim.Type == ReclaimType.Fnc)
+            if (carePackageReclaim.SubType == ReclaimSubType.CareChargeProvisional && carePackage.Reclaims.Any(r => r.Type == ReclaimType.CareCharge && r.SubType != ReclaimSubType.CareChargeProvisional && r.Status.In(ReclaimStatus.Active, ReclaimStatus.Pending, ReclaimStatus.Ended)))
             {
-                carePackageReclaim.Status = ReclaimStatus.Cancelled;
-                await _dbManager.SaveAsync();
-                return;
-            }
-
-            if (carePackageReclaim.Type == ReclaimType.Fnc)
-            {
-                var resourceType = carePackageReclaim.Type == ReclaimType.Fnc
-                    ? PackageResourceType.FncAssessmentFile
-                    : PackageResourceType.CareChargeAssessmentFile;
-
-                if (carePackageReclaimUpdateDomain?.AssessmentFileId == Guid.Empty && carePackageReclaimUpdateDomain.AssessmentFile != null)
-                {
-                    await _createPackageResourceUseCase.CreateFileAsync(carePackage.Id, resourceType,
-                        carePackageReclaimUpdateDomain.AssessmentFile);
-                }
+                throw new ApiException($"Operation not allowed. Package has been assessed.", HttpStatusCode.BadRequest);
             }
 
             try
             {
                 _mapper.Map(carePackageReclaimUpdateDomain, carePackageReclaim);
-                CareChargeExtensions.EnsureValidPackageTotals(carePackage);
+                ReclaimCostValidator.Validate(carePackage);
                 await _dbManager.SaveAsync("Could not update care package reclaim");
             }
             catch (ApiException ex)
@@ -242,22 +223,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var existingCareCharge = carePackageReclaim.FirstOrDefault(r => r.SubType == reclaimSubType) ?? carePackage.Reclaims.FirstOrDefault(r => r.SubType == reclaimSubType);
 
             return existingCareCharge;
-        }
-
-        private static string ConvertCarePlan(IFormFile carePlanFile)
-        {
-            if (carePlanFile != null)
-            {
-                using (var stream = new MemoryStream())
-                {
-                    carePlanFile.CopyTo(stream);
-
-                    var bytes = stream.ToArray();
-                    return $"data:{carePlanFile.ContentType};base64,{Convert.ToBase64String(bytes)}";
-                }
-            }
-
-            return null;
         }
     }
 }

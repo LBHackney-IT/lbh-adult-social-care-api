@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Core;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -24,15 +25,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
     {
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
-        private readonly IFileStorage _fileStorage;
         private readonly IMapper _mapper;
         private readonly ICarePackageReclaimGateway _carePackageReclaimGateway;
 
-        public UpsertCareChargesUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IFileStorage fileStorage, IMapper mapper, ICarePackageReclaimGateway carePackageReclaimGateway)
+        public UpsertCareChargesUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IMapper mapper, ICarePackageReclaimGateway carePackageReclaimGateway)
         {
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
-            _fileStorage = fileStorage;
             _mapper = mapper;
             _carePackageReclaimGateway = carePackageReclaimGateway;
         }
@@ -46,11 +45,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 careCharge.CarePackageId = carePackageId;
             }
 
-            ValidateCareChargeModificationRequest(careChargesCreateDomain.CareCharges);
-
             // Get package with all reclaims
             var package = await _carePackageGateway.GetPackageAsync(carePackageId, PackageFields.Settings | PackageFields.Details | PackageFields.Reclaims, true)
                 .EnsureExistsAsync($"Care package with id {carePackageId} not found");
+
+            ValidateCareChargeModificationRequest(package, careChargesCreateDomain.CareCharges);
+
 
             // Is user in Section 117, reject care charges
             if (package.Settings.IsS117Client)
@@ -107,27 +107,33 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             {
                 if (existingCareCharge.SubType == ReclaimSubType.CareChargeProvisional && provisionalCareCharge != null)
                 {
-                    _mapper.Map(provisionalCareCharge, existingCareCharge);
                     if (oneToTwelveCareCharge != null && existingCareCharge.StartDate == oneToTwelveCareCharge.StartDate)
                     {
                         existingCareCharge.Status = ReclaimStatus.Cancelled;
+                    }
+                    else
+                    {
+                        _mapper.Map(provisionalCareCharge, existingCareCharge);
+                        existingCareCharge.Status = provisionalCareCharge.Status;
                     }
                 }
 
                 if (existingCareCharge.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks && oneToTwelveCareCharge != null)
                 {
                     _mapper.Map(oneToTwelveCareCharge, existingCareCharge);
+                    existingCareCharge.Status = oneToTwelveCareCharge.Status;
                 }
 
                 if (existingCareCharge.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks && thirteenPlusCareCharge != null)
                 {
                     _mapper.Map(thirteenPlusCareCharge, existingCareCharge);
+                    existingCareCharge.Status = thirteenPlusCareCharge.Status;
                 }
             }
 
             try
             {
-                CareChargeExtensions.EnsureValidPackageTotals(package);
+                ReclaimCostValidator.Validate(package);
                 await _dbManager.SaveAsync();
             }
             catch (ApiException ex)
@@ -140,7 +146,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 .EnsureExistsAsync($"Care package with id {carePackageId} not found");*/
         }
 
-        private static void ValidateCareChargeModificationRequest(IList<CareChargeReclaimCreationDomain> careCharges)
+        private static void ValidateCareChargeModificationRequest(CarePackage package, IList<CareChargeReclaimCreationDomain> careCharges)
         {
             // In request each care charge sub-type can have only one entry
             var invalidSubType = (from c in careCharges
@@ -157,12 +163,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var provisionalCareCharge = careCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeProvisional);
             var oneToTwelveCareCharge = careCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
             var thirteenPlusCareCharge = careCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks);
-
-            //If package has care charge other than provisional, provisional must have end date
-            if ((oneToTwelveCareCharge != null || thirteenPlusCareCharge != null) && provisionalCareCharge?.EndDate == null)
-            {
-                throw new ApiException($"Provisional care charge must have an end date", HttpStatusCode.BadRequest);
-            }
 
             // 1-12 must have end date
             if (oneToTwelveCareCharge is { EndDate: null })
@@ -181,8 +181,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
             }
 
-            // Package cannot have 13+ without 1-12
-            if (thirteenPlusCareCharge != null && oneToTwelveCareCharge == null)
+            // Package cannot have 13+ without 1-12 if the data is not migrated
+            if (thirteenPlusCareCharge != null && oneToTwelveCareCharge == null && !package.IsMigrated)
             {
                 throw new ApiException($"Not allowed to have care charges for 13+ without 1-12", HttpStatusCode.BadRequest);
             }
@@ -236,18 +236,24 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 thirteenPlusCareCharge?.StartDate);
 
             // Care charges cannot be before package start date
-            if (minCareChargeStartDate.Date < coreCost.StartDate.Date)
+            if (minCareChargeStartDate < coreCost.StartDate.Date)
             {
                 throw new ApiException($"Care charge start date cannot be before package start date. Expected min start date {coreCost.StartDate.Date:yyyy-MM-dd}",
                     HttpStatusCode.BadRequest);
             }
 
             // Initial care charge must start on package start date
-            if (minCareChargeStartDate.Date != coreCost.StartDate.Date)
+            if (minCareChargeStartDate != coreCost.StartDate)
             {
                 throw new ApiException($"Initial care charge must start on package start date",
                     HttpStatusCode.BadRequest);
             }
+
+            /*//If package has 1-12 care charge, provisional must have end date
+            if (oneToTwelveCareCharge != null && oneToTwelveCareCharge.StartDate.Date != coreCost.StartDate.Date && provisionalCareCharge?.EndDate == null)
+            {
+                throw new ApiException($"Provisional care charge must have an end date", HttpStatusCode.BadRequest);
+            }*/
 
             // Only provisional care charge, ongoing and package has end date, make package end date to be end date of provisional care charge
             if (provisionalCareCharge is { EndDate: null } && oneToTwelveCareCharge == null && thirteenPlusCareCharge == null && coreCost.EndDate != null)

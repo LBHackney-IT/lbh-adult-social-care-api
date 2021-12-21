@@ -1,8 +1,10 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using LBH.AdultSocialCare.Data.Attributes;
 
 namespace LBH.AdultSocialCare.Data.Constants.Enums
 {
+    [Lookup]
     public enum RolesEnum
     {
         [Description("7335e791-1d08-437a-974e-809944d29bc6")]

@@ -37,6 +37,7 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
 
         public string Description { get; set; }
         public string ClaimReason { get; set; }
+        public string Subjective { get; set; }
 
         [ForeignKey(nameof(CarePackageId))]
         public CarePackage Package { get; set; }

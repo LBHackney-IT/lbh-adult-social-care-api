@@ -31,12 +31,12 @@ namespace DataImporter.Services
                     suppliers.Add(new Supplier()
                     {
                         Id = i - 1,
-                        SupplierName = worksheet.Cells[$"B{i}"].Value.ToString(),
-                        CedarName = worksheet.Cells[$"C{i}"].Value.ToString(),
-                        CedarReferenceNumber = worksheet.Cells[$"D{i}"].Value.ToString(),
-                        CedarId = int.Parse(worksheet.Cells[$"E{i}"].Value.ToString()),
-                        Address = worksheet.Cells[$"F{i}"].Value.ToString(),
-                        Postcode = worksheet.Cells[$"G{i}"].Value.ToString()
+                        SupplierName = worksheet.Cells[$"A{i}"].Value.ToString(),
+                        CedarName = worksheet.Cells[$"B{i}"].Value.ToString(),
+                        CedarReferenceNumber = worksheet.Cells[$"C{i}"].Value.ToString(),
+                        CedarId = int.Parse(worksheet.Cells[$"D{i}"].Value.ToString()),
+                        Address = worksheet.Cells[$"E{i}"].Value.ToString(),
+                        Postcode = worksheet.Cells[$"F{i}"].Value.ToString()
                     });
                 }
                 _databaseContext.Suppliers.AddRange(suppliers);

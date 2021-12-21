@@ -48,6 +48,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                     invoiceEndDate, invoiceTypes, ref lastInvoiceNumber));
             }
 
+            await _invoiceGateway.AcceptReleasedInvoices(packageIds);
+
             return invoices;
         }
 
@@ -71,6 +73,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 {
                     invoiceItems.AddRange(generator.CreateNormalItems(package, packageInvoices, invoiceEndDate));
                 }
+            }
+
+            foreach (var item in invoiceItems)
+            {
+                item.Name += $"\n{item.FromDate:ddMMyy}{item.ToDate:ddMMyy} {package.ServiceUser.HackneyId}";
             }
 
             var totals = CalculateTotals(invoiceItems);

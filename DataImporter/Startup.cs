@@ -37,8 +37,7 @@ namespace DataImporter
         {
             var identity = new ClaimsIdentity();
             var httpContextAccessor = services.GetRequiredService<IHttpContextAccessor>();
-            //var userIdClaim = new Claim(ClaimTypes.NameIdentifier, "aee45700-af9b-4ab5-bb43-535adbdcfb84");
-            var userIdClaim = new Claim(ClaimTypes.NameIdentifier, "37782d93-6489-4b09-9112-a37b9735006b");
+            var userIdClaim = new Claim(ClaimTypes.NameIdentifier, "75996f73-3a1a-4efa-8729-eb4a48c465b0");
 
             identity.AddClaim(userIdClaim);
 

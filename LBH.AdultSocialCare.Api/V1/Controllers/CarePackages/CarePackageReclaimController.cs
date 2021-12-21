@@ -22,7 +22,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
     [ApiVersion("1.0")]
     public class CarePackageReclaimController : ControllerBase
     {
-        private readonly ICreateCarePackageReclaimUseCase _createCarePackageReclaimUseCase;
+        private readonly ICreateProvisionalCareChargeUseCase _createProvisionalCareChargeUseCase;
         private readonly IUpdateCarePackageReclaimUseCase _updateCarePackageReclaimUseCase;
         private readonly IGetCarePackageReclaimsUseCase _getCarePackageReclaimsUseCase;
         private readonly IGetFundedNursingCarePriceUseCase _getFundedNursingCarePriceUseCase;
@@ -30,7 +30,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         private readonly IGetSinglePackageCareChargeUseCase _getSinglePackageCareChargeUseCase;
         private readonly IUpsertCareChargesUseCase _upsertCareChargesUseCase;
 
-        public CarePackageReclaimController(ICreateCarePackageReclaimUseCase createCarePackageReclaimUseCase,
+        public CarePackageReclaimController(ICreateProvisionalCareChargeUseCase createProvisionalCareChargeUseCase,
             IUpdateCarePackageReclaimUseCase updateCarePackageReclaimUseCase,
             IGetCarePackageReclaimsUseCase getCarePackageReclaimsUseCase,
             IGetFundedNursingCarePriceUseCase getFundedNursingCarePriceUseCase,
@@ -38,7 +38,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             IGetSinglePackageCareChargeUseCase getSinglePackageCareChargeUseCase,
             IUpsertCareChargesUseCase upsertCareChargesUseCase)
         {
-            _createCarePackageReclaimUseCase = createCarePackageReclaimUseCase;
+            _createProvisionalCareChargeUseCase = createProvisionalCareChargeUseCase;
             _updateCarePackageReclaimUseCase = updateCarePackageReclaimUseCase;
             _getCarePackageReclaimsUseCase = getCarePackageReclaimsUseCase;
             _getFundedNursingCarePriceUseCase = getFundedNursingCarePriceUseCase;
@@ -48,29 +48,36 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         }
 
         /// <summary>Creates a new funded nursing care reclaim.</summary>
-        /// <param name="fundedNursingCareCreationRequest">The funded nursing care request.</param>
+        /// <param name="request">The funded nursing care request.</param>
+        /// <param name="useCase">A reference to an instance of the ICreateFncReclaimUseCase.</param>
         /// <returns>The created funded nursing care package reclaim.</returns>
         [ProducesResponseType(typeof(CarePackageReclaimResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("fnc")]
-        public async Task<ActionResult<CarePackageReclaimResponse>> CreateFundedNursingCare([FromForm] FundedNursingCareCreationRequest fundedNursingCareCreationRequest)
+        public async Task<ActionResult<CarePackageReclaimResponse>> CreateFundedNursingCare(
+            [FromForm] FundedNursingCareCreationRequest request,
+            [FromServices] ICreateFundedNursingCareUseCase useCase)
         {
-            var fundedNursingCareResponse = await _createCarePackageReclaimUseCase.CreateCarePackageReclaim(fundedNursingCareCreationRequest.ToDomain(), ReclaimType.Fnc);
-            return Ok(fundedNursingCareResponse);
+            var response = await useCase.ExecuteAsync(request.ToDomain());
+            return Ok(response);
         }
 
         /// <summary>Update single funded nursing care reclaim.</summary>
-        /// <param name="fundedNursingCareUpdateRequest">The funded nursing care update request.</param>
+        /// <param name="request">The funded nursing care update request.</param>
+        /// <param name="carePackageId">A unique care package identifier.</param>
+        /// <param name="useCase">A reference to an IUpdateFundedNursingCareUseCase instance.</param>
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPut("fnc")]
-        public async Task<ActionResult> UpdateFundedNursingCare([FromForm] FundedNursingCareUpdateRequest fundedNursingCareUpdateRequest)
+        public async Task<ActionResult> UpdateFundedNursingCare(
+            [FromForm] FundedNursingCareUpdateRequest request, Guid carePackageId,
+            [FromServices] IUpdateFundedNursingCareUseCase useCase)
         {
-            await _updateCarePackageReclaimUseCase.UpdateAsync(fundedNursingCareUpdateRequest.ToDomain());
+            await useCase.UpdateAsync(request.ToDomain(), carePackageId);
             return Ok();
         }
 
@@ -166,7 +173,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpGet("fnc")]
         public async Task<ActionResult<CarePackageReclaimResponse>> GetFundedNursingCare(Guid carePackageId)
         {
-            var result = await _getCarePackageReclaimsUseCase.GetCarePackageReclaim(carePackageId, ReclaimType.Fnc);
+            var result = await _getCarePackageReclaimsUseCase.GetFundedNursingCare(carePackageId);
             return Ok(result);
         }
 
@@ -297,7 +304,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpPost("care-charges/provisional")]
         public async Task<ActionResult<CarePackageReclaimResponse>> CreateProvisionalCareChargeReclaim(CareChargeReclaimCreationRequest careChargeReclaimCreationRequest)
         {
-            var carePackageReclaimResponse = await _createCarePackageReclaimUseCase.CreateProvisionalCareCharge(careChargeReclaimCreationRequest.ToDomain(), ReclaimType.CareCharge);
+            var carePackageReclaimResponse = await _createProvisionalCareChargeUseCase.CreateProvisionalCareCharge(careChargeReclaimCreationRequest.ToDomain(), ReclaimType.CareCharge);
             return Ok(carePackageReclaimResponse);
         }
     }

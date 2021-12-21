@@ -28,10 +28,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
 
         Task DeleteReclaimsForPackage(Guid packageId, ReclaimType reclaimType);
 
-        Task<List<Guid>> GetUnpaidPackageIdsAsync(DateTimeOffset dateTo);
-
-        Task<List<CarePackage>> GetByIdsAsync(IEnumerable<Guid> packageIds, PackageFields fields = PackageFields.All);
-
         Task<List<CarePackage>> GetServiceUserPackagesAsync(Guid serviceUserId, PackageFields fields = PackageFields.None, bool trackChanges = false);
 
         Task<int> GetServiceUserActivePackagesCount(Guid serviceUserId, PackageType packageType, Guid? excludePackageId = null);
@@ -39,5 +35,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces
         Task<PagedList<CarePackageApprovableListItemDomain>> GetApprovablePackagesAsync(ApprovableCarePackagesQueryParameters parameters, PackageStatus[] statusesToInclude);
 
         Task DeletePackage(Guid packageId);
+
+        Task<List<CarePackage>> GetServiceUserActivePackages(List<int> hackneyId);
     }
 }

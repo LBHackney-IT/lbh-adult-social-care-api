@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
+using LBH.AdultSocialCare.Data.Attributes;
 
 namespace LBH.AdultSocialCare.Data.Constants.Enums
 {
-    // TODO: VK: There is a discrepancy between statuses in constants and DB - what is actual?
+    [Lookup]
     public enum PackageStatus
     {
         [Display(Name = "New")]

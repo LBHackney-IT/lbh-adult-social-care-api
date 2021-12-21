@@ -59,7 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     DateTo = pr.EndDate,
                     DateCreated = pr.DateCreated
                 })
-                .OrderBy(p => p.PayRunStatusId).ThenBy(p => p.DateCreated)
+                .OrderByDescending(p => p.DateCreated)
                 .ToListAsync();
 
             payRunList = payRunList
@@ -112,11 +112,11 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 .CountAsync();
         }
 
-        public async Task<bool> CheckExistsUnApprovedPayRunAsync(PayrunType payRunType)
+        public async Task<bool> CheckExistsUnApprovedPayRunAsync()
         {
             var completedPayRunStatuses = new[] { PayrunStatus.Archived, PayrunStatus.Paid, PayrunStatus.PaidWithHold };
             return await _dbContext.Payruns
-                .Where(pr => pr.Type == payRunType && !completedPayRunStatuses.Contains(pr.Status)).AnyAsync();
+                .Where(pr => !completedPayRunStatuses.Contains(pr.Status)).AnyAsync();
         }
 
         public async Task<IEnumerable<Payrun>> GetPayRunsByTypeAndStatusAsync(PayrunType[] types, PayrunStatus[] statuses)
@@ -145,10 +145,10 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             return previousPayRun;
         }
 
-        public async Task<Payrun> GetPackageLatestPayRunAsync(Guid packageId, PayrunType[] payrunTypes, PayrunStatus[] payRunStatuses, InvoiceStatus[] invoiceStatuses)
+        public async Task<Payrun> GetPackageLatestPayRunAsync(Guid packageId, PayrunStatus[] payRunStatuses, InvoiceStatus[] invoiceStatuses)
         {
             var payrun = await _dbContext.PayrunInvoices
-                .Where(pi => pi.Invoice.PackageId == packageId && invoiceStatuses.Contains(pi.InvoiceStatus) && payrunTypes.Contains(pi.Payrun.Type) && payRunStatuses.Contains(pi.Payrun.Status))
+                .Where(pi => pi.Invoice.PackageId == packageId && invoiceStatuses.Contains(pi.InvoiceStatus) && payRunStatuses.Contains(pi.Payrun.Status))
                 .OrderByDescending(pi => pi.Payrun.EndDate).Select(pi => pi.Payrun).FirstOrDefaultAsync();
             return payrun;
         }
@@ -156,14 +156,18 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         public async Task<List<CedarFileInvoiceHeader>> GetCedarFileList(Guid payRunId)
         {
             return await _dbContext.PayrunInvoices
-                .Where(p => p.PayrunId == payRunId)
+                .Where(p => p.PayrunId == payRunId && p.InvoiceStatus == InvoiceStatus.Accepted)
                 .Include(item => item.Invoice)
                 .ThenInclude(item => item.Items)
+                .ThenInclude(item => item.CarePackageDetail)
                 .Include(item => item.Invoice)
                 .ThenInclude(item => item.Supplier)
                 .Include(item => item.Invoice)
                 .ThenInclude(item => item.Package)
                 .ThenInclude(item => item.PrimarySupportReason)
+                .Include(item => item.Invoice)
+                .ThenInclude(item => item.Items)
+                .ThenInclude(item => item.CarePackageReclaim)
                 .Select(p => new CedarFileInvoiceHeader
                 {
                     InvoiceHeaderId = 2,
@@ -178,12 +182,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     InvoiceItems = p.Invoice.Items.Select(it => new CedarFileInvoiceLineDomain()
                     {
                         InvoiceLineId = 3,
-                        Name = it.Name,
+                        Name = $"{it.FromDate.ToString("ddMMyy")}{it.ToDate.ToString("ddMMyy")} {it.Invoice.ServiceUser.HackneyId}",
                         Quantity = it.Quantity,
                         Cost = it.WeeklyCost == 0 ? it.TotalCost : it.WeeklyCost,
                         TaxFlag = 0,
                         CostCentre = p.Invoice.Package.PrimarySupportReason.CederBudgetCode,
-                        Subjective = "520060",
+                        Subjective = it.CarePackageDetailId != Guid.Empty ? it.CarePackageDetail.Subjective : it.CarePackageReclaimId != Guid.Empty ? it.CarePackageReclaim.Subjective : null,
                         Analysis = "X",
                         TaxStatus = "EXE"
                     }).ToList()
