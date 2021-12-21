@@ -1,6 +1,5 @@
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
@@ -9,12 +8,17 @@ using LBH.AdultSocialCare.Data.Constants.Enums;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Core;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
     public class GetCarePackageSummaryUseCase : IGetCarePackageSummaryUseCase
     {
         private readonly ICarePackageGateway _carePackageGateway;
+
+        private CarePackage _package;
+        private CarePackageSummaryDomain _summary;
 
         public GetCarePackageSummaryUseCase(ICarePackageGateway carePackageGateway)
         {
@@ -23,57 +27,123 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         public async Task<CarePackageSummaryDomain> ExecuteAsync(Guid packageId)
         {
-            var package = await _carePackageGateway
+            _package = await _carePackageGateway
                 .GetPackageAsync(packageId, PackageFields.All)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
-            var coreCost = package.Details
+            var coreCost = _package.Details
                 .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost)
                 .EnsureExists($"Core cost for package {packageId} not found");
 
-            var additionalNeeds = package.Details
+            var additionalNeeds = _package.Details
                 .Where(d => d.Type == PackageDetailType.AdditionalNeed).ToList();
 
-            CareChargeExtensions.NegateNetOffCosts(package);
-
-            var summary = new CarePackageSummaryDomain
+            _summary = new CarePackageSummaryDomain
             {
-                PackageType = package.PackageType.GetDisplayName(),
-                Status = package.Status,
-                PrimarySupportReason = package.PrimarySupportReason?.PrimarySupportReasonName,
-                SchedulingPeriod = $"{package.PackageScheduling.GetDisplayName()} {package.PackageScheduling.ToDescription()}",
+                PackageType = _package.PackageType.GetDisplayName(),
+                Status = _package.Status,
+                PrimarySupportReason = _package.PrimarySupportReason?.PrimarySupportReasonName,
+                SchedulingPeriod = $"{_package.PackageScheduling.GetDisplayName()} {_package.PackageScheduling.ToDescription()}",
 
                 StartDate = coreCost.StartDate,
                 EndDate = coreCost.EndDate,
                 CostOfPlacement = coreCost.Cost,
 
-                Supplier = package.Supplier?.ToDomain(),
-                ServiceUser = package.ServiceUser?.ToDomain(),
-                Settings = package.Settings?.ToDomain(),
+                Supplier = _package.Supplier?.ToDomain(),
+                ServiceUser = _package.ServiceUser?.ToDomain(),
+                Settings = _package.Settings?.ToDomain(),
 
                 AdditionalWeeklyNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.Weekly).ToDomain(),
                 AdditionalOneOffNeeds = additionalNeeds.Where(d => d.CostPeriod is PaymentPeriod.OneOff).ToDomain(),
 
-                CareCharges = package.Reclaims.Where(r => r.Type is ReclaimType.CareCharge).ToDomain(),
-                FundedNursingCare = package.Reclaims.FirstOrDefault(r => r.Type is ReclaimType.Fnc)?.ToDomain()
+                CareCharges = _package.Reclaims.Where(r =>
+                    r.Type is ReclaimType.CareCharge &&
+                    r.Status != ReclaimStatus.Cancelled).ToDomain()
             };
 
-            var fncResource = package.Resources?.OrderByDescending(r => r.DateCreated)
-                .FirstOrDefault(r => r.Type == PackageResourceType.FncAssessmentFile);
+            FillFundedNursingCare();
+            FillReclaimsSubTotals();
 
-            if (summary.FundedNursingCare != null)
+            _summary.SubTotalCost = _summary.CostOfPlacement + _summary.FncPayment;
+
+            _summary.AdditionalWeeklyCost = _package.GetAdditionalWeeklyCost();
+            _summary.AdditionalOneOffCost = _package.GetAdditionalOneOffCost();
+
+            _summary.TotalWeeklyCost =
+                +_summary.SubTotalCost
+                + _summary.AdditionalWeeklyCost
+                - (_summary.SupplierReclaims?.SubTotal ?? 0.0m);
+
+            // intentionally separated from calculations to stress that this for display purposes only
+            NegateReclaimTotals(_summary.HackneyReclaims, _summary.SupplierReclaims);
+
+            return _summary;
+        }
+
+        private void FillFundedNursingCare()
+        {
+            _summary.FundedNursingCare = _package.Reclaims
+                .FirstOrDefault(r =>
+                    r.Status != ReclaimStatus.Cancelled &&
+                    r.Type is ReclaimType.Fnc &&
+                    r.SubType is ReclaimSubType.FncPayment)?
+                .ToDomain();
+
+            _summary.FncPayment = _summary.FundedNursingCare?.Cost ?? 0.0m;
+
+            var fncResource = _package.Resources?
+                .OrderByDescending(r => r.DateCreated)
+                .FirstOrDefault(r => r.Type is PackageResourceType.FncAssessmentFile);
+
+            if (_summary.FundedNursingCare != null)
             {
-                summary.FundedNursingCare.AssessmentFileId = fncResource?.FileId;
-                summary.FundedNursingCare.AssessmentFileName = fncResource?.Name;
+                _summary.FundedNursingCare.AssessmentFileId = fncResource?.FileId;
+                _summary.FundedNursingCare.AssessmentFileName = fncResource?.Name;
+            }
+        }
+
+        private void FillReclaimsSubTotals()
+        {
+            var reclaims = _package.Reclaims
+                .Where(r => r.Status != ReclaimStatus.Cancelled)
+                .ToList();
+
+            if (reclaims.Any(r => r.ClaimCollector is ClaimCollector.Hackney))
+            {
+                _summary.HackneyReclaims = new CarePackageSummaryReclaimsDomain();
+                FillReclaimsForCollector(_summary.HackneyReclaims, ClaimCollector.Hackney);
             }
 
-            var currentDate = DateTimeOffset.Now.Date;
-            var validReclaimStatuses = new[] { ReclaimStatus.Active };
+            if (reclaims.Any(r => r.ClaimCollector is ClaimCollector.Supplier))
+            {
+                _summary.SupplierReclaims = new CarePackageSummaryReclaimsDomain();
+                FillReclaimsForCollector(_summary.SupplierReclaims, ClaimCollector.Supplier);
+            }
+        }
 
-            CareChargeExtensions.CalculateReclaimSubTotals(package, summary, coreCost, currentDate, validReclaimStatuses);
-            CareChargeExtensions.CalculateTotals(summary, coreCost, currentDate);
+        private void FillReclaimsForCollector(CarePackageSummaryReclaimsDomain reclaimTotals, ClaimCollector collector)
+        {
+            if (_summary.FundedNursingCare != null)
+            {
+                reclaimTotals.Fnc = _summary.FundedNursingCare.ClaimCollector == collector
+                    ? _summary.FundedNursingCare.Cost
+                    : 0.0m;
+            }
 
-            return summary;
+            reclaimTotals.CareCharge = _package.GetCareChargesCost(collector);
+            reclaimTotals.SubTotal = reclaimTotals.Fnc + reclaimTotals.CareCharge;
+        }
+
+        private static void NegateReclaimTotals(params CarePackageSummaryReclaimsDomain[] reclaimTotals)
+        {
+            foreach (var reclaimTotal in reclaimTotals)
+            {
+                if (reclaimTotal is null) continue;
+
+                reclaimTotal.Fnc = Decimal.Negate(reclaimTotal.Fnc);
+                reclaimTotal.CareCharge = Decimal.Negate(reclaimTotal.CareCharge);
+                reclaimTotal.SubTotal = Decimal.Negate(reclaimTotal.SubTotal);
+            }
         }
     }
 }

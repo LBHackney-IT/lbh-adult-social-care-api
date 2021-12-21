@@ -75,9 +75,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
         [Theory]
         //          FNC                    | CareCharge            | Hackney & Supplier sub totals
-        [InlineData(ClaimCollector.Hackney, ClaimCollector.Supplier, 10, -80)]
-        [InlineData(ClaimCollector.Hackney, ClaimCollector.Hackney, 90, 0)]
-        [InlineData(ClaimCollector.Supplier, ClaimCollector.Hackney, 80, -10)]
+        [InlineData(ClaimCollector.Hackney, ClaimCollector.Supplier, -10, -80)]
+        [InlineData(ClaimCollector.Hackney, ClaimCollector.Hackney, -90, 0)]
+        [InlineData(ClaimCollector.Supplier, ClaimCollector.Hackney, -80, -10)]
         [InlineData(ClaimCollector.Supplier, ClaimCollector.Supplier, 0, -90)]
         public async Task ShouldFillReclaimsSubTotals(
             ClaimCollector fncCollector, ClaimCollector careChargesCollector, decimal hackneySubTotal, decimal supplierSubTotal)
