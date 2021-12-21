@@ -41,7 +41,7 @@ namespace LBH.AdultSocialCare.Api.Core
                 .Where(reclaim =>
                     reclaim.Type is ReclaimType.CareCharge &&
                     reclaim.Status != ReclaimStatus.Cancelled &&
-                    collector is null || reclaim.ClaimCollector == collector &&
+                    (collector is null || reclaim.ClaimCollector == collector) &&
                     (targetDate is null || targetDate.Value.IsInRange(reclaim.StartDate, reclaim.EndDate ?? DateTimeOffset.MaxValue)))
                 .Sum(reclaim => reclaim.Cost);
         }
