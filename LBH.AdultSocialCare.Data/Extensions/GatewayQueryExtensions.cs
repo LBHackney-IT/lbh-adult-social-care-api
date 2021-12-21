@@ -145,6 +145,7 @@ namespace LBH.AdultSocialCare.Data.Extensions
                     || EF.Functions.ILike(e.Invoice.ServiceUser.LastName, $"%{searchToken}%")
                     || EF.Functions.ILike(e.InvoiceId.ToString(), $"%{searchToken}%")
                     || EF.Functions.ILike(e.Invoice.Number, $"%{searchToken}%")
+                    || EF.Functions.ILike(e.Payrun.Number, $"%{searchToken}%")
                     || EF.Functions.ILike(e.Invoice.Supplier.SupplierName ?? "", $"%{searchToken}%"));
             }
 
