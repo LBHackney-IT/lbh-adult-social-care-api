@@ -166,6 +166,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Concrete
             var packages = await query
                 .Include(cp => cp.ServiceUser)
                 .Include(cp => cp.Approver)
+                .OrderBy(cp => cp.Status)
                 .GetPage(parameters.PageNumber, parameters.PageSize)
                 .AsNoTracking()
                 .ToListAsync();
