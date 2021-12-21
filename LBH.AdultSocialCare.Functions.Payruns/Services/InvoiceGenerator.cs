@@ -73,6 +73,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 }
             }
 
+            foreach (var item in invoiceItems)
+            {
+                item.Name += $"\n{item.FromDate:ddMMyy}{item.ToDate:ddMMyy} {package.ServiceUser.HackneyId}";
+            }
+
             var totals = CalculateTotals(invoiceItems);
 
             return new Invoice
