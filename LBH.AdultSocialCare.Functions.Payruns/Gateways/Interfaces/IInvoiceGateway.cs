@@ -13,5 +13,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces
         Task<long> GetInvoicesCountAsync();
 
         void RejectInvoices(IEnumerable<PayrunInvoice> payrunInvoices);
+
+        Task AcceptReleasedInvoices(IList<Guid> packageIds);
     }
 }

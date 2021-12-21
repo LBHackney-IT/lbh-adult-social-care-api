@@ -25,9 +25,10 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
                 .Include(payrunInvoice => payrunInvoice.Invoice)
                 .ThenInclude(invoice => invoice.Items)
                 .AsNoTracking()
-                .Where(payrunInvoice => packageIds.Contains(payrunInvoice.Invoice.PackageId) &&
-                                        (payrunInvoice.InvoiceStatus == InvoiceStatus.Accepted ||
-                                         payrunInvoice.InvoiceStatus == InvoiceStatus.Held))
+                .Where(payrunInvoice =>
+                    packageIds.Contains(payrunInvoice.Invoice.PackageId) &&
+                    (payrunInvoice.InvoiceStatus == InvoiceStatus.Accepted ||
+                     payrunInvoice.InvoiceStatus == InvoiceStatus.Held))
                 .Select(payrunInvoice => new InvoiceDomain
                 {
                     Id = payrunInvoice.Invoice.Id,
@@ -68,6 +69,20 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Gateways.Concrete
             foreach (var payrunInvoice in payrunInvoices)
             {
                 payrunInvoice.InvoiceStatus = InvoiceStatus.Rejected;
+            }
+        }
+
+        public async Task AcceptReleasedInvoices(IList<Guid> packageIds)
+        {
+            var releasedInvoices = await DbContext.PayrunInvoices
+                .Where(payrunInvoice =>
+                    packageIds.Contains(payrunInvoice.Invoice.PackageId) &&
+                    payrunInvoice.InvoiceStatus == InvoiceStatus.Released)
+                .ToListAsync();
+
+            foreach (var invoice in releasedInvoices)
+            {
+                invoice.InvoiceStatus = InvoiceStatus.ReleaseAccepted;
             }
         }
     }
