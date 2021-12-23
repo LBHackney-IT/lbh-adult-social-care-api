@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Extensions
 {
@@ -6,7 +7,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Extensions
     {
         public static DateTimeOffset ToUtcDate(this string date)
         {
-            return DateTimeOffset.Parse($"{date}T00:00:00.000Z");
+            return DateTimeOffset.ParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture);
         }
     }
 }
