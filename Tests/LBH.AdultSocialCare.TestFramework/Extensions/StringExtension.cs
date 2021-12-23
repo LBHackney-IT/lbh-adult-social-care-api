@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Extensions
+namespace LBH.AdultSocialCare.TestFramework.Extensions
 {
     public static class StringExtension
     {

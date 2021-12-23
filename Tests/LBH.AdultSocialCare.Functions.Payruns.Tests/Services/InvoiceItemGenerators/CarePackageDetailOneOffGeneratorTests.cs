@@ -3,7 +3,7 @@ using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators;
 using LBH.AdultSocialCare.Functions.Payruns.Tests.Dsl;
-using LBH.AdultSocialCare.Functions.Payruns.Tests.Extensions;
+using LBH.AdultSocialCare.TestFramework.Extensions;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenerators

@@ -8,11 +8,14 @@ namespace LBH.AdultSocialCare.Api.Core
 {
     public static class CarePackageExtensions
     {
+        public static CarePackageDetail GetCoreCostDetail(this CarePackage package)
+        {
+            return package.Details.FirstOrDefault(d => d.Type is PackageDetailType.CoreCost);
+        }
+
         public static decimal GetCoreCost(this CarePackage package)
         {
-            return package.Details
-                .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost)?
-                .Cost ?? 0.0m;
+            return package.GetCoreCostDetail()?.Cost ?? 0.0m;
         }
 
         public static decimal GetAdditionalWeeklyCost(this CarePackage package, DateTimeOffset? targetDate = null)

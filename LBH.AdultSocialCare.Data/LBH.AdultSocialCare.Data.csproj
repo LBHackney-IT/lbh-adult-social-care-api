@@ -5,37 +5,40 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Migrations\20211120084657_AddCareChargeManagerRole.cs" />
-      <Compile Remove="Migrations\20211120084657_AddCareChargeManagerRole.Designer.cs" />
-      <Compile Remove="Migrations\20211120101535_AddCareChargeManagerRoles.cs" />
-      <Compile Remove="Migrations\20211120101535_AddCareChargeManagerRoles.Designer.cs" />
-      <Compile Remove="Migrations\20211123090604_CarePackageReclaimAddAssessmentFileTest.cs" />
-      <Compile Remove="Migrations\20211123090604_CarePackageReclaimAddAssessmentFileTest.Designer.cs" />
-      <Compile Remove="Migrations\20211207062539_EnumConstraintUpdate.cs" />
-      <Compile Remove="Migrations\20211207062539_EnumConstraintUpdate.Designer.cs" />
-      <Compile Remove="Migrations\20211207064141_EnumConstraintUpdate.cs" />
-      <Compile Remove="Migrations\20211207064141_EnumConstraintUpdate.Designer.cs" />
-      <Compile Remove="Migrations\20211207070752_EnumConstraintUpdate.cs" />
-      <Compile Remove="Migrations\20211207070752_EnumConstraintUpdate.Designer.cs" />
-      <Compile Remove="Migrations\20211207114140_CarePackageHistoriesIdIncrement.cs" />
-      <Compile Remove="Migrations\20211207114140_CarePackageHistoriesIdIncrement.Designer.cs" />
+        <Compile Remove="Migrations\20211120084657_AddCareChargeManagerRole.cs"/>
+        <Compile Remove="Migrations\20211120084657_AddCareChargeManagerRole.Designer.cs"/>
+        <Compile Remove="Migrations\20211120101535_AddCareChargeManagerRoles.cs"/>
+        <Compile Remove="Migrations\20211120101535_AddCareChargeManagerRoles.Designer.cs"/>
+        <Compile Remove="Migrations\20211123090604_CarePackageReclaimAddAssessmentFileTest.cs"/>
+        <Compile Remove="Migrations\20211123090604_CarePackageReclaimAddAssessmentFileTest.Designer.cs"/>
+        <Compile Remove="Migrations\20211207062539_EnumConstraintUpdate.cs"/>
+        <Compile Remove="Migrations\20211207062539_EnumConstraintUpdate.Designer.cs"/>
+        <Compile Remove="Migrations\20211207064141_EnumConstraintUpdate.cs"/>
+        <Compile Remove="Migrations\20211207064141_EnumConstraintUpdate.Designer.cs"/>
+        <Compile Remove="Migrations\20211207070752_EnumConstraintUpdate.cs"/>
+        <Compile Remove="Migrations\20211207070752_EnumConstraintUpdate.Designer.cs"/>
+        <Compile Remove="Migrations\20211207114140_CarePackageHistoriesIdIncrement.cs"/>
+        <Compile Remove="Migrations\20211207114140_CarePackageHistoriesIdIncrement.Designer.cs"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="LinqKit" Version="1.1.27" />
-      <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.16" />
-      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.3" />
+        <PackageReference Include="LinqKit" Version="1.1.27"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.16"/>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.3"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Common\Common.csproj" />
-      <ProjectReference Include="..\HttpServices\HttpServices.csproj" />
+        <ProjectReference Include="..\Common\Common.csproj"/>
+        <ProjectReference Include="..\HttpServices\HttpServices.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
             <_Parameter1>LBH.AdultSocialCare.Functions.Payruns.Tests</_Parameter1>
+        </AssemblyAttribute>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>LBH.AdultSocialCare.Api.Tests</_Parameter1>
         </AssemblyAttribute>
     </ItemGroup>
 

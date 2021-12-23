@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
 {
@@ -12,6 +13,12 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
                 collection.Add(item);
             }
 
+            return collection;
+        }
+
+        public static ICollection<T> AddRange<T>(this ICollection<T> collection, params T[] items)
+        {
+            collection.AddRange(items.AsEnumerable());
             return collection;
         }
     }

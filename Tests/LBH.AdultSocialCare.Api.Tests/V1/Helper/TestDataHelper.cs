@@ -17,8 +17,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
     {
         public static CarePackage CreateCarePackage(PackageType? packageType = null, Guid? serviceUserId = null, PackageStatus? status = null, int? primarySupportReasonId = null)
         {
-            var today = DateTimeOffset.Now;
-
             return new Faker<CarePackage>()
                 .RuleFor(cp => cp.Id, f => f.Random.Guid())
                 .RuleFor(cp => cp.PackageType, f => packageType ?? f.PickRandom<PackageType>())
@@ -26,8 +24,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.SupplierId, f => null)
                 .RuleFor(cp => cp.PackageScheduling, f => f.PickRandom<PackageScheduling>())
                 .RuleFor(cp => cp.PrimarySupportReasonId, f => primarySupportReasonId ?? f.PickRandom(1, 2))
-                /*.RuleFor(cp => cp.StartDate,
-                    f => startDate ?? f.Date.BetweenOffset(today.AddDays(-300), today.AddDays(-200)))*/
                 .RuleFor(cp => cp.Status, f => status ?? f.PickRandom<PackageStatus>());
         }
 
@@ -128,6 +124,37 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(r => r.Type, type)
                 .RuleFor(r => r.Status, ReclaimStatus.Active)
                 .RuleFor(r => r.SubType, subType);
+        }
+
+        public static CarePackageReclaim CreateCarePackageReclaim(
+            ReclaimType type, ReclaimSubType subType, ClaimCollector? collector,
+            decimal? cost, DateTimeOffset? startDate, DateTimeOffset? endDate)
+        {
+            return new Faker<CarePackageReclaim>()
+                .RuleFor(r => r.Cost, f => cost ?? Math.Round(f.Random.Decimal(0m, 1000m), 2)) // Workaround to avoid precision loss in SQLite)
+                .RuleFor(r => r.StartDate, f => startDate ?? f.Date.Past(1, DateTime.Now).AddDays(-1).Date)
+                .RuleFor(r => r.EndDate, f => endDate ?? f.Date.Future(1, DateTime.Now).AddDays(1).Date)
+                .RuleFor(r => r.Description, f => f.Lorem.Paragraph())
+                .RuleFor(r => r.ClaimCollector, f => collector ?? f.PickRandom<ClaimCollector>())
+                .RuleFor(r => r.Type, type)
+                .RuleFor(r => r.Status, ReclaimStatus.Active)
+                .RuleFor(r => r.SubType, subType);
+        }
+
+        public static CarePackageDetail CreateCarePackageDetail(
+            PackageDetailType type, decimal? cost = null,
+            DateTimeOffset? startDate = null, DateTimeOffset? endDate = null, PaymentPeriod? costPeriod = null)
+        {
+            return new Faker<CarePackageDetail>()
+                .RuleFor(r => r.Cost, f => cost ?? Math.Round(f.Random.Decimal(100m, 1000m), 2))
+                .RuleFor(d => d.CostPeriod,
+                    f => costPeriod ?? (type == PackageDetailType.CoreCost
+                        ? PaymentPeriod.Weekly
+                        : f.PickRandom(PaymentPeriod.Weekly, PaymentPeriod.OneOff)))
+                .RuleFor(d => d.StartDate, f => startDate ?? f.Date.Past(1, DateTime.Now).AddDays(-1).Date)
+                .RuleFor(d => d.EndDate, f => endDate ?? f.Date.Future(1, DateTime.Now).AddDays(1).Date)
+                .RuleFor(d => d.Type, type)
+                .Generate();
         }
 
         public static List<CarePackageDetail> CreateCarePackageDetails(int count, PackageDetailType type, PaymentPeriod costPeriod = PaymentPeriod.Weekly)
