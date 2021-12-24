@@ -18,14 +18,27 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
     {
         public static CarePackage CreateCarePackage(PackageType? packageType = null, Guid? serviceUserId = null, PackageStatus? status = null, int? primarySupportReasonId = null)
         {
-            return new Faker<CarePackage>()
+            var package = new Faker<CarePackage>()
                 .RuleFor(cp => cp.Id, f => f.Random.Guid())
                 .RuleFor(cp => cp.PackageType, f => packageType ?? f.PickRandom<PackageType>())
-                .RuleFor(cp => cp.ServiceUserId, f => serviceUserId ?? f.Random.Guid())
                 .RuleFor(cp => cp.SupplierId, f => null)
                 .RuleFor(cp => cp.PackageScheduling, f => f.PickRandom<PackageScheduling>())
                 .RuleFor(cp => cp.PrimarySupportReasonId, f => primarySupportReasonId ?? f.PickRandom(1, 2))
-                .RuleFor(cp => cp.Status, f => status ?? f.PickRandom<PackageStatus>());
+                .RuleFor(cp => cp.Status, f => status ?? f.PickRandom<PackageStatus>())
+                .Generate();
+
+            // TODO: VK: Review serviceUserId usage - probably can be moved to the end of parameters or removed
+            if (serviceUserId.HasValue)
+            {
+                package.ServiceUserId = serviceUserId.Value;
+            }
+            else
+            {
+                package.ServiceUser = CreateServiceUser();
+                package.ServiceUserId = package.ServiceUser.Id;
+            }
+
+            return package;
         }
 
         public static CarePackageSettings CreateCarePackageSettings(Guid? settingId = null, Guid? carePackageId = null)
@@ -160,8 +173,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                     f => endDate != DateTimeOffset.MaxValue // use DateTimeOffset.MaxValue to create an ongoing detail
                         ? endDate ?? f.Date.Future(1, DateTime.Now.AddDays(1)).Date
                         : null as DateTimeOffset?)
-                .RuleFor(d => d.Type, type)
-                .Generate();
+                .RuleFor(d => d.Type, type);
         }
 
         public static List<CarePackageDetail> CreateCarePackageDetails(int count, PackageDetailType type, PaymentPeriod costPeriod = PaymentPeriod.Weekly)
