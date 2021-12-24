@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -131,7 +132,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
             decimal? cost, DateTimeOffset? startDate, DateTimeOffset? endDate)
         {
             return new Faker<CarePackageReclaim>()
-                .RuleFor(r => r.Cost, f => cost ?? Math.Round(f.Random.Decimal(0m, 1000m), 2)) // Workaround to avoid precision loss in SQLite)
+                .RuleFor(r => r.Cost, f => cost ?? f.Random.Decimal(0m, 1000m).Round(2))
                 .RuleFor(r => r.StartDate, f => startDate ?? f.Date.Past(1, DateTime.Now.AddDays(-1)).Date)
                 .RuleFor(d => d.EndDate,
                     f => endDate != DateTimeOffset.MaxValue // use DateTimeOffset.MaxValue to create an ongoing reclaim
@@ -149,7 +150,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
             DateTimeOffset? startDate = null, DateTimeOffset? endDate = null, PaymentPeriod? costPeriod = null)
         {
             return new Faker<CarePackageDetail>()
-                .RuleFor(r => r.Cost, f => cost ?? Math.Round(f.Random.Decimal(100m, 1000m), 2))
+                .RuleFor(r => r.Cost, f => cost ?? f.Random.Decimal(100m, 1000m).Round(2))
                 .RuleFor(d => d.CostPeriod,
                     f => costPeriod ?? (type == PackageDetailType.CoreCost
                         ? PaymentPeriod.Weekly
