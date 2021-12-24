@@ -2,7 +2,6 @@ using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Bogus;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Data.Constants.Enums;
@@ -22,12 +21,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 
         public CarePackage CreateCarePackage(PackageType type = PackageType.ResidentialCare, PackageStatus status = PackageStatus.New)
         {
-            var serviceUser = CreateServiceUser();
-
-            var carePackage = TestDataHelper.CreateCarePackage(
-                serviceUserId: serviceUser?.Id,
-                packageType: type,
-                status: status);
+            var carePackage = TestDataHelper.CreateCarePackage(type, status);
 
             carePackage.SupplierId = _context.Suppliers.FirstOrDefault()?.Id;
 

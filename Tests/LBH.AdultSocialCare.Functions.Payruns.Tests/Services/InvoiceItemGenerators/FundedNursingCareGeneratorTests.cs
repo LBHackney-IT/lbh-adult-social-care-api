@@ -8,7 +8,6 @@ using LBH.AdultSocialCare.Data.Entities.Common;
 using LBH.AdultSocialCare.Functions.Payruns.Gateways.Interfaces;
 using LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators;
 using LBH.AdultSocialCare.Functions.Payruns.Tests.Dsl;
-using LBH.AdultSocialCare.Functions.Payruns.Tests.Extensions;
 using LBH.AdultSocialCare.TestFramework;
 using LBH.AdultSocialCare.TestFramework.Extensions;
 using Moq;

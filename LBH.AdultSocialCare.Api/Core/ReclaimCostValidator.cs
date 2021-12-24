@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Common.Exceptions.CustomExceptions;
@@ -12,34 +11,30 @@ namespace LBH.AdultSocialCare.Api.Core
     {
         public static void Validate(CarePackage package)
         {
-            var validatedDates = new HashSet<DateTimeOffset>();
+            // ensure that reclaim cost doesn't exceed weekly cost at any date
+            // [Core 1000...............]
+            // [ANP 500]        [ANP 600]
+            // [CC 300.....][CC 1800....] <- last one exceeds weekly cost, invalid
 
-            var reclaims = package.Reclaims.Where(r => r.Status != ReclaimStatus.Cancelled);
-            foreach (var reclaim in reclaims)
+            // reclaim cost may also exceed weekly cost after ANP is ended
+            // [Core 1000......]
+            // [ANP 500] <- starting from here reclaim cost exceeds weekly cost, so validate day after ANP end
+            // [CC 1300........]
+
+            var datesToValidate = package.Reclaims
+                .Where(reclaim => reclaim.Status != ReclaimStatus.Cancelled)
+                .Select(reclaim => reclaim.StartDate)
+                .Concat(package.Details
+                    .Where(detail =>
+                        detail.Type is PackageDetailType.AdditionalNeed &&
+                        detail.CostPeriod is PaymentPeriod.Weekly &&
+                        detail.EndDate.HasValue)
+                    .Select(detail => detail.EndDate.Value.AddDays(1)))
+                .Distinct();
+
+            foreach (var date in datesToValidate)
             {
-                // ensure that reclaim cost doesn't exceed weekly cost at any date
-                // [Core 1000...............]
-                // [ANP 500]        [ANP 600]
-                // [CC 300.....][CC 1800....] <- last one exceeds weekly cost, invalid
-                if (!validatedDates.Contains(reclaim.StartDate))
-                {
-                    ValidateReclaimCostsAtDate(package, reclaim.StartDate);
-                    validatedDates.Add(reclaim.StartDate);
-                }
-
-                // [Core 1000......]
-                // [ANP 500] <- starting from here reclaim cost exceeds weekly cost, so validate end dates too
-                // [CC 1300........]
-                if (reclaim.EndDate.HasValue)
-                {
-                    var dateToValidate = reclaim.EndDate.Value.AddDays(1);
-                    if (!validatedDates.Contains(dateToValidate))
-                    {
-                        ValidateReclaimCostsAtDate(package, dateToValidate);
-                        validatedDates.Add(dateToValidate);
-                    }
-
-                }
+                ValidateReclaimCostsAtDate(package, date);
             }
         }
 

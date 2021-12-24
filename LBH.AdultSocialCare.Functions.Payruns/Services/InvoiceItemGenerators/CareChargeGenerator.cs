@@ -31,7 +31,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     Name = $"Care Charge {careCharge.SubType.GetDisplayName()}",
                     Quantity = itemRange.WeeksInclusive,
                     WeeklyCost = careCharge.Cost,
-                    TotalCost = Math.Round(careCharge.Cost * itemRange.WeeksInclusive, 2),
+                    TotalCost = (careCharge.Cost * itemRange.WeeksInclusive).Round(2),
                     FromDate = itemRange.StartDate,
                     ToDate = itemRange.EndDate,
                     CarePackageReclaimId = careCharge.Id,
