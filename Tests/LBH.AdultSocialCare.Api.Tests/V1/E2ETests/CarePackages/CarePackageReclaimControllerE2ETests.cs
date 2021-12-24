@@ -330,7 +330,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             response.Content.Status.Should().Be(ReclaimStatus.Ended);
 
             reclaim.Status.Should().Be(ReclaimStatus.Ended);
-            reclaim.EndDate.Should().Be(endDate.Date);
+            reclaim.EndDate.Value.Date.Should().Be(endDate.Date);
         }
 
         [Fact]
