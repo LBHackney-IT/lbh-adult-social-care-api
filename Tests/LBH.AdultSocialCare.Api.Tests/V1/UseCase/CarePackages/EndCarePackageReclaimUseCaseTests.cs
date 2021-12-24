@@ -85,11 +85,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             var response = await _useCase.ExecuteAsync(reclaimId, new CarePackageReclaimEndRequest()
             {
-                EndDate = package.Details.First().EndDate
+                EndDate = package.Details.First().EndDate.Value.AddDays(-2)
             });
 
             _dbManagerMock.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
             response.Status.Should().Be(ReclaimStatus.Ended);
+            response.EndDate.Should().Be(package.Details.First().EndDate.Value.AddDays(-2));
         }
 
         [Fact]
