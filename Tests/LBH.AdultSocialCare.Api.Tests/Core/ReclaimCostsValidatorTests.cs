@@ -47,7 +47,6 @@ namespace LBH.AdultSocialCare.Api.Tests.Core
                 .AddCareChargeProvisional(2500.0m, ClaimCollector.Supplier, "01-12-2022", "31-12-2022")
                 .SetCurrentDate("01-12-2022");
 
-
             FluentActions.Invoking(() =>
                 ReclaimCostValidator.Validate(package)).Should().Throw<ApiException>();
         }

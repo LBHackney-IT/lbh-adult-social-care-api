@@ -132,8 +132,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
         {
             return new Faker<CarePackageReclaim>()
                 .RuleFor(r => r.Cost, f => cost ?? Math.Round(f.Random.Decimal(0m, 1000m), 2)) // Workaround to avoid precision loss in SQLite)
-                .RuleFor(r => r.StartDate, f => startDate ?? f.Date.Past(1, DateTime.Now).AddDays(-1).Date)
-                .RuleFor(r => r.EndDate, f => endDate ?? f.Date.Future(1, DateTime.Now).AddDays(1).Date)
+                .RuleFor(r => r.StartDate, f => startDate ?? f.Date.Past(1, DateTime.Now.AddDays(-1)).Date)
+                .RuleFor(r => r.EndDate, f => endDate ?? f.Date.Future(1, DateTime.Now.AddDays(1)).Date)
                 .RuleFor(r => r.Description, f => f.Lorem.Paragraph())
                 .RuleFor(r => r.ClaimCollector, f => collector ?? f.PickRandom<ClaimCollector>())
                 .RuleFor(r => r.Type, type)
@@ -151,8 +151,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                     f => costPeriod ?? (type == PackageDetailType.CoreCost
                         ? PaymentPeriod.Weekly
                         : f.PickRandom(PaymentPeriod.Weekly, PaymentPeriod.OneOff)))
-                .RuleFor(d => d.StartDate, f => startDate ?? f.Date.Past(1, DateTime.Now).AddDays(-1).Date)
-                .RuleFor(d => d.EndDate, f => endDate ?? f.Date.Future(1, DateTime.Now).AddDays(1).Date)
+                .RuleFor(d => d.StartDate, f => startDate ?? f.Date.Past(1, DateTime.Now.AddDays(-1)).Date)
+                .RuleFor(d => d.EndDate, f => endDate ?? f.Date.Future(1, DateTime.Now.AddDays(1)).Date)
                 .RuleFor(d => d.Type, type)
                 .Generate();
         }
