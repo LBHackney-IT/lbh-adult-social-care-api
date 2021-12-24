@@ -16,18 +16,17 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
 {
     public static class TestDataHelper
     {
-        public static CarePackage CreateCarePackage(PackageType? packageType = null, Guid? serviceUserId = null, PackageStatus? status = null, int? primarySupportReasonId = null)
+        public static CarePackage CreateCarePackage(PackageType? packageType = null, PackageStatus? status = null, Guid? serviceUserId = null)
         {
             var package = new Faker<CarePackage>()
                 .RuleFor(cp => cp.Id, f => f.Random.Guid())
                 .RuleFor(cp => cp.PackageType, f => packageType ?? f.PickRandom<PackageType>())
                 .RuleFor(cp => cp.SupplierId, f => null)
                 .RuleFor(cp => cp.PackageScheduling, f => f.PickRandom<PackageScheduling>())
-                .RuleFor(cp => cp.PrimarySupportReasonId, f => primarySupportReasonId ?? f.PickRandom(1, 2))
+                .RuleFor(cp => cp.PrimarySupportReasonId, f => f.PickRandom(1, 2))
                 .RuleFor(cp => cp.Status, f => status ?? f.PickRandom<PackageStatus>())
                 .Generate();
 
-            // TODO: VK: Review serviceUserId usage - probably can be moved to the end of parameters or removed
             if (serviceUserId.HasValue)
             {
                 package.ServiceUserId = serviceUserId.Value;
@@ -55,7 +54,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
 
         public static CarePackageForCreationRequest CarePackageCreationRequest(PackageType? packageType = null, Guid? serviceUserId = null, PackageStatus? status = null, Guid? settingId = null, Guid? carePackageId = null)
         {
-            var carePackage = CreateCarePackage(packageType, serviceUserId, status);
+            var carePackage = CreateCarePackage(packageType, status, serviceUserId);
             var carePackageSettings = CreateCarePackageSettings(settingId, carePackageId);
             return new CarePackageForCreationRequest
             {
@@ -141,10 +140,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
         }
 
         public static CarePackageReclaim CreateCarePackageReclaim(
-            ReclaimType type, ReclaimSubType subType, ClaimCollector? collector,
+            Guid packageId, ReclaimType type, ReclaimSubType subType, ClaimCollector? collector,
             decimal? cost, DateTimeOffset? startDate, DateTimeOffset? endDate)
         {
             return new Faker<CarePackageReclaim>()
+                .RuleFor(r => r.Id, Guid.NewGuid)
+                .RuleFor(r => r.CarePackageId, packageId)
                 .RuleFor(r => r.Cost, f => cost ?? f.Random.Decimal(0m, 1000m).Round(2))
                 .RuleFor(r => r.StartDate, f => startDate ?? f.Date.Past(1, DateTime.Now.AddDays(-1)).Date)
                 .RuleFor(d => d.EndDate,
@@ -159,10 +160,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
         }
 
         public static CarePackageDetail CreateCarePackageDetail(
-            PackageDetailType type, decimal? cost = null,
+            Guid packageId, PackageDetailType type, decimal? cost = null,
             DateTimeOffset? startDate = null, DateTimeOffset? endDate = null, PaymentPeriod? costPeriod = null)
         {
             return new Faker<CarePackageDetail>()
+                .RuleFor(r => r.Id, Guid.NewGuid)
+                .RuleFor(r => r.CarePackageId, packageId)
                 .RuleFor(r => r.Cost, f => cost ?? f.Random.Decimal(100m, 1000m).Round(2))
                 .RuleFor(d => d.CostPeriod,
                     f => costPeriod ?? (type == PackageDetailType.CoreCost

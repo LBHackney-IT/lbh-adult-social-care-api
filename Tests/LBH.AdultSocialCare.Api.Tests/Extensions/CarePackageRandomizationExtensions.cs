@@ -20,7 +20,7 @@ namespace LBH.AdultSocialCare.Api.Tests.Extensions
 
         public static CarePackage AddCoreCost(this CarePackage package, decimal? cost = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
         {
-            package.Details.Add(TestDataHelper.CreateCarePackageDetail(PackageDetailType.CoreCost, cost, startDate, endDate, PaymentPeriod.Weekly));
+            package.Details.Add(TestDataHelper.CreateCarePackageDetail(package.Id, PackageDetailType.CoreCost, cost, startDate, endDate, PaymentPeriod.Weekly));
             return package;
         }
 
@@ -32,7 +32,7 @@ namespace LBH.AdultSocialCare.Api.Tests.Extensions
 
         public static CarePackage AddWeeklyNeed(this CarePackage package, decimal? cost = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
         {
-            package.Details.Add(TestDataHelper.CreateCarePackageDetail(PackageDetailType.AdditionalNeed, cost, startDate, endDate, PaymentPeriod.Weekly));
+            package.Details.Add(TestDataHelper.CreateCarePackageDetail(package.Id, PackageDetailType.AdditionalNeed, cost, startDate, endDate, PaymentPeriod.Weekly));
             return package;
         }
 
@@ -44,7 +44,7 @@ namespace LBH.AdultSocialCare.Api.Tests.Extensions
 
         public static CarePackage AddOneOffNeed(this CarePackage package, decimal? cost = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
         {
-            package.Details.Add(TestDataHelper.CreateCarePackageDetail(PackageDetailType.AdditionalNeed, cost, startDate, endDate, PaymentPeriod.OneOff));
+            package.Details.Add(TestDataHelper.CreateCarePackageDetail(package.Id, PackageDetailType.AdditionalNeed, cost, startDate, endDate, PaymentPeriod.OneOff));
             return package;
         }
 
@@ -60,7 +60,7 @@ namespace LBH.AdultSocialCare.Api.Tests.Extensions
 
         public static CarePackage AddCareChargeProvisional(this CarePackage package, decimal? cost = null, ClaimCollector? collector = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
         {
-            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(ReclaimType.CareCharge, ReclaimSubType.CareChargeProvisional, collector, cost, startDate, endDate));
+            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(package.Id, ReclaimType.CareCharge, ReclaimSubType.CareChargeProvisional, collector, cost, startDate, endDate));
             return package;
         }
 
@@ -72,7 +72,7 @@ namespace LBH.AdultSocialCare.Api.Tests.Extensions
 
         public static CarePackage AddCareChargeFor12Weeks(this CarePackage package, decimal? cost = null, ClaimCollector? collector = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
         {
-            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(ReclaimType.CareCharge, ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, collector, cost, startDate, endDate));
+            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(package.Id, ReclaimType.CareCharge, ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, collector, cost, startDate, endDate));
             return package;
         }
 
@@ -84,7 +84,7 @@ namespace LBH.AdultSocialCare.Api.Tests.Extensions
 
         public static CarePackage AddCareChargeFor13PlusWeeks(this CarePackage package, decimal? cost = null, ClaimCollector? collector = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
         {
-            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(ReclaimType.CareCharge, ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks, collector, cost, startDate, endDate));
+            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(package.Id, ReclaimType.CareCharge, ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks, collector, cost, startDate, endDate));
             return package;
         }
 
@@ -100,7 +100,7 @@ namespace LBH.AdultSocialCare.Api.Tests.Extensions
 
         public static CarePackage AddFncPayment(this CarePackage package, decimal? cost = null, ClaimCollector? collector = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
         {
-            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(ReclaimType.Fnc, ReclaimSubType.FncPayment, collector, cost, startDate, endDate));
+            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(package.Id, ReclaimType.Fnc, ReclaimSubType.FncPayment, collector, cost, startDate, endDate));
             return package;
         }
 
@@ -112,32 +112,13 @@ namespace LBH.AdultSocialCare.Api.Tests.Extensions
 
         public static CarePackage AddFncReclaim(this CarePackage package, decimal? cost = null, ClaimCollector? collector = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
         {
-            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(ReclaimType.Fnc, ReclaimSubType.FncReclaim, collector, cost, startDate, endDate));
+            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(package.Id, ReclaimType.Fnc, ReclaimSubType.FncReclaim, collector, cost, startDate, endDate));
             return package;
         }
 
         #endregion FNC
 
         #region Utils
-
-        public static CarePackage GenerateIds(this CarePackage package)
-        {
-            package.Id = Guid.NewGuid();
-
-            foreach (var detail in package.Details)
-            {
-                detail.Id = Guid.NewGuid();
-                detail.CarePackageId = package.Id;
-            }
-
-            foreach (var reclaim in package.Reclaims)
-            {
-                reclaim.Id = Guid.NewGuid();
-                reclaim.CarePackageId = package.Id;
-            }
-
-            return package;
-        }
 
         public static CarePackage SetCurrentDate(this CarePackage package, string date)
         {
