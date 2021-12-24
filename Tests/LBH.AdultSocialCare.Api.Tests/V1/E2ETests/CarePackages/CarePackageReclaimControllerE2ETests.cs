@@ -38,7 +38,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             var fncCost = 500M;
 
             var package = TestDataHelper
-                .CreateCarePackage(PackageType.NursingCare, PackageStatus.New)
+                .CreateCarePackage(PackageType.NursingCare)
                 .AddCoreCost(fncCost * 2, startDate, endDate)
                 .Save(_fixture.DatabaseContext);
 

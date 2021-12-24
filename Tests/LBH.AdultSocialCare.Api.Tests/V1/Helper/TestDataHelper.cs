@@ -16,7 +16,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
 {
     public static class TestDataHelper
     {
-        public static CarePackage CreateCarePackage(PackageType? packageType = null, PackageStatus? status = null, Guid? serviceUserId = null)
+        public static CarePackage CreateCarePackage(PackageType? packageType = null, PackageStatus? status = PackageStatus.New, Guid? serviceUserId = null)
         {
             var package = new Faker<CarePackage>()
                 .RuleFor(cp => cp.Id, f => f.Random.Guid())
