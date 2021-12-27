@@ -93,7 +93,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                     PackageType = c.PackageType.GetDisplayName(),
                     PackageId = c.Id,
                     IsS117Client = c.Settings.IsS117Client,
-                    StartDate = c.DateCreated,
+                    StartDate = c.Reclaims.OrderBy(x => x.StartDate).FirstOrDefault().StartDate,
                     LastModified = c.DateUpdated,
                     ModifiedBy = c.Updater.Name
                 })
