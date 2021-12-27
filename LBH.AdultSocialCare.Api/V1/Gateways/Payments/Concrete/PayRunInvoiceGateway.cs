@@ -66,9 +66,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 
             var result = new PayRunInsightsDomain
             {
-                TotalInvoiceAmount = invoices.Sum(i => i.Invoice.GrossTotal),
-                SupplierCount = invoices.Select(i => i.Invoice.SupplierId).Distinct().Count(),
-                ServiceUserCount = invoices.Select(i => i.Invoice.ServiceUserId).Distinct().Count(),
+                TotalInvoiceAmount = invoices.Where(x => x.InvoiceStatus == InvoiceStatus.Accepted).Sum(i => i.Invoice.GrossTotal),
+                SupplierCount = invoices.Where(x => x.InvoiceStatus == InvoiceStatus.Accepted).Select(i => i.Invoice.SupplierId).Distinct().Count(),
+                ServiceUserCount = invoices.Where(x => x.InvoiceStatus == InvoiceStatus.Accepted).Select(i => i.Invoice.ServiceUserId).Distinct().Count(),
                 HoldsCount = invoices.Count(i => heldInvoiceStatuses.Contains(i.InvoiceStatus)),
                 TotalHeldAmount = invoices.Where(i => heldInvoiceStatuses.Contains(i.InvoiceStatus))
                     .Sum(i => i.Invoice.GrossTotal),

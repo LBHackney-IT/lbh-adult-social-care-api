@@ -128,7 +128,8 @@ namespace DataImporter.Services
                             UnitOfMeasure = package.UnitOfMeasure,
                             StartDate = package.StartDate,
                             CostPeriod = excelPackageModel.CostPeriod,
-                            EndDate = package.EndDate
+                            EndDate = package.EndDate,
+                            Subjective = package.Subjective
                         };
                         carePackage.Details.Add(corePackage);
                         _databaseContext.CarePackageDetails.Add(corePackage);
@@ -148,7 +149,8 @@ namespace DataImporter.Services
                             ClaimCollector = excelPackageModel.ClaimCollector,
                             SubType = excelPackageModel.CareChargeSubType,
                             Type = excelPackageModel.ReclaimType,
-                            Status = ReclaimStatus.Active
+                            Status = ReclaimStatus.Active,
+                            Subjective = package.Subjective
                         };
                         carePackage.Reclaims.Add(reclaim);
                         _databaseContext.CarePackageReclaims.Add(reclaim);
