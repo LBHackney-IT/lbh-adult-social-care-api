@@ -132,7 +132,6 @@ namespace DataImporter.Services
                             Subjective = package.Subjective
                         };
                         carePackage.Details.Add(corePackage);
-                        _databaseContext.CarePackageDetails.Add(corePackage);
                     }
                     else if (excelPackageModel.SubPackageType == ExcelPackageModel.ExcelPackageType.Reclaim)
                     {
@@ -147,24 +146,35 @@ namespace DataImporter.Services
                             StartDate = package.StartDate,
                             EndDate = package.EndDate,
                             ClaimCollector = excelPackageModel.ClaimCollector,
-                            SubType = excelPackageModel.CareChargeSubType,
+                            SubType = excelPackageModel.ReclaimSubType,
                             Type = excelPackageModel.ReclaimType,
                             Status = ReclaimStatus.Active,
                             Subjective = package.Subjective
                         };
                         carePackage.Reclaims.Add(reclaim);
-                        _databaseContext.CarePackageReclaims.Add(reclaim);
                     }
                     else
                     {
                         logs.Add($"{DateTimeOffset.UtcNow}\tRow Number: {serviceUserPackage.FirstOrDefault().RowNumber}\tService user {serviceUserPackage.Key}\tPackage Type {package.ElementType} is not valid.");
                     }
                 }
+
+                SyncFncClaimCollector(carePackage.Reclaims);
+
                 _databaseContext.CarePackages.Add(carePackage);
             }
 
             File.WriteAllLines($"{fileName}_logs.txt", logs);
             _databaseContext.SaveChanges();
+        }
+
+        private void SyncFncClaimCollector(ICollection<CarePackageReclaim> carePackageReclaims)
+        {
+            var fncClaimCollector = carePackageReclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.FncReclaim)?.ClaimCollector;
+            if (fncClaimCollector.HasValue && carePackageReclaims.Any(x => x.SubType == ReclaimSubType.FncPayment))
+            {
+                carePackageReclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.FncPayment).ClaimCollector = fncClaimCollector.Value;
+            }
         }
 
         private async Task<Guid> CreateOrSkipUser(string hackneyID)
