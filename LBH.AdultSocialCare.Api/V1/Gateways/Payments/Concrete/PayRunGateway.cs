@@ -91,6 +91,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     .MaxAsync()
                 : 0;
 
+            //TODO: Testing purpose. It will be removed
+            payrunsCount = 1;
+
             payRun.Number = $"PYR-{DateTimeOffset.UtcNow:yyMMdd}-{++payrunsCount:0000}";
 
             await _dbContext.Payruns.AddAsync(payRun);
@@ -98,9 +101,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             {
                 await _dbContext.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new DbSaveFailedException("Could not create pay run");
+                throw new DbSaveFailedException("Could not create pay run", ex);
             }
         }
 
