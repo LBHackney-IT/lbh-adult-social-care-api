@@ -38,10 +38,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 throw new ApiException($"Operation not allowed. There exists a pay run that is not approved", HttpStatusCode.PreconditionFailed);
 
             var endOfLastPayRun = await _payRunGateway.GetEndDateOfLastPayRun(draftPayRunCreationDomain.Type);
-            //draftPayRunCreationDomain.StartDate = endOfLastPayRun.Date.AddDays(1);
-
-            //TODO: Testing purpose. It will be removed
-            draftPayRunCreationDomain.StartDate = endOfLastPayRun.Date;
+            draftPayRunCreationDomain.StartDate = endOfLastPayRun.Date.AddDays(1);
 
             ValidatePayRunDates(draftPayRunCreationDomain.StartDate, draftPayRunCreationDomain.EndDate);
 

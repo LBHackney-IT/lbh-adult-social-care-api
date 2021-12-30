@@ -91,9 +91,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     .MaxAsync()
                 : 0;
 
-            //TODO: Testing purpose. It will be removed
-            payrunsCount = 1;
-
             payRun.Number = $"PYR-{DateTimeOffset.UtcNow:yyMMdd}-{++payrunsCount:0000}";
 
             await _dbContext.Payruns.AddAsync(payRun);
