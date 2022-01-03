@@ -7,6 +7,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Data.Constants;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using System;
@@ -52,6 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             //todo FK: ?
             newReclaim.Type = ReclaimType.CareCharge;
             newReclaim.Status = ReclaimStatus.Active;
+            newReclaim.Subjective = SubjectiveConstants.CareChargeReclaimSubjectiveCode;
 
             carePackage.Reclaims.Add(newReclaim);
 

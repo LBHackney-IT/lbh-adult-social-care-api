@@ -11,6 +11,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Data.Constants;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
@@ -46,6 +47,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var fncPayment = reclaims.SingleOrDefault(r => r.SubType is ReclaimSubType.FncPayment);
             var fncReclaim = reclaims.SingleOrDefault(r => r.SubType is ReclaimSubType.FncReclaim);
 
+
             if (fncPayment is null || fncReclaim is null)
             {
                 throw new ApiException($"No FNC defined for package {packageId}", HttpStatusCode.NotFound);
@@ -60,6 +62,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
                 fncReclaim.Id = fncReclaimId;
                 fncReclaim.Cost = Decimal.Negate(fncPayment.Cost);
+
+                fncPayment.Subjective = SubjectiveConstants.FncPaymentSubjectiveCode;
+                fncReclaim.Subjective = SubjectiveConstants.FncReclaimSubjectiveCode;
 
                 ReclaimCostValidator.Validate(package);
 
