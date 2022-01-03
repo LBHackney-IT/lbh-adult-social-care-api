@@ -17,13 +17,7 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
         public DateTimeOffset? EndDate { get; set; }
         public string Description { get; set; }
         public string ClaimReason { get; set; }
-        public static string Subjective
-        {
-            get
-            {
-                return SubjectiveConstants.CareChargeReclaimSubjectiveCode;
-            }
-        }
+        public static string Subjective => SubjectiveConstants.CareChargeReclaimSubjectiveCode;
 
         public ReclaimType Type
         {
