@@ -13,6 +13,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
+using LBH.AdultSocialCare.Data.Constants;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
@@ -116,6 +117,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             fncPayment.Type = ReclaimType.Fnc;
             fncPayment.SubType = subType;
             fncPayment.Status = ReclaimStatus.Active;
+            fncPayment.Subjective = fncPayment.SubType == ReclaimSubType.FncPayment ? SubjectiveConstants.FncPaymentSubjectiveCode : SubjectiveConstants.FncReclaimSubjectiveCode;
 
             return fncPayment;
         }
