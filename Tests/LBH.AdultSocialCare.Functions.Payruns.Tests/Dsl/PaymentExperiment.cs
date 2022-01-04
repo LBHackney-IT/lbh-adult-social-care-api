@@ -7,7 +7,7 @@ using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Payments;
 using LBH.AdultSocialCare.Functions.Payruns.Domain;
 using LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators;
-using LBH.AdultSocialCare.Functions.Payruns.Tests.Extensions;
+using LBH.AdultSocialCare.TestFramework.Extensions;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Dsl
 {

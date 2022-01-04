@@ -98,9 +98,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             {
                 await _dbContext.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new DbSaveFailedException("Could not create pay run");
+                throw new DbSaveFailedException("Could not create pay run", ex);
             }
         }
 
@@ -182,12 +182,12 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     InvoiceItems = p.Invoice.Items.Select(it => new CedarFileInvoiceLineDomain()
                     {
                         InvoiceLineId = 3,
-                        Name = $"{it.FromDate.ToString("ddMMyy")}{it.ToDate.ToString("ddMMyy")} {it.Invoice.ServiceUser.HackneyId}",
-                        Quantity = it.Quantity,
-                        Cost = it.WeeklyCost == 0 ? it.TotalCost : it.WeeklyCost,
+                        Name = $"{it.FromDate:ddMMyy}{it.ToDate:ddMMyy} {it.Invoice.ServiceUser.HackneyId}",
+                        Quantity = 1, // Quantity is always 1
+                        Cost = it.TotalCost, // Always shows total cost
                         TaxFlag = 0,
                         CostCentre = p.Invoice.Package.PrimarySupportReason.CederBudgetCode,
-                        Subjective = it.CarePackageDetailId != Guid.Empty ? it.CarePackageDetail.Subjective : it.CarePackageReclaimId != Guid.Empty ? it.CarePackageReclaim.Subjective : null,
+                        Subjective = !it.CarePackageDetailId.IsEmpty() ? it.CarePackageDetail.Subjective : !it.CarePackageReclaimId.IsEmpty() ? it.CarePackageReclaim.Subjective : null,
                         Analysis = "X",
                         TaxStatus = "EXE"
                     }).ToList()
@@ -197,7 +197,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 
         public async Task<CedarFileHeader> GetPayRunInvoicesInfoAsync(Guid payRunId)
         {
-            var invoices = await _dbContext.PayrunInvoices.Where(p => p.PayrunId == payRunId).Include(pi => pi.Invoice)
+            var invoices = await _dbContext.PayrunInvoices.Where(p => p.PayrunId == payRunId && p.InvoiceStatus == InvoiceStatus.Accepted).Include(pi => pi.Invoice)
                 .ToListAsync();
 
             var result = new CedarFileHeader

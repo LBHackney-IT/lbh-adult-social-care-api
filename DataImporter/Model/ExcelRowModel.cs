@@ -51,6 +51,14 @@ namespace DataImporter.Model
         }
 
         public string BudgetCode { get; set; }
+        public string Subjective
+        {
+            get
+            {
+                return string.IsNullOrEmpty(BudgetCode) ? "" : BudgetCode.Substring(BudgetCode.LastIndexOf("-X") - 6, 6);
+            }
+        }
+
         public string SupplierID { get; set; }
         public string SupplierSite { get; set; }
     }

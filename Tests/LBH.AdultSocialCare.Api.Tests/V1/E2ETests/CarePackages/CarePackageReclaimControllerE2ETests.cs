@@ -9,13 +9,12 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Data.Constants.Enums;
-using Microsoft.AspNetCore.Http;
+using LBH.AdultSocialCare.TestFramework.Extensions;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
@@ -34,25 +33,27 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         [Fact]
         public async Task ShouldCreateFundedNursingCareReclaimForExistingNursingCarePackage()
         {
-            var package = _generator.CreateCarePackage(PackageType.NursingCare);
-            var packageDetails = _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
+            var startDate = "01-12-2022".ToUtcDate();
+            var endDate = "31-12-2022".ToUtcDate();
+            var fncCost = 500M;
 
-            var request = FundedNursingCareCreationRequest(package.Id);
-            request.Cost = packageDetails.First().Cost - 10M;
-            request.StartDate = packageDetails.First().StartDate;
-            request.EndDate = packageDetails.First().EndDate;
+            var package = TestDataHelper
+                .CreateCarePackage(PackageType.NursingCare)
+                .AddCoreCost(fncCost * 2, startDate, endDate)
+                .Save(_fixture.DatabaseContext);
 
-            var response = await CreateFncReclaim(request);
+            var response = await CreateFncReclaim(package.Id, fncCost, startDate, endDate);
 
-            var carePackageReclaim = await _fixture.DatabaseContext.CarePackageReclaims
-                .FirstOrDefaultAsync(c => c.CarePackageId == package.Id);
+            var reclaims = await _fixture.DatabaseContext.CarePackageReclaims
+                .Where(c => c.CarePackageId == package.Id)
+                .ToListAsync();
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
 
-            carePackageReclaim.Should().BeEquivalentTo(request, opt => opt
-                .Excluding(reclaim => reclaim.EndDate)
-                .Excluding(reclaim => reclaim.AssessmentFileId)
-                .Excluding(reclaim => reclaim.AssessmentFile));
+            reclaims.Count.Should().Be(2);
+            reclaims.Should().OnlyContain(r => r.Type == ReclaimType.Fnc && r.StartDate == startDate && r.EndDate == endDate);
+            reclaims.Should().ContainSingle(r => r.SubType == ReclaimSubType.FncPayment && r.Cost == fncCost);
+            reclaims.Should().ContainSingle(r => r.SubType == ReclaimSubType.FncReclaim && r.Cost == -fncCost);
         }
 
         [Fact]
@@ -330,7 +331,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             response.Content.Status.Should().Be(ReclaimStatus.Ended);
 
             reclaim.Status.Should().Be(ReclaimStatus.Ended);
-            reclaim.EndDate.Should().Be(endDate.Date);
+            reclaim.EndDate.Value.Date.Should().Be(endDate.Date);
         }
 
         [Fact]
@@ -389,6 +390,16 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
         }
 
+        private async Task<TestResponse<CarePackageReclaimResponse>> CreateFncReclaim(
+            Guid packageId, decimal? cost = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
+        {
+            var request = FundedNursingCareCreationRequest(packageId, cost, startDate, endDate);
+            var response = await _fixture.RestClient
+                .SubmitFormAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{request.CarePackageId}/reclaims/fnc", request);
+
+            return response;
+        }
+
         private async Task<TestResponse<CarePackageReclaimResponse>> CreateFncReclaim(FundedNursingCareCreationRequest request)
         {
             var response = await _fixture.RestClient
@@ -403,15 +414,16 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             return response;
         }
 
-        private static FundedNursingCareCreationRequest FundedNursingCareCreationRequest(Guid carePackageId)
+        private static FundedNursingCareCreationRequest FundedNursingCareCreationRequest(
+            Guid carePackageId, decimal? cost = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
         {
             var request = new FundedNursingCareCreationRequest
             {
                 CarePackageId = carePackageId,
-                Cost = 200M,
+                Cost = cost ?? 200M,
                 ClaimCollector = (ClaimCollector) 1,
-                StartDate = DateTimeOffset.Now.Date.AddDays(-1),
-                EndDate = DateTimeOffset.Now.Date.AddDays(2),
+                StartDate = startDate ?? DateTimeOffset.Now.Date.AddDays(-1),
+                EndDate = endDate ?? DateTimeOffset.Now.Date.AddDays(2),
                 Description = "Test",
                 AssessmentFileId = Guid.NewGuid()
             };

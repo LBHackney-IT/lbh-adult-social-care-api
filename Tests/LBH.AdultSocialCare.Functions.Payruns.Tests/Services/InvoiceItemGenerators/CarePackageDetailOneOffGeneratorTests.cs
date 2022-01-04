@@ -3,7 +3,7 @@ using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators;
 using LBH.AdultSocialCare.Functions.Payruns.Tests.Dsl;
-using LBH.AdultSocialCare.Functions.Payruns.Tests.Extensions;
+using LBH.AdultSocialCare.TestFramework.Extensions;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenerators
@@ -28,8 +28,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 Cost = 100.0m,
                 Type = PackageDetailType.CoreCost,
                 CostPeriod = PaymentPeriod.OneOff,
-                StartDate = "2022-12-01".ToUtcDate(),
-                EndDate = "2022-12-31".ToUtcDate(),
+                StartDate = "01-12-2022".ToUtcDate(),
+                EndDate = "31-12-2022".ToUtcDate(),
                 Package = _package
             });
 
@@ -43,8 +43,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         {
             PaymentExperiment
                 .For(_package, _generator)
-                .CreateInvoice("2022-12-07")
-                .VerifyLastInvoice((100.0m, "2022-12-01", "2022-12-31")); // since one off is created one time use it's range, not invoice range
+                .CreateInvoice("07-12-2022")
+                .VerifyLastInvoice((100.0m, "01-12-2022", "31-12-2022")); // since one off is created one time use it's range, not invoice range
         }
 
         [Fact]
@@ -52,9 +52,9 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         {
             PaymentExperiment
                 .For(_package, _generator)
-                .CreateInvoice("2022-12-06")
-                .VerifyLastInvoice((100.0m, "2022-12-01", "2022-12-31"))
-                .CreateInvoice("2022-01-31")
+                .CreateInvoice("06-12-2022")
+                .VerifyLastInvoice((100.0m, "01-12-2022", "31-12-2022"))
+                .CreateInvoice("31-01-2022")
                 .EnsureNoInvoiceGenerated(); // one-off has been created already
         }
 
@@ -63,10 +63,10 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         {
             PaymentExperiment
                 .For(_package, _generator)
-                .CreateInvoice("2022-12-06")
+                .CreateInvoice("06-12-2022")
                 .Reject()
-                .CreateInvoice("2023-01-31")
-                .VerifyLastInvoice((100.0m, "2022-12-01", "2022-12-31"));
+                .CreateInvoice("31-01-2023")
+                .VerifyLastInvoice((100.0m, "01-12-2022", "31-12-2022"));
         }
 
         [Fact]
@@ -74,7 +74,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         {
             PaymentExperiment
                 .For(_package, _generator)
-                .CreateInvoice("2022-11-30")
+                .CreateInvoice("30-11-2022")
                 .EnsureNoInvoiceGenerated();
         }
 
@@ -83,8 +83,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         {
             PaymentExperiment
                 .For(_package, _generator)
-                .CreateInvoice("2023-01-31")
-                .VerifyLastInvoice((100.0m, "2022-12-01", "2022-12-31"));
+                .CreateInvoice("31-01-2023")
+                .VerifyLastInvoice((100.0m, "01-12-2022", "31-12-2022"));
         }
 
         #endregion Normal invoices
@@ -96,11 +96,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         {
             PaymentExperiment
                 .For(_package, _generator)
-                .CreateInvoice("2022-12-06")
+                .CreateInvoice("06-12-2022")
                 .Pay()
                 .UpdateDetail(d => d.Cost = 60.0m)
                 .CreateRefund()
-                .VerifyLastInvoice((-40.0m, "2022-12-01", "2022-12-31")); // price decrease - overpaid
+                .VerifyLastInvoice((-40.0m, "01-12-2022", "31-12-2022")); // price decrease - overpaid
         }
 
         [Fact]
@@ -108,9 +108,9 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         {
             PaymentExperiment
                 .For(_package, _generator)
-                .CreateInvoice("2022-12-06")
+                .CreateInvoice("06-12-2022")
                 .Pay()
-                .UpdateDetail(d => d.StartDate = "2022-12-06".ToUtcDate())
+                .UpdateDetail(d => d.StartDate = "06-12-2022".ToUtcDate())
                 .CreateRefund()
                 .EnsureNoInvoiceGenerated();
         }
@@ -120,11 +120,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         {
             PaymentExperiment
                 .For(_package, _generator)
-                .CreateInvoice("2022-12-06")
+                .CreateInvoice("06-12-2022")
                 .Pay()
-                .UpdateDetail(d => d.StartDate = "2023-01-01".ToUtcDate())
+                .UpdateDetail(d => d.StartDate = "01-01-2023".ToUtcDate())
                 .CreateRefund()
-                .VerifyLastInvoice((-100.0m, "2022-12-01", "2022-12-31"));
+                .VerifyLastInvoice((-100.0m, "01-12-2022", "31-12-2022"));
         }
 
         [Fact]
@@ -132,15 +132,15 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         {
             PaymentExperiment
                 .For(_package, _generator)
-                .CreateInvoice("2022-12-06")
+                .CreateInvoice("06-12-2022")
                 .Pay()
                 .UpdateDetail(d => d.Cost = 75.0m)
                 .CreateRefund()
-                .VerifyLastInvoice((-25.0m, "2022-12-01", "2022-12-31")) // cost decrease - overpaid
+                .VerifyLastInvoice((-25.0m, "01-12-2022", "31-12-2022")) // cost decrease - overpaid
                 .Pay()
                 .UpdateDetail(d => d.Cost = 140.0m)
                 .CreateRefund()
-                .VerifyLastInvoice((65.0m, "2022-12-01", "2022-12-31")); // cost increase - underpaid
+                .VerifyLastInvoice((65.0m, "01-12-2022", "31-12-2022")); // cost increase - underpaid
         }
 
         #endregion Refunds
@@ -153,8 +153,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
             PaymentExperiment
                 .For(_package, _generator)
                 .UpdateDetail(d => d.EndDate = null)
-                .CreateInvoice("2022-12-06")
-                .VerifyLastInvoice((100.0m, "2022-12-01", "2022-12-01"));
+                .CreateInvoice("06-12-2022")
+                .VerifyLastInvoice((100.0m, "01-12-2022", "01-12-2022"));
         }
 
         [Fact]
@@ -163,9 +163,9 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
             PaymentExperiment
                 .For(_package, _generator)
                 .UpdateDetail(d => d.EndDate = null)
-                .CreateInvoice("2022-12-06")
+                .CreateInvoice("06-12-2022")
                 .Pay()
-                .CreateInvoice("2022-12-12")
+                .CreateInvoice("12-12-2022")
                 .EnsureNoInvoiceGenerated();
         }
 
@@ -175,14 +175,14 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
             PaymentExperiment
                 .For(_package, _generator)
                 .UpdateDetail(d => d.EndDate = null)
-                .CreateInvoice("2022-12-06")
+                .CreateInvoice("06-12-2022")
                 .Pay()
-                .UpdateDetail(d => d.StartDate = "2022-11-29".ToUtcDate())
+                .UpdateDetail(d => d.StartDate = "29-11-2022".ToUtcDate())
                 .UpdateDetail(d => d.Cost = 300.0m)
                 .CreateRefund()
                 .VerifyLastInvoice(
-                    (300.0m, "2022-11-29", "2022-11-29"),   // new payment
-                    (-100.0m, "2022-12-01", "2022-12-01")); // refund previous one
+                    (300.0m, "29-11-2022", "29-11-2022"),   // new payment
+                    (-100.0m, "01-12-2022", "01-12-2022")); // refund previous one
         }
 
         [Fact]
@@ -190,7 +190,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         {
             PaymentExperiment
                 .For(_package, _generator)
-                .CreateInvoice("2022-12-07")
+                .CreateInvoice("07-12-2022")
                 .Pay()
                 .UpdateDetail(d => d.EndDate = null)
                 .CreateRefund()

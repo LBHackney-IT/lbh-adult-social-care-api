@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Extensions;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Payments;
@@ -24,7 +25,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                     Name = GetDetailItemName(detail),
                     Quantity = itemRange.WeeksInclusive,
                     WeeklyCost = detail.Cost,
-                    TotalCost = Math.Round(detail.Cost * itemRange.WeeksInclusive, 2),
+                    TotalCost = (detail.Cost * itemRange.WeeksInclusive).Round(2),
                     FromDate = itemRange.StartDate,
                     ToDate = itemRange.EndDate,
                     CarePackageDetailId = detail.Id,
