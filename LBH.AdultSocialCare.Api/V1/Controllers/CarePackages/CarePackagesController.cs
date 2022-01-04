@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
 {
@@ -72,6 +73,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<CarePackagePlainResponse>> CreateCarePackage([FromBody] CarePackageForCreationRequest carePackageForCreationRequest)
         {
             var residentialCarePackageResponse = await _createCarePackageUseCase.CreateAsync(carePackageForCreationRequest.ToDomain());
@@ -108,6 +110,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(CarePackageResponse), StatusCodes.Status200OK)]
         [HttpGet("{carePackageId}/core")]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<CarePackageResponse>> GetCarePackageCore(Guid carePackageId)
         {
             var res = await _getCarePackageUseCase.GetCarePackageCoreAsync(carePackageId);
@@ -142,6 +145,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPut("{carePackageId}")]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<CarePackagePlainResponse>> UpdateCarePackage(Guid carePackageId, [FromForm] CarePackageUpdateRequest carePackageUpdateRequest)
         {
             var updateResult = await _updateCarePackageUseCase.UpdateAsync(carePackageId, carePackageUpdateRequest.ToDomain());
@@ -158,6 +162,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("{carePackageId}/submit")]
+        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
         public async Task<ActionResult> SubmitForApproval(Guid carePackageId, CarePackageSubmissionRequest request)
         {
             await _submitCarePackageUseCase.ExecuteAsync(carePackageId, request.ToDomain());
@@ -176,6 +181,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesDefaultResponseType]
         [HttpPost("assign")]
         [DisableRequestSizeLimit]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<Guid>> AssignCarePlan([FromForm] CarePlanAssignmentRequest request)
         {
             var result = await _assignCarePlanUseCase.ExecuteAsync(request.ToDomain());
@@ -200,6 +206,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// <returns>List of packages if success</returns>
         [ProducesResponseType(typeof(BrokerPackageViewResponse), StatusCodes.Status200OK)]
         [HttpGet("broker-view")]
+        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
         public async Task<ActionResult<BrokerPackageViewResponse>> GetBrokerPackageView([FromQuery] BrokerPackageViewQueryParameters queryParameters)
         {
             var res = await _getCarePackageUseCase.GetBrokerPackageViewListAsync(queryParameters);
@@ -228,6 +235,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("{carePackageId}/cancel")]
+        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
         public async Task<ActionResult> CancelPackage(Guid carePackageId, CarePackageChangeStatusRequest request)
         {
             await _cancelCarePackageUseCase.ExecuteAsync(carePackageId, request.Notes);
@@ -244,6 +252,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("{carePackageId}/end")]
+        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
         public async Task<ActionResult> EndPackage(Guid carePackageId, CarePackageEndRequest request)
         {
             await _endCarePackageUseCase.ExecuteAsync(carePackageId, request.EndDate.GetValueOrDefault(), request.Notes);
@@ -260,6 +269,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("{carePackageId}/approve")]
+        [AuthorizeRoles(RolesEnum.BrokerageApprover)]
         public async Task<ActionResult> ApprovePackage(Guid carePackageId, CarePackageChangeStatusRequest request)
         {
             await _approveCarePackageUseCase.ExecuteAsync(carePackageId, request.Notes);
@@ -276,6 +286,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPost("{carePackageId}/decline")]
+        [AuthorizeRoles(RolesEnum.BrokerageApprover)]
         public async Task<ActionResult> DeclinePackage(Guid carePackageId, CarePackageChangeStatusRequest request)
         {
             await _declineCarePackageUseCase.ExecuteAsync(carePackageId, request.Notes);
@@ -291,6 +302,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPut("{carePackageId}/confirm-s117")]
+        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover, RolesEnum.CareChargeManager)]
         public async Task<ActionResult> ConfirmS117ServiceUser(Guid carePackageId)
         {
             await _confirmS117ServiceUserUseCase.ExecuteAsync(carePackageId);
@@ -306,6 +318,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(PagedResponse<CarePackageApprovableListItemResponse>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [HttpGet("approvals")]
+        [AuthorizeRoles(RolesEnum.BrokerageApprover)]
         public async Task<ActionResult<PagedResponse<CarePackageApprovableListItemResponse>>> GetApprovedPackages(
             [FromQuery] ApprovableCarePackagesQueryParameters queryParameters,
             [FromServices] IGetApprovableCarePackagesUseCase useCase)
@@ -325,6 +338,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpDelete("{carePackageId}")]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult> DeletePackage(Guid carePackageId)
         {
             await _deleteCarePackageUseCase.ExecuteAsync(carePackageId);
@@ -340,6 +354,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// <returns>Paged list of package past payments if success</returns>
         [ProducesResponseType(typeof(PackagePaymentViewResponse), StatusCodes.Status200OK)]
         [HttpGet("{carePackageId:guid}/payment-history")]
+        [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
         public async Task<ActionResult<PackagePaymentViewResponse>> GetCarePackagePaymentHistory([FromServices] IGetPackagePaymentHistoryUseCase useCase, Guid carePackageId, [FromQuery] RequestParameters parameters)
         {
             var res = await useCase.GetAsync(carePackageId, parameters);

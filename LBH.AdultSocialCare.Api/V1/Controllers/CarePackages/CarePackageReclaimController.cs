@@ -3,6 +3,7 @@ using Common.Exceptions.Models;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Request;
+using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Common.Interfaces;
@@ -56,6 +57,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("fnc")]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<CarePackageReclaimResponse>> CreateFundedNursingCare(
             [FromForm] FundedNursingCareCreationRequest request,
             [FromServices] ICreateFundedNursingCareUseCase useCase)
@@ -73,6 +75,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPut("fnc")]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult> UpdateFundedNursingCare(
             [FromForm] FundedNursingCareUpdateRequest request, Guid carePackageId,
             [FromServices] IUpdateFundedNursingCareUseCase useCase)
@@ -93,6 +96,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [HttpPut("care-charges")]
+        [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult> UpdateCareChargeReclaims([FromBody] CareChargesCreationRequest careChargesCreationRequest, Guid carePackageId)
         {
             await _upsertCareChargesUseCase.ExecuteAsync(carePackageId, careChargesCreationRequest.ToeDomain());
@@ -110,6 +114,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost("care-charges/assessment-file"), DisableRequestSizeLimit]
+        [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult> UploadCareChargeAssessmentFile([FromServices] ICreatePackageResourceUseCase useCase, Guid carePackageId)
         {
             try
@@ -142,6 +147,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpGet("care-charges")]
+        [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult<CarePackageReclaimResponse>> GetCareCharges(Guid carePackageId, ReclaimSubType? subType)
         {
             var result = await _getCarePackageReclaimsUseCase.GetListAsync(carePackageId, ReclaimType.CareCharge, subType);
@@ -157,6 +163,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [HttpGet("care-charges/assessment-details")]
+        [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult<FinancialAssessmentViewResponse>> GetFinancialAssessmentDetails(Guid carePackageId)
         {
             var result = await _getCarePackageReclaimsUseCase.GetFinancialAssessmentDetailsAsync(carePackageId);
@@ -171,6 +178,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpGet("fnc")]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<CarePackageReclaimResponse>> GetFundedNursingCare(Guid carePackageId)
         {
             var result = await _getCarePackageReclaimsUseCase.GetFundedNursingCare(carePackageId);
@@ -200,6 +208,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpGet("care-charges/{serviceUserId}/default")]
         [ProducesResponseType(typeof(decimal), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
+        [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult<decimal>> GetProvisionalCareChargeAmountUsingServiceUserId(Guid serviceUserId)
         {
             var provisionalAmount = await _getCareChargeUseCase.GetUsingServiceUserIdAsync(serviceUserId);
@@ -217,6 +226,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(SinglePackageCareChargeResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
+        [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult<SinglePackageCareChargeResponse>> GetSinglePackageCareCharge(Guid carePackageId)
         {
             var singlePackageCareCharge = await _getSinglePackageCareChargeUseCase.GetSinglePackageCareCharge(carePackageId).ConfigureAwait(false);
@@ -234,6 +244,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [HttpPut("care-charges/{reclaimId}/cancel")]
+        [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult<CarePackageReclaimResponse>> CancelReclaim(
             Guid reclaimId, [FromServices] ICancelCareChargeUseCase useCase)
         {
@@ -253,6 +264,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
         [HttpPut("care-charges/{reclaimId}/end")]
+        [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult<CarePackageReclaimResponse>> EndReclaim(
             Guid reclaimId, CarePackageReclaimEndRequest request,
             [FromServices] IEndCareChargeUseCase useCase)
@@ -274,6 +286,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
         [HttpPut("care-charges/{careChargeId}")]
+        [AuthorizeRoles(RolesEnum.CareChargeManager)]
         public async Task<ActionResult> UpdateProvisionalCareChargeReclaims(CareChargeReclaimUpdateRequest requestedReclaims)
         {
             await _updateCarePackageReclaimUseCase.UpdateAsync(requestedReclaims.ToDomain());
@@ -288,6 +301,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpGet("care-charges/provisional")]
+        [AuthorizeRoles(RolesEnum.CareChargeManager, RolesEnum.Broker)]
         public async Task<ActionResult<CarePackageReclaimResponse>> GetProvisionalCareCharges(Guid carePackageId)
         {
             var result = await _getCarePackageReclaimsUseCase.GetProvisionalCareCharge(carePackageId);
@@ -302,6 +316,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpPost("care-charges/provisional")]
+        [AuthorizeRoles(RolesEnum.CareChargeManager, RolesEnum.Broker)]
         public async Task<ActionResult<CarePackageReclaimResponse>> CreateProvisionalCareChargeReclaim(CareChargeReclaimCreationRequest careChargeReclaimCreationRequest)
         {
             var carePackageReclaimResponse = await _createProvisionalCareChargeUseCase.CreateProvisionalCareCharge(careChargeReclaimCreationRequest.ToDomain(), ReclaimType.CareCharge);

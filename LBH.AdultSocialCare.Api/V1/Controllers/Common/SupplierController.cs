@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
@@ -33,6 +34,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(ApiException), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiException), StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<SupplierResponse>> CreateSupplier(
             SupplierCreationRequest supplierCreationRequest)
         {
