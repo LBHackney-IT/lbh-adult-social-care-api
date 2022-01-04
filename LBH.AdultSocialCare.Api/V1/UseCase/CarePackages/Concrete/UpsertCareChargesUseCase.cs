@@ -177,7 +177,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 if ((provisionalCareCharge.StartDate.Date != oneToTwelveCareCharge.StartDate.Date) && (provisionalCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1) !=
                     oneToTwelveCareCharge.StartDate.Date))
                 {
-                    throw new ApiException($"1-12 must start one day after provisional care charge end", HttpStatusCode.BadRequest);
+                    throw new ApiException("1-12 must start one day after provisional care charge end", HttpStatusCode.BadRequest);
+                }
+            }
+
+            // for migrated packages it's possible that there is only 13+ charge, new provisional charge in this case must be aligned with it.
+            if (package.IsMigrated && provisionalCareCharge != null && oneToTwelveCareCharge == null && thirteenPlusCareCharge != null)
+            {
+                if (provisionalCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1) != thirteenPlusCareCharge.StartDate.Date)
+                {
+                    throw new ApiException("13+ must start one day after provisional care charge end", HttpStatusCode.BadRequest);
                 }
             }
 
