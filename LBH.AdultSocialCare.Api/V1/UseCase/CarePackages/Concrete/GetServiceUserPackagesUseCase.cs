@@ -52,7 +52,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 var coreCost = carePackage.Details
                     .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost);
 
-                _logger.LogCritical("{@CoreCosts}", carePackage.Details.Where(d => d.Type is PackageDetailType.CoreCost).ToList());
+                foreach (var detail in carePackage.Details.Where(d => d.Type is PackageDetailType.CoreCost))
+                {
+                    _logger.LogCritical("{@CoreCost}", detail);
+                }
 
                 var packageResponse = new ServiceUserPackageViewItemResponse
                 {
