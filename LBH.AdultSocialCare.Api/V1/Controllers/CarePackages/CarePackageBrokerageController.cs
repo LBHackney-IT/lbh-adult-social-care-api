@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesDefaultResponseType]
-        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
+        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover, RolesEnum.CareChargeManager)]
         public async Task<ActionResult<CarePackageBrokerageResponse>> GetCarePackageBrokerageAsync(Guid packageId)
         {
             var brokerageInfo = await _getCarePackageBrokerageUseCase.ExecuteAsync(packageId);

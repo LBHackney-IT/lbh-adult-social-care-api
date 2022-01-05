@@ -110,7 +110,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(CarePackageResponse), StatusCodes.Status200OK)]
         [HttpGet("{carePackageId}/core")]
-        [AuthorizeRoles(RolesEnum.Broker)]
+        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover, RolesEnum.CareChargeManager)]
         public async Task<ActionResult<CarePackageResponse>> GetCarePackageCore(Guid carePackageId)
         {
             var res = await _getCarePackageUseCase.GetCarePackageCoreAsync(carePackageId);
@@ -317,7 +317,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(PagedResponse<CarePackageApprovableListItemResponse>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [HttpGet("approvals")]
-        [AuthorizeRoles(RolesEnum.BrokerageApprover)]
+        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
         public async Task<ActionResult<PagedResponse<CarePackageApprovableListItemResponse>>> GetApprovedPackages(
             [FromQuery] ApprovableCarePackagesQueryParameters queryParameters,
             [FromServices] IGetApprovableCarePackagesUseCase useCase)
