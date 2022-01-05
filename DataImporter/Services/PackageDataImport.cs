@@ -126,9 +126,9 @@ namespace DataImporter.Services
                             Id = Guid.NewGuid(),
                             Type = excelPackageModel.PackageDetailType,
                             UnitOfMeasure = package.UnitOfMeasure,
-                            StartDate = package.StartDate,
+                            StartDate = package.StartDate.UtcDateTime,
                             CostPeriod = excelPackageModel.CostPeriod,
-                            EndDate = package.EndDate,
+                            EndDate = package.EndDate?.UtcDateTime,
                             Subjective = package.Subjective
                         };
                         carePackage.Details.Add(corePackage);
@@ -143,8 +143,8 @@ namespace DataImporter.Services
                             Description = package.ElementType,
                             DateCreated = DateTimeOffset.UtcNow,
                             Id = Guid.NewGuid(),
-                            StartDate = package.StartDate,
-                            EndDate = package.EndDate,
+                            StartDate = package.StartDate.UtcDateTime,
+                            EndDate = package.EndDate?.UtcDateTime,
                             ClaimCollector = excelPackageModel.ClaimCollector,
                             SubType = excelPackageModel.ReclaimSubType,
                             Type = excelPackageModel.ReclaimType,
