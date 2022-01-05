@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -15,20 +16,28 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
 {
     public static class TestDataHelper
     {
-        public static CarePackage CreateCarePackage(PackageType? packageType = null, Guid? serviceUserId = null, PackageStatus? status = null, int? primarySupportReasonId = null)
+        public static CarePackage CreateCarePackage(PackageType? packageType = null, PackageStatus? status = PackageStatus.New, Guid? serviceUserId = null)
         {
-            var today = DateTimeOffset.Now;
-
-            return new Faker<CarePackage>()
+            var package = new Faker<CarePackage>()
                 .RuleFor(cp => cp.Id, f => f.Random.Guid())
                 .RuleFor(cp => cp.PackageType, f => packageType ?? f.PickRandom<PackageType>())
-                .RuleFor(cp => cp.ServiceUserId, f => serviceUserId ?? f.Random.Guid())
                 .RuleFor(cp => cp.SupplierId, f => null)
                 .RuleFor(cp => cp.PackageScheduling, f => f.PickRandom<PackageScheduling>())
-                .RuleFor(cp => cp.PrimarySupportReasonId, f => primarySupportReasonId ?? f.PickRandom(1, 2))
-                /*.RuleFor(cp => cp.StartDate,
-                    f => startDate ?? f.Date.BetweenOffset(today.AddDays(-300), today.AddDays(-200)))*/
-                .RuleFor(cp => cp.Status, f => status ?? f.PickRandom<PackageStatus>());
+                .RuleFor(cp => cp.PrimarySupportReasonId, f => f.PickRandom(1, 2))
+                .RuleFor(cp => cp.Status, f => status ?? f.PickRandom<PackageStatus>())
+                .Generate();
+
+            if (serviceUserId.HasValue)
+            {
+                package.ServiceUserId = serviceUserId.Value;
+            }
+            else
+            {
+                package.ServiceUser = CreateServiceUser();
+                package.ServiceUserId = package.ServiceUser.Id;
+            }
+
+            return package;
         }
 
         public static CarePackageSettings CreateCarePackageSettings(Guid? settingId = null, Guid? carePackageId = null)
@@ -45,7 +54,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
 
         public static CarePackageForCreationRequest CarePackageCreationRequest(PackageType? packageType = null, Guid? serviceUserId = null, PackageStatus? status = null, Guid? settingId = null, Guid? carePackageId = null)
         {
-            var carePackage = CreateCarePackage(packageType, serviceUserId, status);
+            var carePackage = CreateCarePackage(packageType, status, serviceUserId);
             var carePackageSettings = CreateCarePackageSettings(settingId, carePackageId);
             return new CarePackageForCreationRequest
             {
@@ -128,6 +137,46 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(r => r.Type, type)
                 .RuleFor(r => r.Status, ReclaimStatus.Active)
                 .RuleFor(r => r.SubType, subType);
+        }
+
+        public static CarePackageReclaim CreateCarePackageReclaim(
+            Guid packageId, ReclaimType type, ReclaimSubType subType, ClaimCollector? collector,
+            decimal? cost, DateTimeOffset? startDate, DateTimeOffset? endDate)
+        {
+            return new Faker<CarePackageReclaim>()
+                .RuleFor(r => r.Id, Guid.NewGuid)
+                .RuleFor(r => r.CarePackageId, packageId)
+                .RuleFor(r => r.Cost, f => cost ?? f.Random.Decimal(0m, 1000m).Round(2))
+                .RuleFor(r => r.StartDate, f => startDate ?? f.Date.Past(1, DateTime.Now.AddDays(-1)).Date)
+                .RuleFor(d => d.EndDate,
+                    f => endDate != DateTimeOffset.MaxValue // use DateTimeOffset.MaxValue to create an ongoing reclaim
+                        ? endDate ?? f.Date.Future(1, DateTime.Now.AddDays(1)).Date
+                        : null as DateTimeOffset?)
+                .RuleFor(r => r.Description, f => f.Lorem.Paragraph())
+                .RuleFor(r => r.ClaimCollector, f => collector ?? f.PickRandom<ClaimCollector>())
+                .RuleFor(r => r.Type, type)
+                .RuleFor(r => r.Status, ReclaimStatus.Active)
+                .RuleFor(r => r.SubType, subType);
+        }
+
+        public static CarePackageDetail CreateCarePackageDetail(
+            Guid packageId, PackageDetailType type, decimal? cost = null,
+            DateTimeOffset? startDate = null, DateTimeOffset? endDate = null, PaymentPeriod? costPeriod = null)
+        {
+            return new Faker<CarePackageDetail>()
+                .RuleFor(r => r.Id, Guid.NewGuid)
+                .RuleFor(r => r.CarePackageId, packageId)
+                .RuleFor(r => r.Cost, f => cost ?? f.Random.Decimal(100m, 1000m).Round(2))
+                .RuleFor(d => d.CostPeriod,
+                    f => costPeriod ?? (type == PackageDetailType.CoreCost
+                        ? PaymentPeriod.Weekly
+                        : f.PickRandom(PaymentPeriod.Weekly, PaymentPeriod.OneOff)))
+                .RuleFor(d => d.StartDate, f => startDate ?? f.Date.Past(1, DateTime.Now.AddDays(-1)).Date)
+                .RuleFor(d => d.EndDate,
+                    f => endDate != DateTimeOffset.MaxValue // use DateTimeOffset.MaxValue to create an ongoing detail
+                        ? endDate ?? f.Date.Future(1, DateTime.Now.AddDays(1)).Date
+                        : null as DateTimeOffset?)
+                .RuleFor(d => d.Type, type);
         }
 
         public static List<CarePackageDetail> CreateCarePackageDetails(int count, PackageDetailType type, PaymentPeriod costPeriod = PaymentPeriod.Weekly)

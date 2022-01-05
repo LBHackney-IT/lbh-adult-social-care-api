@@ -14,6 +14,7 @@ using System.Net;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.Constants;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -63,9 +64,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         {
             var coreCostDetail = package.Details.FirstOrDefault(d => d.Type is PackageDetailType.CoreCost);
 
+            string subjective = package.PackageType == PackageType.ResidentialCare ? SubjectiveConstants.ResidentialCarePackageSubjectiveCode : SubjectiveConstants.NursingCarePackageSubjectiveCode;
+
             if (coreCostDetail is null)
             {
-                coreCostDetail = new CarePackageDetail();
+                coreCostDetail = new CarePackageDetail()
+                {
+                    Subjective = subjective
+                };
                 package.Details.Add(coreCostDetail);
             }
 
@@ -74,6 +80,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             coreCostDetail.CostPeriod = PaymentPeriod.Weekly;
             coreCostDetail.StartDate = brokerageInfo.StartDate;
             coreCostDetail.EndDate = brokerageInfo.EndDate;
+            coreCostDetail.Subjective = subjective;
         }
 
         private static void AddDetail(CarePackage package, CarePackageDetailDomain requestedDetail)
@@ -84,6 +91,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             var detail = requestedDetail.ToEntity();
+            detail.Subjective = package.PackageType == PackageType.ResidentialCare ? SubjectiveConstants.ResidentialCarePackageSubjectiveCode : SubjectiveConstants.NursingCarePackageSubjectiveCode;
 
             package.Details.Add(detail);
         }
@@ -95,6 +103,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             if (existingDetail != null)
             {
                 _mapper.Map(requestedDetail, existingDetail);
+                existingDetail.Subjective = package.PackageType == PackageType.ResidentialCare ? SubjectiveConstants.ResidentialCarePackageSubjectiveCode : SubjectiveConstants.NursingCarePackageSubjectiveCode;
             }
             else
             {

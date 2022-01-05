@@ -201,7 +201,7 @@ workflows:
     - assume-role-development:
         requires:
             - build-and-test
-        context: mosaic-development-context        
+        context: mosaic-development-context
         filters:
             branches:
               only: develop
@@ -214,13 +214,13 @@ workflows:
     - deploy-to-development:
           requires:
             - terraform-init-and-apply-to-development
-          context: mosaic-development-context           
+          context: mosaic-development-context
           filters:
             branches:
               only: develop
 
   check-and-deploy-staging:
-      jobs:      
+      jobs:
       - check-code-formatting:
           filters:
             branches:
@@ -234,7 +234,7 @@ workflows:
       - assume-role-staging:
           requires:
               - build-and-test
-          context: mosaic-staging-context          
+          context: mosaic-staging-context
           filters:
              branches:
               only: 

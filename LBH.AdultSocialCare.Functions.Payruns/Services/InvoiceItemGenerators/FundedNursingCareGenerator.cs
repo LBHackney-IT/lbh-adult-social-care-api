@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -46,7 +47,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                         Name = $"Funded Nursing Care {FormatDescription(reclaim.Description)}",
                         Quantity = paymentRange.WeeksInclusive,
                         WeeklyCost = price.PricePerWeek,
-                        TotalCost = Math.Round(paymentRange.WeeksInclusive * price.PricePerWeek, 2),
+                        TotalCost = (paymentRange.WeeksInclusive * price.PricePerWeek).Round(2),
                         FromDate = paymentRange.StartDate,
                         ToDate = paymentRange.EndDate,
                         CarePackageReclaimId = reclaim.Id,

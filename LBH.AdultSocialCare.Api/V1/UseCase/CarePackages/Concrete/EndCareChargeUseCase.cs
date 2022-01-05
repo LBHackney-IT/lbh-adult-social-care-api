@@ -72,7 +72,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             var currentReclaim = carePackage.Reclaims.First(r => r.Id == reclaim.Id);
             currentReclaim.Status = ReclaimStatus.Ended;
-            currentReclaim.EndDate = DateTimeOffset.Now.Date;
+            currentReclaim.EndDate = request.EndDate;
             carePackage.Histories.Add(new CarePackageHistory
             {
                 Status = HistoryStatus.PackageInformation,
