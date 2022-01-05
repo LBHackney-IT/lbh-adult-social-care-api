@@ -208,7 +208,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [HttpGet("care-charges/{serviceUserId}/default")]
         [ProducesResponseType(typeof(decimal), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
-        [AuthorizeRoles(RolesEnum.CareChargeManager)]
+        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.CareChargeManager)]
         public async Task<ActionResult<decimal>> GetProvisionalCareChargeAmountUsingServiceUserId(Guid serviceUserId)
         {
             var provisionalAmount = await _getCareChargeUseCase.GetUsingServiceUserIdAsync(serviceUserId);

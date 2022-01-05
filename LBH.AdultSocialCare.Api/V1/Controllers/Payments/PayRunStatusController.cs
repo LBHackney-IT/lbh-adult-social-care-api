@@ -30,7 +30,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(HeldInvoiceFlatResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [HttpPost("{payRunId:guid}/invoices/{payRunInvoiceId:guid}/hold")]
-        [AuthorizeRoles(RolesEnum.Finance)]
+        [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
         public async Task<ActionResult<HeldInvoiceFlatResponse>> HoldInvoice([FromServices] IHoldInvoiceUseCase useCase, [FromBody] HeldInvoiceCreationRequest heldInvoiceCreationRequest, Guid payRunId, Guid payRunInvoiceId)
         {
             var res = await useCase.ExecuteAsync(payRunId, payRunInvoiceId, heldInvoiceCreationRequest.ToDomain());
@@ -48,7 +48,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [HttpPost("{payRunId:guid}/invoices/{payRunInvoiceId:guid}/release")]
-        [AuthorizeRoles(RolesEnum.Finance)]
+        [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
         public async Task<ActionResult<HeldInvoiceFlatResponse>> ReleaseHeldInvoice([FromServices] IChangePayRunInvoiceStatusUseCase useCase, Guid payRunId, Guid payRunInvoiceId)
         {
             var res = await useCase.ReleaseInvoiceAsync(payRunId, payRunInvoiceId);
@@ -67,7 +67,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [HttpPut("{id}/invoices/{invoiceId}/status/{newStatus}")]
-        [AuthorizeRoles(RolesEnum.Finance)]
+        [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
         public async Task<ActionResult<bool>> ChangePayRunInvoiceStatus([FromServices] IChangePayRunInvoiceStatusUseCase useCase, Guid id, Guid invoiceId, InvoiceStatus newStatus)
         {
             var res = await useCase.ExecuteAsync(id, invoiceId, newStatus);
@@ -159,7 +159,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Payments
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status500InternalServerError)]
         [ProducesDefaultResponseType]
         [HttpPut("{id:guid}/pay")]
-        [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
+        [AuthorizeRoles(RolesEnum.FinanceApprover)]
         public async Task<IActionResult> MarkPayRunAsPaidAsync([FromServices] IMakePayRunPaymentUseCase useCase, Guid id)
         {
             await useCase.ExecuteAsync(id);

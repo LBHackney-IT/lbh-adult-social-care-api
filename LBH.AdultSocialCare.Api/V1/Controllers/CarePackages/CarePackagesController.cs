@@ -206,7 +206,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// <returns>List of packages if success</returns>
         [ProducesResponseType(typeof(BrokerPackageViewResponse), StatusCodes.Status200OK)]
         [HttpGet("broker-view")]
-        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
         public async Task<ActionResult<BrokerPackageViewResponse>> GetBrokerPackageView([FromQuery] BrokerPackageViewQueryParameters queryParameters)
         {
             var res = await _getCarePackageUseCase.GetBrokerPackageViewListAsync(queryParameters);
@@ -354,7 +353,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         /// <returns>Paged list of package past payments if success</returns>
         [ProducesResponseType(typeof(PackagePaymentViewResponse), StatusCodes.Status200OK)]
         [HttpGet("{carePackageId:guid}/payment-history")]
-        [AuthorizeRoles(RolesEnum.Finance, RolesEnum.FinanceApprover)]
         public async Task<ActionResult<PackagePaymentViewResponse>> GetCarePackagePaymentHistory([FromServices] IGetPackagePaymentHistoryUseCase useCase, Guid carePackageId, [FromQuery] RequestParameters parameters)
         {
             var res = await useCase.GetAsync(carePackageId, parameters);

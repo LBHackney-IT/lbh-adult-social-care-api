@@ -34,7 +34,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(ApiException), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiException), StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
-        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<SupplierResponse>> CreateSupplier(
             SupplierCreationRequest supplierCreationRequest)
         {

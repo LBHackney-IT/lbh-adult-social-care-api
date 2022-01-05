@@ -56,6 +56,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(ServiceUserPackagesViewResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [HttpGet("{serviceUserId:guid}/care-packages")]
+        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover, RolesEnum.CareChargeManager)]
         public async Task<ActionResult<ServiceUserPackagesViewResponse>> GetServiceUserPackages(Guid serviceUserId)
         {
             var result = await _getServiceUserPackagesUseCase.ExecuteAsync(serviceUserId);
@@ -70,7 +71,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status422UnprocessableEntity)]
         [HttpGet("search")]
-        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
+        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover, RolesEnum.CareChargeManager, RolesEnum.FinanceApprover)]
         public async Task<ActionResult<ServiceUserSearchResponse>> SearchServiceUser([FromQuery] ServiceUserQueryRequest request)
         {
             var result = await _getServiceUserMasterSearchUseCase.GetServiceUsers(request);
