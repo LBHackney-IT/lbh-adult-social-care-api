@@ -71,7 +71,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             var currentReclaim = carePackage.Reclaims.First(r => r.Id == reclaim.Id);
-            currentReclaim.Status = ReclaimStatus.Ended;
             currentReclaim.EndDate = request.EndDate;
             carePackage.Histories.Add(new CarePackageHistory
             {
@@ -96,6 +95,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     });
                 }
             }
+            currentReclaim.Status = ReclaimStatus.Ended;
 
             await _dbManager.SaveAsync();
 
