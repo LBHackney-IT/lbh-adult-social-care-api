@@ -37,7 +37,8 @@ namespace DataImporter.Model
         {
             get
             {
-                return DateTime.FromOADate(long.Parse(StartDateOA));
+                DateTime sourceDT = DateTime.FromOADate(long.Parse(StartDateOA));
+                return new DateTimeOffset(sourceDT.Date, TimeSpan.Zero);
             }
         }
 
@@ -46,7 +47,15 @@ namespace DataImporter.Model
         {
             get
             {
-                return string.IsNullOrEmpty(EndDateOA) ? null : DateTime.FromOADate(long.Parse(EndDateOA));
+                if (string.IsNullOrEmpty(EndDateOA))
+                {
+                    return null;
+                }
+                else
+                {
+                    DateTime sourceDT = DateTime.FromOADate(long.Parse(StartDateOA));
+                    return new DateTimeOffset(sourceDT.Date, TimeSpan.Zero);
+                }
             }
         }
 
