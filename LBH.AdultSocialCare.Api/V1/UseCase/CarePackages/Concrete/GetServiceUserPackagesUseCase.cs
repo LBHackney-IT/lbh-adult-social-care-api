@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -54,7 +55,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
                 foreach (var detail in carePackage.Details.Where(d => d.Type is PackageDetailType.CoreCost))
                 {
-                    _logger.LogCritical("{@CoreCost}", detail);
+                    _logger.LogCritical("{@CoreCost}", JsonConvert.SerializeObject(detail, Formatting.Indented));
                 }
 
                 var packageResponse = new ServiceUserPackageViewItemResponse
