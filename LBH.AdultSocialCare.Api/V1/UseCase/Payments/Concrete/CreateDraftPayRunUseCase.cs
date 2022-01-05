@@ -43,6 +43,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             {
                 draftPayRunCreationDomain.StartDate = endOfLastPayRun.Date.AddDays(1);
             }
+            else
+            {
+                draftPayRunCreationDomain.StartDate = endOfLastPayRun.Date;
+            }
 
             ValidatePayRunDates(draftPayRunCreationDomain.StartDate, draftPayRunCreationDomain.EndDate, draftPayRunCreationDomain.Type);
 
