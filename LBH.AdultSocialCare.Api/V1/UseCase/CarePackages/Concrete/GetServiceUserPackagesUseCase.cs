@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -21,12 +22,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IServiceUserGateway _serviceUserGateway;
         private readonly ICarePackageHistoryGateway _carePackageHistoryGateway;
+        private readonly ILogger<GetServiceUserPackagesUseCase> _logger;
 
-        public GetServiceUserPackagesUseCase(ICarePackageGateway carePackageGateway, IServiceUserGateway serviceUserGateway, ICarePackageHistoryGateway carePackageHistoryGateway)
+        public GetServiceUserPackagesUseCase(ICarePackageGateway carePackageGateway, IServiceUserGateway serviceUserGateway, ICarePackageHistoryGateway carePackageHistoryGateway, ILogger<GetServiceUserPackagesUseCase> logger)
         {
             _carePackageGateway = carePackageGateway;
             _serviceUserGateway = serviceUserGateway;
             _carePackageHistoryGateway = carePackageHistoryGateway;
+            _logger = logger;
         }
 
         public async Task<ServiceUserPackagesViewResponse> ExecuteAsync(Guid serviceUserId)
@@ -47,7 +50,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             foreach (var carePackage in userPackages)
             {
                 var coreCost = carePackage.Details
-                    .SingleOrDefault(d => d.Type is PackageDetailType.CoreCost);
+                    .FirstOrDefault(d => d.Type is PackageDetailType.CoreCost);
+
+                _logger.LogCritical("{@CoreCosts}", carePackage.Details.Where(d => d.Type is PackageDetailType.CoreCost).ToList());
 
                 var packageResponse = new ServiceUserPackageViewItemResponse
                 {
