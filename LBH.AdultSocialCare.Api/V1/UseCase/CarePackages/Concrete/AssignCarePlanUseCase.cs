@@ -53,7 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 BrokerId = carePlanAssignment.BrokerId,
                 PackageType = carePlanAssignment.PackageType,
                 Status = PackageStatus.New,
-                DateAssigned = DateTimeOffset.Now,
+                DateAssigned = DateTimeOffset.UtcNow,
                 PackageScheduling = PackageScheduling.Temporary, // TODO: Review if package scheduling can be made nullable
             };
 

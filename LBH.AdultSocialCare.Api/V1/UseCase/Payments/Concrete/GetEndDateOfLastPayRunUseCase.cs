@@ -17,7 +17,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 
         public async Task<DateTimeOffset> GetAsync(PayrunType type)
         {
-            return await _gateway.GetEndDateOfLastPayRun(type);
+            return await _gateway.GetEndDateOfLastPayRun();
         }
     }
 }

@@ -37,10 +37,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             if (unApprovedPayRunExists)
                 throw new ApiException($"Operation not allowed. There exists a pay run that is not approved", HttpStatusCode.PreconditionFailed);
 
-            var endOfLastPayRun = await _payRunGateway.GetEndDateOfLastPayRun(draftPayRunCreationDomain.Type);
-            draftPayRunCreationDomain.StartDate = endOfLastPayRun.Date.AddDays(1);
+            var endOfLastPayRun = await _payRunGateway.GetEndDateOfLastPayRun();
 
-            ValidatePayRunDates(draftPayRunCreationDomain.StartDate, draftPayRunCreationDomain.EndDate);
+            if (draftPayRunCreationDomain.Type == PayrunType.ResidentialRecurring)
+            {
+                draftPayRunCreationDomain.StartDate = endOfLastPayRun.Date.AddDays(1);
+            }
+            else
+            {
+                draftPayRunCreationDomain.StartDate = endOfLastPayRun.Date;
+            }
+
+            ValidatePayRunDates(draftPayRunCreationDomain.StartDate, draftPayRunCreationDomain.EndDate, draftPayRunCreationDomain.Type);
 
             draftPayRunCreationDomain.Status = PayrunStatus.Draft;
 
@@ -50,7 +58,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             await _payrunsQueue.Send(payrun.Id);
         }
 
-        private static void ValidatePayRunDates(DateTimeOffset startDate, DateTimeOffset endDate)
+        private static void ValidatePayRunDates(DateTimeOffset startDate, DateTimeOffset endDate, PayrunType payrunType)
         {
             if (startDate > endDate)
             {
@@ -59,7 +67,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                     HttpStatusCode.UnprocessableEntity);
             }
 
-            if (startDate == endDate)
+            // Start and End Date can't be same if Pay Run Type is Residential Recurring 
+            if (startDate == endDate && payrunType == PayrunType.ResidentialRecurring)
             {
                 throw new ApiException(
                     $"Pay run dates invalid. Pay run cannot start and end on the same day",

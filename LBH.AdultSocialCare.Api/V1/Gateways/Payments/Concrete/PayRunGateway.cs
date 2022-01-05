@@ -129,7 +129,17 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         public async Task<DateTimeOffset> GetEndDateOfLastPayRun(PayrunType payRunType)
         {
             var lastPayRun = await _dbContext.Payruns.Where(pr =>
-                    pr.Type.Equals(payRunType))
+                    pr.Type.Equals(payRunType) && pr.Status != PayrunStatus.Archived)
+                .OrderByDescending(pr => pr.PaidUpToDate)
+                .FirstOrDefaultAsync();
+
+            return lastPayRun?.PaidUpToDate ?? PayrunConstants.DefaultStartDate.AddDays(-1);
+        }
+
+        public async Task<DateTimeOffset> GetEndDateOfLastPayRun()
+        {
+            var lastPayRun = await _dbContext.Payruns.Where(pr =>
+                    pr.Status != PayrunStatus.Archived)
                 .OrderByDescending(pr => pr.PaidUpToDate)
                 .FirstOrDefaultAsync();
 

@@ -49,7 +49,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 Id = reclaimId,
                 Cost = 12.34m,
                 CarePackageId = packageId,
-                StartDate = DateTimeOffset.Now,
+                StartDate = DateTimeOffset.UtcNow,
                 Type = ReclaimType.CareCharge,
                 SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks
             };
@@ -63,8 +63,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     {
                         Cost = 34.12m,
                         Type = PackageDetailType.CoreCost,
-                        StartDate = DateTimeOffset.Now.AddDays(-10),
-                        EndDate = DateTimeOffset.Now.AddDays(10)
+                        StartDate = DateTimeOffset.UtcNow.AddDays(-10),
+                        EndDate = DateTimeOffset.UtcNow.AddDays(10)
                     }
                 },
                 Reclaims =
@@ -104,7 +104,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 Id = reclaimId,
                 Cost = 12.34m,
                 CarePackageId = packageId,
-                StartDate = DateTimeOffset.Now,
+                StartDate = DateTimeOffset.UtcNow,
                 Type = ReclaimType.CareCharge,
                 SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks
             };
@@ -118,8 +118,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     {
                         Cost = 34.12m,
                         Type = PackageDetailType.CoreCost,
-                        StartDate = DateTimeOffset.Now.AddDays(-10),
-                        EndDate = DateTimeOffset.Now.AddDays(10)
+                        StartDate = DateTimeOffset.UtcNow.AddDays(-10),
+                        EndDate = DateTimeOffset.UtcNow.AddDays(10)
                     }
                 },
                 Reclaims =
@@ -142,7 +142,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 var response = await _useCase.ExecuteAsync(reclaimId, new CarePackageReclaimEndRequest()
                 {
-                    EndDate = DateTimeOffset.Now.AddDays(30)
+                    EndDate = DateTimeOffset.UtcNow.AddDays(30)
                 });
             });
 
@@ -163,7 +163,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 Id = reclaimId,
                 Cost = 12.34m,
                 CarePackageId = packageId,
-                StartDate = DateTimeOffset.Now,
+                StartDate = DateTimeOffset.UtcNow,
                 Type = ReclaimType.CareCharge,
                 SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks
             };
@@ -177,7 +177,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     {
                         Cost = 34.12m,
                         Type = PackageDetailType.CoreCost,
-                        StartDate = DateTimeOffset.Now.AddDays(-10),
+                        StartDate = DateTimeOffset.UtcNow.AddDays(-10),
                     }
                 },
                 Reclaims =
@@ -198,7 +198,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             var response = await _useCase.ExecuteAsync(reclaimId, new CarePackageReclaimEndRequest()
             {
-                EndDate = DateTimeOffset.Now.AddDays(30)
+                EndDate = DateTimeOffset.UtcNow.AddDays(30)
             });
 
             //TODO: Fix with correct value
@@ -218,7 +218,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 Id = reclaimId,
                 Cost = 12.34m,
                 CarePackageId = packageId,
-                StartDate = DateTimeOffset.Now,
+                StartDate = DateTimeOffset.UtcNow,
                 Type = ReclaimType.CareCharge,
                 SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks
             };
@@ -232,7 +232,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     {
                         Cost = 34.12m,
                         Type = PackageDetailType.CoreCost,
-                        StartDate = DateTimeOffset.Now.AddDays(-10),
+                        StartDate = DateTimeOffset.UtcNow.AddDays(-10),
                     }
                 },
                 Reclaims =
@@ -255,7 +255,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 var response = await _useCase.ExecuteAsync(reclaimId, new CarePackageReclaimEndRequest()
                 {
-                    EndDate = DateTimeOffset.Now.AddDays(-30)
+                    EndDate = DateTimeOffset.UtcNow.AddDays(-30)
                 });
             });
 

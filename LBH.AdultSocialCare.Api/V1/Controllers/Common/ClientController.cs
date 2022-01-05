@@ -4,12 +4,12 @@ using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.UseCase.Clients.Interfaces;
+using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 
 namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
 {
@@ -45,7 +45,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        // [AuthorizeRoles(RolesEnum.Broker)]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<ServiceUserResponse>> Create(ServiceUserRequest serviceUserRequest)
         {
             try
@@ -112,7 +112,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesDefaultResponseType]
         [HttpDelete]
         [Route("{clientId}")]
-        // [AuthorizeRoles(RolesEnum.Broker)]
+        [AuthorizeRoles(RolesEnum.Broker)]
         public async Task<ActionResult<bool>> Delete(Guid clientId)
         {
             try

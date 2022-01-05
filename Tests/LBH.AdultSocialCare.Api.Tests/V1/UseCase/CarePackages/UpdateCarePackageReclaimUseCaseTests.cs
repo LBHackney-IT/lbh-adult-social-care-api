@@ -28,7 +28,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private readonly CarePackage _defaultPackage;
         private readonly UpdateCarePackageReclaimUseCase _useCase;
         private readonly Mock<ICreatePackageResourceUseCase> _createPackageResourceUseCase;
-        private readonly DateTimeOffset _today = DateTimeOffset.Now.Date;
+        private readonly DateTimeOffset _today = DateTimeOffset.UtcNow.Date;
 
         public UpdateCarePackageReclaimUseCaseTests()
         {
@@ -47,7 +47,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     {
                         Cost = 34.12m,
                         Type = PackageDetailType.CoreCost,
-                        StartDate = DateTimeOffset.Now.AddDays(-10)
+                        StartDate = DateTimeOffset.UtcNow.AddDays(-10)
                     }
                 },
                 Reclaims = _requestedIds.Select(id => new CarePackageReclaim
@@ -55,7 +55,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     Id = id,
                     Cost = 12.34m,
                     CarePackageId = packageId,
-                    StartDate = DateTimeOffset.Now,
+                    StartDate = DateTimeOffset.UtcNow,
                     Type = ReclaimType.CareCharge,
                     SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks
                 }).ToList()
