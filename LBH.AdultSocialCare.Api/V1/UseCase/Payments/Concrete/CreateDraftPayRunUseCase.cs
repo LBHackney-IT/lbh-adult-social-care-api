@@ -37,7 +37,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             if (unApprovedPayRunExists)
                 throw new ApiException($"Operation not allowed. There exists a pay run that is not approved", HttpStatusCode.PreconditionFailed);
 
-            var endOfLastPayRun = await _payRunGateway.GetEndDateOfLastPayRun(draftPayRunCreationDomain.Type);
+            var endOfLastPayRun = await _payRunGateway.GetEndDateOfLastPayRun();
 
             if (draftPayRunCreationDomain.Type == PayrunType.ResidentialRecurring)
             {
