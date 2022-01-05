@@ -54,7 +54,7 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
                 return ReclaimStatus.Ended;
             }
 
-            return DateTimeOffset.Now.Date >= StartDate.Date
+            return DateTimeOffset.UtcNow.Date >= StartDate.Date
                 ? ReclaimStatus.Active
                 : ReclaimStatus.Pending;
         }
