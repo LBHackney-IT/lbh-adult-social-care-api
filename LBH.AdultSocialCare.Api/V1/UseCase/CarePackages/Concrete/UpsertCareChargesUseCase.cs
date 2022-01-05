@@ -156,6 +156,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
             }
 
+            // TODO: VK: Review how to make it pretty
+            foreach (var reclaim in package.Reclaims)
+            {
+                reclaim.Status = reclaim.Status;
+            }
+
             try
             {
                 ReclaimCostValidator.Validate(package);
