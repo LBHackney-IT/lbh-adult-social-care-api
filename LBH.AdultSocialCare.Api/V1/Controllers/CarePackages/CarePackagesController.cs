@@ -316,7 +316,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesResponseType(typeof(PagedResponse<CarePackageApprovableListItemResponse>), StatusCodes.Status200OK)]
         [ProducesDefaultResponseType]
         [HttpGet("approvals")]
-        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover)]
         public async Task<ActionResult<PagedResponse<CarePackageApprovableListItemResponse>>> GetApprovedPackages(
             [FromQuery] ApprovableCarePackagesQueryParameters queryParameters,
             [FromServices] IGetApprovableCarePackagesUseCase useCase)
