@@ -35,7 +35,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             foreach (var reclaim in reclaims)
             {
                 reclaim.Status = ReclaimStatus.Ended;
-                reclaim.EndDate = DateTimeOffset.Now;
+                reclaim.EndDate = DateTimeOffset.UtcNow;
             }
 
             package.Histories.Add(new CarePackageHistory

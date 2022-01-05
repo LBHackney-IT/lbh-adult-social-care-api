@@ -55,7 +55,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             var request = new CarePackageBrokerageCreationRequest
             {
                 CoreCost = 123.45m,
-                StartDate = DateTimeOffset.Now.Date.AddDays(-500),
+                StartDate = DateTimeOffset.UtcNow.Date.AddDays(-500),
                 SupplierId = 2,
                 Details = details.ToRequest().ToList()
             };
@@ -68,8 +68,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             foreach (var detail in request.Details)
             {
                 detail.Cost += 1.0m;
-                detail.StartDate = detail.StartDate?.AddDays(-10) ?? DateTimeOffset.Now.Date.AddDays(-10);
-                detail.EndDate = detail.EndDate?.AddDays(-10) ?? DateTimeOffset.Now.Date.AddDays(-10);
+                detail.StartDate = detail.StartDate?.AddDays(-10) ?? DateTimeOffset.UtcNow.Date.AddDays(-10);
+                detail.EndDate = detail.EndDate?.AddDays(-10) ?? DateTimeOffset.UtcNow.Date.AddDays(-10);
             }
 
             var response = await _fixture.RestClient
@@ -93,8 +93,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             var request = new CarePackageBrokerageCreationRequest
             {
                 CoreCost = 123.45m,
-                StartDate = DateTimeOffset.Now.Date.AddDays(-30),
-                EndDate = DateTimeOffset.Now.Date.AddDays(30),
+                StartDate = DateTimeOffset.UtcNow.Date.AddDays(-30),
+                EndDate = DateTimeOffset.UtcNow.Date.AddDays(30),
                 SupplierId = 2,
                 Details = details.ToRequest().ToList()
             };

@@ -102,14 +102,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     else if (requestedReclaim.StartDate.Date > existingReclaim.StartDate.Date)
                     {
                         existingReclaim.EndDate = requestedReclaim.StartDate.Date.AddDays(-1);
-                        existingReclaim.Status = existingReclaim.EndDate.GetValueOrDefault().Date < DateTimeOffset.Now.Date
+                        existingReclaim.Status = existingReclaim.EndDate.GetValueOrDefault().Date < DateTimeOffset.UtcNow.Date
                             ? ReclaimStatus.Ended
                             : existingReclaim.Status;
                     }
                     else
                     {
                         existingReclaim.Status = ReclaimStatus.Ended;
-                        existingReclaim.EndDate = DateTimeOffset.Now.Date;
+                        existingReclaim.EndDate = DateTimeOffset.UtcNow.Date;
                     }
 
                     var newReclaim = CreateNewReclaim(requestedReclaim, existingReclaim, package);

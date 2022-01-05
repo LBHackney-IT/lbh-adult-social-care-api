@@ -96,7 +96,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         private static string CalculatePackageStatus(CarePackage package, IPackageItem coreCost)
         {
-            var today = DateTimeOffset.Now.Date;
+            var today = DateTimeOffset.UtcNow.Date;
             return package.Status switch
             {
                 PackageStatus.Approved when coreCost.EndDate != null &&
@@ -178,7 +178,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         private static ReclaimStatus CalculateReclaimStatus(CarePackageReclaim reclaim)
         {
-            var today = DateTimeOffset.Now.Date;
+            var today = DateTimeOffset.UtcNow.Date;
             if (reclaim.Status is ReclaimStatus.Cancelled || reclaim.Status is ReclaimStatus.Ended)
             {
                 return reclaim.Status;
@@ -245,7 +245,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         private static bool IsValidDateRange(DateTimeOffset startDate, DateTimeOffset? endDate)
         {
-            var today = DateTimeOffset.Now.Date;
+            var today = DateTimeOffset.UtcNow.Date;
             return (today >= startDate) switch
             {
                 true when (endDate == null || endDate.Value.Date >= today) => true,

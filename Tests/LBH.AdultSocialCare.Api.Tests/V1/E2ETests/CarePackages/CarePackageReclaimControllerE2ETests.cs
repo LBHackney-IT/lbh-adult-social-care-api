@@ -140,8 +140,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 ClaimCollector = ClaimCollector.Hackney,
                 SubType = ReclaimSubType.CareChargeProvisional,
                 CarePackageId = package.Id,
-                StartDate = DateTimeOffset.Now.AddDays(-1),
-                EndDate = DateTimeOffset.Now.AddDays(2),
+                StartDate = DateTimeOffset.UtcNow.AddDays(-1),
+                EndDate = DateTimeOffset.UtcNow.AddDays(2),
                 Description = "test",
                 ClaimReason = "test"
             };
@@ -172,8 +172,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 ClaimCollector = ClaimCollector.Supplier,
                 SubType = ReclaimSubType.CareChargeProvisional,
                 CarePackageId = package.Id,
-                StartDate = DateTimeOffset.Now.AddDays(-1),
-                EndDate = DateTimeOffset.Now.AddDays(2),
+                StartDate = DateTimeOffset.UtcNow.AddDays(-1),
+                EndDate = DateTimeOffset.UtcNow.AddDays(2),
                 Description = "test",
                 ClaimReason = "test"
             };
@@ -318,7 +318,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             var reclaim = _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
             var detail = _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
 
-            var endDate = DateTimeOffset.Now;
+            var endDate = DateTimeOffset.UtcNow;
 
             var response = await _fixture.RestClient
                 .PutAsync<CarePackageReclaimResponse>(
@@ -422,8 +422,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 CarePackageId = carePackageId,
                 Cost = cost ?? 200M,
                 ClaimCollector = (ClaimCollector) 1,
-                StartDate = startDate ?? DateTimeOffset.Now.Date.AddDays(-1),
-                EndDate = endDate ?? DateTimeOffset.Now.Date.AddDays(2),
+                StartDate = startDate ?? DateTimeOffset.UtcNow.Date.AddDays(-1),
+                EndDate = endDate ?? DateTimeOffset.UtcNow.Date.AddDays(2),
                 Description = "Test",
                 AssessmentFileId = Guid.NewGuid()
             };

@@ -104,7 +104,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
                             }
 
                             // By default the token expires in one week. If more or less then reject token
-                            if ((timeIssued.AddDays(7).AddMinutes(10) < DateTimeOffset.Now) || (timeIssued.AddDays(7) > DateTimeOffset.Now.AddDays(7).AddMinutes(10)))
+                            if ((timeIssued.AddDays(7).AddMinutes(10) < DateTimeOffset.UtcNow) || (timeIssued.AddDays(7) > DateTimeOffset.UtcNow.AddDays(7).AddMinutes(10)))
                             {
                                 throw new Exception("Invalid token");
                             }
@@ -138,7 +138,7 @@ namespace LBH.AdultSocialCare.Api.V1.Services.Auth
                 }
 
                 // By default the token expires in one week. If more or less then reject token
-                if ((timeIssued.AddDays(7).AddMinutes(10) < DateTimeOffset.Now) || (timeIssued.AddDays(7) > DateTimeOffset.Now.AddDays(7).AddMinutes(10)))
+                if ((timeIssued.AddDays(7).AddMinutes(10) < DateTimeOffset.UtcNow) || (timeIssued.AddDays(7) > DateTimeOffset.UtcNow.AddDays(7).AddMinutes(10)))
                 {
                     throw new Exception("Invalid token");
                 }

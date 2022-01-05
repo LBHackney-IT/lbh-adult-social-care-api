@@ -5,7 +5,7 @@ namespace Common.Helpers
 {
     public class CurrentDateProvider : ICurrentDateProvider
     {
-        public DateTimeOffset Now => DateTimeOffset.Now;
+        public DateTimeOffset Now => DateTimeOffset.UtcNow;
         public DateTimeOffset UtcNow => DateTimeOffset.UtcNow;
     }
 }

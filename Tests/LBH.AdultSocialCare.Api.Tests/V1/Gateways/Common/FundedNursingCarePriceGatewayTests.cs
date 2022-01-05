@@ -19,7 +19,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
         [Fact]
         public async Task ShouldReturnCorrectFncPriceForBoundedRange()
         {
-            var activeFrom = DateTimeOffset.Now;
+            var activeFrom = DateTimeOffset.UtcNow;
             var activeTo = activeFrom.AddDays(365);
             var currentDate = activeFrom.AddDays(15);
             var price = 123.45m;
@@ -46,11 +46,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.Common
             Context.SaveChanges();
 
             var result = await _gateway
-                .GetFundedNursingCarePriceAsync(DateTimeOffset.Now)
+                .GetFundedNursingCarePriceAsync(DateTimeOffset.UtcNow)
                 .ConfigureAwait(false);
 
             Assert.Equal(0, result);
-            // Task GetPrice() => gateway.GetFundedNursingCarePriceAsync(DateTimeOffset.Now);
+            // Task GetPrice() => gateway.GetFundedNursingCarePriceAsync(DateTimeOffset.UtcNow);
             //
             // var exception = await Assert.ThrowsAsync<ApiException>(GetPrice).ConfigureAwait(false);
             // Assert.Equal(404, exception?.StatusCode);

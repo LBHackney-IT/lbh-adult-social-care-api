@@ -27,7 +27,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private readonly IUpsertCareChargesUseCase _useCase;
         private CarePackage _defaultPackage;
         private CarePackageDetail _coreCost;
-        private readonly DateTimeOffset _today = DateTimeOffset.Now.Date;
+        private readonly DateTimeOffset _today = DateTimeOffset.UtcNow.Date;
 
         public UpsertCareChargesUseCaseTests()
         {
