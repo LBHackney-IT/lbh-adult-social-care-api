@@ -49,7 +49,7 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
                 return value;
             }
 
-            if (EndDate != null && DateTimeOffset.Now.Date > EndDate.Value.Date)
+            if (EndDate != null && DateTimeOffset.UtcNow.Date > EndDate.Value.Date)
             {
                 return ReclaimStatus.Ended;
             }

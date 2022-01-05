@@ -39,7 +39,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             }
 
             var clientAge = clientBirthDate.GetAge(DateTime.Now);
-            var todayDate = DateTimeOffset.Now.Date;
+            var todayDate = DateTimeOffset.UtcNow.Date;
 
             // Use age to get provisional amount range
             var provisionalAmount = await _dbContext.ProvisionalCareChargeAmounts

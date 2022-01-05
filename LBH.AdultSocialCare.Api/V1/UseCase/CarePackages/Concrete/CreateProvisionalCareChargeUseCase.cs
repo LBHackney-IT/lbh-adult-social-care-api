@@ -94,7 +94,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             // Start date of provisional CC cannot be before package start date
-            if (!reclaimCreationDomain.StartDate.IsInRange(coreCostDetail.StartDate, coreCostDetail.EndDate ?? DateTimeOffset.Now.AddYears(10)))
+            if (!reclaimCreationDomain.StartDate.IsInRange(coreCostDetail.StartDate, coreCostDetail.EndDate ?? DateTimeOffset.UtcNow.AddYears(10)))
             {
                 throw new ApiException($"{ReclaimSubType.CareChargeProvisional.GetDisplayName()} start date must be equal or greater than {coreCostDetail.StartDate.Date}", HttpStatusCode.UnprocessableEntity);
             }

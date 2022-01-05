@@ -66,8 +66,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             var brokerageInfo = new CarePackageBrokerageDomain
             {
                 CoreCost = 12.34m,
-                StartDate = DateTimeOffset.Now.Date,
-                EndDate = DateTimeOffset.Now.Date.AddDays(100)
+                StartDate = DateTimeOffset.UtcNow.Date,
+                EndDate = DateTimeOffset.UtcNow.Date.AddDays(100)
             };
 
             _useCase.ExecuteAsync(_package.Id, brokerageInfo);
@@ -104,7 +104,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 detail.Cost += 10;
                 detail.StartDate = detail.StartDate.AddDays(-10);
-                detail.EndDate = detail.EndDate?.AddDays(10) ?? DateTimeOffset.Now.Date.AddDays(100);
+                detail.EndDate = detail.EndDate?.AddDays(10) ?? DateTimeOffset.UtcNow.Date.AddDays(100);
             }
 
             _useCase.ExecuteAsync(_package.Id, brokerageInfo);

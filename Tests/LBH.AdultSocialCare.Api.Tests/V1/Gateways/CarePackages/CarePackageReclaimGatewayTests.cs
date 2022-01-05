@@ -39,12 +39,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Gateways.CarePackages
         public static IEnumerable<object[]> ReclaimStatusExpectations() =>
             new List<object[]>
             {
-                new object[] { ReclaimStatus.Cancelled, DateTimeOffset.Now.AddDays(100), ReclaimStatus.Cancelled },
-                new object[] { ReclaimStatus.Ended, DateTimeOffset.Now.AddDays(100), ReclaimStatus.Ended },
-                new object[] { ReclaimStatus.Pending, DateTimeOffset.Now.AddDays(-50), ReclaimStatus.Active },
-                new object[] { ReclaimStatus.Active, DateTimeOffset.Now.AddDays(50), ReclaimStatus.Pending },
-                new object[] { ReclaimStatus.Pending, DateTimeOffset.Now.AddDays(50), ReclaimStatus.Pending },
-                new object[] { ReclaimStatus.Active, DateTimeOffset.Now.AddDays(-50), ReclaimStatus.Active }
+                new object[] { ReclaimStatus.Cancelled, DateTimeOffset.UtcNow.AddDays(100), ReclaimStatus.Cancelled },
+                new object[] { ReclaimStatus.Ended, DateTimeOffset.UtcNow.AddDays(100), ReclaimStatus.Ended },
+                new object[] { ReclaimStatus.Pending, DateTimeOffset.UtcNow.AddDays(-50), ReclaimStatus.Active },
+                new object[] { ReclaimStatus.Active, DateTimeOffset.UtcNow.AddDays(50), ReclaimStatus.Pending },
+                new object[] { ReclaimStatus.Pending, DateTimeOffset.UtcNow.AddDays(50), ReclaimStatus.Pending },
+                new object[] { ReclaimStatus.Active, DateTimeOffset.UtcNow.AddDays(-50), ReclaimStatus.Active }
             };
     }
 }

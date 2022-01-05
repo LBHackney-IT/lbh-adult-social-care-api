@@ -308,7 +308,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             var request = new CarePackageEndRequest()
             {
                 Notes = "Test",
-                EndDate = DateTimeOffset.Now.Date.AddDays(-2)
+                EndDate = DateTimeOffset.UtcNow.Date.AddDays(-2)
             };
 
             var response = await _fixture.RestClient

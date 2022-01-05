@@ -18,7 +18,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Boundary.Requests
                 Type = PackageDetailType.AdditionalNeed,
                 CostPeriod = PaymentPeriod.OneOff,
                 Cost = 12.34m,
-                StartDate = DateTimeOffset.Now
+                StartDate = DateTimeOffset.UtcNow
             };
 
             var validationContext = new ValidationContext(request);
@@ -36,8 +36,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Boundary.Requests
                 Type = PackageDetailType.AdditionalNeed,
                 CostPeriod = PaymentPeriod.OneOff,
                 Cost = 12.34m,
-                StartDate = DateTimeOffset.Now,
-                EndDate = DateTimeOffset.Now.AddDays(-100)
+                StartDate = DateTimeOffset.UtcNow,
+                EndDate = DateTimeOffset.UtcNow.AddDays(-100)
             };
 
             var validationContext = new ValidationContext(request);

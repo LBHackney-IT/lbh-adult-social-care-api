@@ -53,7 +53,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     $"Package end date cannot be before start date of {coreCost.StartDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
             }
 
-            var today = DateTimeOffset.Now.Date;
+            var today = DateTimeOffset.UtcNow.Date;
 
             // Update package detail end dates
             foreach (var packageDetail in package.Details)
