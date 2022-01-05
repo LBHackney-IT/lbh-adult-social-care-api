@@ -79,7 +79,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 SubType = ReclaimSubType.CareChargeProvisional,
                 Status = ReclaimStatus.Active,
                 StartDate = _today.AddDays(-30),
-                EndDate = _today.AddDays(20)
+                EndDate = _today.AddDays(5)
             };
             _defaultPackage.Reclaims.Add(provisionalReclaim);
 
@@ -276,7 +276,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     {
                         CarePackageId = _defaultPackage.Id,
                         Id = provisionalCareCharge.Id,
-                        Cost = 1m,
+                        Cost = 3m,
                         Type = ReclaimType.CareCharge,
                         SubType = ReclaimSubType.CareChargeProvisional,
                         StartDate = _today.AddDays(-30),
@@ -313,18 +313,17 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             await _useCase.ExecuteAsync(_defaultPackage.Id, careChargesUpdateDomain);
 
-            _defaultPackage.Reclaims.Count.Should().Be(3);
-            foreach (var reclaim in _defaultPackage.Reclaims)
-            {
-                reclaim.ClaimCollector.Should().Be(ClaimCollector.Hackney);
-            }
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).Status.Should().Be(ReclaimStatus.Active);
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks).Status.Should().Be(ReclaimStatus.Pending);
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks).Status.Should().Be(ReclaimStatus.Pending);
+            _defaultPackage.Reclaims.Count.Should().Be(6);
+            _defaultPackage.Reclaims.Count(r => r.ClaimCollector == ClaimCollector.Hackney).Should().Be(3);
+            _defaultPackage.Reclaims.Count(r => r.ClaimCollector == ClaimCollector.Supplier).Should().Be(3);
+            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeProvisional && x.Status == ReclaimStatus.Active).Should().Be(1);
+            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks && x.Status == ReclaimStatus.Active).Should().Be(1);
+            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks && x.Status == ReclaimStatus.Active).Should().Be(1);
 
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).Cost.Should().Be(1m);
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks).Cost.Should().Be(2m);
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks).Cost.Should().Be(2m);
+
+            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeProvisional && x.Cost == 3m).Should().Be(1);
+            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks && x.Cost == 2m).Should().Be(1);
+            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks && x.Cost == 2m).Should().Be(1);
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
         }
