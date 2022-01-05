@@ -25,8 +25,8 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
 
         public ReclaimStatus Status
         {
-            get => _status;
-            set => _status = value != 0 ? CalculateStatus(value) : CalculateStatus();
+            get => CalculateStatus();
+            set => _status = value;
         }
 
         public ReclaimType Type { get; set; }
@@ -61,13 +61,18 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
 
         private ReclaimStatus CalculateStatus()
         {
-            if (EndDate != null && CurrentDateProvider.Now.Date > EndDate.Value.Date)
+            if (_status is ReclaimStatus.Cancelled || _status is ReclaimStatus.Ended)
             {
-                return ReclaimStatus.Ended;
+                return _status;
             }
 
-            return CurrentDateProvider.Now.Date >= StartDate.Date
-                ? ReclaimStatus.Active
+            // if (EndDate != null && DateTimeOffset.UtcNow.Date > EndDate.Value.Date)
+            // {
+            //     return ReclaimStatus.Ended;
+            // }
+
+            return DateTimeOffset.Now.Date >= StartDate.Date
+                ? ReclaimStatus.Active // Ended status should be set manually, so no check for the end date here
                 : ReclaimStatus.Pending;
         }
 

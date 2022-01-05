@@ -318,7 +318,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _defaultPackage.Reclaims.Count(r => r.ClaimCollector == ClaimCollector.Supplier).Should().Be(3);
             _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeProvisional && x.Status == ReclaimStatus.Active).Should().Be(1);
             _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks && x.Status == ReclaimStatus.Active).Should().Be(1);
-            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks && x.Status == ReclaimStatus.Active).Should().Be(1);
+            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks && x.Status == ReclaimStatus.Pending).Should().Be(1);
 
 
             _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeProvisional && x.Cost == 3m).Should().Be(1);
