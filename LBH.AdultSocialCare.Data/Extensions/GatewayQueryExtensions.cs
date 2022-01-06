@@ -82,7 +82,7 @@ namespace LBH.AdultSocialCare.Data.Extensions
                                           package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost)
                                               .EndDate <= toDate)); // TODO: VK: Review end date (can be empty)
         }
-            
+
 
         public static IQueryable<User> FilterAppUsers(this IQueryable<User> users, string searchTerm = "") =>
             users.Where(u => (string.IsNullOrEmpty(searchTerm) || (EF.Functions.ILike(u.Name, $"%{searchTerm}%") ||
