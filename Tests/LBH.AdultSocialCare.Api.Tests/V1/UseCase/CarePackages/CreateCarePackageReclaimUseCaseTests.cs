@@ -24,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private CarePackage _defaultPackage;
         private readonly CreateProvisionalCareChargeUseCase _useCase;
         private readonly Mock<ICreatePackageResourceUseCase> _createPackageResourceUseCase;
-        private readonly DateTimeOffset _today = DateTimeOffset.Now.Date;
+        private readonly DateTimeOffset _today = DateTimeOffset.UtcNow.Date;
 
         public CreateCarePackageReclaimUseCaseTests()
         {

@@ -25,6 +25,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces
         Task<IEnumerable<Payrun>> GetPayRunsByTypeAndStatusAsync(PayrunType[] types, PayrunStatus[] statuses);
 
         Task<DateTimeOffset> GetEndDateOfLastPayRun(PayrunType payRunType);
+        Task<DateTimeOffset> GetEndDateOfLastPayRun();
 
         Task<Payrun> GetPreviousPayRunAsync(PayrunType payRunType);
 

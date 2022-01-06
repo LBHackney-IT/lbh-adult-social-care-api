@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response
     {
         public Guid PackageId { get; set; }
         public decimal TotalPaid { get; set; }
-        public DateTime DateTo { get; set; }
+        public DateTimeOffset DateTo { get; set; }
     }
 }

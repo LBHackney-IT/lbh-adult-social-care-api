@@ -27,23 +27,24 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
 
         public ReclaimStatus Status
         {
-            get => _status;
-            set => _status = CalculateStatus(value);
+            get => CalculateStatus();
+            set => _status = value;
         }
 
-        private ReclaimStatus CalculateStatus(ReclaimStatus value)
+        // TODO: VK: Move to Core/ReclaimStatusCalculator
+        private ReclaimStatus CalculateStatus()
         {
-            if (value is ReclaimStatus.Cancelled || value is ReclaimStatus.Ended)
+            if (_status is ReclaimStatus.Cancelled || _status is ReclaimStatus.Ended)
             {
-                return value;
+                return _status;
             }
 
-            if (EndDate != null && DateTimeOffset.Now.Date > EndDate.Value.Date)
+            if (EndDate != null && DateTimeOffset.UtcNow.Date > EndDate.Value.Date)
             {
                 return ReclaimStatus.Ended;
             }
 
-            return DateTimeOffset.Now.Date >= StartDate.Date
+            return DateTimeOffset.UtcNow.Date >= StartDate.Date
                 ? ReclaimStatus.Active
                 : ReclaimStatus.Pending;
         }

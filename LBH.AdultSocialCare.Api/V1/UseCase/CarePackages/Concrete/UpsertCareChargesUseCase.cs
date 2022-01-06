@@ -1,14 +1,13 @@
 using AutoMapper;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
+using LBH.AdultSocialCare.Api.Core;
 using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
-using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
-using LBH.AdultSocialCare.Api.V1.Services.IO;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -17,7 +16,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using LBH.AdultSocialCare.Api.Core;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -50,7 +48,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 .EnsureExistsAsync($"Care package with id {carePackageId} not found");
 
             ValidateCareChargeModificationRequest(package, careChargesCreateDomain.CareCharges);
-
 
             // Is user in Section 117, reject care charges
             if (package.Settings.IsS117Client)
@@ -113,21 +110,49 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     }
                     else
                     {
-                        _mapper.Map(provisionalCareCharge, existingCareCharge);
-                        existingCareCharge.Status = provisionalCareCharge.Status;
+                        // If package amount or dates changed, cancel existing and create new
+                        if (CareChargeHasChanged(existingCareCharge, provisionalCareCharge))
+                        {
+                            existingCareCharge.Status = ReclaimStatus.Cancelled;
+                            provisionalCareCharge.Id = null;
+                            package.Reclaims.Add(provisionalCareCharge.ToEntity());
+                        }
+                        else
+                        {
+                            _mapper.Map(provisionalCareCharge, existingCareCharge);
+                            existingCareCharge.Status = provisionalCareCharge.Status;
+                        }
                     }
                 }
 
                 if (existingCareCharge.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks && oneToTwelveCareCharge != null)
                 {
-                    _mapper.Map(oneToTwelveCareCharge, existingCareCharge);
-                    existingCareCharge.Status = oneToTwelveCareCharge.Status;
+                    if (CareChargeHasChanged(existingCareCharge, oneToTwelveCareCharge))
+                    {
+                        existingCareCharge.Status = ReclaimStatus.Cancelled;
+                        oneToTwelveCareCharge.Id = null;
+                        package.Reclaims.Add(oneToTwelveCareCharge.ToEntity());
+                    }
+                    else
+                    {
+                        _mapper.Map(oneToTwelveCareCharge, existingCareCharge);
+                        existingCareCharge.Status = oneToTwelveCareCharge.Status;
+                    }
                 }
 
                 if (existingCareCharge.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks && thirteenPlusCareCharge != null)
                 {
-                    _mapper.Map(thirteenPlusCareCharge, existingCareCharge);
-                    existingCareCharge.Status = thirteenPlusCareCharge.Status;
+                    if (CareChargeHasChanged(existingCareCharge, thirteenPlusCareCharge))
+                    {
+                        existingCareCharge.Status = ReclaimStatus.Cancelled;
+                        thirteenPlusCareCharge.Id = null;
+                        package.Reclaims.Add(thirteenPlusCareCharge.ToEntity());
+                    }
+                    else
+                    {
+                        _mapper.Map(thirteenPlusCareCharge, existingCareCharge);
+                        existingCareCharge.Status = thirteenPlusCareCharge.Status;
+                    }
                 }
             }
 
@@ -144,6 +169,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             // Get package and check reclaim totals are valid
             /*var packageFromDb = await _carePackageGateway.GetPackageAsync(carePackageId, PackageFields.Details | PackageFields.Reclaims, true)
                 .EnsureExistsAsync($"Care package with id {carePackageId} not found");*/
+        }
+
+        private static bool CareChargeHasChanged(CarePackageReclaim existingCareCharge, CareChargeReclaimCreationDomain newCareCharge)
+        {
+            return newCareCharge.StartDate.Date != existingCareCharge.StartDate.Date ||
+                   newCareCharge.EndDate != existingCareCharge.EndDate ||
+                   newCareCharge.Cost != existingCareCharge.Cost ||
+                   newCareCharge.ClaimCollector != existingCareCharge.ClaimCollector;
         }
 
         private static void ValidateCareChargeModificationRequest(CarePackage package, IList<CareChargeReclaimCreationDomain> careCharges)
@@ -177,7 +210,16 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 if ((provisionalCareCharge.StartDate.Date != oneToTwelveCareCharge.StartDate.Date) && (provisionalCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1) !=
                     oneToTwelveCareCharge.StartDate.Date))
                 {
-                    throw new ApiException($"1-12 must start one day after provisional care charge end", HttpStatusCode.BadRequest);
+                    throw new ApiException("1-12 must start one day after provisional care charge end", HttpStatusCode.BadRequest);
+                }
+            }
+
+            // for migrated packages it's possible that there is only 13+ charge, new provisional charge in this case must be aligned with it.
+            if (package.IsMigrated && provisionalCareCharge != null && oneToTwelveCareCharge == null && thirteenPlusCareCharge != null)
+            {
+                if (provisionalCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1) != thirteenPlusCareCharge.StartDate.Date)
+                {
+                    throw new ApiException("13+ must start one day after provisional care charge end", HttpStatusCode.BadRequest);
                 }
             }
 

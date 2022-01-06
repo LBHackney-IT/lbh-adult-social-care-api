@@ -95,7 +95,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 throw new ApiException($"FNC already added to package {package.Id}", HttpStatusCode.Conflict);
             }
 
-            if (!requestedReclaim.StartDate.IsInRange(coreCost.StartDate, coreCost.EndDate ?? DateTimeOffset.Now.AddYears(10)))
+            if (!requestedReclaim.StartDate.IsInRange(coreCost.StartDate, coreCost.EndDate ?? DateTimeOffset.UtcNow.AddYears(10)))
             {
                 throw new ApiException($"FNC start date must be equal or greater than {coreCost.StartDate}", HttpStatusCode.UnprocessableEntity);
             }
