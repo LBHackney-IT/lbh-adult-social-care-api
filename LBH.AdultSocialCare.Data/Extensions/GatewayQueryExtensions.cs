@@ -32,8 +32,11 @@ namespace LBH.AdultSocialCare.Data.Extensions
             string searchTermSecond = searchTerms != null && searchTerms.Count > 1 ? searchTerms[1] : null;
 
             return packages.Where(package => (serviceUserId == null || package.ServiceUserId.Equals(serviceUserId))
-                                             && (String.IsNullOrEmpty(searchTermFirst) || package.ServiceUser.FirstName
-                                                 .ToLower().Contains(searchTermFirst.ToLower()))
+                                             && (String.IsNullOrEmpty(searchTermFirst)
+                                                || package.ServiceUser.FirstName.ToLower().Contains(searchTermFirst.ToLower())
+                                                || package.ServiceUser.LastName.ToLower().Contains(searchTermFirst.ToLower())
+                                                || package.ServiceUser.HackneyId.ToString().Equals(searchTermFirst)
+                                                )
                                              && (searchTermSecond != null
                                                  ? package.ServiceUser.LastName.ToLower()
                                                      .Contains(searchTermSecond.ToLower())
@@ -52,11 +55,22 @@ namespace LBH.AdultSocialCare.Data.Extensions
 
         public static IQueryable<CarePackage> FilterApprovableCarePackages(this IQueryable<CarePackage> packages,
             Guid? serviceUserId, string serviceUserName, PackageStatus? packageStatus, PackageType? packageType,
-            Guid? approverId, DateTimeOffset? fromDate, DateTimeOffset? toDate, PackageStatus[] statusesToInclude) =>
-            packages.Where(package => (serviceUserId == null || package.ServiceUserId.Equals(serviceUserId))
+            Guid? approverId, DateTimeOffset? fromDate, DateTimeOffset? toDate, PackageStatus[] statusesToInclude)
+        {
+            var searchTerms = serviceUserName?.Split(' ').ToList();
+            string searchTermFirst = searchTerms?.First();
+            string searchTermSecond = searchTerms != null && searchTerms.Count > 1 ? searchTerms[1] : null;
+
+            return packages.Where(package => (serviceUserId == null || package.ServiceUserId.Equals(serviceUserId))
                                       && (String.IsNullOrEmpty(serviceUserName)
-                                          || package.ServiceUser.FirstName.ToLower().Contains(serviceUserName.ToLower())
-                                          || package.ServiceUser.LastName.ToLower().Contains(serviceUserName.ToLower()))
+                                          || package.ServiceUser.FirstName.ToLower().Contains(searchTermFirst.ToLower())
+                                          || package.ServiceUser.LastName.ToLower().Contains(searchTermFirst.ToLower())
+                                          || package.ServiceUser.HackneyId.Equals(searchTermFirst)
+                                         )
+                                      && (searchTermSecond != null
+                                                 ? package.ServiceUser.LastName.ToLower()
+                                                     .Contains(searchTermSecond.ToLower())
+                                                 : package.Equals(package))
                                       && ((packageStatus == null && statusesToInclude.Contains(package.Status) ||
                                            package.Status.Equals(packageStatus)))
                                       && (packageType == null || package.PackageType.Equals(packageType))
@@ -67,6 +81,8 @@ namespace LBH.AdultSocialCare.Data.Extensions
                                       && (toDate == null ||
                                           package.Details.FirstOrDefault(d => d.Type == PackageDetailType.CoreCost)
                                               .EndDate <= toDate)); // TODO: VK: Review end date (can be empty)
+        }
+
 
         public static IQueryable<User> FilterAppUsers(this IQueryable<User> users, string searchTerm = "") =>
             users.Where(u => (string.IsNullOrEmpty(searchTerm) || (EF.Functions.ILike(u.Name, $"%{searchTerm}%") ||

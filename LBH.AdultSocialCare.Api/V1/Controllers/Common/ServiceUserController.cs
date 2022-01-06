@@ -56,7 +56,6 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.Common
         [ProducesResponseType(typeof(ServiceUserPackagesViewResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status404NotFound)]
         [HttpGet("{serviceUserId:guid}/care-packages")]
-        [AuthorizeRoles(RolesEnum.Broker, RolesEnum.BrokerageApprover, RolesEnum.CareChargeManager)]
         public async Task<ActionResult<ServiceUserPackagesViewResponse>> GetServiceUserPackages(Guid serviceUserId)
         {
             var result = await _getServiceUserPackagesUseCase.ExecuteAsync(serviceUserId);

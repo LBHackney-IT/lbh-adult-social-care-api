@@ -131,13 +131,6 @@ namespace LBH.AdultSocialCare.Data
                 .HasIndex(p => p.Number)
                 .IsUnique();
 
-            modelBuilder.Entity<Payrun>(entity =>
-            {
-                entity.Property(e => e.StartDate).HasColumnType("date");
-                entity.Property(e => e.EndDate).HasColumnType("date");
-                entity.Property(e => e.PaidUpToDate).HasColumnType("date");
-            });
-
             modelBuilder.Entity<PayrunHistory>(entity =>
             {
                 entity.Property(e => e.Type).IsRequired().HasDefaultValue(PayRunHistoryType.NormalRecord);

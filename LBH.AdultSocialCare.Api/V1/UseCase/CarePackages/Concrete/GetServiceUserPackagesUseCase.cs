@@ -13,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -21,12 +23,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IServiceUserGateway _serviceUserGateway;
         private readonly ICarePackageHistoryGateway _carePackageHistoryGateway;
+        private readonly ILogger<GetServiceUserPackagesUseCase> _logger;
 
-        public GetServiceUserPackagesUseCase(ICarePackageGateway carePackageGateway, IServiceUserGateway serviceUserGateway, ICarePackageHistoryGateway carePackageHistoryGateway)
+        public GetServiceUserPackagesUseCase(ICarePackageGateway carePackageGateway, IServiceUserGateway serviceUserGateway, ICarePackageHistoryGateway carePackageHistoryGateway, ILogger<GetServiceUserPackagesUseCase> logger)
         {
             _carePackageGateway = carePackageGateway;
             _serviceUserGateway = serviceUserGateway;
             _carePackageHistoryGateway = carePackageHistoryGateway;
+            _logger = logger;
         }
 
         public async Task<ServiceUserPackagesViewResponse> ExecuteAsync(Guid serviceUserId)
@@ -73,7 +77,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 var preferences = FilterPreferences.PackageItemStatus();
 
                 packageResponse.PackageItems = packageResponse.PackageItems.OrderBy(
-                    item => preferences.IndexOf(item.Status));
+                    item => preferences.IndexOf(item.Status)).ThenBy(x => x.StartDate);
 
                 // Get care package history if package request i.e new, in-progress, not-approved
                 if (carePackage.Status.In(PackageStatus.New, PackageStatus.InProgress, PackageStatus.NotApproved))
