@@ -71,18 +71,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             var currentReclaim = carePackage.Reclaims.First(r => r.Id == reclaim.Id);
-            currentReclaim.EndDate = request.EndDate;
-            carePackage.Histories.Add(new CarePackageHistory
-            {
-                Status = HistoryStatus.PackageInformation,
-                Description = $"{currentReclaim.SubType.GetDisplayName()} Ended",
-            });
 
             // If reclaim is active/pending cancel future reclaims
             if (currentReclaim.Status.In(ReclaimStatus.Active, ReclaimStatus.Pending))
             {
                 var futureCareCharges = carePackage.Reclaims.Where(r =>
-                    r.Type == ReclaimType.CareCharge && r.StartDate.Date < reclaim.StartDate.Date &&
+                    r.Type == ReclaimType.CareCharge && r.StartDate.Date > reclaim.StartDate.Date &&
                     r.Status.In(ReclaimStatus.Active, ReclaimStatus.Ended, ReclaimStatus.Pending));
 
                 foreach (var careCharge in futureCareCharges)
@@ -95,7 +89,28 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     });
                 }
             }
-            currentReclaim.Status = ReclaimStatus.Ended;
+
+            // If reclaim starts in the future, cancel it
+            if (currentReclaim.StartDate.Date > DateTimeOffset.UtcNow.Date)
+            {
+                currentReclaim.Status = ReclaimStatus.Cancelled;
+                carePackage.Histories.Add(new CarePackageHistory
+                {
+                    Status = HistoryStatus.PackageInformation,
+                    Description = $"{currentReclaim.SubType.GetDisplayName()} Cancelled",
+                });
+            }
+            else
+            {
+                currentReclaim.EndDate = request.EndDate;
+                currentReclaim.Status = ReclaimStatus.Ended;
+                carePackage.Histories.Add(new CarePackageHistory
+                {
+                    Status = HistoryStatus.PackageInformation,
+                    Description = $"{currentReclaim.SubType.GetDisplayName()} Ended",
+                });
+            }
+
 
             await _dbManager.SaveAsync();
 
