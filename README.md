@@ -162,7 +162,8 @@ We have two environments:
 and two deployment branches:
 
 - `master` which deploys to Staging and Production
-- `develop` which deploys to Staging
+- `staging` which deploys to Staging
+- `develop` which deploys to Development
 
 This means pull request merges into `master` and `development` both trigger a deployment to Staging, but only `master` can trigger a deployment for Production.
 
