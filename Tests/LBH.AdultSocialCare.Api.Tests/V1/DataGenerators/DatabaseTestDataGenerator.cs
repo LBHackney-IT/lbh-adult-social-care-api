@@ -1,12 +1,13 @@
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using LBH.AdultSocialCare.Api.V1.Extensions;
 using LBH.AdultSocialCare.Data;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Common;
+using LBH.AdultSocialCare.Data.Entities.Payments;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 {
@@ -19,7 +20,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             _context = context;
         }
 
-        public CarePackage CreateCarePackage(PackageType type = PackageType.ResidentialCare, PackageStatus status = PackageStatus.New)
+        public CarePackage CreateCarePackage(PackageType type = PackageType.ResidentialCare,
+            PackageStatus status = PackageStatus.New)
         {
             var carePackage = TestDataHelper.CreateCarePackage(type, status);
 
@@ -80,11 +82,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 
         public CarePackageSettings CreateCarePackageSettingsForS117Client(Guid carePackageId, bool s117Client)
         {
-            var packageSettings = new CarePackageSettings
-            {
-                CarePackageId = carePackageId,
-                IsS117Client = s117Client
-            };
+            var packageSettings = new CarePackageSettings { CarePackageId = carePackageId, IsS117Client = s117Client };
 
             _context.CarePackageSettings.Add(packageSettings);
             _context.SaveChanges();
@@ -100,6 +98,38 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             _context.SaveChanges();
 
             return serviceUser;
+        }
+
+        public Invoice CreateInvoice(Invoice invoice)
+        {
+            _context.Invoices.Add(invoice);
+            _context.SaveChanges();
+
+            return invoice;
+        }
+
+        public IList<Invoice> CreateInvoices(IList<Invoice> invoices)
+        {
+            _context.Invoices.AddRange(invoices);
+            _context.SaveChanges();
+
+            return invoices;
+        }
+
+        public Payrun CreatePayRun(Payrun payrun)
+        {
+            _context.Payruns.Add(payrun);
+            _context.SaveChanges();
+
+            return payrun;
+        }
+
+        public IList<Payrun> CreatePayRuns(IList<Payrun> payRuns)
+        {
+            _context.Payruns.AddRange(payRuns);
+            _context.SaveChanges();
+
+            return payRuns;
         }
     }
 }
