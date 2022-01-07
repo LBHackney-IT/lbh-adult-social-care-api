@@ -15,10 +15,10 @@ namespace LBH.AdultSocialCare.Data.Constants.Enums
         [Display(Name = "Further information requested")]
         RequestMoreInformation = 3,
 
-        [Display(Name = "Care package Approved by")]
+        [Display(Name = "Care package Approved")]
         PackageApproved = 4,
 
-        [Display(Name = "Care Package Brokered by")]
+        [Display(Name = "Care Package Brokered")]
         PackageBrokered = 5,
 
         [Display(Name = "Care Package Approved for Commercial")]
