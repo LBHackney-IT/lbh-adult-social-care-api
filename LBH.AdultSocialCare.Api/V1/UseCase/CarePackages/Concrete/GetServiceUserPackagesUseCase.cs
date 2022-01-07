@@ -119,6 +119,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             if (IsValidDateRange(carePackageDetail.StartDate, carePackageDetail.EndDate))
                 return ReclaimStatus.Active.GetDisplayName();
+            else if (carePackageDetail.EndDate.GetValueOrDefault().Date < today)
+                return ReclaimStatus.Ended.GetDisplayName();
 
             return ReclaimStatus.Pending.GetDisplayName();
         }
