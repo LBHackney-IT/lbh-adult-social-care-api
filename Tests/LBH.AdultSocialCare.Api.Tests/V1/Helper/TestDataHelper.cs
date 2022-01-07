@@ -264,16 +264,24 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
             PriceEffect priceEffect = PriceEffect.Add)
         {
             return new Faker<InvoiceItem>()
-                    .RuleFor(inv => inv.Id, f => f.Random.Uuid())
-                    .RuleFor(inv => inv.Name, f => f.Random.Words(3))
-                    .RuleFor(inv => inv.InvoiceId, invoice.Id)
-                    .RuleFor(inv => inv.WeeklyCost, weeklyCost)
-                    .RuleFor(inv => inv.Quantity, quantity)
-                    .RuleFor(inv => inv.FromDate, fromDate)
-                    .RuleFor(inv => inv.ToDate, toDate)
-                    .RuleFor(inv => inv.ClaimCollector, claimCollector)
-                    .RuleFor(inv => inv.PriceEffect, priceEffect)
-                ;
+                .RuleFor(invItem => invItem.Id, f => f.Random.Uuid())
+                .RuleFor(invItem => invItem.Name, f => f.Random.Words(3))
+                .RuleFor(invItem => invItem.InvoiceId, invoice.Id)
+                .RuleFor(invItem => invItem.WeeklyCost, weeklyCost)
+                .RuleFor(invItem => invItem.Quantity, quantity)
+                .RuleFor(invItem => invItem.FromDate, fromDate)
+                .RuleFor(invItem => invItem.ToDate, toDate)
+                .RuleFor(invItem => invItem.ClaimCollector, claimCollector)
+                .RuleFor(invItem => invItem.PriceEffect, priceEffect);
+        }
+
+        public static PayrunInvoice CreatePayrunInvoice(Payrun payrun, Invoice invoice, InvoiceStatus invoiceStatus = InvoiceStatus.Accepted)
+        {
+            return new Faker<PayrunInvoice>()
+                .RuleFor(pInv => pInv.Id, f => f.Random.Uuid())
+                .RuleFor(pInv => pInv.PayrunId, f => payrun.Id)
+                .RuleFor(pInv => pInv.InvoiceId, f => invoice.Id)
+                .RuleFor(pInv => pInv.InvoiceStatus, f => invoiceStatus);
         }
     }
 }
