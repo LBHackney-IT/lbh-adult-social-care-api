@@ -111,6 +111,18 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             };
         }
 
+        private static string CalculateAnpStatus(CarePackage package, IPackageItem carePackageDetail)
+        {
+            var today = DateTimeOffset.UtcNow.Date;
+            if (package.Status != PackageStatus.Approved)
+                return package.Status.GetDisplayName();
+
+            if (IsValidDateRange(carePackageDetail.StartDate, carePackageDetail.EndDate))
+                return ReclaimStatus.Active.GetDisplayName();
+
+            return ReclaimStatus.Pending.GetDisplayName();
+        }
+
         private static IEnumerable<CarePackageCostItemResponse> CollectPackageItems(CarePackage package, CarePackageDetail coreCost, IReadOnlyCollection<CarePackageDetail> additionalNeeds, IReadOnlyCollection<CarePackageReclaim> reclaims)
         {
             var carePackageCostItem = new List<CarePackageCostItemResponse>();
@@ -139,7 +151,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     Name = GetAdditionalNeedName(need.CostPeriod),
                     Type = "Additional Needs",
                     CollectedBy = ClaimCollector.Hackney.GetDisplayName(),
-                    Status = coreCost != null ? CalculatePackageStatus(package, coreCost) : package.Status.GetDisplayName(),
+                    //Status = coreCost != null ? CalculatePackageStatus(package, coreCost) : package.Status.GetDisplayName(),
+                    Status = CalculateAnpStatus(package, need),
                     StartDate = need.StartDate,
                     EndDate = need.EndDate,
                     WeeklyCost = need.Cost
