@@ -258,5 +258,22 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(inv => inv.GrossTotal, grossTotal.Round(2))
                 .RuleFor(inv => inv.NetTotal, netTotal.Round(2));
         }
+
+        public static InvoiceItem CreateInvoiceItem(Invoice invoice, DateTimeOffset fromDate, DateTimeOffset toDate,
+            decimal weeklyCost = 2m, decimal quantity = 1m, ClaimCollector claimCollector = ClaimCollector.Hackney,
+            PriceEffect priceEffect = PriceEffect.Add)
+        {
+            return new Faker<InvoiceItem>()
+                    .RuleFor(inv => inv.Id, f => f.Random.Uuid())
+                    .RuleFor(inv => inv.Name, f => f.Random.Words(3))
+                    .RuleFor(inv => inv.InvoiceId, invoice.Id)
+                    .RuleFor(inv => inv.WeeklyCost, weeklyCost)
+                    .RuleFor(inv => inv.Quantity, quantity)
+                    .RuleFor(inv => inv.FromDate, fromDate)
+                    .RuleFor(inv => inv.ToDate, toDate)
+                    .RuleFor(inv => inv.ClaimCollector, claimCollector)
+                    .RuleFor(inv => inv.PriceEffect, priceEffect)
+                ;
+        }
     }
 }
