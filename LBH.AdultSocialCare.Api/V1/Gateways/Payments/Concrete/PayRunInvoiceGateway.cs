@@ -12,16 +12,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Models;
+using LBH.AdultSocialCare.Api.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 {
     public class PayRunInvoiceGateway : IPayRunInvoiceGateway
     {
         private readonly DatabaseContext _dbContext;
+        private readonly RuntimeConfiguration _runtimeConfig;
 
-        public PayRunInvoiceGateway(DatabaseContext dbContext)
+        public PayRunInvoiceGateway(DatabaseContext dbContext, IOptions<RuntimeConfiguration> runtimeConfig)
         {
             _dbContext = dbContext;
+            _runtimeConfig = runtimeConfig.Value;
         }
 
         public async Task<PagedList<PayrunInvoice>> GetPayRunInvoicesAsync(Guid payRunId, RequestParameters parameters, InvoiceStatus[] statuses, PayRunInvoiceFields fields = PayRunInvoiceFields.None,
@@ -84,7 +89,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             PayRunDetailsQueryParameters parameters)
         {
             var query = _dbContext.PayrunInvoices.Where(p => p.PayrunId == payRunId)
-                .FilterPayRunInvoices(parameters)
+                .FilterPayRunInvoices(_runtimeConfig, parameters)
                 .TrackChanges(false);
 
             var payRunInvoices = await query
@@ -131,7 +136,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             parameters.InvoiceStatus = InvoiceStatus.Held;
             var query = _dbContext.PayrunInvoices
                 .Where(pr => pr.Payrun.Status != PayrunStatus.Archived)
-                .FilterPayRunInvoices(parameters)
+                .FilterPayRunInvoices(_runtimeConfig, parameters)
                 .TrackChanges(false);
 
             var heldInvoices = await query

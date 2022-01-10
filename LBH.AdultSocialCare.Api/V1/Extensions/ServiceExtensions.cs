@@ -19,6 +19,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Text;
+using Common.Models;
 
 namespace LBH.AdultSocialCare.Api.V1.Extensions
 {
@@ -135,6 +136,11 @@ namespace LBH.AdultSocialCare.Api.V1.Extensions
             {
                 services.AddAWSService<IAmazonSQS>();
             }
+        }
+
+        public static void AddEnvironmentOptions(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<RuntimeConfiguration>(configuration.GetSection(RuntimeConfiguration.SectionName));
         }
 
         public static void ConfigureDocumentApiClient(this IServiceCollection services, IConfiguration configuration)

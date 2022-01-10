@@ -19,12 +19,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
     public static class TestDataHelper
     {
         public static CarePackage CreateCarePackage(PackageType? packageType = null,
-            PackageStatus? status = PackageStatus.New, Guid? serviceUserId = null)
+            PackageStatus? status = PackageStatus.New, Guid? serviceUserId = null, int? supplierId = null)
         {
             var package = new Faker<CarePackage>()
                 .RuleFor(cp => cp.Id, f => f.Random.Guid())
                 .RuleFor(cp => cp.PackageType, f => packageType ?? f.PickRandom<PackageType>())
-                .RuleFor(cp => cp.SupplierId, f => null)
+                .RuleFor(cp => cp.SupplierId, f => supplierId)
                 .RuleFor(cp => cp.PackageScheduling, f => f.PickRandom<PackageScheduling>())
                 .RuleFor(cp => cp.PrimarySupportReasonId, f => f.PickRandom(1, 2))
                 .RuleFor(cp => cp.Status, f => status ?? f.PickRandom<PackageStatus>())
@@ -232,6 +232,17 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(u => u.HackneyId, f => f.Random.Int());
         }
 
+        public static Supplier CreateSupplier()
+        {
+            return new Faker<Supplier>()
+                .RuleFor(u => u.SupplierName, f => f.Name.FullName())
+                .RuleFor(u => u.Address, f => f.Address.FullAddress())
+                .RuleFor(u => u.Postcode, f => f.Address.CountryCode())
+                .RuleFor(u => u.Postcode, f => f.Random.String(8))
+                .RuleFor(u => u.CedarReferenceNumber, f => f.Random.String(8))
+                .RuleFor(u => u.DateCreated, f => f.Date.Past(1, DateTime.Now));
+        }
+
         public static Payrun CreatePayRun(PayrunType? type = null, PayrunStatus? status = null,
             DateTimeOffset? paidUpToDate = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
         {
@@ -275,11 +286,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(invItem => invItem.PriceEffect, priceEffect);
         }
 
-        public static PayrunInvoice CreatePayrunInvoice(Payrun payrun, Invoice invoice, InvoiceStatus invoiceStatus = InvoiceStatus.Accepted)
+        public static PayrunInvoice CreatePayrunInvoice(Guid? payRunId, Invoice invoice,
+            InvoiceStatus invoiceStatus = InvoiceStatus.Accepted)
         {
             return new Faker<PayrunInvoice>()
                 .RuleFor(pInv => pInv.Id, f => f.Random.Uuid())
-                .RuleFor(pInv => pInv.PayrunId, f => payrun.Id)
+                .RuleFor(pInv => pInv.PayrunId, f => payRunId ?? f.Random.Uuid())
                 .RuleFor(pInv => pInv.InvoiceId, f => invoice.Id)
                 .RuleFor(pInv => pInv.InvoiceStatus, f => invoiceStatus);
         }

@@ -131,5 +131,29 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 
             return payRuns;
         }
+
+        public IList<CarePackage> CreateCarePackages(IList<CarePackage> packages)
+        {
+            _context.CarePackages.AddRange(packages);
+            _context.SaveChanges();
+
+            return packages;
+        }
+
+        public IList<Supplier> CreateSuppliers(IList<Supplier> suppliers)
+        {
+            _context.Suppliers.AddRange(suppliers);
+            _context.SaveChanges();
+
+            return suppliers;
+        }
+
+        public IList<ServiceUser> CreateServiceUsers(IList<ServiceUser> serviceUsers)
+        {
+            _context.ServiceUsers.AddRange(serviceUsers);
+            _context.SaveChanges();
+
+            return serviceUsers;
+        }
     }
 }

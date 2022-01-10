@@ -104,6 +104,7 @@ namespace LBH.AdultSocialCare.Api
             services.AddAuthentication();
             services.ConfigureIdentityService();
             services.ConfigureJWT(Configuration);
+            services.AddEnvironmentOptions(Configuration);
 
             services.AddScoped<IDatabaseManager, DatabaseManager>();
             services.AddScoped<IAuthenticationManager, AuthenticationManager>();

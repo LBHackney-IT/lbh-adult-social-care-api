@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Common.Models;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Common;
@@ -148,24 +149,29 @@ namespace LBH.AdultSocialCare.Data.Extensions
             return filteredList;
         }
 
-        public static IQueryable<PayrunInvoice> FilterPayRunInvoices(this IQueryable<PayrunInvoice> invoices,
+        public static IQueryable<PayrunInvoice> FilterPayRunInvoices(this IQueryable<PayrunInvoice> invoices, RuntimeConfiguration runtimeConfig,
             PayRunDetailsQueryParameters parameters)
         {
-            // Explode search term to tokens
-            var searchTokens = Regex.Split(parameters.SearchTerm ?? string.Empty, "\\s+").ToList();
-            var searchPredicate = PredicateBuilder.New<PayrunInvoice>(true);
-            foreach (var searchToken in searchTokens)
+            var query = invoices;
+            if (!runtimeConfig.IsSqlite)
             {
-                searchPredicate = searchPredicate.Or(e =>
-                    EF.Functions.ILike(e.Invoice.ServiceUser.FirstName, $"%{searchToken}%")
-                    || EF.Functions.ILike(e.Invoice.ServiceUser.LastName, $"%{searchToken}%")
-                    || EF.Functions.ILike(e.InvoiceId.ToString(), $"%{searchToken}%")
-                    || EF.Functions.ILike(e.Invoice.Number, $"%{searchToken}%")
-                    || EF.Functions.ILike(e.Payrun.Number, $"%{searchToken}%")
-                    || EF.Functions.ILike(e.Invoice.Supplier.SupplierName ?? "", $"%{searchToken}%"));
+                // Explode search term to tokens
+                var searchTokens = Regex.Split(parameters.SearchTerm ?? string.Empty, "\\s+").ToList();
+                var searchPredicate = PredicateBuilder.New<PayrunInvoice>(true);
+                foreach (var searchToken in searchTokens)
+                {
+                    searchPredicate = searchPredicate.Or(e =>
+                        EF.Functions.ILike(e.Invoice.ServiceUser.FirstName, $"%{searchToken}%")
+                        || EF.Functions.ILike(e.Invoice.ServiceUser.LastName, $"%{searchToken}%")
+                        || EF.Functions.ILike(e.InvoiceId.ToString(), $"%{searchToken}%")
+                        || EF.Functions.ILike(e.Invoice.Number, $"%{searchToken}%")
+                        || EF.Functions.ILike(e.Payrun.Number, $"%{searchToken}%")
+                        || EF.Functions.ILike(e.Invoice.Supplier.SupplierName ?? "", $"%{searchToken}%"));
+                }
+                query = query.Where(searchPredicate);
             }
 
-            return invoices.Where(searchPredicate).Where(invoice =>
+            return query.Where(invoice =>
                 (parameters.PackageType == null || invoice.Invoice.Package.PackageType == parameters.PackageType)
                 && (parameters.InvoiceStatus == null || invoice.InvoiceStatus == parameters.InvoiceStatus)
                 && (parameters.FromDate == null || invoice.Invoice.DateCreated >= parameters.FromDate)
