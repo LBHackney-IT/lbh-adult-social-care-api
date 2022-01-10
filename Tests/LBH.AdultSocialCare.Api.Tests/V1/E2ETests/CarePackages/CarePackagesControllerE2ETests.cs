@@ -327,7 +327,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             package?.Status.Should().Be(PackageStatus.Ended);
 
             carePackageHistory?.Should().NotBeNull();
-            carePackageHistory?.Description.Should().Be(HistoryStatus.BrokeredEnded.GetDisplayName() + request.EndDate);
+            carePackageHistory?.Description.Should().Be($"{HistoryStatus.BrokeredEnded.GetDisplayName()}: {request.EndDate:yyyy-MM-dd}");
             carePackageHistory?.RequestMoreInformation.Should().Be(request.Notes);
             carePackageHistory?.Status.Should().Be(HistoryStatus.BrokeredEnded);
         }
