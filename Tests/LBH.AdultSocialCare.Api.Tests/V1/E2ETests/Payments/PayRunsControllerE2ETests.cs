@@ -10,8 +10,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Common.Extensions;
 using FluentAssertions;
 using HttpServices.Helpers;
+using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 using Xunit;
@@ -22,33 +24,28 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
     public class PayRunsControllerE2ETests : IClassFixture<MockWebApplicationFactory>
     {
         private readonly MockWebApplicationFactory _fixture;
-        private readonly ITestOutputHelper _output;
         private readonly DatabaseTestDataGenerator _generator;
 
         private readonly DateTimeOffset _periodFrom = DateTimeOffset.UtcNow.AddDays(-7);
         private readonly DateTimeOffset _periodTo = DateTimeOffset.UtcNow;
 
-        private readonly Payrun _payrun;
-
-        public PayRunsControllerE2ETests(MockWebApplicationFactory fixture, ITestOutputHelper output)
+        public PayRunsControllerE2ETests(MockWebApplicationFactory fixture)
         {
             _fixture = fixture;
-            _output = output;
             _generator = _fixture.Generator;
-            _payrun = CreateFullPayRun();
         }
 
         [Fact]
         public async Task ShouldGetPayRunDetails()
         {
-            _output.WriteLine(_payrun.Id.ToString());
+            var payrun = CreateFullPayRun();
             var parameters = new PayRunDetailsQueryParameters
             {
                 PageNumber = 1,
                 PageSize = 10
             };
             var url = new UrlFormatter()
-                .SetBaseUrl($"api/v1/payruns/{_payrun.Id}")
+                .SetBaseUrl($"api/v1/payruns/{payrun.Id}")
                 .AddParameter("pageNumber", parameters.PageNumber)
                 .AddParameter("pageSize", parameters.PageSize)
                 .ToString();
@@ -58,14 +55,24 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
 
             Assert.NotNull(response);
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
-            _output.WriteLine(_fixture.DatabaseContext.Payruns.Count().ToString());
         }
 
         [Fact]
-        public void ShouldGetHeldInvoices()
+        public async Task ShouldGetHeldInvoices()
         {
-            _output.WriteLine(_payrun.Id.ToString());
-            _output.WriteLine(_fixture.DatabaseContext.Payruns.Count().ToString());
+            var payRun = CreateFullPayRun(true);
+            var parameters = new PayRunDetailsQueryParameters { PageNumber = 1, PageSize = 10 };
+            var url = new UrlFormatter()
+                .SetBaseUrl($"api/v1/payruns/held-invoices")
+                .AddParameter("pageNumber", parameters.PageNumber)
+                .AddParameter("pageSize", parameters.PageSize)
+                .ToString();
+            var response = await _fixture.RestClient
+                .GetAsync<PagedResponse<HeldInvoiceDetailsResponse>>(url);
+
+            Assert.NotNull(response);
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.Content.Data.Count().Should().BeGreaterThan(0);
         }
 
         private void ClearDatabase()
@@ -80,7 +87,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
             _fixture.DatabaseContext.SaveChanges();
         }
 
-        private Payrun CreateFullPayRun()
+        private Payrun CreateFullPayRun(bool hasHeldInvoices = false)
         {
             ClearDatabase();
             var packages = CreateCarePackages();
@@ -89,7 +96,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
             // Create pay run with 10 items
             var payRun = TestDataHelper.CreatePayRun(type: PayrunType.ResidentialRecurring,
                 status: PayrunStatus.Approved, startDate: _periodFrom, endDate: _periodTo, paidUpToDate: _periodTo);
-            payRun.PayrunInvoices = CreatePayRunInvoices(payRun, invoices);
+            payRun.PayrunInvoices = CreatePayRunInvoices(payRun, invoices, hasHeldInvoices);
             return _generator.CreatePayRun(payRun);
         }
 
@@ -106,9 +113,20 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
             return _generator.CreateInvoices(invoices);
         }
 
-        private static IList<PayrunInvoice> CreatePayRunInvoices(Payrun payrun, IList<Invoice> invoices)
+        private static IList<PayrunInvoice> CreatePayRunInvoices(Payrun payrun, IList<Invoice> invoices, bool hasHeldInvoices)
         {
-            return invoices.Select(invoice => TestDataHelper.CreatePayrunInvoice(payrun.Id, invoice)).ToList();
+            if (!hasHeldInvoices)
+            {
+                return invoices.Select(invoice => TestDataHelper.CreatePayrunInvoice(payrun.Id, invoice)).ToList();
+            }
+
+            var payrunInvoices = new List<PayrunInvoice>();
+            var half = invoices.Count / 2;
+            payrunInvoices.AddRange(invoices.GetPage(1, half).ToList()
+                .Select(invoice => TestDataHelper.CreatePayrunInvoice(payrun.Id, invoice,InvoiceStatus.Held)));
+            payrunInvoices.AddRange(invoices.GetPage(2, half).ToList()
+                .Select(invoice => TestDataHelper.CreatePayrunInvoice(payrun.Id, invoice)));
+            return payrunInvoices;
         }
 
         private IList<CarePackage> CreateCarePackages()
