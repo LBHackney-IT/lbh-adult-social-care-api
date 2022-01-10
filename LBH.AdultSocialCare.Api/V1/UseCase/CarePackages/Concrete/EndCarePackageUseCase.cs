@@ -90,7 +90,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             package.Histories.Add(new CarePackageHistory
             {
                 Status = HistoryStatus.BrokeredEnded,
-                Description = HistoryStatus.BrokeredEnded.GetDisplayName(),
+                Description = HistoryStatus.BrokeredEnded.GetDisplayName() + endDate,
                 RequestMoreInformation = notes
             });
 
