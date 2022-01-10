@@ -62,14 +62,27 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
         }
 
         [Fact]
-        public void SampleTest()
+        public void ShouldGetHeldInvoices()
         {
             _output.WriteLine(_payrun.Id.ToString());
             _output.WriteLine(_fixture.DatabaseContext.Payruns.Count().ToString());
         }
 
+        private void ClearDatabase()
+        {
+            _fixture.DatabaseContext.PayrunInvoices.ClearData();
+            _fixture.DatabaseContext.InvoiceItems.ClearData();
+            _fixture.DatabaseContext.Invoices.ClearData();
+            _fixture.DatabaseContext.Payruns.ClearData();
+            _fixture.DatabaseContext.CarePackages.ClearData();
+            _fixture.DatabaseContext.Suppliers.ClearData();
+            _fixture.DatabaseContext.ServiceUsers.ClearData();
+            _fixture.DatabaseContext.SaveChanges();
+        }
+
         private Payrun CreateFullPayRun()
         {
+            ClearDatabase();
             var packages = CreateCarePackages();
             var invoices = CreateInvoices(packages);
 
