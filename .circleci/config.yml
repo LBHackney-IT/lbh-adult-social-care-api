@@ -186,6 +186,10 @@ jobs:
           aws-account: $AWS_ACCOUNT_PRODUCTION
 
 workflows:
+  check-and-test-branch:
+    jobs:
+      - check-code-formatting
+      - build-and-test
   check-and-deploy-development:
     jobs:
     - check-code-formatting:
