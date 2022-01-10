@@ -38,7 +38,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 package.Histories.Add(new CarePackageHistory
                 {
                     Status = HistoryStatus.BrokeredEnded,
-                    Description = HistoryStatus.BrokeredEnded.GetDisplayName(),
+                    Description = HistoryStatus.BrokeredEnded.GetDisplayName() + endDate.ToString("yyyy-MM-dd"),
                     RequestMoreInformation = notes
                 });
 
@@ -87,10 +87,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 }
             }
 
+            string desc = $"{HistoryStatus.BrokeredEnded.GetDisplayName()}: {endDate:yyyy-MM-dd}";
+
             package.Histories.Add(new CarePackageHistory
             {
                 Status = HistoryStatus.BrokeredEnded,
-                Description = HistoryStatus.BrokeredEnded.GetDisplayName(),
+                Description = desc,
                 RequestMoreInformation = notes
             });
 

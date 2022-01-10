@@ -15,8 +15,10 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Common.Extensions;
+using HttpServices.Helpers;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
@@ -325,7 +327,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             package?.Status.Should().Be(PackageStatus.Ended);
 
             carePackageHistory?.Should().NotBeNull();
-            carePackageHistory?.Description.Should().Be(HistoryStatus.BrokeredEnded.GetDisplayName());
+            carePackageHistory?.Description.Should().Be($"{HistoryStatus.BrokeredEnded.GetDisplayName()}: {request.EndDate:yyyy-MM-dd}");
             carePackageHistory?.RequestMoreInformation.Should().Be(request.Notes);
             carePackageHistory?.Status.Should().Be(HistoryStatus.BrokeredEnded);
         }
