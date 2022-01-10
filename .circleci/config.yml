@@ -188,8 +188,20 @@ jobs:
 workflows:
   check-and-test-branch:
     jobs:
-      - check-code-formatting
-      - build-and-test
+      - check-code-formatting:
+          filters:
+            branches:
+              ignore:
+                - develop
+                - staging
+                - master          
+      - build-and-test:
+          filters:
+                branches:
+                  ignore:
+                    - develop
+                    - staging
+                    - master
   check-and-deploy-development:
     jobs:
     - check-code-formatting:
