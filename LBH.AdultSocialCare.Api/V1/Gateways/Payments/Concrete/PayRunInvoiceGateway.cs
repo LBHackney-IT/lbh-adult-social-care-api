@@ -230,9 +230,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             return await BuildPayRunInvoiceQuery(query, fields).SingleOrDefaultAsync();
         }
 
-        public async Task<decimal> GetPayRunInvoicedTotalAsync(Guid payRunId)
+        public async Task<decimal> GetPayRunInvoicedTotalAsync(Guid payRunId, InvoiceStatus[] invoiceStatuses)
         {
-            var result = await _dbContext.PayrunInvoices.Where(pi => pi.PayrunId == payRunId).TrackChanges(false)
+            var result = await _dbContext.PayrunInvoices.Where(pi => pi.PayrunId == payRunId && invoiceStatuses.Contains(pi.InvoiceStatus)).TrackChanges(false)
                 .SumAsync(pi => pi.Invoice.GrossTotal);
             return decimal.Round(result, 2);
         }

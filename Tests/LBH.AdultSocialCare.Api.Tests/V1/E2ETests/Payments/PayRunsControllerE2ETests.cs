@@ -81,8 +81,24 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
         }
 
         [Fact]
-        public void ShouldGetPayRunInsights()
+        public async Task ShouldGetPayRunInsights()
         {
+            var payRun = CreateFullPayRun(true);
+            var url = new UrlFormatter()
+                .SetBaseUrl($"api/v1/payruns/{payRun.Id}/insights")
+                .ToString();
+            var response = await _fixture.RestClient
+                .GetAsync<PayRunInsightsResponse>(url);
+
+            Assert.NotNull(response);
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.Content.HoldsCount.Should().Be(5);
+            response.Content.ServiceUserCount.Should().Be(5);
+            response.Content.SupplierCount.Should().Be(5);
+            response.Content.TotalInvoiceAmount.Should().Be(50M);
+            response.Content.TotalHeldAmount.Should().Be(50M);
+            response.Content.PayRunStatus.Should().Be(payRun.Status);
+            response.Content.TotalDifferenceFromLastCycle.Should().Be(50M);
         }
 
         [Fact]
