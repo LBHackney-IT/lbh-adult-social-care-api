@@ -136,8 +136,21 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
         }
 
         [Fact]
-        public void ShouldGetPayRunInvoiceDetails()
+        public async Task ShouldGetPayRunInvoiceDetails()
         {
+            var payRun = CreateFullPayRun(true);
+            var invoiceId = payRun.PayrunInvoices.First().InvoiceId;
+            var url = new UrlFormatter()
+                .SetBaseUrl($"api/v1/payruns/{payRun.Id}/invoices/{invoiceId}")
+                .ToString();
+            var response = await _fixture.RestClient
+                .GetAsync<PayRunInvoiceDetailViewResponse>(url);
+
+            Assert.NotNull(response);
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.Content.PayRunId.Should().Be(payRun.Id);
+            response.Content.PayRunNumber.Should().Be(payRun.Number);
+            response.Content.EndDate.Should().Be(_periodTo);
         }
 
         private void ClearDatabase()
