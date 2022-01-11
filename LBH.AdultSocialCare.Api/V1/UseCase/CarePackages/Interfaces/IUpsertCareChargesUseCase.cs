@@ -6,6 +6,6 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces
 {
     public interface IUpsertCareChargesUseCase
     {
-        Task ExecuteAsync(Guid carePackageId, CareChargesCreateDomain careChargesCreateDomain);
+        Task ExecuteAsync(Guid carePackageId, CareChargesCreateDomain request);
     }
 }
