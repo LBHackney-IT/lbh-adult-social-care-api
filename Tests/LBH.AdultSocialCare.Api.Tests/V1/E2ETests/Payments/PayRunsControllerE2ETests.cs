@@ -102,8 +102,18 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
         }
 
         [Fact]
-        public void ShouldGetReleasedInvoiceCount()
+        public async Task ShouldGetReleasedInvoiceCount()
         {
+            var payRun = CreateFullPayRun(false, true);
+            var url = new UrlFormatter()
+                .SetBaseUrl($"api/v1/payruns/released-invoice-count")
+                .ToString();
+            var response = await _fixture.RestClient
+                .GetAsync<int>(url);
+
+            Assert.NotNull(response);
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.Content.Should().Be(5);
         }
 
         [Fact]
@@ -128,7 +138,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
             _fixture.DatabaseContext.SaveChanges();
         }
 
-        private Payrun CreateFullPayRun(bool hasHeldInvoices = false)
+        private Payrun CreateFullPayRun(bool hasHeldInvoices = false, bool hasReleasedInvoices = false)
         {
             ClearDatabase();
             var packages = CreateCarePackages();
@@ -137,7 +147,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
             // Create pay run with 10 items
             var payRun = TestDataHelper.CreatePayRun(PayrunType.ResidentialRecurring,
                 PayrunStatus.Approved, startDate: _periodFrom, endDate: _periodTo, paidUpToDate: _periodTo);
-            payRun.PayrunInvoices = CreatePayRunInvoices(payRun, invoices, hasHeldInvoices);
+            payRun.PayrunInvoices = CreatePayRunInvoices(payRun, invoices, hasHeldInvoices, hasReleasedInvoices);
             return _generator.CreatePayRun(payRun);
         }
 
@@ -155,15 +165,23 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
         }
 
         private static IList<PayrunInvoice> CreatePayRunInvoices(Payrun payrun, IList<Invoice> invoices,
-            bool hasHeldInvoices)
+            bool hasHeldInvoices, bool hasReleasedInvoices)
         {
-            if (!hasHeldInvoices)
+            if (!hasHeldInvoices && !hasReleasedInvoices)
                 return invoices.Select(invoice => TestDataHelper.CreatePayrunInvoice(payrun.Id, invoice)).ToList();
 
             var payrunInvoices = new List<PayrunInvoice>();
             var half = invoices.Count / 2;
-            payrunInvoices.AddRange(invoices.GetPage(1, half).ToList()
-                .Select(invoice => TestDataHelper.CreatePayrunInvoice(payrun.Id, invoice, InvoiceStatus.Held)));
+            if (hasHeldInvoices)
+            {
+                payrunInvoices.AddRange(invoices.GetPage(1, half).ToList()
+                    .Select(invoice => TestDataHelper.CreatePayrunInvoice(payrun.Id, invoice, InvoiceStatus.Held)));
+            }
+            if (hasReleasedInvoices)
+            {
+                payrunInvoices.AddRange(invoices.GetPage(1, half).ToList()
+                    .Select(invoice => TestDataHelper.CreatePayrunInvoice(payrun.Id, invoice, InvoiceStatus.Released)));
+            }
             payrunInvoices.AddRange(invoices.GetPage(2, half).ToList()
                 .Select(invoice => TestDataHelper.CreatePayrunInvoice(payrun.Id, invoice)));
             return payrunInvoices;
