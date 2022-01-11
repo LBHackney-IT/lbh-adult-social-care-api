@@ -68,6 +68,8 @@ namespace LBH.AdultSocialCare.Api.Tests
                         ["DocumentAPI:ClaimBearerToken"] = "17456",
                         ["DocumentAPI:PostBearerToken"] = "18811938",
                         ["DocumentAPI:GetBearerToken"] = "10711453",
+                        ["RuntimeConfiguration:IsSqlite"] = "true",
+                        ["RuntimeConfiguration:IsQueueAvailable"] = "false",
                     });
             });
             return base.CreateServer(builder);
