@@ -25,8 +25,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
         private readonly MockWebApplicationFactory _fixture;
         private readonly DatabaseTestDataGenerator _generator;
 
-        private readonly DateTimeOffset _periodFrom = DateTimeOffset.UtcNow.AddDays(-7);
-        private readonly DateTimeOffset _periodTo = DateTimeOffset.UtcNow;
+        private readonly DateTimeOffset _periodFrom = DateTimeOffset.UtcNow.AddDays(-7).Date;
+        private readonly DateTimeOffset _periodTo = DateTimeOffset.UtcNow.Date;
 
         public PayRunsControllerE2ETests(MockWebApplicationFactory fixture)
         {
@@ -117,8 +117,22 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
         }
 
         [Fact]
-        public void ShouldGetPreviousPayRunEndDate()
+        public async Task ShouldGetPreviousPayRunEndDate()
         {
+            ClearDatabase();
+            var payRun = TestDataHelper.CreatePayRun(PayrunType.ResidentialRecurring, PayrunStatus.Approved,
+                startDate: _periodFrom, endDate: _periodTo, paidUpToDate:_periodTo);
+            _generator.CreatePayRun(payRun);
+
+            var url = new UrlFormatter()
+                .SetBaseUrl($"api/v1/payruns/{payRun.Type}/previous-pay-run-end-date")
+                .ToString();
+            var response = await _fixture.RestClient
+                .GetAsync<DateTimeOffset>(url);
+
+            Assert.NotNull(response);
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+            Assert.Equal(payRun.EndDate, response.Content);
         }
 
         [Fact]
