@@ -60,6 +60,16 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         }
 
         [Fact]
+        public void ShouldSkipDetailsTotallyCoveredByInvoices()
+        {
+            PaymentExperiment
+                .For(_package, _generator)
+                .CreateInvoice("31-12-2022")
+                .CreateInvoice("31-12-2022")
+                .EnsureNoInvoiceGenerated();
+        }
+
+        [Fact]
         public void ShouldConsiderRejectedInvoices()
         {
             PaymentExperiment
@@ -90,7 +100,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
         }
 
         #endregion Normal finite weekly needs
-
 
         #region Refunds for finite details
 
