@@ -12,6 +12,7 @@ using LBH.AdultSocialCare.Api.Tests.Extensions;
 using LBH.AdultSocialCare.Api.Tests.V1.DataGenerators;
 using LBH.AdultSocialCare.Api.Tests.V1.Helper;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Request;
 using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
@@ -98,8 +99,22 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
         }
 
         [Fact]
-        public void ShouldCreateDraftPayRun()
+        public async Task ShouldCreateDraftPayRun()
         {
+            ClearDatabase();
+            var payRunCreationRequest = new DraftPayRunCreationRequest
+            {
+                Type = PayrunType.ResidentialRecurring,
+                PaidFromDate = _periodFrom,
+                PaidUpToDate = _periodTo
+            };
+            var url = $"api/v1/payruns";
+            var response = await _fixture.RestClient.PostAsync<object>(url, payRunCreationRequest);
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+
+            var payRuns = _fixture.DatabaseContext.Payruns.ToList();
+            payRuns.Should().HaveCount(1);
+            payRuns.First().Status.Should().Be(PayrunStatus.Draft);
         }
 
         [Fact]
@@ -143,7 +158,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
         {
             ClearDatabase();
             var payRun = TestDataHelper.CreatePayRun(PayrunType.ResidentialRecurring, PayrunStatus.Approved,
-                startDate: _periodFrom, endDate: _periodTo, paidUpToDate:_periodTo);
+                startDate: _periodFrom, endDate: _periodTo, paidUpToDate: _periodTo);
             _generator.CreatePayRun(payRun);
 
             var url = new UrlFormatter()
@@ -263,7 +278,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
             var ranges = new List<DateTimeOffsetRange>();
             for (var i = 0; i < count; i++)
             {
-                ranges.Add(new DateTimeOffsetRange(startDate,startDate.AddDays(gap)));
+                ranges.Add(new DateTimeOffsetRange(startDate, startDate.AddDays(gap)));
                 startDate = startDate.AddDays(2);
             }
 
