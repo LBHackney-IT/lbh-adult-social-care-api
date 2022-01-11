@@ -248,7 +248,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
         {
             return new Faker<Payrun>()
                 .RuleFor(p => p.Id, f => f.Random.Uuid())
-                .RuleFor(p => p.Number, f => f.Random.String(8))
+                .RuleFor(p => p.Number, f => f.Random.Uuid().ToString())
                 .RuleFor(p => p.Type, f => type ?? f.PickRandom<PayrunType>())
                 .RuleFor(p => p.Status, f => status ?? f.PickRandom<PayrunStatus>())
                 .RuleFor(p => p.PaidUpToDate, paidUpToDate ?? PayrunConstants.DefaultStartDate)
