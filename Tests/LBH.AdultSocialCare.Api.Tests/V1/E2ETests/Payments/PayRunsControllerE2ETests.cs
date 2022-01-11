@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Common.Extensions;
+using Common.Extensions.Concrete;
+using Common.Models;
 using FluentAssertions;
 using HttpServices.Helpers;
 using LBH.AdultSocialCare.Api.Tests.Extensions;
@@ -71,8 +73,28 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
         }
 
         [Fact]
-        public void ShouldGetPayRunList()
+        public async Task ShouldGetPayRunList()
         {
+            ClearDatabase();
+            var payRunDateRanges = CreateDateRanges(DateTimeOffset.UtcNow.Date.AddDays(-600), 30, 15);
+            var payRuns = payRunDateRanges.Select(dateRange =>
+                TestDataHelper.CreatePayRun(startDate: dateRange.Start, endDate: dateRange.End,
+                    paidUpToDate: dateRange.End)).ToList();
+            _generator.CreatePayRuns(payRuns);
+
+            var parameters = new PayRunListParameters { PageNumber = 1, PageSize = 15 };
+            var url = new UrlFormatter()
+                .SetBaseUrl($"api/v1/payruns")
+                .AddParameter("pageNumber", parameters.PageNumber)
+                .AddParameter("pageSize", parameters.PageSize)
+                .ToString();
+
+            var response = await _fixture.RestClient
+                .GetAsync<PagedResponse<PayRunListResponse>>(url);
+
+            Assert.NotNull(response);
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.Content.Data.Count().Should().Be(15);
         }
 
         [Fact]
@@ -234,6 +256,18 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
             Supplier supplier)
         {
             return TestDataHelper.CreateCarePackage(type, status, client.Id, supplier.Id);
+        }
+
+        private static IList<DateTimeOffsetRange> CreateDateRanges(DateTimeOffset startDate, int gap, int count)
+        {
+            var ranges = new List<DateTimeOffsetRange>();
+            for (var i = 0; i < count; i++)
+            {
+                ranges.Add(new DateTimeOffsetRange(startDate,startDate.AddDays(gap)));
+                startDate = startDate.AddDays(2);
+            }
+
+            return ranges;
         }
     }
 }
