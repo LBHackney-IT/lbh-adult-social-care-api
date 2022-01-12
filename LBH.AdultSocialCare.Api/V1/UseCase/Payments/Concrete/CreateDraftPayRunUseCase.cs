@@ -5,6 +5,7 @@ using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Services.Queuing;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
+using LBH.AdultSocialCare.Data.Constants;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using System;
 using System.Net;
@@ -45,7 +46,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             }
             else
             {
-                draftPayRunCreationDomain.StartDate = endOfLastPayRun.Date;
+                draftPayRunCreationDomain.StartDate = PayrunConstants.DefaultStartDate;
             }
 
             ValidatePayRunDates(draftPayRunCreationDomain.StartDate, draftPayRunCreationDomain.EndDate, draftPayRunCreationDomain.Type);
