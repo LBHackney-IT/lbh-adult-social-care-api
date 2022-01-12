@@ -9,8 +9,6 @@ using LBH.AdultSocialCare.Data.Constants.Enums;
 using System;
 using System.Net;
 using System.Threading.Tasks;
-using Common.Models;
-using Microsoft.Extensions.Options;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 {
@@ -18,13 +16,11 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
     {
         private readonly IPayRunGateway _payRunGateway;
         private readonly IQueueService _payrunsQueue;
-        private readonly RuntimeConfiguration _runtimeConfig;
 
-        public CreateDraftPayRunUseCase(IPayRunGateway payRunGateway, IQueueService payrunsQueue, IOptions<RuntimeConfiguration> runtimeConfig)
+        public CreateDraftPayRunUseCase(IPayRunGateway payRunGateway, IQueueService payrunsQueue)
         {
             _payRunGateway = payRunGateway;
             _payrunsQueue = payrunsQueue;
-            _runtimeConfig = runtimeConfig.Value;
         }
 
         public async Task CreateDraftPayRun(DraftPayRunCreationDomain draftPayRunCreationDomain)
@@ -59,10 +55,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             var payrun = draftPayRunCreationDomain.ToEntity();
 
             await _payRunGateway.CreateDraftPayRun(payrun);
-            if (_runtimeConfig.IsQueueAvailable)
-            {
-                await _payrunsQueue.Send(payrun.Id);
-            }
+            await _payrunsQueue.Send(payrun.Id);
         }
 
         private static void ValidatePayRunDates(DateTimeOffset startDate, DateTimeOffset endDate, PayrunType payrunType)

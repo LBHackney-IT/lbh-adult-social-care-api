@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using Common.Models;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using LBH.AdultSocialCare.Data.Entities.Common;
@@ -149,11 +148,11 @@ namespace LBH.AdultSocialCare.Data.Extensions
             return filteredList;
         }
 
-        public static IQueryable<PayrunInvoice> FilterPayRunInvoices(this IQueryable<PayrunInvoice> invoices, RuntimeConfiguration runtimeConfig,
-            PayRunDetailsQueryParameters parameters)
+        public static IQueryable<PayrunInvoice> FilterPayRunInvoices(
+            this IQueryable<PayrunInvoice> invoices, PayRunDetailsQueryParameters parameters, bool usePredicates)
         {
             var query = invoices;
-            if (!runtimeConfig.IsSqlite)
+            if (usePredicates)
             {
                 // Explode search term to tokens
                 var searchTokens = Regex.Split(parameters.SearchTerm ?? string.Empty, "\\s+").ToList();
