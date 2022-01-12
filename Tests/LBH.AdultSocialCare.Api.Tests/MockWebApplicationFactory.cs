@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
+using LBH.AdultSocialCare.Api.V1.Services.Queuing;
 using LBH.AdultSocialCare.Data;
 
 namespace LBH.AdultSocialCare.Api.Tests
@@ -39,6 +40,8 @@ namespace LBH.AdultSocialCare.Api.Tests
             Generator = new DatabaseTestDataGenerator(DatabaseContext);
 
             OutgoingRestClient = new Mock<IRestClient>();
+            PayrunsQueue = new Mock<IQueueService>();
+
             RestClient = new TestRestClient(CreateClient())
             {
                 // HACK: for some reason updates to existing entities done by API
@@ -54,6 +57,7 @@ namespace LBH.AdultSocialCare.Api.Tests
         public DatabaseTestDataGenerator Generator { get; }
 
         public Mock<IRestClient> OutgoingRestClient { get; }
+        public Mock<IQueueService> PayrunsQueue { get; }
 
         protected override TestServer CreateServer(IWebHostBuilder builder)
         {
@@ -67,7 +71,7 @@ namespace LBH.AdultSocialCare.Api.Tests
                         ["DocumentAPI:BaseUrl"] = "http://127.0.0.1",
                         ["DocumentAPI:ClaimBearerToken"] = "17456",
                         ["DocumentAPI:PostBearerToken"] = "18811938",
-                        ["DocumentAPI:GetBearerToken"] = "10711453",
+                        ["DocumentAPI:GetBearerToken"] = "10711453"
                     });
             });
             return base.CreateServer(builder);
@@ -79,13 +83,19 @@ namespace LBH.AdultSocialCare.Api.Tests
 
             builder.ConfigureTestServices(services =>
             {
-                services.RemoveAll<IRestClient>();
-                services.AddScoped(provider => OutgoingRestClient.Object);
+                ReplaceService(services, OutgoingRestClient.Object);
+                ReplaceService(services, PayrunsQueue.Object);
 
                 ConfigureHttpContextAccessor(services);
                 ConfigureAuthentication(services);
                 ConfigureDatabaseContext(services);
             });
+        }
+
+        private static void ReplaceService<TService>(IServiceCollection services, TService replacement) where TService : class
+        {
+            services.RemoveAll<TService>();
+            services.AddScoped(provider => replacement);
         }
 
         private static void ConfigureHttpContextAccessor(IServiceCollection services)
