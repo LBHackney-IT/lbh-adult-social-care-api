@@ -15,8 +15,10 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Common.Extensions;
+using HttpServices.Helpers;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
+using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
@@ -325,7 +327,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             package?.Status.Should().Be(PackageStatus.Ended);
 
             carePackageHistory?.Should().NotBeNull();
-            carePackageHistory?.Description.Should().Be(HistoryStatus.BrokeredEnded.GetDisplayName());
+            carePackageHistory?.Description.Should().Be($"{HistoryStatus.BrokeredEnded.GetDisplayName()}: {request.EndDate:yyyy-MM-dd}");
             carePackageHistory?.RequestMoreInformation.Should().Be(request.Notes);
             carePackageHistory?.Status.Should().Be(HistoryStatus.BrokeredEnded);
         }
@@ -359,6 +361,71 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                 .PutAsync<CarePackagePlainResponse>($"api/v1/care-packages/{package.Id}/confirm-s117");
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.InternalServerError);
+        }
+
+        [Fact]
+        public async Task ShouldReturnSubmittedForApprovalPackages()
+        {
+            3.Times(_ => _generator.CreateCarePackage(PackageType.NursingCare, PackageStatus.SubmittedForApproval));
+
+            var pageNumber = 1;
+            var pageSize = 10;
+
+            var url = new UrlFormatter()
+                .SetBaseUrl($"api/v1/care-packages/broker-view")
+                .AddParameter("pageNumber", pageNumber)
+                .AddParameter("pageSize", pageSize)
+                .AddParameter("status", PackageStatus.SubmittedForApproval)
+                .ToString();
+
+            var response = await _fixture.RestClient
+                .GetAsync<BrokerPackageViewResponse>(url);
+
+            response.Content.Packages.Count().Should().BeGreaterThan(0);
+        }
+
+        [Fact]
+        public async Task ShouldReturnCreatedPackageOfServiceUser()
+        {
+            var package = _generator.CreateCarePackage();
+
+            var pageNumber = 1;
+            var pageSize = 10;
+
+            var url = new UrlFormatter()
+                .SetBaseUrl($"api/v1/care-packages/broker-view")
+                .AddParameter("pageNumber", pageNumber)
+                .AddParameter("pageSize", pageSize)
+                .AddParameter("serviceUserId", package.ServiceUserId)
+                .ToString();
+
+            var response = await _fixture.RestClient
+                .GetAsync<BrokerPackageViewResponse>(url);
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.Content.Packages.FirstOrDefault()?.ServiceUserId.Should().Be(package.ServiceUserId.ToString());
+        }
+
+        [Fact]
+        public async Task ShouldReturnCreatedPackageWithDateRange()
+        {
+            var package = _generator.CreateCarePackage();
+
+            var pageNumber = 1;
+            var pageSize = 10;
+
+            var url = new UrlFormatter()
+                .SetBaseUrl($"api/v1/care-packages/broker-view")
+                .AddParameter("pageNumber", pageNumber)
+                .AddParameter("pageSize", pageSize)
+                .AddParameter("FromDate", package.DateAssigned)
+                .ToString();
+
+            var response = await _fixture.RestClient
+                .GetAsync<BrokerPackageViewResponse>(url);
+
+            response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
+            response.Content.Packages.Count().Should().BeGreaterThan(0);
         }
     }
 }

@@ -4,6 +4,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Interfaces;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Data.Constants.Enums;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 {
@@ -30,7 +31,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 
             if (previousPayRun != null)
             {
-                previousPayRunTotal = await _payRunInvoiceGateway.GetPayRunInvoicedTotalAsync(previousPayRun.Id);
+                previousPayRunTotal = await _payRunInvoiceGateway.GetPayRunInvoicedTotalAsync(previousPayRun.Id, new[] { InvoiceStatus.Accepted });
             }
 
             var result = new PayRunInsightsResponse

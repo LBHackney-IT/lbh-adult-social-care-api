@@ -148,24 +148,29 @@ namespace LBH.AdultSocialCare.Data.Extensions
             return filteredList;
         }
 
-        public static IQueryable<PayrunInvoice> FilterPayRunInvoices(this IQueryable<PayrunInvoice> invoices,
-            PayRunDetailsQueryParameters parameters)
+        public static IQueryable<PayrunInvoice> FilterPayRunInvoices(
+            this IQueryable<PayrunInvoice> invoices, PayRunDetailsQueryParameters parameters, bool usePredicates)
         {
-            // Explode search term to tokens
-            var searchTokens = Regex.Split(parameters.SearchTerm ?? string.Empty, "\\s+").ToList();
-            var searchPredicate = PredicateBuilder.New<PayrunInvoice>(true);
-            foreach (var searchToken in searchTokens)
+            var query = invoices;
+            if (usePredicates)
             {
-                searchPredicate = searchPredicate.Or(e =>
-                    EF.Functions.ILike(e.Invoice.ServiceUser.FirstName, $"%{searchToken}%")
-                    || EF.Functions.ILike(e.Invoice.ServiceUser.LastName, $"%{searchToken}%")
-                    || EF.Functions.ILike(e.InvoiceId.ToString(), $"%{searchToken}%")
-                    || EF.Functions.ILike(e.Invoice.Number, $"%{searchToken}%")
-                    || EF.Functions.ILike(e.Payrun.Number, $"%{searchToken}%")
-                    || EF.Functions.ILike(e.Invoice.Supplier.SupplierName ?? "", $"%{searchToken}%"));
+                // Explode search term to tokens
+                var searchTokens = Regex.Split(parameters.SearchTerm ?? string.Empty, "\\s+").ToList();
+                var searchPredicate = PredicateBuilder.New<PayrunInvoice>(true);
+                foreach (var searchToken in searchTokens)
+                {
+                    searchPredicate = searchPredicate.Or(e =>
+                        EF.Functions.ILike(e.Invoice.ServiceUser.FirstName, $"%{searchToken}%")
+                        || EF.Functions.ILike(e.Invoice.ServiceUser.LastName, $"%{searchToken}%")
+                        || EF.Functions.ILike(e.Invoice.Number, $"%{searchToken}%")
+                        || EF.Functions.ILike(e.Invoice.Supplier.CedarReferenceNumber, $"%{searchToken}%")
+                        || EF.Functions.ILike(e.Invoice.Supplier.CedarId.ToString(), $"%{searchToken}%")
+                        || EF.Functions.ILike(e.Invoice.Supplier.SupplierName ?? "", $"%{searchToken}%"));
+                }
+                query = query.Where(searchPredicate);
             }
 
-            return invoices.Where(searchPredicate).Where(invoice =>
+            return query.Where(invoice =>
                 (parameters.PackageType == null || invoice.Invoice.Package.PackageType == parameters.PackageType)
                 && (parameters.InvoiceStatus == null || invoice.InvoiceStatus == parameters.InvoiceStatus)
                 && (parameters.FromDate == null || invoice.Invoice.DateCreated >= parameters.FromDate)
@@ -176,7 +181,7 @@ namespace LBH.AdultSocialCare.Data.Extensions
             PayrunType? payrunType, PayrunStatus? payrunStatus, DateTimeOffset? dateFrom,
             DateTimeOffset? dateTo) =>
             payRuns.Where(e => (
-                (searchTerm == null || e.Id.ToString().ToLower().Contains(searchTerm.ToLower()) || e.Number.ToLower().Contains(searchTerm.ToLower()))
+                (searchTerm == null || e.Number.ToLower().Contains(searchTerm.ToLower()))
                 && (payrunType == null || e.Type.Equals(payrunType))
                 && (payrunStatus == null || e.Status.Equals(payrunStatus))
                 && (dateFrom == null || e.DateCreated >= dateFrom)

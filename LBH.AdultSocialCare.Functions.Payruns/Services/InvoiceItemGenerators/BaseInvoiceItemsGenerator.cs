@@ -33,7 +33,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
             var latestInvoiceItem = GetLatestInvoiceItem(packageItem, packageInvoices);
 
             return latestInvoiceItem != null
-                ? Dates.Min(packageItem.EndDate, latestInvoiceItem.ToDate.AddDays(1))
+                ? latestInvoiceItem.ToDate.AddDays(1)
                 : Dates.Max(packageItem.StartDate, PayrunConstants.DefaultStartDate);
         }
 
