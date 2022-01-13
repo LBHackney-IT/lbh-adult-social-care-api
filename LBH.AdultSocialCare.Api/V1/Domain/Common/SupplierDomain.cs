@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace LBH.AdultSocialCare.Api.V1.Domain.Common
 {
     public class SupplierDomain
@@ -9,5 +11,6 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.Common
         public string CedarName { get; set; }
         public string CedarReferenceNumber { get; set; }
         public int? CedarId { get; set; }
+        public List<SubSupplierDomain> SubSuppliers { get; set; }
     }
 }

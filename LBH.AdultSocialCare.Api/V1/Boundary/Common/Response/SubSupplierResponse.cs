@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
 namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
 {
-    public class SupplierResponse
+    public class SubSupplierResponse
     {
         public int Id { get; set; }
         public string SupplierName { get; set; }
@@ -11,6 +9,5 @@ namespace LBH.AdultSocialCare.Api.V1.Boundary.Common.Response
         public string CedarName { get; set; }
         public string CedarReferenceNumber { get; set; }
         public int? CedarId { get; set; }
-        public List<SubSupplierResponse> SubSuppliers { get; set; }
     }
 }
