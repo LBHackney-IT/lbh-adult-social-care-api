@@ -81,7 +81,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
             var suppliersPage = groupedSupplier
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
                 .Take(parameters.PageSize)
-                .Select(x => 
+                .Select(x =>
                 {
                     var parentSupplier = x.OrderBy(x => x.CedarReferenceNumber).FirstOrDefault();
 
@@ -104,7 +104,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
                             Postcode = s.Postcode,
                             SupplierName = s.SupplierName
                         }).ToList()
-                    };                    
+                    };
                 });
 
             return PagedList<SupplierDomain>
