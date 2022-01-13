@@ -72,18 +72,40 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
         public async Task<PagedList<SupplierDomain>> ListAsync(RequestParameters parameters, string supplierName)
         {
-            var suppliersCount = await _databaseContext.Suppliers
+            var supplierList = await _databaseContext.Suppliers
                 .FilterByName(supplierName)
-                .CountAsync().ConfigureAwait(false);
+                .GroupBy(h => new { h.CedarId, h.CedarName })
+                .Select(g => new SupplierDomain()
+                {
+                    CedarId = g.Key.CedarId,
+                    CedarName = g.Key.CedarName,
+                    SupplierName =_databaseContext.Suppliers.Where(s => s.CedarId == g.Key.CedarId).Select(x => x.SupplierName).SingleOrDefault(),
+                    Address = _databaseContext.Suppliers.Where(s => s.CedarId == g.Key.CedarId).Select(x => x.Address).SingleOrDefault(),
+                    Id = _databaseContext.Suppliers.Where(s => s.CedarId == g.Key.CedarId).Select(x => x.Id).SingleOrDefault(),
+                    Postcode = _databaseContext.Suppliers.Where(s => s.CedarId == g.Key.CedarId).Select(x => x.Postcode).SingleOrDefault(),
+                    CedarReferenceNumber = _databaseContext.Suppliers.Where(s => s.CedarId == g.Key.CedarId).Select(x => x.CedarReferenceNumber).SingleOrDefault(),
+                }).ToListAsync();
 
-            var suppliersPage = await _databaseContext.Suppliers
-                .FilterByName(supplierName)
-                .OrderBy(s => s.SupplierName)
-                .GetPage(parameters.PageNumber, parameters.PageSize)
-                .ToListAsync().ConfigureAwait(false);
+            foreach (var supplier in supplierList)
+            {
+                supplier.SubSuppliers = await _databaseContext.Suppliers.Where(s => s.CedarId == supplier.CedarId && Convert.ToInt32(s.CedarReferenceNumber) != 0)
+                    .Select(x => new SubSupplierDomain(){
+                        Id = x.Id,
+                        SupplierName = x.SupplierName,
+                        Address = x.Address,
+                        Postcode = x.Postcode,
+                        CedarId = x.CedarId,
+                        CedarName = x.CedarName,
+                        CedarReferenceNumber = x.CedarReferenceNumber})
+                    .ToListAsync();
+            }
+
+            var suppliersPage = supplierList
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize);
 
             return PagedList<SupplierDomain>
-                .ToPagedList(suppliersPage?.ToDomain(), suppliersCount, parameters.PageNumber, parameters.PageSize);
+                .ToPagedList(suppliersPage, supplierList.Count, parameters.PageNumber, parameters.PageSize);
         }
 
         private async Task<Supplier> GetSupplierEntityAsync(int supplierId)
