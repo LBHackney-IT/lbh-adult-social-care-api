@@ -74,38 +74,41 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
         {
             var supplierList = await _databaseContext.Suppliers
                 .FilterByName(supplierName)
-                .GroupBy(h => new { h.CedarId, h.CedarName })
-                .Select(g => new SupplierDomain()
-                {
-                    CedarId = g.Key.CedarId,
-                    CedarName = g.Key.CedarName,
-                    SupplierName =_databaseContext.Suppliers.Where(s => s.CedarId == g.Key.CedarId).Select(x => x.SupplierName).SingleOrDefault(),
-                    Address = _databaseContext.Suppliers.Where(s => s.CedarId == g.Key.CedarId).Select(x => x.Address).SingleOrDefault(),
-                    Id = _databaseContext.Suppliers.Where(s => s.CedarId == g.Key.CedarId).Select(x => x.Id).SingleOrDefault(),
-                    Postcode = _databaseContext.Suppliers.Where(s => s.CedarId == g.Key.CedarId).Select(x => x.Postcode).SingleOrDefault(),
-                    CedarReferenceNumber = _databaseContext.Suppliers.Where(s => s.CedarId == g.Key.CedarId).Select(x => x.CedarReferenceNumber).SingleOrDefault(),
-                }).ToListAsync();
+                .ToListAsync();
 
-            foreach (var supplier in supplierList)
-            {
-                supplier.SubSuppliers = await _databaseContext.Suppliers.Where(s => s.CedarId == supplier.CedarId && Convert.ToInt32(s.CedarReferenceNumber) != 0)
-                    .Select(x => new SubSupplierDomain(){
-                        Id = x.Id,
-                        SupplierName = x.SupplierName,
-                        Address = x.Address,
-                        Postcode = x.Postcode,
-                        CedarId = x.CedarId,
-                        CedarName = x.CedarName,
-                        CedarReferenceNumber = x.CedarReferenceNumber})
-                    .ToListAsync();
-            }
+            var groupedSupplier = supplierList.OrderBy(x => x.SupplierName).GroupBy(x => x.CedarId);
 
-            var suppliersPage = supplierList
+            var suppliersPage = groupedSupplier
                 .Skip((parameters.PageNumber - 1) * parameters.PageSize)
-                .Take(parameters.PageSize);
+                .Take(parameters.PageSize)
+                .Select(x => 
+                {
+                    var parentSupplier = x.OrderBy(x => x.CedarReferenceNumber).FirstOrDefault();
+
+                    return new SupplierDomain()
+                    {
+                        CedarId = x.Key,
+                        Address = parentSupplier.Address,
+                        CedarName = parentSupplier.CedarName,
+                        CedarReferenceNumber = parentSupplier.CedarReferenceNumber,
+                        Id = parentSupplier.Id,
+                        Postcode = parentSupplier.Postcode,
+                        SupplierName = parentSupplier.SupplierName,
+                        SubSuppliers = x.Count() <= 1 ? null : x.Select(s => new SubSupplierDomain()
+                        {
+                            Address = s.Address,
+                            CedarId = s.CedarId,
+                            CedarName = s.CedarName,
+                            CedarReferenceNumber = s.CedarReferenceNumber,
+                            Id = s.Id,
+                            Postcode = s.Postcode,
+                            SupplierName = s.SupplierName
+                        }).ToList()
+                    };                    
+                });
 
             return PagedList<SupplierDomain>
-                .ToPagedList(suppliersPage, supplierList.Count, parameters.PageNumber, parameters.PageSize);
+                .ToPagedList(suppliersPage, groupedSupplier.Count(), parameters.PageNumber, parameters.PageSize);
         }
 
         private async Task<Supplier> GetSupplierEntityAsync(int supplierId)
