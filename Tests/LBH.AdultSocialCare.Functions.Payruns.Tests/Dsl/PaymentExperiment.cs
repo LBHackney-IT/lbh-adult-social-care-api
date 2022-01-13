@@ -99,12 +99,18 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Dsl
         {
             _lastInvoice.Items.Count.Should().Be(expectations.Length);
 
+            var itemData = _lastInvoice.Items
+                .Select(i => $"{i.FromDate:dd-MM-yy}-{i.ToDate:dd-MM-yy}:{i.TotalCost}")
+                .ToList();
+
             foreach (var (cost, startDate, endDate) in expectations)
             {
                 _lastInvoice.Items.Should().ContainSingle(item =>
                     item.TotalCost == cost &&
                     item.FromDate == startDate &&
-                    item.ToDate == endDate);
+                    item.ToDate == endDate,
+                    $"Item {startDate:dd-MM-yy}-{endDate:dd-MM-yy}:{cost} " +
+                    $"must be present in among items {String.Join(", ", itemData)}");
             }
 
             return this;

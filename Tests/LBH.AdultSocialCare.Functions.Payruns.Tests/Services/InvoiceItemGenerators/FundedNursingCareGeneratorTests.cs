@@ -212,8 +212,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .CreateInvoice("07-12-2022")
                 .Pay()
                 .UpdateReclaim(r => r.StartDate = "02-12-2022".ToUtcDate())
-                .CreateRefund() // deducted for 7 days, now deducted for 6 days -> refund 100, use original invoice range
-                .VerifyLastInvoice((100.0m, "01-12-2022", "07-12-2022"));
+                .CreateRefund() // paid for 7 days, now pay for 6 days -> return 100 from supplier, use original invoice range
+                .VerifyLastInvoice((-100.0m, "01-12-2022", "07-12-2022"));
         }
 
         [Fact]
@@ -225,7 +225,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .Pay()
                 .UpdateReclaim(d => d.EndDate = "06-12-2022".ToUtcDate())
                 .CreateRefund()
-                .VerifyLastInvoice((100.0m, "01-12-2022", "07-12-2022"));
+                // FNC payment - paid 100 per day for seven days, now pay 6 days, return 100 from supplier
+                .VerifyLastInvoice((- 100.0m, "01-12-2022", "07-12-2022"));
         }
 
         [Fact]
@@ -241,8 +242,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
             experiment
                 .UpdateReclaim(d => d.StartDate = "02-12-2022".ToUtcDate())
                 .UpdateReclaim(d => d.EndDate = "06-12-2022".ToUtcDate())
-                .CreateRefund() // deducted 100 per day for 7 days, now deducted 50 per day for 5 days - return 450 to supplier
-                .VerifyLastInvoice((450.0m, "01-12-2022", "07-12-2022"));
+                .CreateRefund() // paid 100 per day for 7 days, now pay 50 per day for 5 days - return 450 from supplier
+                .VerifyLastInvoice((-450.0m, "01-12-2022", "07-12-2022"));
         }
 
         [Fact]
@@ -253,8 +254,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .CreateInvoice("07-12-2022")
                 .Pay()
                 .UpdateReclaim(r => r.StartDate = "30-11-2022".ToUtcDate())
-                .CreateRefund() // period is extended 1 day back, cost hasn't deducted -> supplier overpaid
-                .VerifyLastInvoice((-100.0m, "30-11-2022", "30-11-2022"));
+                .CreateRefund() // period is extended 1 day back, for FNC payment should pay 1 day more
+                .VerifyLastInvoice((100.0m, "30-11-2022", "30-11-2022"));
         }
 
         [Fact]
@@ -265,8 +266,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .CreateInvoice("07-12-2022")
                 .Pay()
                 .UpdateReclaim(d => d.StartDate = "01-01-2023".ToUtcDate())
-                .CreateRefund() // no cost should be deducted now, supplier underpaid - compensate
-                .VerifyLastInvoice((700.0m, "01-12-2022", "07-12-2022"));
+                .CreateRefund() // no need to pay anything for FNC payment, return everything from supplier
+                .VerifyLastInvoice((-700.0m, "01-12-2022", "07-12-2022"));
         }
 
         [Fact]
@@ -278,10 +279,10 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .CreateInvoice("14-12-2022")
                 .Pay()
                 .UpdateReclaim(r => r.StartDate = "15-12-2022".ToUtcDate())
-                .CreateRefund() // moving forward, refund everything
+                .CreateRefund() // moving forward, for FNC payment return everything from supplier
                 .VerifyLastInvoice(
-                    (700.0m, "01-12-2022", "07-12-2022"),
-                    (700.0m, "08-12-2022", "14-12-2022"));
+                    (-700.0m, "01-12-2022", "07-12-2022"),
+                    (-700.0m, "08-12-2022", "14-12-2022"));
         }
 
         [Fact]
@@ -292,16 +293,16 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .CreateInvoice("14-12-2022")
                 .Pay()
                 .UpdateReclaim(r => r.StartDate = "02-12-2022".ToUtcDate())
-                .CreateRefund() // one day less, return 100
-                .VerifyLastInvoice((100.0m, "01-12-2022", "14-12-2022"))
+                .CreateRefund() // pay one day less, return 100 from supplier
+                .VerifyLastInvoice((-100.0m, "01-12-2022", "14-12-2022"))
                 .Pay()
                 .UpdateReclaim(r => r.StartDate = "04-12-2022".ToUtcDate())
-                .CreateRefund() // two day less, return 200
-                .VerifyLastInvoice((200.0m, "01-12-2022", "14-12-2022"))
+                .CreateRefund() // pay two day less, return 200 from supplier
+                .VerifyLastInvoice((-200.0m, "01-12-2022", "14-12-2022"))
                 .Pay()
                 .UpdateReclaim(r => r.StartDate = "01-12-2022".ToUtcDate())
-                .CreateRefund() // bring back previously returned 100 and 300
-                .VerifyLastInvoice((-300.0m, "01-12-2022", "14-12-2022"));
+                .CreateRefund() // bring back to supplier previously returned 100 and 300
+                .VerifyLastInvoice((300.0m, "01-12-2022", "14-12-2022"));
         }
 
         [Fact]
@@ -320,11 +321,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .UpdateReclaim(r => r.ClaimCollector = ClaimCollector.Supplier)
                 .UpdateReclaim(r => r.StartDate = "05-12-2022".ToUtcDate())
                 .CreateRefund()
-                .VerifyLastInvoice((-1000.0m, "01-12-2022", "14-12-2022"))
+                .VerifyLastInvoice((1000.0m, "01-12-2022", "14-12-2022"))
                 .Pay()
                 .UpdateReclaim(r => r.StartDate = "01-12-2022".ToUtcDate())
                 .CreateRefund()
-                .VerifyLastInvoice((-400.0m, "01-12-2022", "14-12-2022"));
+                .VerifyLastInvoice((400.0m, "01-12-2022", "14-12-2022"));
         }
 
         [Fact]
@@ -335,11 +336,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .CreateInvoice("07-12-2022")
                 .Pay()
                 .UpdateReclaim(r => r.Status = ReclaimStatus.Cancelled)
-                .CreateRefund() // previous cost was deducted, so supplier was underpaid -> compensate all
-                .VerifyLastInvoice((700.0m, "01-12-2022", "07-12-2022"));
+                .CreateRefund() // previous cost was paid, supplier was overpaid -> compensate all
+                .VerifyLastInvoice((-700.0m, "01-12-2022", "07-12-2022"));
         }
 
-        [Fact]
+        [Fact(Skip = "Review FNC payment refunds collected by Hackney ")]
         public void ShouldSkipRefundOnHackneyReclaimUpdates()
         {
             PaymentExperiment
@@ -352,7 +353,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .EnsureNoInvoiceGenerated();
         }
 
-        [Fact]
+        [Fact(Skip = "Review FNC payment refunds collected by Hackney ")]
         public void ShouldSkipRefundOnHackneyReclaimCancellation()
         {
             PaymentExperiment
@@ -401,8 +402,8 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .CreateInvoice("07-12-2022")
                 .Pay()
                 .UpdateReclaim(d => d.EndDate = "05-12-2022".ToUtcDate())
-                .CreateRefund() // deducted 700, now should deduct 500, supplier underpaid
-                .VerifyLastInvoice((200.0m, "01-12-2022", "07-12-2022"));
+                .CreateRefund() // paid 700, now should pay 500, supplier overpaid, return 200
+                .VerifyLastInvoice((-200.0m, "01-12-2022", "07-12-2022"));
         }
 
         [Fact]

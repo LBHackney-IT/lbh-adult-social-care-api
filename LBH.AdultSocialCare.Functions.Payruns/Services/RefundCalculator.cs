@@ -78,29 +78,12 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
             // ..[--ref0--][--ref1--][--ref2--]
             var currentCost = calculateCurrentCost(unpaidRange, unpaidRange.WeeksInclusive);
 
-            if (packageItem is CarePackageReclaim reclaim)
-            {
-                switch (reclaim.ClaimCollector)
-                {
-                    case ClaimCollector.Hackney:
-                        currentCost = 0.0m;
-                        break;
-
-                    case ClaimCollector.Supplier:
-                        currentCost *= -1;
-                        break;
-
-                    default:
-                        throw new InvalidOperationException($"Unsupported claim collector {reclaim.ClaimCollector}");
-                }
-            }
-
             return new Refund
             {
                 StartDate = unpaidRange.StartDate,
                 EndDate = unpaidRange.EndDate,
                 Quantity = unpaidRange.WeeksInclusive,
-                Amount = Math.Round(currentCost, 2)
+                Amount = currentCost.Round(2)
             };
         }
 
@@ -126,6 +109,16 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 
         private static decimal CalculateReclaimRefundAmount(CarePackageReclaim reclaim, decimal currentCost, IList<InvoiceItem> paidInvoiceItems)
         {
+            if (reclaim.ClaimCollector is ClaimCollector.Hackney || reclaim.Status is ReclaimStatus.Cancelled)
+            {
+                currentCost = 0.0m; // shouldn't pay anything in this case, just refund previous payments
+            }
+
+            if (reclaim.SubType is ReclaimSubType.FncPayment)
+            {
+                return currentCost - paidInvoiceItems.Sum(item => item.TotalCost);
+            }
+
             // total amount deducted from supplier for a given period
             var deductedNetCost = paidInvoiceItems
                 .Where(item => item.ClaimCollector is ClaimCollector.Supplier)
@@ -136,29 +129,11 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 .Where(item => item.ClaimCollector is null)
                 .Sum(item => item.TotalCost);
 
-            if (reclaim.Status != ReclaimStatus.Cancelled)
-            {
-                switch (reclaim.ClaimCollector)
-                {
-                    case ClaimCollector.Supplier:
-                        // previously deducted costs + (overpaid - underpaid) - current cost
-                        return deductedNetCost - refundedCost - currentCost;
+            // when switching collector from Supplier to Hackney we refund everything not yet refunded,
+            // then when staying in Hackney deducted and refunded costs are equal so no refund generated;
+            // if initial collector is Hackney, deducted and refunded costs are zero - no refund generated
 
-                    case ClaimCollector.Hackney:
-                        // when switching collector from Supplier to Hackney we refund everything not yet refunded,
-                        // then when staying in Hackney deducted and refunded costs are equal so no refund generated;
-                        // if initial collector is Hackney, deducted and refunded costs are zero - no refund generated
-                        return deductedNetCost - refundedCost;
-
-                    default:
-                        throw new InvalidOperationException($"Unsupported ClaimCollector {reclaim.ClaimCollector}");
-                }
-            }
-            else
-            {
-                // compensate remainders to / from supplier
-                return deductedNetCost - refundedCost;
-            }
+            return currentCost - refundedCost - deductedNetCost;
         }
 
         private static List<InvoiceItem> GetPaidInvoiceItems(IPackageItem packageItem, IList<InvoiceDomain> packageInvoices)

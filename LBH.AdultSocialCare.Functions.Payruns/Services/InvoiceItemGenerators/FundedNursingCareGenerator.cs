@@ -82,7 +82,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                 .Where(r => r.Type is ReclaimType.Fnc)
                 .ToList();
 
-
             foreach (var reclaim in fundedNursingCare)
             {
                 var refunds = RefundCalculator.Calculate(
