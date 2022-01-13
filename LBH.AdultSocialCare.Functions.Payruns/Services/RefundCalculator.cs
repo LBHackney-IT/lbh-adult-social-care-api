@@ -89,34 +89,27 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
 
         private static decimal CalculateRefundAmount(IPackageItem packageItem, decimal currentCost, IList<InvoiceItem> paidInvoiceItems)
         {
-            switch (packageItem)
-            {
-                case CarePackageDetail _:
-                    return CalculateDetailRefundAmount(currentCost, paidInvoiceItems);
-
-                case CarePackageReclaim reclaim:
-                    return CalculateReclaimRefundAmount(reclaim, currentCost, paidInvoiceItems);
-
-                default:
-                    throw new InvalidOperationException($"Unsupported IPackageItem {packageItem.GetType()}");
-            }
+            return packageItem is CarePackageDetail
+                ? CalculatePaymentRefundAmount(currentCost, paidInvoiceItems)
+                : CalculateReclaimRefundAmount((CarePackageReclaim) packageItem, currentCost, paidInvoiceItems);
         }
 
-        private static decimal CalculateDetailRefundAmount(decimal currentCost, IList<InvoiceItem> paidInvoiceItems)
+        private static decimal CalculatePaymentRefundAmount(decimal currentCost, IList<InvoiceItem> paidInvoiceItems)
         {
             return currentCost - paidInvoiceItems.Sum(item => item.TotalCost);
         }
 
         private static decimal CalculateReclaimRefundAmount(CarePackageReclaim reclaim, decimal currentCost, IList<InvoiceItem> paidInvoiceItems)
         {
-            if (reclaim.ClaimCollector is ClaimCollector.Hackney || reclaim.Status is ReclaimStatus.Cancelled)
+            if ((reclaim.ClaimCollector is ClaimCollector.Hackney && reclaim.SubType != ReclaimSubType.FncPayment) || reclaim.Status is ReclaimStatus.Cancelled)
             {
-                currentCost = 0.0m; // shouldn't pay anything in this case, just refund previous payments
+                currentCost = 0.0m; // shouldn't pay anything in these cases, just refund previous payments
             }
 
             if (reclaim.SubType is ReclaimSubType.FncPayment)
             {
-                return currentCost - paidInvoiceItems.Sum(item => item.TotalCost);
+                // handle FNC payment as usual payment and FNC reclaim as reclaim
+                return CalculatePaymentRefundAmount(currentCost, paidInvoiceItems);
             }
 
             // total amount deducted from supplier for a given period

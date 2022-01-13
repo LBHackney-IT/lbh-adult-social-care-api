@@ -48,6 +48,16 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Dsl
             return this;
         }
 
+        public PaymentExperiment UpdateAllReclaims(Action<CarePackageReclaim> action)
+        {
+            foreach (var reclaim in _package.Reclaims)
+            {
+                UpdateReclaim(reclaim.Id, action);
+            }
+
+            return this;
+        }
+
         public PaymentExperiment UpdateReclaim(Action<CarePackageReclaim> action)
         {
             return UpdateReclaim(_package.Reclaims.First().Id, action);
@@ -97,11 +107,13 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Dsl
 
         public PaymentExperiment VerifyLastInvoice(params (decimal Cost, DateTimeOffset StartDate, DateTimeOffset EndDate)[] expectations)
         {
-            _lastInvoice.Items.Count.Should().Be(expectations.Length);
-
             var itemData = _lastInvoice.Items
-                .Select(i => $"{i.FromDate:dd-MM-yy}-{i.ToDate:dd-MM-yy}:{i.TotalCost}")
+                .Select(i => $"{i.FromDate:dd-MM-yy}/{i.ToDate:dd-MM-yy}:{i.TotalCost}")
                 .ToList();
+
+            _lastInvoice.Items.Count.Should().Be(
+                expectations.Length,
+                $"actual invoice items are {String.Join(", ", itemData)}");
 
             foreach (var (cost, startDate, endDate) in expectations)
             {
@@ -109,7 +121,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Dsl
                     item.TotalCost == cost &&
                     item.FromDate == startDate &&
                     item.ToDate == endDate,
-                    $"Item {startDate:dd-MM-yy}-{endDate:dd-MM-yy}:{cost} " +
+                    $"Item {startDate:dd-MM-yy}/{endDate:dd-MM-yy}:{cost} " +
                     $"must be present in among items {String.Join(", ", itemData)}");
             }
 
@@ -118,7 +130,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Dsl
 
         public PaymentExperiment EnsureNoInvoiceGenerated()
         {
-            _lastInvoice.Items.Count.Should().Be(0);
+            VerifyLastInvoice(Array.Empty<(decimal, DateTimeOffset, DateTimeOffset)>());
             return this;
         }
 
