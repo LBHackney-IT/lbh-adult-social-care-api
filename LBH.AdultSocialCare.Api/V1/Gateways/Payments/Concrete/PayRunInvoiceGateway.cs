@@ -84,7 +84,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             PayRunDetailsQueryParameters parameters)
         {
             var query = _dbContext.PayrunInvoices.Where(p => p.PayrunId == payRunId)
-                .FilterPayRunInvoices(parameters)
+                .FilterPayRunInvoices(parameters, _dbContext.SupportsPredicates)
                 .TrackChanges(false);
 
             var payRunInvoices = await query
@@ -131,7 +131,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             parameters.InvoiceStatus = InvoiceStatus.Held;
             var query = _dbContext.PayrunInvoices
                 .Where(pr => pr.Payrun.Status != PayrunStatus.Archived)
-                .FilterPayRunInvoices(parameters)
+                .FilterPayRunInvoices(parameters, _dbContext.SupportsPredicates)
                 .TrackChanges(false);
 
             var heldInvoices = await query
@@ -225,9 +225,9 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             return await BuildPayRunInvoiceQuery(query, fields).SingleOrDefaultAsync();
         }
 
-        public async Task<decimal> GetPayRunInvoicedTotalAsync(Guid payRunId)
+        public async Task<decimal> GetPayRunInvoicedTotalAsync(Guid payRunId, InvoiceStatus[] invoiceStatuses)
         {
-            var result = await _dbContext.PayrunInvoices.Where(pi => pi.PayrunId == payRunId).TrackChanges(false)
+            var result = await _dbContext.PayrunInvoices.Where(pi => pi.PayrunId == payRunId && invoiceStatuses.Contains(pi.InvoiceStatus)).TrackChanges(false)
                 .SumAsync(pi => pi.Invoice.GrossTotal);
             return decimal.Round(result, 2);
         }
