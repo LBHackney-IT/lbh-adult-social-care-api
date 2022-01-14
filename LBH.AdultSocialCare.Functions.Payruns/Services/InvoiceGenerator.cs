@@ -120,7 +120,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                 }
             }
 
-            var net = gross - supplierReclaims;
+            var net = gross + supplierReclaims;
             return (gross, net);
         }
 

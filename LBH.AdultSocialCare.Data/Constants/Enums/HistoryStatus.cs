@@ -36,7 +36,7 @@ namespace LBH.AdultSocialCare.Data.Constants.Enums
         [Display(Name = "Care Package declined")]
         Declined = 10,
 
-        [Display(Name = "Package Ended")]
+        [Display(Name = "Package end date changed to")]
         BrokeredEnded = 11,
 
         [Display(Name = "Care Package cancelled")]

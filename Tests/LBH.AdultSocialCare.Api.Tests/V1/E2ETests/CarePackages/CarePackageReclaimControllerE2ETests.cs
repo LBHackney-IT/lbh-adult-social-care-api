@@ -143,7 +143,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                      {
                          Cost = 12.34m,
                          ClaimCollector = ClaimCollector.Hackney,
-                         SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
+                         SubType = ReclaimSubType.CareCharge1To12Weeks,
                          StartDate = details.FirstOrDefault().StartDate,
                          EndDate = details.FirstOrDefault().StartDate.AddDays(84),
                          Description = "test",

@@ -66,6 +66,8 @@ namespace LBH.AdultSocialCare.Data
         public DbSet<Department> Departments { get; set; }
         public DbSet<HeldInvoice> HeldInvoices { get; set; }
 
+        public bool SupportsPredicates => Database.ProviderName == "Npgsql.EntityFrameworkCore.PostgreSQL";
+
         #region CustomFunctions
 
 #pragma warning disable CA1801, CA1822

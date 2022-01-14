@@ -70,6 +70,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                     InvoiceId = invoice.InvoiceId,
                     CarePackageId = invoice.CarePackageId,
                     ServiceUserId = invoice.ServiceUserId,
+                    HackneyId = invoice.HackneyId,
                     ServiceUserName = invoice.ServiceUserName,
                     SupplierId = invoice.SupplierId,
                     SupplierName = invoice.SupplierName,

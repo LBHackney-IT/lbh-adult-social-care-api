@@ -47,7 +47,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
             PaymentExperiment
                 .For(_package, _generator)
                 .CreateInvoice("07-12-2022")
-                .VerifyLastInvoice((700.0m, "01-12-2022", "07-12-2022"));
+                .VerifyLastInvoice((-700.0m, "01-12-2022", "07-12-2022"));
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .For(_package, _generator)
                 .CreateInvoice("03-12-2022")
                 .CreateInvoice("04-12-2022")
-                .VerifyLastInvoice((100.0m, "04-12-2022", "04-12-2022"));
+                .VerifyLastInvoice((-100.0m, "04-12-2022", "04-12-2022"));
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .CreateInvoice("03-12-2022")
                 .Reject()
                 .CreateInvoice("08-12-2022")
-                .VerifyLastInvoice((800.0m, "01-12-2022", "08-12-2022"));
+                .VerifyLastInvoice((-800.0m, "01-12-2022", "08-12-2022"));
         }
 
         [Fact]
@@ -87,7 +87,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
             PaymentExperiment
                 .For(_package, _generator)
                 .CreateInvoice("31-01-2023")
-                .VerifyLastInvoice((3100.0m /* 4wk 3d */, "01-12-2022", "31-12-2022"));
+                .VerifyLastInvoice((-3100.0m /* 4wk 3d */, "01-12-2022", "31-12-2022"));
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .For(_package, _generator)
                 .UpdateReclaim(r => r.StartDate = "20-12-2022".ToUtcDate())
                 .CreateInvoice("20-12-2022")
-                .VerifyLastInvoice((100.0m, "20-12-2022", "20-12-2022"));
+                .VerifyLastInvoice((-100.0m, "20-12-2022", "20-12-2022"));
         }
 
         [Fact]
@@ -107,7 +107,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .For(_package, _generator)
                 .UpdateReclaim(r => r.EndDate = "01-12-2022".ToUtcDate())
                 .CreateInvoice("07-12-2022")
-                .VerifyLastInvoice((100.0m, "01-12-2022", "01-12-2022"));
+                .VerifyLastInvoice((-100.0m, "01-12-2022", "01-12-2022"));
         }
 
         [Fact]
@@ -318,7 +318,7 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .For(_package, _generator)
                 .UpdateReclaim(d => d.EndDate = null)
                 .CreateInvoice("07-12-2022")
-                .VerifyLastInvoice((700.0m, "01-12-2022", "07-12-2022"));
+                .VerifyLastInvoice((-700.0m, "01-12-2022", "07-12-2022"));
         }
 
         [Fact]
@@ -329,9 +329,9 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Tests.Services.InvoiceItemGenera
                 .UpdateReclaim(d => d.EndDate = null)
                 .CreateInvoice("07-12-2022")
                 .CreateInvoice("14-12-2022")
-                .VerifyLastInvoice((700.0m, "08-12-2022", "14-12-2022"))
+                .VerifyLastInvoice((-700.0m, "08-12-2022", "14-12-2022"))
                 .CreateInvoice("14-10-2026")
-                .VerifyLastInvoice((140000.0m, "15-12-2022", "14-10-2026"));
+                .VerifyLastInvoice((-140000.0m, "15-12-2022", "14-10-2026"));
         }
 
         [Fact]

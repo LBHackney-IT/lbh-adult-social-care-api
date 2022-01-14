@@ -25,6 +25,9 @@ namespace LBH.AdultSocialCare.Data.Entities.CarePackages
 
         public ReclaimStatus Status
         {
+            // Status (unless it's final - cancelled) depends on current time
+            // so it's inherently pure calculated. Saving it have no reason
+            // 'cause anyway we have to recalculate it each day
             get => CalculateStatus();
             set => _status = value;
         }

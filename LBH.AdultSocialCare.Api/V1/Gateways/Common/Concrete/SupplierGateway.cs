@@ -72,18 +72,43 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Common.Concrete
 
         public async Task<PagedList<SupplierDomain>> ListAsync(RequestParameters parameters, string supplierName)
         {
-            var suppliersCount = await _databaseContext.Suppliers
+            var supplierList = await _databaseContext.Suppliers
                 .FilterByName(supplierName)
-                .CountAsync().ConfigureAwait(false);
+                .ToListAsync();
 
-            var suppliersPage = await _databaseContext.Suppliers
-                .FilterByName(supplierName)
-                .OrderBy(s => s.SupplierName)
-                .GetPage(parameters.PageNumber, parameters.PageSize)
-                .ToListAsync().ConfigureAwait(false);
+            var groupedSupplier = supplierList.OrderBy(x => x.SupplierName).GroupBy(x => x.CedarId);
+
+            var suppliersPage = groupedSupplier
+                .Skip((parameters.PageNumber - 1) * parameters.PageSize)
+                .Take(parameters.PageSize)
+                .Select(x =>
+                {
+                    var parentSupplier = x.OrderBy(x => x.CedarReferenceNumber).FirstOrDefault();
+
+                    return new SupplierDomain()
+                    {
+                        CedarId = x.Key,
+                        Address = parentSupplier.Address,
+                        CedarName = parentSupplier.CedarName,
+                        CedarReferenceNumber = parentSupplier.CedarReferenceNumber,
+                        Id = parentSupplier.Id,
+                        Postcode = parentSupplier.Postcode,
+                        SupplierName = parentSupplier.SupplierName,
+                        SubSuppliers = x.Count() <= 1 ? null : x.Select(s => new SubSupplierDomain()
+                        {
+                            Address = s.Address,
+                            CedarId = s.CedarId,
+                            CedarName = s.CedarName,
+                            CedarReferenceNumber = s.CedarReferenceNumber,
+                            Id = s.Id,
+                            Postcode = s.Postcode,
+                            SupplierName = s.SupplierName
+                        }).ToList()
+                    };
+                });
 
             return PagedList<SupplierDomain>
-                .ToPagedList(suppliersPage?.ToDomain(), suppliersCount, parameters.PageNumber, parameters.PageSize);
+                .ToPagedList(suppliersPage, groupedSupplier.Count(), parameters.PageNumber, parameters.PageSize);
         }
 
         private async Task<Supplier> GetSupplierEntityAsync(int supplierId)
