@@ -187,8 +187,8 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     TransactionDate = p.Invoice.DateCreated.Date,
                     ReceivedDate = p.Invoice.DateCreated.Date,
                     SupplierSiteReferenceId = p.Invoice.Supplier.CedarReferenceNumber,
-                    GrossAmount = p.Invoice.GrossTotal,
-                    NetAmount = p.Invoice.NetTotal,
+                    GrossAmount = p.Invoice.NetTotal, // GrossAmount is equal NET + VAT (VAT is out-of-scope for mvp)
+                    NetAmount = p.Invoice.NetTotal, // NeAmount is equal net without VAT (VAT is out-of-scope for mvp)
                     InvoiceItems = p.Invoice.Items.Select(it => new CedarFileInvoiceLineDomain()
                     {
                         InvoiceLineId = 3,
@@ -212,7 +212,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
 
             var result = new CedarFileHeader
             {
-                TotalValueOfInvoices = invoices.Sum(i => i.Invoice.GrossTotal),
+                TotalValueOfInvoices = invoices.Sum(i => i.Invoice.NetTotal),
                 TotalNumberOfInvoices = invoices.Count,
             };
 
