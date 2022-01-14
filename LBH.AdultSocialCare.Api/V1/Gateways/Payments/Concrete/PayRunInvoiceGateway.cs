@@ -62,7 +62,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             var paidLog = await _dbContext.PayrunHistories.Include(ph => ph.Creator).FirstOrDefaultAsync(ph => ph.PayRunId.Equals(payRunId) && ph.Type == PayRunHistoryType.PaidPayrun);
 
             var heldInvoiceStatuses =
-                new[] { InvoiceStatus.Held, InvoiceStatus.Released, InvoiceStatus.ReleaseAccepted };
+                new[] { InvoiceStatus.Rejected, InvoiceStatus.Held, InvoiceStatus.Released, InvoiceStatus.ReleaseAccepted };
 
             var result = new PayRunInsightsDomain
             {
@@ -71,7 +71,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                 ServiceUserCount = invoices.Where(x => x.InvoiceStatus == InvoiceStatus.Accepted).Select(i => i.Invoice.ServiceUserId).Distinct().Count(),
                 HoldsCount = invoices.Count(i => heldInvoiceStatuses.Contains(i.InvoiceStatus)),
                 TotalHeldAmount = invoices.Where(i => heldInvoiceStatuses.Contains(i.InvoiceStatus))
-                    .Sum(i => i.Invoice.GrossTotal),
+                    .Sum(i => i.Invoice.NetTotal),
                 IsCedarFileDownloaded = isCedarDownloaded,
                 PaidBy = paidLog?.Creator.Name,
                 PaidOn = paidLog?.DateCreated
@@ -228,7 +228,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
         public async Task<decimal> GetPayRunInvoicedTotalAsync(Guid payRunId, InvoiceStatus[] invoiceStatuses)
         {
             var result = await _dbContext.PayrunInvoices.Where(pi => pi.PayrunId == payRunId && invoiceStatuses.Contains(pi.InvoiceStatus)).TrackChanges(false)
-                .SumAsync(pi => pi.Invoice.GrossTotal);
+                .SumAsync(pi => pi.Invoice.NetTotal);
             return decimal.Round(result, 2);
         }
 
