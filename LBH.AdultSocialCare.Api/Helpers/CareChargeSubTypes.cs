@@ -8,9 +8,9 @@ namespace LBH.AdultSocialCare.Api.Helpers
         {
             return subType switch
             {
-                ReclaimSubType.CareChargeProvisional => ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks => ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks,
-                _ => ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks
+                ReclaimSubType.CareChargeProvisional => ReclaimSubType.CareCharge1To12Weeks,
+                ReclaimSubType.CareCharge1To12Weeks => ReclaimSubType.CareCharge13PlusWeeks,
+                _ => ReclaimSubType.CareCharge13PlusWeeks
             };
         }
     }

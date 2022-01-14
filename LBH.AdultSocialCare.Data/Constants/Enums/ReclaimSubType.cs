@@ -10,10 +10,10 @@ namespace LBH.AdultSocialCare.Data.Constants.Enums
         CareChargeProvisional = 1,
 
         [Display(Name = "Without Property 1-12 Weeks")]
-        CareChargeWithoutPropertyOneToTwelveWeeks = 2,
+        CareCharge1To12Weeks = 2,
 
         [Display(Name = "Without Property 13+ Weeks")]
-        CareChargeWithoutPropertyThirteenPlusWeeks = 3,
+        CareCharge13PlusWeeks = 3,
 
         [Display(Name = "FNC Payment")]
         FncPayment = 4,

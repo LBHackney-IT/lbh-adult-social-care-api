@@ -70,7 +70,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 
         public CarePackageReclaim CreateCarePackageReclaim(
             CarePackage package, ClaimCollector collector,
-            ReclaimType type, ReclaimSubType subType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks)
+            ReclaimType type, ReclaimSubType subType = ReclaimSubType.CareCharge13PlusWeeks)
         {
             var reclaim = TestDataHelper.CreateCarePackageReclaim(package.Id, collector, type, subType);
 

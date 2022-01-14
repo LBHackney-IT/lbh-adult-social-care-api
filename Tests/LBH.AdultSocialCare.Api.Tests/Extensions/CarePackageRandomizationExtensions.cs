@@ -72,7 +72,7 @@ namespace LBH.AdultSocialCare.Api.Tests.Extensions
 
         public static CarePackage AddCareChargeFor12Weeks(this CarePackage package, decimal? cost = null, ClaimCollector? collector = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
         {
-            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(package.Id, ReclaimType.CareCharge, ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, collector, cost, startDate, endDate));
+            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(package.Id, ReclaimType.CareCharge, ReclaimSubType.CareCharge1To12Weeks, collector, cost, startDate, endDate));
             return package;
         }
 
@@ -84,7 +84,7 @@ namespace LBH.AdultSocialCare.Api.Tests.Extensions
 
         public static CarePackage AddCareChargeFor13PlusWeeks(this CarePackage package, decimal? cost = null, ClaimCollector? collector = null, DateTimeOffset? startDate = null, DateTimeOffset? endDate = null)
         {
-            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(package.Id, ReclaimType.CareCharge, ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks, collector, cost, startDate, endDate));
+            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(package.Id, ReclaimType.CareCharge, ReclaimSubType.CareCharge13PlusWeeks, collector, cost, startDate, endDate));
             return package;
         }
 

@@ -64,8 +64,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             var request = CreateUpsertRequest(
                 (ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _today.AddDays(-1)),
-                (ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _today, _today.AddDays(84)),
-                (ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks, _today.AddDays(85), _today.AddDays(200)));
+                (ReclaimSubType.CareCharge1To12Weeks, _today, _today.AddDays(84)),
+                (ReclaimSubType.CareCharge13PlusWeeks, _today.AddDays(85), _today.AddDays(200)));
 
             await _useCase.ExecuteAsync(_package.Id, request);
 
@@ -86,7 +86,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         public async Task ShouldReplaceUpdatedChargeWithNewOneWhenDateIsChanged()
         {
             AddExistingCareCharge(ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _today);
-            AddExistingCareCharge(ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _today.AddDays(1), _coreCost.EndDate);
+            AddExistingCareCharge(ReclaimSubType.CareCharge1To12Weeks, _today.AddDays(1), _coreCost.EndDate);
 
             var request = CreateUpsertRequest();
             request.CareCharges.First().EndDate = _today.AddDays(-1);
@@ -95,7 +95,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             await _useCase.ExecuteAsync(_package.Id, request);
 
             var provisionalCharges = _package.Reclaims.Where(r => r.SubType is ReclaimSubType.CareChargeProvisional).ToList();
-            var first12WeeksCharges = _package.Reclaims.Where(r => r.SubType is ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks).ToList();
+            var first12WeeksCharges = _package.Reclaims.Where(r => r.SubType is ReclaimSubType.CareCharge1To12Weeks).ToList();
 
             provisionalCharges.Count.Should().Be(2);
             first12WeeksCharges.Count.Should().Be(2);
@@ -114,8 +114,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         {
             _coreCost.EndDate = _today.AddDays(1000);
 
-            AddExistingCareCharge(ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(84));
-            AddExistingCareCharge(ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks, _coreCost.StartDate.AddDays(85), _coreCost.EndDate);
+            AddExistingCareCharge(ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(84));
+            AddExistingCareCharge(ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(85), _coreCost.EndDate);
 
             _package.Reclaims.Last().Cost = 10m;
 
@@ -126,7 +126,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             _package.Reclaims.Count.Should().Be(3);
 
-            var plus13WeeksCharges = _package.Reclaims.Where(r => r.SubType is ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks).ToList();
+            var plus13WeeksCharges = _package.Reclaims.Where(r => r.SubType is ReclaimSubType.CareCharge13PlusWeeks).ToList();
 
             plus13WeeksCharges.Should().ContainSingle(c => c.Cost == 20m && c.Status == ReclaimStatus.Pending);
             plus13WeeksCharges.Should().ContainSingle(c => c.Cost == 10m && c.Status == ReclaimStatus.Cancelled);
@@ -159,7 +159,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             AddExistingCareCharge(ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _today.AddDays(5));
 
             var request = CreateUpsertRequest(
-                (ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _today.AddDays(6), _coreCost.EndDate));
+                (ReclaimSubType.CareCharge1To12Weeks, _today.AddDays(6), _coreCost.EndDate));
 
             await _useCase.ExecuteAsync(_package.Id, request);
 
@@ -172,7 +172,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                      r.EndDate == _today.AddDays(5));
 
             _package.Reclaims.Should().ContainSingle(
-                r => r.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks &&
+                r => r.SubType == ReclaimSubType.CareCharge1To12Weeks &&
                      r.Status == ReclaimStatus.Pending &&
                      r.StartDate == _today.AddDays(6) &&
                      r.EndDate == _coreCost.EndDate);
@@ -186,7 +186,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             AddExistingCareCharge(ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _today.AddDays(5));
 
             var request = CreateUpsertRequest(
-                (ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _coreCost.StartDate, _coreCost.EndDate));
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.EndDate));
 
             await _useCase.ExecuteAsync(_package.Id, request);
 
@@ -197,7 +197,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                      r.Status == ReclaimStatus.Cancelled);
 
             _package.Reclaims.Should().ContainSingle(
-                r => r.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks &&
+                r => r.SubType == ReclaimSubType.CareCharge1To12Weeks &&
                      r.Status == ReclaimStatus.Active);
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
@@ -205,7 +205,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
         [Theory]
         [InlineData(ReclaimSubType.CareChargeProvisional)]
-        [InlineData(ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks)]
+        [InlineData(ReclaimSubType.CareCharge1To12Weeks)]
         public async Task ShouldAdjustOngoingCareChargeEndDateToFinitePackageEndDate(ReclaimSubType subtype)
         {
             var request = CreateUpsertRequest((subtype, _coreCost.StartDate, null));
@@ -223,13 +223,13 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _coreCost.EndDate = _today.AddDays(300);
 
             var request = CreateUpsertRequest(
-                (ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(84)),
-                (ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks, _coreCost.StartDate.AddDays(85), null));
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(84)),
+                (ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(85), null));
 
             await _useCase.ExecuteAsync(_package.Id, request);
 
             _package.Reclaims
-                .Single(r => r.SubType is ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks)
+                .Single(r => r.SubType is ReclaimSubType.CareCharge13PlusWeeks)
                 .EndDate.Should().Be(_coreCost.EndDate);
         }
 
@@ -239,7 +239,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _coreCost.EndDate = _today.AddDays(300);
 
             var request = CreateUpsertRequest(
-                (ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(20 * 7)));
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(20 * 7)));
 
             VerifyFailedRequest(request, "cannot exceed 12 weeks");
         }
@@ -250,7 +250,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _coreCost.EndDate = _today.AddDays(3000);
 
             var request = CreateUpsertRequest(
-                (ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(2 * 7)));
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(2 * 7)));
 
             VerifyFailedRequest(request, "should end at");
         }
@@ -261,13 +261,13 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _coreCost.EndDate = _coreCost.StartDate.AddDays(5);
 
             var request = CreateUpsertRequest(
-                (ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _coreCost.StartDate, _coreCost.EndDate));
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.EndDate));
 
             await _useCase.ExecuteAsync(_package.Id, request);
 
             _package.Reclaims.Count.Should().Be(1);
             _package.Reclaims.Should().ContainSingle(
-                r => r.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks &&
+                r => r.SubType == ReclaimSubType.CareCharge1To12Weeks &&
                      r.Status == ReclaimStatus.Ended &&
                      r.StartDate == _coreCost.StartDate &&
                      r.EndDate == _coreCost.EndDate);
@@ -280,7 +280,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         {
             var request = CreateUpsertRequest(
                 (ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _today.AddDays(5)),
-                (ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _today.AddDays(5), _coreCost.EndDate));
+                (ReclaimSubType.CareCharge1To12Weeks, _today.AddDays(5), _coreCost.EndDate));
 
             VerifyFailedRequest(request, "must start one day after");
         }
@@ -291,8 +291,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _coreCost.EndDate = _today.AddDays(300);
 
             var request = CreateUpsertRequest(
-                (ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(84)),
-                (ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks, _coreCost.StartDate.AddDays(90), _coreCost.EndDate));
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(84)),
+                (ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(90), _coreCost.EndDate));
 
             VerifyFailedRequest(request, "must start one day after");
         }
@@ -302,7 +302,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         {
             var request = CreateUpsertRequest(
                 (ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, null),
-                (ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _coreCost.StartDate.AddDays(10), _coreCost.EndDate));
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate.AddDays(10), _coreCost.EndDate));
 
             VerifyFailedRequest(request, "care charge must have an end date");
         }
@@ -310,8 +310,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         [Theory]
         [InlineData(ReclaimSubType.CareChargeProvisional, -1)]
         [InlineData(ReclaimSubType.CareChargeProvisional, 1)]
-        [InlineData(ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, -1)]
-        [InlineData(ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, 1)]
+        [InlineData(ReclaimSubType.CareCharge1To12Weeks, -1)]
+        [InlineData(ReclaimSubType.CareCharge1To12Weeks, 1)]
         public void ShouldFailWhenFirstCareChargeStartDateDiffersFromPackageStartDate(ReclaimSubType subtype, int daysDelta)
         {
             var request = CreateUpsertRequest(
@@ -322,7 +322,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
         [Theory]
         [InlineData(ReclaimSubType.CareChargeProvisional)]
-        [InlineData(ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks)]
+        [InlineData(ReclaimSubType.CareCharge1To12Weeks)]
         public void ShouldFailWhenLastCareChargeEndDateExceedsPackageEndDate(ReclaimSubType subtype)
         {
             var request = CreateUpsertRequest((subtype, _coreCost.StartDate, _coreCost.EndDate?.AddDays(1)));
@@ -336,8 +336,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _coreCost.EndDate = _today.AddDays(300);
 
             var request = CreateUpsertRequest(
-                (ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(84)),
-                (ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks, _coreCost.StartDate.AddDays(85), _coreCost.EndDate?.AddDays(1)));
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(84)),
+                (ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(85), _coreCost.EndDate?.AddDays(1)));
 
             VerifyFailedRequest(request, "Last care charge end date expected to be less than or equal to");
         }
@@ -347,7 +347,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         {
             var request = CreateUpsertRequest(
                 (ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _coreCost.StartDate.AddDays(10)),
-                (ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks, _coreCost.StartDate.AddDays(11), _coreCost.EndDate));
+                (ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(11), _coreCost.EndDate));
 
             VerifyFailedRequest(request, "care charge must be followed by");
         }
@@ -359,7 +359,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
             var request = CreateUpsertRequest(
                 (ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _today.AddDays(5)),
-                (ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks, _today.AddDays(6), _coreCost.EndDate));
+                (ReclaimSubType.CareCharge13PlusWeeks, _today.AddDays(6), _coreCost.EndDate));
 
             await _useCase.ExecuteAsync(_package.Id, request);
 
@@ -370,7 +370,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                      r.Status == ReclaimStatus.Active);
 
             _package.Reclaims.Should().ContainSingle(
-                r => r.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks &&
+                r => r.SubType == ReclaimSubType.CareCharge13PlusWeeks &&
                      r.Status == ReclaimStatus.Pending);
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
@@ -385,8 +385,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _coreCost.EndDate = _today.AddDays(300);
 
             AddExistingCareCharge(
-                ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks,
-                _coreCost.StartDate.AddDays(85), _coreCost.EndDate);
+                ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(85), _coreCost.EndDate);
 
             var request = CreateUpsertRequest(
                 (ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _coreCost.StartDate.AddDays(85 + daysDelta)));
@@ -400,8 +399,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             _coreCost.EndDate = _coreCost.EndDate.GetValueOrDefault().AddDays(1000);
 
             AddExistingCareCharge(ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _coreCost.StartDate.AddDays(10));
-            AddExistingCareCharge(ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks, _coreCost.StartDate.AddDays(11), _coreCost.StartDate.AddDays(95));
-            AddExistingCareCharge(ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks, _coreCost.StartDate.AddDays(96), _coreCost.EndDate);
+            AddExistingCareCharge(ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate.AddDays(11), _coreCost.StartDate.AddDays(95));
+            AddExistingCareCharge(ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(96), _coreCost.EndDate);
 
             foreach (var subtype in _package.Reclaims.Select(r => r.SubType))
             {

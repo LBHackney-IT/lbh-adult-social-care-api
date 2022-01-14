@@ -57,7 +57,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     CarePackageId = packageId,
                     StartDate = DateTimeOffset.UtcNow,
                     Type = ReclaimType.CareCharge,
-                    SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks
+                    SubType = ReclaimSubType.CareCharge13PlusWeeks
                 }).ToList()
             };
             _carePackageGateway = new Mock<ICarePackageGateway>();
@@ -210,7 +210,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             {
                 Cost = 1m,
                 Type = ReclaimType.CareCharge,
-                SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks,
+                SubType = ReclaimSubType.CareCharge13PlusWeeks,
                 Status = ReclaimStatus.Active,
                 StartDate = _today.AddDays(-30),
                 EndDate = _today.AddDays(30),
@@ -368,7 +368,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                     {
                         Cost = 1m,
                         Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
+                        SubType = ReclaimSubType.CareCharge1To12Weeks,
                         Status = ReclaimStatus.Active,
                         StartDate = _today.AddDays(-20),
                         EndDate = _today.AddDays(20),
