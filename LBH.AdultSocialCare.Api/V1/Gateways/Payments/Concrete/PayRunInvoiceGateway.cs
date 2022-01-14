@@ -96,6 +96,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     InvoiceId = payRunInvoice.InvoiceId,
                     CarePackageId = payRunInvoice.Invoice.PackageId,
                     ServiceUserId = payRunInvoice.Invoice.ServiceUserId,
+                    HackneyId = payRunInvoice.Invoice.ServiceUser.HackneyId,
                     ServiceUserName =
                     $"{payRunInvoice.Invoice.ServiceUser.FirstName} {payRunInvoice.Invoice.ServiceUser.MiddleName ?? string.Empty} {payRunInvoice.Invoice.ServiceUser.LastName}",
                     SupplierId = payRunInvoice.Invoice.Supplier.CedarId ?? payRunInvoice.Invoice.SupplierId,
@@ -189,6 +190,7 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
                     Id = payRunInvoice.Id,
                     InvoiceId = payRunInvoice.InvoiceId,
                     CarePackageId = payRunInvoice.Invoice.PackageId,
+                    HackneyId = payRunInvoice.Invoice.ServiceUser.HackneyId,
                     ServiceUserId = payRunInvoice.Invoice.ServiceUserId,
                     ServiceUserName =
                     $"{payRunInvoice.Invoice.ServiceUser.FirstName} {payRunInvoice.Invoice.ServiceUser.MiddleName ?? string.Empty} {payRunInvoice.Invoice.ServiceUser.LastName}",
