@@ -73,7 +73,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             // if requested 1-12 charge covers period of provisional charge, 1-12 will replace provisional
             var provisionalCharge = request.CareCharges.SingleOrDefault(cc => cc.SubType is ReclaimSubType.CareChargeProvisional);
-            var first12WeeksCharge = request.CareCharges.SingleOrDefault(cc => cc.SubType is ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
+            var first12WeeksCharge = request.CareCharges.SingleOrDefault(cc => cc.SubType is ReclaimSubType.CareCharge1To12Weeks);
 
             if (first12WeeksCharge != null && first12WeeksCharge.StartDate <= provisionalCharge?.StartDate)
             {
@@ -101,8 +101,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         private static void ValidateCareChargesModel(CareChargesCreateDomain request, CarePackage package)
         {
-            Debug.Assert(ReclaimSubType.CareChargeProvisional == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks - 1);
-            Debug.Assert(ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks - 1);
+            Debug.Assert(ReclaimSubType.CareChargeProvisional == ReclaimSubType.CareCharge1To12Weeks - 1);
+            Debug.Assert(ReclaimSubType.CareCharge1To12Weeks == ReclaimSubType.CareCharge13PlusWeeks - 1);
 
             var coreCost = package.GetCoreCostDetail();
 
@@ -157,7 +157,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private static void ValidateFirst12WeeksChargeDuration(List<CareChargeReclaimCreationDomain> careCharges, CarePackageDetail coreCost)
         {
             // 1-12 care charge duration shouldn't exceed 12 weeks
-            var first12WeeksCharge = careCharges.SingleOrDefault(cc => cc.SubType is ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
+            var first12WeeksCharge = careCharges.SingleOrDefault(cc => cc.SubType is ReclaimSubType.CareCharge1To12Weeks);
             if (first12WeeksCharge != null)
             {
                 var realEndDate = first12WeeksCharge.EndDate.GetValueOrDefault().Date;
@@ -266,8 +266,8 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             return subtype switch
             {
                 ReclaimSubType.CareChargeProvisional => "Provisional",
-                ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks => "1-12",
-                ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks => "13+",
+                ReclaimSubType.CareCharge1To12Weeks => "1-12",
+                ReclaimSubType.CareCharge13PlusWeeks => "13+",
                 _ => String.Empty
             };
         }
