@@ -79,7 +79,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
                 // Set initial invoice line number
                 var invoiceNumber = 1;
 
-                foreach (var invoice in invoiceList.OrderBy(x => x.InvoiceNumber))
+                foreach (var invoice in invoiceList.OrderBy(x => x.InvoiceReferenceNumber))
                 {
                     // Get Property Value of invoice header using Reflection
                     var invoiceModel = new CedarFileInvoiceHeader();
