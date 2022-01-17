@@ -22,7 +22,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
             PackageStatus? status = PackageStatus.New, Guid? serviceUserId = null, int? supplierId = null)
         {
             var package = new Faker<CarePackage>()
-                .RuleFor(cp => cp.Id, f => f.Random.Guid())
+                .RuleFor(cp => cp.Id, Guid.NewGuid())
                 .RuleFor(cp => cp.PackageType, f => packageType ?? f.PickRandom<PackageType>())
                 .RuleFor(cp => cp.SupplierId, f => supplierId)
                 .RuleFor(cp => cp.PackageScheduling, f => f.PickRandom<PackageScheduling>())
