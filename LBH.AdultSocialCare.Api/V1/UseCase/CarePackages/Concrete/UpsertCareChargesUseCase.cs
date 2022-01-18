@@ -75,7 +75,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var provisionalCharge = request.CareCharges.SingleOrDefault(cc => cc.SubType is ReclaimSubType.CareChargeProvisional);
             var first12WeeksCharge = request.CareCharges.SingleOrDefault(cc => cc.SubType is ReclaimSubType.CareCharge1To12Weeks);
 
-            if (first12WeeksCharge != null && first12WeeksCharge.StartDate <= provisionalCharge?.StartDate)
+            if (first12WeeksCharge != null && first12WeeksCharge.StartDate.Date <= provisionalCharge?.StartDate.Date)
             {
                 provisionalCharge.Status = ReclaimStatus.Cancelled;
             }
@@ -122,7 +122,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                                            $" {GetShortName(previousCharge.SubType + 1)}", HttpStatusCode.BadRequest);
                 }
 
-                var expectedEndDate = currentCharge.StartDate.AddDays(-1);
+                var expectedEndDate = currentCharge.StartDate.Date.AddDays(-1);
                 if (previousCharge.EndDate is null)
                 {
                     throw new ApiException($"{GetShortName(previousCharge.SubType)} care charge must have an end date one day before " +
@@ -138,14 +138,14 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             // First care charge must be started at package start date
-            if (requestedCareCharges.First()?.StartDate != coreCost.StartDate)
+            if (requestedCareCharges.First()?.StartDate.Date < coreCost.StartDate.Date)
             {
-                throw new ApiException("First care charge must start on package start date " +
+                throw new ApiException("First care charge start date must be greater or equal to package start date " +
                                        $"{coreCost.StartDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
             }
 
             // Last care charge end date must not exceed package end date (if any)
-            if (coreCost.EndDate.HasValue && requestedCareCharges.Last().EndDate > coreCost.EndDate)
+            if (coreCost.EndDate.HasValue && requestedCareCharges.Last().EndDate?.Date > coreCost.EndDate.Value.Date)
             {
                 throw new ApiException("Last care charge end date expected to be less than or equal " +
                                        $"to {coreCost.EndDate.Value:yyyy-MM-dd}", HttpStatusCode.BadRequest);

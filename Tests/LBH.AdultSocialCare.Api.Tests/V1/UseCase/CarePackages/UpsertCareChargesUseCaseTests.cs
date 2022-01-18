@@ -309,15 +309,29 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
         [Theory]
         [InlineData(ReclaimSubType.CareChargeProvisional, -1)]
-        [InlineData(ReclaimSubType.CareChargeProvisional, 1)]
         [InlineData(ReclaimSubType.CareCharge1To12Weeks, -1)]
-        [InlineData(ReclaimSubType.CareCharge1To12Weeks, 1)]
-        public void ShouldFailWhenFirstCareChargeStartDateDiffersFromPackageStartDate(ReclaimSubType subtype, int daysDelta)
+        public void ShouldFailWhenFirstCareChargeStartLessThanPackageStartDate(ReclaimSubType subtype, int daysDelta)
         {
             var request = CreateUpsertRequest(
                 (subtype, _coreCost.StartDate.AddDays(daysDelta), null));
 
-            VerifyFailedRequest(request, "First care charge must start on package start date");
+            VerifyFailedRequest(request, "First care charge start date must be greater or equal to package start date");
+        }
+
+        [Theory]
+        [InlineData(ReclaimSubType.CareChargeProvisional, 0)]
+        [InlineData(ReclaimSubType.CareChargeProvisional, 1)]
+        [InlineData(ReclaimSubType.CareCharge1To12Weeks, 0)]
+        [InlineData(ReclaimSubType.CareCharge1To12Weeks, 1)]
+        public void ShouldSaveWhenFirstCareChargeStartDateGreaterOrEqualThanPackageStartDate(ReclaimSubType subtype, int daysDelta)
+        {
+            var request = CreateUpsertRequest(
+                (subtype, _coreCost.StartDate.AddDays(daysDelta), null));
+
+            _useCase.ExecuteAsync(_package.Id, request);
+
+            _package.Reclaims.Should().ContainSingle(r => r.SubType == subtype);
+            _dbManager.VerifySaved();
         }
 
         [Theory]
