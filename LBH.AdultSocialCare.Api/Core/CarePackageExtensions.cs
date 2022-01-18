@@ -59,5 +59,17 @@ namespace LBH.AdultSocialCare.Api.Core
                     (targetDate is null || targetDate.Value.IsInRange(reclaim.StartDate, reclaim.EndDate ?? DateTimeOffset.MaxValue)))?
                 .Cost ?? 0.0m;
         }
+
+        public static void AddHistoryEntry(
+            this CarePackage package, string description,
+            HistoryStatus status = HistoryStatus.PackageInformation, string moreInformation = null)
+        {
+            package.Histories.Add(new CarePackageHistory
+            {
+                Status = status,
+                Description = description,
+                RequestMoreInformation = moreInformation
+            });
+        }
     }
 }
