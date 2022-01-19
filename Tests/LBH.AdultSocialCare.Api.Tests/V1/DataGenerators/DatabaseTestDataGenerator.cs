@@ -33,6 +33,14 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
             return carePackage;
         }
 
+        public CarePackage CreateCarePackage(CarePackage package)
+        {
+            _context.CarePackages.Add(package);
+            _context.SaveChanges();
+
+            return package;
+        }
+
         public List<CarePackageDetail> CreateCarePackageDetails(CarePackage package, int count, PackageDetailType type)
         {
             var faker = new Bogus.Faker();
