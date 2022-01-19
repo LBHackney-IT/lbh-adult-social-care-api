@@ -1,17 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoFixture;
-using Common.Exceptions.CustomExceptions;
 using FluentAssertions;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
 using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete;
-using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.RequestFeatures.Parameters;
-using Microsoft.AspNetCore.Http;
 using Moq;
+using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
@@ -23,7 +18,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
         private Fixture _fixture;
         private BrokerPackageViewDomain _brokerViewDomain;
         private BrokerPackageViewQueryParameters _queryFilter;
-
 
         public GetCarePackageUseCaseTest()
         {
