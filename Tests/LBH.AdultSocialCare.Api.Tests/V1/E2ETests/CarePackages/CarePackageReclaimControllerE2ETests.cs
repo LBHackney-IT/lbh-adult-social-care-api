@@ -131,9 +131,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         [Fact]
         public async Task ShouldCreateNewCareCharge()
         {
-            var package = _generator.CreateCarePackage(status: PackageStatus.Approved);
-            _generator.CreateCarePackageSettings(package.Id);
-            var details = _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
+            var package = TestDataHelper.CreateCarePackage(packageType: PackageType.ResidentialCare,
+                status: PackageStatus.Approved);
+            package.Settings = TestDataHelper.CreateCarePackageSettings(carePackageId: package.Id, isS117Client: false);
+            package.Details.Add(TestDataHelper.CreateCarePackageDetail(package.Id, type: PackageDetailType.CoreCost, cost: 100M));
+
+            package = _generator.CreateCarePackage(package);
 
             var request = new CareChargesCreationRequest()
             {
@@ -144,8 +147,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                          Cost = 12.34m,
                          ClaimCollector = ClaimCollector.Hackney,
                          SubType = ReclaimSubType.CareCharge1To12Weeks,
-                         StartDate = details.FirstOrDefault().StartDate,
-                         EndDate = details.FirstOrDefault().StartDate.AddDays(84),
+                         StartDate = package.Details.First().StartDate,
+                         EndDate = package.Details.First().StartDate.AddDays(84),
                          Description = "test",
                          ClaimReason = "test",
                          CarePackageId = package.Id

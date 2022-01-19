@@ -1,13 +1,15 @@
 using AutoMapper;
+using Common.Extensions;
 using LBH.AdultSocialCare.Api.V1.Boundary.CarePackages.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Common.Response;
+using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Boundary.Security.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Domain.Common;
-using LBH.AdultSocialCare.Api.V1.Domain.Security;
-using System.Collections.Generic;
-using LBH.AdultSocialCare.Api.V1.Boundary.Payments.Response;
 using LBH.AdultSocialCare.Api.V1.Domain.Payments;
+using LBH.AdultSocialCare.Api.V1.Domain.Security;
+using LBH.AdultSocialCare.Data.Constants.Enums;
+using System.Collections.Generic;
 
 namespace LBH.AdultSocialCare.Api.V1.Factories
 {
@@ -108,5 +110,34 @@ namespace LBH.AdultSocialCare.Api.V1.Factories
         }
 
         #endregion CareCharges
+
+        #region Payments
+
+        public static PayRunInvoiceResponse ToResponse(this PayRunInvoiceDomain invoice, InvoiceStatus status, decimal supplierReclaimsTotal, decimal hackneyReclaimsTotal)
+        {
+            return new PayRunInvoiceResponse
+            {
+                Id = invoice.Id,
+                InvoiceId = invoice.InvoiceId,
+                CarePackageId = invoice.CarePackageId,
+                ServiceUserId = invoice.ServiceUserId,
+                HackneyId = invoice.HackneyId,
+                ServiceUserName = invoice.ServiceUserName,
+                SupplierId = invoice.SupplierId,
+                SupplierName = invoice.SupplierName,
+                InvoiceNumber = invoice.InvoiceNumber,
+                PackageTypeId = (int) invoice.PackageType,
+                PackageType = invoice.PackageType.GetDisplayName(),
+                GrossTotal = decimal.Round(invoice.GrossTotal, 2),
+                NetTotal = decimal.Round(invoice.NetTotal, 2),
+                SupplierReclaimsTotal = decimal.Round(supplierReclaimsTotal, 2),
+                HackneyReclaimsTotal = decimal.Round(hackneyReclaimsTotal, 2),
+                InvoiceStatus = status,
+                AssignedBrokerName = invoice.AssignedBrokerName,
+                InvoiceItems = invoice.InvoiceItems.ToResponse()
+            };
+        }
+
+        #endregion Payments
     }
 }
