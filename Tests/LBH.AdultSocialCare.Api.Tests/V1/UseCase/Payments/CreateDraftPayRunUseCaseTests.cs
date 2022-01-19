@@ -75,6 +75,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Payments
             await _useCase.CreateDraftPayRun(payRunCreationDomain);
             newPayRun.Should().BeEquivalentTo(payRunCreationDomain, options =>
                 options.ExcludingNestedObjects().ExcludingMissingMembers());
+            newPayRun.Status.Should().Be(PayrunStatus.Draft);
             _dbManager.VerifySaved();
         }
     }

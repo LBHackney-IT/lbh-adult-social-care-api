@@ -1,4 +1,5 @@
 using LBH.AdultSocialCare.Api.V1.Gateways;
+using LBH.AdultSocialCare.Api.V1.Gateways.CarePackages.Interfaces;
 using LBH.AdultSocialCare.Api.V1.Gateways.Enums;
 using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using Moq;
@@ -21,6 +22,11 @@ namespace LBH.AdultSocialCare.TestFramework.Extensions
         public static void VerifyGetPayRun(this Mock<IPayRunGateway> payRunGateway)
         {
             payRunGateway.Verify(pr => pr.GetPayRunAsync(It.IsAny<Guid>(), It.IsAny<PayRunFields>(), It.IsAny<bool>()), Times.Once);
+        }
+
+        public static void VerifyGetPackage(this Mock<ICarePackageGateway> packageGateway, Times times)
+        {
+            packageGateway.Verify(pr => pr.GetPackageAsync(It.IsAny<Guid>(), It.IsAny<PackageFields>(), It.IsAny<bool>()), times);
         }
     }
 }
