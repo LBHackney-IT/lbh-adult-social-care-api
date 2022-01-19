@@ -8,6 +8,7 @@ using LBH.AdultSocialCare.Api.V1.Gateways.Payments.Interfaces;
 using LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete;
 using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.Payments;
+using LBH.AdultSocialCare.TestFramework.Extensions;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using System;
@@ -51,7 +52,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Payments
             _payrun.Status = PayrunStatus.WaitingForApproval;
             await _useCase.ExecuteAsync(_payrun.Id, ApprovalNotes);
             _payrun.Status.Should().Be(PayrunStatus.Approved);
-            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
+            _dbManager.VerifySaved();
         }
 
         [Fact]
@@ -64,6 +65,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Payments
                 .Invoking(useCase => useCase.ExecuteAsync(_payrun.Id, ApprovalNotes))
                 .Should().Throw<ApiException>()
                 .Where(ex => ex.StatusCode == StatusCodes.Status404NotFound);
+
+            _payRunGateway.VerifyGetPayRun();
+            _payRunGateway.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -78,6 +82,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Payments
                 .Invoking(useCase => useCase.ExecuteAsync(_payrun.Id, ApprovalNotes))
                 .Should().Throw<ApiException>()
                 .Where(ex => ex.StatusCode == StatusCodes.Status400BadRequest);
+
+            _payRunGateway.VerifyGetPayRun();
+            _payRunGateway.VerifyNoOtherCalls();
         }
 
         [Theory]
@@ -95,6 +102,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Payments
                 .Invoking(useCase => useCase.ExecuteAsync(_payrun.Id, ApprovalNotes))
                 .Should().Throw<ApiException>()
                 .Where(ex => ex.StatusCode == StatusCodes.Status400BadRequest);
+
+            _payRunGateway.VerifyGetPayRun();
+            _payRunGateway.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -109,7 +119,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Payments
                 h.Status == PayrunStatus.Approved &&
                 h.Notes == ApprovalNotes);
 
-            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
+            _dbManager.VerifySaved();
         }
     }
 }
