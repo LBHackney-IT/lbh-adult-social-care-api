@@ -8,8 +8,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Common.Exceptions.CustomExceptions;
+using LBH.AdultSocialCare.Api.Core;
 using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -35,12 +35,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             {
                 // End package, set history and return
                 package.Status = PackageStatus.Ended;
-                package.Histories.Add(new CarePackageHistory
-                {
-                    Status = HistoryStatus.BrokeredEnded,
-                    Description = HistoryStatus.BrokeredEnded.GetDisplayName() + endDate.ToString("yyyy-MM-dd"),
-                    RequestMoreInformation = notes
-                });
+                package.AddHistoryEntry(
+                    $"{HistoryStatus.BrokeredEnded.GetDisplayName()}: {endDate:yyyy-MM-dd}",
+                    HistoryStatus.BrokeredEnded, notes);
 
                 await _dbManager.SaveAsync();
                 return;
@@ -56,11 +53,17 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var today = DateTimeOffset.UtcNow.Date;
 
             // Update package detail end dates
-            foreach (var packageDetail in package.Details)
+            foreach (var detail in package.Details)
             {
-                if (packageDetail.EndDate == null || packageDetail.EndDate.Value > endDate)
+                if (detail.EndDate == null || detail.EndDate.Value > endDate)
                 {
-                    packageDetail.EndDate = endDate;
+                    detail.EndDate = endDate;
+
+                    if (detail.Type is PackageDetailType.AdditionalNeed) // core cost represents package itself
+                    {
+                        package.AddHistoryEntry(
+                            $"Additional Need {detail.StartDate:yyyy-MM-dd} - {detail.EndDate:yyyy-MM-dd} ended");
+                    }
                 }
             }
 
@@ -78,23 +81,20 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                     if (reclaim.StartDate >= endDate)
                     {
                         reclaim.Status = ReclaimStatus.Cancelled;
+                        package.AddHistoryEntry($"{reclaim.SubType.GetDisplayName()} cancelled");
                     }
                     else
                     {
                         reclaim.Status = ReclaimStatus.Ended;
                         reclaim.EndDate = endDate;
+                        package.AddHistoryEntry($"{reclaim.SubType.GetDisplayName()} ended");
                     }
                 }
             }
 
-            string desc = $"{HistoryStatus.BrokeredEnded.GetDisplayName()}: {endDate:yyyy-MM-dd}";
-
-            package.Histories.Add(new CarePackageHistory
-            {
-                Status = HistoryStatus.BrokeredEnded,
-                Description = desc,
-                RequestMoreInformation = notes
-            });
+            package.AddHistoryEntry(
+                $"{HistoryStatus.BrokeredEnded.GetDisplayName()}: {endDate:yyyy-MM-dd}",
+                HistoryStatus.BrokeredEnded, notes);
 
             await _dbManager.SaveAsync();
         }
