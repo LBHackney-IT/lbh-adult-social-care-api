@@ -10,6 +10,7 @@ using LBH.AdultSocialCare.Data.Constants.Enums;
 using System;
 using System.Net;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.V1.Gateways;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 {
@@ -17,11 +18,13 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
     {
         private readonly IPayRunGateway _payRunGateway;
         private readonly IQueueService _payrunsQueue;
+        private readonly IDatabaseManager _dbManager;
 
-        public CreateDraftPayRunUseCase(IPayRunGateway payRunGateway, IQueueService payrunsQueue)
+        public CreateDraftPayRunUseCase(IPayRunGateway payRunGateway, IQueueService payrunsQueue, IDatabaseManager dbManager)
         {
             _payRunGateway = payRunGateway;
             _payrunsQueue = payrunsQueue;
+            _dbManager = dbManager;
         }
 
         public async Task CreateDraftPayRun(DraftPayRunCreationDomain draftPayRunCreationDomain)
@@ -56,6 +59,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
             var payrun = draftPayRunCreationDomain.ToEntity();
 
             await _payRunGateway.CreateDraftPayRun(payrun);
+            await _dbManager.SaveAsync("Failed to create pay run");
             await _payrunsQueue.Send(payrun.Id);
         }
 
