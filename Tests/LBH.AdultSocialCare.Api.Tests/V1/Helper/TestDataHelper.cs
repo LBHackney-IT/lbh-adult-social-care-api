@@ -43,7 +43,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
             return package;
         }
 
-        public static CarePackageSettings CreateCarePackageSettings(Guid? settingId = null, Guid? carePackageId = null)
+        public static CarePackageSettings CreateCarePackageSettings(Guid? settingId = null, Guid? carePackageId = null, bool? isS117Client = null)
         {
             return new Faker<CarePackageSettings>()
                 .RuleFor(cp => cp.Id, f => settingId ?? f.Random.Guid())
@@ -52,7 +52,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.HasDischargePackage, f => f.Random.Bool())
                 .RuleFor(cp => cp.HospitalAvoidance, f => f.Random.Bool())
                 .RuleFor(cp => cp.IsReEnablement, f => f.Random.Bool())
-                .RuleFor(cp => cp.IsS117Client, f => f.Random.Bool());
+                .RuleFor(cp => cp.IsS117Client, f => isS117Client ?? f.Random.Bool());
         }
 
         public static CarePackageForCreationRequest CarePackageCreationRequest(PackageType? packageType = null,
