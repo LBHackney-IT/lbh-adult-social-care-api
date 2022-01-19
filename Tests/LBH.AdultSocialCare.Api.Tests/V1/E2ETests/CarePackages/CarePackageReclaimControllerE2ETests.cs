@@ -51,7 +51,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
 
             reclaims.Count.Should().Be(2);
-            reclaims.Should().OnlyContain(r => r.Type == ReclaimType.Fnc && r.StartDate == startDate && r.EndDate == endDate);
+            reclaims.Should().OnlyContain(r =>
+                r.Type == ReclaimType.Fnc && r.StartDate == startDate && r.EndDate == endDate);
             reclaims.Should().ContainSingle(r => r.SubType == ReclaimSubType.FncPayment && r.Cost == fncCost);
             reclaims.Should().ContainSingle(r => r.SubType == ReclaimSubType.FncReclaim && r.Cost == -fncCost);
         }
@@ -134,26 +135,27 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             var package = TestDataHelper.CreateCarePackage(packageType: PackageType.ResidentialCare,
                 status: PackageStatus.Approved);
             package.Settings = TestDataHelper.CreateCarePackageSettings(carePackageId: package.Id, isS117Client: false);
-            package.Details.Add(TestDataHelper.CreateCarePackageDetail(package.Id, type: PackageDetailType.CoreCost, cost: 100M));
+            package.Details.Add(
+                TestDataHelper.CreateCarePackageDetail(package.Id, type: PackageDetailType.CoreCost, cost: 100M));
 
             package = _generator.CreateCarePackage(package);
 
             var request = new CareChargesCreationRequest()
             {
                 CareCharges = new List<CareChargeReclaimCreationRequest>()
-                 {
-                     new CareChargeReclaimCreationRequest()
-                     {
-                         Cost = 12.34m,
-                         ClaimCollector = ClaimCollector.Hackney,
-                         SubType = ReclaimSubType.CareCharge1To12Weeks,
-                         StartDate = package.Details.First().StartDate,
-                         EndDate = package.Details.First().StartDate.AddDays(84),
-                         Description = "test",
-                         ClaimReason = "test",
-                         CarePackageId = package.Id
-                     }
-                 }
+                {
+                    new CareChargeReclaimCreationRequest()
+                    {
+                        Cost = 12.34m,
+                        ClaimCollector = ClaimCollector.Hackney,
+                        SubType = ReclaimSubType.CareCharge1To12Weeks,
+                        StartDate = package.Details.First().StartDate,
+                        EndDate = package.Details.First().StartDate.AddDays(84),
+                        Description = "test",
+                        ClaimReason = "test",
+                        CarePackageId = package.Id
+                    }
+                }
             };
 
             var response = await _fixture.RestClient
@@ -174,7 +176,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
 
             var provisionalCharge = _generator
-                .CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge, ReclaimSubType.CareChargeProvisional);
+                .CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge,
+                    ReclaimSubType.CareChargeProvisional);
 
             var request = new CareChargeReclaimCreationRequest
             {
@@ -189,7 +192,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             };
 
             var response = await _fixture.RestClient
-                .SubmitFormAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{request.CarePackageId}/reclaims/care-charges", request);
+                .SubmitFormAsync<CarePackageReclaimResponse>(
+                    $"api/v1/care-packages/{request.CarePackageId}/reclaims/care-charges", request);
 
             var reclaims = _fixture.DatabaseContext.CarePackageReclaims
                 .Where(r => r.CarePackageId == package.Id).ToList();
@@ -247,7 +251,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         public async Task ShouldReturnCareChargePackages()
         {
             var package = _generator.CreateCarePackage(PackageType.NursingCare);
-            var careCharge = _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
+            var careCharge =
+                _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
             var pageNumber = 1;
             var pageSize = 10;
 
@@ -270,7 +275,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             5.Times(_ => _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge));
 
             var response = await _fixture.RestClient
-                .GetAsync<IEnumerable<CarePackageReclaimResponse>>($"api/v1/care-packages/{package.Id}/reclaims/care-charges");
+                .GetAsync<IEnumerable<CarePackageReclaimResponse>>(
+                    $"api/v1/care-packages/{package.Id}/reclaims/care-charges");
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
             response.Content.Count().Should().Be(5);
@@ -282,10 +288,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             var package = _generator.CreateCarePackage();
 
             3.Times(_ => _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge));
-            2.Times(_ => _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge, ReclaimSubType.CareChargeProvisional));
+            2.Times(_ => _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge,
+                ReclaimSubType.CareChargeProvisional));
 
             var response = await _fixture.RestClient
-                .GetAsync<IEnumerable<CarePackageReclaimResponse>>($"api/v1/care-packages/{package.Id}/reclaims/care-charges?subType={ReclaimSubType.CareChargeProvisional}");
+                .GetAsync<IEnumerable<CarePackageReclaimResponse>>(
+                    $"api/v1/care-packages/{package.Id}/reclaims/care-charges?subType={ReclaimSubType.CareChargeProvisional}");
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
             response.Content.Count().Should().Be(2);
@@ -296,10 +304,12 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         public async Task ShouldReturnSinglePackageCareCharge()
         {
             var package = _generator.CreateCarePackage();
-            var careCharge = _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
+            var careCharge =
+                _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
 
             var response = await _fixture.RestClient
-                .GetAsync<SinglePackageCareChargeResponse>($"api/v1/care-packages/{package.Id}/reclaims/care-charges/detail");
+                .GetAsync<SinglePackageCareChargeResponse>(
+                    $"api/v1/care-packages/{package.Id}/reclaims/care-charges/detail");
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
             response.Content.ServiceUser.HackneyId.Should().Be(package.ServiceUser.HackneyId);
@@ -312,7 +322,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             var reclaim = _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
 
             var response = await _fixture.RestClient
-                .PutAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{package.Id}/reclaims/care-charges/{reclaim.Id}/cancel");
+                .PutAsync<CarePackageReclaimResponse>(
+                    $"api/v1/care-packages/{package.Id}/reclaims/care-charges/{reclaim.Id}/cancel");
 
             reclaim = _fixture.DatabaseContext.CarePackageReclaims.First(r => r.Id == reclaim.Id);
 
@@ -324,9 +335,16 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         [Fact]
         public async Task ShouldEndReclaim()
         {
-            var package = _generator.CreateCarePackage();
-            var reclaim = _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
-            var detail = _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
+            var package = TestDataHelper.CreateCarePackage(packageType: PackageType.ResidentialCare,
+                status: PackageStatus.Approved);
+            var coreCost = TestDataHelper.CreateCarePackageDetail(package.Id, PackageDetailType.CoreCost);
+            package.Details.Add(coreCost);
+            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(package.Id, type: ReclaimType.CareCharge,
+                subType: ReclaimSubType.CareChargeProvisional, collector: ClaimCollector.Supplier,
+                startDate: coreCost.StartDate, endDate: coreCost.EndDate, cost: 10M));
+            package = _generator.CreateCarePackage(package);
+
+            var reclaim = package.Reclaims.First();
 
             var endDate = DateTimeOffset.UtcNow;
 
@@ -370,7 +388,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             }
 
             var response = await _fixture.RestClient
-                .PostAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{request.CarePackageId}/reclaims/care-charges/provisional", request);
+                .PostAsync<CarePackageReclaimResponse>(
+                    $"api/v1/care-packages/{request.CarePackageId}/reclaims/care-charges/provisional", request);
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.UnprocessableEntity);
         }
@@ -395,7 +414,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             };
 
             var response = await _fixture.RestClient
-                .PostAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{request.CarePackageId}/reclaims/care-charges/provisional", request);
+                .PostAsync<CarePackageReclaimResponse>(
+                    $"api/v1/care-packages/{request.CarePackageId}/reclaims/care-charges/provisional", request);
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
         }
@@ -406,22 +426,27 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         {
             var request = FundedNursingCareCreationRequest(packageId, cost, startDate, endDate);
             var response = await _fixture.RestClient
-                .SubmitFormAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{request.CarePackageId}/reclaims/fnc", request);
+                .SubmitFormAsync<CarePackageReclaimResponse>(
+                    $"api/v1/care-packages/{request.CarePackageId}/reclaims/fnc", request);
 
             return response;
         }
 
-        private async Task<TestResponse<CarePackageReclaimResponse>> CreateFncReclaim(FundedNursingCareCreationRequest request)
+        private async Task<TestResponse<CarePackageReclaimResponse>> CreateFncReclaim(
+            FundedNursingCareCreationRequest request)
         {
             var response = await _fixture.RestClient
-                .SubmitFormAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{request.CarePackageId}/reclaims/fnc", request);
+                .SubmitFormAsync<CarePackageReclaimResponse>(
+                    $"api/v1/care-packages/{request.CarePackageId}/reclaims/fnc", request);
             return response;
         }
 
-        private async Task<TestResponse<CarePackageReclaimResponse>> CreateCareChargesReclaim(CareChargeReclaimCreationRequest request)
+        private async Task<TestResponse<CarePackageReclaimResponse>> CreateCareChargesReclaim(
+            CareChargeReclaimCreationRequest request)
         {
             var response = await _fixture.RestClient
-                .PostAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{request.CarePackageId}/reclaims/care-charges", request);
+                .PostAsync<CarePackageReclaimResponse>(
+                    $"api/v1/care-packages/{request.CarePackageId}/reclaims/care-charges", request);
             return response;
         }
 
