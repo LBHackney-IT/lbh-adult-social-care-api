@@ -109,7 +109,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Payments
             _payrun.Histories.Count.Should().Be(1);
 
             _payrun.Histories.Should().ContainSingle(h =>
-                h.Status == PayrunStatus.Archived &&
                 h.Type == PayRunHistoryType.PaidPayrun);
 
             _dbManager.VerifySaved();
