@@ -149,7 +149,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
                         ClaimCollector = ClaimCollector.Hackney,
                         SubType = ReclaimSubType.CareCharge1To12Weeks,
                         StartDate = package.Details.First().StartDate,
-                        EndDate = package.Details.First().StartDate.AddDays(84),
+                        EndDate = package.Details.First().StartDate.AddDays(83),
                         Description = "test",
                         ClaimReason = "test",
                         CarePackageId = package.Id
