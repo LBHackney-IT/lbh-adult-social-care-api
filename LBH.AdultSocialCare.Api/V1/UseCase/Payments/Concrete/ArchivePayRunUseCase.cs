@@ -62,10 +62,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.Payments.Concrete
 
             if (payRun.Status == PayrunStatus.Archived)
             {
-                throw new ApiException($"Pay run with id {payRunId} already archived");
+                throw new ApiException($"Pay run with id {payRunId} already archived", HttpStatusCode.BadRequest);
             }
 
-            if (payRun.Status.NotIn(PayrunStatus.Draft, PayrunStatus.WaitingForApproval, PayrunStatus.WaitingForReview, PayrunStatus.Approved))
+            if (payRun.Status.NotIn(PayrunStatus.Draft, PayrunStatus.InProgress, PayrunStatus.WaitingForApproval, PayrunStatus.WaitingForReview, PayrunStatus.Approved))
             {
                 throw new ApiException("Not allowed. Pay run status should be draft, waiting for approval, waiting for review or approved to delete",
                     HttpStatusCode.BadRequest);
