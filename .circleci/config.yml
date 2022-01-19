@@ -125,14 +125,11 @@ jobs:
           name: build API
           command: docker-compose build base-api-test
       - run:
-          name: Run API tests
-          command: docker-compose run base-api-test
-      - run:
           name: build payruns function
           command: docker-compose build functions-payruns-test
       - run:
-          name: Run payruns tests
-          command: docker-compose run functions-payruns-test
+          name: Run API tests
+          command: docker-compose run base-api-test
   assume-role-development:
     executor: docker-python
     steps:

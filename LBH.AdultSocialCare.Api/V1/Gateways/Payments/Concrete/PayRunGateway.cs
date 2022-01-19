@@ -94,14 +94,6 @@ namespace LBH.AdultSocialCare.Api.V1.Gateways.Payments.Concrete
             payRun.Number = $"PYR-{DateTimeOffset.UtcNow:yyMMdd}-{++payrunsCount:0000}";
 
             await _dbContext.Payruns.AddAsync(payRun);
-            try
-            {
-                await _dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new DbSaveFailedException("Could not create pay run", ex);
-            }
         }
 
         public async Task<int> GetDraftPayRunCount(PayrunType payRunType)

@@ -237,9 +237,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
             return new Faker<Supplier>()
                 .RuleFor(u => u.SupplierName, f => f.Name.FullName())
                 .RuleFor(u => u.Address, f => f.Address.FullAddress())
-                .RuleFor(u => u.Postcode, f => f.Address.CountryCode())
+                // .RuleFor(u => u.Postcode, f => f.Address.CountryCode())
                 .RuleFor(u => u.Postcode, f => f.Random.String(8))
                 .RuleFor(u => u.CedarReferenceNumber, f => f.Random.String(8))
+                .RuleFor(u => u.CedarId, f => f.UniqueIndex)
                 .RuleFor(u => u.DateCreated, f => f.Date.Past(1, DateTime.Now));
         }
 
