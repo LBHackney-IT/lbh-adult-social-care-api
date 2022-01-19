@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using AutoFixture;
 using Common.Exceptions.CustomExceptions;
 using FluentAssertions;
@@ -17,7 +16,7 @@ using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Payments
 {
-    public class ReleaseInvoiceUseCaseTests : BaseTest
+    public class ChangePayRunInvoiceStatusUseCaseTests : BaseTest
     {
         private readonly ChangePayRunInvoiceStatusUseCase _useCase;
         private readonly Mock<IPayRunGateway> _payRunGateway;
@@ -27,18 +26,18 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Payments
         private readonly Payrun _payrun;
         private readonly PayrunInvoice _payrunInvoice;
 
-        public ReleaseInvoiceUseCaseTests()
+        public ChangePayRunInvoiceStatusUseCaseTests()
         {
             _payRunGateway = new Mock<IPayRunGateway>();
             _payRunInvoiceGateway = new Mock<IPayRunInvoiceGateway>();
             _dbManager = new Mock<IDatabaseManager>();
-            _payrun = TestDataHelper.CreatePayRun(type: PayrunType.ResidentialRecurring, status: PayrunStatus.Approved);
+            _payrun = TestDataHelper.CreatePayRun(type: PayrunType.ResidentialRecurring, status: PayrunStatus.WaitingForApproval);
 
             var fixture = new Fixture();
             _payrunInvoice = fixture.Build<PayrunInvoice>()
                 .OmitAutoProperties()
                 .With(pi => pi.PayrunId, _payrun.Id)
-                .With(pi => pi.InvoiceStatus, InvoiceStatus.Held)
+                .With(pi => pi.InvoiceStatus, InvoiceStatus.Draft)
                 .Create();
             _payrun.PayrunInvoices.Add(_payrunInvoice);
 
@@ -59,7 +58,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Payments
                 .ReturnsAsync((Payrun) null);
 
             _useCase
-                .Invoking(useCase => useCase.ReleaseInvoiceAsync(_payrun.Id, _payrunInvoice.Id))
+                .Invoking(useCase => useCase.ExecuteAsync(_payrun.Id, _payrunInvoice.Id, InvoiceStatus.Accepted))
                 .Should().Throw<ApiException>()
                 .Where(ex => ex.StatusCode == StatusCodes.Status404NotFound);
 
@@ -73,34 +72,53 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Payments
             _payRunInvoiceGateway.Setup(g => g.GetPayRunInvoiceAsync(It.IsAny<Guid>(), It.IsAny<PayRunInvoiceFields>(), It.IsAny<bool>()))
                 .ReturnsAsync((PayrunInvoice) null);
             _useCase
-                .Invoking(useCase => useCase.ReleaseInvoiceAsync(_payrun.Id, _payrunInvoice.Id))
+                .Invoking(useCase => useCase.ExecuteAsync(_payrun.Id, _payrunInvoice.Id, InvoiceStatus.Accepted))
                 .Should().Throw<ApiException>()
                 .Where(ex => ex.StatusCode == StatusCodes.Status404NotFound);
             _dbManager.VerifyNotSaved();
         }
 
         [Theory]
-        [InlineData(InvoiceStatus.Draft)]
-        [InlineData(InvoiceStatus.Released)]
-        [InlineData(InvoiceStatus.Rejected)]
-        [InlineData(InvoiceStatus.Accepted)]
-        [InlineData(InvoiceStatus.ReleaseAccepted)]
-        public void ShouldFailIfInvoiceIsNotHeld(InvoiceStatus status)
+        [InlineData(PayrunStatus.Draft)]
+        [InlineData(PayrunStatus.InProgress)]
+        [InlineData(PayrunStatus.Approved)]
+        [InlineData(PayrunStatus.Paid)]
+        [InlineData(PayrunStatus.PaidWithHold)]
+        [InlineData(PayrunStatus.Archived)]
+        public void ShouldFailIfPayRunNotInReviewOrAwaitingApproval(PayrunStatus status)
         {
-            _payrun.PayrunInvoices.First().InvoiceStatus = status;
+            _payrun.Status = status;
             _useCase
-                .Invoking(useCase => useCase.ReleaseInvoiceAsync(_payrun.Id, _payrunInvoice.Id))
+                .Invoking(useCase => useCase.ExecuteAsync(_payrun.Id, _payrunInvoice.Id, InvoiceStatus.Accepted))
                 .Should().Throw<ApiException>()
                 .Where(ex => ex.StatusCode == StatusCodes.Status400BadRequest);
             _dbManager.VerifyNotSaved();
         }
 
         [Fact]
-        public async void ShouldReleaseHeldInvoice()
+        public void ShouldFailIfInvoiceIsHeld()
         {
-            await _useCase.ReleaseInvoiceAsync(_payrun.Id, _payrunInvoice.Id);
+            _payrunInvoice.InvoiceStatus = InvoiceStatus.Held;
+            _useCase
+                .Invoking(useCase => useCase.ExecuteAsync(_payrun.Id, _payrunInvoice.Id, InvoiceStatus.Accepted))
+                .Should().Throw<ApiException>()
+                .Where(ex => ex.StatusCode == StatusCodes.Status400BadRequest);
+            _dbManager.VerifyNotSaved();
+        }
 
-            _payrunInvoice.InvoiceStatus.Should().Be(InvoiceStatus.Released);
+        [Theory]
+        [InlineData(PayrunStatus.WaitingForReview, InvoiceStatus.Draft, InvoiceStatus.Accepted)]
+        [InlineData(PayrunStatus.WaitingForReview, InvoiceStatus.Rejected, InvoiceStatus.Accepted)]
+        [InlineData(PayrunStatus.WaitingForReview, InvoiceStatus.Accepted, InvoiceStatus.Rejected)]
+        [InlineData(PayrunStatus.WaitingForReview, InvoiceStatus.Released, InvoiceStatus.Accepted)]
+        [InlineData(PayrunStatus.WaitingForApproval, InvoiceStatus.Draft, InvoiceStatus.Accepted)]
+        public async void ShouldChangePayRunInvoiceStatus(PayrunStatus payrunStatus, InvoiceStatus oldInvoiceStatus, InvoiceStatus newInvoiceStatus)
+        {
+            _payrun.Status = payrunStatus;
+            _payrunInvoice.InvoiceStatus = oldInvoiceStatus;
+            await _useCase.ExecuteAsync(_payrun.Id, _payrunInvoice.Id, newInvoiceStatus);
+
+            _payrunInvoice.InvoiceStatus.Should().Be(newInvoiceStatus);
             _dbManager.VerifySaved();
         }
     }
