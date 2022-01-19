@@ -58,7 +58,9 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.Payments
 
             _heldInvoiceCreationDomain = new HeldInvoiceCreationDomain
             {
-                PayRunInvoiceId = _payrunInvoice.Id, ActionRequiredFromId = 1, ReasonForHolding = "Incorrect values"
+                PayRunInvoiceId = _payrunInvoice.Id,
+                ActionRequiredFromId = 1,
+                ReasonForHolding = "Incorrect values"
             };
         }
 
