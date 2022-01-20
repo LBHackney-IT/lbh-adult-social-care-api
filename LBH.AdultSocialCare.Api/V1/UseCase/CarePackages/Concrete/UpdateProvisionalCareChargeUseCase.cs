@@ -44,16 +44,17 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             if (ShouldReplaceReclaim(existingReclaim, requestedReclaim))
             {
-                existingReclaim.Status = ReclaimStatus.Cancelled;
-
                 var newReclaim = requestedReclaim.ToEntity();
 
                 newReclaim.Id = Guid.Empty;
                 newReclaim.Type = existingReclaim.Type;
                 newReclaim.SubType = existingReclaim.SubType;
                 newReclaim.Subjective = existingReclaim.Subjective;
+                newReclaim.Status = newReclaim.Status; // persist calculated value for new record
 
                 package.Reclaims.Add(newReclaim);
+
+                existingReclaim.Status = ReclaimStatus.Cancelled;
             }
             else
             {
