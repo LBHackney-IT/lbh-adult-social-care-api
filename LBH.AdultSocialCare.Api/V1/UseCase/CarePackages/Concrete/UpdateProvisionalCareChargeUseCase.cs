@@ -33,7 +33,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task UpdateAsync(Guid packageId, CarePackageReclaimUpdateDomain requestedReclaim)
         {
             var package = await _carePackageGateway
-                .GetPackageAsync(packageId, PackageFields.Resources | PackageFields.Reclaims, true)
+                .GetPackageAsync(packageId, PackageFields.Details | PackageFields.Reclaims | PackageFields.Resources, true)
                 .EnsureExists($"Care Package {packageId} not found");
 
             var existingReclaim = package.Reclaims
@@ -45,9 +45,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             if (ShouldReplaceReclaim(existingReclaim, requestedReclaim))
             {
                 existingReclaim.Status = ReclaimStatus.Cancelled;
-                requestedReclaim.Id = Guid.Empty;
 
-                package.Reclaims.Add(requestedReclaim.ToEntity());
+                var newReclaim = requestedReclaim.ToEntity();
+
+                newReclaim.Id = Guid.Empty;
+                newReclaim.Type = existingReclaim.Type;
+                newReclaim.SubType = existingReclaim.SubType;
+                newReclaim.Subjective = existingReclaim.Subjective;
+
+                package.Reclaims.Add(newReclaim);
             }
             else
             {
