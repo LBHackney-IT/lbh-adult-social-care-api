@@ -22,19 +22,23 @@ namespace LBH.AdultSocialCare.Api.V1.Domain.CarePackages
         public ServiceUserDomain ServiceUser { get; set; }
         public CarePackageSettingsDomain Settings { get; set; }
 
+        public decimal CostOfPlacement { get; set; }
+
         public IEnumerable<CarePackageDetailDomain> AdditionalWeeklyNeeds { get; set; }
         public IEnumerable<CarePackageDetailDomain> AdditionalOneOffNeeds { get; set; }
 
-        public decimal AdditionalWeeklyCost { get; set; }
-        public decimal OneOffCost { get; set; }
-
-        public decimal CostOfPlacement { get; set; }
-        public decimal FncPayment { get; set; }
-        public decimal TotalCostOfPlacement { get; set; }
-        public decimal TotalWeeklyCost { get; set; }
-
         public CarePackageReclaimDomain FundedNursingCare { get; set; }
         public IEnumerable<CarePackageReclaimDomain> CareCharges { get; set; }
+
+        // summary section
+        public decimal ActiveCostOfPlacement { get; set; }
+        public decimal FncPayment { get; set; }
+        public decimal TotalCostOfPlacement { get; set; }
+
+        public decimal AdditionalWeeklyCost { get; set; }
+        public decimal TotalWeeklyCost { get; set; }
+
+        public decimal OneOffCost { get; set; }
 
         public CarePackageSummaryReclaimsDomain HackneyReclaims { get; set; }
         public CarePackageSummaryReclaimsDomain SupplierReclaims { get; set; }
