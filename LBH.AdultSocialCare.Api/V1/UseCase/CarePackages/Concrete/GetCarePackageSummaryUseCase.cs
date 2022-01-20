@@ -64,9 +64,17 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             FillFundedNursingCare();
             FillReclaimsSubTotals();
 
-            _summary.TotalCostOfPlacement = _summary.CostOfPlacement + _summary.FncPayment;
-            _summary.AdditionalWeeklyCost = _package.GetAdditionalWeeklyCost();
-            _summary.OneOffCost = _package.GetAdditionalOneOffCost();
+            var today = DateTimeOffset.UtcNow;
+            if (today.IsInRange(coreCost.StartDate, coreCost.EndDate ?? DateTimeOffset.MaxValue))
+            {
+                _summary.ActiveCostOfPlacement = coreCost.Cost;
+            }
+
+            _summary.FncPayment = _package.GetFncPaymentCost(today);
+            _summary.TotalCostOfPlacement = _summary.ActiveCostOfPlacement + _summary.FncPayment;
+
+            _summary.AdditionalWeeklyCost = _package.GetAdditionalWeeklyCost(today);
+            _summary.OneOffCost = _package.GetAdditionalOneOffCost(today);
 
             _summary.TotalWeeklyCost =
                 _summary.TotalCostOfPlacement
@@ -83,12 +91,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         {
             _summary.FundedNursingCare = _package.Reclaims
                 .FirstOrDefault(r =>
-                    r.Status != ReclaimStatus.Cancelled &&
                     r.Type is ReclaimType.Fnc &&
+                    r.Status != ReclaimStatus.Cancelled &&
                     r.SubType is ReclaimSubType.FncPayment)?
                 .ToDomain();
-
-            _summary.FncPayment = _summary.FundedNursingCare?.Cost ?? 0.0m;
 
             var fncResource = _package.Resources?
                 .OrderByDescending(r => r.DateCreated)
@@ -122,14 +128,9 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
         private void FillReclaimsForCollector(CarePackageSummaryReclaimsDomain reclaimTotals, ClaimCollector collector)
         {
-            if (_summary.FundedNursingCare != null)
-            {
-                reclaimTotals.Fnc = _summary.FundedNursingCare.ClaimCollector == collector
-                    ? _summary.FundedNursingCare.Cost
-                    : 0.0m;
-            }
+            reclaimTotals.Fnc = Math.Abs(_package.GetFncReclaimCost(collector, DateTimeOffset.UtcNow));
+            reclaimTotals.CareCharge = _package.GetCareChargesCost(collector, DateTimeOffset.UtcNow);
 
-            reclaimTotals.CareCharge = _package.GetCareChargesCost(collector);
             reclaimTotals.SubTotal = reclaimTotals.Fnc + reclaimTotals.CareCharge;
         }
 

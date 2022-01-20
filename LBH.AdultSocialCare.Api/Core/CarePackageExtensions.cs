@@ -49,12 +49,24 @@ namespace LBH.AdultSocialCare.Api.Core
                 .Sum(reclaim => reclaim.Cost);
         }
 
-        public static decimal GetFncCost(this CarePackage package, DateTimeOffset? targetDate = null)
+        public static decimal GetFncPaymentCost(this CarePackage package, DateTimeOffset? targetDate = null)
         {
             return package.Reclaims
                 .FirstOrDefault(reclaim =>
                     reclaim.Type is ReclaimType.Fnc &&
                     reclaim.SubType is ReclaimSubType.FncPayment &&
+                    reclaim.Status != ReclaimStatus.Cancelled &&
+                    (targetDate is null || targetDate.Value.IsInRange(reclaim.StartDate, reclaim.EndDate ?? DateTimeOffset.MaxValue)))?
+                .Cost ?? 0.0m;
+        }
+
+        public static decimal GetFncReclaimCost(this CarePackage package, ClaimCollector collector, DateTimeOffset? targetDate = null)
+        {
+            return package.Reclaims
+                .FirstOrDefault(reclaim =>
+                    reclaim.Type is ReclaimType.Fnc &&
+                    reclaim.SubType is ReclaimSubType.FncReclaim &&
+                    reclaim.ClaimCollector == collector &&
                     reclaim.Status != ReclaimStatus.Cancelled &&
                     (targetDate is null || targetDate.Value.IsInRange(reclaim.StartDate, reclaim.EndDate ?? DateTimeOffset.MaxValue)))?
                 .Cost ?? 0.0m;
