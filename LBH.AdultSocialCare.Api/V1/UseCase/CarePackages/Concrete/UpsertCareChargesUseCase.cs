@@ -2,7 +2,6 @@ using AutoMapper;
 using Common.Exceptions.CustomExceptions;
 using Common.Extensions;
 using LBH.AdultSocialCare.Api.Core;
-using LBH.AdultSocialCare.Api.Helpers;
 using LBH.AdultSocialCare.Api.V1.Domain.CarePackages;
 using LBH.AdultSocialCare.Api.V1.Factories;
 using LBH.AdultSocialCare.Api.V1.Gateways;
@@ -13,6 +12,7 @@ using LBH.AdultSocialCare.Data.Constants.Enums;
 using LBH.AdultSocialCare.Data.Entities.CarePackages;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -24,151 +24,236 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         private readonly ICarePackageGateway _carePackageGateway;
         private readonly IDatabaseManager _dbManager;
         private readonly IMapper _mapper;
-        private readonly ICarePackageReclaimGateway _carePackageReclaimGateway;
 
-        public UpsertCareChargesUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IMapper mapper, ICarePackageReclaimGateway carePackageReclaimGateway)
+        public UpsertCareChargesUseCase(ICarePackageGateway carePackageGateway, IDatabaseManager dbManager, IMapper mapper)
         {
             _carePackageGateway = carePackageGateway;
             _dbManager = dbManager;
             _mapper = mapper;
-            _carePackageReclaimGateway = carePackageReclaimGateway;
         }
 
-        public async Task ExecuteAsync(Guid carePackageId, CareChargesCreateDomain careChargesCreateDomain)
+        public async Task ExecuteAsync(Guid carePackageId, CareChargesCreateDomain request)
         {
-            // await using var transaction = await _dbManager.BeginTransactionAsync();
-            // All care charges to have one care package Id
-            foreach (var careCharge in careChargesCreateDomain.CareCharges)
-            {
-                careCharge.CarePackageId = carePackageId;
-            }
-
             // Get package with all reclaims
-            var package = await _carePackageGateway.GetPackageAsync(carePackageId, PackageFields.Settings | PackageFields.Details | PackageFields.Reclaims, true)
+            var package = await _carePackageGateway
+                .GetPackageAsync(carePackageId, PackageFields.Settings | PackageFields.Details | PackageFields.Reclaims, true)
                 .EnsureExistsAsync($"Care package with id {carePackageId} not found");
 
-            ValidateCareChargeModificationRequest(package, careChargesCreateDomain.CareCharges);
+            ValidatePackage(package);
+            ValidateRequestIntegrity(request, package); // ensure existing reclaims match requested
 
-            // Is user in Section 117, reject care charges
+            // since validating raw request is tricky, first build a model of ordered charges
+            // and then validate them to be in package date range and followed each other without any gaps
+            PrepareCareChargesModel(request, package);
+            ValidateCareChargesModel(request, package);
+
+            // if care charge has date / cost / collector changed, cancel existing one and replace it with new.
+            ReplaceUpdatedCareCharges(request, package);
+            ReclaimCostValidator.Validate(package);
+
+            await _dbManager.SaveAsync();
+        }
+
+        private static void PrepareCareChargesModel(CareChargesCreateDomain request, CarePackage package)
+        {
+            foreach (var careCharge in request.CareCharges)
+            {
+                careCharge.CarePackageId = package.Id;
+            }
+
+            var coreCost = package.GetCoreCostDetail();
+
+            // Limit ongoing charges if package interval is finite
+            request.CareCharges = request.CareCharges.OrderBy(cc => cc.SubType).ToList();
+
+            if (request.CareCharges.Last().EndDate is null && coreCost.EndDate != null)
+            {
+                request.CareCharges.Last().EndDate = coreCost.EndDate;
+            }
+
+            // if requested 1-12 charge covers period of provisional charge, 1-12 will replace provisional
+            var provisionalCharge = request.CareCharges.SingleOrDefault(cc => cc.SubType is ReclaimSubType.CareChargeProvisional);
+            var first12WeeksCharge = request.CareCharges.SingleOrDefault(cc => cc.SubType is ReclaimSubType.CareCharge1To12Weeks);
+
+            if (first12WeeksCharge != null && first12WeeksCharge.StartDate.Date <= provisionalCharge?.StartDate.Date)
+            {
+                provisionalCharge.Status = ReclaimStatus.Cancelled;
+            }
+        }
+
+        private static void ValidatePackage(CarePackage package)
+        {
             if (package.Settings.IsS117Client)
             {
-                throw new ApiException($"This service user is under S117, not allowed to add care charges", HttpStatusCode.BadRequest);
+                throw new ApiException("Cannot add add care charges for service user under S1117", HttpStatusCode.BadRequest);
             }
 
             if (package.Status.In(PackageStatus.Cancelled, PackageStatus.Ended))
             {
-                throw new ApiException($"Cannot update care charges for care package in status {package.Status.GetDisplayName()}",
-                    HttpStatusCode.BadRequest);
+                throw new ApiException($"Cannot edit care charges for care package in status {package.Status.GetDisplayName()}", HttpStatusCode.BadRequest);
             }
 
-            var validReclaimStatuses = new[] { ReclaimStatus.Active, ReclaimStatus.Ended, ReclaimStatus.Pending };
+            if (package.GetCoreCostDetail() is null)
+            {
+                throw new ApiException("Core cost must be defined before editing care charges", HttpStatusCode.BadRequest);
+            }
+        }
+
+        private static void ValidateCareChargesModel(CareChargesCreateDomain request, CarePackage package)
+        {
+            Debug.Assert(ReclaimSubType.CareChargeProvisional == ReclaimSubType.CareCharge1To12Weeks - 1);
+            Debug.Assert(ReclaimSubType.CareCharge1To12Weeks == ReclaimSubType.CareCharge13PlusWeeks - 1);
+
+            var coreCost = package.GetCoreCostDetail();
+
+            var requestedCareCharges = request.CareCharges
+                .Where(c => c.Status != ReclaimStatus.Cancelled)
+                .OrderBy(c => c.SubType).ToList();
+
+            // Care charges should follow each other without gaps
+            for (var i = 1; i < requestedCareCharges.Count; i++)
+            {
+                var currentCharge = requestedCareCharges[i];
+                var previousCharge = requestedCareCharges[i - 1];
+
+                if (!package.IsMigrated && currentCharge.SubType != previousCharge.SubType + 1)
+                {
+                    throw new ApiException($"{GetShortName(previousCharge.SubType)} care charge must be followed by" +
+                                           $" {GetShortName(previousCharge.SubType + 1)}", HttpStatusCode.BadRequest);
+                }
+
+                var expectedEndDate = currentCharge.StartDate.Date.AddDays(-1);
+                if (previousCharge.EndDate is null)
+                {
+                    throw new ApiException($"{GetShortName(previousCharge.SubType)} care charge must have an end date one day before " +
+                                           $"{GetShortName(currentCharge.SubType)} start: {expectedEndDate:yyy-MM-dd}", HttpStatusCode.BadRequest);
+                }
+
+                var expectedStartDate = previousCharge.EndDate.Value.Date.AddDays(1);
+                if (currentCharge.StartDate.Date != expectedStartDate)
+                {
+                    throw new ApiException($"{GetShortName(currentCharge.SubType)} care charge must start one day after " +
+                                           $"{GetShortName(previousCharge.SubType)} care charge end: {expectedStartDate:yyy-MM-dd}", HttpStatusCode.BadRequest);
+                }
+            }
+
+            // First care charge must be started at package start date
+            if (requestedCareCharges.First()?.StartDate.Date < coreCost.StartDate.Date)
+            {
+                throw new ApiException("First care charge start date must be greater or equal to package start date " +
+                                       $"{coreCost.StartDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
+            }
+
+            // Last care charge end date must not exceed package end date (if any)
+            if (coreCost.EndDate.HasValue && requestedCareCharges.Last().EndDate?.Date > coreCost.EndDate.Value.Date)
+            {
+                throw new ApiException("Last care charge end date expected to be less than or equal " +
+                                       $"to {coreCost.EndDate.Value:yyyy-MM-dd}", HttpStatusCode.BadRequest);
+            }
+
+            ValidateCareChargeBounds(requestedCareCharges);
+        }
+
+        private static void ValidateCareChargeBounds(List<CareChargeReclaimCreationDomain> careCharges)
+        {
+            foreach (var careCharge in careCharges)
+            {
+                if (careCharge.StartDate > careCharge.EndDate)
+                {
+                    throw new ApiException($"{GetShortName(careCharge.SubType)} charge start date should be less than or equal to its end date");
+                }
+            }
+
+            // 1-12 care charge duration shouldn't exceed 12 weeks
+            var first12WeeksCharge = careCharges.SingleOrDefault(cc => cc.SubType is ReclaimSubType.CareCharge1To12Weeks);
+            if (first12WeeksCharge != null)
+            {
+                var realEndDate = first12WeeksCharge.EndDate.GetValueOrDefault().Date;
+                var maxEndDate = first12WeeksCharge.StartDate.Date.AddDays(12 * 7 - 1); // 12 weeks, exclude last day to get inclusive 84 days range
+
+                if (realEndDate > maxEndDate)
+                {
+                    throw new ApiException("1-12 weeks care charge duration cannot exceed 12 weeks. Max end date is " +
+                                           $"{maxEndDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
+                }
+            }
+        }
+
+        private static void ValidateRequestIntegrity(CareChargesCreateDomain request, CarePackage package)
+        {
             var existingCareCharges = package.Reclaims
-                .Where(r => r.Type == ReclaimType.CareCharge && validReclaimStatuses.Contains(r.Status)).ToList();
+                .Where(r => r.Type is ReclaimType.CareCharge &&
+                            r.Status.In(ReclaimStatus.Pending, ReclaimStatus.Active, ReclaimStatus.Ended))
+                .ToList();
 
-            EnsureUpdatedReclaimsExist(careChargesCreateDomain.CareCharges, existingCareCharges);
+            // each existing care charge should be presented in upsert request
+            var missedCareCharges = existingCareCharges
+                .Where(existingCharge => !request.CareCharges.Any(
+                    requestedCharge =>
+                        requestedCharge.SubType == existingCharge.SubType &&
+                        requestedCharge.Id == existingCharge.Id))
+                .Select(existingCareCharge => GetShortName(existingCareCharge.SubType))
+                .ToList();
 
-            ValidateBeforeCreate(package, careChargesCreateDomain.CareCharges, existingCareCharges);
-
-            // Declare values
-            var provisionalCareCharge = careChargesCreateDomain.CareCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeProvisional);
-            var oneToTwelveCareCharge = careChargesCreateDomain.CareCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
-            var thirteenPlusCareCharge = careChargesCreateDomain.CareCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks);
-
-            var existingProvisionalCareCharge = existingCareCharges.FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeProvisional);
-            var existingOneToTwelveCareCharge = existingCareCharges.FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
-            var existingThirteenPlusCareCharge = existingCareCharges.FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks);
-
-            // 13+ and package has end date, set end date on 13+
-            var coreCost = package.Details.SingleOrDefault(d => d.Type == PackageDetailType.CoreCost);
-            if (thirteenPlusCareCharge is { EndDate: null } && coreCost?.EndDate != null)
+            if (missedCareCharges.Count > 0)
             {
-                thirteenPlusCareCharge.EndDate = coreCost.EndDate;
+                throw new ApiException($"Care charges {String.Join(", ", missedCareCharges)} " +
+                                       "must present in the request with valid Id", HttpStatusCode.BadRequest);
             }
 
-            // If not in Db add
-            if (existingProvisionalCareCharge == null && provisionalCareCharge != null)
+            // each requested care charge with non-empty Id should have matching DB record
+            var unknownCareCharges = request.CareCharges
+                .Where(requestedCharge =>
+                    !requestedCharge.Id.IsEmpty() &&
+                    !existingCareCharges.Any(existingCharge => existingCharge.Id == requestedCharge.Id))
+                .Select(requestedCharge => requestedCharge.Id)
+                .ToList();
+
+            if (unknownCareCharges.Count > 0)
             {
-                package.Reclaims.Add(provisionalCareCharge.ToEntity());
-            }
-            if (existingOneToTwelveCareCharge == null && oneToTwelveCareCharge != null)
-            {
-                package.Reclaims.Add(oneToTwelveCareCharge.ToEntity());
-            }
-            if (existingThirteenPlusCareCharge == null && thirteenPlusCareCharge != null)
-            {
-                package.Reclaims.Add(thirteenPlusCareCharge.ToEntity());
+                throw new ApiException($"Care charges {String.Join(", ", unknownCareCharges)} not found", HttpStatusCode.BadRequest);
             }
 
-            // If dates have changed, update care charge
-            foreach (var existingCareCharge in existingCareCharges)
+            // each care charge sub-type must have only one entry
+            var duplicatedSubtypes = request.CareCharges
+                .GroupBy(careCharge => careCharge.SubType)
+                .Where(group => group.Count() > 1)
+                .Select(group => group.Key.GetDisplayName())
+                .ToList();
+
+            if (duplicatedSubtypes.Count > 0)
             {
-                if (existingCareCharge.SubType == ReclaimSubType.CareChargeProvisional && provisionalCareCharge != null)
+                throw new ApiException("Not allowed to have more than one " +
+                                       $"{String.Join(", ", duplicatedSubtypes)} in request", HttpStatusCode.BadRequest);
+            }
+        }
+
+        private void ReplaceUpdatedCareCharges(CareChargesCreateDomain request, CarePackage package)
+        {
+            foreach (var requestedCharge in request.CareCharges)
+            {
+                // if existing charge date / cost / collector is changed, cancel it and create a new one instead.
+                if (!requestedCharge.Id.IsEmpty())
                 {
-                    if (oneToTwelveCareCharge != null && existingCareCharge.StartDate == oneToTwelveCareCharge.StartDate)
+                    var existingCharge = package.Reclaims.Single(cc => cc.Id == requestedCharge.Id);
+
+                    if (CareChargeHasChanged(existingCharge, requestedCharge) && requestedCharge.Status != ReclaimStatus.Cancelled)
                     {
-                        existingCareCharge.Status = ReclaimStatus.Cancelled;
+                        existingCharge.Status = ReclaimStatus.Cancelled;
+                        requestedCharge.Id = null;
+
+                        package.Reclaims.Add(requestedCharge.ToEntity());
                     }
                     else
                     {
-                        // If package amount or dates changed, cancel existing and create new
-                        if (CareChargeHasChanged(existingCareCharge, provisionalCareCharge))
-                        {
-                            existingCareCharge.Status = ReclaimStatus.Cancelled;
-                            provisionalCareCharge.Id = null;
-                            package.Reclaims.Add(provisionalCareCharge.ToEntity());
-                        }
-                        else
-                        {
-                            _mapper.Map(provisionalCareCharge, existingCareCharge);
-                            existingCareCharge.Status = provisionalCareCharge.Status;
-                        }
+                        _mapper.Map(requestedCharge, existingCharge);
                     }
                 }
-
-                if (existingCareCharge.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks && oneToTwelveCareCharge != null)
+                else
                 {
-                    if (CareChargeHasChanged(existingCareCharge, oneToTwelveCareCharge))
-                    {
-                        existingCareCharge.Status = ReclaimStatus.Cancelled;
-                        oneToTwelveCareCharge.Id = null;
-                        package.Reclaims.Add(oneToTwelveCareCharge.ToEntity());
-                    }
-                    else
-                    {
-                        _mapper.Map(oneToTwelveCareCharge, existingCareCharge);
-                        existingCareCharge.Status = oneToTwelveCareCharge.Status;
-                    }
-                }
-
-                if (existingCareCharge.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks && thirteenPlusCareCharge != null)
-                {
-                    if (CareChargeHasChanged(existingCareCharge, thirteenPlusCareCharge))
-                    {
-                        existingCareCharge.Status = ReclaimStatus.Cancelled;
-                        thirteenPlusCareCharge.Id = null;
-                        package.Reclaims.Add(thirteenPlusCareCharge.ToEntity());
-                    }
-                    else
-                    {
-                        _mapper.Map(thirteenPlusCareCharge, existingCareCharge);
-                        existingCareCharge.Status = thirteenPlusCareCharge.Status;
-                    }
+                    package.Reclaims.Add(requestedCharge.ToEntity());
                 }
             }
-
-            try
-            {
-                ReclaimCostValidator.Validate(package);
-                await _dbManager.SaveAsync();
-            }
-            catch (ApiException ex)
-            {
-                throw new ApiException(ex.Message, ex.StatusCode);
-            }
-
-            // Get package and check reclaim totals are valid
-            /*var packageFromDb = await _carePackageGateway.GetPackageAsync(carePackageId, PackageFields.Details | PackageFields.Reclaims, true)
-                .EnsureExistsAsync($"Care package with id {carePackageId} not found");*/
         }
 
         private static bool CareChargeHasChanged(CarePackageReclaim existingCareCharge, CareChargeReclaimCreationDomain newCareCharge)
@@ -179,168 +264,15 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                    newCareCharge.ClaimCollector != existingCareCharge.ClaimCollector;
         }
 
-        private static void ValidateCareChargeModificationRequest(CarePackage package, IList<CareChargeReclaimCreationDomain> careCharges)
+        private static string GetShortName(ReclaimSubType? subtype)
         {
-            // In request each care charge sub-type can have only one entry
-            var invalidSubType = (from c in careCharges
-                                  group c by c.SubType
-                into grp
-                                  where grp.Count() > 1
-                                  select grp.Key).ToList();
-
-            if (invalidSubType.Any())
+            return subtype switch
             {
-                throw new ApiException($"Not allowed to have more than one {invalidSubType.First().GetDisplayName()} in request", HttpStatusCode.BadRequest);
-            }
-
-            var provisionalCareCharge = careCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeProvisional);
-            var oneToTwelveCareCharge = careCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
-            var thirteenPlusCareCharge = careCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks);
-
-            // 1-12 must have end date
-            if (oneToTwelveCareCharge is { EndDate: null })
-            {
-                throw new ApiException($"1-12 care charge must have an end date", HttpStatusCode.BadRequest);
-            }
-
-            //No gaps in care charge date allowed
-            if (provisionalCareCharge != null && oneToTwelveCareCharge != null)
-            {
-                // 1-12 weeks starts a day after provisional if not on package start date which will cancel provisional care charge
-                if ((provisionalCareCharge.StartDate.Date != oneToTwelveCareCharge.StartDate.Date) && (provisionalCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1) !=
-                    oneToTwelveCareCharge.StartDate.Date))
-                {
-                    throw new ApiException("1-12 must start one day after provisional care charge end", HttpStatusCode.BadRequest);
-                }
-            }
-
-            // for migrated packages it's possible that there is only 13+ charge, new provisional charge in this case must be aligned with it.
-            if (package.IsMigrated && provisionalCareCharge != null && oneToTwelveCareCharge == null && thirteenPlusCareCharge != null)
-            {
-                if (provisionalCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1) != thirteenPlusCareCharge.StartDate.Date)
-                {
-                    throw new ApiException("13+ must start one day after provisional care charge end", HttpStatusCode.BadRequest);
-                }
-            }
-
-            // Package cannot have 13+ without 1-12 if the data is not migrated
-            if (thirteenPlusCareCharge != null && oneToTwelveCareCharge == null && !package.IsMigrated)
-            {
-                throw new ApiException($"Not allowed to have care charges for 13+ without 1-12", HttpStatusCode.BadRequest);
-            }
-
-            if (oneToTwelveCareCharge != null && thirteenPlusCareCharge != null)
-            {
-                // 13+ starts a day after 1-12
-                if (oneToTwelveCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1) != thirteenPlusCareCharge.StartDate.Date)
-                {
-                    var expectedStart = oneToTwelveCareCharge.EndDate.GetValueOrDefault().Date.AddDays(1);
-                    throw new ApiException($"13+ must start one day after 1-12 end: {expectedStart:yyy-MM-dd}", HttpStatusCode.BadRequest);
-                }
-            }
-        }
-
-        private static void EnsureUpdatedReclaimsExist(IEnumerable<CareChargeReclaimCreationDomain> modifiedReclaims, IEnumerable<CarePackageReclaim> existingReclaims)
-        {
-            var modifiedReclaimIds = modifiedReclaims.Where(cc => cc.Id != null).Select(cc => (Guid) cc.Id);
-            var existingReclaimIds = existingReclaims.Where(r => r.Type == ReclaimType.CareCharge).Select(r => r.Id)
-                .ToList();
-            var missedIds = modifiedReclaimIds
-                .Where(id => !existingReclaimIds.Contains(id))
-                .ToList();
-
-            if (missedIds.Any())
-            {
-                throw new ApiException($"Care package reclaims {String.Join(", ", missedIds)} not found", HttpStatusCode.NotFound);
-            }
-        }
-
-        private static void ValidateBeforeCreate(CarePackage package,
-            IList<CareChargeReclaimCreationDomain> modifiedCareCharges, IList<CarePackageReclaim> existingReclaims)
-        {
-            // Get package core cost
-            var coreCost = package.Details.SingleOrDefault(d => d.Type == PackageDetailType.CoreCost);
-            if (coreCost == null)
-            {
-                throw new ApiException($"Not allowed to add care charges. Package core cost must be added first",
-                    HttpStatusCode.BadRequest);
-            }
-
-            var provisionalCareCharge = modifiedCareCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeProvisional);
-            var oneToTwelveCareCharge = modifiedCareCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
-            var thirteenPlusCareCharge = modifiedCareCharges.SingleOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks);
-
-            var existingProvisionalCareCharge = existingReclaims.FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeProvisional);
-            var existingOneToTwelveCareCharge = existingReclaims.FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks);
-            var existingThirteenPlusCareCharge = existingReclaims.FirstOrDefault(cc => cc.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks);
-
-            var minCareChargeStartDate = Dates.Min(provisionalCareCharge?.StartDate, oneToTwelveCareCharge?.StartDate,
-                thirteenPlusCareCharge?.StartDate);
-
-            // Care charges cannot be before package start date
-            if (minCareChargeStartDate < coreCost.StartDate.Date)
-            {
-                throw new ApiException($"Care charge start date cannot be before package start date. Expected min start date {coreCost.StartDate.Date:yyyy-MM-dd}",
-                    HttpStatusCode.BadRequest);
-            }
-
-            // Initial care charge must start on package start date
-            if (minCareChargeStartDate != coreCost.StartDate)
-            {
-                throw new ApiException($"Initial care charge must start on package start date",
-                    HttpStatusCode.BadRequest);
-            }
-
-            /*//If package has 1-12 care charge, provisional must have end date
-            if (oneToTwelveCareCharge != null && oneToTwelveCareCharge.StartDate.Date != coreCost.StartDate.Date && provisionalCareCharge?.EndDate == null)
-            {
-                throw new ApiException($"Provisional care charge must have an end date", HttpStatusCode.BadRequest);
-            }*/
-
-            // Only provisional care charge, ongoing and package has end date, make package end date to be end date of provisional care charge
-            if (provisionalCareCharge is { EndDate: null } && oneToTwelveCareCharge == null && thirteenPlusCareCharge == null && coreCost.EndDate != null)
-            {
-                provisionalCareCharge.EndDate = coreCost.EndDate;
-            }
-
-            // Existing reclaim should not miss on update
-            if ((provisionalCareCharge == null && existingProvisionalCareCharge != null) || (existingProvisionalCareCharge != null && provisionalCareCharge?.Id != existingProvisionalCareCharge?.Id))
-            {
-                throw new ApiException($"Provisional care charge must be in request and with a valid Id", HttpStatusCode.BadRequest);
-            }
-
-            if ((oneToTwelveCareCharge == null && existingOneToTwelveCareCharge != null) || (existingOneToTwelveCareCharge != null && oneToTwelveCareCharge?.Id != existingOneToTwelveCareCharge?.Id))
-            {
-                throw new ApiException($"1-12 care charge must be in request and with a valid Id", HttpStatusCode.BadRequest);
-            }
-
-            if ((thirteenPlusCareCharge == null && existingThirteenPlusCareCharge != null) || (existingThirteenPlusCareCharge != null && thirteenPlusCareCharge?.Id != existingThirteenPlusCareCharge?.Id))
-            {
-                throw new ApiException($"13+ care charge must be in request and with a valid Id", HttpStatusCode.BadRequest);
-            }
-
-            // If package core cost ongoing or package end date greater than/= 1-12 end date, 1-12 must be exactly 12 weeks
-            if (oneToTwelveCareCharge != null && (coreCost.EndDate == null || coreCost.EndDate.GetValueOrDefault().Date >= oneToTwelveCareCharge.StartDate.Date.AddDays(84)))
-            {
-                if ((oneToTwelveCareCharge.EndDate.GetValueOrDefault().Date - oneToTwelveCareCharge.StartDate.Date).Days != 84)
-                {
-                    var expectedEndDate = oneToTwelveCareCharge.StartDate.Date.AddDays(84);
-                    throw new ApiException($"1-12 must take exactly 12 weeks: Expected end date is {expectedEndDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
-                }
-            }
-
-            // If package core cost has end date, care charge end date cannot be after that date
-            if (coreCost.EndDate != null)
-            {
-                var maxCareChargeEndDate = Dates.Max(provisionalCareCharge?.EndDate, oneToTwelveCareCharge?.EndDate,
-                    thirteenPlusCareCharge?.EndDate);
-
-                if (maxCareChargeEndDate.Date > coreCost.EndDate.GetValueOrDefault().Date)
-                {
-                    throw new ApiException(
-                        $"Max care charge end date expected to be {coreCost.EndDate.GetValueOrDefault().Date:yyyy-MM-dd}", HttpStatusCode.BadRequest);
-                }
-            }
+                ReclaimSubType.CareChargeProvisional => "Provisional",
+                ReclaimSubType.CareCharge1To12Weeks => "1-12",
+                ReclaimSubType.CareCharge13PlusWeeks => "13+",
+                _ => String.Empty
+            };
         }
     }
 }

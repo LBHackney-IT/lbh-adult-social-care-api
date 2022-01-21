@@ -59,7 +59,7 @@ namespace DataImporter.Model
             else if (_careCharge13PlusNetPackageType.Contains(elementType, StringComparer.OrdinalIgnoreCase))
             {
                 _excelPackageType = ExcelPackageType.Reclaim;
-                _reclaimSubType = LBH.AdultSocialCare.Data.Constants.Enums.ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks;
+                _reclaimSubType = LBH.AdultSocialCare.Data.Constants.Enums.ReclaimSubType.CareCharge13PlusWeeks;
                 _reclaimType = ReclaimType.CareCharge;
                 _claimCollector = ClaimCollector.Supplier;
 
@@ -67,7 +67,7 @@ namespace DataImporter.Model
             else if (_careCharge13PlusGrossPackageType.Contains(elementType, StringComparer.OrdinalIgnoreCase))
             {
                 _excelPackageType = ExcelPackageType.Reclaim;
-                _reclaimSubType = LBH.AdultSocialCare.Data.Constants.Enums.ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks;
+                _reclaimSubType = LBH.AdultSocialCare.Data.Constants.Enums.ReclaimSubType.CareCharge13PlusWeeks;
                 _reclaimType = ReclaimType.CareCharge;
                 _claimCollector = ClaimCollector.Hackney;
             }

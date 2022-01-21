@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using LBH.AdultSocialCare.TestFramework.Extensions;
 using Xunit;
 using UserConstants = LBH.AdultSocialCare.Data.Constants.UserConstants;
 
@@ -22,11 +22,11 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
     public class UpsertCareChargesUseCaseTests : BaseTest
     {
         private readonly Mock<IDatabaseManager> _dbManager;
-        private readonly Mock<ICarePackageGateway> _carePackageGateway;
-        private readonly Mock<ICarePackageReclaimGateway> _carePackageReclaimGateway;
         private readonly IUpsertCareChargesUseCase _useCase;
-        private CarePackage _defaultPackage;
-        private CarePackageDetail _coreCost;
+
+        private readonly CarePackage _package;
+        private readonly CarePackageDetail _coreCost;
+
         private readonly DateTimeOffset _today = DateTimeOffset.UtcNow.Date;
 
         public UpsertCareChargesUseCaseTests()
@@ -39,463 +39,477 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 EndDate = _today.AddDays(30)
             };
 
-            _defaultPackage = new CarePackage
+            _package = new CarePackage
             {
                 Id = Guid.NewGuid(),
                 PackageType = PackageType.ResidentialCare,
-                Settings = new CarePackageSettings
-                {
-                    Id = Guid.NewGuid(),
-                    HasRespiteCare = false,
-                    HasDischargePackage = false,
-                    HospitalAvoidance = false,
-                    IsReEnablement = false,
-                    IsS117Client = false,
-                    IsS117ClientConfirmed = false,
-                },
-                Details = { _coreCost }
+                Details = { _coreCost },
+                Settings = new CarePackageSettings()
             };
 
             _dbManager = new Mock<IDatabaseManager>();
-            _carePackageReclaimGateway = new Mock<ICarePackageReclaimGateway>();
-            _carePackageGateway = new Mock<ICarePackageGateway>();
 
-            _carePackageGateway
-                .Setup(g => g.GetPackageAsync(_defaultPackage.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
-                .ReturnsAsync(_defaultPackage);
+            var carePackageGateway = new Mock<ICarePackageGateway>();
+            carePackageGateway
+                .Setup(g => g.GetPackageAsync(_package.Id, It.IsAny<PackageFields>(), It.IsAny<bool>()))
+                .ReturnsAsync(_package);
 
-            _useCase = new UpsertCareChargesUseCase(_carePackageGateway.Object, _dbManager.Object, Mapper, _carePackageReclaimGateway.Object);
+            _useCase = new UpsertCareChargesUseCase(carePackageGateway.Object, _dbManager.Object, Mapper);
         }
 
         [Fact]
-        public async Task ShouldKeepActiveProvisionalIfCareChargeWithoutPropertyOneToTwelveWeeksStartDateAheadInActualDate()
+        public async Task ShouldSaveValidChargesList()
         {
-            var provisionalReclaim = new CarePackageReclaim
+            _coreCost.EndDate = _today.AddDays(300);
+
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _today.AddDays(-1)),
+                (ReclaimSubType.CareCharge1To12Weeks, _today, _today.AddDays(83)),
+                (ReclaimSubType.CareCharge13PlusWeeks, _today.AddDays(84), _today.AddDays(200)));
+
+            await _useCase.ExecuteAsync(_package.Id, request);
+
+            _package.Reclaims.Count.Should().Be(3);
+
+            foreach (var requestedCharge in request.CareCharges)
             {
-                Id = Guid.NewGuid(),
-                CarePackageId = _defaultPackage.Id,
-                Cost = 1m,
-                Type = ReclaimType.CareCharge,
-                SubType = ReclaimSubType.CareChargeProvisional,
-                Status = ReclaimStatus.Active,
-                StartDate = _today.AddDays(-30),
-                EndDate = _today.AddDays(5)
-            };
-            _defaultPackage.Reclaims.Add(provisionalReclaim);
-
-            var careChargesCreateDomain = new CareChargesCreateDomain()
-            {
-                CareCharges = new List<CareChargeReclaimCreationDomain>()
-                {
-                    new CareChargeReclaimCreationDomain
-                    {
-                        CarePackageId = _defaultPackage.Id,
-                        Id = provisionalReclaim.Id,
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeProvisional,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(5)
-                    },
-                    new CareChargeReclaimCreationDomain()
-                    {
-                        CarePackageId = _defaultPackage.Id,
-                        Cost = 2m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                        StartDate = _today.AddDays(6),
-                        EndDate = _today.AddDays(30)
-                    }
-                }
-            };
-
-            await _useCase.ExecuteAsync(_defaultPackage.Id, careChargesCreateDomain);
-
-            _defaultPackage.Reclaims.Count.Should().Be(2);
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).Should().NotBeNull();
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).Status.Should().Be(ReclaimStatus.Active);
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).EndDate.Should().Be(_today.AddDays(5));
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks).StartDate.Should().Be(_today.AddDays(6));
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks).EndDate.Should().Be(_today.AddDays(30));
+                _package.Reclaims.Should().ContainSingle(
+                    r => r.SubType == requestedCharge.SubType &&
+                         r.StartDate == requestedCharge.StartDate &&
+                         r.EndDate == requestedCharge.EndDate);
+            }
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
-        public async Task ShouldNotAllowAddingCareChargeWithoutPropertyOneToTwelveWeeksIfDaterangeIsMoreThan12Weeks()
+        public async Task ShouldReplaceUpdatedChargeWithNewOneWhenDateIsChanged()
         {
-            _defaultPackage.Details.Clear();
-            _defaultPackage.Details.Add(new CarePackageDetail
-            {
-                Cost = 34.12m,
-                Type = PackageDetailType.CoreCost,
-                StartDate = _today.AddDays(-30),
-                EndDate = _today.AddDays(300)
-            });
+            AddExistingCareCharge(ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _today);
+            AddExistingCareCharge(ReclaimSubType.CareCharge1To12Weeks, _today.AddDays(1), _coreCost.EndDate);
 
-            var careChargesCreateDomain = new CareChargesCreateDomain()
-            {
-                CareCharges = new List<CareChargeReclaimCreationDomain>()
-                {
-                    new CareChargeReclaimCreationDomain
-                    {
-                        CarePackageId = _defaultPackage.Id,
-                        Cost = 2m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(90)
-                    }
-                }
-            };
+            var request = CreateUpsertRequest();
+            request.CareCharges.First().EndDate = _today.AddDays(-1);
+            request.CareCharges.Last().StartDate = _today;
 
-            var exception = await Assert.ThrowsAsync<ApiException>(async () =>
-            {
-                await _useCase.ExecuteAsync(_defaultPackage.Id, careChargesCreateDomain);
-            });
+            await _useCase.ExecuteAsync(_package.Id, request);
 
-            exception.StatusCode.Should().Be(400);
+            var provisionalCharges = _package.Reclaims.Where(r => r.SubType is ReclaimSubType.CareChargeProvisional).ToList();
+            var first12WeeksCharges = _package.Reclaims.Where(r => r.SubType is ReclaimSubType.CareCharge1To12Weeks).ToList();
 
-            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
-        }
+            provisionalCharges.Count.Should().Be(2);
+            first12WeeksCharges.Count.Should().Be(2);
 
-        [Fact]
-        public async Task ShouldNotAllowOverlapBetweenCareCharges()
-        {
-            _defaultPackage.Details.Clear();
-            _defaultPackage.Details.Add(new CarePackageDetail
-            {
-                Cost = 34.12m,
-                Type = PackageDetailType.CoreCost,
-                StartDate = _today.AddDays(-30),
-                EndDate = _today.AddDays(300)
-            });
+            provisionalCharges.Should().ContainSingle(c => c.StartDate == _coreCost.StartDate && c.EndDate == _today && c.Status == ReclaimStatus.Cancelled);
+            provisionalCharges.Should().ContainSingle(c => c.StartDate == _coreCost.StartDate && c.EndDate == _today.AddDays(-1) && c.Status == ReclaimStatus.Ended);
 
-            var careChargesCreateDomain = new CareChargesCreateDomain()
-            {
-                CareCharges = new List<CareChargeReclaimCreationDomain>()
-                {
-                    new CareChargeReclaimCreationDomain
-                    {
-                        CarePackageId = _defaultPackage.Id,
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeProvisional,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(5)
-                    },
-                    new CareChargeReclaimCreationDomain()
-                    {
-                        CarePackageId = _defaultPackage.Id,
-                        Cost = 2m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                        StartDate = _today.AddDays(5),
-                        EndDate = _today.AddDays(30)
-                    },
-                    new CareChargeReclaimCreationDomain()
-                    {
-                        CarePackageId = _defaultPackage.Id,
-                        Cost = 2m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                        StartDate = _today.AddDays(25),
-                        EndDate = _today.AddDays(300)
-                    }
-                }
-            };
-
-            var exception = await Assert.ThrowsAsync<ApiException>(async () =>
-            {
-                await _useCase.ExecuteAsync(_defaultPackage.Id, careChargesCreateDomain);
-            });
-
-            exception.StatusCode.Should().Be(400);
-
-            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
-        }
-
-        [Fact]
-        public async Task ShouldAllowUpdateCareChargesIfNoOverlap()
-        {
-            var provisionalCareCharge = new CarePackageReclaim
-            {
-                Cost = 1m,
-                Type = ReclaimType.CareCharge,
-                SubType = ReclaimSubType.CareChargeProvisional,
-                Status = ReclaimStatus.Active,
-                StartDate = _today.AddDays(-30),
-                EndDate = _today.AddDays(-1),
-                Id = Guid.NewGuid(),
-                CarePackageId = _defaultPackage.Id,
-                ClaimCollector = ClaimCollector.Supplier
-            };
-            var OneTo12CareCharge = new CarePackageReclaim
-            {
-                Cost = 1m,
-                Type = ReclaimType.CareCharge,
-                SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                Status = ReclaimStatus.Active,
-                StartDate = _today.AddDays(0),
-                EndDate = _today.AddDays(84),
-                Id = Guid.NewGuid(),
-                CarePackageId = _defaultPackage.Id,
-                ClaimCollector = ClaimCollector.Supplier
-            };
-            var ThirteenPlusCareCharge = new CarePackageReclaim
-            {
-                Cost = 1m,
-                Type = ReclaimType.CareCharge,
-                SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks,
-                Status = ReclaimStatus.Active,
-                StartDate = _today.AddDays(85),
-                EndDate = _today.AddDays(200),
-                Id = Guid.NewGuid(),
-                CarePackageId = _defaultPackage.Id,
-                ClaimCollector = ClaimCollector.Supplier
-            };
-
-            _defaultPackage.Details.Clear();
-            _defaultPackage.Details.Add(new CarePackageDetail
-            {
-                Cost = 34.12m,
-                Type = PackageDetailType.CoreCost,
-                StartDate = _today.AddDays(-30),
-                EndDate = _today.AddDays(300)
-            });
-
-            _defaultPackage.Reclaims.Add(provisionalCareCharge);
-            _defaultPackage.Reclaims.Add(OneTo12CareCharge);
-            _defaultPackage.Reclaims.Add(ThirteenPlusCareCharge);
-
-            var careChargesUpdateDomain = new CareChargesCreateDomain()
-            {
-                CareCharges = new List<CareChargeReclaimCreationDomain>()
-                {
-                    new CareChargeReclaimCreationDomain
-                    {
-                        CarePackageId = _defaultPackage.Id,
-                        Id = provisionalCareCharge.Id,
-                        Cost = 3m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeProvisional,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(0),
-                        Status = ReclaimStatus.Active,
-                        ClaimCollector = ClaimCollector.Hackney
-                    },
-                    new CareChargeReclaimCreationDomain()
-                    {
-                        CarePackageId = _defaultPackage.Id,
-                        Id = OneTo12CareCharge.Id,
-                        Cost = 2m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                        StartDate = _today.AddDays(1),
-                        EndDate = _today.AddDays(85),
-                        Status = ReclaimStatus.Pending,
-                        ClaimCollector = ClaimCollector.Hackney
-                    },
-                    new CareChargeReclaimCreationDomain()
-                    {
-                        CarePackageId = _defaultPackage.Id,
-                        Id = ThirteenPlusCareCharge.Id,
-                        Cost = 2m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks,
-                        StartDate = _today.AddDays(86),
-                        EndDate = _today.AddDays(300),
-                        Status = ReclaimStatus.Pending,
-                        ClaimCollector = ClaimCollector.Hackney
-                    }
-                }
-            };
-
-            await _useCase.ExecuteAsync(_defaultPackage.Id, careChargesUpdateDomain);
-
-            _defaultPackage.Reclaims.Count.Should().Be(6);
-            _defaultPackage.Reclaims.Count(r => r.ClaimCollector == ClaimCollector.Hackney).Should().Be(3);
-            _defaultPackage.Reclaims.Count(r => r.ClaimCollector == ClaimCollector.Supplier).Should().Be(3);
-            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeProvisional && x.Status == ReclaimStatus.Active).Should().Be(1);
-            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks && x.Status == ReclaimStatus.Pending).Should().Be(1);
-            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks && x.Status == ReclaimStatus.Pending).Should().Be(1);
-
-
-            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeProvisional && x.Cost == 3m).Should().Be(1);
-            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks && x.Cost == 2m).Should().Be(1);
-            _defaultPackage.Reclaims.Count(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks && x.Cost == 2m).Should().Be(1);
+            first12WeeksCharges.Should().ContainSingle(c => c.StartDate == _today.AddDays(1) && c.EndDate == _coreCost.EndDate && c.Status == ReclaimStatus.Cancelled);
+            first12WeeksCharges.Should().ContainSingle(c => c.StartDate == _today && c.EndDate == _coreCost.EndDate && c.Status == ReclaimStatus.Active);
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
-        public async Task ShouldFailIfGapBetweenProvisionalAndCareChargeWithoutPropertyOneToTwelveWeeks()
+        public async Task ShouldReplaceUpdatedChargeWithNewOneWhenCostIsChanged()
         {
-            _defaultPackage.Details.Clear();
-            _defaultPackage.Details.Add(new CarePackageDetail
-            {
-                Cost = 34.12m,
-                Type = PackageDetailType.CoreCost,
-                StartDate = _today.AddDays(-30),
-                EndDate = _today.AddDays(300)
-            });
+            _coreCost.EndDate = _today.AddDays(1000);
 
-            var provisionalCareCharge = new CarePackageReclaim
-            {
-                Cost = 1m,
-                Type = ReclaimType.CareCharge,
-                SubType = ReclaimSubType.CareChargeProvisional,
-                Status = ReclaimStatus.Active,
-                StartDate = _today.AddDays(-30),
-                EndDate = _today.AddDays(300)
-            };
-            _defaultPackage.Reclaims.Add(provisionalCareCharge);
+            AddExistingCareCharge(ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(83));
+            AddExistingCareCharge(ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(84), _coreCost.EndDate);
 
-            var careChargesUpdateDomain = new CareChargesCreateDomain()
-            {
-                CareCharges = new List<CareChargeReclaimCreationDomain>()
-                {
-                    new CareChargeReclaimCreationDomain
-                    {
-                        CarePackageId = _defaultPackage.Id,
-                        Id = provisionalCareCharge.Id,
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeProvisional,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(-1),
-                        Status = ReclaimStatus.Active,
-                        ClaimCollector = ClaimCollector.Hackney
-                    },
-                    new CareChargeReclaimCreationDomain()
-                    {
-                        CarePackageId = _defaultPackage.Id,
-                        Id = Guid.NewGuid(),
-                        Cost = 2m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                        StartDate = _today.AddDays(1),
-                        EndDate = _today.AddDays(85),
-                        Status = ReclaimStatus.Pending,
-                        ClaimCollector = ClaimCollector.Hackney
-                    }
-                }
-            };
+            _package.Reclaims.Last().Cost = 10m;
 
-            var exception = await Assert.ThrowsAsync<ApiException>(async () =>
-            {
-                await _useCase.ExecuteAsync(_defaultPackage.Id, careChargesUpdateDomain);
-            });
+            var request = CreateUpsertRequest();
+            request.CareCharges.Last().Cost = 20m;
 
-            exception.StatusCode.Should().Be(400);
+            await _useCase.ExecuteAsync(_package.Id, request);
 
-            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
+            _package.Reclaims.Count.Should().Be(3);
+
+            var plus13WeeksCharges = _package.Reclaims.Where(r => r.SubType is ReclaimSubType.CareCharge13PlusWeeks).ToList();
+
+            plus13WeeksCharges.Should().ContainSingle(c => c.Cost == 20m && c.Status == ReclaimStatus.Pending);
+            plus13WeeksCharges.Should().ContainSingle(c => c.Cost == 10m && c.Status == ReclaimStatus.Cancelled);
+
+            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Fact]
-        public async Task ShouldSetCancelledProvisionalIfCareChargeWithoutPropertyOneToTwelveWeeksOverlap()
+        public async Task ShouldReplaceUpdatedChargeWithNewOneWhenCollectorIsChanged()
         {
-            _defaultPackage.Details.Clear();
-            _defaultPackage.Details.Add(new CarePackageDetail
-            {
-                Cost = 34.12m,
-                Type = PackageDetailType.CoreCost,
-                StartDate = _today.AddDays(-30),
-                EndDate = _today.AddDays(300)
-            });
+            AddExistingCareCharge(ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _coreCost.EndDate);
+            _package.Reclaims.Single().ClaimCollector = ClaimCollector.Supplier;
 
-            var provisionalCareCharge = new CarePackageReclaim
-            {
-                Cost = 1m,
-                Type = ReclaimType.CareCharge,
-                SubType = ReclaimSubType.CareChargeProvisional,
-                Status = ReclaimStatus.Active,
-                StartDate = _today.AddDays(-30),
-                EndDate = _today.AddDays(300)
-            };
-            _defaultPackage.Reclaims.Add(provisionalCareCharge);
+            var request = CreateUpsertRequest();
+            request.CareCharges.Single().ClaimCollector = ClaimCollector.Hackney;
 
-            var careChargesUpdateDomain = new CareChargesCreateDomain()
-            {
-                CareCharges = new List<CareChargeReclaimCreationDomain>()
-                {
-                    new CareChargeReclaimCreationDomain
-                    {
-                        CarePackageId = _defaultPackage.Id,
-                        Id = provisionalCareCharge.Id,
-                        Cost = 1m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeProvisional,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(-1),
-                        Status = ReclaimStatus.Active,
-                        ClaimCollector = ClaimCollector.Hackney
-                    },
-                    new CareChargeReclaimCreationDomain()
-                    {
-                        CarePackageId = _defaultPackage.Id,
-                        Cost = 2m,
-                        Type = ReclaimType.CareCharge,
-                        SubType = ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks,
-                        StartDate = _today.AddDays(-30),
-                        EndDate = _today.AddDays(54),
-                        Status = ReclaimStatus.Pending,
-                        ClaimCollector = ClaimCollector.Hackney
-                    }
-                }
-            };
+            await _useCase.ExecuteAsync(_package.Id, request);
 
-            await _useCase.ExecuteAsync(_defaultPackage.Id, careChargesUpdateDomain);
+            _package.Reclaims.Count.Should().Be(2);
 
-            _defaultPackage.Reclaims.Count.Should().Be(2);
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).Should().NotBeNull();
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).Status.Should().Be(ReclaimStatus.Cancelled);
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeProvisional).EndDate.Should().Be(_today.AddDays(300));
-            _defaultPackage.Reclaims.FirstOrDefault(x => x.SubType == ReclaimSubType.CareChargeWithoutPropertyOneToTwelveWeeks).Status.Should().Be(ReclaimStatus.Active);
+            _package.Reclaims.Should().ContainSingle(c => c.ClaimCollector == ClaimCollector.Hackney && c.Status == ReclaimStatus.Active);
+            _package.Reclaims.Should().ContainSingle(c => c.ClaimCollector == ClaimCollector.Supplier && c.Status == ReclaimStatus.Cancelled);
+
+            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task ShouldKeepProvisionalChargeWhenAddingSuccessive12WeeksCharge()
+        {
+            AddExistingCareCharge(ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _today.AddDays(5));
+
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareCharge1To12Weeks, _today.AddDays(6), _coreCost.EndDate));
+
+            await _useCase.ExecuteAsync(_package.Id, request);
+
+            _package.Reclaims.Count.Should().Be(2);
+
+            _package.Reclaims.Should().ContainSingle(
+                r => r.SubType == ReclaimSubType.CareChargeProvisional &&
+                     r.Status == ReclaimStatus.Active &&
+                     r.StartDate == _coreCost.StartDate &&
+                     r.EndDate == _today.AddDays(5));
+
+            _package.Reclaims.Should().ContainSingle(
+                r => r.SubType == ReclaimSubType.CareCharge1To12Weeks &&
+                     r.Status == ReclaimStatus.Pending &&
+                     r.StartDate == _today.AddDays(6) &&
+                     r.EndDate == _coreCost.EndDate);
+
+            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task ShouldCancelledProvisionalChargeWhenAddingReplacing12WeeksCharge()
+        {
+            AddExistingCareCharge(ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _today.AddDays(5));
+
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.EndDate));
+
+            await _useCase.ExecuteAsync(_package.Id, request);
+
+            _package.Reclaims.Count.Should().Be(2);
+
+            _package.Reclaims.Should().ContainSingle(
+                r => r.SubType == ReclaimSubType.CareChargeProvisional &&
+                     r.Status == ReclaimStatus.Cancelled);
+
+            _package.Reclaims.Should().ContainSingle(
+                r => r.SubType == ReclaimSubType.CareCharge1To12Weeks &&
+                     r.Status == ReclaimStatus.Active);
 
             _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
         }
 
         [Theory]
-        [InlineData(1, true)]
-        [InlineData(0, true)]
-        [InlineData(-10, true)]
-        [InlineData(-1, false)]
-        public void ShouldValidateOverlappingProvisionalAnd13PlusChargesForMigratedPackage(int daysDelta, bool shouldFail)
+        [InlineData(ReclaimSubType.CareChargeProvisional)]
+        [InlineData(ReclaimSubType.CareCharge1To12Weeks)]
+        public async Task ShouldAdjustOngoingCareChargeEndDateToFinitePackageEndDate(ReclaimSubType subtype)
         {
-            _defaultPackage.CreatorId = UserConstants.MigrationUserId;
-            _coreCost.EndDate = _today.AddDays(365);
+            var request = CreateUpsertRequest((subtype, _coreCost.StartDate, null));
 
-            AddCareCharge(
-                ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks,
-                _coreCost.EndDate.GetValueOrDefault().AddDays(-100),
-                _coreCost.EndDate);
+            await _useCase.ExecuteAsync(_package.Id, request);
 
-            var request = CreateUpsertRequest();
-            AddRequestedCareCharge(request,
-                ReclaimSubType.CareChargeProvisional,
-                _coreCost.StartDate,
-                _defaultPackage.Reclaims
-                    .First(r => r.SubType is ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks)
-                    .StartDate.AddDays(daysDelta));
+            _package.Reclaims
+                .Single(r => r.SubType == subtype)
+                .EndDate.Should().Be(_coreCost.EndDate);
+        }
 
-            var invocation = _useCase.Invoking(async useCase => await useCase.ExecuteAsync(_defaultPackage.Id, request));
+        [Fact]
+        public async Task ShouldAdjustOngoing13PlusWeeksChargeEndDateToFinitePackageEndDate()
+        {
+            _coreCost.EndDate = _today.AddDays(300);
 
-            if (shouldFail)
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(83)),
+                (ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(84), null));
+
+            await _useCase.ExecuteAsync(_package.Id, request);
+
+            _package.Reclaims
+                .Single(r => r.SubType is ReclaimSubType.CareCharge13PlusWeeks)
+                .EndDate.Should().Be(_coreCost.EndDate);
+        }
+
+        [Fact]
+        public void ShouldFailWhenCareChargeStartDateExceedsEndDate()
+        {
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate.AddDays(5), _coreCost.StartDate.AddDays(3)));
+
+            VerifyFailedRequest(request, "charge start date should be less than or equal to its end date");
+        }
+
+        [Fact]
+        public void ShouldFailWhenAdding12WeeksChargeForMoreThan12WeeksPeriod()
+        {
+            _coreCost.EndDate = _today.AddDays(300);
+
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(20 * 7)));
+
+            VerifyFailedRequest(request, "cannot exceed 12 weeks");
+        }
+
+        [Fact]
+        public async Task ShouldAllowCreating12WeeksChargeForShorterPackage()
+        {
+            _coreCost.EndDate = _coreCost.StartDate.AddDays(5);
+
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.EndDate));
+
+            await _useCase.ExecuteAsync(_package.Id, request);
+
+            _package.Reclaims.Count.Should().Be(1);
+            _package.Reclaims.Should().ContainSingle(
+                r => r.SubType == ReclaimSubType.CareCharge1To12Weeks &&
+                     r.Status == ReclaimStatus.Ended &&
+                     r.StartDate == _coreCost.StartDate &&
+                     r.EndDate == _coreCost.EndDate);
+
+            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
+        public void ShouldFailOnOverlappingCareCharges()
+        {
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _today.AddDays(5)),
+                (ReclaimSubType.CareCharge1To12Weeks, _today.AddDays(5), _coreCost.EndDate));
+
+            VerifyFailedRequest(request, "must start one day after");
+        }
+
+        [Fact]
+        public void ShouldFailOnGapsBetweenCareCharges()
+        {
+            _coreCost.EndDate = _today.AddDays(300);
+
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(84)),
+                (ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(90), _coreCost.EndDate));
+
+            VerifyFailedRequest(request, "must start one day after");
+        }
+
+        [Fact]
+        public void ShouldFailWhenOngoingChargeFollowedByAnotherCharge()
+        {
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, null),
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate.AddDays(10), _coreCost.EndDate));
+
+            VerifyFailedRequest(request, "care charge must have an end date");
+        }
+
+        [Theory]
+        [InlineData(ReclaimSubType.CareChargeProvisional, -1)]
+        [InlineData(ReclaimSubType.CareCharge1To12Weeks, -1)]
+        public void ShouldFailWhenFirstCareChargeStartLessThanPackageStartDate(ReclaimSubType subtype, int daysDelta)
+        {
+            var request = CreateUpsertRequest(
+                (subtype, _coreCost.StartDate.AddDays(daysDelta), null));
+
+            VerifyFailedRequest(request, "First care charge start date must be greater or equal to package start date");
+        }
+
+        [Theory]
+        [InlineData(ReclaimSubType.CareChargeProvisional, 0)]
+        [InlineData(ReclaimSubType.CareChargeProvisional, 1)]
+        [InlineData(ReclaimSubType.CareCharge1To12Weeks, 0)]
+        [InlineData(ReclaimSubType.CareCharge1To12Weeks, 1)]
+        public void ShouldSaveWhenFirstCareChargeStartDateGreaterOrEqualThanPackageStartDate(ReclaimSubType subtype, int daysDelta)
+        {
+            var request = CreateUpsertRequest(
+                (subtype, _coreCost.StartDate.AddDays(daysDelta), null));
+
+            _useCase.ExecuteAsync(_package.Id, request);
+
+            _package.Reclaims.Should().ContainSingle(r => r.SubType == subtype);
+            _dbManager.VerifySaved();
+        }
+
+        [Theory]
+        [InlineData(ReclaimSubType.CareChargeProvisional)]
+        [InlineData(ReclaimSubType.CareCharge1To12Weeks)]
+        public void ShouldFailWhenLastCareChargeEndDateExceedsPackageEndDate(ReclaimSubType subtype)
+        {
+            var request = CreateUpsertRequest((subtype, _coreCost.StartDate, _coreCost.EndDate?.AddDays(1)));
+
+            VerifyFailedRequest(request, "Last care charge end date expected to be less than or equal to");
+        }
+
+        [Fact]
+        public void ShouldFailWhen13PlusWeeksCareChargeEndDateExceedsPackageEndDate()
+        {
+            _coreCost.EndDate = _today.AddDays(300);
+
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate, _coreCost.StartDate.AddDays(84)),
+                (ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(85), _coreCost.EndDate?.AddDays(1)));
+
+            VerifyFailedRequest(request, "Last care charge end date expected to be less than or equal to");
+        }
+
+        [Fact]
+        public void ShouldFailWhenProvisionalChargeFollowedBy13PlusCharge()
+        {
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _coreCost.StartDate.AddDays(10)),
+                (ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(11), _coreCost.EndDate));
+
+            VerifyFailedRequest(request, "care charge must be followed by");
+        }
+
+        [Fact]
+        public async Task ShouldAllowProvisionalChargeFollowedBy13PlusChargeForMigratedPackage()
+        {
+            _package.CreatorId = UserConstants.MigrationUserId;
+
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _today.AddDays(5)),
+                (ReclaimSubType.CareCharge13PlusWeeks, _today.AddDays(6), _coreCost.EndDate));
+
+            await _useCase.ExecuteAsync(_package.Id, request);
+
+            _package.Reclaims.Count.Should().Be(2);
+
+            _package.Reclaims.Should().ContainSingle(
+                r => r.SubType == ReclaimSubType.CareChargeProvisional &&
+                     r.Status == ReclaimStatus.Active);
+
+            _package.Reclaims.Should().ContainSingle(
+                r => r.SubType == ReclaimSubType.CareCharge13PlusWeeks &&
+                     r.Status == ReclaimStatus.Pending);
+
+            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Once);
+        }
+
+        [Theory]
+        [InlineData(10)]
+        [InlineData(-10)]
+        public void ShouldFailWhenProvisionalAnd13PlusChargeNonAdjacentInMigratedPackage(int daysDelta)
+        {
+            _package.CreatorId = UserConstants.MigrationUserId;
+            _coreCost.EndDate = _today.AddDays(300);
+
+            AddExistingCareCharge(
+                ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(85), _coreCost.EndDate);
+
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _coreCost.StartDate.AddDays(85 + daysDelta)));
+
+            VerifyFailedRequest(request, "must start one day after");
+        }
+
+        [Fact]
+        public void ShouldFailWhenExistingCareChargeAbsentInRequest()
+        {
+            _coreCost.EndDate = _coreCost.EndDate.GetValueOrDefault().AddDays(1000);
+
+            AddExistingCareCharge(ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _coreCost.StartDate.AddDays(10));
+            AddExistingCareCharge(ReclaimSubType.CareCharge1To12Weeks, _coreCost.StartDate.AddDays(11), _coreCost.StartDate.AddDays(95));
+            AddExistingCareCharge(ReclaimSubType.CareCharge13PlusWeeks, _coreCost.StartDate.AddDays(96), _coreCost.EndDate);
+
+            foreach (var subtype in _package.Reclaims.Select(r => r.SubType))
             {
-                invocation.Should().Throw<ApiException>();
-            }
-            else
-            {
-                invocation.Should().NotThrow();
+                var request = CreateUpsertRequest();
+                request.CareCharges.Remove(request.CareCharges.First(r => r.SubType == subtype));
+
+                VerifyFailedRequest(request, "must present in the request with valid Id");
             }
         }
 
-        private void AddRequestedCareCharge(CareChargesCreateDomain request, ReclaimSubType subType, DateTimeOffset startDate, DateTimeOffset? endDate)
+        [Fact]
+        public void ShouldFailWhenRequestContainsNonUniqueSubtypes()
+        {
+            AddExistingCareCharge(ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _coreCost.StartDate.AddDays(10));
+
+            var request = CreateUpsertRequest();
+            request.CareCharges.Add(request.CareCharges.First().DeepCopy());
+
+            VerifyFailedRequest(request, "Not allowed to have more than one");
+        }
+
+        [Fact]
+        public void ShouldFailWhenServiceUserIsS1117()
+        {
+            _package.Settings.IsS117Client = true;
+
+            var request = CreateUpsertRequest(
+                (ReclaimSubType.CareChargeProvisional, _coreCost.StartDate, _coreCost.StartDate.AddDays(10)));
+
+            VerifyFailedRequest(request, "service user under S1117");
+        }
+
+        #region Utils
+
+        private void VerifyFailedRequest(CareChargesCreateDomain request, string message)
+        {
+            _useCase
+                .Invoking(async useCase => await useCase.ExecuteAsync(_package.Id, request))
+                .Should().Throw<ApiException>()
+                .Where(ex => ex.Message.Contains(message));
+
+            _dbManager.Verify(db => db.SaveAsync(It.IsAny<string>()), Times.Never);
+        }
+
+        private void AddExistingCareCharge(ReclaimSubType subType, DateTimeOffset startDate, DateTimeOffset? endDate)
+        {
+            _package.Reclaims.Add(new CarePackageReclaim
+            {
+                Id = Guid.NewGuid(),
+                CarePackageId = _package.Id,
+                Type = ReclaimType.CareCharge,
+                SubType = subType,
+                Status = ReclaimStatus.Active,
+                ClaimCollector = ClaimCollector.Supplier,
+                Cost = 1m,
+                StartDate = startDate,
+                EndDate = endDate
+            });
+        }
+
+        private CareChargesCreateDomain CreateUpsertRequest(params (ReclaimSubType subtype, DateTimeOffset startDate, DateTimeOffset? endDate)[] newCharges)
+        {
+            var request = new CareChargesCreateDomain { CareCharges = new List<CareChargeReclaimCreationDomain>() };
+
+            // TODO: VK: Reorganize and unify reclaim creation entities, use mapper
+            foreach (var careCharge in _package.Reclaims.Where(r => r.Type is ReclaimType.CareCharge))
+            {
+                request.CareCharges.Add(
+                    new CareChargeReclaimCreationDomain
+                    {
+                        Id = careCharge.Id,
+                        CarePackageId = careCharge.CarePackageId,
+                        Type = careCharge.Type,
+                        SubType = careCharge.SubType.GetValueOrDefault(),
+                        Status = careCharge.Status,
+                        Cost = careCharge.Cost,
+                        Description = careCharge.Description,
+                        ClaimCollector = careCharge.ClaimCollector,
+                        ClaimReason = careCharge.ClaimReason,
+                        StartDate = careCharge.StartDate,
+                        EndDate = careCharge.EndDate
+                    });
+            }
+
+            foreach (var newCareCharge in newCharges)
+            {
+                AddRequestedCareCharge(request, newCareCharge.subtype, newCareCharge.startDate, newCareCharge.endDate);
+            }
+
+            return request;
+        }
+
+        private void AddRequestedCareCharge(CareChargesCreateDomain request, ReclaimSubType subType, DateTimeOffset startDate, DateTimeOffset? endDate = null)
         {
             request.CareCharges.Add(new CareChargeReclaimCreationDomain
             {
-                CarePackageId = _defaultPackage.Id,
+                CarePackageId = _package.Id,
                 Cost = 1m,
                 Type = ReclaimType.CareCharge,
                 SubType = subType,
@@ -506,46 +520,6 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
             });
         }
 
-        private void AddCareCharge(ReclaimSubType subType, DateTimeOffset startDate, DateTimeOffset? endDate)
-        {
-            _defaultPackage.Reclaims.Add(new CarePackageReclaim
-            {
-                Id = Guid.NewGuid(),
-                CarePackageId = _defaultPackage.Id,
-                Type = ReclaimType.CareCharge,
-                SubType = subType,
-                Status = ReclaimStatus.Active,
-                ClaimCollector = ClaimCollector.Supplier,
-                StartDate = startDate,
-                EndDate = endDate
-            });
-        }
-
-        private CareChargesCreateDomain CreateUpsertRequest()
-        {
-            var request = new CareChargesCreateDomain { CareCharges = new List<CareChargeReclaimCreationDomain>() };
-
-            // TODO: VK: Reorganize and unify reclaim creation entities, use mapper
-            foreach (var reclaim in _defaultPackage.Reclaims)
-            {
-                request.CareCharges.Add(
-                    new CareChargeReclaimCreationDomain
-                    {
-                        CarePackageId = reclaim.CarePackageId,
-                        Id = reclaim.Id,
-                        Type = reclaim.Type,
-                        SubType = reclaim.SubType.GetValueOrDefault(),
-                        Status = reclaim.Status,
-                        Cost = reclaim.Cost,
-                        Description = reclaim.Description,
-                        ClaimCollector = reclaim.ClaimCollector,
-                        ClaimReason = reclaim.ClaimReason,
-                        StartDate = reclaim.StartDate,
-                        EndDate = reclaim.EndDate
-                    });
-            }
-
-            return request;
-        }
+        #endregion Utils
     }
 }

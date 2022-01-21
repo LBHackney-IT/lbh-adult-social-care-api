@@ -22,7 +22,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
             PackageStatus? status = PackageStatus.New, Guid? serviceUserId = null, int? supplierId = null)
         {
             var package = new Faker<CarePackage>()
-                .RuleFor(cp => cp.Id, f => f.Random.Guid())
+                .RuleFor(cp => cp.Id, Guid.NewGuid())
                 .RuleFor(cp => cp.PackageType, f => packageType ?? f.PickRandom<PackageType>())
                 .RuleFor(cp => cp.SupplierId, f => supplierId)
                 .RuleFor(cp => cp.PackageScheduling, f => f.PickRandom<PackageScheduling>())
@@ -43,7 +43,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
             return package;
         }
 
-        public static CarePackageSettings CreateCarePackageSettings(Guid? settingId = null, Guid? carePackageId = null)
+        public static CarePackageSettings CreateCarePackageSettings(Guid? settingId = null, Guid? carePackageId = null, bool? isS117Client = null)
         {
             return new Faker<CarePackageSettings>()
                 .RuleFor(cp => cp.Id, f => settingId ?? f.Random.Guid())
@@ -52,7 +52,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
                 .RuleFor(cp => cp.HasDischargePackage, f => f.Random.Bool())
                 .RuleFor(cp => cp.HospitalAvoidance, f => f.Random.Bool())
                 .RuleFor(cp => cp.IsReEnablement, f => f.Random.Bool())
-                .RuleFor(cp => cp.IsS117Client, f => f.Random.Bool());
+                .RuleFor(cp => cp.IsS117Client, f => isS117Client ?? f.Random.Bool());
         }
 
         public static CarePackageForCreationRequest CarePackageCreationRequest(PackageType? packageType = null,
@@ -237,9 +237,10 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.Helper
             return new Faker<Supplier>()
                 .RuleFor(u => u.SupplierName, f => f.Name.FullName())
                 .RuleFor(u => u.Address, f => f.Address.FullAddress())
-                .RuleFor(u => u.Postcode, f => f.Address.CountryCode())
+                // .RuleFor(u => u.Postcode, f => f.Address.CountryCode())
                 .RuleFor(u => u.Postcode, f => f.Random.String(8))
                 .RuleFor(u => u.CedarReferenceNumber, f => f.Random.String(8))
+                .RuleFor(u => u.CedarId, f => f.UniqueIndex)
                 .RuleFor(u => u.DateCreated, f => f.Date.Past(1, DateTime.Now));
         }
 

@@ -162,6 +162,7 @@ namespace LBH.AdultSocialCare.Data.Extensions
                     searchPredicate = searchPredicate.Or(e =>
                         EF.Functions.ILike(e.Invoice.ServiceUser.FirstName, $"%{searchToken}%")
                         || EF.Functions.ILike(e.Invoice.ServiceUser.LastName, $"%{searchToken}%")
+                        || EF.Functions.ILike(e.Invoice.ServiceUser.HackneyId.ToString(), $"%{searchToken}%")
                         || EF.Functions.ILike(e.Invoice.Number, $"%{searchToken}%")
                         || EF.Functions.ILike(e.Invoice.Supplier.CedarReferenceNumber, $"%{searchToken}%")
                         || EF.Functions.ILike(e.Invoice.Supplier.CedarId.ToString(), $"%{searchToken}%")

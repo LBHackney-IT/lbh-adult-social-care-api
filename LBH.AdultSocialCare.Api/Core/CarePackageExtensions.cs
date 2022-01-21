@@ -49,7 +49,7 @@ namespace LBH.AdultSocialCare.Api.Core
                 .Sum(reclaim => reclaim.Cost);
         }
 
-        public static decimal GetFncCost(this CarePackage package, DateTimeOffset? targetDate = null)
+        public static decimal GetFncPaymentCost(this CarePackage package, DateTimeOffset? targetDate = null)
         {
             return package.Reclaims
                 .FirstOrDefault(reclaim =>
@@ -58,6 +58,30 @@ namespace LBH.AdultSocialCare.Api.Core
                     reclaim.Status != ReclaimStatus.Cancelled &&
                     (targetDate is null || targetDate.Value.IsInRange(reclaim.StartDate, reclaim.EndDate ?? DateTimeOffset.MaxValue)))?
                 .Cost ?? 0.0m;
+        }
+
+        public static decimal GetFncReclaimCost(this CarePackage package, ClaimCollector collector, DateTimeOffset? targetDate = null)
+        {
+            return package.Reclaims
+                .FirstOrDefault(reclaim =>
+                    reclaim.Type is ReclaimType.Fnc &&
+                    reclaim.SubType is ReclaimSubType.FncReclaim &&
+                    reclaim.ClaimCollector == collector &&
+                    reclaim.Status != ReclaimStatus.Cancelled &&
+                    (targetDate is null || targetDate.Value.IsInRange(reclaim.StartDate, reclaim.EndDate ?? DateTimeOffset.MaxValue)))?
+                .Cost ?? 0.0m;
+        }
+
+        public static void AddHistoryEntry(
+            this CarePackage package, string description,
+            HistoryStatus status = HistoryStatus.PackageInformation, string moreInformation = null)
+        {
+            package.Histories.Add(new CarePackageHistory
+            {
+                Status = status,
+                Description = description,
+                RequestMoreInformation = moreInformation
+            });
         }
     }
 }

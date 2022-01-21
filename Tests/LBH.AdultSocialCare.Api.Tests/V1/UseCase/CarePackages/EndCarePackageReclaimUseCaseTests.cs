@@ -51,7 +51,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 CarePackageId = packageId,
                 StartDate = DateTimeOffset.UtcNow,
                 Type = ReclaimType.CareCharge,
-                SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks
+                SubType = ReclaimSubType.CareCharge13PlusWeeks
             };
 
             var package = new CarePackage
@@ -106,7 +106,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 CarePackageId = packageId,
                 StartDate = DateTimeOffset.UtcNow,
                 Type = ReclaimType.CareCharge,
-                SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks
+                SubType = ReclaimSubType.CareCharge13PlusWeeks
             };
 
             var package = new CarePackage
@@ -165,7 +165,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 CarePackageId = packageId,
                 StartDate = DateTimeOffset.UtcNow,
                 Type = ReclaimType.CareCharge,
-                SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks
+                SubType = ReclaimSubType.CareCharge13PlusWeeks
             };
 
             var package = new CarePackage
@@ -220,7 +220,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 CarePackageId = packageId,
                 StartDate = DateTimeOffset.UtcNow,
                 Type = ReclaimType.CareCharge,
-                SubType = ReclaimSubType.CareChargeWithoutPropertyThirteenPlusWeeks
+                SubType = ReclaimSubType.CareCharge13PlusWeeks
             };
 
             var package = new CarePackage

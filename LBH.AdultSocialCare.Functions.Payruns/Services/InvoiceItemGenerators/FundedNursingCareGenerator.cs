@@ -82,7 +82,6 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                 .Where(r => r.Type is ReclaimType.Fnc)
                 .ToList();
 
-
             foreach (var reclaim in fundedNursingCare)
             {
                 var refunds = RefundCalculator.Calculate(
@@ -126,7 +125,10 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services.InvoiceItemGenerators
                 rangeStartDate = costPeriodRange.EndDate.AddDays(1);
             }
 
-            return totalCost;
+            // treat FNC payment as normal payment to supplier and FNC reclaim as reclaim from
+            return fundedNursingCare.SubType is ReclaimSubType.FncPayment
+                ? totalCost
+                : Decimal.Negate(totalCost);
         }
 
         private decimal GetPriceForDate(DateTimeOffset date)
