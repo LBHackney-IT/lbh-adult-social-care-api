@@ -42,7 +42,7 @@ namespace LBH.AdultSocialCare.Api.Core
         {
             var totalWeeklyCost = package.GetCoreCost() + package.GetAdditionalWeeklyCost(targetDate);
             var careChargesCost = package.GetCareChargesCost(null, targetDate);
-            var fncCost = package.GetFncCost(targetDate);
+            var fncCost = package.GetFncPaymentCost(targetDate);
 
             if (careChargesCost + fncCost > totalWeeklyCost)
             {

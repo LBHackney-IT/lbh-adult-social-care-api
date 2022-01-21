@@ -131,26 +131,30 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         [Fact]
         public async Task ShouldCreateNewCareCharge()
         {
-            var package = _generator.CreateCarePackage(status: PackageStatus.Approved);
-            _generator.CreateCarePackageSettings(package.Id);
-            var details = _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
+            var package = TestDataHelper.CreateCarePackage(packageType: PackageType.ResidentialCare,
+                status: PackageStatus.Approved);
+            package.Settings = TestDataHelper.CreateCarePackageSettings(carePackageId: package.Id, isS117Client: false);
+            package.Details.Add(
+                TestDataHelper.CreateCarePackageDetail(package.Id, type: PackageDetailType.CoreCost, cost: 100M));
+
+            package = _generator.CreateCarePackage(package);
 
             var request = new CareChargesCreationRequest()
             {
                 CareCharges = new List<CareChargeReclaimCreationRequest>()
-                 {
-                     new CareChargeReclaimCreationRequest()
-                     {
-                         Cost = 12.34m,
-                         ClaimCollector = ClaimCollector.Hackney,
-                         SubType = ReclaimSubType.CareCharge1To12Weeks,
-                         StartDate = details.FirstOrDefault().StartDate,
-                         EndDate = details.FirstOrDefault().StartDate.AddDays(84),
-                         Description = "test",
-                         ClaimReason = "test",
-                         CarePackageId = package.Id
-                     }
-                 }
+                {
+                    new CareChargeReclaimCreationRequest()
+                    {
+                        Cost = 12.34m,
+                        ClaimCollector = ClaimCollector.Hackney,
+                        SubType = ReclaimSubType.CareCharge1To12Weeks,
+                        StartDate = package.Details.First().StartDate,
+                        EndDate = package.Details.First().StartDate.AddDays(83),
+                        Description = "test",
+                        ClaimReason = "test",
+                        CarePackageId = package.Id
+                    }
+                }
             };
 
             var response = await _fixture.RestClient
@@ -186,7 +190,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             };
 
             var response = await _fixture.RestClient
-                .SubmitFormAsync<CarePackageReclaimResponse>($"api/v1/care-packages/{request.CarePackageId}/reclaims/care-charges", request);
+                .SubmitFormAsync<CarePackageReclaimResponse>(
+                    $"api/v1/care-packages/{request.CarePackageId}/reclaims/care-charges", request);
 
             var reclaims = _fixture.DatabaseContext.CarePackageReclaims
                 .Where(r => r.CarePackageId == package.Id).ToList();
@@ -267,7 +272,8 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
             5.Times(_ => _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge));
 
             var response = await _fixture.RestClient
-                .GetAsync<IEnumerable<CarePackageReclaimResponse>>($"api/v1/care-packages/{package.Id}/reclaims/care-charges");
+                .GetAsync<IEnumerable<CarePackageReclaimResponse>>(
+                    $"api/v1/care-packages/{package.Id}/reclaims/care-charges");
 
             response.Message.StatusCode.Should().Be(HttpStatusCode.OK);
             response.Content.Count().Should().Be(5);
@@ -321,9 +327,16 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.CarePackages
         [Fact]
         public async Task ShouldEndReclaim()
         {
-            var package = _generator.CreateCarePackage();
-            var reclaim = _generator.CreateCarePackageReclaim(package, ClaimCollector.Supplier, ReclaimType.CareCharge);
-            var detail = _generator.CreateCarePackageDetails(package, 1, PackageDetailType.CoreCost);
+            var package = TestDataHelper.CreateCarePackage(packageType: PackageType.ResidentialCare,
+                status: PackageStatus.Approved);
+            var coreCost = TestDataHelper.CreateCarePackageDetail(package.Id, PackageDetailType.CoreCost);
+            package.Details.Add(coreCost);
+            package.Reclaims.Add(TestDataHelper.CreateCarePackageReclaim(package.Id, type: ReclaimType.CareCharge,
+                subType: ReclaimSubType.CareChargeProvisional, collector: ClaimCollector.Supplier,
+                startDate: coreCost.StartDate, endDate: coreCost.EndDate, cost: 10M));
+            package = _generator.CreateCarePackage(package);
+
+            var reclaim = package.Reclaims.First();
 
             var endDate = DateTimeOffset.UtcNow;
 

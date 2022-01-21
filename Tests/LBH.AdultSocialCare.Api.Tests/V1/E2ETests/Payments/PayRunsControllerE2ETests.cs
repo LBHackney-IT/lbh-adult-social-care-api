@@ -98,13 +98,15 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
             response.Content.Data.Count().Should().Be(15);
         }
 
-        [Fact]
-        public async Task ShouldCreateDraftPayRun()
+        [Theory]
+        [InlineData(PayrunType.ResidentialRecurring)]
+        [InlineData(PayrunType.ResidentialReleasedHolds)]
+        public async Task ShouldCreateDraftPayRun(PayrunType type)
         {
             ClearDatabase();
             var payRunCreationRequest = new DraftPayRunCreationRequest
             {
-                Type = PayrunType.ResidentialRecurring,
+                Type = type,
                 PaidFromDate = _periodFrom,
                 PaidUpToDate = _periodTo
             };
@@ -115,6 +117,31 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.E2ETests.Payments
             var payRuns = _fixture.DatabaseContext.Payruns.ToList();
             payRuns.Should().HaveCount(1);
             payRuns.First().Status.Should().Be(PayrunStatus.Draft);
+        }
+
+        [Theory]
+        [InlineData(PayrunStatus.Draft)]
+        [InlineData(PayrunStatus.InProgress)]
+        [InlineData(PayrunStatus.WaitingForReview)]
+        [InlineData(PayrunStatus.WaitingForApproval)]
+        [InlineData(PayrunStatus.Approved)]
+        public async Task ShouldFailIfExistsAnUnApprovedPayRun(PayrunStatus status)
+        {
+            ClearDatabase();
+            _fixture.DatabaseContext.Add(TestDataHelper.CreatePayRun(status: status));
+            await _fixture.DatabaseContext.SaveChangesAsync();
+            var payRunCreationRequest = new DraftPayRunCreationRequest
+            {
+                Type = PayrunType.ResidentialRecurring,
+                PaidFromDate = _periodFrom,
+                PaidUpToDate = _periodTo
+            };
+            var url = $"api/v1/payruns";
+            var response = await _fixture.RestClient.PostAsync<object>(url, payRunCreationRequest);
+            response.Message.StatusCode.Should().Be(HttpStatusCode.PreconditionFailed);
+
+            var payRuns = _fixture.DatabaseContext.Payruns.ToList();
+            payRuns.Should().HaveCount(1);
         }
 
         [Fact]

@@ -24,7 +24,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
     public class CarePackageReclaimController : ControllerBase
     {
         private readonly ICreateProvisionalCareChargeUseCase _createProvisionalCareChargeUseCase;
-        private readonly IUpdateCarePackageReclaimUseCase _updateCarePackageReclaimUseCase;
+        private readonly IUpdateProvisionalCareChargeUseCase _updateProvisionalCareChargeUseCase;
         private readonly IGetCarePackageReclaimsUseCase _getCarePackageReclaimsUseCase;
         private readonly IGetFundedNursingCarePriceUseCase _getFundedNursingCarePriceUseCase;
         private readonly ICareChargeUseCase _getCareChargeUseCase;
@@ -32,7 +32,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         private readonly IUpsertCareChargesUseCase _upsertCareChargesUseCase;
 
         public CarePackageReclaimController(ICreateProvisionalCareChargeUseCase createProvisionalCareChargeUseCase,
-            IUpdateCarePackageReclaimUseCase updateCarePackageReclaimUseCase,
+            IUpdateProvisionalCareChargeUseCase updateProvisionalCareChargeUseCase,
             IGetCarePackageReclaimsUseCase getCarePackageReclaimsUseCase,
             IGetFundedNursingCarePriceUseCase getFundedNursingCarePriceUseCase,
             ICareChargeUseCase getCareChargeUseCase,
@@ -40,7 +40,7 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
             IUpsertCareChargesUseCase upsertCareChargesUseCase)
         {
             _createProvisionalCareChargeUseCase = createProvisionalCareChargeUseCase;
-            _updateCarePackageReclaimUseCase = updateCarePackageReclaimUseCase;
+            _updateProvisionalCareChargeUseCase = updateProvisionalCareChargeUseCase;
             _getCarePackageReclaimsUseCase = getCarePackageReclaimsUseCase;
             _getFundedNursingCarePriceUseCase = getFundedNursingCarePriceUseCase;
             _getCareChargeUseCase = getCareChargeUseCase;
@@ -274,7 +274,8 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         }
 
         /// <summary>Update single care charge reclaim.</summary>
-        /// <param name="requestedReclaims">Care charge reclaims to be updated.</param>
+        /// <param name="carePackageId">An unique identifier of a package containing the given reclaim.</param>
+        /// <param name="requestedReclaim">Care charge reclaim to be updated.</param>
         /// <returns>Care charge reclaims to be updated.</returns>
         /// <response code="200">When operation is completed successfully.</response>
         /// <response code="400">When requested reclaims belong to different care packages.</response>
@@ -287,9 +288,9 @@ namespace LBH.AdultSocialCare.Api.V1.Controllers.CarePackages
         [ProducesDefaultResponseType]
         [HttpPut("care-charges/{careChargeId}")]
         [AuthorizeRoles(RolesEnum.CareChargeManager)]
-        public async Task<ActionResult> UpdateProvisionalCareChargeReclaims(CareChargeReclaimUpdateRequest requestedReclaims)
+        public async Task<ActionResult> UpdateProvisionalCareChargeReclaims(Guid carePackageId, CareChargeReclaimUpdateRequest requestedReclaim)
         {
-            await _updateCarePackageReclaimUseCase.UpdateAsync(requestedReclaims.ToDomain());
+            await _updateProvisionalCareChargeUseCase.UpdateAsync(carePackageId, requestedReclaim.ToDomain());
             return Ok();
         }
 

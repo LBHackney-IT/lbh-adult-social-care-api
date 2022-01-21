@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Moq;
 using System;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.TestFramework.Extensions;
 using Xunit;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
@@ -114,7 +115,7 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
 
         private void AddReclaim(decimal cost, ReclaimType type, ClaimCollector collector)
         {
-            _package.Reclaims.Add(new CarePackageReclaim
+            var reclaim = new CarePackageReclaim
             {
                 Cost = cost,
                 Type = type,
@@ -125,7 +126,19 @@ namespace LBH.AdultSocialCare.Api.Tests.V1.UseCase.CarePackages
                 StartDate = _startDate,
                 EndDate = _endDate,
                 Status = ReclaimStatus.Active
-            });
+            };
+
+            _package.Reclaims.Add(reclaim);
+
+            if (type is ReclaimType.Fnc)
+            {
+                var fncReclaim = reclaim.DeepCopy();
+
+                fncReclaim.Cost = Decimal.Negate(reclaim.Cost);
+                fncReclaim.SubType = ReclaimSubType.FncReclaim;
+
+                _package.Reclaims.Add(fncReclaim);
+            }
         }
 
         private void AddAdditionalNeed(decimal cost, PaymentPeriod period)

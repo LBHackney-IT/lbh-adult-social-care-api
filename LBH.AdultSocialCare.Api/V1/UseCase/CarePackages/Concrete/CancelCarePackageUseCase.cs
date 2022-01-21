@@ -6,8 +6,8 @@ using LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Interfaces;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using LBH.AdultSocialCare.Api.Core;
 using LBH.AdultSocialCare.Data.Constants.Enums;
-using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 {
@@ -25,25 +25,37 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
         public async Task ExecuteAsync(Guid packageId, string notes)
         {
             var package = await _carePackageGateway
-                .GetPackageAsync(packageId, PackageFields.Reclaims, true)
+                .GetPackageAsync(packageId, PackageFields.Details | PackageFields.Reclaims, true)
                 .EnsureExistsAsync($"Care package {packageId} not found");
 
             package.Status = PackageStatus.Cancelled;
 
             var reclaims = package.Reclaims.Where(r => r.Status.In(ReclaimStatus.Active, ReclaimStatus.Pending));
+            var today = DateTimeOffset.UtcNow.Date;
 
             foreach (var reclaim in reclaims)
             {
-                reclaim.Status = ReclaimStatus.Ended;
-                reclaim.EndDate = DateTimeOffset.UtcNow;
+                reclaim.Status = ReclaimStatus.Cancelled;
+                reclaim.EndDate = today;
+
+                package.AddHistoryEntry($"{reclaim.SubType.GetDisplayName()} cancelled");
             }
 
-            package.Histories.Add(new CarePackageHistory
+            foreach (var detail in package.Details)
             {
-                Status = HistoryStatus.Cancelled,
-                Description = HistoryStatus.Cancelled.GetDisplayName(),
-                RequestMoreInformation = notes
-            });
+                if (detail.EndDate == null || detail.EndDate.Value > today)
+                {
+                    detail.EndDate = today;
+
+                    if (detail.Type is PackageDetailType.AdditionalNeed) // core cost represents package itself
+                    {
+                        package.AddHistoryEntry(
+                            $"Additional Need {detail.StartDate:yyyy-MM-dd} - {detail.EndDate:yyyy-MM-dd} cancelled");
+                    }
+                }
+            }
+
+            package.AddHistoryEntry(HistoryStatus.Cancelled.GetDisplayName(), HistoryStatus.Cancelled, notes);
 
             await _dbManager.SaveAsync();
         }

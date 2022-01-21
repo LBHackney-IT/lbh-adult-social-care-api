@@ -75,7 +75,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             var provisionalCharge = request.CareCharges.SingleOrDefault(cc => cc.SubType is ReclaimSubType.CareChargeProvisional);
             var first12WeeksCharge = request.CareCharges.SingleOrDefault(cc => cc.SubType is ReclaimSubType.CareCharge1To12Weeks);
 
-            if (first12WeeksCharge != null && first12WeeksCharge.StartDate <= provisionalCharge?.StartDate)
+            if (first12WeeksCharge != null && first12WeeksCharge.StartDate.Date <= provisionalCharge?.StartDate.Date)
             {
                 provisionalCharge.Status = ReclaimStatus.Cancelled;
             }
@@ -122,7 +122,7 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                                            $" {GetShortName(previousCharge.SubType + 1)}", HttpStatusCode.BadRequest);
                 }
 
-                var expectedEndDate = currentCharge.StartDate.AddDays(-1);
+                var expectedEndDate = currentCharge.StartDate.Date.AddDays(-1);
                 if (previousCharge.EndDate is null)
                 {
                     throw new ApiException($"{GetShortName(previousCharge.SubType)} care charge must have an end date one day before " +
@@ -138,40 +138,43 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
             }
 
             // First care charge must be started at package start date
-            if (requestedCareCharges.First()?.StartDate != coreCost.StartDate)
+            if (requestedCareCharges.First()?.StartDate.Date < coreCost.StartDate.Date)
             {
-                throw new ApiException("First care charge must start on package start date " +
+                throw new ApiException("First care charge start date must be greater or equal to package start date " +
                                        $"{coreCost.StartDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
             }
 
             // Last care charge end date must not exceed package end date (if any)
-            if (coreCost.EndDate.HasValue && requestedCareCharges.Last().EndDate > coreCost.EndDate)
+            if (coreCost.EndDate.HasValue && requestedCareCharges.Last().EndDate?.Date > coreCost.EndDate.Value.Date)
             {
                 throw new ApiException("Last care charge end date expected to be less than or equal " +
                                        $"to {coreCost.EndDate.Value:yyyy-MM-dd}", HttpStatusCode.BadRequest);
             }
 
-            ValidateFirst12WeeksChargeDuration(requestedCareCharges, coreCost);
+            ValidateCareChargeBounds(requestedCareCharges);
         }
 
-        private static void ValidateFirst12WeeksChargeDuration(List<CareChargeReclaimCreationDomain> careCharges, CarePackageDetail coreCost)
+        private static void ValidateCareChargeBounds(List<CareChargeReclaimCreationDomain> careCharges)
         {
+            foreach (var careCharge in careCharges)
+            {
+                if (careCharge.StartDate > careCharge.EndDate)
+                {
+                    throw new ApiException($"{GetShortName(careCharge.SubType)} charge start date should be less than or equal to its end date");
+                }
+            }
+
             // 1-12 care charge duration shouldn't exceed 12 weeks
             var first12WeeksCharge = careCharges.SingleOrDefault(cc => cc.SubType is ReclaimSubType.CareCharge1To12Weeks);
             if (first12WeeksCharge != null)
             {
                 var realEndDate = first12WeeksCharge.EndDate.GetValueOrDefault().Date;
-                var expectedEndDate = first12WeeksCharge.StartDate.Date.AddDays(12 * 7);
+                var maxEndDate = first12WeeksCharge.StartDate.Date.AddDays(12 * 7 - 1); // 12 weeks, exclude last day to get inclusive 84 days range
 
-                if (realEndDate > expectedEndDate)
+                if (realEndDate > maxEndDate)
                 {
-                    throw new ApiException("1-12 weeks care charge duration cannot exceed 12 weeks. Expected end date is " +
-                                           $"{expectedEndDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
-                }
-                else if (realEndDate < expectedEndDate && realEndDate != coreCost.EndDate)
-                {
-                    throw new ApiException("1-12 weeks care charge should end at " +
-                                           $"{coreCost.EndDate:yyy-MM-dd}", HttpStatusCode.BadRequest);
+                    throw new ApiException("1-12 weeks care charge duration cannot exceed 12 weeks. Max end date is " +
+                                           $"{maxEndDate:yyyy-MM-dd}", HttpStatusCode.BadRequest);
                 }
             }
         }

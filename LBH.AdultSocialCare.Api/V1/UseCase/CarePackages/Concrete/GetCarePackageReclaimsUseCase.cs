@@ -62,9 +62,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 .GetPackageAsync(carePackageId, PackageFields.Reclaims, true)
                 .EnsureExistsAsync($"Care package with id {carePackageId} not found");
 
-            var provisionalCareChargeReclaim =
-                carePackage.Reclaims.OrderBy(r => r.DateCreated)
-                    .FirstOrDefault(cc => cc.Type == ReclaimType.CareCharge && cc.SubType == ReclaimSubType.CareChargeProvisional);
+            var provisionalCareCharge = carePackage.Reclaims
+                .OrderBy(r => r.DateCreated)
+                .FirstOrDefault(
+                    cc => cc.Type == ReclaimType.CareCharge &&
+                          cc.SubType == ReclaimSubType.CareChargeProvisional &&
+                          cc.Status != ReclaimStatus.Cancelled);
 
             var res = new CarePackageReclaimDomain();
 
@@ -76,10 +79,10 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
                 return res.ToResponse();
             }
 
-            if (provisionalCareChargeReclaim == null)
+            if (provisionalCareCharge == null)
                 return null;
 
-            res = provisionalCareChargeReclaim?.ToDomain();
+            res = provisionalCareCharge?.ToDomain();
             res.HasAssessmentBeenCarried = hasAssessmentBeenCarried;
 
             return res.ToResponse();
