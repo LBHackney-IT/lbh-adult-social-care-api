@@ -46,7 +46,10 @@ namespace LBH.AdultSocialCare.Functions.Payruns.Services
                     // So set quantity and current cost to 0 and let the rest of logic flow.
                     var quantity = Math.Max(currentRange.WeeksInclusive, 0);
 
-                    var currentCost = calculateCurrentCost(currentRange, quantity).Round(2);
+                    var currentCost = packageItem.Package.Status != PackageStatus.Cancelled
+                        ? calculateCurrentCost(currentRange, quantity).Round(2)
+                        : 0.0m;
+
                     var refundAmount = CalculateRefundAmount(packageItem, currentCost, paidItems.ToList()).Round(2);
 
                     if (refundAmount != 0.0m)
