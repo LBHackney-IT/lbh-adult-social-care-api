@@ -1,4 +1,5 @@
 using System;
+using LBH.AdultSocialCare.Data.Entities.CarePackages;
 
 namespace LBH.AdultSocialCare.Data.Entities.Interfaces
 {
@@ -11,6 +12,8 @@ namespace LBH.AdultSocialCare.Data.Entities.Interfaces
 
         public DateTimeOffset StartDate { get; set; }
         public DateTimeOffset? EndDate { get; set; }
+
+        CarePackage Package { get; set; }
 
         public long Version { get; set; }
     }

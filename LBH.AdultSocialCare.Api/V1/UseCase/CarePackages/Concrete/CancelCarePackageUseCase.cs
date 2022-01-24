@@ -43,6 +43,12 @@ namespace LBH.AdultSocialCare.Api.V1.UseCase.CarePackages.Concrete
 
             foreach (var detail in package.Details)
             {
+                // mark all details as updated to be refunded by invoice generator. Alternatives would be
+                // - add smth. like CarePackageDetail.IsCancelled / Status column  to DB
+                // - handle cancelled packages separately in invoicing,
+                //   need to update DB schema to avoid processing -all- cancelled packages at each generator run
+                detail.Version++;
+
                 if (detail.EndDate == null || detail.EndDate.Value > today)
                 {
                     detail.EndDate = today;
