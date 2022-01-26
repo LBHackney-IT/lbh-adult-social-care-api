@@ -31,7 +31,7 @@ namespace LBH.AdultSocialCare.Data.Entities.Payments
         public DateTimeOffset ToDate { get; set; }
 
         public ClaimCollector? ClaimCollector { get; set; }
-        public PriceEffect PriceEffect { get; set; }
+        public PriceEffect PriceEffect { get; set; } // TODO: VK: Legacy field, should be avoided and removed
 
         public long SourceVersion { get; set; }
 

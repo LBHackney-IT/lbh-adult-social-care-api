@@ -11,6 +11,7 @@ using System.Linq;
 
 namespace LBH.AdultSocialCare.Api.Tests.V1.DataGenerators
 {
+    // TODO: VK: Move to TestFramework project to share with payrun tests
     public class DatabaseTestDataGenerator
     {
         private readonly DatabaseContext _context;
