@@ -97,3 +97,24 @@ resource "aws_sqs_queue_policy" "payruns_queue_to_lambda_policy" {
     ]
   })
 }
+
+module "tags" {
+  source = "git@github.com:LBHackney-IT/infrastructure.git//modules/aws-tags-lbh/module?ref=master"
+
+  application          = "social-care-care-packages"
+  department           = "Social Care"
+  environment          = "dev"
+}
+
+module "certificate" {
+  source = "git@github.com:LBHackney-IT/infrastructure.git//modules/aws-acm-lbh/module?ref=master"
+
+  acm_certificates = {
+    certificate = {
+      domain_name = "social-care-care-packages-development.hackney.gov.uk"
+      zone_id = "Z05689131LRP536POAGQN"
+    }
+  }
+
+  tags = module.tags.values
+}
